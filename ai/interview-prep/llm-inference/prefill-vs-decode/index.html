@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prefill vs Decode, Explained</title>
+  <meta name="description" content="Prefill vs decode in LLM inference: why an LLM reads your prompt fast but writes slowly, compute-bound vs memory-bound, TTFT vs tokens per second, batching, chunked prefill and disaggregation, with interactive labs.">
+  <meta property="og:title" content="Prefill vs Decode, explained">
+  <meta property="og:description" content="Why does an LLM read your prompt fast but write its answer slowly? An interactive lesson by @datawithsuman.">
+  <link rel="stylesheet" href="../../kit/site.css">
+  <style>
+    .chart { position: relative; background: #0f0f12; border-radius: 12px; }
+    .chart svg { display: block; width: 100%; height: auto; }
+    .chart text { font-family: var(--sans); }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .seg .btn { padding: 9px 13px; font-size: 14px; }
+    .seg .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-top: 14px; }
+    .controls > span { font-size: 14px; color: var(--muted); }
+    .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .row3 div { background: var(--surface-2); border-radius: 12px; padding: 10px 14px; }
+    .row3 span { display: block; font-size: 13px; color: var(--muted); }
+    .row3 b { font: 600 20px/1.3 var(--mono); }
+    table.t { width: 100%; border-collapse: collapse; font-size: 15px; }
+    table.t th, table.t td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.t th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    .scroll { overflow-x: auto; }
+    .toks { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+    .tok { font: 600 16px/1 var(--mono); padding: 9px 12px; border-radius: 9px; border: 1.5px solid var(--line); color: var(--muted); background: var(--surface-2); transition: all .25s; }
+    .tok.p.on { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+    .tok.a { opacity: 0; transform: translateY(6px); }
+    .tok.a.on { opacity: 1; transform: none; border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .phase { font: 600 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
+    .gauge { margin-top: 10px; }
+    .gauge .lbl { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-2); margin-bottom: 6px; }
+    .gauge .track { height: 16px; background: var(--surface-2); border-radius: 8px; overflow: hidden; }
+    .gauge .fill { height: 100%; border-radius: 8px; transition: width .3s; }
+    @media (max-width: 680px) { .row3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } table.t { font-size: 13.5px; } table.t th, table.t td { padding: 8px 6px; } }
+  </style>
+</head>
+<body data-page="lesson" data-root="../../" data-track="llm-inference" data-lesson="prefill-vs-decode">
+
+<header class="top wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="chip">Concept · LLM Inference</span>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <div class="kicker">PREFILL VS DECODE</div>
+  <h1>Why does an LLM read your prompt fast but write its answer <span class="yellow">slowly?</span></h1>
+  <p class="lead">Every LLM request runs in two phases. Prefill reads your whole prompt at once. Decode writes the answer one token at a time. They hit completely different limits on the GPU, and that one fact explains most of LLM inference.</p>
+  <p class="note" id="qual"></p>
+</section>
+
+<!-- 01 two phases -->
+<section class="wrap" id="phases">
+  <span class="step">01</span>
+  <h2>One request, <span class="yellow">two phases</span></h2>
+  <p class="sub">Press play. Watch how many passes through the model each phase needs.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--blue)"></i>prefill: the prompt</li><li><i style="--c:var(--yellow)"></i>decode: the answer</li></ul>
+      <button class="btn" id="play">▶ Play</button>
+    </div>
+    <div class="phase">Prompt</div>
+    <div class="toks" id="ptoks"></div>
+    <div class="phase">Answer</div>
+    <div class="toks" id="atoks"></div>
+    <div class="readouts"><div><span>forward passes</span><b id="passes">0</b></div><div><span>phase</span><b id="phaseNow">ready</b></div></div>
+    <p class="note">The whole prompt goes through the model in <b>one</b> pass. Every answer token needs <b>its own</b> pass, because each new token depends on the one before it. (Illustrative example, not real model output.)</p>
+  </div>
+</section>
+
+<!-- 02 quiz -->
+<section class="wrap" id="quiz">
+  <span class="step">02</span>
+  <h2>The first word appears fast, then the rest <span class="yellow">streams slowly.</span> Which phase is slow?</h2>
+  <p class="sub">Tap an answer.</p>
+  <div class="quiz">
+    <button class="opt" data-ok="0" data-why="Prefill is what you wait for before the first word. Here that part is fast.">Prefill</button>
+    <button class="opt" data-ok="1" data-why="Right. The streaming speed is decode: one full pass through the model per token. The wait before the first word is prefill.">Decode</button>
+    <button class="opt" data-ok="0" data-why="Tokenizing is a tiny fraction of the time. Almost all of it goes into the model's forward passes.">Tokenization</button>
+    <button class="opt" data-ok="0" data-why="The network adds a little, but the steady per-word pace comes from decode on the GPU.">The network</button>
+  </div>
+  <p class="quiz-why" aria-live="polite"></p>
+</section>
+
+<!-- 03 prefill -->
+<section class="wrap" id="prefill">
+  <span class="step">03</span>
+  <h2>Prefill is <span class="blue">compute-bound</span></h2>
+  <p class="sub">All prompt tokens go through the model together. The weights are read once and reused for every token, so the GPU's maths units are the limit.</p>
+  <div class="card lab">
+    <div class="lab-top"><div class="seg" id="pModel"></div><span class="badge info" id="pBadge"></span></div>
+    <div class="row3">
+      <div><span>maths needed</span><b id="pFlops">–</b></div>
+      <div><span>ideal prefill time</span><b id="pTime">–</b></div>
+      <div><span>FLOPs per byte read</span><b id="pAI">–</b></div>
+    </div>
+    <label class="slider"><span>Prompt length: <b id="plenOut">–</b></span><input type="range" id="plen" min="0" max="6" value="3"></label>
+    <p class="note">≈ 2 FLOPs per parameter per token (attention adds more on very long prompts). The GPU does 989 trillion FLOPs a second at peak. Prefill time sets the <b>time to first token</b>.</p>
+  </div>
+</section>
+
+<!-- 04 decode -->
+<section class="wrap" id="decode">
+  <span class="step">04</span>
+  <h2>Decode is <span class="yellow">memory-bound</span></h2>
+  <p class="sub">To make one token, the GPU reads <i>every</i> weight from memory and does only a little maths with each. So it spends almost all its time waiting for data.</p>
+  <div class="card lab">
+    <div class="lab-top"><div class="seg" id="dModel"></div><div class="seg" id="dPrec"><button class="btn on" data-b="2">16-bit</button><button class="btn" data-b="1">8-bit</button></div></div>
+    <div class="row3">
+      <div><span>read per token</span><b id="dGB">–</b></div>
+      <div><span>ideal time per token</span><b id="dMs">–</b></div>
+      <div><span>max speed, one user</span><b id="dTps">–</b></div>
+    </div>
+    <div class="gauge"><div class="lbl"><span>Memory bandwidth in use</span><b id="gMem">100%</b></div><div class="track"><div class="fill" style="width:100%;background:var(--yellow)"></div></div></div>
+    <div class="gauge"><div class="lbl"><span>Maths units in use</span><b id="gComp">–</b></div><div class="track"><div class="fill" id="gCompFill" style="background:var(--blue)"></div></div></div>
+    <p class="note">The GPU moves 3.35 TB a second. Try 8-bit: half the bytes, roughly double the speed. That's why quantization speeds up decode.</p>
+  </div>
+</section>
+
+<!-- 05 roofline + batching -->
+<section class="wrap" id="batch">
+  <span class="step">05</span>
+  <h2>The fix for decode: <span class="yellow">batching</span></h2>
+  <p class="sub">Serve many users in the same step. One read of the weights now feeds many tokens, so the maths units finally get work. Drag the slider and watch the dot climb the roofline.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--yellow)"></i>decode at this batch size</li><li><i style="--c:var(--blue)"></i>prefill, 2,000-token prompt</li></ul>
+      <span class="badge" id="bBadge"></span>
+    </div>
+    <div class="chart" id="roof"></div>
+    <div class="row3">
+      <div><span>speed per user</span><b id="bUser">–</b></div>
+      <div><span>total throughput</span><b id="bTotal">–</b></div>
+      <div><span>FLOPs per byte</span><b id="bAI">–</b></div>
+    </div>
+    <label class="slider"><span>Users per batch: <b id="bOut">–</b></span><input type="range" id="bsz" min="0" max="10" value="0"></label>
+    <p class="note">Roofline: below about 295 FLOPs per byte (the knee), speed is capped by memory; above it, by compute. Llama 3.1 8B, weights only, ideal. Real engines also read each user's KV cache, which pulls the knee further right.</p>
+  </div>
+</section>
+
+<!-- 06 metrics -->
+<section class="wrap" id="metrics">
+  <span class="step">06</span>
+  <h2>Two phases, <span class="yellow">two latency numbers</span></h2>
+  <div class="grid2">
+    <div class="card pad"><span class="badge info">Prefill → TTFT</span><h3 style="margin-top:12px">Time to first token</h3><p class="muted">How long you wait before the first word appears. Grows with prompt length. Matters most for chat and voice.</p></div>
+    <div class="card pad"><span class="badge warn">Decode → ITL / TPS</span><h3 style="margin-top:12px">Inter-token latency</h3><p class="muted">The gap between each word as it streams. An ITL of 10 ms means 100 tokens per second for that user. Grows with model size and batch size.</p></div>
+  </div>
+  <p class="note">"Tokens per second" can mean per user (latency) or for the whole service (throughput). Always ask which one.</p>
+</section>
+
+<!-- 07 collide -->
+<section class="wrap" id="collide">
+  <span class="step">07</span>
+  <h2>When the phases <span class="red">collide</span></h2>
+  <p class="sub">On a shared GPU, only one phase runs at a time. A long prefill pauses everyone's streaming; lots of decoding delays new users' first token. Two fixes:</p>
+  <div class="grid2">
+    <div class="card pad"><span class="badge good">Chunked prefill</span><p class="muted" style="margin-top:10px">Cut long prompts into chunks and mix them into decode batches, scheduling decode first. Streaming stays smooth. It's on by default in vLLM V1.</p></div>
+    <div class="card pad"><span class="badge good">Disaggregation</span><p class="muted" style="margin-top:10px">Run prefill and decode on separate GPUs, each tuned and scaled for its own limit. Better tail latency, but the KV cache must be copied across. On small or mistuned setups it can be 20–30% slower, and short prompts are often faster prefilled locally.</p></div>
+  </div>
+  <p class="note" id="collideNote"></p>
+</section>
+
+<!-- 08 which optimisation -->
+<section class="wrap" id="opts">
+  <span class="step">08</span>
+  <h2>Which optimisation helps <span class="yellow">which phase</span></h2>
+  <div class="card pad scroll">
+    <table class="t">
+      <tr><th>Technique</th><th>Helps</th><th>Why</th></tr>
+      <tr><td>Batching (continuous)</td><td class="yellow">Decode</td><td>One weight read feeds many users' tokens</td></tr>
+      <tr><td>Quantization (8/4-bit weights)</td><td class="yellow">Decode</td><td>Fewer bytes to read per token</td></tr>
+      <tr><td>Speculative decoding</td><td class="yellow">Decode</td><td>A small model drafts several tokens; the big one checks them in a single pass</td></tr>
+      <tr><td>KV cache</td><td class="yellow">Decode</td><td>Reuses past tokens' keys and values instead of recomputing them</td></tr>
+      <tr><td>FlashAttention</td><td class="blue">Prefill</td><td>Faster, memory-efficient attention for long prompts</td></tr>
+      <tr><td>Prefix caching</td><td class="blue">Prefill</td><td>Skip recomputing a shared prompt prefix (system prompt, documents)</td></tr>
+      <tr><td>FP8 compute</td><td class="blue">Prefill</td><td>Low-precision tensor cores do more maths per second</td></tr>
+      <tr><td>Chunked prefill, disaggregation</td><td>Both</td><td>Stop the phases slowing each other down</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 09 diagnose -->
+<section class="wrap" id="diagnose">
+  <span class="step">09</span>
+  <h2>Your LLM feels slow. <span class="yellow">Diagnose it</span></h2>
+  <ol class="steps">
+    <li class="card"><span class="n">1</span><div><h3>Measure TTFT and ITL separately</h3><p>One blended "latency" number hides which phase is the problem. Look at P50 and P90, not just the average.</p></div></li>
+    <li class="card"><span class="n">2</span><div><h3>High TTFT? Look at prefill</h3><p>Long prompts, no prefix caching, or prefill stuck behind other work. Try prefix caching, chunked prefill, or shorter prompts.</p></div></li>
+    <li class="card"><span class="n">3</span><div><h3>High ITL? Look at decode</h3><p>Big model, huge batches, long KV caches. Try quantization, speculative decoding, or a smaller model.</p></div></li>
+    <li class="card"><span class="n">4</span><div><h3>Low throughput, GPU "busy" but slow?</h3><p>Probably memory-bound decode at small batch sizes. Batch more users together (continuous batching).</p></div></li>
+  </ol>
+</section>
+
+<!-- 10 interview -->
+<section class="wrap">
+  <span class="step">10</span>
+  <h2>Interview follow-ups</h2>
+  <div class="qa">
+    <details class="card"><summary><span>Why is decode memory-bound but prefill compute-bound?</span></summary><p>Both read the model's weights once per forward pass. Prefill does maths for thousands of prompt tokens with that one read, so it has hundreds or thousands of FLOPs per byte and saturates compute. Decode makes one token per pass per user, about 1 FLOP per byte in 16-bit, far below the GPU's ~295, so it waits on memory bandwidth.</p></details>
+    <details class="card"><summary><span>What does the KV cache have to do with this?</span></summary><p>Prefill builds the KV cache: the keys and values for every prompt token. Decode reuses it, adding one entry per new token, so it never recomputes the past. But the cache grows with context length and batch size and must also be read every step, which makes decode even more memory-bound.</p></details>
+    <details class="card"><summary><span>Why does batching raise throughput but not per-user speed?</span></summary><p>In the memory-bound region, a step takes about the time to read the weights, whether it serves 1 user or 64. So total tokens per second grows almost linearly with batch size while each user's speed stays roughly flat, until you hit the compute limit or the KV cache fills memory.</p></details>
+    <details class="card"><summary><span>How would you estimate the max tokens per second for a model?</span></summary><p>For one user: memory bandwidth ÷ bytes of weights. An 8B model in 16-bit is 16 GB; an H100 moves 3.35 TB/s, so about 210 tokens/s at best. Real numbers are lower because of the KV cache, kernels and overheads, but it's a solid first estimate.</p></details>
+    <details class="card"><summary><span>When would you disaggregate prefill and decode?</span></summary><p>At scale, with long prompts and strict latency targets, where prefill spikes hurt streaming. Not for small deployments or short or heavily cached prompts: copying the KV cache between machines costs time and can make things slower.</p></details>
+  </div>
+</section>
+
+<section class="wrap"><div class="card recap">Read in parallel. <span class="yellow">Write one token at a time.</span></div></section>
+
+</main>
+
+<footer class="wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="muted small">AI &amp; ML, explained simply</span>
+</footer>
+
+<script src="lesson.js"></script>
+<script src="../../lessons.js"></script>
+<script src="../../kit/site.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

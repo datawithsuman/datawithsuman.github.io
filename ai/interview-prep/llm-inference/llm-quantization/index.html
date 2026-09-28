@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Quantization, Explained</title>
+  <meta name="description" content="How LLM quantization works: INT8, INT4 and FP8, why outliers break naive rounding, and how group-wise scales, GPTQ, AWQ and SmoothQuant fix it, with interactive labs measured on a real LLM.">
+  <meta property="og:title" content="LLM Quantization, explained">
+  <meta property="og:description" content="How does an LLM survive losing 75% of its bits? An interactive lesson by @datawithsuman.">
+  <link rel="stylesheet" href="../../kit/site.css">
+  <style>
+    .chart { position: relative; background: #0f0f12; border-radius: 12px; }
+    .chart svg { display: block; width: 100%; height: auto; }
+    .chart text { font-family: var(--sans); }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .seg .btn { padding: 9px 13px; font-size: 14px; }
+    .seg .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .say { font: 400 19px/1.45 var(--serif); background: var(--surface-2); border-radius: 12px; padding: 12px 16px; margin-top: 12px; }
+    .say .p { color: var(--muted); } .say .g { color: var(--ink); }
+    .say.bad .g { color: var(--red); } .say.good .g { color: var(--green); }
+    table.t { width: 100%; border-collapse: collapse; font-size: 15px; }
+    table.t th, table.t td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.t th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    table.t td.num { font-family: var(--mono); white-space: nowrap; }
+    .scroll { overflow-x: auto; }
+    .ladder { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .ladder .card { padding: 16px; border-top: 4px solid var(--c); }
+    .ladder b { display: block; font: 400 22px/1.2 var(--serif); margin-bottom: 4px; }
+    .ladder span { font: 600 12px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--c); }
+    .ladder p { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-2); }
+    .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .row3 div { background: var(--surface-2); border-radius: 12px; padding: 10px 14px; }
+    .row3 span { display: block; font-size: 13px; color: var(--muted); }
+    .row3 b { font: 600 20px/1.3 var(--mono); }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-top: 14px; }
+    .controls > span { font-size: 14px; color: var(--muted); }
+    h3.mini { font: 600 13px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 16px 0 8px; }
+    @media (max-width: 680px) { .ladder, .row3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } table.t { font-size: 13.5px; } table.t th, table.t td { padding: 8px 6px; } table.t th { font-size: 11px; } }
+  </style>
+</head>
+<body data-page="lesson" data-root="../../" data-track="llm-inference" data-lesson="llm-quantization">
+
+<header class="top wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="chip">Concept · LLM Inference</span>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <div class="kicker">LLM QUANTIZATION</div>
+  <h1>How does an LLM survive losing <span class="yellow">75% of its bits?</span></h1>
+  <p class="lead">Quantization stores each weight in 4 or 8 bits instead of 16. That makes the model smaller and faster to serve. Plain rounding can break it, though. Here's what goes wrong, and how GPTQ, AWQ and SmoothQuant fix it.</p>
+  <p class="note">Numbers come from the GPTQ, AWQ and SmoothQuant papers (table cited next to each) and <i>Inference Engineering</i> (P. Kiely, ch. 5.1). Sizes are exact arithmetic. Anything else is labelled illustrative.</p>
+</section>
+
+<!-- 01 why -->
+<section class="wrap" id="why">
+  <span class="step">01</span>
+  <h2>An LLM is mostly <span class="yellow">numbers you have to move</span></h2>
+  <p class="sub">Every token the model generates reads every weight from GPU memory. Fewer bits per weight means less memory to hold them and less data to move for each token.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <div class="seg" id="precBtns"></div>
+      <span class="badge info" id="whyBadge"></span>
+    </div>
+    <div class="chart" id="memChart"></div>
+    <div class="readouts"><div><span>70B model weights</span><b id="mem70">–</b></div><div><span>80 GB GPUs needed</span><b id="gpus70">–</b></div></div>
+    <p class="note">Weights only (the KV cache and per-group scales add a little more). GB = parameters × bits ÷ 8. The dashed line is one 80 GB GPU.</p>
+  </div>
+  <div class="card tip"><span class="badge warn">Speed</span><p>Decoding is <b>memory-bound</b>: the GPU mostly waits for weights to arrive. Halving the bytes helps, but it isn't a free 2×. <i id="bookStep"></i> (<span class="muted small">Inference Engineering, ch. 5.1</span>). GPTQ reports <i id="gptqSpeed"></i>.</p></div>
+</section>
+
+<!-- 02 what -->
+<section class="wrap" id="snap">
+  <span class="step">02</span>
+  <h2>Quantizing = <span class="yellow">snapping to a grid</span></h2>
+  <p class="sub">Pick a scale that stretches 2<sup>bits</sup> evenly spaced levels from the smallest weight to the largest, then round every weight to the nearest level. Here are 32 real weights from an open LLM.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--blue)"></i>original weight</li><li><i style="--c:var(--yellow)"></i>after rounding</li><li><i style="--c:var(--red)"></i>crushed to the zero level</li></ul>
+    </div>
+    <div class="chart" id="snapChart"></div>
+    <div class="row3">
+      <div><span>levels</span><b id="snapLevels">–</b></div>
+      <div><span>avg error vs avg |w|</span><b id="snapErr">–</b></div>
+      <div><span>crushed to zero</span><b id="snapZero">–</b></div>
+    </div>
+    <label class="slider"><span>Bits per weight: <b id="bitsOut">–</b></span><input type="range" id="bits" min="2" max="8" value="4"></label>
+    <p class="note" id="snapNote"></p>
+  </div>
+  <div class="card tip"><span class="badge warn">Why it matters</span><p>Small errors compound. π rounded to 3.14 is off by 0.05%, but cube it and you're off by 0.15%. Round it to 3 and π³ is 27 instead of 31. An LLM stacks dozens of layers and thousands of tokens on top of every rounding error <span class="muted small">(example from Inference Engineering, ch. 5.1)</span>.</p></div>
+</section>
+
+<!-- 03 quiz -->
+<section class="wrap" id="quiz">
+  <span class="step">03</span>
+  <h2>One weight is <span class="yellow">12× bigger</span> than a typical one. At 4 bits, what happens to the small ones?</h2>
+  <p class="sub">Tap an answer.</p>
+  <div class="quiz">
+    <button class="opt" data-ok="0" data-why="The big weight is the one that survives: the grid's range is stretched to fit it exactly.">The big one gets clipped</button>
+    <button class="opt" data-ok="1" data-why="Right. The scale must stretch to reach the outlier, so the 16 levels sit far apart and many small weights round to the same level, often zero. That is the core difficulty of quantization. (Scroll up: at 4 bits, 14 of the 32 weights are crushed.)">They collapse onto the same few levels</button>
+    <button class="opt" data-ok="0" data-why="Rounding error depends on the level spacing, which the outlier makes huge. So small weights get worse, not better.">Nothing, rounding error is tiny</button>
+    <button class="opt" data-ok="0" data-why="Plain rounding has no such rule; every weight gets the same grid. (Keeping a few channels in 16-bit is AWQ's first idea, section 06.)">The model keeps them in 16-bit</button>
+  </div>
+  <p class="quiz-why" aria-live="polite"></p>
+</section>
+
+<!-- 04 cliff -->
+<section class="wrap" id="cliff">
+  <span class="step">04</span>
+  <h2>Plain rounding works… <span class="red">until it falls off a cliff</span></h2>
+  <p class="sub">Round-to-nearest (RTN) applied to real OPT models, from 125M to 175B parameters. Perplexity measures how surprised the model is by real text; lower is better.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--muted)"></i>16-bit</li><li><i style="--c:var(--yellow)"></i>4-bit RTN</li><li><i style="--c:var(--red)"></i>3-bit RTN</li></ul>
+      <span class="badge" id="cliffBadge"></span>
+    </div>
+    <div class="chart" id="cliffChart"></div>
+    <div class="readouts"><div><span>4-bit: perplexity rise</span><b id="cliff4">–</b></div><div><span>3-bit: perplexity rise</span><b id="cliff3">–</b></div></div>
+    <label class="slider"><span>Model size: <b id="sizeOut">–</b></span><input type="range" id="size" min="0" max="8" value="8"></label>
+    <p class="note" id="cliffNote"></p>
+  </div>
+</section>
+
+<!-- 05 groups -->
+<section class="wrap" id="groups">
+  <span class="step">05</span>
+  <h2>Fix 1: give every <span class="yellow">small group</span> its own scale</h2>
+  <p class="sub">An outlier only stretches the grid of its own group. Smaller groups mean more scales to store, but each group's grid fits its own weights snugly.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <div class="seg" id="grpBtns"><button class="btn on" data-g="32">1 scale / 32</button><button class="btn" data-g="16">1 / 16</button><button class="btn" data-g="8">1 / 8</button><button class="btn" data-g="4">1 / 4</button></div>
+      <span class="badge info" id="grpBadge"></span>
+    </div>
+    <div class="chart" id="grpChart"></div>
+    <div class="row3">
+      <div><span>avg error vs avg |w|</span><b id="grpErr">–</b></div>
+      <div><span>crushed to zero</span><b id="grpZero">–</b></div>
+      <div><span>extra storage</span><b id="grpOver">–</b></div>
+    </div>
+    <p class="note">The same 32 weights at 3 bits. Extra storage assumes a 16-bit scale and a 16-bit zero-point per group. Real models use groups of 128.</p>
+  </div>
+  <div class="card pad scroll" style="margin-top:16px">
+    <table class="t" id="grpTable"></table>
+    <p class="note" id="grpTableNote"></p>
+  </div>
+  <div class="card tip"><span class="badge info">In hardware</span><p>New number formats bake this in. MXFP8 and MXFP4 share one scale per 32 values; NVFP4 uses one per 16, plus a global scale. The more scales, the less an outlier can hurt.</p></div>
+</section>
+
+<!-- 06 AWQ -->
+<section class="wrap" id="awq">
+  <span class="step">06</span>
+  <h2>Fix 2: protect the <span class="yellow">1% that matters</span></h2>
+  <p class="sub">A few input channels carry huge activations every time, so the weights that multiply them matter most. AWQ's insight: find them by looking at the <i>activations</i>, not the weights.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--yellow)"></i>activation size per input channel</li><li><i style="--c:var(--blue)"></i>weight size per input channel</li></ul>
+      <span class="badge warn">illustrative</span>
+    </div>
+    <h3 class="mini">Activations: a few channels are ≈100× bigger</h3>
+    <div class="chart" id="actChart"></div>
+    <h3 class="mini">Weights (own scale): nothing stands out</h3>
+    <div class="chart" id="wChart"></div>
+    <p class="note">Illustrative picture of what SmoothQuant and AWQ observe in real LLMs: outliers are ≈100× larger than typical values and stay in the same channels for every token. Judging importance by weight size would miss them.</p>
+  </div>
+  <h3 class="mini" style="margin-top:28px">Keep a few channels in 16-bit, round the rest to 3 bits</h3>
+  <div class="card lab">
+    <div class="lab-top"><div class="seg" id="keepBtns"><button class="btn" data-m="0">OPT-1.3B</button><button class="btn on" data-m="1">OPT-6.7B</button><button class="btn" data-m="2">OPT-13B</button></div></div>
+    <div class="scroll"><table class="t" id="keepTable"></table></div>
+    <p class="note" id="keepNote"></p>
+  </div>
+  <div class="card tip"><span class="badge good">The trick</span><p>Mixed precision is awkward for GPU kernels. So AWQ keeps everything in 4 bits and instead <b>scales the important channels up</b> before rounding (and their activations down by the same factor). The math is unchanged, but those weights now span more levels, so their relative error shrinks. The per-channel scale comes from average activation size, tuned per layer on a small calibration set. No retraining.</p></div>
+</section>
+
+<!-- 07 GPTQ + comparison -->
+<section class="wrap" id="gptq">
+  <span class="step">07</span>
+  <h2>Fix 3: <span class="yellow">cancel the error</span> you just made</h2>
+  <p class="sub">GPTQ quantizes a layer one column at a time. After rounding each column, it nudges the not-yet-quantized columns to cancel that column's error on real inputs.</p>
+  <ol class="steps">
+    <li class="card"><span class="n">1</span><div><h3>Run a small calibration set through the layer</h3><p>Record its inputs X and build H = 2XᵀX. H captures which input directions are correlated and important.</p></div></li>
+    <li class="card"><span class="n">2</span><div><h3>Round column 1</h3><p>Its rounding error is now fixed forever.</p></div></li>
+    <li class="card"><span class="n">3</span><div><h3>Spread the error onto columns 2…n</h3><p>Update them with H⁻¹ so the layer's <i>output</i>, not each weight, stays as close as possible to the original.</p></div></li>
+    <li class="card"><span class="n">4</span><div><h3>Repeat to the last column, layer by layer</h3><p>OPT-175B took ≈4 GPU hours (GPTQ paper).</p></div></li>
+  </ol>
+  <div class="card lab" style="margin-top:16px">
+    <div class="lab-top">
+      <div class="seg" id="mModel"><button class="btn on" data-m="0">Llama-2-7B</button><button class="btn" data-m="1">13B</button><button class="btn" data-m="2">70B</button></div>
+      <div class="seg" id="mBits"><button class="btn on" data-b="3">3-bit</button><button class="btn" data-b="4">4-bit</button></div>
+    </div>
+    <ul class="legend" style="margin-bottom:8px"><li><i style="--c:var(--red)"></i>RTN</li><li><i style="--c:var(--blue)"></i>GPTQ</li><li><i style="--c:var(--yellow)"></i>AWQ</li><li><i style="--c:var(--muted)"></i>16-bit</li></ul>
+    <div class="chart" id="methodChart"></div>
+    <p class="note" id="methodNote"></p>
+  </div>
+</section>
+
+<!-- 08 SmoothQuant -->
+<section class="wrap" id="smooth">
+  <span class="step">08</span>
+  <h2>Activations are harder: <span class="yellow">move the difficulty</span></h2>
+  <p class="sub">Weight-only quantization saves memory. To also use the fast INT8 or FP8 math units, the activations must be quantized too, and they're full of outliers. SmoothQuant divides activation channel j by s<sub>j</sub> and multiplies the matching weights by s<sub>j</sub>. The product is the same, but the outliers move into the weights, which handle them easily.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <ul class="legend"><li><i style="--c:var(--yellow)"></i>activation / s</li><li><i style="--c:var(--blue)"></i>weight × s</li></ul>
+      <span class="badge" id="smBadge"></span>
+    </div>
+    <div class="chart" id="smChart"></div>
+    <div class="readouts"><div><span>activation peak ÷ median</span><b id="smA">–</b></div><div><span>weight peak ÷ median</span><b id="smW">–</b></div></div>
+    <label class="slider"><span>Migration strength α: <b id="alphaOut">–</b></span><input type="range" id="alpha" min="0" max="20" value="0"></label>
+    <p class="note">s<sub>j</sub> = max|X<sub>j</sub>|<sup>α</sup> / max|W<sub>j</sub>|<sup>1−α</sup> (SmoothQuant eq. 4), applied to the illustrative channels above. A lower peak ÷ median means fewer levels are wasted on outliers. The paper uses α = 0.5 for most models.</p>
+  </div>
+  <div class="card pad scroll" style="margin-top:16px">
+    <table class="t" id="w8Table"></table>
+    <p class="note" id="w8Note"></p>
+  </div>
+</section>
+
+<!-- 09 what + formats -->
+<section class="wrap" id="what">
+  <span class="step">09</span>
+  <h2>What to quantize, and <span class="yellow">in which format</span></h2>
+  <p class="sub">Not every part of a model is equally fragile. From least to most sensitive (Inference Engineering, ch. 5.1):</p>
+  <div class="ladder">
+    <div class="card" style="--c:var(--green)"><span>low risk</span><b>Weights</b><p>Linear layers are the bulk of the model and the safest to quantize. Often the first and last layers stay in 16-bit.</p></div>
+    <div class="card" style="--c:var(--green)"><span>some risk</span><b>Activations</b><p>Layer outputs have outliers (section 08). Activation functions themselves are rarely quantized.</p></div>
+    <div class="card" style="--c:var(--yellow)"><span>moderate</span><b>KV cache</b><p>A big win for long contexts and caching, but errors carry forward to every later token.</p></div>
+    <div class="card" style="--c:var(--red)"><span>high risk</span><b>Attention</b><p>Softmax is sensitive to range, and errors compound across thousands of tokens. Usually kept in high precision.</p></div>
+  </div>
+  <div class="card pad scroll" style="margin-top:16px">
+    <table class="t">
+      <tr><th>Format</th><th>What it is</th><th>Where it fits</th></tr>
+      <tr><td class="num">BF16 / FP16</td><td>16-bit float, the usual training precision</td><td>The baseline</td></tr>
+      <tr><td class="num">FP8 (E4M3)</td><td>1 sign, 4 exponent, 3 mantissa bits. The exponent gives it wide dynamic range</td><td>Datacenter sweet spot (Hopper and later): weights, activations, KV cache</td></tr>
+      <tr><td class="num">MXFP8</td><td>FP8 plus one shared scale per block of 32 values</td><td>Blackwell. Even safer FP8</td></tr>
+      <tr><td class="num">INT8 (W8A8)</td><td>Integer with a scale, uniform levels</td><td>Works with smoothing (SmoothQuant); less range than FP8</td></tr>
+      <tr><td class="num">INT4 (W4A16)</td><td>4-bit integer weights, g128 scales, 16-bit activations</td><td>GPTQ and AWQ checkpoints; local and memory-bound serving</td></tr>
+      <tr><td class="num">MXFP4 / NVFP4</td><td>4-bit float, one scale per 32 (MX) or 16 values (NV) + global scale</td><td>Blackwell; e.g. GPT-OSS ships in MXFP4 (trained that way)</td></tr>
+      <tr><td class="num">GGUF k-quants</td><td>File format with mixed per-layer precision, down to ~1.5 bits on average</td><td>Laptops and edge (llama.cpp)</td></tr>
+    </table>
+    <p class="note">Why float beats int at the same bits: the exponent spaces levels densely near zero and sparsely far away. That suits bell-shaped weights with a few outliers.</p>
+  </div>
+</section>
+
+<!-- 10 recipe -->
+<section class="wrap" id="recipe">
+  <span class="step">10</span>
+  <h2>The recipe for <span class="yellow">shipping a quantized model</span></h2>
+  <ol class="steps">
+    <li class="card"><span class="n">1</span><div><h3>Pick the precision from your bottleneck</h3><p>Out of memory or slow decode → weight-only 4-bit (AWQ/GPTQ). Compute-bound prefill or high batch → FP8/INT8 weights <i>and</i> activations.</p></div></li>
+    <li class="card"><span class="n">2</span><div><h3>Choose what to quantize</h3><p>Start with linear-layer weights. Add activations and the KV cache only if you need them. Leave attention math, embeddings and the output head in 16-bit.</p></div></li>
+    <li class="card"><span class="n">3</span><div><h3>Use small groups, never one scale per tensor</h3><p>g128 for INT4, or block-scaled formats (MXFP8, NVFP4).</p></div></li>
+    <li class="card"><span class="n">4</span><div><h3>Calibrate with a smart method</h3><p>AWQ or GPTQ for low-bit weights, SmoothQuant for W8A8. Use a few hundred samples that look like your traffic.</p></div></li>
+    <li class="card"><span class="n">5</span><div><h3>Measure against the original</h3><p>Perplexity first, then benchmarks (MMLU etc.), then <b>your own evals</b>. The bar is "difference indistinguishable from run-to-run noise."</p></div></li>
+    <li class="card"><span class="n">6</span><div><h3>Back off where it hurts</h3><p>Quantization is a dial, not a switch. Go FP8 instead of FP4, or quantize fewer components.</p></div></li>
+  </ol>
+</section>
+
+<!-- 11 when -->
+<section class="wrap">
+  <span class="step">11</span>
+  <h2>When to use it, and <span class="yellow">what to watch out for</span></h2>
+  <div class="grid2">
+    <div class="card pad"><span class="badge good">✓ Great for</span><ul class="muted">
+      <li>Fitting a big model on fewer GPUs, or on a laptop</li>
+      <li>Faster decode (memory-bound), especially at small batch sizes</li>
+      <li>More room for KV cache → bigger batches, longer contexts</li>
+      <li>Large models: the bigger the model, the less each weight matters</li></ul></div>
+    <div class="card pad"><span class="badge bad">Watch out</span><ul class="muted">
+      <li>Small models are fragile: every weight carries more of the load</li>
+      <li>3 bits and below: quality drops fast, even with GPTQ/AWQ</li>
+      <li>Calibration data that doesn't match your domain</li>
+      <li>Speedups need real low-bit kernels (e.g. vLLM, TensorRT-LLM); the file size alone isn't speed</li></ul></div>
+  </div>
+</section>
+
+<!-- 12 interview -->
+<section class="wrap">
+  <span class="step">12</span>
+  <h2>Interview follow-ups</h2>
+  <div class="qa">
+    <details class="card"><summary><span>Why does 4-bit weight-only quantization speed up decode but not prefill much?</span></summary><p>Decode reads every weight for just a few tokens, so it is memory-bandwidth-bound. Moving 4× fewer bytes directly speeds it up. Prefill processes many tokens per weight read, so it's compute-bound, and W4A16 still does 16-bit math after de-quantizing. To speed up prefill you need low-precision math: FP8/INT8 activations as well (W8A8).</p></details>
+    <details class="card"><summary><span>Symmetric vs asymmetric quantization?</span></summary><p>Symmetric: the levels are centred on zero, and scale = max|w| / (2<sup>b−1</sup>−1). Asymmetric adds a zero-point so the grid covers [min, max] exactly, which is better for skewed ranges and costs one extra number per group. Weights are often done asymmetrically at 3–4 bits; activations are usually symmetric.</p></details>
+    <details class="card"><summary><span>Why do activation outliers hurt more than weight outliers?</span></summary><p>Weights are fixed, so you can scale each output channel separately offline. Activation outliers sit in fixed <i>input</i> channels and change per token. A per-tensor activation scale gets stretched by them for every token, and you can't give each input channel its own scale without breaking the fast INT8 matmul. SmoothQuant folds that per-channel scale into the weights instead.</p></details>
+    <details class="card"><summary><span>GPTQ vs AWQ: which would you pick?</span></summary><p>Both are post-training, weight-only and use calibration data. GPTQ reconstructs each layer's output with second-order (Hessian) updates, which is strong but can overfit the calibration set. AWQ only searches per-channel scales, is cheaper and generalizes well across domains. At 4-bit g128 they're usually close. Evaluate both on your own tasks.</p></details>
+    <details class="card"><summary><span>What's the difference between PTQ and QAT?</span></summary><p>Post-training quantization converts finished weights using a small calibration set in minutes to hours. Quantization-aware training simulates the low-bit rounding during training so the weights adapt to it. It gives the best quality at very low bits but needs the training pipeline (e.g. GPT-OSS released in MXFP4, Kimi K2 Thinking in INT4). With open weights you usually only have PTQ.</p></details>
+    <details class="card"><summary><span>How do you check that a quantized model is "good enough"?</span></summary><p>Compare against the original on the same harness: perplexity (cheap, sensitive), public benchmarks, and a product-specific eval. You want differences within run-to-run noise. Check long-context and reasoning tasks too, since errors compound over tokens.</p></details>
+  </div>
+</section>
+
+<section class="wrap"><div class="card recap">Fewer bits, same model: <span class="yellow">just tame the outliers.</span></div></section>
+
+</main>
+
+<footer class="wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="muted small">AI &amp; ML, explained simply</span>
+</footer>
+
+<script src="lesson.js"></script>
+<script src="../../lessons.js"></script>
+<script src="../../kit/site.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
