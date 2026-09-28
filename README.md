@@ -43,22 +43,54 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 
 ---
 
-## 📚 Lessons
+## 🆕 Latest lessons
 
-### 🚀 LLM Inference
+| Lesson | Track | The question it answers |
+|---|---|---|
+| [**LLM Quantization**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🚀 LLM Inference | How does an LLM survive losing 75% of its bits? |
+| [**Prefill vs Decode**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | 🚀 LLM Inference | Why does an LLM read your prompt fast but write its answer slowly? |
 
-| # | Lesson | The question it answers | Level | Time |
-|:---:|---|---|:---:|:---:|
-| 1 | [**Prefill vs Decode**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | Why does an LLM read your prompt fast but write its answer slowly? | 🟢 Beginner | 8 min |
-| 2 | [**LLM Quantization**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | How does an LLM survive losing 75% of its bits? | 🟡 Intermediate | 12 min |
+---
+
+## 📚 All lessons by track
+
+Tap a track to see its lessons, in the order to learn them.
 
 <details>
-<summary><b>🔜 Coming soon in other tracks</b></summary>
+<summary><b>🚀 LLM Inference</b> · 2 lessons</summary>
 
 <br>
 
-New lessons land every week across **ML Scenarios**, **ML System Design**, **ML Papers Explained**, **GenAI & LLM Engineering** and **ML Fundamentals**. ⭐ Star this repo to follow along.
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Prefill vs Decode](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | 🟢 Beginner | 8 min |
+| 2 | [LLM Quantization](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🟡 Intermediate | 12 min |
 
+</details>
+
+<details>
+<summary><b>🩺 ML Scenarios</b> · coming soon</summary>
+<br>First scenarios land soon. ⭐ Star the repo to follow along.
+</details>
+
+<details>
+<summary><b>🏗️ ML System Design</b> · coming soon</summary>
+<br>Coming soon.
+</details>
+
+<details>
+<summary><b>📄 ML Papers Explained</b> · coming soon</summary>
+<br>Coming soon.
+</details>
+
+<details>
+<summary><b>🤖 GenAI & LLM Engineering</b> · coming soon</summary>
+<br>Coming soon.
+</details>
+
+<details>
+<summary><b>📐 ML Fundamentals</b> · coming soon</summary>
+<br>Coming soon.
 </details>
 
 ---
