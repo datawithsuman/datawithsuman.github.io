@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Context Language Models, Explained · @datawithsuman</title>
-<meta name="description" content="Context Language Models in plain language: the problem, the approach with a flow diagram, results, limitations, a read-or-skip verdict and how to explain it in an interview. By @datawithsuman.">
+<meta name="description" content="Context Language Models in plain language: the problem, the approach with a flow diagram, the paper's own figures, results, limitations, a read-or-skip verdict and how to explain it in an interview. By @datawithsuman.">
 <meta property="og:title" content="Context Language Models, explained">
 <meta property="og:description" content="What if an AI agent could edit its own memory? A plain-language brief of the paper by @datawithsuman.">
 <style>
@@ -57,6 +57,11 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
 .say{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:10px 0;font-size:17px}
 .qa{margin:10px 0}.qa b{display:block}.qa p{margin:4px 0 0}
 .avoid{background:var(--warn-soft);border:1px solid #f3d9c3;border-radius:10px;padding:12px 18px}
+.fig{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.fig img{display:block;width:100%;height:auto;border-radius:6px;background:#fff}
+.fig a{display:block;cursor:zoom-in}
+.fig figcaption{font-size:14.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+.fig figcaption b{color:var(--ink)}
 .topbar{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:18px}
 .topbar a{color:var(--accent);text-decoration:none;font-weight:600}
 .topbar .handle{color:var(--muted);font-weight:700}
@@ -76,6 +81,8 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
     arXiv 2609.37725 · 29 Sep 2026 · <a href="https://www.alphaxiv.org/abs/2609.37725">alphaXiv</a> · <a href="https://github.com/facebookresearch/context-language-models">code</a>
   </div>
   <div class="tldr"><b>TL;DR</b> Today an agent's memory is managed by outside code that decides when to summarize or delete. This paper lets the model itself edit its own context, like editing a text file, and shows that this beats the fixed approaches on long tasks while using less compute.</div>
+  <figure class="fig"><a href="figures/fig1-overview.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig1-overview.png" alt="Figure 1 of the paper: a one-page overview. (A) behaviors the model invented, (B) results out of the box, (C) learning from instructions and evolved skills, (D) learning in the weights with reinforcement learning." loading="lazy"></a>
+    <figcaption><b>Figure 1 of the paper: a one-page overview.</b> (A) behaviors the model invented, (B) results out of the box, (C) learning from instructions and evolved skills, (D) learning in the weights with reinforcement learning. <span class="src">Fig 1, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </header>
 
 <nav class="toc">
@@ -110,6 +117,9 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
     <li><b>Memory handling is tuned separately from reasoning,</b> even though what is in context directly shapes the next thought. <span class="src">Overview of Sec 1</span></li>
     <li><b>Cost:</b> long runs (12 to 24 hours) are expensive, so wasteful context management is a real money problem. <span class="src">Abstract</span></li>
   </ul>
+
+  <figure class="fig"><a href="figures/fig2-contextbench.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig2-contextbench.png" alt="Figure 2: four tests where success means keeping the right information. As context pressure (input volume divided by the context limit) grows, most methods lose accuracy. The dark blue line, CLM, stays near 1.0. GPT-5.4, 32K limit." loading="lazy"></a>
+    <figcaption><b>Figure 2: four tests where success means keeping the right information.</b> As context pressure (input volume divided by the context limit) grows, most methods lose accuracy. The dark blue line, CLM, stays near 1.0. GPT-5.4, 32K limit. <span class="src">Fig 2, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </section>
 
 <section id="approach">
@@ -125,6 +135,9 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
   </ol>
   <p>In math terms: a normal model does <code>c_next = c_now + output</code>. A CLM does <code>c_next = f_CLM(c_now)</code>, where <code>f</code> can be any edit the model chooses.</p>
   <p>The paper also shows the model can <b>learn better context habits</b> three ways: from a one-line instruction, from an evolving written "skill" document, and from reinforcement learning (stepwise GRPO with a reward for being cheap only when the task succeeded). <span class="src">Sec 4.2 / Fig 1</span></p>
+
+  <figure class="fig"><a href="figures/fig1-banner.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig1-banner.png" alt="Figure 1 (top): the core idea. The context is a file, and the model can turn it into the next one with any function it chooses." loading="lazy"></a>
+    <figcaption><b>Figure 1 (top): the core idea.</b> The context is a file, and the model can turn it into the next one with any function it chooses. <span class="src">Fig 1, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </section>
 
 <section id="flow">
@@ -229,6 +242,9 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
   <div class="card">
     <b>5. Safety.</b> A context the model can edit is another place where injected or self-written instructions can persist. The paper points to a reported case where a model slipped unauthorized instructions into its own summary. <span class="src">Sec 6</span>
   </div>
+
+  <figure class="fig"><a href="figures/fig4-scr.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig4-scr.png" alt="Figure 4: standard serving versus Suffix Cache Reuse. After an edit changes B to B', standard serving re-prefills B' and everything after it (C). Suffix Cache Reuse keeps the cached work for C and only prefills the edited part." loading="lazy"></a>
+    <figcaption><b>Figure 4: standard serving versus Suffix Cache Reuse.</b> After an edit changes B to B', standard serving re-prefills B' and everything after it (C). Suffix Cache Reuse keeps the cached work for C and only prefills the edited part. <span class="src">Fig 4, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </section>
 
 <section id="results">
@@ -248,6 +264,24 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
   </table>
   </div>
   <p><b>Interesting behaviors the model invented on its own:</b> keeping a scoreboard to track sub-agents, creating an internal "notes" chat role, and defining reusable context-cleaning functions. <span class="src">Sec 1, Fig 1a</span></p>
+
+  <figure class="fig"><a href="figures/fig5-benchmarks.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig5-benchmarks.png" alt="Figure 5: accuracy against compute on three benchmarks. Higher and further left is better. CLM (blue) is on the efficient frontier on all three. Qwen3.6-27B, 32K limit, 100-turn cap." loading="lazy"></a>
+    <figcaption><b>Figure 5: accuracy against compute on three benchmarks.</b> Higher and further left is better. CLM (blue) is on the efficient frontier on all three. Qwen3.6-27B, 32K limit, 100-turn cap. <span class="src">Fig 5, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
+
+  <figure class="fig"><a href="figures/fig6-long-horizon.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig6-long-horizon.png" alt="Figure 6: long-horizon software optimization. Left: EdgeBench-10 over 12 hours with Qwen3.6-27B and Claude 4.6 Sonnet. Right: the six-repository agent swarm, where CLM reaches a 1.044 speedup against 1.026 for the summary swarm." loading="lazy"></a>
+    <figcaption><b>Figure 6: long-horizon software optimization.</b> Left: EdgeBench-10 over 12 hours with Qwen3.6-27B and Claude 4.6 Sonnet. Right: the six-repository agent swarm, where CLM reaches a 1.044 speedup against 1.026 for the summary swarm. <span class="src">Fig 6, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
+
+  <figure class="fig"><a href="figures/fig3-behaviors.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig3-behaviors.png" alt="Figure 3: what the model wrote to its own context. A scoreboard for sub-agents, a new "notes" role, loops that delete stale search results, and a reusable compaction function." loading="lazy"></a>
+    <figcaption><b>Figure 3: what the model wrote to its own context.</b> A scoreboard for sub-agents, a new "notes" role, loops that delete stale search results, and a reusable compaction function. <span class="src">Fig 3, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
+
+  <figure class="fig"><a href="figures/fig7-8-learning.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig7-8-learning.png" alt="Figures 7 and 8: steering and evolving the strategy. Left three: one sentence in the prompt changes when and how the model manages context. Right: evolved skills move accuracy up on KV Store, with a frontier of better accuracy for the same or lower cost." loading="lazy"></a>
+    <figcaption><b>Figures 7 and 8: steering and evolving the strategy.</b> Left three: one sentence in the prompt changes when and how the model manages context. Right: evolved skills move accuracy up on KV Store, with a frontier of better accuracy for the same or lower cost. <span class="src">Fig 7, 8, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
+
+  <figure class="fig"><a href="figures/table2-rl.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/table2-rl.png" alt="Table 2: reinforcement learning on BrowseComp-Plus (Qwen3.5-9B). CLM goes from 28.8% to 42.5% accuracy while compute per question drops from 1.52 to 1.34 PFLOPs. The summary harness reaches 42.1% at 2.19." loading="lazy"></a>
+    <figcaption><b>Table 2: reinforcement learning on BrowseComp-Plus (Qwen3.5-9B).</b> CLM goes from 28.8% to 42.5% accuracy while compute per question drops from 1.52 to 1.34 PFLOPs. The summary harness reaches 42.1% at 2.19. <span class="src">Table 2, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
+
+  <figure class="fig"><a href="figures/fig9-cache.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig9-cache.png" alt="Figure 9: Suffix Cache Reuse on BrowseComp-Plus. Task accuracy stays at 60.2% while prefix-reuse compute per question falls from 10.98 to 7.14 PFLOPs. The bars on the right show the share of prompt tokens reused or recomputed." loading="lazy"></a>
+    <figcaption><b>Figure 9: Suffix Cache Reuse on BrowseComp-Plus.</b> Task accuracy stays at 60.2% while prefix-reuse compute per question falls from 10.98 to 7.14 PFLOPs. The bars on the right show the share of prompt tokens reused or recomputed. <span class="src">Fig 9, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </section>
 
 <section id="related">
@@ -279,6 +313,9 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:v
       <li><b>Mostly Qwen and a few closed models;</b> I did not see results across a wide range of model families.</li>
     </ul>
   </div>
+
+  <figure class="fig"><a href="figures/fig19-128k.png" target="_blank" rel="noopener" title="Open full size"><img src="figures/fig19-128k.png" alt="Figure 19: the same EdgeBench-10 test with a 128K budget. CLM scores 47.3 at 142 PFLOPs against 47.8 at 222 for summarization. With sub-agents it reaches 50.2 at 219. The accuracy gap is small here." loading="lazy"></a>
+    <figcaption><b>Figure 19: the same EdgeBench-10 test with a 128K budget.</b> CLM scores 47.3 at 142 PFLOPs against 47.8 at 222 for summarization. With sub-agents it reaches 50.2 at 219. The accuracy gap is small here. <span class="src">Fig 19, from the paper</span> <span style="font-size:12.5px">Tap the image to enlarge.</span></figcaption></figure>
 </section>
 
 <section id="future">
