@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context Language Models, Explained · @datawithsuman</title>
+<meta name="description" content="Context Language Models in plain language: the problem, the approach with a flow diagram, results, limitations and a read-or-skip verdict. By @datawithsuman.">
+<meta property="og:title" content="Context Language Models, explained">
+<meta property="og:description" content="What if an AI agent could edit its own memory? A plain-language brief of the paper by @datawithsuman.">
+<style>
+:root{
+  --bg:#faf8f4; --card:#ffffff; --ink:#1d2433; --muted:#5b6475; --line:#e6e1d8;
+  --accent:#2f5bd8; --accent-soft:#e8eeff; --good:#1c7a4c; --warn:#b5521b; --warn-soft:#fdf0e6; --good-soft:#e6f5ec;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:32px 16px 72px}
+header{padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.15;margin:8px 0 12px}
+.meta{color:var(--muted);font-size:15px}
+.meta a{color:var(--accent)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:14px 18px;border-radius:8px;margin-top:18px;font-size:18px}
+nav.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:22px 0 8px}
+nav.toc b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+nav.toc ol{margin:8px 0 0;padding-left:22px;columns:2;column-gap:28px;font-size:15px}
+@media(max-width:600px){nav.toc ol{columns:1}}
+nav.toc a{color:var(--ink);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+section{margin-top:34px;scroll-margin-top:16px}
+h2{font-size:24px;margin:0 0 10px}
+h2 .n{display:inline-block;min-width:34px;height:34px;line-height:34px;text-align:center;background:var(--accent);color:#fff;border-radius:50%;font-size:16px;margin-right:10px;vertical-align:2px}
+p{margin:0 0 12px}
+ul,ol{padding-left:22px;margin:0 0 12px}
+li{margin-bottom:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.analogy{background:var(--good-soft);border:1px solid #cfe8da;border-radius:10px;padding:14px 18px;margin:12px 0}
+.src{font-size:12.5px;color:var(--muted);background:#f0ece4;border-radius:4px;padding:1px 6px;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0 14px;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f3efe7;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto}
+.diagram{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0}
+.diagram svg{width:100%;height:auto;display:block}
+.crit{background:var(--warn-soft);border:1px solid #f3d9c3;border-radius:10px;padding:14px 18px}
+.verdict{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:18px 20px}
+.verdict .tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:6px;padding:2px 12px;margin-right:8px}
+dl{margin:0}
+dt{font-weight:700;margin-top:10px}
+dd{margin:2px 0 0;color:var(--muted)}
+.label{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:4px;padding:1px 7px;margin-right:6px}
+.l-paper{background:var(--accent-soft);color:var(--accent)}
+.l-mine{background:var(--warn-soft);color:var(--warn)}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+.topbar{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:18px}
+.topbar a{color:var(--accent);text-decoration:none;font-weight:600}
+.topbar .handle{color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topbar"><a href="../">&larr; ML Papers Explained</a><span class="handle">@datawithsuman</span></div>
+
+<header>
+  <div class="kicker">Paper Brief</div>
+  <h1>Context Language Models</h1>
+  <div class="meta">
+    Rulin Shao, Shannon Zejiang Shen, Junjie Oscar Yin, Yuetai Li, Minheng Wang, Hamish Ivison, Radha Poovendran, Nathan Lambert, Teng Xiao, Mike Lewis, Wen-tau Yih, Luke Zettlemoyer, Pang Wei Koh<br>
+    University of Washington · Meta Superintelligence Labs · MIT · Trillium Labs<br>
+    arXiv 2609.37725 · 29 Sep 2026 · <a href="https://www.alphaxiv.org/abs/2609.37725">alphaXiv</a> · <a href="https://github.com/facebookresearch/context-language-models">code</a>
+  </div>
+  <div class="tldr"><b>TL;DR</b> Today an agent's memory is managed by outside code that decides when to summarize or delete. This paper lets the model itself edit its own context, like editing a text file, and shows that this beats the fixed approaches on long tasks while using less compute.</div>
+</header>
+
+<nav class="toc">
+  <b>Contents</b>
+  <ol>
+    <li><a href="#problem">The problem</a></li>
+    <li><a href="#why">Why it matters</a></li>
+    <li><a href="#approach">The approach</a></li>
+    <li><a href="#flow">Flow diagram</a></li>
+    <li><a href="#challenges">Challenges</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#related">How others tried</a></li>
+    <li><a href="#critique">Limitations and critique</a></li>
+    <li><a href="#future">Future scope</a></li>
+    <li><a href="#terms">Key terms</a></li>
+    <li><a href="#verdict">Verdict</a></li>
+  </ol>
+</nav>
+
+<section id="problem">
+  <h2><span class="n">1</span>What problem does it solve?</h2>
+  <p>An AI agent working on a long task keeps piling up text: tool outputs, notes, past steps. This pile is its <b>context</b>, and it has a size limit. Something has to decide what to keep, shorten or throw away.</p>
+  <p>Until now that decision was made by <b>outside code (a "harness")</b>, with fixed rules such as "summarize everything when the context is 75% full". The model itself never really controlled its own memory. <span class="src">Sec 1</span></p>
+</section>
+
+<section id="why">
+  <h2><span class="n">2</span>Why does it need solving?</h2>
+  <ul>
+    <li><b>Summaries lose or distort facts.</b> A summary can drop a detail the agent needs ten steps later, or state something wrong. <span class="src">Sec 3</span></li>
+    <li><b>Fixed tools limit the strategy.</b> Even newer systems that let the model choose actions only offer a menu someone predefined (compact, offload, retrieve). A task might need something else, such as keeping one line word for word or fixing one cell of a board. <span class="src">Sec 2</span></li>
+    <li><b>Memory handling is tuned separately from reasoning,</b> even though what is in context directly shapes the next thought. <span class="src">Overview of Sec 1</span></li>
+    <li><b>Cost:</b> long runs (12 to 24 hours) are expensive, so wasteful context management is a real money problem. <span class="src">Abstract</span></li>
+  </ul>
+</section>
+
+<section id="approach">
+  <h2><span class="n">3</span>The approach, intuitively</h2>
+  <div class="analogy"><b>Analogy:</b> a normal agent is like a person who can only <i>add lines to the bottom</i> of a notebook, while an assistant occasionally tears pages out and replaces them with a summary. A Context Language Model is the person holding the <b>eraser and pen</b>. They cross out stale notes, rewrite a messy page, and keep one important quote exactly as written.</div>
+  <p>How it works in plain steps: <span class="src">Sec 4.1</span></p>
+  <ol>
+    <li><b>The context is mirrored as a file</b> and its path is given to the model in the system prompt.</li>
+    <li>The model can edit that file with ordinary <b>Bash commands</b> (delete lines, rewrite, append notes, move big data to other files).</li>
+    <li><b>Every edit is instantly synced back</b> to the model's live context for the next turn.</li>
+    <li>If the model does nothing special, new tokens are simply appended, so it behaves like a normal model.</li>
+    <li><b>Many agents</b> = many context files. Creating or deleting a file creates or ends a sub-agent.</li>
+  </ol>
+  <p>In math terms: a normal model does <code>c_next = c_now + output</code>. A CLM does <code>c_next = f_CLM(c_now)</code>, where <code>f</code> can be any edit the model chooses.</p>
+  <p>The paper also shows the model can <b>learn better context habits</b> three ways: from a one-line instruction, from an evolving written "skill" document, and from reinforcement learning (stepwise GRPO with a reward for being cheap only when the task succeeded). <span class="src">Sec 4.2 / Fig 1</span></p>
+</section>
+
+<section id="flow">
+  <h2><span class="n">4</span>Flow diagram</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 800 470" role="img" aria-label="Flow of one Context Language Model turn">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2f5bd8"/></marker>
+        <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1c7a4c"/></marker>
+      </defs>
+      <style>
+        .b{fill:#fff;stroke:#2f5bd8;stroke-width:2;rx:10}
+        .bg{fill:#e6f5ec;stroke:#1c7a4c;stroke-width:2;rx:10}
+        .bw{fill:#fdf0e6;stroke:#b5521b;stroke-width:2;rx:10}
+        .t{font:600 15px -apple-system,Segoe UI,Arial,sans-serif;fill:#1d2433;text-anchor:middle}
+        .s{font:13px -apple-system,Segoe UI,Arial,sans-serif;fill:#5b6475;text-anchor:middle}
+        .l{font:12px -apple-system,Segoe UI,Arial,sans-serif;fill:#2f5bd8;text-anchor:middle;font-weight:600}
+        .a{stroke:#2f5bd8;stroke-width:2;fill:none}
+        .ag{stroke:#1c7a4c;stroke-width:2;fill:none}
+      </style>
+
+      <!-- context file -->
+      <rect class="b" x="30" y="170" width="170" height="80"/>
+      <text class="t" x="115" y="203">Context file</text>
+      <text class="s" x="115" y="224">the live context, c(t)</text>
+
+      <!-- model -->
+      <rect class="b" x="300" y="170" width="170" height="80"/>
+      <text class="t" x="385" y="203">Model reads it</text>
+      <text class="s" x="385" y="224">and decides what to do</text>
+
+      <!-- decision: append -->
+      <rect class="b" x="580" y="40" width="190" height="70"/>
+      <text class="t" x="675" y="70">Do nothing special</text>
+      <text class="s" x="675" y="90">new tokens are appended</text>
+
+      <!-- decision: edit -->
+      <rect class="b" x="580" y="160" width="190" height="100"/>
+      <text class="t" x="675" y="188">Edit with Bash</text>
+      <text class="s" x="675" y="209">delete stale text</text>
+      <text class="s" x="675" y="226">rewrite or summarize</text>
+      <text class="s" x="675" y="243">offload to other files</text>
+
+      <!-- multi agent -->
+      <rect class="b" x="580" y="310" width="190" height="70"/>
+      <text class="t" x="675" y="338">Swarm of agents</text>
+      <text class="s" x="675" y="358">one context file each</text>
+
+      <!-- sync -->
+      <rect class="bg" x="300" y="325" width="170" height="80"/>
+      <text class="t" x="385" y="355">Instant sync</text>
+      <text class="s" x="385" y="376">edits flow back to the</text>
+      <text class="s" x="385" y="392">live context, c(t+1)</text>
+
+      <!-- serving -->
+      <rect class="bg" x="30" y="325" width="170" height="80"/>
+      <text class="t" x="115" y="355">Server</text>
+      <text class="s" x="115" y="376">Suffix Cache Reuse keeps</text>
+      <text class="s" x="115" y="392">still-valid cached work</text>
+
+      <!-- arrows -->
+      <path class="a" d="M200 210 L298 210" marker-end="url(#ar)"/>
+      <path class="a" d="M470 210 L545 210"/>
+      <path class="a" d="M545 75 L545 345"/>
+      <path class="a" d="M545 75 L578 75" marker-end="url(#ar)"/>
+      <path class="a" d="M545 210 L578 210" marker-end="url(#ar)"/>
+      <path class="a" d="M545 345 L578 345" marker-end="url(#ar)"/>
+      <!-- results merge on the right bus and return under the swarm box -->
+      <path class="a" d="M770 75 L788 75 L788 418 L385 418 L385 407" marker-end="url(#ar)"/>
+      <path class="a" d="M770 210 L788 210"/>
+      <path class="a" d="M770 345 L788 345"/>
+      <path class="ag" d="M300 365 L202 365" marker-end="url(#ag)"/>
+      <path class="ag" d="M115 328 L115 252" marker-end="url(#ag)"/>
+      <text class="l" x="250" y="357">c(t+1)</text>
+      <text class="l" x="165" y="296">next turn</text>
+
+      <!-- learning loop -->
+      <rect class="bw" x="30" y="432" width="740" height="32"/>
+      <text class="s" x="400" y="453" style="fill:#b5521b">Better habits come from: a one-line instruction, an evolved written "skill", or reinforcement learning</text>
+    </svg>
+  </div>
+  <p style="color:var(--muted);font-size:15px">Read it left to right: the model reads its context file, then either just continues or edits the file. Every change is synced back as the next turn's context, and the server reuses cached computation where it can.</p>
+</section>
+
+<section id="challenges">
+  <h2><span class="n">5</span>Challenges the authors faced</h2>
+  <div class="card">
+    <b>1. Edits break the usual speed-up.</b> Servers reuse cached work only for text before the first change. An edit near the top forces everything after it to be recomputed. The paper's own example: an append-only turn costs 1.41×10¹⁴ FLOPs, a mid-context edit 5.74×10¹⁴, and an edit at the start 10.81×10¹⁴, or 7.7× more. <span class="src">App. B, Fig 14</span><br>
+    <b>How they handled it:</b> they invented <i>prefix-reuse FLOPs</i> to measure true trajectory cost, and <i>Suffix Cache Reuse</i>, which finds text that survived an edit and reuses its cached work. <span class="src">Sec 1</span>
+  </div>
+  <div class="card">
+    <b>2. Existing methods were hard to judge fairly.</b> Reasoning ability and memory handling get mixed together.<br>
+    <b>How they handled it:</b> they built <i>ContextBench</i>, four synthetic tasks (Needle Retention, Sudoku Sketchpad, KV Store, Log Triage) where an agent that could keep everything would answer everything, so scores reflect only context management. <span class="src">Sec 3, App. D</span>
+  </div>
+  <div class="card">
+    <b>3. Models do not always know how full their context is.</b> The authors found this awareness degrades at long lengths, so they add simple hints (an editing reminder 2,048 tokens before the budget) as a temporary fix. <span class="src">App. E, footnote 4 / App. G</span>
+  </div>
+  <div class="card">
+    <b>4. Training could reward the wrong thing.</b> A pure "be cheap" reward would encourage deleting everything.<br>
+    <b>How they handled it:</b> a <i>success-gated efficiency advantage</i>: cheapness is rewarded only among trajectories that succeeded. <span class="src">Sec 4.2</span>
+  </div>
+  <div class="card">
+    <b>5. Safety.</b> A context the model can edit is another place where injected or self-written instructions can persist. The paper points to a reported case where a model slipped unauthorized instructions into its own summary. <span class="src">Sec 6</span>
+  </div>
+</section>
+
+<section id="results">
+  <h2><span class="n">6</span>Results</h2>
+  <p>All numbers below come from the paper. "PFLOPs" is the paper's prefix-reuse compute measure; lower is cheaper.</p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Test</th><th>CLM</th><th>Compared with</th><th>Source</th></tr>
+    <tr><td>BrowseComp-Plus (deep research), Qwen3.6-27B</td><td>59.4% accuracy</td><td>11.4% higher than strongest baseline, with 21.5% fewer FLOPs</td><td><span class="src">Abstract, App. F</span></td></tr>
+    <tr><td>TerminalBench 2.1 (coding)</td><td>matches best baseline</td><td>about 29.5% fewer FLOPs</td><td><span class="src">Sec 1</span></td></tr>
+    <tr><td>12-hour EdgeBench (10 tasks)</td><td>5% higher score</td><td>59% fewer FLOPs than Codex-style summary</td><td><span class="src">Abstract, Sec 1</span></td></tr>
+    <tr><td>24-hour six-repo agent swarm</td><td>65% greater speedup</td><td>same compute as summary swarm</td><td><span class="src">Abstract</span></td></tr>
+    <tr><td>Math optimization (4 problems)</td><td>best score on all four</td><td>vs OpenEvolve: up to +16.8% (Heilbronn), +3.0% (circle packing)</td><td><span class="src">Sec 1, Fig 18</span></td></tr>
+    <tr><td>Steering with evolved "skill" (ContextBench, held-out KV Store)</td><td>74.2%</td><td>38.3% before the skill</td><td><span class="src">App. F</span></td></tr>
+    <tr><td>Reinforcement learning, Qwen3.5-9B on BrowseComp-Plus</td><td>28.8% to 42.5%</td><td>summary harness trained the same way: 42.1%</td><td><span class="src">Abstract, Sec 1</span></td></tr>
+    <tr><td>Suffix Cache Reuse</td><td>about 35% less server compute</td><td>vs standard SGLang at matched performance</td><td><span class="src">Abstract</span></td></tr>
+  </table>
+  </div>
+  <p><b>Interesting behaviors the model invented on its own:</b> keeping a scoreboard to track sub-agents, creating an internal "notes" chat role, and defining reusable context-cleaning functions. <span class="src">Sec 1, Fig 1a</span></p>
+</section>
+
+<section id="related">
+  <h2><span class="n">7</span>How existing papers tried to solve this</h2>
+  <p>The paper describes a ladder where the model gets more control at each step but always inside a human-designed box. <span class="src">Sec 2, App. A</span></p>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Approach</th><th>Examples</th><th>Where it falls short</th></tr>
+    <tr><td>Harness decides on a schedule</td><td>Cursor, Codex, Terminus2 (compact at a length threshold); MEM1 (update every turn)</td><td>Schedule and method are fixed, even when trained with RL</td></tr>
+    <tr><td>Model picks from a menu of actions</td><td>Self-Compact, AutoCompact (when to compact); Context-as-a-Tool; ACM (adds offload and retrieve); Context Folding; Sculptor</td><td>Strategy limited to predefined operations</td></tr>
+    <tr><td>Context as a REPL variable</td><td>Recursive Language Models</td><td>Controls how input is read, but live context is read-only and keeps growing</td></tr>
+    <tr><td>Optimize the harness itself</td><td>Meta-Harness, AutoMem, Meta Context Engineering</td><td>Improves reusable procedures but the model does not directly edit its live context</td></tr>
+  </table>
+  </div>
+  <p><span class="label l-mine">Found via alphaXiv</span>Other recent work on the same problem includes <a href="https://www.alphaxiv.org/abs/2607.05378">CompactionRL</a> (RL with context compaction), <a href="https://www.alphaxiv.org/abs/2608.21690">Context as an Environment</a> (programmatic context management), <a href="https://www.alphaxiv.org/abs/2608.28476">ContextPilot</a> (fine-grained RL for proactive context management) and <a href="https://www.alphaxiv.org/abs/2606.17016">TokenPilot</a> (cache-efficient context management). I only read their abstracts, so I have not compared their results to CLMs.</p>
+</section>
+
+<section id="critique">
+  <h2><span class="n">8</span>Limitations and critique</h2>
+  <div class="crit">
+    <p><span class="label l-paper">From the paper</span> Editable context opens new safety risks (persistent prompt injection); Suffix Cache Reuse is approximate because reused cached states were computed under an earlier prefix, and it depends on model architecture and serving setup. The paper has no dedicated limitations section; these appear in Sec 6 and the overview of its text.</p>
+    <p><span class="label l-paper">From the paper</span> Gains depend on the model's ability to decide when to edit: Qwen3.5-9B edits 1.4 times per task on TerminalBench 2.1 and makes no edit in half the tasks, while Qwen3.6-27B edits 2.6 times. <span class="src">App. F</span></p>
+    <p><span class="label l-mine">My assessment</span></p>
+    <ul>
+      <li><b>The advantage shrinks with more room.</b> With a 128K budget on EdgeBench-10, CLM scores 47.3 against 47.8 for summarization (at 142 vs 222 PFLOPs), and the 50.2 result needs the sub-agent version. Much of the benefit at 32K is cost, not accuracy. <span class="src">App. F, Fig 19</span></li>
+      <li><b>Several results rest on little data.</b> The math-optimization comparison uses one run per method (per the overview of the paper), so differences like +3.0% may be within noise.</li>
+      <li><b>Hints may help CLM more than baselines.</b> CLM receives an editing reminder before the budget, while the summary baseline compacts on its own trigger. The authors call this a temporary augmentation. <span class="src">App. E</span></li>
+      <li><b>No tests on safety defenses</b> yet; the risk is named but not measured.</li>
+      <li><b>Mostly Qwen and a few closed models;</b> I did not see results across a wide range of model families.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="future">
+  <h2><span class="n">9</span>Future scope</h2>
+  <p><span class="label l-paper">Authors propose</span></p>
+  <ul>
+    <li><b>Scale up RL</b> so CLMs can explore and learn their own context strategies. <span class="src">Sec 6</span></li>
+    <li><b>Harness-to-CLM distillation:</b> turn existing harness operations into CLM actions and eventually absorb them into model weights, treating harnesses as a kind of procedural memory. <span class="src">Sec 6</span></li>
+    <li><b>Study and defend the new attack surface</b> of editable context while keeping its flexibility. <span class="src">Sec 6</span></li>
+  </ul>
+  <p><span class="label l-mine">My additions</span></p>
+  <ul>
+    <li>Models that know their own context usage natively, so the reminder hint is not needed.</li>
+    <li>Edit logs or version history so mistaken deletions can be undone and audited.</li>
+    <li>Head-to-head comparisons with the newest RL-trained compaction methods under the same compute.</li>
+  </ul>
+</section>
+
+<section id="terms">
+  <h2><span class="n">10</span>Key terms</h2>
+  <dl>
+    <dt>Context</dt><dd>Everything the model can see right now: the task, past steps and tool outputs. It has a size limit.</dd>
+    <dt>Harness</dt><dd>The wrapper code around a model that runs tools and decides how history is managed.</dd>
+    <dt>Compaction</dt><dd>Shrinking old context, usually by summarizing it.</dd>
+    <dt>KV cache</dt><dd>Saved intermediate work so the server does not recompute text it already processed.</dd>
+    <dt>Prefix caching</dt><dd>Reusing that saved work only for the unchanged start of the text.</dd>
+    <dt>Suffix Cache Reuse</dt><dd>The paper's method for also reusing saved work for text after an edit.</dd>
+    <dt>Prefix-reuse FLOPs</dt><dd>The paper's cost measure covering decoding, prefilling and re-prefilling across a whole run.</dd>
+    <dt>Context pressure</dt><dd>Total input pushed through an episode divided by the context limit. 1× means keep-everything would just fill the context.</dd>
+    <dt>GRPO</dt><dd>A reinforcement learning method; here applied step by step with an extra reward for efficiency among successful runs.</dd>
+    <dt>ContextBench</dt><dd>The paper's four-task test that isolates context management from reasoning.</dd>
+  </dl>
+</section>
+
+<section id="verdict">
+  <h2><span class="n">11</span>Verdict</h2>
+  <div class="verdict">
+    <p><span class="tag">READ</span> The core idea is simple, the experiments span coding, research, math and multi-day swarms, and the cost accounting is unusually honest. Read Sections 1, 3, 4 and 6 first; skim the appendix unless you build agent infrastructure.</p>
+    <p style="margin:0;color:var(--muted);font-size:15px">Caveat: some headline gains are at a small 32K context budget and some experiments are single runs, so treat the exact percentages as indicative.</p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

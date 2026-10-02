@@ -9,7 +9,9 @@ window.LESSONS = {
     ] },
     { id: 'ml-scenarios', title: 'ML Scenarios', prefix: 'Q', desc: 'Real interview scenarios: your model does X, what do you do? Diagnose first, then fix.', lessons: [] },
     { id: 'ml-system-design', title: 'ML System Design', desc: 'ML systems from an ML engineer\'s view: data, features, serving, monitoring and trade-offs.', lessons: [] },
-    { id: 'ml-papers', title: 'ML Papers Explained', desc: 'The idea and the key result of important papers, explained simply.', lessons: [] },
+    { id: 'ml-papers', title: 'ML Papers Explained', desc: 'The idea and the key result of important papers, explained simply.', lessons: [
+      { slug: 'context-language-models', title: 'Context Language Models', sub: 'What if an AI agent could edit its own memory?', level: 'Intermediate', mins: 8 },
+    ] },
     { id: 'genai-engineering', title: 'GenAI & LLM Engineering', desc: 'Building with LLMs in practice: RAG, agents, fine-tuning and evaluation.', lessons: [] },
     { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [] },
   ],
