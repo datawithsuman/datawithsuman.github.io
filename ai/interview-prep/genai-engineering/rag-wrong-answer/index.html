@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG Wrong Answer: Where to Look First, Explained</title>
+  <meta name="description" content="Your RAG chatbot gives a confident but wrong answer: where do you look first? How to debug retrieval vs generation, the seven RAG failure points, and what to fix in order, with interactive labs.">
+  <meta property="og:title" content="RAG wrong answer: where do you look first?">
+  <meta property="og:description" content="Your support chatbot just gave a customer the wrong refund policy. Where do you look first? An interactive lesson by @datawithsuman.">
+  <link rel="stylesheet" href="../../kit/site.css">
+  <style>
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .seg .btn { padding: 9px 13px; font-size: 14px; }
+    .seg .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .qbox { display: grid; gap: 10px; }
+    .bubble { border-radius: 14px; padding: 12px 16px; font-size: 16px; line-height: 1.5; max-width: 92%; }
+    .bubble small { display: block; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .bubble.u { background: var(--surface-2); justify-self: start; }
+    .bubble.b { background: rgba(252, 98, 85, .12); border: 1px solid rgba(252, 98, 85, .45); justify-self: end; }
+    .bubble.g { background: rgba(131, 193, 103, .12); border: 1px solid rgba(131, 193, 103, .45); justify-self: end; }
+    .docs { display: grid; gap: 8px; margin-top: 14px; }
+    .chunk { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 15px; display: flex; gap: 12px; align-items: baseline; background: var(--surface-2); }
+    .chunk .rk { font: 600 13px/1 var(--mono); color: var(--muted); min-width: 2.2em; }
+    .chunk.right { border-color: var(--green); background: rgba(131, 193, 103, .1); }
+    .chunk.bad { border-color: rgba(252, 98, 85, .55); }
+    .chunk.missing { border-style: dashed; color: var(--muted); }
+    .pipe { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 12px; }
+    .pipe .btn { padding: 10px 14px; font-size: 15px; }
+    .pipe .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .pipe .btn.ok::after { content: " ✓"; color: var(--green); }
+    .pipe .btn.no::after { content: " ✗"; color: var(--red); }
+    .pipe .arr { color: var(--muted); }
+    .stage { min-height: 150px; }
+    .stage h3 { margin: 0 0 8px; font-size: 16px; }
+    .verdict { margin-top: 12px; font-size: 15px; }
+    .zones { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .fpgrid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+    .fp { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; background: var(--surface); }
+    .fp b.id { font: 600 13px/1 var(--mono); color: var(--yellow); }
+    .fp h3 { margin: 6px 0; font-size: 16px; }
+    .fp p { margin: 4px 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+    .fp p.chk strong { color: var(--ink, #ececec); font-weight: 600; }
+    .fp.retrieval { border-left: 4px solid var(--red); }
+    .fp.context { border-left: 4px solid var(--yellow); }
+    .fp.generation { border-left: 4px solid var(--green); }
+    .tree .q { font-size: 18px; font-weight: 600; margin: 0 0 12px; }
+    .tree .path { font-size: 13px; color: var(--muted); margin-bottom: 8px; font-family: var(--mono); }
+    .tree .res { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); }
+    .tree .res.red { border-color: var(--red); background: rgba(252, 98, 85, .1); }
+    .tree .res.yellow { border-color: var(--yellow); background: var(--yellow-soft); }
+    .tree .res.green { border-color: var(--green); background: rgba(131, 193, 103, .1); }
+    .tree .res b { display: block; margin-bottom: 4px; }
+    .src { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .src a { color: var(--blue); }
+  </style>
+</head>
+<body data-page="lesson" data-root="../../" data-track="genai-engineering" data-lesson="rag-wrong-answer">
+
+<header class="top wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="chip">Scenario · GenAI</span>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <div class="kicker">RAG · WRONG ANSWER</div>
+  <h1>You're the ML engineer at Amazon. Your support chatbot just gave a customer the wrong refund policy. <span class="yellow">Where do you look first?</span></h1>
+  <p class="lead">Most people blame the prompt or reach for a bigger model. A better first move is to look at what the system retrieved. One check splits the problem in two, and each side has its own fixes.</p>
+  <p class="note" id="qual">–</p>
+</section>
+
+<section class="wrap" id="situation">
+  <span class="step">01</span>
+  <h2>The situation: a <span class="yellow">confident, wrong</span> answer</h2>
+  <p class="sub">A customer asks about refunds. The bot answers instantly and sounds sure. It is wrong.</p>
+  <div class="card pad">
+    <div class="qbox" id="chat"></div>
+    <p class="note">The documents the bot searches (made-up policy snippets):</p>
+    <div class="docs" id="docs"></div>
+  </div>
+</section>
+
+<section class="wrap" id="quiz">
+  <span class="step">02</span>
+  <h2>What would you <span class="yellow">check first?</span></h2>
+  <p class="sub">Tap an answer.</p>
+  <div class="quiz">
+    <button class="opt" data-ok="0" data-why="Rewriting the prompt is a guess. If the right text never reached the model, no wording can fix that.">Rewrite the prompt</button>
+    <button class="opt" data-ok="0" data-why="A bigger model can't use a chunk it never received. You'd pay more and keep the bug.">Switch to a bigger model</button>
+    <button class="opt" data-ok="1" data-why="Right. Look at the chunks retrieved for that exact question. One check tells you which half of the system to debug.">Look at the chunks it retrieved for that question</button>
+    <button class="opt" data-ok="0" data-why="Re-indexing everything is slow and blind. Check what retrieval returned for this question before you change anything.">Re-embed and re-index every document</button>
+  </div>
+  <p class="quiz-why" aria-live="polite"></p>
+</section>
+
+<section class="wrap" id="spot">
+  <span class="step">03</span>
+  <h2>Spot it: <span class="yellow">where does the right answer disappear?</span></h2>
+  <p class="sub">Pick a case, then click each stage to see what the system had at that point. The right chunk says annual plans get 14 days.</p>
+  <div class="card lab">
+    <div class="lab-top">
+      <div class="seg" id="caseSeg"></div>
+      <span class="badge info" id="caseBadge"></span>
+    </div>
+    <div class="pipe" id="pipe"></div>
+    <div class="card pad stage" id="stage"></div>
+    <div class="controls" style="display:flex;gap:10px;align-items:center;margin-top:12px">
+      <button class="btn" id="reveal">Show where it's lost</button>
+      <span class="muted small" id="lostAt"></span>
+    </div>
+    <p class="verdict" id="fixNote"></p>
+    <p class="note">Illustrative. Green = the right chunk. Red = a chunk that points the model the wrong way.</p>
+  </div>
+</section>
+
+<section class="wrap" id="why">
+  <span class="step">04</span>
+  <h2>Why it happens: <span class="yellow">seven failure points</span></h2>
+  <p class="sub">A study built on three RAG case studies found these seven ways an answer goes wrong. They fall into three zones along the pipeline.</p>
+  <div class="zones" id="zones"></div>
+  <div class="fpgrid" id="fpgrid"></div>
+  <p class="note">In the reel, "generation side" includes the step where retrieved chunks are packed into the prompt (FP3). The "how to check" lines are practical suggestions, not results from the study.</p>
+</section>
+
+<section class="wrap" id="diagnose">
+  <span class="step">05</span>
+  <h2>Diagnose <span class="yellow">before you fix</span></h2>
+  <p class="sub">Answer the questions for your own failing example. Each answer narrows the problem.</p>
+  <div class="card pad tree" id="tree"></div>
+  <p class="note">This order is a practical debugging approach. It is not a result from the study.</p>
+</section>
+
+<section class="wrap" id="fixes">
+  <span class="step">06</span>
+  <h2>Fixes, <span class="yellow">in order</span></h2>
+  <ol class="steps">
+    <li class="card"><span class="n">1</span><div><h3>Chunking and metadata</h3><p>Chunk size is a trade-off: too small and some questions can't be answered, too long and the answer picks up noise. In one case study, adding the file name and chunk number to the retrieved text helped the model use it. Watch out: changing how you embed means re-indexing every chunk.</p></div></li>
+    <li class="card"><span class="n">2</span><div><h3>Top-k and reranking</h3><p>In practice only the top K chunks are used, so the right one has to rank near the top. Reranking reorders the candidates so the chunk with the answer sits first. Watch out: a bigger K adds more noise and more cost.</p></div></li>
+    <li class="card"><span class="n">3</span><div><h3>Context size</h3><p>The step that packs chunks into the prompt can drop a good one. In one case study, a larger context (8K vs 4K) gave more accurate answers. Watch out: that was one system, so measure it on yours.</p></div></li>
+    <li class="card"><span class="n">4</span><div><h3>The prompt, last</h3><p>Only once the right text reliably reaches the model does the prompt matter: format, level of detail, splitting multi-part questions, and saying "I don't know" when nothing relevant comes back.</p></div></li>
+  </ol>
+</section>
+
+<section class="wrap" id="mistakes">
+  <span class="step">07</span>
+  <h2>Mistakes <span class="yellow">to avoid</span></h2>
+  <div class="grid2">
+    <div class="card pad"><span class="badge bad">Common</span><ul class="muted">
+      <li>Swapping to a bigger model before looking at retrieval.</li>
+      <li>Re-indexing everything without knowing which stage failed.</li>
+      <li>Retrieving more chunks without checking for noise and conflicts.</li>
+      <li>Launching with no test questions.</li>
+    </ul></div>
+    <div class="card pad"><span class="badge good">✓ Better</span><ul class="muted">
+      <li>Read the retrieved chunks for the failing question first.</li>
+      <li>Fix the stage that lost the answer, then re-test the same question.</li>
+      <li>Remove outdated or conflicting documents.</li>
+      <li>Keep a small set of real questions with known answers, and keep monitoring after launch.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap" id="followups">
+  <span class="step">08</span>
+  <h2>Interview follow-ups</h2>
+  <div class="qa">
+    <details class="card"><summary><span>How would you test a RAG system before launch?</span></summary><p>Build a small set of real questions with known answers and the document each answer comes from. Score retrieval (did the right chunk come back?) separately from the final answer, so you know which half failed. The study notes that these systems are hard to validate up front and need continuous calibration, so keep monitoring after launch.</p></details>
+    <details class="card"><summary><span>RAG or fine-tuning for company knowledge?</span></summary><p>RAG keeps knowledge in documents you can update and control access to. Fine-tuning bakes the data into the model, so you retrain when the data or the base model changes. Many teams start with RAG for changing knowledge. Compare accuracy, latency, cost and robustness for your case.</p></details>
+    <details class="card"><summary><span>How do you choose a chunk size?</span></summary><p>It's a trade-off: small chunks can miss context a question needs, long chunks add noise. Try a few sizes on your own test questions and compare whether the right chunk is retrieved. Heuristic chunking (paragraphs, punctuation) and semantic chunking are both worth comparing.</p></details>
+    <details class="card"><summary><span>What if the answer isn't in the documents at all?</span></summary><p>That's failure point 1. In the happy case the system says it doesn't know. The risk is questions that are related to the content but have no answer, which can fool the system into answering anyway. Include such questions in your tests and make abstaining an expected behavior.</p></details>
+  </div>
+</section>
+
+<section class="wrap"><div class="card recap">Debug retrieval <span class="yellow">before the prompt.</span></div></section>
+
+<section class="wrap">
+  <p class="src" id="src">–</p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="muted small">AI &amp; ML, explained simply</span>
+</footer>
+
+<script src="lesson.js"></script>
+<script src="../../lessons.js"></script>
+<script src="../../kit/site.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

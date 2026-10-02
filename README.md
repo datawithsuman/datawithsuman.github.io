@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-3-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-4-58C4DD?labelColor=0f0f12)
 ![Tracks](https://img.shields.io/badge/tracks-6-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -38,7 +38,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | 🩺 [**ML Scenarios**](https://datawithsuman.github.io/ai/interview-prep/ml-scenarios/) | Real interview scenarios: your model does X, what do you do? | Soon |
 | 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
 | 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/) | The idea and the key result of important papers | 1 |
-| 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | Soon |
+| 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 1 |
 | 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | Soon |
 
 ---
@@ -47,6 +47,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 
 | Lesson | Track | The question it answers |
 |---|---|---|
+| [**RAG: Wrong Answer, Where to Look First**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-wrong-answer/) | 🤖 GenAI & LLM Engineering | Your chatbot gave a confident, wrong answer. Where do you look first? |
 | [**Context Language Models**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/context-language-models/) | 📄 ML Papers Explained | What if an AI agent could edit its own memory? |
 | [**LLM Quantization**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🚀 LLM Inference | How does an LLM survive losing 75% of its bits? |
 | [**Prefill vs Decode**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | 🚀 LLM Inference | Why does an LLM read your prompt fast but write its answer slowly? |
@@ -91,8 +92,14 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>🤖 GenAI & LLM Engineering</b> · coming soon</summary>
-<br>Coming soon.
+<summary><b>🤖 GenAI & LLM Engineering</b> · 1 lesson</summary>
+
+<br>
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
+
 </details>
 
 <details>

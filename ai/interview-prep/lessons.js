@@ -12,7 +12,9 @@ window.LESSONS = {
     { id: 'ml-papers', title: 'ML Papers Explained', desc: 'The idea and the key result of important papers, explained simply.', lessons: [
       { slug: 'context-language-models', title: 'Context Language Models', sub: 'What if an AI agent could edit its own memory?', level: 'Intermediate', mins: 8 },
     ] },
-    { id: 'genai-engineering', title: 'GenAI & LLM Engineering', desc: 'Building with LLMs in practice: RAG, agents, fine-tuning and evaluation.', lessons: [] },
+    { id: 'genai-engineering', title: 'GenAI & LLM Engineering', desc: 'Building with LLMs in practice: RAG, agents, fine-tuning and evaluation.', lessons: [
+      { slug: 'rag-wrong-answer', title: 'RAG: Wrong Answer, Where to Look First', sub: 'Your chatbot gave a confident, wrong answer. Where do you look first?', level: 'Intermediate', mins: 8 },
+    ] },
     { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [] },
   ],
 };
