@@ -14,6 +14,7 @@ window.LESSONS = {
     ] },
     { id: 'genai-engineering', title: 'GenAI & LLM Engineering', desc: 'Building with LLMs in practice: RAG, agents, fine-tuning and evaluation.', lessons: [
       { slug: 'rag-wrong-answer', title: 'RAG: Wrong Answer, Where to Look First', sub: 'Your chatbot gave a confident, wrong answer. Where do you look first?', level: 'Intermediate', mins: 8 },
+      { slug: 'rag-at-scale', title: 'RAG at Scale: Slow and Wrong', sub: 'Your RAG worked on 100 docs, but broke at 10 million. Why?', level: 'Intermediate', mins: 8 },
     ] },
     { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [] },
   ],

@@ -38,7 +38,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | 🩺 [**ML Scenarios**](https://datawithsuman.github.io/ai/interview-prep/ml-scenarios/) | Real interview scenarios: your model does X, what do you do? | Soon |
 | 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
 | 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/) | The idea and the key result of important papers | 1 |
-| 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 1 |
+| 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 2 |
 | 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | Soon |
 
 ---
@@ -47,6 +47,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 
 | Lesson | Track | The question it answers |
 |---|---|---|
+| [**RAG at Scale: Slow and Wrong**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-at-scale/) | 🤖 GenAI & LLM Engineering | Your RAG worked on 100 docs, but broke at 10 million. Why? |
 | [**RAG: Wrong Answer, Where to Look First**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-wrong-answer/) | 🤖 GenAI & LLM Engineering | Your chatbot gave a confident, wrong answer. Where do you look first? |
 | [**Context Language Models**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/context-language-models/) | 📄 ML Papers Explained | What if an AI agent could edit its own memory? |
 | [**LLM Quantization**](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🚀 LLM Inference | How does an LLM survive losing 75% of its bits? |
@@ -92,13 +93,14 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>🤖 GenAI & LLM Engineering</b> · 1 lesson</summary>
+<summary><b>🤖 GenAI & LLM Engineering</b> · 2 lessons</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
+| 2 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-at-scale/) | 🟡 Intermediate | 8 min |
 
 </details>
 
