@@ -11,10 +11,14 @@ window.LESSONS = {
     { id: 'ml-system-design', title: 'ML System Design', desc: 'ML systems from an ML engineer\'s view: data, features, serving, monitoring and trade-offs.', lessons: [] },
     { id: 'ml-papers', title: 'ML Papers Explained', desc: 'The idea and the key result of important papers, explained simply.', lessons: [
       { slug: 'context-language-models', title: 'Context Language Models', sub: 'What if an AI agent could edit its own memory?', level: 'Intermediate', mins: 8 },
+      { slug: 'harness-engineering', title: 'Harness Engineering', sub: 'What is actually inside a coding agent?', level: 'Intermediate', mins: 25 },
     ] },
     { id: 'genai-engineering', title: 'GenAI & LLM Engineering', desc: 'Building with LLMs in practice: RAG, agents, fine-tuning and evaluation.', lessons: [
       { slug: 'rag-wrong-answer', title: 'RAG: Wrong Answer, Where to Look First', sub: 'Your chatbot gave a confident, wrong answer. Where do you look first?', level: 'Intermediate', mins: 8 },
       { slug: 'rag-at-scale', title: 'RAG at Scale: Slow and Wrong', sub: 'Your RAG worked on 100 docs, but broke at 10 million. Why?', level: 'Intermediate', mins: 8 },
+    ] },
+    { id: 'classical-ml', title: 'Classical ML', desc: 'The classic algorithms, built from scratch on one small example: how they work and why.', lessons: [
+      { slug: 'random-forest', title: 'Random Forest', sub: 'How do many wobbly trees make one steady prediction?', level: 'Beginner', mins: 25 },
     ] },
     { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [] },
   ],
