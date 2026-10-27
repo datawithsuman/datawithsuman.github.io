@@ -7,7 +7,7 @@
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
 ![Lessons](https://img.shields.io/badge/lessons-7-58C4DD?labelColor=0f0f12)
-![Tracks](https://img.shields.io/badge/tracks-7-58C4DD?labelColor=0f0f12)
+![Tracks](https://img.shields.io/badge/tracks-6-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
 by **@datawithsuman**
@@ -39,8 +39,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
 | 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/) | The idea and the key result of important papers | 2 |
 | 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 2 |
-| 🌲 [**Classical ML**](https://datawithsuman.github.io/ai/interview-prep/classical-ml/) | The classic algorithms, built from scratch on one small example | 1 |
-| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | Soon |
+| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | 1 |
 
 ---
 
@@ -49,7 +48,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | Lesson | Track | The question it answers |
 |---|---|---|
 | [**Harness Engineering**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/harness-engineering/) | 📄 ML Papers Explained | What is actually inside a coding agent? |
-| [**Random Forest**](https://datawithsuman.github.io/ai/interview-prep/classical-ml/random-forest/) | 🌲 Classical ML | How do many wobbly trees make one steady prediction? |
+| [**Random Forest**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 📐 ML Fundamentals | How do many wobbly trees make one steady prediction? |
 | [**RAG at Scale: Slow and Wrong**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/rag-at-scale/) | 🤖 GenAI & LLM Engineering | Your RAG worked on 100 docs, but broke at 10 million. Why? |
 
 ---
@@ -105,19 +104,14 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>🌲 Classical ML</b> · 1 lesson</summary>
+<summary><b>📐 ML Fundamentals</b> · 1 lesson</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/classical-ml/random-forest/) | 🟢 Beginner | 25 min |
+| 1 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
 
-</details>
-
-<details>
-<summary><b>📐 ML Fundamentals</b> · coming soon</summary>
-<br>Coming soon.
 </details>
 
 ---

@@ -17,9 +17,8 @@ window.LESSONS = {
       { slug: 'rag-wrong-answer', title: 'RAG: Wrong Answer, Where to Look First', sub: 'Your chatbot gave a confident, wrong answer. Where do you look first?', level: 'Intermediate', mins: 8 },
       { slug: 'rag-at-scale', title: 'RAG at Scale: Slow and Wrong', sub: 'Your RAG worked on 100 docs, but broke at 10 million. Why?', level: 'Intermediate', mins: 8 },
     ] },
-    { id: 'classical-ml', title: 'Classical ML', desc: 'The classic algorithms, built from scratch on one small example: how they work and why.', lessons: [
+    { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [
       { slug: 'random-forest', title: 'Random Forest', sub: 'How do many wobbly trees make one steady prediction?', level: 'Beginner', mins: 25 },
     ] },
-    { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [] },
   ],
 };
