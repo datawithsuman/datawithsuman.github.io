@@ -289,7 +289,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="reader" data-reader='[
     {"t":"p","c":"info","label":"precision@k","say":"Share of the top k that is relevant. What the user sees on the first screen."},
     {"t":"r","c":"ok","label":"recall@k","say":"Share of all relevant items that made the top k. For RAG, the gold chunk must be in the k chunks sent to the LLM: this is the retriever&#39;s key metric."},
-    {"t":"h","c":"a","label":"hit rate@k","say":"1 if at least one relevant item is in the top k, else 0, averaged over queries. Common for recommendations (&quot;did the user&#39;s next purchase appear in our 10 suggestions?&quot;)."}
+    {"t":"h","c":"a","label":"hit rate@k","say":"1 if at least one relevant item is in the top k, else 0, averaged over queries. Common for recommendations (“did the user&#39;s next purchase appear in our 10 suggestions?”)."}
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-p}{P@k = \tfrac{\#\text{rel in top }k}{k}} \qquad \class{term t-r}{R@k = \tfrac{\#\text{rel in top }k}{\#\text{rel total}}} \qquad \class{term t-h}{HR@k = \mathbb 1[\#\text{rel in top }k \ge 1]}"></div></div>
     <ol class="say"></ol>

@@ -250,7 +250,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">2 · Building blocks</div>
   <h2>Errors, and three ways to average them</h2>
   <div class="reader" data-reader='[
-    {"t":"mae","c":"ok","label":"MAE","say":"Mean absolute error: the average size of a miss, in the target&#39;s own units (&quot;off by 1.7 minutes&quot;). Every minute of error counts the same."},
+    {"t":"mae","c":"ok","label":"MAE","say":"Mean absolute error: the average size of a miss, in the target&#39;s own units (“off by 1.7 minutes”). Every minute of error counts the same."},
     {"t":"mse","c":"info","label":"MSE","say":"Mean squared error: squares each miss first, so a 10-minute miss costs 100 and a 1-minute miss costs 1. Units are squared (minutes²), hard to read."},
     {"t":"rmse","c":"info","label":"RMSE","say":"Square root of MSE: back in minutes, but still dominated by the biggest misses. Always ≥ MAE; the gap tells you how uneven the errors are."}
   ]'>
@@ -344,9 +344,9 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <div class="card ok"><h4>What forecasters use instead</h4><p class="small" style="margin:0">Hyndman and Koehler showed the common measures "can give infinite or undefined values in commonly occurring situations" and proposed <b>MASE</b>, the mean absolute scaled error, for comparing accuracy across series <span class="src"><a href="https://www.doi.org/10.1016/J.IJFORECAST.2006.03.001">Hyndman &amp; Koehler 2006</a></span>. Retail teams also use <b>WAPE</b> (volume-weighted). sMAPE bounds the range but has its own asymmetry.</p></div>
   </div>
   <div class="reader" data-reader='[
-    {"t":"mase","c":"ok","label":"MASE","say":"Your forecast&#39;s MAE divided by a benchmark MAE. Scale-free, works with zeros, and 1 means &quot;as good as naive&quot;."},
+    {"t":"mase","c":"ok","label":"MASE","say":"Your forecast&#39;s MAE divided by a benchmark MAE. Scale-free, works with zeros, and 1 means “as good as naive”."},
     {"t":"num","c":"b","label":"your errors","say":"Mean absolute error of the forecast on the evaluation period."},
-    {"t":"den","c":"info","label":"naive forecast&#39;s errors","say":"The in-sample mean absolute change from one period to the next: the error of predicting &quot;same as last period&quot; (or same as last season for seasonal data)."}
+    {"t":"den","c":"info","label":"naive forecast&#39;s errors","say":"The in-sample mean absolute change from one period to the next: the error of predicting “same as last period” (or same as last season for seasonal data)."}
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-mase}{\text{MASE}} = \class{term t-num}{\tfrac1n\textstyle\sum|y_t - \hat y_t|} \,\Big/\, \class{term t-den}{\tfrac{1}{T-1}\textstyle\sum_{t=2}^{T}|y_t - y_{t-1}|}"></div></div>
     <ol class="say"></ol>

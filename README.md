@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-20-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-23-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,17 +34,10 @@ Three sections: **Fundamentals**, **System Design** and **Papers**. Pick a track
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 14 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 17 |
 | 🏗️ [**System Design**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
----|---|:---:|
-| 🚀 [**LLM Inference**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) | How LLMs actually run: speed, memory, and the tricks that make serving fast and cheap | 2 |
-| 🩺 [**ML Scenarios**](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/) | Real interview scenarios: your model does X, what do you do? | Soon |
-| 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
-| 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/papers/) | The idea and the key result of important papers | 2 |
-| 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 2 |
-| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) | The core ideas every AI/ML interview still asks about | 14 |
 
 ---
 
@@ -52,9 +45,9 @@ Three sections: **Fundamentals**, **System Design** and **Papers**. Pick a track
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Gradient Boosting**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/gradient-boosting/) | 📐 Fundamentals › Machine Learning | How do hundreds of tiny trees, each fixing the last one's mistakes, win on tabular data? |
-| [**Decision Trees**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/decision-trees/) | 📐 Fundamentals › Machine Learning | How does a tree choose its questions, and why does a deep tree memorise noise? |
-| [**Choosing the Right Metric**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/choosing-the-right-metric/) | 📐 Fundamentals › Machine Learning | Which metric would you use for X? Twelve scenarios to practise. |
+| [**Naive Bayes**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/naive-bayes/) | 📐 Fundamentals › Machine Learning | Its core assumption is almost always wrong. Why does it still classify so well? |
+| [**k-Nearest Neighbours**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/k-nearest-neighbours/) | 📐 Fundamentals › Machine Learning | No training at all: how can copying your neighbours work, and when does it fail? |
+| [**Support Vector Machines**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/support-vector-machines/) | 📐 Fundamentals › Machine Learning | Of all the lines that separate the data, why pick the one with the widest street? |
 
 ---
 
@@ -65,7 +58,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Machine Learning</b> · 14 lessons</summary>
+<summary><b>Machine Learning</b> · 17 lessons</summary>
 
 <br>
 
@@ -85,6 +78,14 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Decision Trees](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/decision-trees/) | 🟢 Beginner | 30 min |
 | 2 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/random-forest/) | 🟢 Beginner | 25 min |
 | 3 | [Gradient Boosting](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/gradient-boosting/) | 🟡 Intermediate | 35 min |
+
+**Other Classic Classifiers**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Support Vector Machines](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/support-vector-machines/) | 🟡 Intermediate | 35 min |
+| 2 | [k-Nearest Neighbours](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/k-nearest-neighbours/) | 🟢 Beginner | 30 min |
+| 3 | [Naive Bayes](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/naive-bayes/) | 🟢 Beginner | 30 min |
 
 **Evaluation Metrics**
 

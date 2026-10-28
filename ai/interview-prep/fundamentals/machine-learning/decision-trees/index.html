@@ -252,7 +252,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <p>A <b>node</b> holds some borrowers and asks one question about one feature: x<sub>j</sub> ≤ t? Yes goes left, no goes right. A <b>leaf</b> stops asking and predicts the share of repayers there (classification) or the mean target (regression). To choose questions, we need a number for how mixed a node is, its <span class="k">impurity</span>. For a node where a share p repaid:</p>
   <div class="reader" data-reader='[
     {"t":"g","c":"info","label":"Gini impurity","say":"Σ p_k(1 − p_k) over classes. The chance two randomly drawn borrowers from this node have different labels. 0 when pure; 0.5 at a 50/50 mix (two classes)."},
-    {"t":"e","c":"b","label":"entropy","say":"−Σ p_k log p_k. Bits of surprise. 0 when pure; 1 bit at 50/50. Splitting on entropy &quot;is equivalent to minimizing the log loss&quot; (scikit-learn)."},
+    {"t":"e","c":"b","label":"entropy","say":"−Σ p_k log p_k. Bits of surprise. 0 when pure; 1 bit at 50/50. Splitting on entropy “is equivalent to minimizing the log loss” (scikit-learn)."},
     {"t":"m","c":"a","label":"regression: squared error","say":"For numeric targets: the variance of the target in the node. A leaf predicts the mean, which minimises it."}
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-g}{H_{\text{Gini}} = \textstyle\sum_k p_k(1-p_k)} \qquad \class{term t-e}{H_{\text{ent}} = -\textstyle\sum_k p_k\log p_k} \qquad \class{term t-m}{H_{\text{MSE}} = \tfrac{1}{n}\textstyle\sum (y-\bar y)^2}"></div></div>

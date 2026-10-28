@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>k-Nearest Neighbours · @datawithsuman</title>
+<meta name="description" content="Choosing k, distance weighting, feature scaling and the curse of dimensionality, with live k-NN labs.">
+<meta property="og:title" content="k-Nearest Neighbours">
+<meta property="og:description" content="Choosing k, distance weighting, feature scaling and the curse of dimensionality, with live k-NN labs.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Classic classifiers 2 of 3</div>
+  <h1>k-Nearest Neighbours</h1>
+  <div class="meta">Lazy learning, choosing k, distance weighting, feature scaling, the curse of dimensionality, KD-trees and vector search · built from Cover &amp; Hart (1967), Beyer et al. (1999) and scikit-learn's neighbors guide · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> k-NN doesn't learn a model at all. It stores the training set, and to classify a new point it finds the <b>k closest</b> stored points and takes a <b>vote</b> (or an average, for regression). Small k memorises noise; large k blurs the boundary; you pick k by cross-validation. Because everything is a distance, <b>feature scaling</b> is not optional, and in <b>high dimensions</b> all distances start to look alike, so "nearest" stops meaning much. Prediction is the expensive part (search the whole set), which is why KD-trees, ball trees and, at scale, approximate nearest-neighbour indexes (the engines behind vector search and RAG) exist.<br><span class="small">What you'll be able to do after this: explain the bias–variance effect of k, show why scaling matters with numbers, state the Cover–Hart bound, explain distance concentration, and connect k-NN to vector databases.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>class +1 (pass)</span><span><i style="background:var(--b)"></i>class −1 (fail)</span><span><i style="background:var(--st)"></i>the query / its neighbourhood</span><span><i style="background:var(--info)"></i>numbers</span><span><i style="background:var(--ok)"></i>test accuracy / win</span><span><i style="background:var(--bad)"></i>failure</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> the same factory as the <a href="../support-vector-machines/">SVM lesson</a>: two sensor readings per part, pass or fail, with a curved boundary between the classes (simulated "two moons", 120 training parts, 30% noise). Test accuracy uses 1,000 fresh parts. Every k-NN on this page runs live in your browser by brute-force search.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>"This part looks like those parts"</h2>
+  <p>An experienced inspector doesn't fit equations. They look at a new part and recall similar ones they've seen: "readings like these usually failed". k-NN is that habit written as an algorithm. It needs no training, makes no assumption about the shape of the boundary, and can follow a curved boundary that a linear model can't. The price is paid at prediction time, and in the choice of what "similar" means.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>A distance, a neighbourhood, a vote</h2>
+  <div class="reader" data-reader='[
+    {"t":"d","c":"st","label":"distance","say":"How far query x is from stored point z. The whole method depends on this choice."},
+    {"t":"s","c":"info","label":"over every feature","say":"Each feature’s difference contributes. A feature measured in big units contributes big differences; more on that in chapter 8."},
+    {"t":"p","c":"b","label":"the power p","say":"p = 2: Euclidean (straight line), the default. p = 1: Manhattan (city blocks), a bit more robust to one large difference. scikit-learn’s default metric is Minkowski with p = 2."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-d}{d(x, z)} = \Bigl(\class{term t-s}{\sum_{j=1}^{D} |x_j - z_j|}^{\class{term t-p}{p}}\Bigr)^{1/p}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <p>Then the prediction is a vote among the k nearest stored points. Read as a probability, it's simply a share:</p>
+  <div class="reader" data-reader='[
+    {"t":"P","c":"ok","label":"estimated chance of class c","say":"k-NN’s estimate of how likely the query belongs to class c."},
+    {"t":"k","c":"info","label":"the k neighbours","say":"N_k(x): the k stored points closest to x."},
+    {"t":"I","c":"a","label":"count the class-c ones","say":"Add 1 for each neighbour with label c. With k = 15, 11 pass votes means 11/15 ≈ 0.73."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-P}{\hat P(y=c \mid x)} = \tfrac{1}{k}\,\class{term t-k}{\sum_{i \in N_k(x)}} \class{term t-I}{\mathbb{1}[y_i = c]}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn: neighbours classification "is computed from a simple majority vote of the nearest neighbors of each point" <span class="src"><a href="https://scikit-learn.org/stable/modules/neighbors.html">neighbors guide</a></span>. For regression, average the neighbours' targets instead.</p>
+  </div>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="The prediction for one query changes with k">
+        <g data-show="1">
+          <circle cx="150" cy="80" r="7" class="sa"/><circle cx="210" cy="220" r="7" class="sb"/><circle cx="560" cy="70" r="7" class="sa"/><circle cx="600" cy="230" r="7" class="sb"/><circle cx="250" cy="130" r="7" class="sb"/><circle cx="520" cy="150" r="7" class="sa"/><circle cx="640" cy="140" r="7" class="sa"/><circle cx="120" cy="170" r="7" class="sb"/>
+          <circle cx="342" cy="136" r="7" class="sb"/><circle cx="422" cy="115" r="7" class="sa"/><circle cx="391" cy="211" r="7" class="sa"/><circle cx="353" cy="77" r="7" class="sb"/><circle cx="460" cy="179" r="7" class="sb"/>
+          <path d="M380 140 L388 150 L380 160 L372 150 Z" fill="var(--st)"/><text x="380" y="290" text-anchor="middle" class="tst" font-size="12">◆ new part to classify</text>
+        </g>
+        <g data-show="2" data-hide="3"><circle cx="380" cy="150" r="46" fill="none" stroke="var(--st)" stroke-width="2"/><text x="380" y="98" text-anchor="middle" class="tb" font-size="13" font-weight="600">k = 1 → fail</text></g>
+        <g data-show="3" data-hide="4"><circle cx="380" cy="150" r="68" fill="none" stroke="var(--st)" stroke-width="2"/><text x="380" y="72" text-anchor="middle" class="ta" font-size="13" font-weight="600">k = 3 → pass (2 vs 1)</text></g>
+        <g data-show="4"><circle cx="380" cy="150" r="92" fill="none" stroke="var(--st)" stroke-width="2"/><text x="380" y="48" text-anchor="middle" class="tb" font-size="13" font-weight="600">k = 5 → fail (3 vs 2)</text></g>
+        <g data-show="5"><text x="380" y="22" text-anchor="middle" class="tinfo" font-size="12">the answer depends on k: pick it by validation</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A new part arrives (the diamond). We have its two sensor readings and thirteen stored parts with known labels.</li>
+      <li>k = 1: the single closest part failed, so predict fail.</li>
+      <li>k = 3: the circle grows to the three closest. Two passed, one failed: predict pass.</li>
+      <li>k = 5: two more neighbours, both failed. Now it's 3 fail vs 2 pass: predict fail.</li>
+      <li>Same data, same query, three answers. k is the one knob that matters most, and the next chapters show how to set it.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Use k = 1: the closest example is the best evidence"</h2>
+  <p>With k = 1 every training part is its own nearest neighbour, so training accuracy is always 100%. That number is meaningless. On our noisy moons, 1-NN scores <b>85.8%</b> on new parts, while k = 15 scores <b>89.7%</b>. The single nearest neighbour is often one of the noisy parts, and 1-NN copies its mistake into a little island of wrong predictions around it. scikit-learn: "a larger k suppresses the effects of noise, but makes the classification boundaries less distinct" <span class="src"><a href="https://scikit-learn.org/stable/modules/neighbors.html">neighbors guide</a></span>.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>Lazy learning, and how the search is made fast</h2>
+  <p>scikit-learn calls k-NN "a type of instance-based learning or non-generalizing learning: it does not attempt to construct a general internal model, but simply stores instances of the training data" <span class="src"><a href="https://scikit-learn.org/stable/modules/neighbors.html">neighbors guide</a></span>. So "training" is just indexing, and the work moves to query time:</p>
+  <div class="tw"><table class="t">
+    <tr><th>Search method</th><th>Cost</th><th>When</th></tr>
+    <tr><td><b>Brute force</b></td><td>Compare with all N points: O(D·N) per query</td><td>Small N, high D, sparse data. scikit-learn's <code>auto</code> picks it when D &gt; 15 or k ≥ N/2</td></tr>
+    <tr><td><b>KD-tree</b></td><td>About O(D log N) per query for small D</td><td>"very fast for low-dimensional (D &lt; 20)" searches; for larger D "the cost increases to nearly O[DN]"</td></tr>
+    <tr><td><b>Ball tree</b></td><td>About O(D log N)</td><td>Nested hyperspheres; "can out-perform a KD-tree in high dimensions", depending on the data</td></tr>
+    <tr><td><b>Approximate NN</b> (HNSW, IVF, product quantisation; FAISS and vector databases)</td><td>Sub-linear, trades a little recall for big speed-ups</td><td>Millions to billions of embedding vectors: semantic search, recommendations, RAG retrieval</td></tr>
+  </table></div>
+  <p class="small">First three rows: scikit-learn's neighbors guide <span class="src"><a href="https://scikit-learn.org/stable/modules/neighbors.html">docs</a></span>. Approximate methods: <span class="mine">my take</span>; see the <a href="../../../system-design/genai-apps/rag-at-scale/">RAG at scale</a> lesson for how retrieval uses them.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Similar inputs have similar labels, locally</h2>
+  <p>k-NN assumes only one thing: the label changes smoothly enough that nearby points usually share it. Everything else follows from making "nearby" meaningful: <b>how many</b> neighbours (k), <b>how much</b> each counts (weights), <b>what distance</b> (and on what feature scale), and <b>how many dimensions</b> the distance lives in. The next four chapters take those one at a time.</p>
+  <div class="card ok"><h4>A guarantee for the simplest version</h4><p class="small" style="margin:0">Cover &amp; Hart (1967): with infinitely many training points, the 1-NN error R is at most twice the best possible (Bayes) error R*. For two classes, R* ≤ R ≤ 2R*(1 − R*). "In this sense, it may be said that half the classification information in an infinite sample set is contained in the nearest neighbor" <span class="src"><a href="https://doi.org/10.1109/TIT.1967.1053964">IEEE Trans. Inf. Theory 13</a></span>. It's an asymptotic result: with finite data, and especially in high dimensions, it says nothing about how close you are.</p></div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Choosing k">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Choosing k</span>
+  <h2>k is a bias–variance dial</h2>
+  <div class="card lab" id="labK">
+    <label>k <input type="range" min="1" max="119" step="2" value="15" data-k="k"><output></output></label>
+    <div class="seg"><button data-v="0" class="on">uniform vote</button><button data-v="1">distance-weighted</button></div>
+    <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="k-NN decision regions"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">training accuracy</div><div class="v a" data-o="tr">–</div></div>
+      <div class="stat"><div class="l">test accuracy (1,000 new)</div><div class="v ok" data-o="te">–</div></div>
+      <div class="stat"><div class="l">best k on test</div><div class="v info" data-o="bk">–</div></div>
+    </div>
+    <div class="stage plot"><svg viewBox="0 0 760 200" data-o="curve" role="img" aria-label="Train and test accuracy versus k"></svg></div>
+    <p class="small" style="margin:0">Shade = share of the k neighbours voting pass. k = 1: islands around noisy parts. k ≈ 15: follows the moons. k = 119 (all but one training part): the vote loses all local shape and test accuracy falls to 67%.</p>
+  </div>
+  <p>Small k: low bias, high variance (the boundary jumps with each noisy point). Large k: high bias (the vote reaches into the other moon). Test accuracy on this data peaks at k = 13–15 (89.9% and 89.7%) and drops to 79.1% at k = 61. Pick k by cross-validation; for two classes, use odd k to avoid tied votes (with k = 4, 71 of the 1,000 test parts got an exact 2–2 tie).</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Distance weights">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill st">Distance weighting</span>
+  <h2>Let closer neighbours count more</h2>
+  <p>scikit-learn's <code>weights="distance"</code> "assigns weights proportional to the inverse of the distance from the query point" <span class="src"><a href="https://scikit-learn.org/stable/modules/neighbors.html">neighbors guide</a></span>. Switch it on in the lab above. Two effects to notice:</p>
+  <ul>
+    <li><b>It makes large k forgiving.</b> At k = 61, test accuracy rises from 79.1% (uniform) to 86.2% (weighted): far neighbours from the other moon count for little.</li>
+    <li><b>Training accuracy becomes 100% at every k.</b> Each training point is at distance 0 from itself, with infinite weight. So with weighted votes, training accuracy tells you nothing; only validation does.</li>
+  </ul>
+  <p>At small k, weighting changed little here (k = 5: 89.3% uniform vs 87.6% weighted). It's not a free win; treat it as a hyperparameter.</p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Feature scaling">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill bad">Scaling</span>
+  <h2>Change the units, change the neighbours</h2>
+  <p>Suppose sensor 1 is logged in centimetres instead of metres: every value ×100. Nothing about the parts changed, but now a 1 cm difference on sensor 1 counts as much as a whole unit on sensor 2. Distance is dominated by sensor 1, and sensor 2 is effectively ignored.</p>
+  <div class="card lab" id="labScale">
+    <div class="seg"><button data-v="0" class="on">original units</button><button data-v="1">sensor 1 in cm (×100)</button><button data-v="2">×100, then standardised</button></div>
+    <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="k-NN with different feature scales"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">test accuracy, k = 15</div><div class="v ok" data-o="te">–</div></div>
+      <div class="stat"><div class="l">sensor 1 spread vs sensor 2 spread</div><div class="v info" data-o="sp">–</div></div>
+    </div>
+    <p class="small" style="margin:0">The plot always shows the original readings; only the distance used inside k-NN changes. In centimetres the boundary turns into vertical stripes: only sensor 1 decides.</p>
+  </div>
+  <p>Test accuracy at k = 15 falls from <b>89.7%</b> to <b>71.3%</b> after the unit change, and standardising (subtract the mean, divide by the standard deviation, fitted on training data) brings it back to <b>88.3%</b>. Standardisation makes every feature equally important by default, which is a choice too: if you know a feature matters more, weight it on purpose. <span class="mine">my take</span></p>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · Curse of dimensionality">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill bad">The curse of dimensionality</span>
+  <h2>In many dimensions, everyone is about equally far</h2>
+  <p>Take 500 random points in a D-dimensional cube and one random query. In 2-D, the farthest point is dozens of times farther than the nearest. In 1,000-D, the farthest is only about 11% farther. When the nearest and the farthest are nearly the same distance away, "nearest" carries little information.</p>
+  <div class="card lab" id="labDim">
+    <label>Dimensions D <input type="range" min="0" max="8" step="1" value="1" data-k="d"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 240" data-o="plot" role="img" aria-label="Histogram of distances divided by the nearest distance"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">farthest ÷ nearest (mean of 20 queries)</div><div class="v bad" data-o="r">–</div></div>
+      <div class="stat"><div class="l">relative contrast (far − near) ÷ near</div><div class="v info" data-o="c">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Histogram for one query: each distance divided by that query's nearest distance. As D grows, the whole histogram squeezes against 1.</p>
+  </div>
+  <p>Beyer, Goldstein, Ramakrishnan &amp; Shaft (1999) proved this: under broad conditions, as dimensionality grows the distance to the nearest neighbour approaches the distance to the farthest one <span class="src"><a href="https://doi.org/10.1007/3-540-49257-7_15">ICDT 1999</a></span>. It applies to i.i.d. features like these random cubes. Real data usually lives near a much lower-dimensional surface (images, text embeddings), which is why nearest-neighbour search on <b>learned embeddings</b> still works well. The practical moves: reduce dimensions (PCA, embeddings), select features, or use a distance that suits the data (cosine for embeddings). scikit-learn also notes that KD-trees lose their speed advantage as D grows.</p>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · The whole recipe">
+  <div class="chap">10 · The whole recipe</div>
+  <h2>k-NN, end to end</h2>
+  <ol>
+    <li><b>Scale</b> features (StandardScaler or a domain weighting), fitted on training data only.</li>
+    <li><b>Reduce dimensions</b> if D is large (PCA, or use embeddings from a model).</li>
+    <li><b>Choose the metric:</b> Euclidean for scaled numeric features, cosine for embeddings, Hamming/Jaccard for binary sets.</li>
+    <li><b>Cross-validate k</b> (odd for binary) and <b>weights</b> (uniform vs distance).</li>
+    <li><b>Pick the index</b>: brute force for small N, KD/ball tree for low D, approximate NN (FAISS, HNSW) for millions of vectors.</li>
+  </ol>
+  <pre class="formula">from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+pipe = make_pipeline(StandardScaler(), KNeighborsClassifier())
+grid = {"kneighborsclassifier__n_neighbors": [1, 3, 5, 9, 15, 31],
+        "kneighborsclassifier__weights": ["uniform", "distance"]}
+GridSearchCV(pipe, grid, cv=5).fit(X_train, y_train)</pre>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Evidence">
+  <div class="chap">11 · Evidence</div>
+  <h2>What's proven, and what our lab shows</h2>
+  <div class="card"><h4>Test accuracy on the moons (this page's labs, k-NN uniform vote)</h4>
+    <div class="bars" data-max="100">
+      <div class="bar"><span>k = 1</span><div class="track"><div class="fill" style="--v:85.8;background:var(--bad)"></div></div><span class="v">85.8%</span></div>
+      <div class="bar"><span>k = 15</span><div class="track"><div class="fill" style="--v:89.7;background:var(--ok)"></div></div><span class="v">89.7%</span></div>
+      <div class="bar"><span>k = 61</span><div class="track"><div class="fill" style="--v:79.1;background:var(--bad)"></div></div><span class="v">79.1%</span></div>
+      <div class="bar"><span>k = 15, sensor 1 in cm</span><div class="track"><div class="fill" style="--v:71.3;background:var(--bad)"></div></div><span class="v">71.3%</span></div>
+      <div class="bar"><span>k = 15, cm then standardised</span><div class="track"><div class="fill" style="--v:88.3;background:var(--ok)"></div></div><span class="v">88.3%</span></div>
+    </div>
+    <p class="small">Simulated data, 120 training and 1,000 test parts; for comparison, the RBF SVM in the previous lesson reached 89.3% on the same data. Illustrative, not a benchmark.</p>
+  </div>
+  <div class="card ok"><h4>Proven: 1-NN is within 2× of optimal, asymptotically</h4><p class="small" style="margin:0">Cover &amp; Hart 1967, as in chapter 5. With k growing (k → ∞ while k/N → 0), k-NN is consistent: it converges to the Bayes error (Stone, 1977). Both are statements about the infinite-data limit.</p></div>
+  <div class="card bad"><h4>Proven: distances concentrate in high dimensions</h4><p class="small" style="margin:0">Beyer et al. 1999, as in chapter 9. In our cube simulation, the farthest ÷ nearest ratio (mean of 20 queries) fell from about 87 in 2-D to 3.6 in 10-D, 1.4 in 100-D and 1.11 in 1,000-D.</p></div>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Caveats">
+  <div class="chap">12 · Takeaways and honest caveats</div>
+  <div class="two">
+    <div class="card ok"><h4>Strengths</h4><ul style="margin:0;padding-left:20px" class="small"><li>No training; add new data instantly</li><li>Any boundary shape; naturally multi-class</li><li>Easy to explain: "these similar cases"</li><li>The same machinery powers retrieval, recommendations and anomaly detection</li></ul></div>
+    <div class="card bad"><h4>Weaknesses</h4><ul style="margin:0;padding-left:20px" class="small"><li>Slow, memory-hungry prediction: the model is the dataset</li><li>Needs scaling and a sensible metric</li><li>Breaks down with many irrelevant or raw high-dimensional features</li><li>Imbalanced classes: the majority dominates votes (weight or resample)</li></ul></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Key terms">
+  <div class="chap">13 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Instance-based / lazy learning</b></td><td>Store the data; do the work at prediction time.</td></tr>
+    <tr><td><b>k</b></td><td>Number of neighbours that vote. Small: variance. Large: bias.</td></tr>
+    <tr><td><b>Minkowski p</b></td><td>p = 2 Euclidean, p = 1 Manhattan.</td></tr>
+    <tr><td><b>Distance weighting</b></td><td>Votes weighted by 1/distance.</td></tr>
+    <tr><td><b>Curse of dimensionality</b></td><td>In high D, data is sparse and distances concentrate.</td></tr>
+    <tr><td><b>KD-tree / ball tree</b></td><td>Space-partitioning indexes for exact search in low D.</td></tr>
+    <tr><td><b>ANN (HNSW, IVF, PQ)</b></td><td>Approximate nearest-neighbour indexes used in vector databases.</td></tr>
+  </table></div>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · When to use it">
+  <div class="chap">14 · When to use it</div>
+  <div class="two">
+    <div class="card ok"><h4>Use k-NN when</h4><ul style="margin:0;padding-left:20px" class="small"><li>A quick, assumption-free baseline on small, low-dimensional data</li><li>You have good embeddings: similarity search, "more like this", recommendations</li><li>Data changes constantly and retraining is awkward</li></ul></div>
+    <div class="card"><h4>Reach for something else when</h4><ul style="margin:0;padding-left:20px" class="small"><li>Many raw features or many irrelevant ones: trees or linear models</li><li>Strict latency on large N without an ANN index</li><li>You need a compact model or feature effects</li></ul></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">k-NN stores the training data and predicts a new point by finding its k nearest neighbours under a distance like Euclidean and taking a majority vote, or the average for regression. There's no training; the cost is at prediction time, O(N·D) by brute force, reduced with KD-trees or ball trees in low dimensions or approximate indexes like HNSW at scale. k trades variance for bias and is chosen by cross-validation. Because it's distance-based you must scale features, and in high dimensions distances concentrate so neighbours become less meaningful, so you reduce dimensions or work in a learned embedding space.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>What happens at k = 1 and k = N?</summary><p>k = 1: zero training error, a jagged boundary, high variance. k = N: predicts the majority class everywhere, maximum bias.</p></details>
+  <details class="qa"><summary>Why scale features?</summary><p>Distances add up feature differences, so a feature with a big numeric range dominates. On this page, logging one feature in centimetres dropped test accuracy from 89.7% to 71.3%; standardising restored 88.3%.</p></details>
+  <details class="qa"><summary>Explain the curse of dimensionality for k-NN.</summary><p>As D grows, data becomes sparse and, for i.i.d. features, the ratio of farthest to nearest distance tends to 1 (Beyer et al. 1999), so the nearest neighbour is barely nearer than a random point. Fix with dimensionality reduction, feature selection, or embeddings where data lies on a low-dimensional manifold.</p></details>
+  <details class="qa"><summary>How is k-NN related to vector databases and RAG?</summary><p>RAG retrieval is k-NN over embedding vectors with cosine or dot-product similarity. Exact search is O(N·D), so vector databases use approximate indexes (HNSW graphs, IVF clusters, product quantisation) that trade a little recall for orders-of-magnitude speed.</p></details>
+  <details class="qa"><summary>Training and prediction complexity?</summary><p>Training O(1) for brute force (just store), or about O(D·N log N) to build a tree. Prediction O(D·N) brute force per query, about O(D log N) with a tree in low D.</p></details>
+  <details class="qa"><summary>What does Cover &amp; Hart say?</summary><p>As N → ∞, 1-NN's error is at most twice the Bayes error (precisely 2R*(1 − R*) for two classes). It's an asymptotic guarantee, not a finite-sample one.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"k-NN has no hyperparameters." k, the weighting, the metric and the scaling all matter.</li>
+    <li>"Training accuracy shows a good k." At k = 1, or with distance weights, it's always 100%.</li>
+    <li>"k-NN works fine in any dimension." Not on raw high-dimensional features.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>T. Cover &amp; P. Hart, "Nearest neighbor pattern classification", <i>IEEE Trans. Information Theory</i> 13(1), 1967, <a href="https://doi.org/10.1109/TIT.1967.1053964">doi:10.1109/TIT.1967.1053964</a> (the 2× Bayes bound).</li>
+    <li>K. Beyer, J. Goldstein, R. Ramakrishnan &amp; U. Shaft, "When is 'nearest neighbor' meaningful?", ICDT 1999, <a href="https://doi.org/10.1007/3-540-49257-7_15">doi:10.1007/3-540-49257-7_15</a> (distance concentration).</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors user guide</a> (instance-based learning, k, weights, brute/KD/ball tree costs, algorithm choice).</li>
+    <li>C. Stone, "Consistent nonparametric regression", <i>Annals of Statistics</i>, 1977 (k-NN consistency; background).</li>
+    <li>Y. Malkov &amp; D. Yashunin, "Efficient and robust approximate nearest neighbor search using HNSW graphs", <a href="https://arxiv.org/abs/1603.09320">arXiv:1603.09320</a> (approximate search; background).</li>
+  </ol>
+  <p class="small">All datasets are simulated with fixed seeds; every result on this page is computed live in your browser.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- shared classic-classifier code: seeded 2-D data, SVM (simplified SMO), k-NN ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+// two blobs (labels ±1), separation sep
+function blobs(seed, n, sep, sd = 1) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2 ? 1 : -1; X.push([c * sep / 2 + sd * g(), c * sep / 4 + sd * g()]); y.push(c); } return { X, y }; }
+// ring: inner class +1, outer class −1
+function ring(seed, n) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2 ? 1 : -1, rad = c > 0 ? 1.2 * Math.sqrt(r()) : 2.2 + 0.9 * r(), a = 2 * Math.PI * r(); X.push([rad * Math.cos(a) + 0.15 * g(), rad * Math.sin(a) + 0.15 * g()]); y.push(c); } return { X, y }; }
+// two moons with noise
+function moons(seed, n, noise = 0.25) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = Math.PI * r(); X.push(c ? [1 - Math.cos(a) + noise * g(), 0.5 - Math.sin(a) + noise * g()] : [Math.cos(a) + noise * g(), Math.sin(a) + noise * g()]); y.push(c ? 1 : -1); } return { X, y }; }
+const K = { linear: (a, b) => a[0] * b[0] + a[1] * b[1], rbf: g => (a, b) => Math.exp(-g * ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)) };
+// simplified SMO (CS229-style) — fine for < 200 points
+function svm(X, y, C, kern, opt = {}) { const n = X.length, tol = 1e-3, maxPasses = opt.passes || 8, r = rng(opt.seed || 1), a = new Float64Array(n); let b = 0;
+  const Kc = X.map(xi => X.map(xj => kern(xi, xj))), f = i => { let s = b; for (let j = 0; j < n; j++) if (a[j]) s += a[j] * y[j] * Kc[i][j]; return s; };
+  let passes = 0, it = 0; while (passes < maxPasses && it < (opt.maxIt || 4000)) { it++; let changed = 0;
+    for (let i = 0; i < n; i++) { const Ei = f(i) - y[i]; if ((y[i] * Ei < -tol && a[i] < C) || (y[i] * Ei > tol && a[i] > 0)) {
+      let j = Math.floor(r() * (n - 1)); if (j >= i) j++; const Ej = f(j) - y[j], ai = a[i], aj = a[j];
+      const L = y[i] !== y[j] ? Math.max(0, aj - ai) : Math.max(0, ai + aj - C), H = y[i] !== y[j] ? Math.min(C, C + aj - ai) : Math.min(C, ai + aj); if (L === H) continue;
+      const eta = 2 * Kc[i][j] - Kc[i][i] - Kc[j][j]; if (eta >= 0) continue;
+      let nj = aj - y[j] * (Ei - Ej) / eta; nj = Math.min(H, Math.max(L, nj)); if (Math.abs(nj - aj) < 1e-5) continue;
+      const ni = ai + y[i] * y[j] * (aj - nj);
+      const b1 = b - Ei - y[i] * (ni - ai) * Kc[i][i] - y[j] * (nj - aj) * Kc[i][j], b2 = b - Ej - y[i] * (ni - ai) * Kc[i][j] - y[j] * (nj - aj) * Kc[j][j];
+      a[i] = ni; a[j] = nj; b = ni > 0 && ni < C ? b1 : nj > 0 && nj < C ? b2 : (b1 + b2) / 2; changed++; } }
+    passes = changed ? 0 : passes + 1; }
+  const sv = [...a.keys()].filter(i => a[i] > 1e-6);
+  return { a, b, sv, dec: x => sv.reduce((s, i) => s + a[i] * y[i] * kern(X[i], x), b) }; }
+function knn(X, y, k, x, weighted = false) { const d = X.map((p, i) => [Math.hypot(p[0] - x[0], p[1] - x[1]), y[i]]).sort((u, v) => u[0] - v[0]).slice(0, k);
+  let s = 0; d.forEach(([dist, l]) => s += (weighted ? 1 / (dist + 1e-9) : 1) * l); return s; }
+// decision-region heatmap: f(x) → score; colour by sign, softer inside the |f|<band "street"
+function heat(F, f, x0, x1, y0, y1, step = 8, band = 0) { let s = ''; const dx = (x1 - x0) * step / (F.W - F.L - F.R), dy = (y1 - y0) * step / (F.H - F.T - F.B);
+  for (let px = F.L; px < F.W - F.R; px += step) for (let py = F.T; py < F.H - F.B; py += step) { const x = x0 + (px - F.L + step / 2) / (F.W - F.L - F.R) * (x1 - x0), y = y1 - (py - F.T + step / 2) / (F.H - F.T - F.B) * (y1 - y0), v = f([x, y]);
+    s += `<rect x="${px}" y="${py}" width="${Math.min(step, F.W - F.R - px) + .5}" height="${Math.min(step, F.H - F.B - py) + .5}" fill="var(--${v > 0 ? 'a' : 'b'})" opacity="${band && Math.abs(v) < band ? 0.07 : 0.17}"/>`; } return s; }
+const pts2 = (F, d, r = 4.5) => d.X.map((x, i) => `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="${r}" class="${d.y[i] > 0 ? 'sa' : 'sb'}"/>`).join('');
+const ring2 = (F, d, idx, r = 8) => idx.map(i => `<circle cx="${F.X(d.X[i][0]).toFixed(1)}" cy="${F.Y(d.X[i][1]).toFixed(1)}" r="${r}" fill="none" stroke="var(--ink)" stroke-width="1.6"/>`).join('');
+// line w·x + b = c inside the frame box
+function wline(F, w, b, c, box, attrs) { const [x0, x1, y0, y1] = box, P = []; if (Math.abs(w[1]) > 1e-9) [x0, x1].forEach(x => { const y = (c - b - w[0] * x) / w[1]; if (y >= y0 && y <= y1) P.push([x, y]); });
+  if (Math.abs(w[0]) > 1e-9) [y0, y1].forEach(y => { const x = (c - b - w[1] * y) / w[0]; if (x >= x0 && x <= x1) P.push([x, y]); });
+  if (P.length < 2) return ''; return `<line x1="${F.X(P[0][0])}" y1="${F.Y(P[0][1])}" x2="${F.X(P[1][0])}" y2="${F.Y(P[1][1])}" ${attrs}/>`; }
+const accOf = (f, d) => d.X.filter((x, i) => Math.sign(f(x)) === d.y[i]).length / d.X.length;
+
+// ---- k-NN page ----
+const MD = moons(6, 120, 0.3), MT = moons(94, 1000, 0.3), MBOX = [-1.4, 2.6, -1.1, 1.9];
+const mframe = () => frame({ W: 560, H: 420, x0: MBOX[0], x1: MBOX[1], y0: MBOX[2], y1: MBOX[3], xt: [-1, 0, 1, 2], yt: [-1, 0, 1], xl: 'sensor 1', yl: 'sensor 2' });
+// sorted neighbour lists [dist, label] for each query, so any k is cheap
+const nbrs = (Tr, Q, tf = x => x) => { const T = Tr.X.map(tf); return Q.map(q => { const z = tf(q); return T.map((p, i) => [Math.hypot(p[0] - z[0], p[1] - z[1]), Tr.y[i]]).sort((u, v) => u[0] - v[0]); }); };
+const vote = (L, k, w) => { let s = 0, t = 0; for (let i = 0; i < k; i++) { const wt = w ? 1 / (L[i][0] + 1e-9) : 1; s += wt * L[i][1]; t += wt; } return s / t; }; // in [−1, 1]
+const accL = (NL, y, k, w) => NL.filter((L, i) => Math.sign(vote(L, k, w)) === y[i]).length / NL.length;
+// vote-share heat map: colour by majority, opacity by margin of the vote
+function vheat(F, f, step = 8) { let s = ''; const [x0, x1, y0, y1] = MBOX;
+  for (let px = F.L; px < F.W - F.R; px += step) for (let py = F.T; py < F.H - F.B; py += step) { const x = x0 + (px - F.L + step / 2) / (F.W - F.L - F.R) * (x1 - x0), y = y1 - (py - F.T + step / 2) / (F.H - F.T - F.B) * (y1 - y0), v = f([x, y]);
+    s += `<rect x="${px}" y="${py}" width="${Math.min(step, F.W - F.R - px) + .5}" height="${Math.min(step, F.H - F.B - py) + .5}" fill="var(--${v > 0 ? 'a' : v < 0 ? 'b' : 'dim'})" opacity="${(0.05 + 0.22 * Math.abs(v)).toFixed(3)}"/>`; } return s; }
+const gridQ = (step = 8) => { const F = mframe(), [x0, x1, y0, y1] = MBOX, Q = []; for (let px = F.L; px < F.W - F.R; px += step) for (let py = F.T; py < F.H - F.B; py += step) Q.push([x0 + (px - F.L + step / 2) / (F.W - F.L - F.R) * (x1 - x0), y1 - (py - F.T + step / 2) / (F.H - F.T - F.B) * (y1 - y0)]); return Q; };
+
+// 6 · choosing k
+(() => { const lab = document.getElementById('labK'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('[data-o=plot]'), cv = lab.querySelector('[data-o=curve]');
+  const NTr = nbrs(MD, MD.X), NTe = nbrs(MD, MT.X), GQ = gridQ(), NG = nbrs(MD, GQ), ks = Array.from({ length: 60 }, (_, i) => 2 * i + 1), curves = {};
+  const upd = () => { const k = +r.value, w = +onv(lab).dataset.v === 1; r.nextElementSibling.textContent = k;
+    const c = curves[+w] || (curves[+w] = { tr: ks.map(kk => accL(NTr, MD.y, kk, w)), te: ks.map(kk => accL(NTe, MT.y, kk, w)) });
+    const F = mframe(); let gi = 0; const gv = NG.map(L => vote(L, k, w));
+    svg.innerHTML = F.s + vheat(F, () => gv[gi++]) + pts2(F, MD, 4.5);
+    put(lab, 'tr', pct(c.tr[(k - 1) / 2])); put(lab, 'te', pct(c.te[(k - 1) / 2])); const bi = c.te.indexOf(Math.max(...c.te)); put(lab, 'bk', `k = ${ks[bi]} (${pct(c.te[bi])})`);
+    const C = frame({ H: 200, x0: 1, x1: 119, y0: 0.5, y1: 1.0, xt: [1, 15, 31, 61, 91, 119], yt: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0], xl: 'k', yl: 'accuracy' });
+    const path = a => a.map((v, i) => (i ? 'L' : 'M') + C.X(ks[i]).toFixed(1) + ' ' + C.Y(v).toFixed(1)).join(' ');
+    cv.innerHTML = C.s + `<path d="${path(c.tr)}" fill="none" stroke="var(--a)" stroke-width="2.5"/><path d="${path(c.te)}" fill="none" stroke="var(--ok)" stroke-width="2.5"/><line x1="${C.X(k)}" x2="${C.X(k)}" y1="${C.T}" y2="${C.H - C.B}" stroke="var(--st)" stroke-dasharray="4 4"/><text x="${C.W - C.R - 4}" y="${C.T + 14}" text-anchor="end" class="ta" font-size="12">train</text><text x="${C.W - C.R - 4}" y="${C.T + 30}" text-anchor="end" class="tok" font-size="12">test</text>`; };
+  segs(lab, upd); r.addEventListener('input', upd); upd(); })();
+
+// 8 · feature scaling
+(() => { const lab = document.getElementById('labScale'); if (!lab) return; const svg = lab.querySelector('svg'), k = 15, GQ = gridQ();
+  const cm = x => [x[0] * 100, x[1]], C = MD.X.map(cm), mu = [0, 1].map(j => C.reduce((s, x) => s + x[j], 0) / C.length), sd = [0, 1].map(j => Math.sqrt(C.reduce((s, x) => s + (x[j] - mu[j]) ** 2, 0) / C.length));
+  const tfs = [x => x, cm, x => cm(x).map((v, j) => (v - mu[j]) / sd[j])], cache = {};
+  const spread = tf => { const T = MD.X.map(tf), s = [0, 1].map(j => { const m = T.reduce((a, x) => a + x[j], 0) / T.length; return Math.sqrt(T.reduce((a, x) => a + (x[j] - m) ** 2, 0) / T.length); }); return s[0] / s[1]; };
+  const upd = () => { const m = +onv(lab).dataset.v, tf = tfs[m], c = cache[m] || (cache[m] = { te: accL(nbrs(MD, MT.X, tf), MT.y, k, false), g: nbrs(MD, GQ, tf).map(L => vote(L, k, false)) });
+    const F = mframe(); let gi = 0; svg.innerHTML = F.s + vheat(F, () => c.g[gi++]) + pts2(F, MD, 4.5);
+    put(lab, 'te', pct(c.te)); put(lab, 'sp', spread(tf).toFixed(1) + ' : 1'); };
+  segs(lab, upd); upd(); })();
+
+// 9 · curse of dimensionality
+(() => { const lab = document.getElementById('labDim'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg'), Ds = [1, 2, 3, 5, 10, 20, 50, 100, 1000], cache = {};
+  const run = d => { const g = rng(42); let rat = 0, rel = 0, first = null;
+    for (let q = 0; q < 20; q++) { const Q = Array.from({ length: d }, g), ds = []; let mn = 1e9, mx = 0;
+      for (let i = 0; i < 500; i++) { let s = 0; for (let j = 0; j < d; j++) { const v = g() - Q[j]; s += v * v; } s = Math.sqrt(s); ds.push(s); mn = Math.min(mn, s); mx = Math.max(mx, s); }
+      rat += mx / mn; rel += (mx - mn) / mn; if (!first) first = ds.map(v => v / mn); }
+    return { rat: rat / 20, rel: rel / 20, h: first }; };
+  const upd = () => { const d = Ds[+r.value]; r.nextElementSibling.textContent = d; const o = cache[d] || (cache[d] = run(d));
+    const top = 10, nb = 40, cnt = Array(nb).fill(0); o.h.forEach(v => { const b = Math.min(nb - 1, Math.floor((Math.min(v, top) - 1) / (top - 1) * nb)); cnt[b]++; });
+    const F = frame({ H: 240, x0: 1, x1: top, y0: 0, y1: Math.max(...cnt) * 1.1, xt: [1, 2, 4, 6, 8, 10], yt: [], xl: 'distance ÷ nearest distance (values above 10 are piled at 10)', yl: 'points' });
+    const bw = (F.X(top) - F.X(1)) / nb;
+    svg.innerHTML = F.s + cnt.map((c, b) => `<rect x="${(F.X(1) + b * bw + 1).toFixed(1)}" y="${F.Y(c).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${(F.Y(0) - F.Y(c)).toFixed(1)}" fill="var(--info)" opacity=".75"/>`).join('');
+    put(lab, 'r', o.rat < 10 ? o.rat.toFixed(2) + '×' : o.rat.toFixed(0) + '×'); put(lab, 'c', o.rel.toFixed(2)); };
+  r.addEventListener('input', upd); upd(); })();
+
+</script>
+</body>
+</html>

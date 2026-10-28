@@ -334,7 +334,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="reader" data-reader='[
     {"t":"L","c":"info","label":"what each tree minimises","say":"Training loss plus a complexity penalty for every tree."},
     {"t":"l","c":"bad","label":"the loss","say":"Any twice-differentiable convex loss: squared error, log-loss, …"},
-    {"t":"om","c":"b","label":"tree penalty","say":"γ per leaf (T = number of leaves) plus an L2 penalty λ on the leaf values w. &quot;When the regularization parameter is set to zero, the objective falls back to the traditional gradient tree boosting.&quot;"},
+    {"t":"om","c":"b","label":"tree penalty","say":"γ per leaf (T = number of leaves) plus an L2 penalty λ on the leaf values w. “When the regularization parameter is set to zero, the objective falls back to the traditional gradient tree boosting.”"},
     {"t":"w","c":"ok","label":"best value for a leaf","say":"Minus the sum of gradients in the leaf divided by (sum of second derivatives + λ): a Newton step, shrunk by λ. For squared error (g = ŷ − y, h = 1) it is the mean residual, shrunk toward 0."}
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-L}{\mathcal L} = \textstyle\sum_i \class{term t-l}{l(y_i,\hat y_i)} + \sum_k \class{term t-om}{\big(\gamma T + \tfrac12\lambda\|w\|^2\big)}, \qquad \class{term t-w}{w_j^{*} = -\,G_j \,/\, (H_j + \lambda)}"></div></div>

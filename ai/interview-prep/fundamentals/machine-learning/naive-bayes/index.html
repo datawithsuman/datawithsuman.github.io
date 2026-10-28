@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naive Bayes · @datawithsuman</title>
+<meta name="description" content="Bayes' rule, the independence assumption, Laplace smoothing and why naive Bayes classifies well but estimates badly.">
+<meta property="og:title" content="Naive Bayes">
+<meta property="og:description" content="Bayes' rule, the independence assumption, Laplace smoothing and why naive Bayes classifies well but estimates badly.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Classic classifiers 3 of 3</div>
+  <h1>Naive Bayes</h1>
+  <div class="meta">Bayes' rule, the independence assumption, Laplace smoothing, log space, Gaussian/Multinomial/Bernoulli/Complement variants, why it classifies well but estimates badly · built from scikit-learn's naive Bayes guide, Domingos &amp; Pazzani (1997), Ng &amp; Jordan (2001) and Rennie et al. (2003) · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> Naive Bayes classifies by asking "which class makes this input most likely?", using Bayes' rule. It makes one big simplification: given the class, every feature is <b>independent</b>, so the likelihood is just a product of one-feature probabilities you can count from data. That makes it tiny, instant to train, and good with little data, which is why it was the classic spam filter. Two practical fixes are mandatory: <b>smoothing</b> (an unseen word must not zero out a class) and <b>log space</b> (products of many small numbers underflow). The independence assumption is almost always false, yet the <b>ranking</b> of classes often survives; the <b>probabilities</b> don't: they're pushed towards 0 and 1.<br><span class="small">What you'll be able to do after this: classify a message by hand, explain smoothing with a concrete failure, pick the right variant, and explain why naive Bayes can be accurate but badly calibrated.</span></div>
+  <div class="legend"><span><i style="background:var(--bad)"></i>spam</span><span><i style="background:var(--a)"></i>ham (normal mail)</span><span><i style="background:var(--b)"></i>the naive assumption</span><span><i style="background:var(--info)"></i>numbers</span><span><i style="background:var(--ok)"></i>fix / win</span><span><i style="background:var(--st)"></i>full model (no assumption)</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> a small spam filter. Its training mail has 40 spam and 60 ham messages, and a vocabulary of six words. The counts below are illustrative (made up to be easy to follow), and every probability on the page is computed live from them. Later chapters use simulated numeric data for Gaussian naive Bayes.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Reverse the question</h2>
+  <div class="tw"><table class="t">
+  <tr><th>word</th><th>free</th><th>win</th><th>offer</th><th>meeting</th><th>project</th><th>lunch</th><th>total</th></tr>
+  <tr><td><b>count in spam</b></td><td>30</td><td>20</td><td>25</td><td>2</td><td>3</td><td>0</td><td>80</td></tr>
+  <tr><td><b>count in ham</b></td><td>4</td><td>1</td><td>5</td><td>30</td><td>35</td><td>25</td><td>100</td></tr>
+</table></div>
+  <p>We want P(spam | this message). That's hard to estimate directly: almost every message is unique. The reverse is easy to count: how often does the word "free" appear in spam? Bayes' rule turns the easy direction into the one we need. The only obstacle is that a message has many words, and counting every combination of words is hopeless. Naive Bayes removes that obstacle with one bold assumption.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Bayes' rule, term by term</h2>
+  <div class="reader" data-reader='[
+    {"t":"post","c":"ok","label":"posterior","say":"What we want: the probability the message is class y (spam or ham) given its words x."},
+    {"t":"prior","c":"info","label":"prior","say":"How common the class is before reading anything: 40 of 100 training messages were spam, so P(spam) = 0.4."},
+    {"t":"lik","c":"b","label":"likelihood","say":"How probable these words are if the message were class y. This is the part we have to model."},
+    {"t":"ev","c":"st","label":"evidence","say":"P(x): the same for every class, so for choosing the class we can ignore it and just compare numerators."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-post}{P(y \mid x)} = \class{term t-prior}{P(y)}\;\class{term t-lik}{P(x \mid y)} \,/\, \class{term t-ev}{P(x)}"></div></div>
+    <ol class="say"></ol>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Just count P(x | y) for whole messages"</h2>
+  <p>Modelling P(x | y) exactly means estimating the probability of every possible combination of words. With only our 6 words treated as present/absent there are 2<sup>6</sup> = 64 combinations per class; with a realistic 50,000-word vocabulary there are 2<sup>50,000</sup>. You will never see most combinations even once, so their counted probability is 0, and any new message would get probability zero under both classes. Exact Bayes is right in theory and impossible in practice.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>Generative vs discriminative</h2>
+  <p>There are two ways to build a classifier. <b>Discriminative</b> models (logistic regression, SVMs, trees) learn P(y | x) or the boundary directly. <b>Generative</b> models learn how each class produces data, P(x | y) and P(y), then use Bayes' rule. Naive Bayes is the simplest generative classifier. Ng &amp; Jordan (2001) compared it with its discriminative twin, logistic regression: logistic regression has the lower error with lots of data, but naive Bayes "may also approach its (higher) asymptotic error much faster" <span class="src"><a href="https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html">NIPS 2001</a></span>. With little data naive Bayes often wins; with lots, logistic regression catches up and passes it.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Given the class, treat every feature as independent</h2>
+  <div class="reader" data-reader='[
+    {"t":"hat","c":"ok","label":"predicted class","say":"Pick the class with the biggest score. P(x) is dropped because it&#39;s the same for all classes."},
+    {"t":"prior","c":"info","label":"prior","say":"Class frequency in training data."},
+    {"t":"prod","c":"b","label":"the naive product","say":"Instead of one impossible joint probability, multiply one small probability per feature. With 50,000 words that&#39;s 50,000 numbers per class instead of 2^50,000."},
+    {"t":"one","c":"a","label":"one-feature likelihood","say":"Estimated by counting: how often word i appears in class y. Gaussian NB uses a per-class mean and variance instead."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-hat}{\hat y} = \arg\max_y\ \class{term t-prior}{P(y)}\ \class{term t-prod}{\prod_{i=1}^{n}} \class{term t-one}{P(x_i \mid y)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn: naive Bayes applies Bayes' theorem "with the 'naive' assumption of conditional independence between every pair of features given the value of the class variable" <span class="src"><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">naive Bayes guide</a></span>.</p>
+  </div>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 270" role="img" aria-label="Scoring the message free offer meeting for spam and ham">
+        <g data-show="1"><rect x="250" y="16" width="260" height="40" rx="10" class="fn"/><text x="380" y="42" text-anchor="middle" font-size="15" fill="var(--ink)">"free offer meeting"</text></g>
+        <g data-show="2"><text x="40" y="100" class="tbad" font-size="14" font-weight="600">spam</text><text x="40" y="190" class="ta" font-size="14" font-weight="600">ham</text>
+          <rect x="110" y="78" width="96" height="36" rx="8" class="finfo"/><text x="158" y="101" text-anchor="middle" class="tinfo m">P = 0.40</text>
+          <rect x="110" y="168" width="96" height="36" rx="8" class="finfo"/><text x="158" y="191" text-anchor="middle" class="tinfo m">P = 0.60</text></g>
+        <g data-show="3"><text x="224" y="101" class="d">×</text><rect x="240" y="78" width="96" height="36" rx="8" class="fbad"/><text x="288" y="94" text-anchor="middle" class="tbad m">free</text><text x="288" y="108" text-anchor="middle" class="d" font-size="11">31/86</text>
+          <text x="224" y="191" class="d">×</text><rect x="240" y="168" width="96" height="36" rx="8" class="fa"/><text x="288" y="184" text-anchor="middle" class="ta m">free</text><text x="288" y="198" text-anchor="middle" class="d" font-size="11">5/106</text></g>
+        <g data-show="4"><text x="352" y="101" class="d">×</text><rect x="368" y="78" width="96" height="36" rx="8" class="fbad"/><text x="416" y="94" text-anchor="middle" class="tbad m">offer</text><text x="416" y="108" text-anchor="middle" class="d" font-size="11">26/86</text>
+          <text x="480" y="101" class="d">×</text><rect x="496" y="78" width="96" height="36" rx="8" class="fbad"/><text x="544" y="94" text-anchor="middle" class="tbad m">meeting</text><text x="544" y="108" text-anchor="middle" class="d" font-size="11">3/86</text>
+          <text x="352" y="191" class="d">×</text><rect x="368" y="168" width="96" height="36" rx="8" class="fa"/><text x="416" y="184" text-anchor="middle" class="ta m">offer</text><text x="416" y="198" text-anchor="middle" class="d" font-size="11">6/106</text>
+          <text x="480" y="191" class="d">×</text><rect x="496" y="168" width="96" height="36" rx="8" class="fa"/><text x="544" y="184" text-anchor="middle" class="ta m">meeting</text><text x="544" y="198" text-anchor="middle" class="d" font-size="11">31/106</text></g>
+        <g data-show="5" data-hl="5" style="color:var(--ok)"><text x="610" y="101" class="d">=</text><text x="630" y="101" class="tbad m">1.5e-3</text><text x="610" y="191" class="d">=</text><text x="630" y="191" class="ta m">4.7e-4</text>
+          <text x="380" y="250" text-anchor="middle" class="tok" font-size="13" font-weight="600">normalise: P(spam | message) ≈ 0.76 → spam</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A new message with three words from our vocabulary.</li>
+      <li>Start each class with its prior: 40% of training mail was spam, 60% ham.</li>
+      <li>Multiply by P("free" | class). With Laplace smoothing (next chapter): spam (30 + 1)/(80 + 6), ham (4 + 1)/(100 + 6).</li>
+      <li>Then "offer" and "meeting", each as if it were independent of the others given the class.</li>
+      <li>Compare the two products. Divide each by their sum to get probabilities: about 0.76 spam. "free" and "offer" pull towards spam; "meeting" pulls hard towards ham.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Smoothing">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill ok">Smoothing</span>
+  <h2>One unseen word must not veto everything</h2>
+  <p>"lunch" never appeared in our spam, so the raw estimate P(lunch | spam) = 0/80 = 0. Any message containing "lunch" then gets P(spam) = 0, however spammy its other words. The fix is to add α imaginary occurrences of every word:</p>
+  <div class="reader" data-reader='[
+    {"t":"th","c":"ok","label":"smoothed estimate","say":"P(word i | class y) used by Multinomial naive Bayes."},
+    {"t":"N","c":"info","label":"count of word i in y","say":"How many times word i appeared in class-y training mail. 0 for lunch in spam."},
+    {"t":"a","c":"b","label":"pseudo-count","say":"α = 1 is Laplace smoothing; α &lt; 1 is Lidstone smoothing. Treat it as a hyperparameter."},
+    {"t":"D","c":"st","label":"total words in y, plus α per word","say":"N_y + αn: n is the vocabulary size (6 here), so the probabilities still sum to 1."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-th}{\hat\theta_{yi}} = (\class{term t-N}{N_{yi}} + \class{term t-a}{\alpha}) \,/\, (\class{term t-D}{N_y + \alpha n})"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn: the smoothing priors "account for features not present in the learning samples and prevent zero probabilities" <span class="src"><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">naive Bayes guide</a></span>.</p>
+  </div>
+  <div class="card lab" id="labSpam">
+    <div class="small">Build a message (click a word to add it; click "clear" to start again)</div>
+    <div class="seg" data-role="words"><button data-v="free">free</button><button data-v="win">win</button><button data-v="offer">offer</button><button data-v="meeting">meeting</button><button data-v="project">project</button><button data-v="lunch">lunch</button><button data-v="clear">clear</button></div>
+    <div class="seg" data-role="preset" style="margin-top:8px"><button data-v="free win lunch">"free win lunch"</button><button data-v="free offer meeting">"free offer meeting"</button><button data-v="meeting">"meeting"</button></div>
+    <label>Smoothing α <input type="range" min="0" max="2" step="0.1" value="1" data-k="a"><output></output></label>
+    <div class="formula" data-o="msg">–</div>
+    <div class="stage plot"><svg viewBox="0 0 760 220" data-o="plot" role="img" aria-label="Log-likelihood contribution of each word"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">P(spam | message)</div><div class="v bad" data-o="p">–</div></div>
+      <div class="stat"><div class="l">verdict</div><div class="v info" data-o="v">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Bars: each word's log-likelihood ratio, log P(word | spam) − log P(word | ham). Right = evidence for spam, left = for ham. Set α = 0 and pick "free win lunch".</p>
+  </div>
+  <p>With α = 0, "free win lunch" scores P(spam) = <b>0</b>, a certain "ham", even though two of its three words are strongly spammy: "lunch" vetoes the spam class. With α = 0.1 it's 0.41, and with Laplace α = 1 it's <b>0.76</b>. Words that are never seen in <i>either</i> class at prediction time are simply skipped.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Log space">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill st">Work in logs</span>
+  <h2>Products underflow; sums don't</h2>
+  <p>A 1,000-word email multiplies 1,000 probabilities, each maybe 0.001. The product, 10<sup>−3000</sup>, is far below the smallest positive double (about 10<sup>−308</sup>), so the computer stores 0 for both classes and can't compare them. Taking logs turns the product into a sum, which keeps the comparison exact:</p>
+  <div class="reader" data-reader='[
+    {"t":"s","c":"ok","label":"class score","say":"A log score per class: compare these, the biggest wins. Exponentiate and normalise (softmax) only if you want probabilities."},
+    {"t":"p","c":"info","label":"log prior","say":"log 0.4 for spam, log 0.6 for ham."},
+    {"t":"l","c":"b","label":"sum of log likelihoods","say":"Each word adds its log probability. The bars in the lab are differences of these terms between the two classes."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-s}{\text{score}(y)} = \class{term t-p}{\log P(y)} + \class{term t-l}{\sum_{i} \log P(x_i \mid y)}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <p>Seen this way, Multinomial naive Bayes is a <b>linear model</b> in the word counts: each word has a weight (its log probability per class). It's the same functional form as logistic regression; only the way the weights are found differs (counting vs optimising).</p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Double counting">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill bad">When the assumption bites</span>
+  <h2>Correlated features are counted twice</h2>
+  <p>Suppose a tokenizer produces "free", "FREE" and "free!" as separate features, and they always appear together. They're one piece of evidence, but naive Bayes treats them as three independent ones and multiplies the same likelihood ratio three times. The class it picks often stays the same; the confidence explodes.</p>
+  <div class="card lab" id="labDup">
+    <label>Copies of the same feature <input type="range" min="1" max="5" step="1" value="1" data-k="k"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 240" data-o="plot" role="img" aria-label="Predicted probability versus the feature value"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">accuracy (20,000 cases)</div><div class="v ok" data-o="acc">–</div></div>
+      <div class="stat"><div class="l">log loss (lower is better)</div><div class="v bad" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">share of predictions &gt; 95% sure</div><div class="v info" data-o="hi">–</div></div>
+      <div class="stat"><div class="l">…and how often those are right</div><div class="v bad" data-o="hia">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Simulated: one numeric feature, class 0 ~ N(0, 1), class 1 ~ N(1.5, 1), equal priors. Violet: the true probability. Red: naive Bayes after copying the feature k times. Same 0.5 crossing, so the same decisions; a steeper, overconfident curve.</p>
+  </div>
+  <p>Accuracy stays at <b>77.4%</b> for any number of copies, while log loss rises from 0.47 to 1.02 at 5 copies, and the predictions it is "more than 95% sure" about are right only 83.8% of the time. This is Domingos &amp; Pazzani's point: naive Bayes can be optimal under zero–one loss even when the independence assumption is clearly violated, because classification only needs the right class to come out on top, not the right probability <span class="src"><a href="https://doi.org/10.1023/A:1007413511361">Machine Learning 29</a></span>. scikit-learn: naive Bayes "is known to be a decent classifier, [but] it is known to be a bad estimator, so the probability outputs from predict_proba are not to be taken too seriously" <span class="src"><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">naive Bayes guide</a></span>.</p>
+  <div class="card ok"><h4>The fix when you need probabilities</h4><p class="small" style="margin:0">Calibrate the outputs on held-out data (<code>CalibratedClassifierCV</code> with isotonic or sigmoid calibration), or switch to logistic regression. Ranking metrics like ROC-AUC are unaffected by this kind of overconfidence; log loss and Brier score are not. See <a href="../probability-metrics/">Probability metrics</a>.</p></div>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · Gaussian NB">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill b">Numeric features</span>
+  <h2>Gaussian naive Bayes: one bell curve per feature per class</h2>
+  <div class="reader" data-reader='[
+    {"t":"P","c":"a","label":"one-feature likelihood","say":"For numeric feature i: how likely its value is under class y."},
+    {"t":"n","c":"info","label":"normaliser","say":"Makes the bell curve integrate to 1; it depends on the class variance."},
+    {"t":"e","c":"b","label":"squared distance from the class mean","say":"Measured in units of that class&#39;s standard deviation for this one feature. Means and variances are estimated by maximum likelihood."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-P}{P(x_i \mid y)} = \class{term t-n}{(2\pi\sigma_{y}^2)^{-1/2}}\ \exp\!\Bigl(\class{term t-e}{-(x_i - \mu_{y})^2 / (2\sigma_{y}^2)}\Bigr)"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn's GaussianNB likelihood (σ and μ per class and feature) <span class="src"><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">naive Bayes guide</a></span>.</p>
+  </div>
+  <p>Multiplying per-feature bell curves is a Gaussian with a <b>diagonal</b> covariance: its contours are ellipses aligned with the axes. It can't represent "these two features move together". Raise the correlation below and compare with a full-covariance Gaussian model (quadratic discriminant analysis), which can:</p>
+  <div class="card lab" id="labGauss">
+    <div class="seg"><button data-v="0" class="on">correlation 0</button><button data-v="0.5">0.5</button><button data-v="0.8">0.8</button><button data-v="0.95">0.95</button></div>
+    <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="Gaussian naive Bayes on correlated data"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">Gaussian NB test accuracy</div><div class="v b" data-o="nb">–</div></div>
+      <div class="stat"><div class="l">full-covariance Gaussian</div><div class="v st" data-o="fc">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Shading: Gaussian NB's decision regions. Ellipses: the 2σ contour each model fits for each class (orange dashed = NB, axis-aligned; violet = full covariance). Simulated: 200 training and 4,000 test points.</p>
+  </div>
+  <p>With uncorrelated features both models score 76.1%. At correlation 0.95, naive Bayes gets <b>95.0%</b> and the full model <b>99.9%</b>: the classes are separated along a diagonal direction that only the correlation reveals. Naive Bayes still does reasonably, which is the theme of this page: wrong assumption, decent decisions.</p>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · Variants">
+  <div class="chap">10 · Mechanism 5</div>
+  <span class="pill a">Pick the right likelihood</span>
+  <h2>The naive Bayes family</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Variant</th><th>Feature type</th><th>Notes</th></tr>
+    <tr><td><b>GaussianNB</b></td><td>Continuous</td><td>Per-class mean and variance per feature</td></tr>
+    <tr><td><b>MultinomialNB</b></td><td>Counts (word counts, TF-IDF also works in practice)</td><td>The classic text classifier; smoothing α</td></tr>
+    <tr><td><b>BernoulliNB</b></td><td>Binary present/absent</td><td>"explicitly penalizes the non-occurrence of a feature i that is an indicator for class y, where the multinomial variant would simply ignore a non-occurring feature"</td></tr>
+    <tr><td><b>ComplementNB</b></td><td>Counts, imbalanced classes</td><td>Uses statistics from the complement of each class; "regularly outperforms MNB (often by a considerable margin) on text classification tasks" (Rennie et al. 2003)</td></tr>
+    <tr><td><b>CategoricalNB</b></td><td>Categorical (ordinal-encoded)</td><td>Its own categorical distribution per feature</td></tr>
+  </table></div>
+  <p class="small">All from scikit-learn's naive Bayes guide <span class="src"><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">docs</a></span>. Every variant supports <code>partial_fit</code>, so it can learn from a stream in batches.</p>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · The whole recipe">
+  <div class="chap">11 · The whole recipe</div>
+  <h2>A text classifier in five lines</h2>
+  <ol>
+    <li><b>Vectorise</b>: word counts (CountVectorizer) or TF-IDF.</li>
+    <li><b>Choose the variant</b>: Multinomial or Complement for counts, Bernoulli for short texts as presence/absence, Gaussian for numeric features.</li>
+    <li><b>Tune α</b> by cross-validation (try 0.01–1).</li>
+    <li><b>Train</b>: one pass of counting, O(n × features).</li>
+    <li><b>Calibrate</b> if you'll threshold or average the probabilities.</li>
+  </ol>
+  <pre class="formula">from sklearn.pipeline import make_pipeline
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import ComplementNB
+clf = make_pipeline(CountVectorizer(), ComplementNB(alpha=0.3))
+clf.fit(train_texts, train_labels)</pre>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Evidence">
+  <div class="chap">12 · Evidence</div>
+  <h2>Why a wrong model works</h2>
+  <div class="card ok"><h4>Optimal decisions despite violated independence</h4><p class="small" style="margin:0">Domingos &amp; Pazzani (1997) showed that the naive Bayes classifier is optimal under zero–one loss for a far larger set of problems than those where independence holds, because it only needs the true class to get the highest score. Their experiments on UCI datasets found it competitive with decision-tree and rule learners even where features were clearly dependent <span class="src"><a href="https://doi.org/10.1023/A:1007413511361">Machine Learning 29</a></span>. They also note the corollary: the probability estimates themselves can be far off.</p></div>
+  <div class="card"><h4>Faster to its (higher) error than logistic regression</h4><p class="small" style="margin:0">Ng &amp; Jordan (2001): discriminative logistic regression has the lower asymptotic error, but generative naive Bayes approaches its own asymptote with far fewer examples; in their analysis, a number that grows only logarithmically with the number of features, versus linearly for logistic regression. On UCI datasets they observed the two regimes: naive Bayes ahead at small training sizes, logistic regression ahead later <span class="src"><a href="https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html">NIPS 2001</a></span>.</p></div>
+  <div class="card"><h4>This page's simulations</h4>
+    <div class="bars" data-max="1.1">
+      <div class="bar"><span>log loss, 1 copy of the feature</span><div class="track"><div class="fill" style="--v:0.467;background:var(--ok)"></div></div><span class="v">0.47</span></div>
+      <div class="bar"><span>log loss, 3 copies</span><div class="track"><div class="fill" style="--v:0.681;background:var(--b)"></div></div><span class="v">0.68</span></div>
+      <div class="bar"><span>log loss, 5 copies</span><div class="track"><div class="fill" style="--v:1.022;background:var(--bad)"></div></div><span class="v">1.02</span></div>
+    </div>
+    <p class="small">Accuracy was 77.4% in all three. Lower log loss is better. Illustrative simulation, chapter 8.</p></div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Caveats">
+  <div class="chap">13 · Takeaways and honest caveats</div>
+  <div class="two">
+    <div class="card ok"><h4>Strengths</h4><ul style="margin:0;padding-left:20px" class="small"><li>Trains in one counting pass; predicts instantly; tiny model</li><li>"require a small amount of training data" (scikit-learn)</li><li>Handles thousands of sparse features; streams with partial_fit</li><li>A strong, honest baseline for text</li></ul></div>
+    <div class="card bad"><h4>Weaknesses</h4><ul style="margin:0;padding-left:20px" class="small"><li>Overconfident, poorly calibrated probabilities</li><li>Double-counts correlated features</li><li>Can't model interactions ("free" is spammy unless next to "lunch")</li><li>Usually beaten by logistic regression or boosting once data is plentiful</li></ul></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · Key terms">
+  <div class="chap">14 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Prior / likelihood / posterior</b></td><td>P(y), P(x | y), P(y | x).</td></tr>
+    <tr><td><b>Conditional independence</b></td><td>Given the class, features carry no information about each other.</td></tr>
+    <tr><td><b>Laplace / Lidstone smoothing</b></td><td>Add α (= 1 / &lt; 1) pseudo-counts so nothing has probability 0.</td></tr>
+    <tr><td><b>Generative vs discriminative</b></td><td>Model P(x | y) and P(y) vs model P(y | x) directly.</td></tr>
+    <tr><td><b>Calibration</b></td><td>Whether predicted probabilities match observed frequencies.</td></tr>
+  </table></div>
+</section>
+
+<!-- 15 -->
+<section class="ch" id="c15" data-toc="15 · When to use it">
+  <div class="chap">15 · When to use it</div>
+  <div class="two">
+    <div class="card ok"><h4>Use naive Bayes when</h4><ul style="margin:0;padding-left:20px" class="small"><li>Text classification baseline: spam, topics, sentiment, routing tickets</li><li>Very little training data, or data arrives as a stream</li><li>You need training and prediction to be nearly free</li></ul></div>
+    <div class="card"><h4>Reach for something else when</h4><ul style="margin:0;padding-left:20px" class="small"><li>You need trustworthy probabilities (calibrate or use logistic regression)</li><li>Features interact strongly: trees, boosting</li><li>Plenty of data: logistic regression, boosting or fine-tuned transformers usually win on text</li></ul></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">Naive Bayes is a generative classifier: it uses Bayes' rule, P(y | x) ∝ P(y) P(x | y), and assumes the features are conditionally independent given the class, so P(x | y) factorises into a product of per-feature probabilities that you estimate by counting. You smooth the counts so unseen features don't give zero probability, and you compute in log space to avoid underflow. It's very fast and works well with little data, especially for text, but because the independence assumption is usually wrong, it double-counts correlated evidence and its probabilities are overconfident even when its classifications are good.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why is it called "naive"?</summary><p>Because of the conditional independence assumption: given the class, knowing one feature tells you nothing about another. It's almost never true (words co-occur), but it turns an impossible estimation problem into many easy ones.</p></details>
+  <details class="qa"><summary>What is Laplace smoothing and why do you need it?</summary><p>Adding α pseudo-counts to every feature count (α = 1 is Laplace). Without it, a word never seen with a class gives that class probability zero for any message containing it, no matter what else the message says.</p></details>
+  <details class="qa"><summary>Why does it classify well if the assumption is wrong?</summary><p>Classification needs only the correct class to have the highest score. Violated independence distorts the scores, often by pushing them to extremes in the same direction, so the argmax frequently survives (Domingos &amp; Pazzani 1997). The probabilities don't.</p></details>
+  <details class="qa"><summary>Naive Bayes vs logistic regression?</summary><p>A generative–discriminative pair: Multinomial NB is linear in the counts, like logistic regression. NB fits weights by counting, LR by optimising the conditional likelihood. NB converges faster with little data; LR reaches lower error with more data and gives better-calibrated probabilities (Ng &amp; Jordan 2001).</p></details>
+  <details class="qa"><summary>Multinomial vs Bernoulli NB?</summary><p>Multinomial models word counts and ignores absent words. Bernoulli models presence/absence and penalises the absence of an indicative word. Bernoulli can do better on short texts; Multinomial on longer documents.</p></details>
+  <details class="qa"><summary>How do you handle continuous features?</summary><p>Gaussian NB (per-class mean and variance per feature), or discretise into bins and use Categorical/Multinomial NB. Strongly non-Gaussian features may need a transform first.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Naive Bayes assumes features are independent." Conditionally independent <i>given the class</i>.</li>
+    <li>"Its predict_proba is a reliable risk score." It's typically overconfident; calibrate first.</li>
+    <li>"Smoothing is optional." Without it, one unseen word zeroes out a class.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/naive_bayes.html">Naive Bayes user guide</a> (assumption, decision rule, Gaussian/Multinomial/Bernoulli/Complement/Categorical variants, smoothing, "bad estimator" caveat).</li>
+    <li>P. Domingos &amp; M. Pazzani, "On the optimality of the simple Bayesian classifier under zero-one loss", <i>Machine Learning</i> 29, 103–130, 1997, <a href="https://doi.org/10.1023/A:1007413511361">doi:10.1023/A:1007413511361</a>.</li>
+    <li>A. Ng &amp; M. Jordan, "On discriminative vs. generative classifiers: a comparison of logistic regression and naive Bayes", <a href="https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html">NIPS 2001</a>.</li>
+    <li>J. Rennie, L. Shih, J. Teevan &amp; D. Karger, "Tackling the poor assumptions of naive Bayes text classifiers", ICML 2003 (Complement NB; cited by scikit-learn).</li>
+  </ol>
+  <p class="small">Word counts are illustrative; numeric data is simulated with fixed seeds; every probability on the page is computed live in your browser.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- shared classic-classifier code: seeded 2-D data, SVM (simplified SMO), k-NN ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+// two blobs (labels ±1), separation sep
+function blobs(seed, n, sep, sd = 1) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2 ? 1 : -1; X.push([c * sep / 2 + sd * g(), c * sep / 4 + sd * g()]); y.push(c); } return { X, y }; }
+// ring: inner class +1, outer class −1
+function ring(seed, n) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2 ? 1 : -1, rad = c > 0 ? 1.2 * Math.sqrt(r()) : 2.2 + 0.9 * r(), a = 2 * Math.PI * r(); X.push([rad * Math.cos(a) + 0.15 * g(), rad * Math.sin(a) + 0.15 * g()]); y.push(c); } return { X, y }; }
+// two moons with noise
+function moons(seed, n, noise = 0.25) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = Math.PI * r(); X.push(c ? [1 - Math.cos(a) + noise * g(), 0.5 - Math.sin(a) + noise * g()] : [Math.cos(a) + noise * g(), Math.sin(a) + noise * g()]); y.push(c ? 1 : -1); } return { X, y }; }
+const K = { linear: (a, b) => a[0] * b[0] + a[1] * b[1], rbf: g => (a, b) => Math.exp(-g * ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)) };
+// simplified SMO (CS229-style) — fine for < 200 points
+function svm(X, y, C, kern, opt = {}) { const n = X.length, tol = 1e-3, maxPasses = opt.passes || 8, r = rng(opt.seed || 1), a = new Float64Array(n); let b = 0;
+  const Kc = X.map(xi => X.map(xj => kern(xi, xj))), f = i => { let s = b; for (let j = 0; j < n; j++) if (a[j]) s += a[j] * y[j] * Kc[i][j]; return s; };
+  let passes = 0, it = 0; while (passes < maxPasses && it < (opt.maxIt || 4000)) { it++; let changed = 0;
+    for (let i = 0; i < n; i++) { const Ei = f(i) - y[i]; if ((y[i] * Ei < -tol && a[i] < C) || (y[i] * Ei > tol && a[i] > 0)) {
+      let j = Math.floor(r() * (n - 1)); if (j >= i) j++; const Ej = f(j) - y[j], ai = a[i], aj = a[j];
+      const L = y[i] !== y[j] ? Math.max(0, aj - ai) : Math.max(0, ai + aj - C), H = y[i] !== y[j] ? Math.min(C, C + aj - ai) : Math.min(C, ai + aj); if (L === H) continue;
+      const eta = 2 * Kc[i][j] - Kc[i][i] - Kc[j][j]; if (eta >= 0) continue;
+      let nj = aj - y[j] * (Ei - Ej) / eta; nj = Math.min(H, Math.max(L, nj)); if (Math.abs(nj - aj) < 1e-5) continue;
+      const ni = ai + y[i] * y[j] * (aj - nj);
+      const b1 = b - Ei - y[i] * (ni - ai) * Kc[i][i] - y[j] * (nj - aj) * Kc[i][j], b2 = b - Ej - y[i] * (ni - ai) * Kc[i][j] - y[j] * (nj - aj) * Kc[j][j];
+      a[i] = ni; a[j] = nj; b = ni > 0 && ni < C ? b1 : nj > 0 && nj < C ? b2 : (b1 + b2) / 2; changed++; } }
+    passes = changed ? 0 : passes + 1; }
+  const sv = [...a.keys()].filter(i => a[i] > 1e-6);
+  return { a, b, sv, dec: x => sv.reduce((s, i) => s + a[i] * y[i] * kern(X[i], x), b) }; }
+function knn(X, y, k, x, weighted = false) { const d = X.map((p, i) => [Math.hypot(p[0] - x[0], p[1] - x[1]), y[i]]).sort((u, v) => u[0] - v[0]).slice(0, k);
+  let s = 0; d.forEach(([dist, l]) => s += (weighted ? 1 / (dist + 1e-9) : 1) * l); return s; }
+// decision-region heatmap: f(x) → score; colour by sign, softer inside the |f|<band "street"
+function heat(F, f, x0, x1, y0, y1, step = 8, band = 0) { let s = ''; const dx = (x1 - x0) * step / (F.W - F.L - F.R), dy = (y1 - y0) * step / (F.H - F.T - F.B);
+  for (let px = F.L; px < F.W - F.R; px += step) for (let py = F.T; py < F.H - F.B; py += step) { const x = x0 + (px - F.L + step / 2) / (F.W - F.L - F.R) * (x1 - x0), y = y1 - (py - F.T + step / 2) / (F.H - F.T - F.B) * (y1 - y0), v = f([x, y]);
+    s += `<rect x="${px}" y="${py}" width="${Math.min(step, F.W - F.R - px) + .5}" height="${Math.min(step, F.H - F.B - py) + .5}" fill="var(--${v > 0 ? 'a' : 'b'})" opacity="${band && Math.abs(v) < band ? 0.07 : 0.17}"/>`; } return s; }
+const pts2 = (F, d, r = 4.5) => d.X.map((x, i) => `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="${r}" class="${d.y[i] > 0 ? 'sa' : 'sb'}"/>`).join('');
+const ring2 = (F, d, idx, r = 8) => idx.map(i => `<circle cx="${F.X(d.X[i][0]).toFixed(1)}" cy="${F.Y(d.X[i][1]).toFixed(1)}" r="${r}" fill="none" stroke="var(--ink)" stroke-width="1.6"/>`).join('');
+// line w·x + b = c inside the frame box
+function wline(F, w, b, c, box, attrs) { const [x0, x1, y0, y1] = box, P = []; if (Math.abs(w[1]) > 1e-9) [x0, x1].forEach(x => { const y = (c - b - w[0] * x) / w[1]; if (y >= y0 && y <= y1) P.push([x, y]); });
+  if (Math.abs(w[0]) > 1e-9) [y0, y1].forEach(y => { const x = (c - b - w[1] * y) / w[0]; if (x >= x0 && x <= x1) P.push([x, y]); });
+  if (P.length < 2) return ''; return `<line x1="${F.X(P[0][0])}" y1="${F.Y(P[0][1])}" x2="${F.X(P[1][0])}" y2="${F.Y(P[1][1])}" ${attrs}/>`; }
+const accOf = (f, d) => d.X.filter((x, i) => Math.sign(f(x)) === d.y[i]).length / d.X.length;
+
+// ---- Naive Bayes page ----
+const W = ['free', 'win', 'offer', 'meeting', 'project', 'lunch'], CS = [30, 20, 25, 2, 3, 0], CH = [4, 1, 5, 30, 35, 25], PS = 0.4;
+const NS = CS.reduce((a, b) => a + b), NH = CH.reduce((a, b) => a + b);
+const th = (c, n, i, al) => (c[i] + al) / (n + al * W.length);
+function nbPost(msg, al) { let ls = Math.log(PS), lh = Math.log(1 - PS); for (const w of msg) { const i = W.indexOf(w); ls += Math.log(th(CS, NS, i, al)); lh += Math.log(th(CH, NH, i, al)); }
+  if (ls === -Infinity && lh === -Infinity) return NaN; if (ls === -Infinity) return 0; if (lh === -Infinity) return 1; return 1 / (1 + Math.exp(lh - ls)); }
+
+// 6 · spam filter with smoothing
+(() => { const lab = document.getElementById('labSpam'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg'); let msg = ['free', 'win', 'lunch'];
+  const upd = () => { const al = +r.value; r.nextElementSibling.textContent = al.toFixed(1);
+    lab.querySelector('[data-o=msg]').textContent = msg.length ? `message: "${msg.join(' ')}"` : 'message: (empty: only the prior counts)';
+    const p = nbPost(msg, al); put(lab, 'p', isFinite(p) ? p.toFixed(3) : '—'); put(lab, 'v', !isFinite(p) ? '—' : p > 0.5 ? 'spam' : 'ham', p > 0.5 ? 'bad' : 'a');
+    const F = frame({ H: 220, x0: -6, x1: 6, y0: 0, y1: 1, xt: [-6, -4, -2, 0, 2, 4, 6], yt: [], xl: '← evidence for ham        log-likelihood ratio        evidence for spam →' });
+    const rows = [...new Set(msg)], bh = Math.min(28, (F.H - F.T - F.B - 8) / Math.max(1, rows.length + 1));
+    let s = F.s + `<line x1="${F.X(0)}" x2="${F.X(0)}" y1="${F.T}" y2="${F.H - F.B}" stroke="var(--dim)"/>`;
+    [['prior', Math.log(PS / (1 - PS))], ...rows.map(w => { const i = W.indexOf(w), n = msg.filter(x => x === w).length; return [n > 1 ? `${w} ×${n}` : w, n * (Math.log(th(CS, NS, i, al)) - Math.log(th(CH, NH, i, al)))]; })].forEach(([l, v], k) => {
+      const y = F.T + 6 + k * bh, inf = !isFinite(v), vv = inf ? (v > 0 ? 6 : -6) : Math.max(-6, Math.min(6, v)), x0 = Math.min(F.X(0), F.X(vv)), wd = Math.abs(F.X(vv) - F.X(0));
+      s += `<rect x="${x0}" y="${y}" width="${Math.max(1, wd)}" height="${bh - 6}" rx="3" fill="var(--${vv > 0 ? 'bad' : 'a'})" opacity="${inf ? 1 : .75}"/><text x="${vv > 0 ? F.X(0) - 6 : F.X(0) + 6}" y="${y + bh / 2}" text-anchor="${vv > 0 ? 'end' : 'start'}" class="d" font-size="12">${l}: ${inf ? (v > 0 ? '+∞' : '−∞ (count 0)') : fx(v, 2)}</text>`; });
+    svg.innerHTML = s; };
+  lab.querySelector('[data-role=words]').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { if (b.dataset.v === 'clear') msg = []; else if (msg.length < 8) msg.push(b.dataset.v); upd(); }));
+  lab.querySelector('[data-role=preset]').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { msg = b.dataset.v.split(' '); upd(); }));
+  r.addEventListener('input', upd); upd(); })();
+
+// 8 · double counting
+(() => { const lab = document.getElementById('labDup'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const g0 = rng(5), g = gaussR(g0), T = []; for (let i = 0; i < 20000; i++) { const c = i % 2; T.push([c * 1.5 + g(), c]); }
+  const llr = x => x * x / 2 - ((x - 1.5) ** 2) / 2, sg = z => 1 / (1 + Math.exp(-z));
+  const upd = () => { const k = +r.value; r.nextElementSibling.textContent = k; let ll = 0, ok = 0, hi = 0, hiok = 0;
+    for (const [x, c] of T) { const p = sg(k * llr(x)); ll -= Math.log(Math.max(1e-15, c ? p : 1 - p)); ok += (p > 0.5) === (c === 1); if (p > 0.95 || p < 0.05) { hi++; hiok += (p > 0.5) === (c === 1); } }
+    put(lab, 'acc', pct(ok / T.length)); put(lab, 'll', (ll / T.length).toFixed(3)); put(lab, 'hi', pct(hi / T.length)); put(lab, 'hia', hi ? pct(hiok / hi) : '—');
+    const F = frame({ H: 240, x0: -2.5, x1: 4, y0: 0, y1: 1, xt: [-2, -1, 0, 0.75, 1, 2, 3, 4], yt: [0, 0.5, 1], xl: 'feature value x', yl: 'P(class 1 | x)' });
+    svg.innerHTML = F.s + curve(F, x => sg(llr(x)), -2.5, 4, 'var(--st)', 3) + (k > 1 ? curve(F, x => sg(k * llr(x)), -2.5, 4, 'var(--bad)', 3, '7 4') : '')
+      + `<text x="${F.L + 8}" y="${F.T + 14}" class="tst" font-size="12">true probability</text>` + (k > 1 ? `<text x="${F.L + 8}" y="${F.T + 30}" class="tbad" font-size="12">naive Bayes with ${k} copies</text>` : ''); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 9 · Gaussian NB vs full covariance
+(() => { const lab = document.getElementById('labGauss'); if (!lab) return; const svg = lab.querySelector('svg'), box = [-3.5, 4.5, -4, 3], cache = {};
+  const gen = (seed, n, rho) => { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = g(), b = g(), x0 = a, x1 = rho * a + Math.sqrt(1 - rho * rho) * b; X.push(c ? [x0 + 1, x1 - 1] : [x0, x1]); y.push(c ? 1 : -1); } return { X, y }; };
+  const fit = d => [-1, 1].map(c => { const P = d.X.filter((_, i) => d.y[i] === c), m = [0, 1].map(j => P.reduce((s, x) => s + x[j], 0) / P.length), v = [0, 1].map(j => P.reduce((s, x) => s + (x[j] - m[j]) ** 2, 0) / P.length), cv = P.reduce((s, x) => s + (x[0] - m[0]) * (x[1] - m[1]), 0) / P.length; return { m, v, cv }; });
+  const lnb = (s, x) => [0, 1].reduce((a, j) => a - 0.5 * Math.log(2 * Math.PI * s.v[j]) - ((x[j] - s.m[j]) ** 2) / (2 * s.v[j]), 0);
+  const lfull = (s, x) => { const a = s.v[0], b = s.cv, d = s.v[1], det = a * d - b * b, u = x[0] - s.m[0], w = x[1] - s.m[1]; return -Math.log(2 * Math.PI) - 0.5 * Math.log(det) - 0.5 * (d * u * u - 2 * b * u * w + a * w * w) / det; };
+  const ell = (F, s, cv, color, dash) => { const a = s.v[0], b = cv, d = s.v[1], tr = (a + d) / 2, q = Math.sqrt(((a - d) / 2) ** 2 + b * b), l1 = tr + q, l2 = tr - q, th = Math.atan2(l1 - a, b || 1e-12); let p = '';
+    for (let k = 0; k <= 72; k++) { const t = 2 * Math.PI * k / 72, ex = 2 * Math.sqrt(l1) * Math.cos(t), ey = 2 * Math.sqrt(l2) * Math.sin(t), X = s.m[0] + ex * Math.cos(th) - ey * Math.sin(th), Y = s.m[1] + ex * Math.sin(th) + ey * Math.cos(th); p += (k ? 'L' : 'M') + F.X(X).toFixed(1) + ' ' + F.Y(Y).toFixed(1); }
+    return `<path d="${p}" fill="none" stroke="${color}" stroke-width="2" ${dash ? 'stroke-dasharray="6 4"' : ''}/>`; };
+  const upd = () => { const rho = +onv(lab).dataset.v, o = cache[rho] || (cache[rho] = (() => { const Tr = gen(1, 200, rho), Te = gen(2, 4000, rho), st = fit(Tr), ac = f => Te.X.filter((x, i) => (f(st[1], x) > f(st[0], x) ? 1 : -1) === Te.y[i]).length / Te.X.length; return { Tr, st, nb: ac(lnb), fc: ac(lfull) }; })());
+    const F = frame({ W: 560, H: 420, x0: box[0], x1: box[1], y0: box[2], y1: box[3], xt: [-3, -2, -1, 0, 1, 2, 3, 4], yt: [-4, -3, -2, -1, 0, 1, 2, 3], xl: 'feature 1', yl: 'feature 2' });
+    const sh = { X: o.Tr.X, y: o.Tr.y }, clip = `<clipPath id="cpG"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+    svg.innerHTML = F.s + clip + `<g clip-path="url(#cpG)">` + heat(F, x => lnb(o.st[1], x) - lnb(o.st[0], x), ...box, 10, 0) + pts2(F, sh, 3.5)
+      + o.st.map(s => ell(F, s, 0, 'var(--b)', true) + ell(F, s, s.cv, 'var(--st)', false)).join('') + '</g>';
+    put(lab, 'nb', pct(o.nb)); put(lab, 'fc', pct(o.fc)); };
+  segs(lab, upd); upd(); })();
+
+</script>
+</body>
+</html>
