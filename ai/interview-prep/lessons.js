@@ -18,6 +18,10 @@ window.LESSONS = {
       { slug: 'rag-at-scale', title: 'RAG at Scale: Slow and Wrong', sub: 'Your RAG worked on 100 docs, but broke at 10 million. Why?', level: 'Intermediate', mins: 8 },
     ] },
     { id: 'ml-fundamentals', title: 'ML Fundamentals', desc: 'The core ideas every AI/ML interview still asks about.', lessons: [
+      { slug: 'linear-regression', title: 'Linear Regression', sub: 'What does least squares actually minimise, and when does it break?', level: 'Beginner', mins: 30 },
+      { slug: 'regularized-linear-models', title: 'Regularized Linear Models', sub: 'Ridge vs Lasso vs Elastic Net: why does L1 zero out weights while L2 only shrinks them?', level: 'Intermediate', mins: 30 },
+      { slug: 'logistic-regression', title: 'Logistic Regression', sub: 'Why is a classifier called regression, and what does log-loss punish?', level: 'Beginner', mins: 30 },
+      { slug: 'softmax-regression', title: 'Softmax Regression', sub: 'How does logistic regression handle many classes, and why does every LLM end with it?', level: 'Intermediate', mins: 25 },
       { slug: 'random-forest', title: 'Random Forest', sub: 'How do many wobbly trees make one steady prediction?', level: 'Beginner', mins: 25 },
     ] },
   ],
