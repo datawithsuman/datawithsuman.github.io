@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-43-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-58-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 37 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 52 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Bayes' Rule Practice**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-bayes/) | 📐 Fundamentals › Maths for ML | You test positive for a rare disease. How worried should you be? |
-| [**Coin Flip Practice**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-coins/) | 📐 Fundamentals › Maths for ML | Why does HH take 6 flips on average but HT only 4? |
-| [**Classic Probability Puzzles**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-classic-puzzles/) | 📐 Fundamentals › Maths for ML | Monty Hall, birthdays, broken sticks and the secretary problem. |
+| [**SVD & Low-Rank Approximation**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/svd-and-low-rank/) | 📐 Fundamentals › Maths for ML | How LoRA and compression keep most of a matrix with a fraction of the numbers. |
+| [**Gradient Descent, Momentum & Adam**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/gradient-descent/) | 📐 Fundamentals › Maths for ML | Why does a slightly bigger learning rate make training explode? |
+| [**Entropy, Cross-Entropy & KL Divergence**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/entropy-cross-entropy-kl/) | 📐 Fundamentals › Maths for ML | Why every classifier is trained on cross-entropy, and what KL adds. |
 
 ---
 
@@ -58,9 +58,35 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 6 lessons</summary>
+<summary><b>Maths for ML</b> · 21 lessons</summary>
 
 <br>
+
+**Linear Algebra**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Vectors, Dot Products & Cosine Similarity](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/vectors-and-cosine-similarity/) | 🟢 Beginner | 20 min |
+| 2 | [Matrices as Transformations](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/matrices-as-transformations/) | 🟢 Beginner | 20 min |
+| 3 | [Eigenvalues & Eigenvectors](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/eigenvalues-and-eigenvectors/) | 🟡 Intermediate | 25 min |
+| 4 | [SVD & Low-Rank Approximation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/svd-and-low-rank/) | 🟡 Intermediate | 25 min |
+
+**Calculus & Optimisation**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Derivatives, Gradients & the Chain Rule](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/derivatives-and-chain-rule/) | 🟢 Beginner | 25 min |
+| 2 | [Gradient Descent, Momentum & Adam](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/gradient-descent/) | 🟡 Intermediate | 25 min |
+| 3 | [Convexity & Local Minima](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/convexity-and-local-minima/) | 🟡 Intermediate | 20 min |
+
+**Probability**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Probability Basics & Bayes' Rule](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/probability-and-bayes/) | 🟢 Beginner | 20 min |
+| 2 | [Common Probability Distributions](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/probability-distributions/) | 🟢 Beginner | 25 min |
+| 3 | [Expectation, Variance & Covariance](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/expectation-and-variance/) | 🟡 Intermediate | 20 min |
+| 4 | [Maximum Likelihood & MAP](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/mle-and-map/) | 🟡 Intermediate | 25 min |
 
 **Probability Practice**
 
@@ -72,6 +98,20 @@ Tap a track to see its lessons, in the order to learn them.
 | 4 | [Playing Card Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-cards/) | 🟡 Intermediate | 25 min |
 | 5 | [Balls & Urns Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-balls-and-urns/) | 🟢 Beginner | 20 min |
 | 6 | [Classic Probability Puzzles](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-classic-puzzles/) | 🟡 Intermediate | 25 min |
+
+**Statistics**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Confidence Intervals & the Bootstrap](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/confidence-intervals-and-bootstrap/) | 🟡 Intermediate | 25 min |
+| 2 | [Hypothesis Tests, p-values & A/B Testing](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/hypothesis-testing-and-ab-tests/) | 🟡 Intermediate | 30 min |
+| 3 | [Correlation vs Causation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/correlation-vs-causation/) | 🟡 Intermediate | 25 min |
+
+**Information Theory**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Entropy, Cross-Entropy & KL Divergence](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/entropy-cross-entropy-kl/) | 🟡 Intermediate | 25 min |
 
 </details>
 
