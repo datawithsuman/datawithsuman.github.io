@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <nav class="toc" aria-label="Contents"></nav>
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 2 of 6</div>
+  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 2 of 7</div>
   <h1>Hierarchical Clustering</h1>
   <div class="meta">Agglomerative clustering, dendrograms, single/complete/average/Ward linkage, cutting the tree · built from scikit-learn's clustering guide, SciPy's hierarchy docs and Ward (1963) · checked 28 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> start with every customer as its own cluster, then repeatedly <b>merge the two closest clusters</b> until one is left. Record each merge and its height (how far apart the merged clusters were) and you get a <b>dendrogram</b>, a tree of every possible grouping. You choose the number of clusters afterwards by <b>cutting</b> the tree, ideally where there's a big jump in merge height. What "closest clusters" means is the <b>linkage</b>: single (nearest pair) follows chains and odd shapes but snowballs; complete (farthest pair) and average are in between; <b>Ward</b> (smallest increase in variance) gives even, round clusters like k-means. The cost is O(n²) memory and up to O(n³) time.<br><span class="small">What you'll be able to do after this: read a dendrogram, choose a cut, explain the four linkages and when each fails, and compare hierarchical clustering with k-means.</span></div>

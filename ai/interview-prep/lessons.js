@@ -7,14 +7,18 @@ window.LESSONS = {
     { id: "fundamentals", title: "Fundamentals", desc: "The core ideas behind every model: classic ML, deep learning and LLMs.", tracks: [
       { id: "machine-learning", dir: "fundamentals/machine-learning", title: "Machine Learning", desc: "Classic ML that every AI/ML interview still asks about: models, metrics and core concepts.",
         groups: [
+          {id: "data-features",title: "Data & Features",desc: "Turning raw columns into model-ready features: encoding, missing values and scaling."},
           {id: "linear-models",title: "Linear Models",desc: "Weighted sums of features: regression, regularization and classification."},
           {id: "tree-models",title: "Tree-Based Models",desc: "Splits, ensembles and boosting: the workhorses of tabular data."},
           {id: "classic-classifiers",title: "Other Classic Classifiers",desc: "Margins, neighbours and probabilities."},
           {id: "unsupervised",title: "Unsupervised Learning",desc: "Finding structure without labels."},
+          {id: "time-series",title: "Time Series",desc: "Forecasting with trend and seasonality, honest backtests and the right error metrics."},
           {id: "metrics",title: "Evaluation Metrics",desc: "Which number to trust, and when: scenario by scenario."},
           {id: "core-concepts",title: "Core Concepts",desc: "The ideas behind every model: generalization, evaluation and validation."},
         ],
         lessons: [
+          {slug: "categorical-encoding",group: "data-features",title: "Encoding Categorical Features",sub: "400 pincodes and a 'late order' flag: how do you encode them without leaking the answer?",level: "Intermediate",mins: 30},
+          {slug: "missing-values-and-scaling",group: "data-features",title: "Missing Values & Feature Scaling",sub: "Slow kitchens hide their prep time. Does it matter how you fill the gap, and when must you scale?",level: "Beginner",mins: 30},
           {slug: "linear-regression",group: "linear-models",title: "Linear Regression",sub: "What does least squares actually minimise, and when does it break?",level: "Beginner",mins: 30},
           {slug: "regularized-linear-models",group: "linear-models",title: "Regularized Linear Models",sub: "Ridge vs Lasso vs Elastic Net: why does L1 zero out weights while L2 only shrinks them?",level: "Intermediate",mins: 30},
           {slug: "logistic-regression",group: "linear-models",title: "Logistic Regression",sub: "Why is a classifier called regression, and what does log-loss punish?",level: "Beginner",mins: 30},
@@ -34,6 +38,9 @@ window.LESSONS = {
           {slug: "bias-variance",group: "core-concepts",title: "The Bias–Variance Trade-off",sub: "Two models are equally wrong for opposite reasons. How do you tell which, and fix it?",level: "Beginner",mins: 30},
           {slug: "cross-validation-and-leakage",group: "core-concepts",title: "Cross-Validation & Data Leakage",sub: "How did a model score 86% on pure noise, and how do you make sure yours isn't?",level: "Intermediate",mins: 30},
           {slug: "class-imbalance",group: "core-concepts",title: "Class Imbalance",sub: "2% fraud: should you SMOTE it, weight it, or just move the threshold?",level: "Intermediate",mins: 30},
+          {slug: "hyperparameter-tuning",group: "core-concepts",title: "Hyperparameter Tuning",sub: "Grid, random or Bayesian: how do you spend 30 expensive training runs?",level: "Intermediate",mins: 30},
+          {slug: "anomaly-detection",group: "unsupervised",title: "Anomaly Detection",sub: "How do you find fraud when you have no examples of fraud?",level: "Intermediate",mins: 30},
+          {slug: "forecasting-basics",group: "time-series",title: "Time-Series Forecasting Basics",sub: "Can your forecasting model beat 'same as last week'? And are you measuring it honestly?",level: "Beginner",mins: 30},
           {slug: "classification-metrics",group: "metrics",title: "Classification Metrics",sub: "Your fraud model is 99.8% accurate. Why is your manager unhappy?",level: "Beginner",mins: 30},
           {slug: "roc-auc-vs-pr-auc",group: "metrics",title: "ROC-AUC vs PR-AUC",sub: "Why can a 0.98 ROC-AUC fraud model still be nearly useless?",level: "Intermediate",mins: 25},
           {slug: "thresholds-and-costs",group: "metrics",title: "Thresholds & Misclassification Costs",sub: "Why flag at 0.5, when a missed fraud costs 100 reviews?",level: "Intermediate",mins: 30},

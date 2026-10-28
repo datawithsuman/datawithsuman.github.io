@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <nav class="toc" aria-label="Contents"></nav>
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 1 of 6</div>
+  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 1 of 7</div>
   <h1>k-Means Clustering</h1>
   <div class="meta">Inertia, Lloyd's algorithm, k-means++, choosing k (elbow, silhouette), and where k-means fails · built from scikit-learn's clustering guide, Lloyd (1982) and Arthur &amp; Vassilvitskii (2007) · checked 28 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> k-means splits data into k groups by placing k <b>centroids</b> and repeating two steps: assign every point to its nearest centroid, then move each centroid to the mean of its points. Each step lowers the <b>inertia</b> (total squared distance to centroids), so it always converges, but only to a <b>local</b> minimum that depends on where you started, which is why <b>k-means++</b> seeding and several restarts matter. You must choose k yourself (elbow, silhouette, or business sense), and because it measures squared Euclidean distance to a centre, it assumes round, similar-sized clusters: elongated, curved or uneven groups break it.<br><span class="small">What you'll be able to do after this: run Lloyd's algorithm by hand, explain why it converges and why it gets stuck, pick k with two methods, and name the shapes k-means can't handle.</span></div>

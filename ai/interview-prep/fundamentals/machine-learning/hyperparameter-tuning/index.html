@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hyperparameter Tuning · @datawithsuman</title>
+<meta name="description" content="Grid vs random search, Bayesian optimisation with expected improvement, and successive halving, all live.">
+<meta property="og:title" content="Hyperparameter Tuning">
+<meta property="og:description" content="Grid vs random search, Bayesian optimisation with expected improvement, and successive halving, all live.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Core concepts 4 of 4</div>
+  <h1>Hyperparameter Tuning</h1>
+  <div class="meta">Grid vs random search, Bayesian optimisation with a Gaussian process and expected improvement, successive halving and Hyperband, and honest evaluation of tuned models · built from Bergstra &amp; Bengio (2012), Snoek, Larochelle &amp; Adams (2012), Li et al. (2018) and scikit-learn's model-selection guide · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> hyperparameters (learning rate, depth, regularisation strength…) are set before training, so you choose them by trying settings and scoring each with cross-validation. <b>Grid search</b> tries every combination, which wastes trials when only one or two parameters matter. <b>Random search</b> samples settings and, for the same budget, explores many more distinct values of the parameters that matter. <b>Bayesian optimisation</b> fits a cheap model of "score as a function of settings" and picks the next trial where improvement looks most likely. <b>Successive halving / Hyperband</b> start many settings on a small budget and only keep training the promising ones. Whatever you use, tune on validation folds and judge the winner on data the search never saw.<br><span class="small">What you'll be able to do after this: explain why random beats grid, describe the BO loop and expected improvement, explain successive halving's budget trick, and set up tuning without fooling yourself.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>trials / samples</span><span><i style="background:var(--b)"></i>surrogate model (GP)</span><span><i style="background:var(--ok)"></i>best found</span><span><i style="background:var(--st)"></i>acquisition (EI)</span><span><i style="background:var(--bad)"></i>wasted budget</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> tuning the food-delivery app's ETA model. Each trial means training the model with one setting and scoring it with 5-fold CV, which takes minutes, so the budget is a few dozen trials. The labs use stand-in validation-loss functions with a known optimum (simulated) so we can measure exactly how close each search method gets.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Expensive, noisy, black-box optimisation</h2>
+  <p>You want the settings that minimise validation loss, but you can't take a gradient of "train a model and cross-validate it" with respect to the learning rate; each evaluation costs real time; and the result is noisy (fold randomness). So tuning is a search problem with a tiny budget. The question is how to spend each trial.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Parameters, hyperparameters, search spaces</h2>
+  <ul>
+    <li><b>Parameters</b> are learned from data by training (weights, split thresholds). <b>Hyperparameters</b> are chosen before training (λ, max_depth, learning rate, number of trees, k in k-NN).</li>
+    <li><b>Search space:</b> a range for each hyperparameter, and a <b>scale</b>. Rates and regularisation strengths vary over orders of magnitude, so search them on a <b>log scale</b> (λ ∈ 10<sup>−4</sup>…10<sup>2</sup>), not linearly.</li>
+    <li><b>Objective:</b> the cross-validated metric you actually care about (scikit-learn's <code>scoring=</code>).</li>
+  </ul>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Try every combination on a grid"</h2>
+  <p>A 3 × 3 grid over two hyperparameters costs 9 trials, but tests each hyperparameter at only <b>3</b> distinct values. If only one of the two really matters (common: Bergstra &amp; Bengio found that "for most data sets only a few of the hyper-parameters really matter"), six of those nine trials are repeats of the same three values of the important one. Grids also grow exponentially: 5 values × 6 hyperparameters = 15,625 fits, before cross-validation multiplies that by 5.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>The search methods</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Method</th><th>Idea</th><th>Tools</th></tr>
+    <tr><td><b>Grid search</b></td><td>All combinations of chosen values</td><td><code>GridSearchCV</code></td></tr>
+    <tr><td><b>Random search</b></td><td>Sample settings from distributions</td><td><code>RandomizedSearchCV</code></td></tr>
+    <tr><td><b>Bayesian optimisation</b></td><td>Model score vs settings, pick the most promising next trial</td><td>Optuna (TPE), scikit-optimize, SMAC, Ax</td></tr>
+    <tr><td><b>Successive halving / Hyperband</b></td><td>Many settings on small budgets, keep the best, give them more</td><td><code>HalvingRandomSearchCV</code>, Optuna pruners, Ray Tune</td></tr>
+  </table></div>
+  <p class="small">scikit-learn lists two advantages of random search: "A budget can be chosen independent of the number of parameters and possible values" and "Adding parameters that do not influence the performance does not decrease efficiency" <span class="src"><a href="https://scikit-learn.org/stable/modules/grid_search.html">model-selection guide</a></span>.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · Grid vs random">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Spend each trial on new information</h2>
+  <div class="card lab" id="labGR">
+    <div class="seg"><button data-v="9" class="on">9 trials</button><button data-v="16">16 trials</button><button data-v="25">25 trials</button></div>
+    <div class="two">
+      <div class="stage plot"><svg viewBox="0 0 380 380" data-o="grid" role="img" aria-label="Grid search trials"></svg></div>
+      <div class="stage plot"><svg viewBox="0 0 380 380" data-o="rand" role="img" aria-label="Random search trials"></svg></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">grid: distinct values of the important setting</div><div class="v bad" data-o="gd">–</div></div>
+      <div class="stat"><div class="l">random: distinct values</div><div class="v ok" data-o="rd">–</div></div>
+      <div class="stat"><div class="l">average best loss over 2,000 problems: grid vs random</div><div class="v info" data-o="avg">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Background shading: validation loss, which depends only on the horizontal setting (the vertical one is irrelevant). The tick marks on the bottom axis show which values of the important setting each method actually tested.</p>
+  </div>
+  <p>Over 2,000 simulated problems with a random optimum, the average best loss with 9 trials was 0.075 for the grid and <b>0.049</b> for random search; with 25 trials, 0.027 vs <b>0.006</b>. Bergstra &amp; Bengio (2012) showed the same on real models: random search found models "as good or better within a small fraction of the computation time", because the score functions have "low effective dimensionality" <span class="src"><a href="https://jmlr.org/papers/v13/bergstra12a.html">JMLR 13</a></span>.</p>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Bayesian optimisation">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Bayesian optimisation</span>
+  <h2>Model the score, then choose where to look</h2>
+  <p>Random search ignores what earlier trials revealed. Bayesian optimisation (BO) fits a <b>surrogate model</b> to the trials so far, usually a Gaussian process (GP) that gives, for every untried setting, a predicted loss and an uncertainty. An <b>acquisition function</b> then trades off "predicted to be good" (exploit) against "we know little here" (explore). The classic choice is expected improvement:</p>
+  <div class="reader" data-reader='[
+    {"t":"ei","c":"st","label":"expected improvement","say":"How much better than the current best we expect setting x to be, averaging over the surrogate’s uncertainty. Run the next trial where this is largest."},
+    {"t":"gap","c":"ok","label":"predicted gain","say":"Best loss so far minus the predicted loss at x. Large when the surrogate thinks x is good."},
+    {"t":"Phi","c":"info","label":"chance it’s better","say":"Φ(z): probability that x beats the current best under the surrogate."},
+    {"t":"sig","c":"b","label":"uncertainty bonus","say":"σ(x) φ(z): large where the surrogate is unsure, which pulls trials into unexplored regions."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-ei}{\mathrm{EI}(x)} = \class{term t-gap}{(y^{*} - \mu(x))}\,\class{term t-Phi}{\Phi(z)} + \class{term t-sig}{\sigma(x)\,\varphi(z)}, \qquad z = (y^{*} - \mu(x))/\sigma(x)"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Expected improvement for minimisation with a GP surrogate (μ mean, σ standard deviation, y* best observed), as used by Snoek, Larochelle &amp; Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012 <span class="src"><a href="https://arxiv.org/abs/1206.2944">arXiv:1206.2944</a></span>.</p>
+  </div>
+  <div class="card lab" id="labBO">
+    <label>Trials so far <input type="range" min="2" max="12" step="1" value="3" data-k="t"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 330" data-o="plot" role="img" aria-label="Gaussian process surrogate and expected improvement"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">best loss found by BO</div><div class="v ok" data-o="bo">–</div></div>
+      <div class="stat"><div class="l">random search with as many trials</div><div class="v b" data-o="rs">–</div></div>
+      <div class="stat"><div class="l">true best possible</div><div class="v info" data-o="opt">0.220</div></div>
+    </div>
+    <p class="small" style="margin:0">Dashed grey: the true validation loss over log₁₀ λ (unknown to the optimiser; it has a second, worse dip on the left). Orange: GP mean ± 2σ. Violet (bottom): expected improvement; the next trial goes at its peak.</p>
+  </div>
+  <p>Averaged over 100 runs from random starts, BO's distance from the best possible loss shrank to 0.0005 by the 8th trial and to zero by the 10th; random search was still 0.014 away after 15 trials. On cheap or high-dimensional problems the advantage shrinks, and BO's own overhead grows with the number of trials (a GP is cubic in trials). Popular tools often use a tree-structured Parzen estimator (TPE, Bergstra et al. 2011, the default in Optuna) instead of a GP; same loop, different surrogate.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Successive halving">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill ok">Early stopping of bad trials</span>
+  <h2>Successive halving and Hyperband</h2>
+  <p>Many trials are hopeless after a few epochs. Successive halving starts many settings with a small budget, keeps the best fraction, and multiplies their budget: scikit-learn calls it "a tournament among candidate parameter combinations", where in each round "the number of resources per candidate is multiplied by <code>factor</code> and the number of candidates is divided by the same factor" <span class="src"><a href="https://scikit-learn.org/stable/modules/grid_search.html#successive-halving-user-guide">docs</a></span>.</p>
+  <div class="card lab" id="labSH">
+    <div class="seg"><button data-v="2" class="on">problem A</button><button data-v="4">problem B</button><button data-v="1">problem C</button></div>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Learning curves pruned by successive halving"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">epochs used (vs 6,561 to train all 81 fully)</div><div class="v info" data-o="used">–</div></div>
+      <div class="stat"><div class="l">final loss of SH's pick</div><div class="v ok" data-o="sh">–</div></div>
+      <div class="stat"><div class="l">random search, same budget (5 full runs)</div><div class="v b" data-o="rs">–</div></div>
+      <div class="stat"><div class="l">best of all 81</div><div class="v info" data-o="best">–</div></div>
+    </div>
+    <p class="small" style="margin:0">81 settings; rounds of 81 × 1 epoch, 27 × 3, 9 × 9, 3 × 27, 1 × 81 (factor 3). Grey: curves of settings that were dropped; green: survivors.</p>
+  </div>
+  <p>Averaged over 500 simulated problems, successive halving used 405 epochs (6% of training all 81 to completion) and picked a setting with final loss 0.217, against 0.205 for the true best; random search with the same 405 epochs (5 full runs) picked 0.268. On any single problem either can win (in problem C above, one of random search's five full runs happened to be the best setting); the average is what matters. The risk: a slow starter (low learning rate, strong regularisation) gets cut early. <b>Hyperband</b> (Li et al.) hedges by running several successive-halving "brackets" with different aggressiveness, and reported "over an order-of-magnitude speedup" over Bayesian optimisation on deep-learning and kernel problems <span class="src"><a href="https://arxiv.org/abs/1603.06560">JMLR 18, arXiv:1603.06560</a></span>.</p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Honest evaluation">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill bad">Don't fool yourself</span>
+  <h2>The tuned score is optimistic</h2>
+  <p>The best CV score among many trials is biased upward: some of its lead is luck on those folds (the <a href="../cross-validation-and-leakage/">Cross-Validation lesson</a> shows 1,000 coin-flip models reaching 70% on a validation set). scikit-learn: "it is recommended to split the data into a development set (to be fed to the GridSearchCV instance) and an evaluation set to compute performance metrics" <span class="src"><a href="https://scikit-learn.org/stable/modules/grid_search.html">docs</a></span>. With small data, use nested CV. And watch the leaderboard of trials: if the top 20 settings score within noise of each other, pick the simplest or most regularised one.</p>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · The whole recipe">
+  <div class="chap">9 · The whole recipe</div>
+  <ol>
+    <li><b>Start from good defaults</b> and tune only the hyperparameters that matter most (learning rate, regularisation, capacity).</li>
+    <li><b>Define ranges on the right scale</b> (log for rates and penalties).</li>
+    <li><b>Random search</b> for a quick, robust baseline (30–60 trials); <b>Bayesian optimisation</b> when trials are expensive and dimensions few; <b>successive halving / pruning</b> for iterative learners (boosting rounds, epochs).</li>
+    <li><b>Score with CV</b> using the metric you care about; use early stopping inside each trial for boosting and neural nets.</li>
+    <li><b>Evaluate the final pick once</b> on held-out data.</li>
+  </ol>
+  <pre class="formula">from scipy.stats import loguniform, randint
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import HistGradientBoostingRegressor
+space = {"learning_rate": loguniform(1e-3, 0.3), "max_leaf_nodes": randint(8, 128),
+         "l2_regularization": loguniform(1e-4, 10), "min_samples_leaf": randint(5, 100)}
+search = RandomizedSearchCV(HistGradientBoostingRegressor(early_stopping=True), space,
+                            n_iter=50, cv=5, scoring="neg_mean_absolute_error", random_state=0)
+search.fit(X_dev, y_dev); print(search.best_params_)
+# Bayesian: optuna.create_study(direction="minimize").optimize(objective, n_trials=50)</pre>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · Evidence">
+  <div class="chap">10 · Evidence</div>
+  <div class="card"><h4>Kernel classifier on CIFAR-10 (Li et al., Hyperband paper)</h4><p class="small" style="margin:0">In the time Bayesian optimisers evaluated about 3 configurations, Hyperband's first bracket evaluated over 250 and found a good one in about 20 minutes; the paper reports it "over 30× faster than Bayesian optimization methods and 70× faster than random search" on this task, and around 6× faster on a random-features task <span class="src"><a href="https://arxiv.org/pdf/1603.06560#page=18">pp. 18–19</a></span>. The authors also note their most aggressive bracket alone often beat full Hyperband.</p></div>
+  <div class="card"><h4>This page's simulations</h4>
+    <div class="bars" data-max="0.08">
+      <div class="bar"><span>grid, 9 trials (avg best loss)</span><div class="track"><div class="fill" style="--v:0.0752;background:var(--bad)"></div></div><span class="v">0.075</span></div>
+      <div class="bar"><span>random, 9 trials</span><div class="track"><div class="fill" style="--v:0.0487;background:var(--b)"></div></div><span class="v">0.049</span></div>
+      <div class="bar"><span>grid, 25 trials</span><div class="track"><div class="fill" style="--v:0.0271;background:var(--bad)"></div></div><span class="v">0.027</span></div>
+      <div class="bar"><span>random, 25 trials</span><div class="track"><div class="fill" style="--v:0.0063;background:var(--ok)"></div></div><span class="v">0.006</span></div>
+    </div>
+    <p class="small">Lower is better; one important and one irrelevant hyperparameter. Illustrative.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Caveats">
+  <div class="chap">11 · Takeaways and honest caveats</div>
+  <ul>
+    <li>Tuning rarely beats better data or features; gains over sensible defaults are often small for gradient boosting.</li>
+    <li>Random search's advantage relies on low effective dimensionality; with one hyperparameter, a fine grid is fine.</li>
+    <li>BO needs sensible priors/ranges and struggles with many dimensions, categorical choices and parallel trials (TPE handles these better than GPs).</li>
+    <li>Early-stopping methods assume early performance predicts final performance; resource-dependent hyperparameters (e.g. learning rate schedules) break that.</li>
+  </ul>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Key terms">
+  <div class="chap">12 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Hyperparameter</b></td><td>Setting chosen before training.</td></tr>
+    <tr><td><b>Surrogate model</b></td><td>Cheap model of score vs settings (GP, TPE, random forest).</td></tr>
+    <tr><td><b>Acquisition function</b></td><td>Rule for choosing the next trial (EI, UCB).</td></tr>
+    <tr><td><b>Successive halving</b></td><td>Keep the best 1/η, multiply their budget by η, repeat.</td></tr>
+    <tr><td><b>Hyperband</b></td><td>Several successive-halving brackets with different starting budgets.</td></tr>
+    <tr><td><b>Pruning</b></td><td>Stopping unpromising trials early (Optuna's term).</td></tr>
+  </table></div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Scenarios">
+  <div class="chap">13 · Scenarios</div>
+  <div class="two">
+    <div class="card"><h4>"Each training run takes 2 hours, 4 hyperparameters"</h4><p class="small" style="margin:0">Bayesian optimisation (TPE/GP) with ~30 trials, plus pruning on intermediate validation loss.</p></div>
+    <div class="card"><h4>"LightGBM, 1M rows, quick runs"</h4><p class="small" style="margin:0">Random search (50–100 trials) with early stopping on boosting rounds; tune on a subsample first, confirm on full data.</p></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">Hyperparameters are chosen by searching settings and scoring each with cross-validation. Grid search is exhaustive but wasteful, because usually only a few hyperparameters matter and a grid tests each at few distinct values; random search with the same budget explores many more values and is a strong default. Bayesian optimisation fits a surrogate model, such as a Gaussian process or TPE, to past trials and uses an acquisition function like expected improvement to pick the next one, which helps when trials are expensive. Successive halving and Hyperband start many configurations cheaply and only continue the promising ones. I search rates and penalties on a log scale, use early stopping inside trials, and evaluate the chosen model on data the search never touched.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why is random search better than grid search?</summary><p>With low effective dimensionality, a grid tests the important hyperparameter at only √n (for 2-D) distinct values; random search tests n. It also lets you set the budget independently of dimension (Bergstra &amp; Bengio 2012).</p></details>
+  <details class="qa"><summary>How does Bayesian optimisation work?</summary><p>Fit a surrogate (GP/TPE) to (settings, score) pairs; compute an acquisition function (expected improvement, UCB) that balances predicted quality and uncertainty; evaluate the maximiser; refit; repeat.</p></details>
+  <details class="qa"><summary>What is Hyperband?</summary><p>Successive halving run in several brackets with different trade-offs between number of configurations and budget per configuration, so you don't have to guess how aggressive to be.</p></details>
+  <details class="qa"><summary>How do you avoid overfitting during tuning?</summary><p>Score with CV on a development set, evaluate the final model once on a held-out set (or nested CV), prefer simpler settings when scores tie, and limit the number of trials relative to data size.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"I tune on the test set." Then the test score is no longer honest.</li>
+    <li>"Grid search is the most thorough, so it's best." Not per trial spent.</li>
+    <li>"Search the learning rate from 0.001 to 0.3 in steps of 0.01." Use a log scale.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>J. Bergstra &amp; Y. Bengio, "Random search for hyper-parameter optimization", <i>JMLR</i> 13, 2012, <a href="https://jmlr.org/papers/v13/bergstra12a.html">jmlr.org</a>.</li>
+    <li>J. Snoek, H. Larochelle &amp; R. Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012, <a href="https://arxiv.org/abs/1206.2944">arXiv:1206.2944</a>.</li>
+    <li>L. Li, K. Jamieson, G. DeSalvo, A. Rostamizadeh &amp; A. Talwalkar, "Hyperband: a novel bandit-based approach to hyperparameter optimization", <i>JMLR</i> 18, 2018, <a href="https://arxiv.org/abs/1603.06560">arXiv:1603.06560</a>.</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/grid_search.html">Tuning the hyper-parameters of an estimator</a> (random search, successive halving, development/evaluation split).</li>
+    <li>J. Bergstra, R. Bardenet, Y. Bengio &amp; B. Kégl, "Algorithms for hyper-parameter optimization", NeurIPS 2011 (TPE; background); T. Akiba et al., "Optuna", KDD 2019 (background).</li>
+  </ol>
+  <p class="small">Loss functions are simulated with known optima; every search runs live in your browser.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- core concepts: seeded data, polynomial / ridge fits, logistic regression, helpers ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+function solveLin(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+// polynomial ridge on x scaled to [-1,1] (Legendre-free, plain powers; lam on all but intercept)
+const feats = (x, d) => { const u = x / 5 - 1, f = [1]; for (let k = 1; k <= d; k++) f.push(f[k - 1] * u); return f; };
+function polyFit(X, Y, d, lam = 1e-9) { const F = X.map(x => feats(x, d)), p = d + 1, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  F.forEach((f, i) => { for (let a = 0; a < p; a++) { b[a] += f[a] * Y[i]; for (let c = 0; c < p; c++) A[a][c] += f[a] * f[c]; } }); for (let a = 1; a < p; a++) A[a][a] += lam;
+  const w = solveLin(A, b); return x => feats(x, d).reduce((s, v, k) => s + v * w[k], 0); }
+// bias–variance by simulation: S training sets of size n, grid of test x
+function bvDecomp(d, n, lam = 1e-9, S = 60, seed = 100) { const xs = Array.from({ length: 41 }, (_, i) => 0.5 + 9 * i / 40), P = [];
+  for (let s = 0; s < S; s++) { const D = deliveries(seed + s, n), f = polyFit(D.X, D.Y, d, lam); P.push(xs.map(f)); }
+  let b2 = 0, v = 0; xs.forEach((x, j) => { const m = P.reduce((a, p) => a + p[j], 0) / S; b2 += (m - truth(x)) ** 2; v += P.reduce((a, p) => a + (p[j] - m) ** 2, 0) / S; });
+  return { bias2: b2 / xs.length, variance: v / xs.length, noise: SIG * SIG, xs, P }; }
+// logistic regression (Newton/IRLS) with sample weights and L2
+function logreg(X, y, w = null, lam = 1e-4, it = 30) { const p = X[0].length + 1; let b = Array(p).fill(0); const W = w || y.map(() => 1);
+  for (let t = 0; t < it; t++) { const H = Array.from({ length: p }, () => Array(p).fill(0)), g = Array(p).fill(0);
+    X.forEach((x, i) => { const f = [1, ...x], z = f.reduce((s, v, k) => s + v * b[k], 0), q = 1 / (1 + Math.exp(-z)), r = W[i] * (q - y[i]), h = W[i] * q * (1 - q); for (let a = 0; a < p; a++) { g[a] += r * f[a]; for (let c = 0; c < p; c++) H[a][c] += h * f[a] * f[c]; } });
+    for (let a = 1; a < p; a++) { g[a] += lam * b[a]; H[a][a] += lam; } const st = solveLin(H, g); b = b.map((v, k) => v - st[k]); if (st.reduce((s, v) => s + v * v, 0) < 1e-14) break; }
+  return { b, prob: x => 1 / (1 + Math.exp(-[1, ...x].reduce((s, v, k) => s + v * b[k], 0))) }; }
+function auc(s, y) { const P = [], N = []; s.forEach((v, i) => (y[i] ? P : N).push(v)); let a = 0; const Ns = N.slice().sort((u, v) => u - v);
+  P.forEach(p => { let lo = 0, hi = Ns.length; while (lo < hi) { const m = (lo + hi) >> 1; if (Ns[m] < p) lo = m + 1; else hi = m; } let eq = 0, k = lo; while (k < Ns.length && Ns[k] === p) { eq++; k++; } a += lo + eq / 2; }); return a / (P.length * N.length); }
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+
+// ---- hyperparameter tuning page ----
+// 5 · grid vs random
+(() => { const lab = document.getElementById('labGR'); if (!lab) return; const r = rng(1), loss = (a, ast) => Math.min(1, 8 * (a - ast) ** 2), avg = {};
+  for (const B of [9, 16, 25]) { const k = Math.round(Math.sqrt(B)); let gG = 0, gR = 0; const T = 2000; for (let t = 0; t < T; t++) { const ast = r(); let bg = 1, br = 1; for (let i = 0; i < k; i++) for (let j = 0; j < k; j++) bg = Math.min(bg, loss((i + 0.5) / k, ast)); for (let i = 0; i < B; i++) br = Math.min(br, loss(r(), ast)); gG += bg; gR += br; } avg[B] = [gG / T, gR / T]; }
+  const ast = 0.63, draw = (svg, P, col) => { const F = frame({ W: 380, H: 380, x0: 0, x1: 1, y0: 0, y1: 1, xt: [0, 0.5, 1], yt: [0, 0.5, 1], xl: 'important setting', yl: 'irrelevant setting' }); let s = F.s;
+    for (let i = 0; i < 40; i++) { const a = (i + 0.5) / 40; s += `<rect x="${F.X(i / 40)}" y="${F.T}" width="${F.X(1 / 40) - F.X(0) + 0.5}" height="${F.H - F.B - F.T}" fill="var(--ok)" opacity="${(0.28 * (1 - loss(a, ast))).toFixed(3)}"/>`; }
+    const best = P.reduce((b, p) => loss(p[0], ast) < loss(b[0], ast) ? p : b, P[0]);
+    s += P.map(p => `<circle cx="${F.X(p[0])}" cy="${F.Y(p[1])}" r="6" fill="${col}"/><line x1="${F.X(p[0])}" x2="${F.X(p[0])}" y1="${F.H - F.B}" y2="${F.H - F.B - 10}" stroke="${col}" stroke-width="2"/>`).join('') + `<circle cx="${F.X(best[0])}" cy="${F.Y(best[1])}" r="10" fill="none" stroke="var(--ink)" stroke-width="2"/>`;
+    svg.innerHTML = s; };
+  const upd = () => { const B = +onv(lab).dataset.v, k = Math.round(Math.sqrt(B)), rr = rng(42), G = [], R = []; for (let i = 0; i < k; i++) for (let j = 0; j < k; j++) G.push([(i + 0.5) / k, (j + 0.5) / k]); for (let i = 0; i < B; i++) R.push([rr(), rr()]);
+    draw(lab.querySelector('[data-o=grid]'), G, 'var(--bad)'); draw(lab.querySelector('[data-o=rand]'), R, 'var(--a)');
+    put(lab, 'gd', k); put(lab, 'rd', B); put(lab, 'avg', `${avg[B][0].toFixed(3)} vs ${avg[B][1].toFixed(3)}`); };
+  segs(lab, upd); upd(); })();
+
+// 6 · Bayesian optimisation with a GP + EI
+const fBO = x => 0.30 + 0.08 * Math.sin(2.2 * x) + 0.025 * (x + 0.6) ** 2;
+function gpPost(X, Y, q, ls = 0.7, sn = 1e-4) { const n = X.length, K = X.map(a => X.map(b => Math.exp(-((a - b) ** 2) / (2 * ls * ls)))), my = Y.reduce((a, b) => a + b, 0) / n, sv = Math.max(1e-6, Y.reduce((a, b) => a + (b - my) ** 2, 0) / n) || 1e-4; for (let i = 0; i < n; i++) K[i][i] += sn; const al = solveLin(K.map(r => [...r]), Y.map(y => y - my));
+  return q.map(x => { const k = X.map(a => Math.exp(-((a - x) ** 2) / (2 * ls * ls))), mu = my + k.reduce((s, v, i) => s + v * al[i], 0), v = solveLin(K.map(r => [...r]), k), vr = Math.max(1e-12, 1 - k.reduce((s, vv, i) => s + vv * v[i], 0)); return [mu, Math.sqrt(vr * Math.max(sv, 1e-4))]; }); }
+const PhiN = z => 0.5 * (1 + Math.tanh(0.7978845608 * (z + 0.044715 * z * z * z))), phiN = z => Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI);
+const GRID = Array.from({ length: 121 }, (_, i) => -4 + 6 * i / 120);
+(() => { const lab = document.getElementById('labBO'); if (!lab) return; const rg = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const r = rng(1), X = [-4 + 6 * r(), -4 + 6 * r()], Y = X.map(fBO), states = [];
+  for (let t = 2; t <= 12; t++) { const P = gpPost(X, Y, GRID), yb = Math.min(...Y), EI = P.map(([m, s]) => { const z = (yb - m) / s; return (yb - m) * PhiN(z) + s * phiN(z); }); const bi = EI.indexOf(Math.max(...EI)); states[t] = { X: [...X], Y: [...Y], P, EI, next: GRID[bi] }; X.push(GRID[bi]); Y.push(fBO(GRID[bi])); }
+  const rr = rng(501), RY = Array.from({ length: 12 }, () => fBO(-4 + 6 * rr()));
+  const upd = () => { const t = +rg.value; rg.nextElementSibling.textContent = t; const S = states[t], F = frame({ H: 330, x0: -4, x1: 2, y0: 0.1, y1: 0.65, xt: [-4, -3, -2, -1, 0, 1, 2], yt: [0.2, 0.3, 0.4, 0.5, 0.6], xl: 'log₁₀ λ', yl: 'validation loss' });
+    const up = S.P.map(([m, s], i) => [GRID[i], m + 2 * s]), dn = S.P.map(([m, s], i) => [GRID[i], m - 2 * s]).reverse(), em = Math.max(...S.EI) || 1;
+    svg.innerHTML = F.s + clipR(F, 'cpBO') + '<g clip-path="url(#cpBO)">' + `<path d="${[...up, ...dn].map((p, i) => (i ? 'L' : 'M') + F.X(p[0]).toFixed(1) + ' ' + F.Y(p[1]).toFixed(1)).join('')}Z" fill="var(--b)" opacity=".15"/>`
+      + curve(F, fBO, -4, 2, 'var(--dim)', 2, '6 4') + `<path d="${S.P.map(([m], i) => (i ? 'L' : 'M') + F.X(GRID[i]).toFixed(1) + ' ' + F.Y(m).toFixed(1)).join('')}" fill="none" stroke="var(--b)" stroke-width="2.5"/>`
+      + `<path d="${S.EI.map((e, i) => (i ? 'L' : 'M') + F.X(GRID[i]).toFixed(1) + ' ' + (F.H - F.B - 60 * e / em).toFixed(1)).join('')}" fill="none" stroke="var(--st)" stroke-width="2"/>` + '</g>'
+      + S.X.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(S.Y[i])}" r="5.5" fill="var(--a)" stroke="var(--ink)"/>`).join('') + `<line x1="${F.X(S.next)}" x2="${F.X(S.next)}" y1="${F.T}" y2="${F.H - F.B}" stroke="var(--st)" stroke-dasharray="4 4"/><text x="${F.X(S.next) + 5}" y="${F.T + 14}" class="tst" font-size="12">next trial</text>`;
+    put(lab, 'bo', Math.min(...S.Y).toFixed(3)); put(lab, 'rs', Math.min(...RY.slice(0, t)).toFixed(3)); };
+  rg.addEventListener('input', upd); upd(); })();
+
+// 7 · successive halving
+(() => { const lab = document.getElementById('labSH'); if (!lab) return; const svg = lab.querySelector('svg');
+  const sim = seed => { const r = rng(seed), g = gaussR(r), fin = Array.from({ length: 81 }, () => 0.2 + 0.4 * r()), L = (i, res) => fin[i] + (0.9 - fin[i]) * Math.pow(res, -0.6) + 0.01 * g();
+    let C = [...fin.keys()], res = 1, used = 0; const rounds = []; while (C.length > 1) { const sc = C.map(i => [i, L(i, res)]); used += C.length * res; rounds.push({ res, C: [...C] }); sc.sort((a, b) => a[1] - b[1]); C = sc.slice(0, Math.max(1, Math.floor(C.length / 3))).map(x => x[0]); res *= 3; } used += 81; rounds.push({ res: 81, C: [...C] });
+    return { fin, rounds, pick: C[0], used, rs: Math.min(...fin.slice(0, Math.floor(used / 81))), best: Math.min(...fin) }; };
+  const cache = {}, upd = () => { const s = +onv(lab).dataset.v, o = cache[s] || (cache[s] = sim(s)), F = frame({ H: 300, x0: 1, x1: 81, y0: 0.15, y1: 0.95, xt: [], yt: [0.2, 0.4, 0.6, 0.8], xl: 'epochs (log scale)', yl: 'validation loss' });
+    const lx = e => F.L + Math.log(e) / Math.log(81) * (F.W - F.L - F.R), last = {}; o.rounds.forEach(rd => rd.C.forEach(i => last[i] = rd.res));
+    const cur = (i, upTo) => { let d = ''; for (let k = 0; k <= 40; k++) { const e = Math.exp(Math.log(upTo) * k / 40); d += (k ? 'L' : 'M') + lx(e).toFixed(1) + ' ' + F.Y(o.fin[i] + (0.9 - o.fin[i]) * Math.pow(e, -0.6)).toFixed(1); } return d; };
+    svg.innerHTML = F.s + o.fin.map((_, i) => `<path d="${cur(i, last[i])}" fill="none" stroke="${i === o.pick ? 'var(--ok)' : last[i] >= 27 ? 'var(--a)' : 'var(--faint)'}" stroke-width="${i === o.pick ? 3 : 1.2}" opacity="${i === o.pick ? 1 : 0.6}"/>`).join('')
+      + [1, 3, 9, 27, 81].map(e => `<text x="${lx(e)}" y="${F.H - F.B + 16}" text-anchor="middle" class="tick">${e}</text>`).join('') + [3, 9, 27].map(e => `<line x1="${lx(e)}" x2="${lx(e)}" y1="${F.T}" y2="${F.H - F.B}" stroke="var(--info)" stroke-dasharray="3 4"/>`).join('');
+    put(lab, 'used', o.used); put(lab, 'sh', o.fin[o.pick].toFixed(3)); put(lab, 'rs', o.rs.toFixed(3)); put(lab, 'best', o.best.toFixed(3)); };
+  segs(lab, upd); upd(); })();
+
+</script>
+</body>
+</html>

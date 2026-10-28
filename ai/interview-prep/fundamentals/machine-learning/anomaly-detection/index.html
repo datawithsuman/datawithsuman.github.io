@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anomaly Detection · @datawithsuman</title>
+<meta name="description" content="Isolation Forest, LOF, One-Class SVM and Mahalanobis, global vs local anomalies, and choosing a threshold.">
+<meta property="og:title" content="Anomaly Detection">
+<meta property="og:description" content="Isolation Forest, LOF, One-Class SVM and Mahalanobis, global vs local anomalies, and choosing a threshold.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 7 of 7</div>
+  <h1>Anomaly Detection</h1>
+  <div class="meta">Outlier vs novelty detection, Isolation Forest, Local Outlier Factor, One-Class SVM, Mahalanobis distance, contamination and thresholds, and evaluating without labels · built from Liu, Ting &amp; Zhou (2008), Breunig et al. (2000), Schölkopf et al. (2001) and scikit-learn's outlier-detection guide · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> anomaly detection finds the few points that don't look like the rest, usually without labels. <b>Isolation Forest</b> builds random trees with random splits: odd points get isolated after very few splits, so a short average path means "anomaly"; it's fast and a strong default. <b>Local Outlier Factor (LOF)</b> compares each point's density with its neighbours' and catches points that are odd <i>for their neighbourhood</i>, even next to a dense cluster. <b>One-Class SVM</b> learns a boundary around normal data (good for novelty detection on clean training data, sensitive to outliers and tuning). A Gaussian / <b>Mahalanobis</b> score works only when normal data is one elliptical blob. Every method gives a score; the threshold (contamination) is a business decision, and evaluation needs at least a few labelled anomalies.<br><span class="small">What you'll be able to do after this: explain why isolation works, when LOF beats Isolation Forest, choose a threshold, and design an evaluation for a detector with almost no labels.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>normal orders</span><span><i style="background:var(--bad)"></i>true anomalies (×)</span><span><i style="background:var(--b)"></i>flagged by the detector</span><span><i style="background:var(--info)"></i>scores / numbers</span><span><i style="background:var(--ok)"></i>caught</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> the food-delivery app watches orders for fraud and glitches using two standardised signals: order value and distance. Two simulated days: on day 1 normal orders form one cloud and 10 anomalies sit far outside it (500 orders); on day 2 normal orders come from a dense city-centre cluster and a spread-out suburban cluster, and the 10 anomalies sit just outside the dense cluster, unusual for the city centre but closer than many suburban orders are to their own centre.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Find the odd ones out, without examples of "odd"</h2>
+  <p>Fraud patterns change, glitches are new every time, and labelled anomalies are rare. A classifier needs examples of both classes; anomaly detection instead learns what "normal" looks like and scores how far each point departs from it. The output is a ranked list for a human or an automatic rule, not a certainty.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Outlier detection vs novelty detection</h2>
+  <div class="two">
+    <div class="card"><h4>Outlier detection (unsupervised)</h4><p class="small" style="margin:0">"The training data contains outliers which are defined as observations that are far from the others." The detector fits the dense regions and ignores the deviants. Example: score yesterday's orders, some of which were fraud.</p></div>
+    <div class="card"><h4>Novelty detection (semi-supervised)</h4><p class="small" style="margin:0">"The training data is not polluted by outliers and we are interested in detecting whether a new observation is an outlier." Example: learn from a week of verified-clean orders, then score each new order.</p></div>
+  </div>
+  <p class="small">Definitions from scikit-learn's outlier-detection guide <span class="src"><a href="https://scikit-learn.org/stable/modules/outlier_detection.html">docs</a></span>. All its detectors share an API: <code>score_samples</code> gives a continuous score; <code>predict</code> returns −1 for outliers using a threshold set by <code>contamination</code>.</p>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Flag anything more than 3 standard deviations from the mean"</h2>
+  <p>A z-score (or its multivariate version, the Mahalanobis distance) assumes normal data is a single elliptical blob. On day 1 that's true and it works perfectly. On day 2, the wide suburban cluster inflates the overall spread, so points near the dense city centre look perfectly ordinary by distance from the global mean, while ordinary suburban orders look extreme. The Mahalanobis score drops to ROC-AUC 0.59 on day 2 and none of its top 10 flags are real anomalies (chapter 7). "Far from the average" isn't the same as "unusual where it is".</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>The main families</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Method</th><th>Idea</th><th>Good at</th></tr>
+    <tr><td><b>Statistical</b> (z-score, Mahalanobis, <code>EllipticEnvelope</code>)</td><td>Distance from one fitted Gaussian</td><td>One elliptical blob, few features</td></tr>
+    <tr><td><b>Isolation Forest</b></td><td>Anomalies are isolated by few random splits</td><td>Fast, high-dimensional, global outliers</td></tr>
+    <tr><td><b>LOF</b></td><td>Density relative to neighbours</td><td>Local outliers, clusters of different density</td></tr>
+    <tr><td><b>One-Class SVM</b></td><td>Boundary around normal data (kernel)</td><td>Novelty detection with clean training data</td></tr>
+    <tr><td><b>Reconstruction</b> (PCA, autoencoders)</td><td>Normal data reconstructs well; anomalies don't</td><td>High-dimensional signals, images, logs</td></tr>
+  </table></div>
+  <p class="small">scikit-learn's own comparison: Isolation Forest and LOF "perform reasonably well on the data sets considered"; One-Class SVM "is known to be sensitive to outliers and thus does not perform very well for outlier detection" <span class="src"><a href="https://scikit-learn.org/stable/modules/outlier_detection.html">docs</a></span>. Density-based ideas from <a href="../dbscan/">DBSCAN</a> and <a href="../gaussian-mixture-models/">GMMs</a> (low p(x)) also work as detectors.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Anomalies are "few and different", so they're easy to isolate</h2>
+  <div class="card lab" id="labIso">
+    <div class="seg"><button data-v="anom" class="on">isolate an anomaly</button><button data-v="norm">isolate a normal order</button></div>
+    <label>Random splits shown <input type="range" min="0" max="15" step="1" value="15" data-k="k"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="Random splits isolating one point"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">splits needed in this tree</div><div class="v b" data-o="depth">–</div></div>
+      <div class="stat"><div class="l">average path over 100 trees</div><div class="v info" data-o="avg">–</div></div>
+      <div class="stat"><div class="l">anomaly score s</div><div class="v bad" data-o="s">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Each split picks a random feature and a random cut between that feature's min and max among the points still in the box. The shaded box is the region still containing the chosen point.</p>
+  </div>
+  <p>Liu, Ting &amp; Zhou (2008) built Isolation Forest on this: a point far from the crowd ends up alone after a few random cuts, while a point in the middle needs many. scikit-learn: "Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies" <span class="src"><a href="https://scikit-learn.org/stable/modules/outlier_detection.html#isolation-forest">docs</a></span>. Here, over 100 trees, the anomaly needs <b>4.8</b> splits on average and the normal order <b>11.4</b>.</p>
+  <div class="reader" data-reader='[
+    {"t":"s","c":"bad","label":"anomaly score","say":"Close to 1: very likely an anomaly. Well below 0.5: normal. Around 0.5 everywhere: no clear anomalies."},
+    {"t":"h","c":"b","label":"average path length","say":"Splits needed to isolate x, averaged over the trees (with a correction for points left in unsplit leaves)."},
+    {"t":"c","c":"info","label":"normaliser","say":"c(ψ) ≈ 2 ln(ψ − 1) + 1.15 − 2(ψ − 1)/ψ: the average path length of an unsuccessful search in a binary search tree of ψ points, so scores are comparable across sample sizes. For the default ψ = 256, c ≈ 10.2."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-s}{s(x)} = 2^{-\,\class{term t-h}{\mathbb{E}[h(x)]} \,/\, \class{term t-c}{c(\psi)}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Liu, Ting &amp; Zhou, "Isolation forest", ICDM 2008. Each tree is grown on a random subsample of ψ = 256 points (scikit-learn's default <code>max_samples</code>), to depth ⌈log₂ ψ⌉; 100 trees by default. Subsampling helps: fewer normal points crowd around the anomalies. On day 1: s = 0.72 for the anomaly, 0.46 for the normal order.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · LOF">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Local Outlier Factor</span>
+  <h2>Unusual compared with its neighbours</h2>
+  <p>LOF (Breunig, Kriegel, Ng &amp; Sander, SIGMOD 2000) estimates each point's local density from the distances to its k nearest neighbours, then divides the neighbours' average density by the point's own. A point inside any cluster, dense or sparse, has density similar to its neighbours (LOF ≈ 1). A point just outside a dense cluster has much lower density than its dense neighbours (LOF ≫ 1), even if it's closer to them than suburban points are to each other. scikit-learn: "The question is not, how isolated the sample is, but how isolated it is with respect to the surrounding neighborhood", and "taking n_neighbors=20 appears to work well in general" <span class="src"><a href="https://scikit-learn.org/stable/modules/outlier_detection.html#local-outlier-factor">docs</a></span>. The cost: O(n²) distances without an index, and it's mainly an outlier (not novelty) detector unless you set <code>novelty=True</code>.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Compare detectors">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill st">Head to head</span>
+  <h2>Global vs local anomalies</h2>
+  <div class="card lab" id="labCmp">
+    <div class="seg"><button data-v="blob" class="on">day 1: one cloud, far anomalies</button><button data-v="multi">day 2: dense + sparse clusters, local anomalies</button></div>
+    <div class="seg" style="margin-top:8px"><button data-v="if" class="on">Isolation Forest</button><button data-v="lof">LOF (k = 20)</button><button data-v="mah">Mahalanobis</button></div>
+    <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="Orders coloured by anomaly score"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">ROC-AUC vs the 10 true anomalies</div><div class="v info" data-o="auc">–</div></div>
+      <div class="stat"><div class="l">true anomalies among the top 10 flagged</div><div class="v ok" data-o="p10">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Darker = higher anomaly score. Orange rings: the 10 highest-scoring orders. Red ×: the true anomalies.</p>
+  </div>
+  <div class="tw"><table class="t">
+    <tr><th></th><th>Isolation Forest</th><th>LOF</th><th>Mahalanobis</th></tr>
+    <tr><td>Day 1 (global anomalies): AUC · top-10 hits</td><td>1.00 · 9</td><td>1.00 · 9</td><td>1.00 · 9</td></tr>
+    <tr><td>Day 2 (local anomalies): AUC · top-10 hits</td><td>0.91 · 0</td><td class="num best">1.00 · 9</td><td class="num worst">0.59 · 0</td></tr>
+  </table></div>
+  <p>On day 1 all three work. On day 2 Isolation Forest still ranks anomalies above most normal orders (AUC 0.91), but its top 10 are all genuine suburban orders on the far edge of the sparse cluster: in absolute terms they're the most isolated points. LOF compares each point with its own neighbourhood and puts 9 real anomalies in its top 10. If your anomalies are "unusual for their segment", use LOF, or score each segment separately. <span class="mine">my take</span></p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Threshold & evaluation">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill ok">From score to action</span>
+  <h2>Contamination, thresholds and evaluation</h2>
+  <div class="card lab" id="labCont">
+    <label>Share of orders to flag (contamination) <input type="range" min="0.005" max="0.1" step="0.005" value="0.02" data-k="c"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">orders flagged (of 500)</div><div class="v info" data-o="n">–</div></div>
+      <div class="stat"><div class="l">precision (flags that are real)</div><div class="v b" data-o="p">–</div></div>
+      <div class="stat"><div class="l">recall (anomalies caught)</div><div class="v ok" data-o="r">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Isolation Forest on day 1 (10 true anomalies = 2%). The model's scores don't change; only the cut-off does.</p>
+  </div>
+  <ul>
+    <li><b>Contamination</b> is not learned: it's your guess of the anomaly rate, or better, your review capacity ("we can check 50 orders a day"). It only sets the threshold on the score.</li>
+    <li><b>Evaluate with labels where you can:</b> even 50 confirmed fraud cases let you measure precision@k and PR-AUC (see <a href="../ranking-metrics/">Ranking Metrics</a>). With none, have analysts review a sample of top-scored and random items.</li>
+    <li><b>Once you have enough labels, consider supervised learning:</b> a classifier trained on confirmed cases usually beats an unsupervised detector on the patterns it has seen; keep the detector for new patterns. <span class="mine">my take</span></li>
+    <li><b>Scale features</b> for distance-based methods (LOF, One-Class SVM, Mahalanobis); Isolation Forest doesn't need it.</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · One-Class SVM">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill a">One-Class SVM</span>
+  <h2>A boundary around normal</h2>
+  <p>Schölkopf et al. (2001) adapted the SVM to one class: in kernel feature space, separate the data from the origin with maximum margin, which in input space becomes a closed boundary around the bulk of the data. The <code>nu</code> parameter "corresponds to the probability of finding a new, but regular, observation outside the frontier", and the RBF kernel's γ sets how tight the boundary hugs the data, with "no exact formula or algorithm to set its bandwidth parameter" <span class="src"><a href="https://scikit-learn.org/stable/modules/outlier_detection.html#novelty-detection">docs</a></span>. It's best for novelty detection with clean training data; it scales poorly (kernel SVM cost), so scikit-learn points to <code>SGDOneClassSVM</code> with kernel approximation for large data. See the <a href="../support-vector-machines/">SVM lesson</a> for kernels and γ.</p>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · The whole recipe">
+  <div class="chap">10 · The whole recipe</div>
+  <ol>
+    <li><b>Define "anomaly"</b> with the business: global outliers, local ones, or new patterns? This picks the method.</li>
+    <li><b>Engineer features</b> that make anomalies visible (ratios, per-user baselines, time-of-day); scale them for distance methods.</li>
+    <li><b>Start with Isolation Forest</b>; try LOF if anomalies are local or segments differ in density.</li>
+    <li><b>Set the threshold</b> from review capacity or costs; monitor the flag rate.</li>
+    <li><b>Collect feedback</b> on flagged items; measure precision@k; move to supervised models as labels accumulate.</li>
+  </ol>
+  <pre class="formula">from sklearn.ensemble import IsolationForest
+from sklearn.neighbors import LocalOutlierFactor
+iso = IsolationForest(n_estimators=200, max_samples=256, contamination=0.02, random_state=0).fit(X_train)
+scores = -iso.score_samples(X_new)          # higher = more anomalous
+lof = LocalOutlierFactor(n_neighbors=20, novelty=True).fit(X_train)   # novelty mode for new data
+flags = lof.predict(X_new) == -1</pre>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Evidence">
+  <div class="chap">11 · Evidence</div>
+  <div class="card"><h4>Day 2 (local anomalies): ROC-AUC (this page's simulation)</h4>
+    <div class="bars" data-max="1">
+      <div class="bar"><span>Mahalanobis</span><div class="track"><div class="fill" style="--v:0.59;background:var(--bad)"></div></div><span class="v">0.59</span></div>
+      <div class="bar"><span>Isolation Forest</span><div class="track"><div class="fill" style="--v:0.909;background:var(--b)"></div></div><span class="v">0.91</span></div>
+      <div class="bar"><span>LOF</span><div class="track"><div class="fill" style="--v:0.999;background:var(--ok)"></div></div><span class="v">1.00</span></div>
+    </div>
+    <p class="small">Higher is better; 500 orders, 10 anomalies. Illustrative: on other data, Isolation Forest is often the stronger and much faster choice.</p></div>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Caveats">
+  <div class="chap">12 · Takeaways and honest caveats</div>
+  <ul>
+    <li>"Anomalous" isn't "bad": a big corporate order is unusual and legitimate. Detectors find rare, not wrong.</li>
+    <li>Isolation Forest uses axis-parallel splits, so it has blind spots along diagonals (Extended Isolation Forest addresses this).</li>
+    <li>In high dimensions, irrelevant features dilute every method; feature selection and domain features matter most.</li>
+    <li>Contamination set too high creates a stream of false alarms; too low misses anomalies. Revisit it as the data drifts.</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Key terms">
+  <div class="chap">13 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Outlier vs novelty detection</b></td><td>Training data contains anomalies / is clean.</td></tr>
+    <tr><td><b>Path length</b></td><td>Random splits needed to isolate a point.</td></tr>
+    <tr><td><b>Local outlier factor</b></td><td>Neighbours' density ÷ own density.</td></tr>
+    <tr><td><b>Contamination</b></td><td>Assumed anomaly share; sets the threshold.</td></tr>
+    <tr><td><b>Mahalanobis distance</b></td><td>Distance from the mean in units of the covariance.</td></tr>
+  </table></div>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · Scenarios">
+  <div class="chap">14 · Scenarios</div>
+  <div class="two">
+    <div class="card"><h4>"Detect fraudulent restaurant payouts, no labels"</h4><p class="small" style="margin:0">Features relative to each restaurant's own history (z-scores per restaurant), then Isolation Forest; analysts review the top 50 a day; feed confirmations into a supervised model.</p></div>
+    <div class="card"><h4>"Server metrics, find new failure modes"</h4><p class="small" style="margin:0">Novelty detection: train on healthy periods (Isolation Forest, or reconstruction error from PCA/autoencoder); alert on high scores; tune threshold to on-call capacity.</p></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">Anomaly detection scores how unusual each point is relative to normal data, usually without labels. Isolation Forest builds random trees with random splits; anomalies are isolated in few splits, so a short average path length means a high anomaly score. It's fast, needs no scaling and is a good default for global outliers. LOF compares a point's local density with its neighbours' and catches anomalies that are unusual for their neighbourhood, for example next to a dense cluster. One-Class SVM learns a boundary around clean training data for novelty detection. Statistical scores like Mahalanobis assume a single Gaussian blob. The threshold, or contamination, is set from review capacity or costs, and evaluation needs at least some labelled cases, using precision at k.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why does Isolation Forest work?</summary><p>Anomalies are few and different, so random axis-parallel cuts separate them from the rest quickly; normal points in dense regions need many cuts. The average path length over many trees, normalised by c(ψ), gives the score s = 2^(−E[h]/c).</p></details>
+  <details class="qa"><summary>Isolation Forest vs LOF?</summary><p>IF: global, fast (subsampled trees), scales to high dimensions, no distances. LOF: local density comparison, handles clusters of different density, but O(n²) distances and needs scaling.</p></details>
+  <details class="qa"><summary>How do you evaluate without labels?</summary><p>Get a small labelled set (analyst review of top-k and random samples), measure precision@k and PR-AUC, check stability over time, and track how many flags lead to action.</p></details>
+  <details class="qa"><summary>Outlier vs novelty detection?</summary><p>Outlier detection: training data contains anomalies; novelty detection: training data is clean and you score new points. It changes which methods and settings fit (e.g., LOF novelty=True, One-Class SVM).</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Contamination is learned from data." It's your assumption or capacity.</li>
+    <li>"Anything 3σ from the mean is an anomaly." Only for one Gaussian-like blob.</li>
+    <li>"Anomaly detection replaces a fraud classifier." With labels, supervised usually wins on known patterns.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>F. T. Liu, K. M. Ting &amp; Z.-H. Zhou, "Isolation forest", IEEE ICDM 2008 (path-length score, subsampling ψ = 256).</li>
+    <li>M. Breunig, H.-P. Kriegel, R. Ng &amp; J. Sander, "LOF: identifying density-based local outliers", SIGMOD 2000.</li>
+    <li>B. Schölkopf, J. Platt, J. Shawe-Taylor, A. Smola &amp; R. Williamson, "Estimating the support of a high-dimensional distribution", <i>Neural Computation</i> 13, 2001 (One-Class SVM).</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/outlier_detection.html">Novelty and outlier detection</a> (definitions, API, Isolation Forest, LOF, One-Class SVM, contamination, comparison).</li>
+  </ol>
+  <p class="small">Order data is simulated with fixed seeds; every detector runs live in your browser.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- core concepts: seeded data, polynomial / ridge fits, logistic regression, helpers ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+function solveLin(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+// polynomial ridge on x scaled to [-1,1] (Legendre-free, plain powers; lam on all but intercept)
+const feats = (x, d) => { const u = x / 5 - 1, f = [1]; for (let k = 1; k <= d; k++) f.push(f[k - 1] * u); return f; };
+function polyFit(X, Y, d, lam = 1e-9) { const F = X.map(x => feats(x, d)), p = d + 1, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  F.forEach((f, i) => { for (let a = 0; a < p; a++) { b[a] += f[a] * Y[i]; for (let c = 0; c < p; c++) A[a][c] += f[a] * f[c]; } }); for (let a = 1; a < p; a++) A[a][a] += lam;
+  const w = solveLin(A, b); return x => feats(x, d).reduce((s, v, k) => s + v * w[k], 0); }
+// bias–variance by simulation: S training sets of size n, grid of test x
+function bvDecomp(d, n, lam = 1e-9, S = 60, seed = 100) { const xs = Array.from({ length: 41 }, (_, i) => 0.5 + 9 * i / 40), P = [];
+  for (let s = 0; s < S; s++) { const D = deliveries(seed + s, n), f = polyFit(D.X, D.Y, d, lam); P.push(xs.map(f)); }
+  let b2 = 0, v = 0; xs.forEach((x, j) => { const m = P.reduce((a, p) => a + p[j], 0) / S; b2 += (m - truth(x)) ** 2; v += P.reduce((a, p) => a + (p[j] - m) ** 2, 0) / S; });
+  return { bias2: b2 / xs.length, variance: v / xs.length, noise: SIG * SIG, xs, P }; }
+// logistic regression (Newton/IRLS) with sample weights and L2
+function logreg(X, y, w = null, lam = 1e-4, it = 30) { const p = X[0].length + 1; let b = Array(p).fill(0); const W = w || y.map(() => 1);
+  for (let t = 0; t < it; t++) { const H = Array.from({ length: p }, () => Array(p).fill(0)), g = Array(p).fill(0);
+    X.forEach((x, i) => { const f = [1, ...x], z = f.reduce((s, v, k) => s + v * b[k], 0), q = 1 / (1 + Math.exp(-z)), r = W[i] * (q - y[i]), h = W[i] * q * (1 - q); for (let a = 0; a < p; a++) { g[a] += r * f[a]; for (let c = 0; c < p; c++) H[a][c] += h * f[a] * f[c]; } });
+    for (let a = 1; a < p; a++) { g[a] += lam * b[a]; H[a][a] += lam; } const st = solveLin(H, g); b = b.map((v, k) => v - st[k]); if (st.reduce((s, v) => s + v * v, 0) < 1e-14) break; }
+  return { b, prob: x => 1 / (1 + Math.exp(-[1, ...x].reduce((s, v, k) => s + v * b[k], 0))) }; }
+function auc(s, y) { const P = [], N = []; s.forEach((v, i) => (y[i] ? P : N).push(v)); let a = 0; const Ns = N.slice().sort((u, v) => u - v);
+  P.forEach(p => { let lo = 0, hi = Ns.length; while (lo < hi) { const m = (lo + hi) >> 1; if (Ns[m] < p) lo = m + 1; else hi = m; } let eq = 0, k = lo; while (k < Ns.length && Ns[k] === p) { eq++; k++; } a += lo + eq / 2; }); return a / (P.length * N.length); }
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+// ---- anomaly detection: isolation forest, LOF, Mahalanobis ----
+const cN = n => n <= 1 ? 0 : 2 * (Math.log(n - 1) + 0.5772156649) - 2 * (n - 1) / n;
+function iTree(X, idx, r, depth, maxD) { if (depth >= maxD || idx.length <= 1) return { size: idx.length }; const j = r() < 0.5 ? 0 : 1; let lo = Infinity, hi = -Infinity; for (const i of idx) { lo = Math.min(lo, X[i][j]); hi = Math.max(hi, X[i][j]); }
+  if (hi <= lo) return { size: idx.length }; const t = lo + (hi - lo) * r(); return { j, t, L: iTree(X, idx.filter(i => X[i][j] < t), r, depth + 1, maxD), R: iTree(X, idx.filter(i => X[i][j] >= t), r, depth + 1, maxD) }; }
+function pathLen(node, x, d = 0) { return node.L ? pathLen(x[node.j] < node.t ? node.L : node.R, x, d + 1) : d + cN(node.size); }
+function iForest(X, seed, nTrees = 100, psi = 256) { const r = rng(seed), n = X.length, s = Math.min(psi, n), maxD = Math.ceil(Math.log2(s)), trees = [];
+  for (let t = 0; t < nTrees; t++) { const idx = []; const used = new Set(); while (idx.length < s) { const i = Math.floor(r() * n); if (!used.has(i)) { used.add(i); idx.push(i); } } trees.push(iTree(X, idx, r, 0, maxD)); }
+  return { trees, score: x => Math.pow(2, -trees.reduce((a, tr) => a + pathLen(tr, x), 0) / trees.length / cN(s)), avgPath: x => trees.reduce((a, tr) => a + pathLen(tr, x), 0) / trees.length }; }
+function lof(X, k) { const n = X.length, D = X.map(a => X.map(b => Math.hypot(a[0] - b[0], a[1] - b[1]))), nb = D.map((row, i) => row.map((d, j) => [d, j]).filter(p => p[1] !== i).sort((a, b) => a[0] - b[0]).slice(0, k)), kd = nb.map(l => l[k - 1][0]);
+  const lrd = nb.map((l, i) => 1 / (l.reduce((a, [d, j]) => a + Math.max(d, kd[j]), 0) / k + 1e-12)); return nb.map((l, i) => l.reduce((a, [d, j]) => a + lrd[j], 0) / k / lrd[i]); }
+function mahal(X) { const n = X.length, m = [0, 1].map(j => X.reduce((a, x) => a + x[j], 0) / n), c = [[0, 0], [0, 0]]; X.forEach(x => { for (let a = 0; a < 2; a++) for (let b = 0; b < 2; b++) c[a][b] += (x[a] - m[a]) * (x[b] - m[b]) / n; });
+  const det = c[0][0] * c[1][1] - c[0][1] ** 2, inv = [[c[1][1] / det, -c[0][1] / det], [-c[0][1] / det, c[0][0] / det]]; return x => { const u = x[0] - m[0], v = x[1] - m[1]; return u * (inv[0][0] * u + inv[0][1] * v) + v * (inv[1][0] * u + inv[1][1] * v); }; }
+function ordersAnom(seed, kind) { const r = rng(seed), g = gaussR(r), X = [], y = [];
+  if (kind === 'blob') { for (let i = 0; i < 490; i++) { X.push([g(), 0.6 * g()]); y.push(0); } for (let i = 0; i < 10; i++) { const a = 2 * Math.PI * r(), d = 3 + 2 * r(); X.push([d * Math.cos(a), 0.6 * d * Math.sin(a)]); y.push(1); } }
+  else { for (let i = 0; i < 300; i++) { X.push([-2 + 0.25 * g(), 0.25 * g()]); y.push(0); } for (let i = 0; i < 190; i++) { X.push([2 + 1.2 * g(), 1.2 * g()]); y.push(0); } for (let i = 0; i < 10; i++) { X.push([-2 + (r() < 0.5 ? -1 : 1) * (1 + 0.4 * r()), (r() - 0.5) * 1.6]); y.push(1); } }
+  return { X, y }; }
+
+// ---- anomaly page ----
+const DAY = { blob: ordersAnom(4, 'blob'), multi: ordersAnom(4, 'multi') }, ABOX = { blob: [-5.2, 4, -2.6, 2.8], multi: [-3.8, 5.8, -3.4, 4.2] };
+const aframe = k => { const b = ABOX[k]; return frame({ W: 560, H: 420, x0: b[0], x1: b[1], y0: b[2], y1: b[3], xt: [], yt: [], xl: 'order value (standardised)', yl: 'distance (standardised)' }); };
+const cross = (F, x) => `<path d="M${F.X(x[0]) - 6} ${F.Y(x[1]) - 6}l12 12M${F.X(x[0]) + 6} ${F.Y(x[1]) - 6}l-12 12" stroke="var(--bad)" stroke-width="2.5"/>`;
+// 5 · isolate one point with random splits (one tree on all 500 orders)
+(() => { const lab = document.getElementById('labIso'); if (!lab) return; const rg = lab.querySelector('input'), svg = lab.querySelector('svg'), D = DAY.blob, F100 = iForest(D.X, 1), ia = D.y.indexOf(1), cache = {};
+  const splits = target => { const r = rng(17), out = []; let idx = D.X.map((_, i) => i), box = [-5.2, 4, -2.6, 2.8];
+    while (idx.length > 1 && out.length < 30) { const j = r() < 0.5 ? 0 : 1; let lo = Infinity, hi = -Infinity; idx.forEach(i => { lo = Math.min(lo, D.X[i][j]); hi = Math.max(hi, D.X[i][j]); }); if (hi <= lo) break;
+      const t = lo + (hi - lo) * r(), left = D.X[target][j] < t; idx = idx.filter(i => (D.X[i][j] < t) === left); const nb = [...box]; if (j === 0) { if (left) nb[1] = t; else nb[0] = t; } else { if (left) nb[3] = t; else nb[2] = t; } out.push({ j, t, box: [...box], nb }); box = nb; } return out; };
+  const upd = () => { const which = onv(lab).dataset.v, target = which === 'anom' ? ia : 0, S = cache[which] || (cache[which] = splits(target)), k = Math.min(+rg.value, S.length); rg.nextElementSibling.textContent = k; const F = aframe('blob');
+    let s = F.s + clipR(F, 'cpIso') + '<g clip-path="url(#cpIso)">'; const b = k ? S[k - 1].nb : [-5.2, 4, -2.6, 2.8]; s += `<rect x="${F.X(b[0])}" y="${F.Y(b[3])}" width="${F.X(b[1]) - F.X(b[0])}" height="${F.Y(b[2]) - F.Y(b[3])}" fill="var(--info)" opacity=".12"/>`;
+    S.slice(0, k).forEach(sp => { s += sp.j === 0 ? `<line x1="${F.X(sp.t)}" x2="${F.X(sp.t)}" y1="${F.Y(sp.box[3])}" y2="${F.Y(sp.box[2])}" stroke="var(--b)" stroke-width="1.5"/>` : `<line x1="${F.X(sp.box[0])}" x2="${F.X(sp.box[1])}" y1="${F.Y(sp.t)}" y2="${F.Y(sp.t)}" stroke="var(--b)" stroke-width="1.5"/>`; });
+    s += D.X.map((x, i) => `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="${i === target ? 7 : 2.6}" fill="var(--${i === target ? 'st' : D.y[i] ? 'bad' : 'a'})" opacity="${i === target ? 1 : 0.6}"/>`).join('') + '</g>';
+    svg.innerHTML = s; put(lab, 'depth', `${S.length}`); put(lab, 'avg', F100.avgPath(D.X[target]).toFixed(1)); put(lab, 's', F100.score(D.X[target]).toFixed(2)); };
+  segs(lab, upd); rg.addEventListener('input', upd); upd(); })();
+// 7 · compare detectors
+(() => { const lab = document.getElementById('labCmp'); if (!lab) return; const svg = lab.querySelector('svg'), cache = {};
+  const score = (k, m) => { const key = k + m; if (cache[key]) return cache[key]; const D = DAY[k]; let s; if (m === 'if') { const F = iForest(D.X, 1); s = D.X.map(F.score); } else if (m === 'lof') s = lof(D.X, 20); else { const M = mahal(D.X); s = D.X.map(M); } return cache[key] = s; };
+  const upd = () => { const k = onv(lab, 0).dataset.v, m = onv(lab, 1).dataset.v, D = DAY[k], s = score(k, m), F = aframe(k), ord = s.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]), rk = new Array(s.length); ord.forEach(([, i], r) => rk[i] = r); const top = ord.slice(0, 10).map(q => q[1]);
+    svg.innerHTML = F.s + D.X.map((x, i) => `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="3.4" fill="var(--a)" opacity="${(0.15 + 0.85 * (1 - rk[i] / s.length) ** 4).toFixed(2)}"/>`).join('')
+      + D.X.map((x, i) => D.y[i] ? cross(F, x) : '').join('') + top.map(i => `<circle cx="${F.X(D.X[i][0])}" cy="${F.Y(D.X[i][1])}" r="9" fill="none" stroke="var(--b)" stroke-width="2.2"/>`).join('');
+    put(lab, 'auc', auc(s, D.y).toFixed(2)); put(lab, 'p10', `${top.filter(i => D.y[i]).length} / 10`); };
+  segs(lab, upd); upd(); })();
+// 8 · contamination
+(() => { const lab = document.getElementById('labCont'); if (!lab) return; const rg = lab.querySelector('input'), D = DAY.blob, F = iForest(D.X, 1), s = D.X.map(F.score), ord = s.map((v, i) => [v, D.y[i]]).sort((a, b) => b[0] - a[0]);
+  const upd = () => { const c = +rg.value, k = Math.round(c * 500), tp = ord.slice(0, k).filter(q => q[1]).length; rg.nextElementSibling.textContent = pct(c, 1); put(lab, 'n', k); put(lab, 'p', pct(tp / k, 0)); put(lab, 'r', pct(tp / 10, 0)); };
+  rg.addEventListener('input', upd); upd(); })();
+
+</script>
+</body>
+</html>
