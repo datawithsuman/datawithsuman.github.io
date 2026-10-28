@@ -108,13 +108,20 @@ Tap a track to see its lessons, in the order to learn them.
 
 <br>
 
+**Linear Models**
+
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Linear Regression](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/linear-regression/) | 🟢 Beginner | 30 min |
 | 2 | [Regularized Linear Models](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/regularized-linear-models/) | 🟡 Intermediate | 30 min |
 | 3 | [Logistic Regression](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/logistic-regression/) | 🟢 Beginner | 30 min |
 | 4 | [Softmax Regression](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/softmax-regression/) | 🟡 Intermediate | 25 min |
-| 5 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
+
+**Tree-Based Models**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
 
 </details>
 

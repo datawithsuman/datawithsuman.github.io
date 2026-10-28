@@ -56,11 +56,14 @@ window.Lesson = {
     document.getElementById('trackDesc').textContent = track.desc;
     document.title = `${track.title} · AI & ML, explained simply`;
     const box = document.getElementById('list');
-    box.innerHTML = track.lessons.length
-      ? `<ol class="llist">${track.lessons.map((l, i) => `<li><a class="card" href="${l.slug}/index.html">
-          <span class="num">${num(track, i)}</span>
-          <div><h3>${esc(l.title)}</h3><p>${esc(l.sub)}</p><div class="meta"><span class="pill lvl-${l.level}">${l.level}</span><span class="pill">${l.mins} min</span></div></div></a></li>`).join('')}</ol>`
-      : `<div class="card soonbox">Lessons coming soon.</div>`;
+    const item = (l, n) => `<li><a class="card" href="${l.slug}/index.html">
+          <span class="num">${n}</span>
+          <div><h3>${esc(l.title)}</h3><p>${esc(l.sub)}</p><div class="meta"><span class="pill lvl-${l.level}">${l.level}</span><span class="pill">${l.mins} min</span></div></div></a></li>`;
+    // tracks with sub-sections: lessons carry a `group` id; numbering restarts per group; empty groups stay hidden
+    const groups = (track.groups || []).map((g) => ({ ...g, ls: track.lessons.filter((l) => l.group === g.id) })).filter((g) => g.ls.length);
+    box.innerHTML = !track.lessons.length ? `<div class="card soonbox">Lessons coming soon.</div>`
+      : groups.length ? groups.map((g) => `<section class="lgroup" id="${g.id}"><h2 class="ghead">${esc(g.title)} <span class="gcount">${g.ls.length} lesson${g.ls.length > 1 ? 's' : ''}</span></h2>${g.desc ? `<p class="gdesc">${esc(g.desc)}</p>` : ''}<ol class="llist">${g.ls.map((l, i) => item(l, (track.prefix || '') + (i + 1))).join('')}</ol></section>`).join('')
+      : `<ol class="llist">${track.lessons.map((l, i) => item(l, num(track, i))).join('')}</ol>`;
   }
 
   if (b.dataset.page === 'lesson' && track) {
