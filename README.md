@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-29-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-32-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 23 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 26 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**t-SNE & UMAP**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/t-sne-and-umap/) | 📐 Fundamentals › Machine Learning | How do you see 768-dimensional data, and what are the plots lying about? |
-| [**Principal Component Analysis**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/pca/) | 📐 Fundamentals › Machine Learning | Ten correlated columns, two real ideas: how does PCA find them, and why scale first? |
-| [**Gaussian Mixture Models**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/gaussian-mixture-models/) | 📐 Fundamentals › Machine Learning | What if clusters are tilted, overlap, and you need a probability of membership? |
+| [**Class Imbalance**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/class-imbalance/) | 📐 Fundamentals › Machine Learning | 2% fraud: should you SMOTE it, weight it, or just move the threshold? |
+| [**Cross-Validation & Data Leakage**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/cross-validation-and-leakage/) | 📐 Fundamentals › Machine Learning | How did a model score 86% on pure noise, and how do you make sure yours isn't? |
+| [**The Bias–Variance Trade-off**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/bias-variance/) | 📐 Fundamentals › Machine Learning | Two models are equally wrong for opposite reasons. How do you tell which, and fix it? |
 
 ---
 
@@ -58,7 +58,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Machine Learning</b> · 23 lessons</summary>
+<summary><b>Machine Learning</b> · 26 lessons</summary>
 
 <br>
 
@@ -109,6 +109,14 @@ Tap a track to see its lessons, in the order to learn them.
 | 5 | [Ranking Metrics](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/ranking-metrics/) | 🟡 Intermediate | 25 min |
 | 6 | [Probability Metrics](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/probability-metrics/) | 🟡 Intermediate | 25 min |
 | 7 | [Choosing the Right Metric](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/choosing-the-right-metric/) | 🟡 Intermediate | 25 min |
+
+**Core Concepts**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [The Bias–Variance Trade-off](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/bias-variance/) | 🟢 Beginner | 30 min |
+| 2 | [Cross-Validation & Data Leakage](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/cross-validation-and-leakage/) | 🟡 Intermediate | 30 min |
+| 3 | [Class Imbalance](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/class-imbalance/) | 🟡 Intermediate | 30 min |
 
 </details>
 

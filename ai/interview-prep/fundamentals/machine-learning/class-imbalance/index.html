@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Class Imbalance · @datawithsuman</title>
+<meta name="description" content="What class weights, resampling, SMOTE and threshold moving really do to AUC, calibration and F1, with a live comparison.">
+<meta property="og:title" content="Class Imbalance">
+<meta property="og:description" content="What class weights, resampling, SMOTE and threshold moving really do to AUC, calibration and F1, with a live comparison.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Core concepts 3 of 3</div>
+  <h1>Class Imbalance</h1>
+  <div class="meta">Why rare classes are hard, what actually goes wrong, and what each fix really does: class weights, over- and undersampling, SMOTE, threshold moving and prior correction · built from Elor &amp; Averbuch-Elor (2022), van den Goorbergh et al. (2022), Chawla et al. (2002) and the scikit-learn / imbalanced-learn docs · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> when 2% of orders are fraud, a model that always says "legit" is 98% accurate and useless. The usual reflex is to "fix the imbalance" by reweighting or resampling the training data. On our data, and in recent large studies, that reflex mostly <b>doesn't improve ranking</b> (AUC is unchanged), <b>breaks the probabilities</b> (the model now thinks fraud is 10× more common than it is), and only <b>moves the decision threshold</b>, something you can do directly. The reliable recipe: use a proper metric (PR-AUC, log loss, cost), train a strong model on the real data, then <b>choose the threshold</b> from costs or a validation set. Resampling still helps weak learners and fixed-threshold systems, and only inside the training fold.<br><span class="small">What you'll be able to do after this: explain why accuracy fails, compare weights/resampling/SMOTE/thresholds with numbers, undo resampling's damage to probabilities, and answer "how would you handle imbalanced data?" without the standard wrong answer.</span></div>
+  <div class="legend"><span><i style="background:var(--bad)"></i>fraud (minority)</span><span><i style="background:var(--a)"></i>legit (majority)</span><span><i style="background:var(--b)"></i>decision threshold</span><span><i style="background:var(--info)"></i>probabilities / numbers</span><span><i style="background:var(--ok)"></i>good choice</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> the food-delivery app's fraud screen. Each order has two risk signals (standardised); about <b>2%</b> of orders are fraudulent. Training data: 6,000 simulated orders (106 fraud); a validation set of 4,000 for choosing thresholds; a test set of 20,000 (1.92% fraud). The model is logistic regression throughout, so the only thing that changes between experiments is how we handle the imbalance. This lesson builds on <a href="../classification-metrics/">Classification Metrics</a>, <a href="../roc-auc-vs-pr-auc/">ROC-AUC vs PR-AUC</a> and <a href="../thresholds-and-costs/">Thresholds &amp; Costs</a>.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>The rare class is the one you care about</h2>
+  <p>Fraud, churn, defaults, rare diseases, machine failures, click-through: the event you want to catch is the minority. Three things go wrong at once. <b>Accuracy</b> rewards ignoring it (always "legit" = 98%). A default threshold of 0.5 flags almost nothing, because with a 2% base rate few orders ever look more than 50% likely to be fraud. And with only ~100 positive examples, the model has little to learn the minority pattern from. People lump all three under "imbalance", but they need different fixes.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Probabilities, thresholds and the base rate</h2>
+  <p>A probabilistic classifier outputs p = P(fraud | order). A good one is <b>calibrated</b>: among orders it scores 0.3, about 30% are fraud, so its average prediction matches the base rate (here 1.9%). Turning p into a decision needs a <b>threshold</b> t: flag if p ≥ t. Ranking quality (AUC) doesn't depend on t; precision, recall and F1 do. The cost-optimal threshold, if a missed fraud costs C<sub>FN</sub> and a false alarm C<sub>FP</sub>, is:</p>
+  <div class="reader" data-reader='[
+    {"t":"t","c":"b","label":"best threshold","say":"Flag an order when its fraud probability exceeds this. Requires calibrated probabilities."},
+    {"t":"fp","c":"a","label":"cost of a false alarm","say":"E.g. ₹20 of a reviewer’s time and an annoyed honest customer."},
+    {"t":"fn","c":"bad","label":"cost of a missed fraud","say":"E.g. a ₹800 chargeback. With these numbers t* = 20/820 ≈ 0.024: flag anything with more than a 2.4% fraud chance."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-t}{t^{*}} = \class{term t-fp}{C_{FP}} \,/\, (\class{term t-fp}{C_{FP}} + \class{term t-fn}{C_{FN}})"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Derived in <a href="../thresholds-and-costs/">Thresholds &amp; Costs</a>. Note what this says: the imbalance doesn't need "fixing" to catch fraud; a calibrated model plus the right threshold already accounts for both the base rate and the costs. <span class="mine">my take</span></p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Balance the classes to 50/50 and the model will notice fraud"</h2>
+  <p>The standard advice is to oversample fraud, undersample legit orders, or weight fraud 50× in the loss. It does change the output: at threshold 0.5 the model now flags far more orders. But look at what it costs (chapter 6): the model now believes 21% of orders are fraud, when the true rate is 1.9%. Its ranking of orders is <b>exactly as good as before</b> (AUC 0.934 in every case). All the "fix" did was distort the probabilities so that 0.5 lands where a lower threshold would have landed on the original model. van den Goorbergh et al. (2022) found the same in clinical risk models: all correction methods "led to poor calibration, but not to better discrimination" <span class="src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/">JAMIA 2022</a></span>.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>The menu of fixes</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Approach</th><th>What it does</th><th>Tools</th></tr>
+    <tr><td><b>Better metric</b></td><td>Judge by PR-AUC, recall at fixed precision, log loss, expected cost; not accuracy</td><td>scikit-learn metrics</td></tr>
+    <tr><td><b>Threshold moving</b></td><td>Keep the model, choose t from costs or validation</td><td><code>TunedThresholdClassifierCV</code>, manual</td></tr>
+    <tr><td><b>Class weights</b></td><td>Multiply the loss of minority errors</td><td><code>class_weight="balanced"</code>, <code>scale_pos_weight</code></td></tr>
+    <tr><td><b>Random over/undersampling</b></td><td>Duplicate minority / drop majority rows (training fold only)</td><td>imbalanced-learn</td></tr>
+    <tr><td><b>SMOTE and variants</b></td><td>Synthesise minority points between minority neighbours</td><td>imbalanced-learn</td></tr>
+    <tr><td><b>More minority data / better features</b></td><td>Address the real bottleneck: few examples</td><td>labelling, data collection</td></tr>
+  </table></div>
+  <p class="small">imbalanced-learn describes the problem as the decision function tending "to favour the class with the larger number of samples" <span class="src"><a href="https://imbalanced-learn.org/stable/introduction.html">imbalanced-learn</a></span>. Whether that "favouring" is a bug or correct Bayesian behaviour is exactly the question this lesson answers.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Separate ranking from deciding</h2>
+  <p>A classifier does two jobs: <b>rank</b> orders by risk, and <b>decide</b> where to cut. Imbalance mostly hurts the decision (a default cut of 0.5 is wrong for rare events), and the decision is cheap to fix after training. Ranking is only hurt when there are too few minority examples to learn from, and reweighting or duplicating the same ~100 fraud cases adds no new information about them. So: get the best ranking you can on the real distribution, keep the probabilities honest, and choose the cut with the costs. Reach for resampling only when you can't control the cut, or your model is weak.</p>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Compare the fixes">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Run the comparison</span>
+  <h2>Five ways to handle the same 2% fraud</h2>
+  <div class="card lab" id="labFix">
+    <div class="seg"><button data-v="none" class="on">no correction</button><button data-v="weighted">class weights</button><button data-v="oversample">oversample</button><button data-v="undersample">undersample</button><button data-v="corrected">undersample + prior correction</button></div>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Predicted fraud probability against actual fraud rate"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">ROC-AUC (ranking)</div><div class="v info" data-o="auc">–</div></div>
+      <div class="stat"><div class="l">average predicted fraud rate (true 1.92%)</div><div class="v b" data-o="mean">–</div></div>
+      <div class="stat"><div class="l">log loss (lower is better)</div><div class="v b" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">F1 at threshold 0.5 (orders flagged)</div><div class="v bad" data-o="f05">–</div></div>
+      <div class="stat"><div class="l">F1 at threshold tuned on validation</div><div class="v ok" data-o="ft">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Plot: test orders grouped by predicted probability (10 bins); each dot compares the average prediction with the actual fraud rate in that bin. On the diagonal = calibrated. Logistic regression in every case; trained in your browser.</p>
+  </div>
+  <div class="tw"><table class="t">
+    <tr><th>Method</th><th>AUC</th><th>Mean predicted</th><th>Log loss</th><th>F1 @ 0.5</th><th>Best t</th><th>F1 @ best t</th></tr>
+    <tr><td>No correction</td><td>0.934</td><td class="num best">1.9%</td><td class="num best">0.057</td><td>0.315</td><td>0.31</td><td>0.430</td></tr>
+    <tr><td>Class weights</td><td>0.934</td><td class="num worst">21.4%</td><td class="num worst">0.336</td><td>0.182</td><td>0.96</td><td>0.426</td></tr>
+    <tr><td>Oversample</td><td>0.934</td><td class="num worst">21.4%</td><td class="num worst">0.337</td><td>0.182</td><td>0.96</td><td>0.428</td></tr>
+    <tr><td>Undersample</td><td>0.934</td><td class="num worst">21.3%</td><td class="num worst">0.378</td><td>0.173</td><td>0.98</td><td>0.432</td></tr>
+    <tr><td>Undersample + correction</td><td>0.934</td><td>2.9%</td><td>0.062</td><td>0.426</td><td>0.55</td><td>0.431</td></tr>
+  </table></div>
+  <p>Every method ranks equally well (AUC 0.934), and every method reaches the same F1 (~0.43) once its threshold is tuned. The difference is all in the probabilities: the three corrections inflate the average fraud prediction elevenfold and multiply log loss by about six. At the default 0.5 threshold they flag over 3,000 of 20,000 orders with 10% precision, worse F1 than not correcting at all. The resampled models only "need" a threshold of 0.96–0.98 to get back to where the plain model was at 0.31.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Threshold moving">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill ok">The direct fix</span>
+  <h2>Move the threshold, not the data</h2>
+  <div class="card lab" id="labThr">
+    <label>Threshold on the uncorrected model <input type="range" min="0.01" max="0.9" step="0.01" value="0.5" data-k="t"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">orders flagged (of 20,000)</div><div class="v info" data-o="flag">–</div></div>
+      <div class="stat"><div class="l">precision</div><div class="v b" data-o="prec">–</div></div>
+      <div class="stat"><div class="l">recall (fraud caught)</div><div class="v ok" data-o="rec">–</div></div>
+      <div class="stat"><div class="l">F1</div><div class="v a" data-o="f1">–</div></div>
+      <div class="stat"><div class="l">cost at ₹20 per alarm, ₹800 per miss</div><div class="v bad" data-o="cost">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Same trained model, only the cut changes. Try 0.31 (best F1 on validation) and 0.02–0.03 (the cost-optimal t* ≈ 0.024 from chapter 2).</p>
+  </div>
+  <p>On the test orders, the default 0.5 costs ₹2,44,000 (most fraud slips through), the F1-best 0.31 costs ₹1,96,960, and the cost-optimal 0.02 costs ₹1,03,560 while catching 84% of fraud: the same model, less than half the cost, and no resampling involved.</p>
+  <p>Elor &amp; Averbuch-Elor (2022) tested this at scale on 73 imbalanced datasets: with a tuned threshold, "balancing the data and optimizing the decision threshold yield comparable prediction performance" except for very weak classifiers, and they recommend tuning the threshold because it is simpler and cheaper to compute. For the strong models (XGBoost, CatBoost), balancing didn't improve AUC at all: "best prediction is achieved by using a strong classifier and balancing the data is not required nor beneficial" <span class="src"><a href="https://arxiv.org/pdf/2201.08528#page=5">arXiv:2201.08528, §4–5</a></span>. scikit-learn's <code>TunedThresholdClassifierCV</code> chooses the threshold by cross-validation.</p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · SMOTE">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill st">SMOTE</span>
+  <h2>Synthetic minority points, and when they help</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 260" role="img" aria-label="How SMOTE creates a synthetic point">
+        <g data-show="1"><g fill="var(--a)" opacity=".5"><circle cx="120" cy="60" r="5"/><circle cx="160" cy="200" r="5"/><circle cx="225" cy="60" r="5"/><circle cx="300" cy="220" r="5"/><circle cx="560" cy="60" r="5"/><circle cx="640" cy="210" r="5"/><circle cx="690" cy="110" r="5"/><circle cx="420" cy="40" r="5"/><circle cx="200" cy="140" r="5"/><circle cx="660" cy="40" r="5"/></g>
+          <circle cx="380" cy="130" r="8" fill="var(--bad)"/><circle cx="450" cy="160" r="8" fill="var(--bad)"/><circle cx="410" cy="200" r="8" fill="var(--bad)"/><circle cx="340" cy="180" r="8" fill="var(--bad)"/></g>
+        <g data-show="2" data-hl="2" style="color:var(--bad)"><circle cx="380" cy="130" r="14" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="380" y1="130" x2="450" y2="160" stroke="var(--dim)" stroke-dasharray="4 3"/><line x1="380" y1="130" x2="340" y2="180" stroke="var(--dim)" stroke-dasharray="4 3"/><text x="380" y="105" text-anchor="middle" class="d" font-size="12">pick a fraud order and its k nearest fraud neighbours</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--info)"><line x1="380" y1="130" x2="450" y2="160" stroke="var(--info)" stroke-width="2.5"/><circle cx="422" cy="148" r="7" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="3 2"/><text x="520" y="150" class="tinfo" font-size="12">new point at a random spot on the line</text></g>
+        <g data-show="4"><circle cx="356" cy="160" r="7" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="3 2"/><circle cx="430" cy="180" r="7" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="3 2"/><circle cx="378" cy="190" r="7" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="3 2"/><text x="380" y="248" text-anchor="middle" class="d" font-size="12">repeat until the classes reach the target ratio</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A few fraud orders (red) among many legit ones.</li>
+      <li>SMOTE (Chawla et al., 2002) picks a minority point and finds its k nearest minority neighbours (default k = 5).</li>
+      <li>It places a synthetic fraud order at a random point on the segment to one neighbour.</li>
+      <li>Repeat until the minority class is as large as you asked for. Unlike duplication, the new points fill the space between real ones.</li>
+    </ol>
+  </div>
+  <p>SMOTE spawned more than 100 variants (Borderline, SVM-SMOTE, ADASYN…). The 2022 evidence is sobering: with a fixed threshold, the sophisticated SMOTE variants were "not more effective than the simple random oversampler" for strong boosted trees, and with a tuned threshold, balancing at all brought them no gain; SMOTE did help weak learners (MLP, SVM, decision trees, AdaBoost) and fixed-threshold setups <span class="src"><a href="https://arxiv.org/pdf/2201.08528#page=6">Elor &amp; Averbuch-Elor 2022</a></span>. Synthetic points can also land in the majority region and blur the boundary, and on categorical or high-dimensional data, interpolation can create impossible rows. <span class="mine">my take</span></p>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · Undo the distortion">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill ok">If you must resample</span>
+  <h2>Correct the probabilities back</h2>
+  <p>Undersampling is sometimes necessary for speed (billions of negatives, as in click prediction). Then correct the predicted probabilities for the sampling rate. If you kept a fraction β of the negatives:</p>
+  <div class="reader" data-reader='[
+    {"t":"p","c":"ok","label":"corrected probability","say":"The fraud probability on the real, imbalanced population."},
+    {"t":"q","c":"b","label":"model output","say":"What the model trained on the undersampled data predicts."},
+    {"t":"b","c":"info","label":"negatives kept","say":"β = negatives kept / negatives available. Here 106 / 5,894 ≈ 0.018."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-p}{p} = \class{term t-b}{\beta}\,\class{term t-q}{q} \,/\, \bigl(\class{term t-b}{\beta}\,\class{term t-q}{q} - \class{term t-q}{q} + 1\bigr)"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Prior-shift correction for undersampling, e.g. Dal Pozzolo et al., "Calibrating probability with undersampling for unbalanced classification" (IEEE SSCI 2015). Applying it is equivalent to subtracting log(1/β) from the model's log-odds. <span class="mine">my take</span></p>
+  </div>
+  <p>On our data the correction brings the average prediction from 21.3% back to 2.9% and log loss from 0.378 to 0.062, close to the uncorrected model's 0.057, with the same AUC. Class weights can be undone the same way (shift the intercept by log of the weight ratio). Better still: calibrate on untouched validation data (<code>CalibratedClassifierCV</code>).</p>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · The whole recipe">
+  <div class="chap">10 · The whole recipe</div>
+  <ol>
+    <li><b>Pick the metric from the decision:</b> expected cost, recall at a precision floor, or PR-AUC; log loss/Brier if probabilities matter. Not accuracy.</li>
+    <li><b>Split with stratification</b> (and groups/time if relevant) so every fold has minority cases.</li>
+    <li><b>Train a strong model on the real distribution</b> (gradient boosting, well-regularised logistic regression).</li>
+    <li><b>Check calibration</b>; calibrate on validation data if needed.</li>
+    <li><b>Choose the threshold</b> from costs (t* = C<sub>FP</sub>/(C<sub>FP</sub> + C<sub>FN</sub>)) or by validation.</li>
+    <li><b>Only then</b> try class weights or resampling, inside the CV pipeline, and keep them only if the chosen metric improves. Correct the probabilities if you use them.</li>
+    <li><b>Collect more minority examples</b> if recall is capped: that's the one fix that adds information.</li>
+  </ol>
+  <pre class="formula">from sklearn.model_selection import TunedThresholdClassifierCV, StratifiedKFold
+from sklearn.ensemble import HistGradientBoostingClassifier
+model = TunedThresholdClassifierCV(HistGradientBoostingClassifier(),
+                                   scoring="f1", cv=StratifiedKFold(5))   # or a custom cost scorer
+model.fit(X_train, y_train)
+# if resampling: imblearn.pipeline.make_pipeline(SMOTE(), clf) so it runs inside each fold only</pre>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Evidence">
+  <div class="chap">11 · Evidence</div>
+  <div class="card"><h4>F1 on 73 datasets, CatBoost (Elor &amp; Averbuch-Elor 2022, Table 3)</h4>
+    <div class="bars" data-max="0.6">
+      <div class="bar"><span>no balancing, threshold 0.5</span><div class="track"><div class="fill" style="--v:0.444;background:var(--bad)"></div></div><span class="v">0.444</span></div>
+      <div class="bar"><span>no balancing, tuned threshold</span><div class="track"><div class="fill" style="--v:0.532;background:var(--ok)"></div></div><span class="v">0.532</span></div>
+      <div class="bar"><span>random oversampling</span><div class="track"><div class="fill" style="--v:0.525;background:var(--b)"></div></div><span class="v">0.525</span></div>
+      <div class="bar"><span>SMOTE</span><div class="track"><div class="fill" style="--v:0.529;background:var(--b)"></div></div><span class="v">0.529</span></div>
+    </div>
+    <p class="small">Mean F1, higher is better; ± about 0.02 <span class="src"><a href="https://arxiv.org/pdf/2201.08528#page=5">p. 5</a></span>. For a weak MLP the picture flips: baseline 0.303 with a tuned threshold vs 0.411 with SMOTE.</p></div>
+  <div class="card ok"><h4>Clinical risk models</h4><p class="small" style="margin:0">van den Goorbergh et al. (JAMIA 2022), logistic regression with random under/oversampling and SMOTE on ovarian-tumour data plus simulations: corrections strongly overestimated the minority-class probability, did not improve AUROC, and the sensitivity/specificity gains were matched by simply shifting the threshold <span class="src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/">PMC9382395</a></span>. A 2024 follow-up extended this to machine-learning models with the same conclusion for calibration <span class="src"><a href="https://arxiv.org/abs/2404.19494">arXiv:2404.19494</a></span>.</p></div>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Caveats">
+  <div class="chap">12 · Takeaways and honest caveats</div>
+  <ul>
+    <li><b>When resampling/weights do help:</b> weak or high-bias models, systems where you can't set the threshold, extremely rare classes where the loss barely "sees" the minority during training (e.g. neural nets with mini-batches containing no positives), and undersampling for compute.</li>
+    <li>Our demo uses a linear model, where reweighting mostly shifts the intercept. With flexible models, weights can also change the shape of the boundary, for better or worse; always validate.</li>
+    <li>"Imbalance" is often a proxy for the real problem: few minority examples, overlapping classes, or label noise. Resampling fixes none of these.</li>
+    <li>Never resample before the train/test split, and never evaluate on resampled data.</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Key terms">
+  <div class="chap">13 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Base rate / prevalence</b></td><td>Share of the minority class in the population.</td></tr>
+    <tr><td><b>Calibration</b></td><td>Predicted probabilities match observed frequencies.</td></tr>
+    <tr><td><b>Threshold moving</b></td><td>Choosing the probability cut-off instead of using 0.5.</td></tr>
+    <tr><td><b>Class weights</b></td><td>Scaling each class's contribution to the loss.</td></tr>
+    <tr><td><b>Random over/undersampling</b></td><td>Duplicate minority / drop majority training rows.</td></tr>
+    <tr><td><b>SMOTE</b></td><td>Synthetic minority points interpolated between minority neighbours.</td></tr>
+    <tr><td><b>Prior correction</b></td><td>Mapping resampled-model probabilities back to the true base rate.</td></tr>
+  </table></div>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · Scenarios">
+  <div class="chap">14 · Scenarios</div>
+  <div class="two">
+    <div class="card"><h4>Fraud screen with a review team of fixed size</h4><p class="small" style="margin:0">Rank by score and review the top N per day: only ranking matters (PR-AUC, precision@N). No resampling or threshold tuning needed.</p></div>
+    <div class="card"><h4>Ad click prediction feeding a bid</h4><p class="small" style="margin:0">Probabilities feed money: calibration is critical. Undersample negatives for speed if you must, then apply the prior correction and check log loss.</p></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">First I'd pick a metric that reflects the decision, such as expected cost, recall at a fixed precision or PR-AUC, because accuracy is meaningless with a 2% base rate. Then I'd stratify the splits, train a strong model on the real distribution, check calibration, and choose the threshold from the error costs or on validation data, since the default 0.5 is the main thing imbalance breaks. Class weights and resampling mostly just shift the threshold while distorting the probabilities; recent studies found they don't improve AUC for strong models and that a tuned threshold matches them. I'd use them inside the training folds only for weak models or fixed-threshold systems, correct the probabilities afterwards, and prioritise getting more minority examples.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Does oversampling or SMOTE improve the model?</summary><p>It changes where the model cuts, not how well it ranks: AUC is typically unchanged for strong models, and probabilities become miscalibrated. It can help weak learners or when the threshold is fixed. It must happen inside the training fold only.</p></details>
+  <details class="qa"><summary>Class weights vs threshold tuning?</summary><p>For a linear model, weights mostly shift the intercept, which is equivalent to a threshold change but corrupts probabilities. Threshold tuning keeps calibration and can be re-tuned without retraining.</p></details>
+  <details class="qa"><summary>Why is accuracy misleading, and what would you use?</summary><p>The majority-class baseline already scores 98%. Use precision/recall/F1 at a chosen threshold, PR-AUC for ranking, log loss/Brier for probabilities, or business cost.</p></details>
+  <details class="qa"><summary>How do you fix probabilities after undersampling?</summary><p>Apply the prior correction p = βq / (βq − q + 1) with β the fraction of negatives kept, or recalibrate on untouched validation data.</p></details>
+  <details class="qa"><summary>When is imbalance a real problem?</summary><p>When there are very few minority examples to learn from, classes overlap heavily, or the training procedure rarely sees positives (mini-batches). Then more data, better features, focal loss or sampling-for-batches help.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Always SMOTE imbalanced data." It often doesn't help strong models and breaks calibration.</li>
+    <li>"Balance the test set too." Evaluate on the real distribution.</li>
+    <li>"Resample, then split." That leaks copies of test rows into training.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>Y. Elor &amp; H. Averbuch-Elor, "To SMOTE, or not to SMOTE?", <a href="https://arxiv.org/abs/2201.08528">arXiv:2201.08528</a>, 2022 (73 datasets, strong vs weak classifiers, threshold tuning, Table 3).</li>
+    <li>R. van den Goorbergh, M. van Smeden, D. Timmerman &amp; B. Van Calster, "The harm of class imbalance corrections for risk prediction models", <i>JAMIA</i> 29(9), 2022, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/">PMC9382395</a>.</li>
+    <li>A. Carriero et al., "The harms of class imbalance corrections for machine learning based prediction models: a simulation study", <a href="https://arxiv.org/abs/2404.19494">arXiv:2404.19494</a>, 2024.</li>
+    <li>N. Chawla, K. Bowyer, L. Hall &amp; W. Kegelmeyer, "SMOTE: synthetic minority over-sampling technique", <i>JAIR</i> 16, 2002.</li>
+    <li>A. Dal Pozzolo, O. Caelen, R. Johnson &amp; G. Bontempi, "Calibrating probability with undersampling for unbalanced classification", IEEE SSCI 2015 (prior correction).</li>
+    <li><a href="https://imbalanced-learn.org/stable/introduction.html">imbalanced-learn</a> and scikit-learn <a href="https://scikit-learn.org/stable/modules/classification_threshold.html">threshold tuning</a> docs.</li>
+  </ol>
+  <p class="small">Fraud data is simulated with fixed seeds; all models are trained live in your browser (logistic regression by Newton's method).</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- core concepts: seeded data, polynomial / ridge fits, logistic regression, helpers ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+function solveLin(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+// delivery time (min) vs distance (km, 0–10): true curve + noise sd 4
+const truth = x => 14 + 6 * x - 0.35 * x * x + 6 * Math.sin(x * 0.9);
+const SIG = 4;
+// fixed design: n distances spread evenly over 0–10 km (jittered), fresh noise per dataset
+function deliveries(seed, n) { const r = rng(seed), g = gaussR(r), X = [], Y = []; for (let i = 0; i < n; i++) { const x = 10 * (i + 0.5 + 0.6 * (r() - 0.5)) / n; X.push(x); Y.push(truth(x) + SIG * g()); } return { X, Y }; }
+// polynomial ridge on x scaled to [-1,1] (Legendre-free, plain powers; lam on all but intercept)
+const feats = (x, d) => { const u = x / 5 - 1, f = [1]; for (let k = 1; k <= d; k++) f.push(f[k - 1] * u); return f; };
+function polyFit(X, Y, d, lam = 1e-9) { const F = X.map(x => feats(x, d)), p = d + 1, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  F.forEach((f, i) => { for (let a = 0; a < p; a++) { b[a] += f[a] * Y[i]; for (let c = 0; c < p; c++) A[a][c] += f[a] * f[c]; } }); for (let a = 1; a < p; a++) A[a][a] += lam;
+  const w = solveLin(A, b); return x => feats(x, d).reduce((s, v, k) => s + v * w[k], 0); }
+// bias–variance by simulation: S training sets of size n, grid of test x
+function bvDecomp(d, n, lam = 1e-9, S = 60, seed = 100) { const xs = Array.from({ length: 41 }, (_, i) => 0.5 + 9 * i / 40), P = [];
+  for (let s = 0; s < S; s++) { const D = deliveries(seed + s, n), f = polyFit(D.X, D.Y, d, lam); P.push(xs.map(f)); }
+  let b2 = 0, v = 0; xs.forEach((x, j) => { const m = P.reduce((a, p) => a + p[j], 0) / S; b2 += (m - truth(x)) ** 2; v += P.reduce((a, p) => a + (p[j] - m) ** 2, 0) / S; });
+  return { bias2: b2 / xs.length, variance: v / xs.length, noise: SIG * SIG, xs, P }; }
+// logistic regression (Newton/IRLS) with sample weights and L2
+function logreg(X, y, w = null, lam = 1e-4, it = 30) { const p = X[0].length + 1; let b = Array(p).fill(0); const W = w || y.map(() => 1);
+  for (let t = 0; t < it; t++) { const H = Array.from({ length: p }, () => Array(p).fill(0)), g = Array(p).fill(0);
+    X.forEach((x, i) => { const f = [1, ...x], z = f.reduce((s, v, k) => s + v * b[k], 0), q = 1 / (1 + Math.exp(-z)), r = W[i] * (q - y[i]), h = W[i] * q * (1 - q); for (let a = 0; a < p; a++) { g[a] += r * f[a]; for (let c = 0; c < p; c++) H[a][c] += h * f[a] * f[c]; } });
+    for (let a = 1; a < p; a++) { g[a] += lam * b[a]; H[a][a] += lam; } const st = solveLin(H, g); b = b.map((v, k) => v - st[k]); if (st.reduce((s, v) => s + v * v, 0) < 1e-14) break; }
+  return { b, prob: x => 1 / (1 + Math.exp(-[1, ...x].reduce((s, v, k) => s + v * b[k], 0))) }; }
+function auc(s, y) { const P = [], N = []; s.forEach((v, i) => (y[i] ? P : N).push(v)); let a = 0; const Ns = N.slice().sort((u, v) => u - v);
+  P.forEach(p => { let lo = 0, hi = Ns.length; while (lo < hi) { const m = (lo + hi) >> 1; if (Ns[m] < p) lo = m + 1; else hi = m; } let eq = 0, k = lo; while (k < Ns.length && Ns[k] === p) { eq++; k++; } a += lo + eq / 2; }); return a / (P.length * N.length); }
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+// ---- class-imbalance experiment (shared by node check and page) ----
+function fraud(seed, n, pi) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const f = r() < pi ? 1 : 0; X.push(f ? [1.6 + g(), 1.2 + g()] : [g(), g()]); y.push(f); } return { X, y }; }
+const shuffle = (a, r) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function imbExperiment() { const TR = fraud(1, 6000, 0.02), VA = fraud(2, 4000, 0.02), TE = fraud(3, 20000, 0.02), r = rng(9);
+  const P = TR.y.map((v, i) => i).filter(i => TR.y[i]), N = TR.y.map((v, i) => i).filter(i => !TR.y[i]);
+  const ov = (() => { const X = [...TR.X], y = [...TR.y]; for (let k = 0; k < N.length - P.length; k++) { const i = P[Math.floor(r() * P.length)]; X.push(TR.X[i]); y.push(1); } return { X, y }; })();
+  const keep = shuffle([...N], r).slice(0, P.length), un = { X: [...P, ...keep].map(i => TR.X[i]), y: [...P, ...keep].map(i => TR.y[i]) }, beta = P.length / N.length;
+  const w = TR.y.map(v => v ? TR.y.length / (2 * P.length) : TR.y.length / (2 * N.length));
+  const M = { none: logreg(TR.X, TR.y), weighted: logreg(TR.X, TR.y, w), oversample: logreg(ov.X, ov.y), undersample: logreg(un.X, un.y) };
+  const um = M.undersample; M.corrected = { prob: x => { const q = um.prob(x); return beta * q / (beta * q - q + 1); } };
+  const f1 = (p, y, t) => { let tp = 0, fp = 0, fn = 0; p.forEach((v, i) => { if (v >= t) { y[i] ? tp++ : fp++; } else if (y[i]) fn++; }); return { f1: 2 * tp / (2 * tp + fp + fn), prec: tp / Math.max(1, tp + fp), rec: tp / Math.max(1, tp + fn), flag: tp + fp }; };
+  const out = {}; for (const [k, m] of Object.entries(M)) { const p = TE.X.map(m.prob), pv = VA.X.map(m.prob); let bt = 0.5, bf = -1; for (let t = 0.01; t < 0.995; t += 0.01) { const f = f1(pv, VA.y, t).f1; if (f > bf) { bf = f; bt = t; } }
+    out[k] = { auc: auc(p, TE.y), ll: -p.reduce((a, v, i) => a + Math.log(TE.y[i] ? Math.max(v, 1e-12) : Math.max(1 - v, 1e-12)), 0) / p.length, mean: p.reduce((a, b) => a + b, 0) / p.length, at05: f1(p, TE.y, 0.5), bt, atT: f1(p, TE.y, bt), p }; }
+  return { TR, VA, TE, M, out, prev: TE.y.filter(v => v).length / TE.y.length, f1 }; }
+
+// ---- class imbalance page ----
+let EXP = null; const getExp = () => EXP || (EXP = imbExperiment());
+// 6 · compare fixes (calibration plot)
+(() => { const lab = document.getElementById('labFix'); if (!lab) return; const svg = lab.querySelector('svg');
+  const upd = () => { put(lab, 'auc', 'training…'); setTimeout(() => { const E = getExp(), k = onv(lab).dataset.v, o = E.out[k], y = E.TE.y;
+    const idx = o.p.map((v, i) => i).sort((a, b) => o.p[a] - o.p[b]), bins = []; for (let b = 0; b < 10; b++) { const sl = idx.slice(Math.floor(b * idx.length / 10), Math.floor((b + 1) * idx.length / 10)); bins.push([sl.reduce((a, i) => a + o.p[i], 0) / sl.length, sl.reduce((a, i) => a + y[i], 0) / sl.length]); }
+    const F = frame({ H: 300, x0: 0, x1: 1, y0: 0, y1: 0.5, xt: [0, 0.2, 0.4, 0.6, 0.8, 1], yt: [0, 0.1, 0.2, 0.3, 0.4, 0.5], xl: 'average predicted fraud probability in the bin', yl: 'actual fraud rate' });
+    svg.innerHTML = F.s + `<line x1="${F.X(0)}" y1="${F.Y(0)}" x2="${F.X(0.5)}" y2="${F.Y(0.5)}" stroke="var(--ok)" stroke-dasharray="6 4" stroke-width="2"/><text x="${F.X(0.5) + 6}" y="${F.Y(0.48)}" class="tok" font-size="12">perfectly calibrated</text>`
+      + `<path d="${bins.map((b, i) => (i ? 'L' : 'M') + F.X(b[0]).toFixed(1) + ' ' + F.Y(b[1]).toFixed(1)).join('')}" fill="none" stroke="var(--info)" stroke-width="2.5"/>` + bins.map(b => `<circle cx="${F.X(b[0]).toFixed(1)}" cy="${F.Y(b[1]).toFixed(1)}" r="5" fill="var(--info)"/>`).join('');
+    put(lab, 'auc', o.auc.toFixed(3)); put(lab, 'mean', pct(o.mean), Math.abs(o.mean - E.prev) < 0.015 ? 'ok' : 'bad'); put(lab, 'll', o.ll.toFixed(3), o.ll < 0.1 ? 'ok' : 'bad');
+    put(lab, 'f05', `${o.at05.f1.toFixed(3)} (${o.at05.flag})`); put(lab, 'ft', `${o.atT.f1.toFixed(3)} at t = ${o.bt.toFixed(2)}`); }, 30); };
+  segs(lab, upd); upd(); })();
+// 7 · threshold slider on the uncorrected model
+(() => { const lab = document.getElementById('labThr'); if (!lab) return; const rg = lab.querySelector('input');
+  const upd = () => { const t = +rg.value; rg.nextElementSibling.textContent = t.toFixed(2); const E = getExp(), o = E.out.none, r = E.f1(o.p, E.TE.y, t), tp = Math.round(r.rec * E.TE.y.filter(v => v).length), fn = E.TE.y.filter(v => v).length - tp, fp = r.flag - tp;
+    put(lab, 'flag', r.flag); put(lab, 'prec', pct(r.prec)); put(lab, 'rec', pct(r.rec)); put(lab, 'f1', r.f1.toFixed(3)); put(lab, 'cost', '₹' + (20 * fp + 800 * fn).toLocaleString('en-IN')); };
+  rg.addEventListener('input', upd); setTimeout(upd, 60); })();
+
+</script>
+</body>
+</html>
