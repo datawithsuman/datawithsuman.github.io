@@ -64,8 +64,8 @@ Tap a track to see its lessons, in the order to learn them.
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [Prefill vs Decode](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | 🟢 Beginner | 8 min |
-| 2 | [LLM Quantization](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🟡 Intermediate | 12 min |
+| 1 | [Prefill vs Decode](https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/) | 🟡 Intermediate | 30 min |
+| 2 | [LLM Quantization](https://datawithsuman.github.io/ai/interview-prep/llm-inference/llm-quantization/) | 🟡 Intermediate | 35 min |
 
 </details>
 

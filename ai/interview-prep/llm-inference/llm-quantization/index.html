@@ -1,305 +1,863 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLM Quantization, Explained</title>
-  <meta name="description" content="How LLM quantization works: INT8, INT4 and FP8, why outliers break naive rounding, and how group-wise scales, GPTQ, AWQ and SmoothQuant fix it, with interactive labs measured on a real LLM.">
-  <meta property="og:title" content="LLM Quantization, explained">
-  <meta property="og:description" content="How does an LLM survive losing 75% of its bits? An interactive lesson by @datawithsuman.">
-  <link rel="stylesheet" href="../../kit/site.css?v=20261027b">
-  <style>
-    .chart { position: relative; background: #0f0f12; border-radius: 12px; }
-    .chart svg { display: block; width: 100%; height: auto; }
-    .chart text { font-family: var(--sans); }
-    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
-    .seg .btn { padding: 9px 13px; font-size: 14px; }
-    .seg .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
-    .say { font: 400 19px/1.45 var(--serif); background: var(--surface-2); border-radius: 12px; padding: 12px 16px; margin-top: 12px; }
-    .say .p { color: var(--muted); } .say .g { color: var(--ink); }
-    .say.bad .g { color: var(--red); } .say.good .g { color: var(--green); }
-    table.t { width: 100%; border-collapse: collapse; font-size: 15px; }
-    table.t th, table.t td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-    table.t th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
-    table.t td.num { font-family: var(--mono); white-space: nowrap; }
-    .scroll { overflow-x: auto; }
-    .ladder { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-    .ladder .card { padding: 16px; border-top: 4px solid var(--c); }
-    .ladder b { display: block; font: 400 22px/1.2 var(--serif); margin-bottom: 4px; }
-    .ladder span { font: 600 12px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--c); }
-    .ladder p { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-2); }
-    .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
-    .row3 div { background: var(--surface-2); border-radius: 12px; padding: 10px 14px; }
-    .row3 span { display: block; font-size: 13px; color: var(--muted); }
-    .row3 b { font: 600 20px/1.3 var(--mono); }
-    .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin-top: 14px; }
-    .controls > span { font-size: 14px; color: var(--muted); }
-    h3.mini { font: 600 13px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 16px 0 8px; }
-    @media (max-width: 680px) { .ladder, .row3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } table.t { font-size: 13.5px; } table.t th, table.t td { padding: 8px 6px; } table.t th { font-size: 11px; } }
-  </style>
-</head>
-<body data-page="lesson" data-root="../../" data-track="llm-inference" data-lesson="llm-quantization">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LLM Quantization · @datawithsuman</title>
+<meta name="description" content="How 4- and 8-bit LLMs keep their quality: grids, groups, outliers, AWQ, GPTQ, SmoothQuant and FP4 formats, explained step by step.">
+<meta property="og:title" content="LLM Quantization">
+<meta property="og:description" content="How 4- and 8-bit LLMs keep their quality: grids, groups, outliers, AWQ, GPTQ, SmoothQuant and FP4 formats, explained step by step.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
 
-<header class="top wrap">
-  <span class="handle">@datawithsuman</span>
-  <span class="chip">Concept · LLM Inference</span>
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; LLM Inference</a><a class="h" href="../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · LLM Inference</div>
+  <h1>LLM Quantization</h1>
+  <div class="meta">Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 docs and the gpt-oss model card · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> quantization stores each number in 8 or 4 bits instead of 16, so the model fits on fewer GPUs and decode moves fewer bytes per token. Rounding always makes errors. The real methods differ in <b>where those errors land</b>: spread across small groups, steered away from the 1% of channels that matter (AWQ), cancelled by adjusting the remaining weights (GPTQ), or moved from hard-to-quantize activations into easy weights (SmoothQuant).<br><span class="small">What you'll be able to do after this: size a quantized deployment on a napkin, explain why plain rounding breaks large models, read the GPTQ, AWQ and SmoothQuant equations, and choose a format for a given bottleneck.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>original values</span><span><i style="background:var(--b)"></i>quantized values</span><span><i style="background:var(--bad)"></i>error, outliers, collapse</span><span><i style="background:var(--ok)"></i>fix that works</span><span><i style="background:var(--st)"></i>activations</span><span><i style="background:var(--info)"></i>memory, numbers</span></div>
 </header>
 
-<main>
+<p class="small" style="margin-top:22px"><b>Running examples:</b> serving Llama 3.1 70B on 80 GB H100s, and 32 real consecutive weights from one row of Qwen2.5-0.5B-Instruct (layer 12, MLP down-projection), including one big outlier. Perplexity numbers are WikiText-2 (lower is better) unless stated.</p>
 
-<section class="hero wrap">
-  <div class="kicker">LLM QUANTIZATION</div>
-  <h1>How does an LLM survive losing <span class="yellow">75% of its bits?</span></h1>
-  <p class="lead">Quantization stores each weight in 4 or 8 bits instead of 16. That makes the model smaller and faster to serve. Plain rounding can break it, though. Here's what goes wrong, and how GPTQ, AWQ and SmoothQuant fix it.</p>
-  <p class="note">Numbers come from the GPTQ, AWQ and SmoothQuant papers (table cited next to each) and <i>Inference Engineering</i> (P. Kiely, ch. 5.1). Sizes are exact arithmetic. Anything else is labelled illustrative.</p>
+<!-- ===== 1 ===== -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>An LLM is mostly numbers you have to store and move</h2>
+  <p>A 70B model in 16-bit is 141 GB of weights before you've served a single user. That's two H100s just to hold it. And every decode step reads every weight from memory, so the bytes also set your speed limit (see <a href="https://datawithsuman.github.io/ai/interview-prep/llm-inference/prefill-vs-decode/">Prefill vs Decode</a>). Fewer bits per weight attacks both problems at once.</p>
+  <div class="card lab" id="labSize">
+    <div class="seg" data-k="m"><button data-v="0">Llama 3.1 8B</button><button data-v="1" class="on">Llama 3.1 70B</button><button data-v="2">Llama 3.1 405B</button></div>
+    <div class="seg" data-k="b"><button data-v="16" class="on">16-bit</button><button data-v="8">8-bit</button><button data-v="4">4-bit</button></div>
+    <div class="stats">
+      <div class="stat"><div class="l">weights</div><div class="v info" data-o="gb">–</div></div>
+      <div class="stat"><div class="l">80 GB GPUs just for weights</div><div class="v" data-o="gpu">–</div></div>
+      <div class="stat"><div class="l">left for KV cache on those GPUs</div><div class="v st" data-o="free">–</div></div>
+    </div>
+    <div class="meter"><i data-o="bar" style="background:var(--info)"></i></div>
+    <p class="small" style="margin:0">GB = parameters × bits ÷ 8 (8.03 B, 70.6 B, 405.9 B parameters). Weights only: 4-bit formats add a little for per-group scales (about 0.25–0.5 bits per weight), and you still need memory for the KV cache and activations.</p>
+  </div>
+  <p>Speed follows the bytes, but not perfectly. One precision step down (16 → 8 bits) is typically 30–50% faster in practice, not 2× (Inference Engineering, P. Kiely, ch. 5.1). The papers report bigger wins against slow baselines: GPTQ's 3-bit OPT-175B generates about 3.25× faster than FP16 on A100s and about 4.5× on A6000s <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=1">GPTQ, p. 1</a></span>; AWQ's 4-bit kernels average 3.2–3.3× over Hugging Face FP16 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, p. 2</a></span>.</p>
+  <p>The catch is quality. Round every weight carelessly and a large model can fall apart. The rest of this page is about why, and the three ideas that fix it.</p>
 </section>
 
-<!-- 01 why -->
-<section class="wrap" id="why">
-  <span class="step">01</span>
-  <h2>An LLM is mostly <span class="yellow">numbers you have to move</span></h2>
-  <p class="sub">Every token the model generates reads every weight from GPU memory. Fewer bits per weight means less memory to hold them and less data to move for each token.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <div class="seg" id="precBtns"></div>
-      <span class="badge info" id="whyBadge"></span>
-    </div>
-    <div class="chart" id="memChart"></div>
-    <div class="readouts"><div><span>70B model weights</span><b id="mem70">–</b></div><div><span>80 GB GPUs needed</span><b id="gpus70">–</b></div></div>
-    <p class="note">Weights only (the KV cache and per-group scales add a little more). GB = parameters × bits ÷ 8. The dashed line is one 80 GB GPU.</p>
+<!-- ===== 2 ===== -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Quantizing = snapping numbers onto a grid</h2>
+  <p>Pick a <span class="k">scale</span> (the spacing between grid levels), divide each number by it, round to the nearest integer, and store the integer. To use it, multiply back by the scale. With N bits you get 2<sup>N</sup> levels, so 4 bits gives just 16.</p>
+  <div class="reader" data-reader='[
+    {"t":"q","c":"b","label":"stored integer","say":"What actually gets saved: an INT8 (or INT4) number."},
+    {"t":"x","c":"a","label":"original value","say":"The 16-bit weight or activation you want to compress."},
+    {"t":"r","c":"b","label":"round","say":"Snap to the nearest integer. This is where the error comes from, at most half a step."},
+    {"t":"d","c":"info","label":"step size","say":"The scale Δ: the gap between neighbouring levels. One Δ is shared by a whole group of numbers."},
+    {"t":"m","c":"bad","label":"the biggest value","say":"Δ is set so the largest magnitude in the group lands on the top level. One outlier stretches the grid for everybody else."},
+    {"t":"lv","c":"info","label":"levels per side","say":"127 for INT8, 7 for INT4 (symmetric around zero)."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-q}{\bar{X}} = \class{term t-r}{\big\lceil}\, \class{term t-x}{X} / \class{term t-d}{\Delta} \,\class{term t-r}{\big\rfloor}, \qquad \class{term t-d}{\Delta} = \class{term t-m}{\max(|X|)} \,/\, \class{term t-lv}{(2^{N-1}-1)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">SmoothQuant's Eq. 1 (symmetric INT-N quantization) <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=2">p. 2</a></span>. Asymmetric quantization adds a zero-point so the grid can sit off-centre · hover any symbol.</p>
   </div>
-  <div class="card tip"><span class="badge warn">Speed</span><p>Decoding is <b>memory-bound</b>: the GPU mostly waits for weights to arrive. Halving the bytes helps, but it isn't a free 2×. <i id="bookStep"></i> (<span class="muted small">Inference Engineering, ch. 5.1</span>). GPTQ reports <i id="gptqSpeed"></i>.</p></div>
+  <h3>Try it on 32 real weights</h3>
+  <div class="card lab" id="labGrid">
+    <label>Bits per weight <input type="range" min="2" max="8" step="1" value="4" data-k="b"><output></output></label>
+    <div class="stage" style="margin:4px 0;padding:12px"><svg viewBox="0 0 760 230" data-o="plot" role="img" aria-label="32 weights before and after rounding"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">levels</div><div class="v info" data-o="lv">–</div></div>
+      <div class="stat"><div class="l">avg error ÷ avg |w|</div><div class="v b" data-o="err">–</div></div>
+      <div class="stat"><div class="l">weights crushed to 0</div><div class="v bad" data-o="zero">–</div></div>
+    </div>
+    <p class="small" style="margin:0"><span style="color:var(--a)">●</span> original <span style="color:var(--b)">●</span> after rounding <span style="color:var(--bad)">●</span> a non-zero weight rounded to exactly 0. One scale for all 32 (per-tensor style). The −0.44 weight is about 10× the typical size here, so it sets Δ for everyone.</p>
+  </div>
+  <p>Three more terms you'll need. <b>Granularity</b> is how many numbers share one scale: one per tensor, per row or channel, per token (for activations), or per small <b>group</b> such as 128 weights. <b>Weight-only</b> schemes (written W4A16: 4-bit weights, 16-bit activations) shrink memory and speed up decode. <b>Weight-and-activation</b> schemes (W8A8, FP8) also let the tensor cores do low-precision maths, which speeds up compute-bound prefill <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, §2, p. 2</a></span>.</p>
+  <details class="deep"><summary>Go deeper: why small errors matter</summary><p>Errors compound. π rounded to 3.14 is off by 0.05%, but cube it and you're off by 0.15%. Round π to 3 and π³ comes out as 27 instead of 31. An LLM stacks dozens of layers and thousands of tokens on top of every rounding error (example from Inference Engineering, ch. 5.1).</p></details>
 </section>
 
-<!-- 02 what -->
-<section class="wrap" id="snap">
-  <span class="step">02</span>
-  <h2>Quantizing = <span class="yellow">snapping to a grid</span></h2>
-  <p class="sub">Pick a scale that stretches 2<sup>bits</sup> evenly spaced levels from the smallest weight to the largest, then round every weight to the nearest level. Here are 32 real weights from an open LLM.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <ul class="legend"><li><i style="--c:var(--blue)"></i>original weight</li><li><i style="--c:var(--yellow)"></i>after rounding</li><li><i style="--c:var(--red)"></i>crushed to the zero level</li></ul>
-    </div>
-    <div class="chart" id="snapChart"></div>
-    <div class="row3">
-      <div><span>levels</span><b id="snapLevels">–</b></div>
-      <div><span>avg error vs avg |w|</span><b id="snapErr">–</b></div>
-      <div><span>crushed to zero</span><b id="snapZero">–</b></div>
-    </div>
-    <label class="slider"><span>Bits per weight: <b id="bitsOut">–</b></span><input type="range" id="bits" min="2" max="8" value="4"></label>
-    <p class="note" id="snapNote"></p>
+<!-- ===== 3 ===== -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>Round-to-nearest works… until it falls off a cliff</h2>
+  <p>The obvious method is <b>RTN</b>: pick a scale per row and round every weight to the nearest level. GPTQ's authors ran exactly that, with one scale per row, on the whole OPT family. At 4 bits it mostly survives. At 3 bits it collapses at every size. Drag through the model sizes:</p>
+  <div class="card lab" id="labRtn">
+    <label>Model <input type="range" min="0" max="8" step="1" value="8" data-k="m"><output></output></label>
+    <div class="bars" data-max="1" data-o="bars"></div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+    <p class="small" style="margin:0">OPT models, WikiText-2 perplexity, per-row asymmetric grid, no grouping. Bars are on a log scale capped at 100 <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">GPTQ, Table 3, p. 7</a></span>.</p>
   </div>
-  <div class="card tip"><span class="badge warn">Why it matters</span><p>Small errors compound. π rounded to 3.14 is off by 0.05%, but cube it and you're off by 0.15%. Round it to 3 and π³ is 27 instead of 31. An LLM stacks dozens of layers and thousands of tokens on top of every rounding error <span class="muted small">(example from Inference Engineering, ch. 5.1)</span>.</p></div>
+  <div class="card bad"><h4>What breaks: outliers</h4><p>At 175B, 4-bit RTN loses 2.2 perplexity points, "performing worse than the 10× smaller full-precision 13B model", and at 3 bits it "collapses completely" <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">GPTQ, p. 7</a></span>. The cause is the same thing you saw with the −0.44 weight above, at scale: a few huge values stretch the grid, and everything small gets rounded into a handful of levels or to zero.</p></div>
 </section>
 
-<!-- 03 quiz -->
-<section class="wrap" id="quiz">
-  <span class="step">03</span>
-  <h2>One weight is <span class="yellow">12× bigger</span> than a typical one. At 4 bits, what happens to the small ones?</h2>
-  <p class="sub">Tap an answer.</p>
-  <div class="quiz">
-    <button class="opt" data-ok="0" data-why="The big weight is the one that survives: the grid's range is stretched to fit it exactly.">The big one gets clipped</button>
-    <button class="opt" data-ok="1" data-why="Right. The scale must stretch to reach the outlier, so the 16 levels sit far apart and many small weights round to the same level, often zero. That is the core difficulty of quantization. (Scroll up: at 4 bits, 14 of the 32 weights are crushed.)">They collapse onto the same few levels</button>
-    <button class="opt" data-ok="0" data-why="Rounding error depends on the level spacing, which the outlier makes huge. So small weights get worse, not better.">Nothing, rounding error is tiny</button>
-    <button class="opt" data-ok="0" data-why="Plain rounding has no such rule; every weight gets the same grid. (Keeping a few channels in 16-bit is AWQ's first idea, section 06.)">The model keeps them in 16-bit</button>
-  </div>
-  <p class="quiz-why" aria-live="polite"></p>
-</section>
-
-<!-- 04 cliff -->
-<section class="wrap" id="cliff">
-  <span class="step">04</span>
-  <h2>Plain rounding works… <span class="red">until it falls off a cliff</span></h2>
-  <p class="sub">Round-to-nearest (RTN) applied to real OPT models, from 125M to 175B parameters. Perplexity measures how surprised the model is by real text; lower is better.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <ul class="legend"><li><i style="--c:var(--muted)"></i>16-bit</li><li><i style="--c:var(--yellow)"></i>4-bit RTN</li><li><i style="--c:var(--red)"></i>3-bit RTN</li></ul>
-      <span class="badge" id="cliffBadge"></span>
+<!-- ===== 4 ===== -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>The map: what gets quantized, and how cleverly</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Map of LLM quantization approaches">
+        <g data-show="1"><text x="20" y="34" font-weight="600">post-training (no retraining)</text>
+          <rect x="20" y="48" width="350" height="110" rx="12" class="fb"/><text x="195" y="74" text-anchor="middle" class="tb" font-weight="600">weight-only · W4A16 / W3A16</text>
+          <text x="195" y="98" text-anchor="middle" class="d" font-size="12.5">RTN with groups · GPTQ · AWQ · GGUF k-quants</text>
+          <text x="195" y="122" text-anchor="middle" class="d" font-size="12.5">smaller model, faster decode</text><text x="195" y="142" text-anchor="middle" class="d" font-size="12.5">maths still runs in 16-bit</text></g>
+        <g data-show="2"><rect x="390" y="48" width="350" height="110" rx="12" class="fst"/><text x="565" y="74" text-anchor="middle" class="tst" font-weight="600">weights + activations · W8A8, FP8</text>
+          <text x="565" y="98" text-anchor="middle" class="d" font-size="12.5">LLM.int8() · SmoothQuant · FP8 (E4M3)</text>
+          <text x="565" y="122" text-anchor="middle" class="d" font-size="12.5">low-precision tensor-core maths</text><text x="565" y="142" text-anchor="middle" class="d" font-size="12.5">helps compute-bound prefill too</text></g>
+        <g data-show="3"><rect x="20" y="180" width="350" height="96" rx="12" class="finfo"/><text x="195" y="206" text-anchor="middle" class="tinfo" font-weight="600">block-scaled number formats</text>
+          <text x="195" y="230" text-anchor="middle" class="d" font-size="12.5">MXFP8, MXFP4 (scale per 32), NVFP4 (per 16)</text><text x="195" y="252" text-anchor="middle" class="d" font-size="12.5">groups built into the hardware</text></g>
+        <g data-show="4"><text x="390" y="172" font-weight="600" font-size="13">trained for it</text><rect x="390" y="180" width="350" height="96" rx="12" class="fok"/><text x="565" y="206" text-anchor="middle" class="tok" font-weight="600">quantization-aware training</text>
+          <text x="565" y="230" text-anchor="middle" class="d" font-size="12.5">e.g. gpt-oss MoE weights post-trained in MXFP4</text><text x="565" y="252" text-anchor="middle" class="d" font-size="12.5">best quality per bit, costs training</text></g>
+      </svg>
     </div>
-    <div class="chart" id="cliffChart"></div>
-    <div class="readouts"><div><span>4-bit: perplexity rise</span><b id="cliff4">–</b></div><div><span>3-bit: perplexity rise</span><b id="cliff3">–</b></div></div>
-    <label class="slider"><span>Model size: <b id="sizeOut">–</b></span><input type="range" id="size" min="0" max="8" value="8"></label>
-    <p class="note" id="cliffNote"></p>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li><b>Weight-only</b> post-training quantization keeps activations in 16-bit and compresses only the weights, usually to 4 bits. It's the standard for memory-bound decode and local inference. RTN with small groups is a strong baseline; GPTQ and AWQ are the two famous smart methods <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, p. 2</a></span>.</li>
+      <li><b>Weight and activation</b> quantization (W8A8) unlocks INT8 or FP8 matrix maths. Activations are much harder to quantize than weights because of outliers, which is what LLM.int8() and SmoothQuant tackle <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=3">SmoothQuant, p. 3</a></span>.</li>
+      <li><b>Block-scaled formats</b> move the "one scale per small group" idea into the hardware, so each block of 16 or 32 values gets its own scale for free.</li>
+      <li><b>Quantization-aware training</b> lets the model learn around the rounding. OpenAI post-trained gpt-oss's mixture-of-experts weights in MXFP4 (about 4.25 bits per parameter), which is how the 117B model fits on a single 80 GB GPU (gpt-oss model card).</li>
+    </ol>
   </div>
 </section>
 
-<!-- 05 groups -->
-<section class="wrap" id="groups">
-  <span class="step">05</span>
-  <h2>Fix 1: give every <span class="yellow">small group</span> its own scale</h2>
-  <p class="sub">An outlier only stretches the grid of its own group. Smaller groups mean more scales to store, but each group's grid fits its own weights snugly.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <div class="seg" id="grpBtns"><button class="btn on" data-g="32">1 scale / 32</button><button class="btn" data-g="16">1 / 16</button><button class="btn" data-g="8">1 / 8</button><button class="btn" data-g="4">1 / 4</button></div>
-      <span class="badge info" id="grpBadge"></span>
-    </div>
-    <div class="chart" id="grpChart"></div>
-    <div class="row3">
-      <div><span>avg error vs avg |w|</span><b id="grpErr">–</b></div>
-      <div><span>crushed to zero</span><b id="grpZero">–</b></div>
-      <div><span>extra storage</span><b id="grpOver">–</b></div>
-    </div>
-    <p class="note">The same 32 weights at 3 bits. Extra storage assumes a 16-bit scale and a 16-bit zero-point per group. Real models use groups of 128.</p>
-  </div>
-  <div class="card pad scroll" style="margin-top:16px">
-    <table class="t" id="grpTable"></table>
-    <p class="note" id="grpTableNote"></p>
-  </div>
-  <div class="card tip"><span class="badge info">In hardware</span><p>New number formats bake this in. MXFP8 and MXFP4 share one scale per 32 values; NVFP4 uses one per 16, plus a global scale. The more scales, the less an outlier can hurt.</p></div>
+<!-- ===== 5 ===== -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>You can't avoid rounding error. You choose where it lands.</h2>
+  <p>Every method below accepts that 4 or 8 bits will make mistakes, and differs only in where those mistakes are allowed to go. Each idea maps to one of the next five chapters:</p>
+  <div class="tw"><table class="t">
+    <tr><th>Idea</th><th>What it does with the error</th><th>Method</th></tr>
+    <tr><td><b>Confine it</b></td><td>Give each small group its own scale, so an outlier only hurts its own group</td><td>group-wise, MX / NVFP4</td></tr>
+    <tr><td><b>Isolate it</b></td><td>Keep the few outlier features in 16-bit</td><td>LLM.int8()</td></tr>
+    <tr><td><b>Steer it</b></td><td>Make the important channels' relative error smaller</td><td>AWQ</td></tr>
+    <tr><td><b>Cancel it</b></td><td>Adjust not-yet-rounded weights to undo the error already made</td><td>GPTQ</td></tr>
+    <tr><td><b>Move it</b></td><td>Shift outliers from activations (hard) into weights (easy)</td><td>SmoothQuant</td></tr>
+  </table></div>
 </section>
 
-<!-- 06 AWQ -->
-<section class="wrap" id="awq">
-  <span class="step">06</span>
-  <h2>Fix 2: protect the <span class="yellow">1% that matters</span></h2>
-  <p class="sub">A few input channels carry huge activations every time, so the weights that multiply them matter most. AWQ's insight: find them by looking at the <i>activations</i>, not the weights.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <ul class="legend"><li><i style="--c:var(--yellow)"></i>activation size per input channel</li><li><i style="--c:var(--blue)"></i>weight size per input channel</li></ul>
-      <span class="badge warn">illustrative</span>
+<!-- ===== 6 ===== -->
+<section class="ch" id="c6" data-toc="6 · Groups">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill ok">Confine it: one scale per small group</span>
+  <h2>An outlier should only stretch its own neighbourhood</h2>
+  <p>With one scale per row, a single big weight sets Δ for thousands of small ones. Give every group of, say, 128 weights its own scale, and the damage stays local. The cost is storing more scales.</p>
+  <div class="card lab" id="labGroup">
+    <div class="seg"><button data-v="32">1 scale / 32</button><button data-v="16">1 / 16</button><button data-v="8" class="on">1 / 8</button><button data-v="4">1 / 4</button></div>
+    <div class="stage" style="margin:4px 0;padding:12px"><svg viewBox="0 0 760 230" data-o="plot" role="img" aria-label="32 weights rounded with group-wise scales"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">avg error ÷ avg |w|</div><div class="v b" data-o="err">–</div></div>
+      <div class="stat"><div class="l">weights crushed to 0</div><div class="v bad" data-o="zero">–</div></div>
+      <div class="stat"><div class="l">extra storage per weight</div><div class="v info" data-o="ex">–</div></div>
     </div>
-    <h3 class="mini">Activations: a few channels are ≈100× bigger</h3>
-    <div class="chart" id="actChart"></div>
-    <h3 class="mini">Weights (own scale): nothing stands out</h3>
-    <div class="chart" id="wChart"></div>
-    <p class="note">Illustrative picture of what SmoothQuant and AWQ observe in real LLMs: outliers are ≈100× larger than typical values and stay in the same channels for every token. Judging importance by weight size would miss them.</p>
+    <p class="small" style="margin:0">The same 32 weights at 3 bits, symmetric grid. Dashed lines mark group boundaries. Extra storage assumes one 16-bit scale per group. Real models use groups of 128: about 0.125 extra bits per weight, or about 0.25 with a zero-point too (GPTQ quotes ≈ 0.15).</p>
   </div>
-  <h3 class="mini" style="margin-top:28px">Keep a few channels in 16-bit, round the rest to 3 bits</h3>
-  <div class="card lab">
-    <div class="lab-top"><div class="seg" id="keepBtns"><button class="btn" data-m="0">OPT-1.3B</button><button class="btn on" data-m="1">OPT-6.7B</button><button class="btn" data-m="2">OPT-13B</button></div></div>
-    <div class="scroll"><table class="t" id="keepTable"></table></div>
-    <p class="note" id="keepNote"></p>
+  <p>The papers agree it's the cheapest big win. For 3-bit OPT-175B, GPTQ found group size 1,024 (about 0.02 extra bits) improves perplexity by about 0.2, and group size 128 (about 0.15 extra bits) by about another 0.1, ending only 0.1–0.3 off full precision <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">GPTQ, p. 7</a></span>. AWQ calls RTN "actually quite strong when using a small group size like 128" and uses g128 throughout <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=7">AWQ, p. 7</a></span>.</p>
+  <h3>In hardware: block-scaled formats</h3>
+  <p>New GPUs build groups into the number format. MXFP4 shares one scale per 32 values. NVIDIA's NVFP4 shares one per 16, and adds a second, per-tensor scale <span class="src"><a href="https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference">NVIDIA blog</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"x","c":"a","label":"the real value","say":"The number the model actually uses."},
+    {"t":"e","c":"b","label":"4-bit float","say":"Stored as E2M1: 1 sign, 2 exponent, 1 mantissa bit. Only values like 0, 0.5, 1, 1.5, 2, 3, 4, 6 (and negatives) are possible."},
+    {"t":"sb","c":"info","label":"block scale","say":"One per 16 values, stored in FP8 (E4M3), so it can be a non-power-of-two. MXFP4 uses one per 32, restricted to powers of two (E8M0), which wastes precision."},
+    {"t":"sg","c":"st","label":"tensor scale","say":"One FP32 scale for the whole tensor, so the block scales fit FP8 range: global max ÷ (448 × 6)."},
+    {"t":"cost","c":"info","label":"cost","say":"About 4.5 bits per value: 4 bits plus an 8-bit scale shared by 16 values."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-x}{x} = \class{term t-e}{x_{\text{e2m1}}}\cdot\class{term t-sb}{s_{\text{block}}}\cdot\class{term t-sg}{s_{\text{global}}} \qquad \class{term t-cost}{\approx 4.5\ \text{bits/value}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">From NVIDIA's <a href="https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html">Transformer Engine NVFP4 docs</a> and the NVFP4 blog · hover any symbol.</p>
   </div>
-  <div class="card tip"><span class="badge good">The trick</span><p>Mixed precision is awkward for GPU kernels. So AWQ keeps everything in 4 bits and instead <b>scales the important channels up</b> before rounding (and their activations down by the same factor). The math is unchanged, but those weights now span more levels, so their relative error shrinks. The per-channel scale comes from average activation size, tuned per layer on a small calibration set. No retraining.</p></div>
 </section>
 
-<!-- 07 GPTQ + comparison -->
-<section class="wrap" id="gptq">
-  <span class="step">07</span>
-  <h2>Fix 3: <span class="yellow">cancel the error</span> you just made</h2>
-  <p class="sub">GPTQ quantizes a layer one column at a time. After rounding each column, it nudges the not-yet-quantized columns to cancel that column's error on real inputs.</p>
-  <ol class="steps">
-    <li class="card"><span class="n">1</span><div><h3>Run a small calibration set through the layer</h3><p>Record its inputs X and build H = 2XᵀX. H captures which input directions are correlated and important.</p></div></li>
-    <li class="card"><span class="n">2</span><div><h3>Round column 1</h3><p>Its rounding error is now fixed forever.</p></div></li>
-    <li class="card"><span class="n">3</span><div><h3>Spread the error onto columns 2…n</h3><p>Update them with H⁻¹ so the layer's <i>output</i>, not each weight, stays as close as possible to the original.</p></div></li>
-    <li class="card"><span class="n">4</span><div><h3>Repeat to the last column, layer by layer</h3><p>OPT-175B took ≈4 GPU hours (GPTQ paper).</p></div></li>
+<!-- ===== 7 ===== -->
+<section class="ch" id="c7" data-toc="7 · Outliers">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill bad">Isolate it: the outlier features</span>
+  <h2>Past ~6.7B parameters, a few channels go huge, everywhere</h2>
+  <p>Groups fix outliers in <i>weights</i>. Activations have a worse problem, discovered by LLM.int8(): in big models a handful of hidden dimensions carry values up to 20× larger than the rest, in nearly every layer and token <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=2">LLM.int8(), p. 2</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 356" role="img" aria-label="Activation channels with a few huge outliers in fixed positions" ><g data-show="1"><line x1="40" y1="130" x2="720" y2="130" class="lnf"/><rect x="40.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="42.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="45.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="48.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="50.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="53.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="55.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="58.6" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="61.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="63.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="66.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="69.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="71.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="74.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="77.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="79.8" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="82.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="85.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="87.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="90.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="93.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="95.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="98.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="101.1" y="35.0" width="1.99" height="95.0" class="sbad"/><rect x="103.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="106.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="109.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="111.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="114.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="117.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="119.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="122.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="125.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="127.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="130.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="133.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="135.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="138.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="140.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="143.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="146.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="148.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="151.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="154.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="156.9" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="159.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="162.2" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="164.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="167.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="170.2" y="127.9" width="1.99" height="2.1" class="sst"/><rect x="172.8" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="175.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="178.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="180.8" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="183.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="186.1" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="188.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="191.4" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="194.1" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="196.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="199.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="202.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="204.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="207.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="210.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="212.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="215.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="218.0" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="220.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="223.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="225.9" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="228.6" y="64.5" width="1.99" height="65.5" class="sbad"/><rect x="231.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="233.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="236.6" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="239.2" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="241.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="244.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="247.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="249.8" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="252.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="255.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="257.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="260.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="263.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="265.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="268.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="271.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="273.8" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="276.4" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="279.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="281.7" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="284.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="287.0" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="289.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="292.3" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="295.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="297.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="300.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="303.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="305.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="308.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="310.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="313.6" y="127.8" width="1.99" height="2.2" class="sst"/><rect x="316.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="318.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="321.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="324.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="326.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="329.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="332.2" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="334.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="337.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="340.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="342.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="345.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="348.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="350.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="353.4" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="356.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="358.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="361.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="364.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="366.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="369.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="372.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="374.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="377.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="380.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="382.7" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="385.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="388.0" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="390.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="393.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="395.9" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="398.6" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="401.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="403.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="406.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="409.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="411.9" y="48.3" width="1.99" height="81.7" class="sbad"/><rect x="414.5" y="91.5" width="1.99" height="38.5" class="sbad"/><rect x="417.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="419.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="422.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="425.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="427.8" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="430.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="433.1" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="435.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="438.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="441.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="443.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="446.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="449.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="451.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="454.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="457.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="459.7" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="462.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="465.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="467.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="470.3" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="473.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="475.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="478.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="480.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="483.6" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="486.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="488.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="491.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="494.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="496.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="499.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="502.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="504.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="507.5" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="510.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="512.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="515.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="518.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="520.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="523.4" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="526.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="528.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="531.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="534.1" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="536.7" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="539.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="542.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="544.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="547.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="550.0" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="552.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="555.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="558.0" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="560.6" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="563.3" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="565.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="568.6" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="571.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="573.9" y="62.7" width="1.99" height="67.3" class="sbad"/><rect x="576.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="579.2" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="581.9" y="128.0" width="1.99" height="2.0" class="sst"/><rect x="584.5" y="128.1" width="1.99" height="1.9" class="sst"/><rect x="587.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="589.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="592.5" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="595.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="597.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="600.5" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="603.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="605.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="608.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="611.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="613.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="616.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="619.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="621.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="624.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="627.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="629.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="632.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="635.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="637.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="640.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="643.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="645.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="648.3" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="650.9" y="101.5" width="1.99" height="28.5" class="sbad"/><rect x="653.6" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="656.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="658.9" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="661.6" y="127.9" width="1.99" height="2.1" class="sst"/><rect x="664.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="666.9" y="128.3" width="1.99" height="1.7" class="sst"/><rect x="669.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="672.2" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="674.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="677.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="680.2" y="128.4" width="1.99" height="1.6" class="sst"/><rect x="682.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="685.5" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="688.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="690.8" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="693.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="696.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="698.8" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="701.4" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="704.1" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="706.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="709.4" y="128.2" width="1.99" height="1.8" class="sst"/><rect x="712.0" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="714.7" y="128.5" width="1.99" height="1.5" class="sst"/><rect x="717.3" y="128.5" width="1.99" height="1.5" class="sst"/><text x="40" y="150" class="d" font-size="12.5">token 1 · 256 input channels (max |activation| each)</text></g><g data-show="2" data-hl="2" style="color:var(--bad)"><circle cx="102.1" cy="27.0" r="4" class="sbad"/><circle cx="229.6" cy="56.5" r="4" class="sbad"/><circle cx="412.9" cy="40.3" r="4" class="sbad"/><circle cx="415.5" cy="83.5" r="4" class="sbad"/><circle cx="574.9" cy="54.7" r="4" class="sbad"/><circle cx="651.9" cy="93.5" r="4" class="sbad"/><text x="720" y="18" text-anchor="end" class="tbad" font-size="12.5" font-weight="600">6 channels ≈ 20–70× the typical ~1.3</text></g><g data-show="3"><line x1="40" y1="270" x2="720" y2="270" class="lnf"/><rect x="40.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="42.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="45.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="48.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="50.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="53.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="55.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="58.6" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="61.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="63.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="66.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="69.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="71.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="74.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="77.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="79.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="82.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="85.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="87.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="90.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="93.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="95.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="98.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="101.1" y="185.0" width="1.99" height="85.0" class="sbad"/><rect x="103.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="106.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="109.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="111.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="114.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="117.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="119.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="122.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="125.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="127.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="130.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="133.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="135.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="138.3" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="140.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="143.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="146.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="148.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="151.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="154.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="156.9" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="159.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="162.2" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="164.8" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="167.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="170.2" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="172.8" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="175.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="178.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="180.8" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="183.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="186.1" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="188.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="191.4" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="194.1" y="267.9" width="1.99" height="2.1" class="sst"/><rect x="196.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="199.4" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="202.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="204.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="207.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="210.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="212.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="215.3" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="218.0" y="267.8" width="1.99" height="2.2" class="sst"/><rect x="220.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="223.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="225.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="228.6" y="197.9" width="1.99" height="72.1" class="sbad"/><rect x="231.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="233.9" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="236.6" y="267.9" width="1.99" height="2.1" class="sst"/><rect x="239.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="241.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="244.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="247.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="249.8" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="252.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="255.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="257.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="260.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="263.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="265.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="268.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="271.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="273.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="276.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="279.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="281.7" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="284.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="287.0" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="289.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="292.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="295.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="297.7" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="300.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="303.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="305.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="308.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="310.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="313.6" y="267.9" width="1.99" height="2.1" class="sst"/><rect x="316.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="318.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="321.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="324.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="326.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="329.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="332.2" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="334.8" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="337.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="340.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="342.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="345.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="348.1" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="350.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="353.4" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="356.1" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="358.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="361.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="364.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="366.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="369.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="372.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="374.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="377.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="380.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="382.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="385.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="388.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="390.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="393.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="395.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="398.6" y="267.8" width="1.99" height="2.2" class="sst"/><rect x="401.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="403.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="406.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="409.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="411.9" y="193.9" width="1.99" height="76.1" class="sbad"/><rect x="414.5" y="238.8" width="1.99" height="31.2" class="sbad"/><rect x="417.2" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="419.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="422.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="425.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="427.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="430.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="433.1" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="435.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="438.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="441.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="443.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="446.4" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="449.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="451.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="454.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="457.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="459.7" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="462.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="465.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="467.7" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="470.3" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="473.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="475.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="478.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="480.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="483.6" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="486.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="488.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="491.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="494.2" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="496.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="499.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="502.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="504.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="507.5" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="510.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="512.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="515.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="518.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="520.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="523.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="526.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="528.8" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="531.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="534.1" y="267.8" width="1.99" height="2.2" class="sst"/><rect x="536.7" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="539.4" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="542.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="544.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="547.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="550.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="552.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="555.3" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="558.0" y="268.0" width="1.99" height="2.0" class="sst"/><rect x="560.6" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="563.3" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="565.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="568.6" y="267.8" width="1.99" height="2.2" class="sst"/><rect x="571.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="573.9" y="197.3" width="1.99" height="72.7" class="sbad"/><rect x="576.6" y="268.2" width="1.99" height="1.8" class="sst"/><rect x="579.2" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="581.9" y="267.7" width="1.99" height="2.3" class="sst"/><rect x="584.5" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="587.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="589.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="592.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="595.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="597.8" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="600.5" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="603.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="605.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="608.4" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="611.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="613.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="616.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="619.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="621.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="624.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="627.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="629.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="632.3" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="635.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="637.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="640.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="643.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="645.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="648.3" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="650.9" y="241.1" width="1.99" height="28.9" class="sbad"/><rect x="653.6" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="656.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="658.9" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="661.6" y="267.6" width="1.99" height="2.4" class="sst"/><rect x="664.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="666.9" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="669.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="672.2" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="674.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="677.5" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="680.2" y="268.4" width="1.99" height="1.6" class="sst"/><rect x="682.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="685.5" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="688.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="690.8" y="268.3" width="1.99" height="1.7" class="sst"/><rect x="693.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="696.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="698.8" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="701.4" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="704.1" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="706.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="709.4" y="268.1" width="1.99" height="1.9" class="sst"/><rect x="712.0" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="714.7" y="268.5" width="1.99" height="1.5" class="sst"/><rect x="717.3" y="268.5" width="1.99" height="1.5" class="sst"/><text x="40" y="288" class="d" font-size="12.5">token 2</text><line x1="102.1" y1="155" x2="102.1" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><line x1="229.6" y1="155" x2="229.6" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><line x1="412.9" y1="155" x2="412.9" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><line x1="415.5" y1="155" x2="415.5" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><line x1="574.9" y1="155" x2="574.9" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><line x1="651.9" y1="155" x2="651.9" y2="172" stroke="var(--bad)" stroke-dasharray="3 3"/><text x="720" y="288" text-anchor="end" class="tbad" font-size="12.5" font-weight="600">same channels, every token</text></g><g data-show="4"><rect x="160" y="302" width="440" height="46" rx="8" class="fn"/><text x="380" y="321" text-anchor="middle" font-size="12.5">INT8, one scale per token: Δ = 92 ÷ 127 ≈ 0.72</text><text x="380" y="339" text-anchor="middle" class="tbad" font-size="12.5" font-weight="600">a typical value of ~1.3 gets only about 2 levels</text></g></svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Each bar is one input channel of a layer's activations, for one token (illustrative, shaped after the papers).</li>
+      <li>A few channels are tens of times bigger than the rest. In real OPT layers SmoothQuant measured outliers "∼100× larger than most of the activation values" <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=3">p. 3</a></span>.</li>
+      <li>They sit in the <b>same channels for every token</b>. At 6.7B, about 150,000 outliers per sequence are concentrated in just 6 hidden dimensions <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=2">LLM.int8(), p. 2</a></span>.</li>
+      <li>With one INT8 scale per token, the outliers set Δ and the normal channels get only 2–3 effective levels <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=3">SmoothQuant, p. 3</a></span>. Yet zeroing those few dimensions raises perplexity by 600–1,000% <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=2">LLM.int8(), p. 2</a></span>: they matter.</li>
+    </ol>
+  </div>
+  <p><b>LLM.int8()'s fix:</b> split each matrix multiply. Any feature dimension with a value above 6.0 runs in 16-bit; the other 99.9% run in INT8. Since outlier dimensions are at most 7 for models up to 13B, this costs about 0.1% extra memory <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=5">p. 5</a></span>. It preserved 16-bit accuracy all the way to 175B.</p>
+  <div class="card bad"><h4>What it costs: speed</h4><p>Mixed-precision decomposition is awkward for GPU kernels. LLM.int8() slows inference for models below 6.7B parameters <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=6">p. 6</a></span>, and SmoothQuant measured it "almost always slower than the FP16 baseline" <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=8">SmoothQuant, p. 8</a></span>. It's a memory tool, not a speed tool. AWQ and SmoothQuant both set out to protect outliers <i>without</i> mixed precision.</p></div>
+</section>
+
+<!-- ===== 8 ===== -->
+<section class="ch" id="c8" data-toc="8 · AWQ">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill ok">Steer it: AWQ</span>
+  <h2>Protect the 1% of weights that see the big activations</h2>
+  <p>AWQ (MIT, MLSys 2024 best paper) starts from an experiment. Quantize OPT to 3 bits with g128, but keep 1% of the weight channels in FP16. Which 1%? If you choose by <b>weight size</b>, almost nothing improves. If you choose the channels whose <b>activations</b> are largest, perplexity nearly recovers. Importance lives in the inputs, not the weights <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=4">AWQ, Table 1, p. 4</a></span>.</p>
+  <div class="card"><h4>OPT-6.7B, INT3 g128, keep 1% of channels in FP16 · perplexity (↓ better)</h4>
+    <div class="bars" data-max="25">
+      <div class="bar"><span>FP16 (no quantization)</span><div class="track"><div class="fill" style="--v:10.86;background:var(--a)"></div></div><span class="v">10.86</span></div>
+      <div class="bar"><span>RTN, nothing kept</span><div class="track"><div class="fill" style="--v:23.54;background:var(--bad)"></div></div><span class="v">23.54</span></div>
+      <div class="bar"><span>keep 1%, chosen at random</span><div class="track"><div class="fill" style="--v:24.23;background:var(--bad)"></div></div><span class="v">24.23</span></div>
+      <div class="bar"><span>keep 1%, biggest weights</span><div class="track"><div class="fill" style="--v:22.37;background:var(--bad)"></div></div><span class="v">22.37</span></div>
+      <div class="bar"><span>keep 1%, biggest activations</span><div class="track"><div class="fill" style="--v:11.39;background:var(--ok)"></div></div><span class="v">11.39</span></div>
+    </div>
+    <p class="small">The same pattern holds on OPT-1.3B and 13B, and with only 0.1% kept (OPT-6.7B: 11.58) <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=4">Table 1</a></span>.</p></div>
+  <p>But keeping FP16 channels brings back the mixed-precision problem. AWQ's trick: <b>scale the important channels up before rounding</b>, and scale their activations down by the same factor. The maths is unchanged, but those weights now span more grid levels, so their relative error shrinks.</p>
+  <div class="reader" data-reader='[
+    {"t":"lhs","c":"bad","label":"error after scaling","say":"The output error for one weight w after multiplying it by s and dividing its input x by s."},
+    {"t":"d2","c":"info","label":"new step size","say":"Δ′: the group scale after w is multiplied by s. Scaling one weight rarely changes the group max, so Δ′ ≈ Δ."},
+    {"t":"re","c":"b","label":"rounding error","say":"Still about 0.25 of a step on average, whatever s is: rounding error is roughly uniform."},
+    {"t":"x","c":"st","label":"the activation","say":"FP16, so no error of its own. Big x means this weight matters, which is why AWQ picks channels by activation size."},
+    {"t":"s","c":"ok","label":"the payoff","say":"Divided by s. With s greater than 1 and Δ′ ≈ Δ, the error on this channel shrinks to about 1/s of what it was."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-lhs}{\text{Err}\big(Q(w\cdot s)\,(x/s)\big)} = \class{term t-d2}{\Delta'}\cdot\class{term t-re}{\text{RoundErr}(ws/\Delta')}\cdot\class{term t-x}{x}\cdot\class{term t-s}{1/s}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">AWQ Eq. 3; the ratio of new to old error is (Δ′/Δ)·(1/s) <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=4">p. 4</a></span> · hover any symbol.</p>
+  </div>
+  <h3>Try it: how hard should you scale?</h3>
+  <div class="card lab" id="labS">
+    <div class="seg"><button data-i="0">s = 1</button><button data-i="1">1.25</button><button data-i="2">1.5</button><button data-i="3" class="on">2</button><button data-i="4">4</button></div>
+    <div class="stats">
+      <div class="stat"><div class="l">salient channels' error vs before</div><div class="v ok" data-o="sal">–</div></div>
+      <div class="stat"><div class="l">groups whose Δ grew</div><div class="v bad" data-o="ch">–</div></div>
+      <div class="stat"><div class="l">perplexity (↓, FP16 = 10.86)</div><div class="v b" data-o="ppl">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Real measurements, not a simulation: OPT-6.7B, 1% salient channels scaled by s, INT3 g128 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=4">AWQ, Table 2, p. 4</a></span>. Bigger s protects the salient channels more, but past s = 2 it starts growing Δ for the other weights in their groups, and perplexity gets worse again.</p>
+  </div>
+  <p>So AWQ searches for s per layer, on a small calibration set, to minimise the layer's output error:</p>
+  <div class="reader" data-reader='[
+    {"t":"s","c":"ok","label":"best scales","say":"One scale per input channel, chosen per layer."},
+    {"t":"q","c":"b","label":"quantized, scaled weights","say":"Scale the weight columns by s, then quantize (e.g. INT4, g128)."},
+    {"t":"x","c":"st","label":"inputs, scaled down","say":"Divide the calibration activations by s. This division gets fused into the previous layer, so it costs nothing at runtime."},
+    {"t":"t","c":"a","label":"original output","say":"The full-precision layer output to match."},
+    {"t":"sx","c":"st","label":"search space","say":"s is just the average activation size per channel raised to α. A 20-point grid search over α in [0, 1] picks it. No gradients, no reconstruction."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-s}{s^{*}} = \arg\min_{s}\big\|\class{term t-q}{Q(W\,\mathrm{diag}(s))}\,\class{term t-x}{(\mathrm{diag}(s)^{-1}X)} - \class{term t-t}{WX}\big\|, \qquad \class{term t-sx}{s = s_X^{\,\alpha}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">AWQ Eqs. 4–5 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=5">p. 5</a></span>; grid of 20 for α <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=7">p. 7</a></span>.</p>
+  </div>
+  <div class="card ok"><h4>Why practitioners like it</h4><p>AWQ only measures average activation size per channel, so it needs little calibration data and is less prone to overfitting it than reconstruction methods like GPTQ <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=5">p. 5</a></span>. In the paper's tests it matched the 1%-FP16 mixed-precision result while staying all-INT3 (OPT-6.7B: 11.39 both) <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=4">Table 3</a></span>.</p></div>
+</section>
+
+<!-- ===== 9 ===== -->
+<section class="ch" id="c9" data-toc="9 · GPTQ">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill ok">Cancel it: GPTQ</span>
+  <h2>Round one column, then fix up the rest to compensate</h2>
+  <p>GPTQ (IST Austria / ETH, ICLR 2023) doesn't try to make each weight accurate. It tries to make each layer's <b>output</b> accurate on real inputs. Rounding a weight creates an error; if inputs are correlated, nudging the not-yet-rounded weights can cancel most of it.</p>
+  <div class="reader" data-reader='[
+    {"t":"am","c":"b","label":"find quantized weights","say":"Search over weight matrices that sit on the quantization grid."},
+    {"t":"wx","c":"a","label":"original output","say":"The layer applied to X: a small calibration set of real inputs (128 random 2,048-token C4 segments)."},
+    {"t":"hx","c":"b","label":"quantized output","say":"The same inputs through the quantized weights."},
+    {"t":"n","c":"bad","label":"squared error","say":"Minimise the difference in outputs, not in weights. This is the key shift from RTN."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-am}{\arg\min_{\widehat{W}}}\ \class{term t-n}{\big\|}\class{term t-wx}{WX} - \class{term t-hx}{\widehat{W}X}\class{term t-n}{\big\|_2^2}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">GPTQ Eq. 1 <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=3">p. 3</a></span>; calibration data <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=6">p. 6</a></span>.</p>
+  </div>
+  <p>The update rule comes from Optimal Brain Quantization, which GPTQ inherits. After rounding weight q, shift all remaining weights F by:</p>
+  <div class="reader" data-reader='[
+    {"t":"dF","c":"ok","label":"the correction","say":"How much to move every still-unquantized weight in this row."},
+    {"t":"e","c":"bad","label":"error just made","say":"The rounding error on weight q."},
+    {"t":"hqq","c":"info","label":"normaliser","say":"The diagonal entry of the inverse Hessian for weight q."},
+    {"t":"hq","c":"st","label":"who can help","say":"Column q of the inverse Hessian, where H = 2XXᵀ. It encodes how the inputs correlate, so it says which other weights can absorb the error."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-dF}{\delta_F} = -\,\class{term t-e}{\big(w_q-\mathrm{quant}(w_q)\big)}\,/\,\class{term t-hqq}{[H_F^{-1}]_{qq}}\cdot\class{term t-hq}{(H_F^{-1})_{:,q}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">GPTQ Eq. 2, with H<sub>F</sub> = 2X<sub>F</sub>X<sub>F</sub><sup>⊤</sup> <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=4">p. 4</a></span>.</p>
+  </div>
+  <h3>Try it: two weights, one correction</h3>
+  <div class="card lab" id="labG">
+    <label>Correlation between the two inputs <input type="range" min="0" max="0.95" step="0.05" value="0.8" data-k="r"><output></output></label>
+    <div class="tw"><table class="t" data-o="tbl"></table></div>
+    <div class="stats">
+      <div class="stat"><div class="l">output error, RTN</div><div class="v bad" data-o="er">–</div></div>
+      <div class="stat"><div class="l">output error, GPTQ</div><div class="v ok" data-o="eg">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Illustrative toy: y = w₁x₁ + w₂x₂ with weights 0.08 and −0.13, grid step 0.25, unit-variance inputs. GPTQ rounds w₁, then moves w₂ by ρ × w₁'s error (what Eq. 2 gives for two inputs), then rounds w₂. Output error = expected squared error of y. With uncorrelated inputs there's nothing to exploit and both match.</p>
+  </div>
+  <p>Three engineering changes made this scale from 100M-parameter models to 175B <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=4">p. 4–5</a></span>:</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 240" role="img" aria-label="GPTQ processes weight columns in blocks of 128, left to right">
+        <g data-show="1"><text x="30" y="30" font-weight="600">weight matrix (rows × columns)</text>
+          <g class="fn"><rect x="30" y="44" width="600" height="150" rx="6"/></g></g>
+        <g data-show="2" data-hl="2" style="color:var(--b)"><rect x="30" y="44" width="12" height="150" class="sb"/><text x="36" y="214" text-anchor="middle" class="tb" font-size="12">col 1</text>
+          <text x="150" y="214" class="d" font-size="12">same column order for every row → one inverse-Hessian update per column</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--ok)"><rect x="42" y="44" width="148" height="150" class="fok"/><text x="116" y="122" text-anchor="middle" class="tok" font-size="12.5" font-weight="600">block of 128</text></g>
+        <g data-show="4"><rect x="190" y="44" width="440" height="150" class="fa" opacity=".7"/><text x="410" y="122" text-anchor="middle" class="ta" font-size="12.5">rest updated once per block (lazy batch)</text></g>
+        <g data-show="5"><text x="650" y="90" class="tinfo" font-size="12.5" font-weight="600">Cholesky of H⁻¹</text><text x="650" y="110" class="d" font-size="12">+ 1% dampening</text><text x="650" y="130" class="d" font-size="12">numerically stable</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A layer's weight matrix. The original method (OBQ) quantized weights one at a time in a greedy order, per row: cubic cost, hours for a 25M-parameter ResNet.</li>
+      <li><b>Arbitrary order:</b> quantize columns left to right in the same order for every row. The greedy order barely helps on big layers, and now the inverse Hessian is shared by all rows, so it's updated once per column instead of once per weight.</li>
+      <li><b>Lazy batch updates:</b> work on 128 columns at a time and keep the corrections inside the block. This turns memory-bound updates into compute-friendly ones, an order-of-magnitude speedup.</li>
+      <li>After each block, apply all its corrections to the remaining columns in one big matrix multiply.</li>
+      <li><b>Cholesky reformulation:</b> precompute the needed rows of H⁻¹ with a stable Cholesky decomposition, plus dampening (1% of the mean diagonal added to H). Without it, large models hit numerical blow-ups.</li>
+    </ol>
+  </div>
+  <p>The result: OPT-175B quantized on one A100 in about 4.2 hours <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">Table 2, p. 7</a></span>, losing only 0.03 perplexity at 4 bits (8.34 → 8.37) where RTN lost 2.2 (→ 10.54) <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">Table 3</a></span>.</p>
+  <div class="card bad"><h4>Where it bends</h4><p>Because GPTQ fits each layer to the calibration data, the AWQ authors argue it "may overfit the calibration set", hurting out-of-distribution domains, and that it needs a reordering trick for some models (LLaMA-7B, OPT-66B) <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, p. 2</a></span>. On LLaMA-7B at 3 bits, plain GPTQ scored 8.81 versus RTN's 7.01; GPTQ with reordering scored 6.53 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=7">AWQ, Table 4</a></span>.</p></div>
+</section>
+
+<!-- ===== 10 ===== -->
+<section class="ch" id="c10" data-toc="10 · SmoothQuant">
+  <div class="chap">10 · Mechanism 5</div>
+  <span class="pill st">Move it: SmoothQuant</span>
+  <h2>Push the outliers from activations into the weights</h2>
+  <p>Weight-only quantization saves memory, but the maths still runs in 16-bit. To use fast INT8 tensor cores you must quantize activations too (W8A8), and activation outliers break that. Per-channel activation scales would fix it, but INT8 matrix kernels can only apply scales along the outer dimensions (tokens, output channels), not the input channels <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=3">SmoothQuant, p. 3</a></span>. SmoothQuant's answer: divide each activation channel by a factor and multiply the matching weight row by the same factor. The product is identical.</p>
+  <div class="reader" data-reader='[
+    {"t":"y","c":"a","label":"same output","say":"The layer output does not change at all."},
+    {"t":"xs","c":"st","label":"smoothed activations","say":"Each input channel divided by s_j. Outlier channels shrink. The division is folded into the previous layer norm or linear layer, offline."},
+    {"t":"ws","c":"b","label":"adjusted weights","say":"Each matching weight row multiplied by s_j. Weights were flat and easy, so they can absorb some spread."},
+    {"t":"sj","c":"ok","label":"the smoothing factor","say":"Balances the two: activation max to the power α over weight max to the power 1 − α."},
+    {"t":"al","c":"info","label":"migration strength","say":"α = 0.5 splits the difficulty evenly and works for all OPT and BLOOM models; GLM-130B needed 0.75, and the Llama-2 runs used 0.85–0.9."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-y}{Y} = \class{term t-xs}{\big(X\,\mathrm{diag}(s)^{-1}\big)}\cdot\class{term t-ws}{\big(\mathrm{diag}(s)\,W\big)}, \qquad \class{term t-sj}{s_j} = \max(|X_j|)^{\class{term t-al}{\alpha}} \,/\, \max(|W_j|)^{1-\alpha}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">SmoothQuant Eqs. 3–4 <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=4">p. 4</a></span>; α values <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=5">p. 5</a>, <a href="https://arxiv.org/pdf/2211.10438#page=7">Table 7</a></span>.</p>
+  </div>
+  <h3>Try it: slide α</h3>
+  <div class="card lab" id="labA">
+    <label>Migration strength α <input type="range" min="0" max="1" step="0.05" value="0.5" data-k="a"><output></output></label>
+    <div class="stage" style="margin:4px 0;padding:12px"><svg viewBox="0 0 760 200" data-o="plot" role="img" aria-label="Per-channel activation and weight maxima after smoothing"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">activation peak ÷ median</div><div class="v st" data-o="ap">–</div></div>
+      <div class="stat"><div class="l">weight peak ÷ median</div><div class="v b" data-o="wp">–</div></div>
+    </div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+    <p class="small" style="margin:0">Illustrative channels shaped after SmoothQuant §3 (a few fixed channels ≈ 100× larger). Lower peak ÷ median means fewer grid levels wasted on outliers. The paper found 0.4–0.6 is the sweet spot on OPT-175B <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=8">p. 8</a></span>.</p>
+  </div>
+  <div class="card"><h4>OPT-175B, INT8 weights and activations · average zero-shot accuracy (↑ better)</h4>
+    <div class="bars" data-max="70">
+      <div class="bar"><span>FP16 (original)</span><div class="track"><div class="fill" style="--v:66.9;background:var(--a)"></div></div><span class="v">66.9%</span></div>
+      <div class="bar"><span>W8A8, naive</span><div class="track"><div class="fill" style="--v:35.5;background:var(--bad)"></div></div><span class="v">35.5%</span></div>
+      <div class="bar"><span>ZeroQuant</span><div class="track"><div class="fill" style="--v:35.8;background:var(--bad)"></div></div><span class="v">35.8%</span></div>
+      <div class="bar"><span>LLM.int8() (FP16 outliers, slow)</span><div class="track"><div class="fill" style="--v:66.7;background:var(--st)"></div></div><span class="v">66.7%</span></div>
+      <div class="bar"><span>SmoothQuant-O3 (fastest setting)</span><div class="track"><div class="fill" style="--v:66.8;background:var(--ok)"></div></div><span class="v">66.8%</span></div>
+    </div>
+    <p class="small">SmoothQuant Table 3. Measured speed: up to 1.56× faster with about half the memory in FasterTransformer, and up to 1.42× faster per decoding token <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=8">p. 8, Table 8</a></span>. On LLaMA it was nearly lossless, e.g. 7B: 11.51 → 11.56 perplexity <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=7">Table 6</a></span>.</p></div>
+</section>
+
+<!-- ===== 11 ===== -->
+<section class="ch" id="c11" data-toc="11 · The recipe">
+  <div class="chap">11 · The whole recipe</div>
+  <h2>Shipping a quantized model</h2>
+  <ol>
+    <li><b>Pick precision from your bottleneck.</b> Out of memory or slow decode → weight-only 4-bit (AWQ or GPTQ). Compute-bound prefill or big batches → FP8 or INT8 weights and activations. On Hopper and later, FP8 is the usual first try.</li>
+    <li><b>Choose what to quantize.</b> Start with linear-layer weights. Add activations and the KV cache only if you need them. Keep attention maths, and often embeddings and the output head, in 16-bit.</li>
+    <li><b>Use small groups, never one scale per tensor</b>: g128 for INT4, or block-scaled formats (MXFP8, NVFP4).</li>
+    <li><b>Calibrate with a smart method</b> on a few hundred samples that look like your traffic: AWQ or GPTQ for low-bit weights, SmoothQuant for W8A8.</li>
+    <li><b>Measure against the original</b>: perplexity first, then benchmarks, then your own task evals. The bar is "difference indistinguishable from run-to-run noise".</li>
+    <li><b>Back off where it hurts.</b> FP8 instead of FP4, fewer quantized components, or keep sensitive layers in 16-bit.</li>
   </ol>
-  <div class="card lab" style="margin-top:16px">
-    <div class="lab-top">
-      <div class="seg" id="mModel"><button class="btn on" data-m="0">Llama-2-7B</button><button class="btn" data-m="1">13B</button><button class="btn" data-m="2">70B</button></div>
-      <div class="seg" id="mBits"><button class="btn on" data-b="3">3-bit</button><button class="btn" data-b="4">4-bit</button></div>
-    </div>
-    <ul class="legend" style="margin-bottom:8px"><li><i style="--c:var(--red)"></i>RTN</li><li><i style="--c:var(--blue)"></i>GPTQ</li><li><i style="--c:var(--yellow)"></i>AWQ</li><li><i style="--c:var(--muted)"></i>16-bit</li></ul>
-    <div class="chart" id="methodChart"></div>
-    <p class="note" id="methodNote"></p>
-  </div>
+  <h3>What's safe to quantize</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Component</th><th>Risk</th><th>Why</th></tr>
+    <tr><td>Linear-layer weights</td><td style="color:var(--ok)">low</td><td>The bulk of the model; flat distributions; well-studied methods</td></tr>
+    <tr><td>Activations</td><td style="color:var(--b)">some</td><td>Outlier channels (chapter 7); needs smoothing or FP8</td></tr>
+    <tr><td>KV cache</td><td style="color:var(--b)">moderate</td><td>Big win for long contexts, but errors carry into every later token</td></tr>
+    <tr><td>Attention softmax</td><td style="color:var(--bad)">high</td><td>Sensitive to range; errors compound across thousands of tokens. Usually kept high-precision.</td></tr>
+  </table></div>
+  <p class="small">Sensitivity ordering from Inference Engineering, ch. 5.1; SmoothQuant also keeps softmax, LayerNorm and other element-wise ops in FP16 <span class="src"><a href="https://arxiv.org/pdf/2211.10438#page=5">p. 5</a></span>.</p>
+  <h3>Formats at a glance</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Format</th><th>What it is</th><th>Where it fits</th></tr>
+    <tr><td>BF16 / FP16</td><td>16-bit float</td><td>The baseline</td></tr>
+    <tr><td>FP8 (E4M3)</td><td>1 sign, 4 exponent, 3 mantissa bits; wide dynamic range</td><td>Hopper and later: weights, activations, KV cache</td></tr>
+    <tr><td>INT8 (W8A8)</td><td>Integer with a scale, uniform levels</td><td>With smoothing (SmoothQuant); less range than FP8</td></tr>
+    <tr><td>INT4 (W4A16)</td><td>4-bit integer weights, g128 scales, 16-bit activations</td><td>GPTQ / AWQ checkpoints; memory-bound serving</td></tr>
+    <tr><td>MXFP4 / NVFP4</td><td>4-bit float, one scale per 32 (MX) or 16 values (NV) + global scale</td><td>Blackwell; gpt-oss ships MoE weights in MXFP4</td></tr>
+    <tr><td>GGUF k-quants</td><td>File format with mixed per-layer precision</td><td>Laptops and edge (llama.cpp)</td></tr>
+  </table></div>
+  <p class="small">Why float beats int at the same bits: the exponent spaces levels densely near zero and sparsely far out, which suits bell-shaped weights with a few outliers.</p>
 </section>
 
-<!-- 08 SmoothQuant -->
-<section class="wrap" id="smooth">
-  <span class="step">08</span>
-  <h2>Activations are harder: <span class="yellow">move the difficulty</span></h2>
-  <p class="sub">Weight-only quantization saves memory. To also use the fast INT8 or FP8 math units, the activations must be quantized too, and they're full of outliers. SmoothQuant divides activation channel j by s<sub>j</sub> and multiplies the matching weights by s<sub>j</sub>. The product is the same, but the outliers move into the weights, which handle them easily.</p>
-  <div class="card lab">
-    <div class="lab-top">
-      <ul class="legend"><li><i style="--c:var(--yellow)"></i>activation / s</li><li><i style="--c:var(--blue)"></i>weight × s</li></ul>
-      <span class="badge" id="smBadge"></span>
-    </div>
-    <div class="chart" id="smChart"></div>
-    <div class="readouts"><div><span>activation peak ÷ median</span><b id="smA">–</b></div><div><span>weight peak ÷ median</span><b id="smW">–</b></div></div>
-    <label class="slider"><span>Migration strength α: <b id="alphaOut">–</b></span><input type="range" id="alpha" min="0" max="20" value="0"></label>
-    <p class="note">s<sub>j</sub> = max|X<sub>j</sub>|<sup>α</sup> / max|W<sub>j</sub>|<sup>1−α</sup> (SmoothQuant eq. 4), applied to the illustrative channels above. A lower peak ÷ median means fewer levels are wasted on outliers. The paper uses α = 0.5 for most models.</p>
+<!-- ===== 12 ===== -->
+<section class="ch" id="c12" data-toc="12 · Evidence">
+  <div class="chap">12 · Evidence</div>
+  <h2>RTN vs GPTQ vs AWQ, same setup</h2>
+  <div class="card lab" id="labCmp">
+    <div class="seg" data-k="b"><button data-v="3" class="on">INT3 g128</button><button data-v="4">INT4 g128</button></div>
+    <div class="seg" data-k="m"><button data-v="0" class="on">Llama-2-7B</button><button data-v="1">13B</button><button data-v="2">70B</button></div>
+    <div class="bars" data-o="bars"></div>
+    <p class="small" style="margin:0">Perplexity added on top of FP16 (↓ better); the label shows the absolute perplexity (FP16: 5.47, 4.88, 3.32). AWQ paper, Table 4, WikiText-2 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=7">p. 7</a></span>.</p>
   </div>
-  <div class="card pad scroll" style="margin-top:16px">
-    <table class="t" id="w8Table"></table>
-    <p class="note" id="w8Note"></p>
-  </div>
+  <div class="card"><h4>Read these numbers fairly</h4><ul style="margin:0;padding-left:20px">
+    <li>This table comes from the AWQ paper, so the comparison was set up by AWQ's authors. GPTQ's own paper reports on OPT and BLOOM, where it beats RTN by much larger margins because it compares per-row RTN without groups. <span class="mine">my take</span></li>
+    <li>At 4 bits with g128, all three are within about 0.1 perplexity on Llama-2: grouping did most of the work. The method matters mostly at 3 bits and below.</li>
+    <li>Perplexity can hide task-specific damage. An INT8 model can pass a perplexity check and still fail a coding task if calibration data doesn't match the workload (<a href="https://www.techinterview.org/post/3233477292/gptq-awq-fp8-llm-inference-interview/">interview guide</a>). Always evaluate on your own tasks.</li>
+    <li>Bigger models are easier to quantize. GPTQ: "larger models generally (with the exception of OPT-66B) appear easier to quantize" <span class="src"><a href="https://arxiv.org/pdf/2210.17323#page=7">p. 7</a></span>.</li></ul></div>
+  <div class="card upd"><h4>Update · my check (28 Oct 2026)</h4><p>The field moved toward low-precision <i>formats</i> and training. NVIDIA's NVFP4 (Blackwell) uses 16-value blocks with FP8 scales plus a per-tensor FP32 scale, about 4.5 bits per value (<a href="https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference">NVIDIA blog</a>). OpenAI's gpt-oss-120b (117B total, 5.1B active parameters) was post-trained with MXFP4 MoE weights at about 4.25 bits per parameter so it fits one 80 GB GPU (model card). AWQ and GPTQ checkpoints remain the common open-weight 4-bit formats served by vLLM, TensorRT-LLM and others <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, p. 2</a></span>.</p></div>
 </section>
 
-<!-- 09 what + formats -->
-<section class="wrap" id="what">
-  <span class="step">09</span>
-  <h2>What to quantize, and <span class="yellow">in which format</span></h2>
-  <p class="sub">Not every part of a model is equally fragile. From least to most sensitive (Inference Engineering, ch. 5.1):</p>
-  <div class="ladder">
-    <div class="card" style="--c:var(--green)"><span>low risk</span><b>Weights</b><p>Linear layers are the bulk of the model and the safest to quantize. Often the first and last layers stay in 16-bit.</p></div>
-    <div class="card" style="--c:var(--green)"><span>some risk</span><b>Activations</b><p>Layer outputs have outliers (section 08). Activation functions themselves are rarely quantized.</p></div>
-    <div class="card" style="--c:var(--yellow)"><span>moderate</span><b>KV cache</b><p>A big win for long contexts and caching, but errors carry forward to every later token.</p></div>
-    <div class="card" style="--c:var(--red)"><span>high risk</span><b>Attention</b><p>Softmax is sensitive to range, and errors compound across thousands of tokens. Usually kept in high precision.</p></div>
+<!-- ===== 13 ===== -->
+<section class="ch" id="c13" data-toc="13 · Caveats">
+  <div class="chap">13 · Takeaways and honest caveats</div>
+  <h2>What to keep, and what to watch</h2>
+  <p><b>The lesson:</b> quantization is a dial, not a switch. Weights are easy, activations are hard, and the whole game is controlling where the rounding error goes: confine it with groups, steer it with AWQ, cancel it with GPTQ, move it with SmoothQuant.</p>
+  <div class="two">
+    <div class="card ok"><h4>Great for</h4><ul style="margin:0;padding-left:20px"><li>Fitting a big model on fewer GPUs or a laptop</li><li>Faster decode at small batch sizes (memory-bound)</li><li>Freeing memory for KV cache → bigger batches, longer contexts</li><li>Large models: each weight matters less</li></ul></div>
+    <div class="card bad"><h4>Watch out</h4><ul style="margin:0;padding-left:20px"><li>Small models are fragile: each weight carries more of the load</li><li>3 bits and below: quality drops fast, even with GPTQ/AWQ</li><li>Calibration data that doesn't match your domain</li><li>Speedups need real low-bit kernels; a smaller file alone isn't speed</li><li>W4A16 barely speeds up compute-bound prefill</li></ul></div>
   </div>
-  <div class="card pad scroll" style="margin-top:16px">
-    <table class="t">
-      <tr><th>Format</th><th>What it is</th><th>Where it fits</th></tr>
-      <tr><td class="num">BF16 / FP16</td><td>16-bit float, the usual training precision</td><td>The baseline</td></tr>
-      <tr><td class="num">FP8 (E4M3)</td><td>1 sign, 4 exponent, 3 mantissa bits. The exponent gives it wide dynamic range</td><td>Datacenter sweet spot (Hopper and later): weights, activations, KV cache</td></tr>
-      <tr><td class="num">MXFP8</td><td>FP8 plus one shared scale per block of 32 values</td><td>Blackwell. Even safer FP8</td></tr>
-      <tr><td class="num">INT8 (W8A8)</td><td>Integer with a scale, uniform levels</td><td>Works with smoothing (SmoothQuant); less range than FP8</td></tr>
-      <tr><td class="num">INT4 (W4A16)</td><td>4-bit integer weights, g128 scales, 16-bit activations</td><td>GPTQ and AWQ checkpoints; local and memory-bound serving</td></tr>
-      <tr><td class="num">MXFP4 / NVFP4</td><td>4-bit float, one scale per 32 (MX) or 16 values (NV) + global scale</td><td>Blackwell; e.g. GPT-OSS ships in MXFP4 (trained that way)</td></tr>
-      <tr><td class="num">GGUF k-quants</td><td>File format with mixed per-layer precision, down to ~1.5 bits on average</td><td>Laptops and edge (llama.cpp)</td></tr>
-    </table>
-    <p class="note">Why float beats int at the same bits: the exponent spaces levels densely near zero and sparsely far away. That suits bell-shaped weights with a few outliers.</p>
-  </div>
+  <p class="small">Author-stated limits: LLM.int8() is slower than FP16 below 6.7B; GPTQ needs reordering for some models; SmoothQuant needs a per-model α. The "small models are fragile" and "kernels matter" points are my synthesis of the tables above. <span class="mine">my take</span></p>
 </section>
 
-<!-- 10 recipe -->
-<section class="wrap" id="recipe">
-  <span class="step">10</span>
-  <h2>The recipe for <span class="yellow">shipping a quantized model</span></h2>
-  <ol class="steps">
-    <li class="card"><span class="n">1</span><div><h3>Pick the precision from your bottleneck</h3><p>Out of memory or slow decode → weight-only 4-bit (AWQ/GPTQ). Compute-bound prefill or high batch → FP8/INT8 weights <i>and</i> activations.</p></div></li>
-    <li class="card"><span class="n">2</span><div><h3>Choose what to quantize</h3><p>Start with linear-layer weights. Add activations and the KV cache only if you need them. Leave attention math, embeddings and the output head in 16-bit.</p></div></li>
-    <li class="card"><span class="n">3</span><div><h3>Use small groups, never one scale per tensor</h3><p>g128 for INT4, or block-scaled formats (MXFP8, NVFP4).</p></div></li>
-    <li class="card"><span class="n">4</span><div><h3>Calibrate with a smart method</h3><p>AWQ or GPTQ for low-bit weights, SmoothQuant for W8A8. Use a few hundred samples that look like your traffic.</p></div></li>
-    <li class="card"><span class="n">5</span><div><h3>Measure against the original</h3><p>Perplexity first, then benchmarks (MMLU etc.), then <b>your own evals</b>. The bar is "difference indistinguishable from run-to-run noise."</p></div></li>
-    <li class="card"><span class="n">6</span><div><h3>Back off where it hurts</h3><p>Quantization is a dial, not a switch. Go FP8 instead of FP4, or quantize fewer components.</p></div></li>
+<!-- ===== 14 ===== -->
+<section class="ch" id="c14" data-toc="14 · Key terms">
+  <div class="chap">14 · Key terms</div>
+  <h2>Glossary</h2>
+  <div class="tw"><table class="t">
+    <tr><td><b>Scale (Δ)</b></td><td>Spacing between quantization levels; one per tensor, channel, token or group.</td></tr>
+    <tr><td><b>Zero-point</b></td><td>Offset that lets an asymmetric grid sit off-centre.</td></tr>
+    <tr><td><b>RTN</b></td><td>Round-to-nearest: the plain baseline.</td></tr>
+    <tr><td><b>Group size (g128)</b></td><td>How many weights share one scale.</td></tr>
+    <tr><td><b>W4A16 / W8A8</b></td><td>Bits for weights / activations.</td></tr>
+    <tr><td><b>PTQ / QAT</b></td><td>Post-training quantization (no retraining) / quantization-aware training.</td></tr>
+    <tr><td><b>Calibration set</b></td><td>A few hundred real inputs used to pick scales or corrections.</td></tr>
+    <tr><td><b>Outlier features</b></td><td>A few hidden dimensions with huge values in every token, from about 6.7B parameters up.</td></tr>
+    <tr><td><b>Salient channels</b></td><td>Weight channels that multiply large activations; AWQ protects them.</td></tr>
+    <tr><td><b>Hessian (H = 2XXᵀ)</b></td><td>Captures how layer inputs correlate; GPTQ uses its inverse to spread corrections.</td></tr>
+    <tr><td><b>Migration strength (α)</b></td><td>SmoothQuant's dial for how much difficulty moves from activations to weights.</td></tr>
+    <tr><td><b>Perplexity</b></td><td>How surprised the model is by real text; lower is better; sensitive to quantization damage.</td></tr>
+  </table></div>
+</section>
+
+<!-- ===== 15 ===== -->
+<section class="ch" id="c15" data-toc="15 · When to use what">
+  <div class="chap">15 · When to use what</div>
+  <h2>Pick by bottleneck</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Situation</th><th>Start with</th></tr>
+    <tr><td>Model doesn't fit, decode-heavy chat, small batches</td><td>INT4 weight-only (AWQ or GPTQ, g128)</td></tr>
+    <tr><td>Hopper/Blackwell datacenter serving, big batches</td><td>FP8 weights + activations (+ FP8 KV cache)</td></tr>
+    <tr><td>INT8 hardware, need faster prefill</td><td>SmoothQuant W8A8</td></tr>
+    <tr><td>Long contexts eating memory</td><td>KV-cache quantization (FP8 / INT8), then check quality</td></tr>
+    <tr><td>Laptop, CPU or Apple Silicon</td><td>GGUF k-quants (llama.cpp)</td></tr>
+    <tr><td>Blackwell, maximum throughput</td><td>NVFP4 / MXFP4, ideally from a model trained or calibrated for it</td></tr>
+  </table></div>
+</section>
+
+<!-- ===== INTERVIEW ===== -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">Quantization stores weights, and sometimes activations, in 8 or 4 bits instead of 16. It cuts memory and speeds up memory-bound decode. The hard part is outliers: a few huge values stretch the grid so small values lose precision. Groups confine them, AWQ protects the channels with big activations by scaling them, GPTQ cancels rounding error using second-order information from calibration data, and SmoothQuant moves activation outliers into weights so INT8 maths works. Then you verify on your own evals, not just perplexity.</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Size first: 70B in BF16 is 141 GB, two H100s; in 4-bit about 35 GB, one. Then the grid: Δ = max ÷ (2<sup>N−1</sup> − 1), and why one outlier wrecks it. RTN's cliff on OPT at 3 bits. Fixes: g128 groups (cheap, ~0.15–0.25 bits); outlier features above 6.7B (LLM.int8 isolates them, but it's slow); AWQ, which keeps the 1% of weights fed by large activations safe by scaling, chosen by a grid search over α; GPTQ, which quantizes columns and pushes each error onto the remaining columns via the inverse Hessian, in 4 GPU-hours for 175B; SmoothQuant for W8A8 via s<sub>j</sub> = max|X|<sup>α</sup> ÷ max|W|<sup>1−α</sup>. Close with the decision: weight-only 4-bit for memory-bound decode, FP8 or W8A8 for compute, block-scaled FP4 on Blackwell, and always check task evals.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why does 4-bit weight-only quantization speed up decode but not prefill?</summary><p>Decode reads every weight for a few tokens, so it's memory-bandwidth-bound: 4× fewer bytes directly helps. Prefill does thousands of FLOPs per byte, so it's compute-bound, and W4A16 dequantizes back to 16-bit before the maths. To speed up prefill you need low-precision compute: W8A8 (SmoothQuant) or FP8.</p></details>
+  <details class="qa"><summary>Symmetric vs asymmetric quantization?</summary><p>Symmetric centres the grid on zero: Δ = max|w| ÷ (2<sup>b−1</sup> − 1), no zero-point, simpler kernels. Asymmetric adds a zero-point so the grid covers [min, max] exactly, which helps one-sided distributions (e.g. after ReLU). LLM.int8() found outliers are mostly one-sided, which is why zero-point quantization did better before decomposition <span class="src"><a href="https://arxiv.org/pdf/2208.07339#page=9">p. 9</a></span>.</p></details>
+  <details class="qa"><summary>GPTQ or AWQ?</summary><p>Both give good 4-bit weight-only models. AWQ needs less calibration data and generalises better across domains because it only uses activation statistics; GPTQ reconstructs each layer's output and can overfit the calibration set but is very strong at 3 bits on big models. At 4-bit g128 on Llama-2 they're within about 0.1 perplexity, so pick by tooling and kernel support. <span class="mine">my take</span></p></details>
+  <details class="qa"><summary>Your INT8 model passes perplexity but fails a coding task. What happened?</summary><p>Perplexity is an average that hides task-specific regressions. Likely the calibration set didn't look like code, so the wrong channels were protected or the scales were off. Re-calibrate on representative data and evaluate on the downstream task.</p></details>
+  <details class="qa"><summary>Why are activations harder to quantize than weights?</summary><p>Weights are flat and bell-shaped. Activations have outlier channels about 100× larger than the rest, in fixed channels for every token, emerging around 6.7B parameters. Per-channel activation scales would fix it but don't fit INT8 GEMM kernels, hence LLM.int8()'s decomposition or SmoothQuant's migration.</p></details>
+  <details class="qa"><summary>Would you quantize the KV cache?</summary><p>For long contexts, yes: it can be bigger than the weights. FP8 KV cache is common and usually safe; INT4 KV has a small but measurable loss. Errors carry into every later token, so test on long-context tasks.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"4-bit is 4× faster." Speed depends on kernels and on whether you're memory- or compute-bound; one step down is often 30–50% faster.</li>
+    <li>"Quantization doesn't hurt quality." At 4-bit g128 on big models it's small; at 3 bits, on small models or on activations without smoothing, it can be severe.</li>
+    <li>"Pick important weights by their magnitude." AWQ showed that magnitude is about as good as random; activations tell you importance.</li>
+    <li>"Perplexity looked fine, so we shipped." Evaluate on your tasks.</li>
+  </ul>
+</section>
+
+<!-- ===== SOURCES ===== -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>Frantar et al., <a href="https://arxiv.org/abs/2210.17323">GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers</a>, IST Austria / ETH, ICLR 2023 (<a href="https://github.com/IST-DASLab/gptq">code</a>).</li>
+    <li>Lin et al., <a href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization</a>, MIT, MLSys 2024 best paper (<a href="https://github.com/mit-han-lab/llm-awq">code</a>).</li>
+    <li>Xiao et al., <a href="https://arxiv.org/abs/2211.10438">SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs</a>, MIT / NVIDIA, ICML 2023 (<a href="https://github.com/mit-han-lab/smoothquant">code</a>).</li>
+    <li>Dettmers et al., <a href="https://arxiv.org/abs/2208.07339">LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale</a>, NeurIPS 2022.</li>
+    <li>NVIDIA, <a href="https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference">Introducing NVFP4</a> and <a href="https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html">Transformer Engine NVFP4 docs</a>.</li>
+    <li>OpenAI, gpt-oss model card (MXFP4 MoE weights, single 80 GB GPU for gpt-oss-120b).</li>
+    <li>P. Kiely, <i>Inference Engineering</i> (Baseten), ch. 5.1: precision speedups, sensitivity ordering, π example.</li>
+    <li>Qwen2.5-0.5B-Instruct weights (layer 12, MLP down-projection) for the 32-weight example.</li>
+    <li>Interview angle: <a href="https://www.techinterview.org/post/3233477292/gptq-awq-fp8-llm-inference-interview/">techinterview.org, GPTQ, AWQ and FP8 in the LLM inference interview</a>.</li>
   </ol>
 </section>
 
-<!-- 11 when -->
-<section class="wrap">
-  <span class="step">11</span>
-  <h2>When to use it, and <span class="yellow">what to watch out for</span></h2>
-  <div class="grid2">
-    <div class="card pad"><span class="badge good">✓ Great for</span><ul class="muted">
-      <li>Fitting a big model on fewer GPUs, or on a laptop</li>
-      <li>Faster decode (memory-bound), especially at small batch sizes</li>
-      <li>More room for KV cache → bigger batches, longer contexts</li>
-      <li>Large models: the bigger the model, the less each weight matters</li></ul></div>
-    <div class="card pad"><span class="badge bad">Watch out</span><ul class="muted">
-      <li>Small models are fragile: every weight carries more of the load</li>
-      <li>3 bits and below: quality drops fast, even with GPTQ/AWQ</li>
-      <li>Calibration data that doesn't match your domain</li>
-      <li>Speedups need real low-bit kernels (e.g. vLLM, TensorRT-LLM); the file size alone isn't speed</li></ul></div>
-  </div>
-</section>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-<!-- 12 interview -->
-<section class="wrap">
-  <span class="step">12</span>
-  <h2>Interview follow-ups</h2>
-  <div class="qa">
-    <details class="card"><summary><span>Why does 4-bit weight-only quantization speed up decode but not prefill much?</span></summary><p>Decode reads every weight for just a few tokens, so it is memory-bandwidth-bound. Moving 4× fewer bytes directly speeds it up. Prefill processes many tokens per weight read, so it's compute-bound, and W4A16 still does 16-bit math after de-quantizing. To speed up prefill you need low-precision math: FP8/INT8 activations as well (W8A8).</p></details>
-    <details class="card"><summary><span>Symmetric vs asymmetric quantization?</span></summary><p>Symmetric: the levels are centred on zero, and scale = max|w| / (2<sup>b−1</sup>−1). Asymmetric adds a zero-point so the grid covers [min, max] exactly, which is better for skewed ranges and costs one extra number per group. Weights are often done asymmetrically at 3–4 bits; activations are usually symmetric.</p></details>
-    <details class="card"><summary><span>Why do activation outliers hurt more than weight outliers?</span></summary><p>Weights are fixed, so you can scale each output channel separately offline. Activation outliers sit in fixed <i>input</i> channels and change per token. A per-tensor activation scale gets stretched by them for every token, and you can't give each input channel its own scale without breaking the fast INT8 matmul. SmoothQuant folds that per-channel scale into the weights instead.</p></details>
-    <details class="card"><summary><span>GPTQ vs AWQ: which would you pick?</span></summary><p>Both are post-training, weight-only and use calibration data. GPTQ reconstructs each layer's output with second-order (Hessian) updates, which is strong but can overfit the calibration set. AWQ only searches per-channel scales, is cheaper and generalizes well across domains. At 4-bit g128 they're usually close. Evaluate both on your own tasks.</p></details>
-    <details class="card"><summary><span>What's the difference between PTQ and QAT?</span></summary><p>Post-training quantization converts finished weights using a small calibration set in minutes to hours. Quantization-aware training simulates the low-bit rounding during training so the weights adapt to it. It gives the best quality at very low bits but needs the training pipeline (e.g. GPT-OSS released in MXFP4, Kimi K2 Thinking in INT4). With open weights you usually only have PTQ.</p></details>
-    <details class="card"><summary><span>How do you check that a quantized model is "good enough"?</span></summary><p>Compare against the original on the same harness: perplexity (cheap, sensitive), public benchmarks, and a product-specific eval. You want differences within run-to-run noise. Check long-context and reasoning tasks too, since errors compound over tokens.</p></details>
-  </div>
-</section>
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
 
-<section class="wrap"><div class="card recap">Fewer bits, same model: <span class="yellow">just tame the outliers.</span></div></section>
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
 
-</main>
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
 
-<footer class="wrap">
-  <span class="handle">@datawithsuman</span>
-  <span class="muted small">AI &amp; ML, explained simply</span>
-</footer>
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
 
-<script src="lesson.js"></script>
-<script src="../../lessons.js?v=20261027b"></script>
-<script src="../../kit/site.js?v=20261027b"></script>
-<script src="main.js"></script>
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+const D = {"w":[0.0071,-0.0491,0.0427,-0.002,-0.014,-0.0713,0.0192,-0.0359,0.0713,0.0396,0.0549,0.208,0.0369,0.0461,0.0106,-0.006,0.1016,0.0728,0.0275,0.0018,-0.4395,0.106,-0.012,-0.0664,0.0129,-0.0155,-0.0239,0.0032,-0.0215,-0.0835,0.0067,-0.0161],"act":[1.3,1.405,1.204,0.988,1.141,0.953,1.321,1.769,1.128,1.083,1.471,1.425,1.337,0.974,1.29,1.543,0.83,1.14,0.635,0.849,0.655,1.218,0.856,91.551,1.355,1.235,0.419,1.111,1.283,1.34,0.764,1.133,0.958,1.017,1.671,1.017,1.289,1.61,1.096,1.261,1.339,1.322,0.871,1.327,1.776,0.758,1.601,1.342,1.075,2.0,1.567,0.88,1.326,1.502,1.234,1.539,1.277,1.534,1.803,1.064,1.371,1.138,1.345,0.884,1.097,1.231,1.615,1.701,0.837,1.022,1.526,63.158,1.138,1.266,1.74,1.541,1.185,1.171,1.212,1.833,1.15,1.194,1.423,1.258,1.231,0.91,1.296,1.145,1.708,1.529,1.292,1.534,1.181,1.668,1.298,1.504,0.848,1.421,0.709,0.588,1.193,0.985,1.357,2.086,1.009,1.082,1.372,1.473,1.238,1.228,1.546,1.482,0.938,1.272,1.312,0.931,1.391,1.0,1.64,1.367,1.331,1.093,1.258,0.601,0.904,1.427,0.555,1.596,0.689,1.565,1.004,1.573,1.346,0.762,1.737,1.805,1.277,1.204,1.244,0.959,78.728,37.066,1.282,1.022,1.081,0.853,1.74,1.246,1.638,1.305,1.057,1.186,1.104,1.303,1.169,1.195,0.817,1.018,1.879,1.065,0.931,1.418,1.793,0.791,1.227,1.079,0.684,1.557,1.292,1.325,1.037,1.459,1.111,1.25,0.912,0.874,1.767,1.123,1.402,1.288,1.146,1.122,1.521,1.194,1.247,1.308,1.712,1.538,1.434,1.103,0.816,1.632,1.638,1.251,1.49,1.574,1.591,1.622,1.141,1.83,0.864,64.83,1.473,1.606,1.958,1.82,0.899,0.709,1.586,0.945,1.296,1.594,0.725,0.562,1.391,1.316,1.214,1.313,0.999,0.77,1.242,0.96,0.725,1.477,1.279,1.442,0.954,1.07,0.95,0.99,27.488,1.026,1.425,1.419,2.009,0.813,1.611,1.269,1.295,0.793,1.139,1.56,1.271,1.328,1.198,1.704,1.292,0.53,1.058,0.611,0.438,1.114,1.767,1.316,0.89,0.971],"cw":[1.538,1.454,1.139,1.528,1.229,1.673,1.082,1.366,1.398,1.069,1.83,1.765,1.284,1.593,1.495,0.747,1.463,1.385,1.421,1.131,1.333,1.355,1.697,1.484,1.399,1.782,1.261,1.303,0.946,1.792,1.641,1.629,1.567,1.428,1.454,1.337,1.349,1.414,1.778,1.539,1.385,1.255,1.241,1.801,1.527,1.417,1.313,1.123,1.383,1.618,1.302,1.343,1.345,1.427,1.002,1.341,1.186,1.621,1.207,1.544,1.781,1.322,1.25,1.448,1.399,1.152,1.515,1.904,1.335,1.349,1.139,1.48,1.088,1.123,1.72,1.174,1.67,1.781,1.465,1.538,1.888,1.351,1.252,1.062,1.41,1.77,1.64,1.164,1.186,1.274,1.473,1.349,1.454,1.474,1.325,1.39,1.452,1.379,1.526,1.868,1.548,1.414,0.978,1.497,0.913,1.048,1.614,1.577,1.363,0.972,1.307,1.23,1.559,1.964,1.454,1.205,1.107,1.386,1.356,1.112,1.429,1.112,1.678,1.666,1.671,1.281,1.529,1.367,1.303,1.315,1.075,1.039,1.599,1.352,1.454,1.65,0.967,1.204,1.444,1.498,1.306,1.657,1.453,1.097,1.167,1.601,1.516,0.925,1.737,1.55,1.736,1.304,1.326,1.118,2.034,1.356,1.797,1.238,1.441,0.982,1.304,1.646,1.087,1.668,1.484,1.139,1.275,1.285,1.388,1.266,1.193,1.324,1.143,1.078,1.388,1.621,1.018,1.401,1.238,1.156,1.613,1.27,1.775,1.205,1.497,1.343,1.211,1.547,1.361,1.551,1.388,1.129,1.374,1.413,1.64,1.173,1.39,0.97,1.563,1.13,0.948,1.385,1.676,1.019,1.128,1.214,1.118,1.495,1.198,1.22,1.546,1.211,1.508,1.157,1.097,0.941,1.865,1.32,1.461,1.392,1.44,1.412,1.877,1.14,1.011,1.147,1.066,1.587,1.605,1.16,1.052,1.311,1.748,0.695,1.532,1.131,1.66,1.131,1.329,1.023,1.156,1.746,1.605,1.3,1.182,0.927,1.302,1.392,1.379,1.377,1.12,1.383,1.39,1.723,1.867,1.366]};
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const bars = (el, rows, max) => { el.innerHTML = rows.map(r => `<div class="bar"><span>${r[0]}</span><div class="track"><div class="fill" style="width:${Math.min(100, 100 * r[1] / max)}%;background:var(--${r[2]})"></div></div><span class="v">${r[3]}</span></div>`).join(''); };
+
+// symmetric absmax quantization of D.w with groups → quantized values + per-group step
+function quant(w, bits, g) { const L = Math.pow(2, bits - 1) - 1, q = [], groups = [];
+  for (let s = 0; s < w.length; s += g) { const part = w.slice(s, s + g), d = Math.max(...part.map(Math.abs)) / L;
+    groups.push([s, s + part.length, d, L]); part.forEach(v => q.push(Math.max(-L, Math.min(L, Math.round(v / d))) * d)); }
+  const ae = w.reduce((a, v, i) => a + Math.abs(v - q[i]), 0) / w.length, aw = w.reduce((a, v) => a + Math.abs(v), 0) / w.length;
+  return { q, groups, err: ae / aw, zero: w.filter((v, i) => v !== 0 && q[i] === 0).length }; }
+function plot(svg, w, r) { const X = i => 40 + i * 21.9, Y = v => 115 - v / 0.46 * 100; let s = `<line x1="30" y1="115" x2="740" y2="115" class="lnf"/>`;
+  r.groups.forEach(([a, b, d, L]) => { if (2 * L + 1 <= 31) for (let k = -L; k <= L; k++) s += `<line x1="${X(a) - 9}" x2="${X(b - 1) + 9}" y1="${Y(k * d)}" y2="${Y(k * d)}" stroke="var(--line)" stroke-width="1"/>`;
+    if (a > 0) s += `<line x1="${X(a) - 11}" x2="${X(a) - 11}" y1="8" y2="222" stroke="var(--dim)" stroke-dasharray="4 4"/>`; });
+  w.forEach((v, i) => { const z = v !== 0 && r.q[i] === 0;
+    s += `<line x1="${X(i)}" x2="${X(i)}" y1="${Y(v)}" y2="${Y(r.q[i])}" stroke="var(--${z ? 'bad' : 'dim'})" stroke-width="1.5"/>`
+      + `<circle cx="${X(i)}" cy="${Y(v)}" r="4.5" class="sa"/><circle cx="${X(i)}" cy="${Y(r.q[i])}" r="4.5" class="${z ? 'sbad' : 'sb'}"/>`; });
+  svg.innerHTML = s; }
+
+// 1 · model size
+(() => { const lab = document.getElementById('labSize'); if (!lab) return; const P = [8.03e9, 70.6e9, 405.9e9];
+  const upd = () => { const p = P[+onv(lab, 0).dataset.v], b = +onv(lab, 1).dataset.v, gb = p * b / 8 / 1e9, n = Math.ceil(gb / 80);
+    put(lab, 'gb', gb.toFixed(gb < 10 ? 1 : 0) + ' GB'); put(lab, 'gpu', n + (n === 1 ? ' GPU' : ' GPUs')); put(lab, 'free', (n * 80 - gb).toFixed(0) + ' GB');
+    lab.querySelector('[data-o=bar]').style.width = (100 * gb / (n * 80)) + '%'; };
+  segs(lab, upd); upd(); })();
+
+// 2 · grid on 32 real weights
+(() => { const lab = document.getElementById('labGrid'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const upd = () => { const b = +r.value, q = quant(D.w, b, 32); r.nextElementSibling.textContent = b + ' bits';
+    plot(svg, D.w, q); put(lab, 'lv', Math.pow(2, b) - 1); put(lab, 'err', (100 * q.err).toFixed(0) + '%'); put(lab, 'zero', q.zero + ' of 32'); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 3 · RTN cliff on OPT (GPTQ paper, Table 3)
+(() => { const lab = document.getElementById('labRtn'); if (!lab) return; const r = lab.querySelector('input');
+  const T = { sizes: ['125M', '350M', '1.3B', '2.7B', '6.7B', '13B', '30B', '66B', '175B'], fp16: [27.65, 22.0, 14.63, 12.47, 10.86, 10.13, 9.56, 9.34, 8.34], rtn4: [37.28, 25.94, 48.17, 16.92, 12.1, 11.32, 10.98, 110, 10.54], gptq4: [31.12, 24.24, 15.47, 12.87, 11.39, 10.31, 9.63, 9.55, 8.37], rtn3: [1300, 64.57, 13000, 16000, 5800, 3400, 1600, 6100, 7300], gptq3: [53.85, 33.79, 20.97, 16.88, 14.86, 11.61, 10.27, 14.16, 8.68] };
+  const f = v => v >= 1000 ? Math.round(v).toLocaleString() : v.toFixed(2), lg = v => Math.log10(v);
+  const upd = () => { const i = +r.value; r.nextElementSibling.textContent = 'OPT-' + T.sizes[i];
+    bars(lab.querySelector('[data-o=bars]'), [['16-bit', lg(T.fp16[i]), 'a', f(T.fp16[i])], ['4-bit RTN', lg(T.rtn4[i]), T.rtn4[i] > 1.3 * T.fp16[i] ? 'bad' : 'b', f(T.rtn4[i])], ['4-bit GPTQ', lg(T.gptq4[i]), 'ok', f(T.gptq4[i])], ['3-bit RTN', lg(T.rtn3[i]), 'bad', f(T.rtn3[i])], ['3-bit GPTQ', lg(T.gptq3[i]), 'ok', f(T.gptq3[i])]], 2);
+    lab.querySelector('[data-o=note]').textContent = `OPT-${T.sizes[i]}: 4-bit RTN adds ${(T.rtn4[i] - T.fp16[i]).toFixed(2)} perplexity; 3-bit RTN goes from ${f(T.fp16[i])} to ${f(T.rtn3[i])}${T.rtn3[i] > 100 ? ', i.e. the model is broken' : ''}. GPTQ (chapter 9) keeps 3-bit at ${f(T.gptq3[i])}.`; };
+  r.addEventListener('input', upd); upd(); })();
+
+// 6 · groups
+(() => { const lab = document.getElementById('labGroup'); if (!lab) return; const svg = lab.querySelector('svg');
+  const upd = () => { const g = +onv(lab).dataset.v, q = quant(D.w, 3, g); plot(svg, D.w, q);
+    put(lab, 'err', (100 * q.err).toFixed(0) + '%'); put(lab, 'zero', q.zero + ' of 32'); put(lab, 'ex', '+' + (16 / g) + ' bits'); };
+  segs(lab, upd); upd(); })();
+
+// 8 · AWQ scaling sweep (AWQ Table 2, OPT-6.7B)
+(() => { const lab = document.getElementById('labS'); if (!lab) return;
+  const T = { ch: ['0%', '2.8%', '4.4%', '8.2%', '21.2%'], sal: [1, 0.804, 0.676, 0.519, 0.303], ppl: [23.54, 12.87, 12.48, 11.92, 12.36] };
+  const upd = () => { const i = +onv(lab).dataset.i; put(lab, 'sal', (100 * T.sal[i]).toFixed(0) + '%'); put(lab, 'ch', T.ch[i]); put(lab, 'ppl', T.ppl[i].toFixed(2), i === 3 ? 'ok' : 'b'); };
+  segs(lab, upd); upd(); })();
+
+// 9 · GPTQ two-weight toy
+(() => { const lab = document.getElementById('labG'); if (!lab) return; const r = lab.querySelector('input'), D2 = 0.25, q = x => Math.round(x / D2) * D2 + 0, w = [0.08, -0.13];
+  const e2 = (e, p) => e[0] * e[0] + e[1] * e[1] + 2 * p * e[0] * e[1], f = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3);
+  const upd = () => { const p = +r.value; r.nextElementSibling.textContent = 'ρ = ' + p.toFixed(2);
+    const er = [w[0] - q(w[0]), w[1] - q(w[1])], e1 = w[0] - q(w[0]), w2n = w[1] + e1 * p, eg = [e1, w[1] - q(w2n)];
+    lab.querySelector('[data-o=tbl]').innerHTML = `<tr><th>weight</th><th>original</th><th>RTN</th><th>GPTQ: nudge, then round</th></tr>
+      <tr><td>w₁</td><td class="num">${f(w[0])}</td><td class="num">${f(q(w[0]))}</td><td class="num">${f(q(w[0]))} (error ${f(e1)})</td></tr>
+      <tr class="hi"><td>w₂</td><td class="num">${f(w[1])}</td><td class="num">${f(q(w[1]))}</td><td class="num">${f(w[1])} ${f(e1 * p)} = ${f(w2n)} → ${f(q(w2n))}</td></tr>`;
+    put(lab, 'er', e2(er, p).toFixed(4)); put(lab, 'eg', e2(eg, p).toFixed(4), e2(eg, p) < e2(er, p) - 1e-9 ? 'ok' : 'b'); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 10 · SmoothQuant migration strength
+(() => { const lab = document.getElementById('labA'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg'), n = D.act.length;
+  const med = a => { const s = [...a].sort((x, y) => x - y); return s[s.length >> 1]; };
+  const row = (vals, base, cls) => { const m = Math.max(...vals); return vals.map((v, j) => { const h = Math.max(1, v / m * 70); return `<rect x="${(40 + j * 680 / n).toFixed(1)}" y="${(base - h).toFixed(1)}" width="${(680 / n * 0.75).toFixed(2)}" height="${h.toFixed(1)}" class="${cls}"/>`; }).join(''); };
+  const upd = () => { const a = +r.value; r.nextElementSibling.textContent = a.toFixed(2);
+    const s = D.act.map((x, j) => Math.pow(x, a) / Math.pow(D.cw[j], 1 - a)), X = D.act.map((x, j) => x / s[j]), W = D.cw.map((x, j) => x * s[j]);
+    const ap = Math.max(...X) / med(X), wp = Math.max(...W) / med(W);
+    svg.innerHTML = `<text x="40" y="14" class="tst" font-size="12.5">activation ÷ s (per channel)</text>${row(X, 92, 'sst')}<text x="40" y="114" class="tb" font-size="12.5">weight × s (per channel)</text>${row(W, 192, 'sb')}`;
+    put(lab, 'ap', ap.toFixed(1) + '×', ap > 10 ? 'bad' : 'st'); put(lab, 'wp', wp.toFixed(1) + '×', wp > 10 ? 'bad' : 'b');
+    lab.querySelector('[data-o=note]').textContent = a < 0.35 ? 'Too little migration: the activation outliers are still there, so INT8 activations stay coarse.' : a > 0.65 ? 'Too much: the outliers have moved into the weights, which are now hard to quantize instead.' : 'Balanced: both sides have moderate peaks, so both quantize well. At α = 0.5 they end up with exactly the same per-channel profile.'; };
+  r.addEventListener('input', upd); upd(); })();
+
+// 12 · RTN vs GPTQ vs AWQ (AWQ Table 4)
+(() => { const lab = document.getElementById('labCmp'); if (!lab) return;
+  const T = { fp16: [5.47, 4.88, 3.32], 3: { rtn: [6.66, 5.52, 3.98], gptq: [6.43, 5.48, 3.88], awq: [6.24, 5.32, 3.74] }, 4: { rtn: [5.73, 4.98, 3.46], gptq: [5.69, 4.98, 3.42], awq: [5.6, 4.97, 3.41] } };
+  const upd = () => { const b = +onv(lab, 0).dataset.v, m = +onv(lab, 1).dataset.v, base = T.fp16[m], t = T[b];
+    const d = k => t[k][m] - base, mx = Math.max(d('rtn'), d('gptq'), d('awq'));
+    bars(lab.querySelector('[data-o=bars]'), [['RTN · ' + t.rtn[m], d('rtn'), 'bad', '+' + d('rtn').toFixed(2)], ['GPTQ · ' + t.gptq[m], d('gptq'), 'b', '+' + d('gptq').toFixed(2)], ['AWQ · ' + t.awq[m], d('awq'), 'ok', '+' + d('awq').toFixed(2)]], mx); };
+  segs(lab, upd); upd(); })();
+
+</script>
 </body>
 </html>

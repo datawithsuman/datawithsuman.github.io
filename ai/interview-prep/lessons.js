@@ -4,8 +4,8 @@
 window.LESSONS = {
   tracks: [
     { id: 'llm-inference', title: 'LLM Inference', desc: 'How LLMs actually run: speed, memory, and the tricks that make serving fast and cheap.', lessons: [
-      { slug: 'prefill-vs-decode', title: 'Prefill vs Decode', sub: 'Why does an LLM read your prompt fast but write its answer slowly?', level: 'Beginner', mins: 8 },
-      { slug: 'llm-quantization', title: 'LLM Quantization', sub: 'How does an LLM survive losing 75% of its bits?', level: 'Intermediate', mins: 12 },
+      { slug: 'prefill-vs-decode', title: 'Prefill vs Decode', sub: 'Why does an LLM read your prompt fast but write its answer slowly?', level: 'Intermediate', mins: 30 },
+      { slug: 'llm-quantization', title: 'LLM Quantization', sub: 'How does an LLM survive losing 75% of its bits?', level: 'Intermediate', mins: 35 },
     ] },
     { id: 'ml-scenarios', title: 'ML Scenarios', prefix: 'Q', desc: 'Real interview scenarios: your model does X, what do you do? Diagnose first, then fix.', lessons: [] },
     { id: 'ml-system-design', title: 'ML System Design', desc: 'ML systems from an ML engineer\'s view: data, features, serving, monitoring and trade-offs.', lessons: [] },

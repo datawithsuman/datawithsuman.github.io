@@ -9,7 +9,7 @@
 <meta property="og:description" content="Random Forest built from one wobbly tree: bagging, random features, out-of-bag error and feature importance, with interactive scenes, live examples and an interview section.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'global'},startup:{typeset:false}};</script>
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
 <style>
 /* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
@@ -79,6 +79,7 @@ code,.mono{font-family:var(--mono);font-size:.9em}
 /* equation reader */
 .eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
 .eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
 .eq.reading mjx-container{color:#4a5368}
 .eq .term{transition:color .3s;cursor:help;border-radius:4px}
 .eq .term:hover{background:rgba(255,255,255,.06)}
@@ -918,6 +919,7 @@ const RF = {
   // equation readers (need MathJax; the page still reads without it)
   const tip = document.getElementById('tip');
   function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
     $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
     $$('.reader').forEach(rd => {
       const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
