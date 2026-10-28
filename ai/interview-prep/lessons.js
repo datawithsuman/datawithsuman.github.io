@@ -23,6 +23,7 @@ window.LESSONS = {
         { id: 'tree-models', title: 'Tree-Based Models', desc: 'Splits, ensembles and boosting: the workhorses of tabular data.' },
         { id: 'classic-classifiers', title: 'Other Classic Classifiers', desc: 'Margins, neighbours and probabilities.' },
         { id: 'unsupervised', title: 'Unsupervised Learning', desc: 'Finding structure without labels.' },
+        { id: 'metrics', title: 'Evaluation Metrics', desc: 'Which number to trust, and when: scenario by scenario.' },
         { id: 'core-concepts', title: 'Core Concepts', desc: 'The ideas behind every model: generalization, evaluation and validation.' },
       ],
       lessons: [
@@ -31,6 +32,13 @@ window.LESSONS = {
       { slug: 'logistic-regression', group: 'linear-models', title: 'Logistic Regression', sub: 'Why is a classifier called regression, and what does log-loss punish?', level: 'Beginner', mins: 30 },
       { slug: 'softmax-regression', group: 'linear-models', title: 'Softmax Regression', sub: 'How does logistic regression handle many classes, and why does every LLM end with it?', level: 'Intermediate', mins: 25 },
       { slug: 'random-forest', group: 'tree-models', title: 'Random Forest', sub: 'How do many wobbly trees make one steady prediction?', level: 'Beginner', mins: 25 },
+      { slug: 'classification-metrics', group: 'metrics', title: 'Classification Metrics', sub: 'Your fraud model is 99.8% accurate. Why is your manager unhappy?', level: 'Beginner', mins: 30 },
+      { slug: 'roc-auc-vs-pr-auc', group: 'metrics', title: 'ROC-AUC vs PR-AUC', sub: 'Why can a 0.98 ROC-AUC fraud model still be nearly useless?', level: 'Intermediate', mins: 25 },
+      { slug: 'thresholds-and-costs', group: 'metrics', title: 'Thresholds & Misclassification Costs', sub: 'Why flag at 0.5, when a missed fraud costs 100 reviews?', level: 'Intermediate', mins: 30 },
+      { slug: 'regression-metrics', group: 'metrics', title: 'Regression Metrics', sub: 'RMSE went up 9× but MAE barely moved. Is the model worse?', level: 'Beginner', mins: 30 },
+      { slug: 'ranking-metrics', group: 'metrics', title: 'Ranking Metrics', sub: 'How do you score a search page, a recommendation list, or a RAG retriever?', level: 'Intermediate', mins: 25 },
+      { slug: 'probability-metrics', group: 'metrics', title: 'Probability Metrics', sub: 'The model ranks perfectly, so why are the bids wrong?', level: 'Intermediate', mins: 25 },
+      { slug: 'choosing-the-right-metric', group: 'metrics', title: 'Choosing the Right Metric', sub: 'Which metric would you use for X? Twelve scenarios to practise.', level: 'Intermediate', mins: 25 },
     ] },
   ],
 };

@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-11-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-18-58C4DD?labelColor=0f0f12)
 ![Tracks](https://img.shields.io/badge/tracks-6-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -39,7 +39,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
 | 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/) | The idea and the key result of important papers | 2 |
 | 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 2 |
-| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | | 5 |
+| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | 12 |
 
 ---
 
@@ -47,9 +47,9 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 
 | Lesson | Track | The question it answers |
 |---|---|---|
-| [**Softmax Regression**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/softmax-regression/) | 📐 ML Fundamentals | How does logistic regression handle many classes, and why does every LLM end with it? |
-| [**Logistic Regression**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/logistic-regression/) | 📐 ML Fundamentals | Why is a classifier called regression, and what does log-loss punish? |
-| [**Regularized Linear Models**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/regularized-linear-models/) | 📐 ML Fundamentals | Ridge vs Lasso vs Elastic Net: why does L1 zero out weights while L2 only shrinks them? |
+| [**Choosing the Right Metric**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/choosing-the-right-metric/) | 📐 ML Fundamentals | Which metric would you use for X? Twelve scenarios to practise. |
+| [**Probability Metrics**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/probability-metrics/) | 📐 ML Fundamentals | The model ranks perfectly, so why are the bids wrong? |
+| [**Ranking Metrics**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/ranking-metrics/) | 📐 ML Fundamentals | How do you score a search page, a recommendation list, or a RAG retriever? |
 
 ---
 
@@ -104,7 +104,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>📐 ML Fundamentals</b> · 5 lessons</summary>
+<summary><b>📐 ML Fundamentals</b> · 12 lessons</summary>
 
 <br>
 
@@ -122,6 +122,18 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
+
+**Evaluation Metrics**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Classification Metrics](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/classification-metrics/) | 🟢 Beginner | 30 min |
+| 2 | [ROC-AUC vs PR-AUC](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/roc-auc-vs-pr-auc/) | 🟡 Intermediate | 25 min |
+| 3 | [Thresholds & Misclassification Costs](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/thresholds-and-costs/) | 🟡 Intermediate | 30 min |
+| 4 | [Regression Metrics](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/regression-metrics/) | 🟢 Beginner | 30 min |
+| 5 | [Ranking Metrics](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/ranking-metrics/) | 🟡 Intermediate | 25 min |
+| 6 | [Probability Metrics](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/probability-metrics/) | 🟡 Intermediate | 25 min |
+| 7 | [Choosing the Right Metric](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/choosing-the-right-metric/) | 🟡 Intermediate | 25 min |
 
 </details>
 
