@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gaussian Mixture Models · @datawithsuman</title>
+<meta name="description" content="Soft clustering with EM, covariance types and choosing k with BIC, with a live EM lab.">
+<meta property="og:title" content="Gaussian Mixture Models">
+<meta property="og:description" content="Soft clustering with EM, covariance types and choosing k with BIC, with a live EM lab.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Unsupervised learning 4 of 6</div>
+  <h1>Gaussian Mixture Models</h1>
+  <div class="meta">Soft clustering, the EM algorithm, covariance types, choosing k with BIC, and how GMMs generalise k-means · built from scikit-learn's mixture guide, Dempster, Laird &amp; Rubin (1977) and Bishop's PRML ch. 9 · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> a Gaussian mixture model says the data was generated by k bell-shaped (Gaussian) blobs, each with its own centre, <b>shape</b> (covariance) and share of the data. Fitting it with <b>EM</b> alternates two steps, like k-means but soft: the <b>E-step</b> computes, for every point, the probability that each blob produced it (its <b>responsibilities</b>); the <b>M-step</b> re-estimates each blob's weight, mean and covariance from those weighted points. You get tilted, stretched clusters k-means can't fit, a <b>probability</b> of membership per point, a likelihood you can use to choose k (<b>BIC</b>), and a density model for anomaly detection. The costs: local optima, more parameters, and degenerate solutions if a blob collapses onto a few points.<br><span class="small">What you'll be able to do after this: write the mixture density, run one EM iteration in words, choose a covariance type and k with BIC, and explain k-means as a special case.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>component 1</span><span><i style="background:var(--b)"></i>component 2</span><span><i style="background:var(--st)"></i>component 3</span><span><i style="background:var(--info)"></i>numbers / likelihood</span><span><i style="background:var(--ink)"></i>2σ ellipses</span><span><i style="background:var(--bad)"></i>failure</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> the same food-delivery customers (standardised orders per month and basket size), but a different simulated base of 320 customers where two segments are <b>tilted</b>: within each, basket size grows with order frequency (correlation 0.9), and the two tilted segments overlap. A third, small round segment sits below. k-means struggles here (ARI 0.62, see the <a href="../k-means/">k-means lesson</a>).</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Stretched, overlapping groups, and "how sure are we?"</h2>
+  <p>k-means draws straight boundaries between centroids and assumes round clusters, so it slices the tilted segments crosswise. It also gives hard answers: a customer right between two segments is "segment 2", full stop. Marketing would rather know "62% likely segment 2, 38% segment 1" and target accordingly. We need a model of each cluster's <b>shape</b> and a <b>probability</b> of membership.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>A mixture of bell curves</h2>
+  <div class="reader" data-reader='[
+    {"t":"p","c":"info","label":"density of the data","say":"How likely the model thinks a customer with readings x is. High in crowded regions."},
+    {"t":"sum","c":"st","label":"sum over components","say":"The data is a blend of k sources. Each customer came from exactly one, but we don’t know which."},
+    {"t":"pi","c":"b","label":"mixing weight","say":"π_j: the share of customers from component j. The weights add up to 1."},
+    {"t":"N","c":"a","label":"one Gaussian","say":"A 2-D bell curve with centre μ_j and covariance Σ_j. The covariance sets the ellipse: how wide, how stretched, how tilted."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-p}{p(x)} = \class{term t-sum}{\sum_{j=1}^{k}} \class{term t-pi}{\pi_j}\ \class{term t-N}{\mathcal{N}(x \mid \mu_j, \Sigma_j)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn: a Gaussian mixture "assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters", and can be thought of as "generalizing k-means clustering to incorporate information about the covariance structure of the data as well as the centers of the latent Gaussians" <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>.</p>
+  </div>
+  <p>Once fitted, Bayes' rule gives each customer's membership probabilities, the <span class="k">responsibilities</span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"r","c":"ok","label":"responsibility","say":"r_ij: the probability that customer i came from component j, given their readings."},
+    {"t":"num","c":"a","label":"how well j explains x_i","say":"Component j’s weight times its density at x_i."},
+    {"t":"den","c":"info","label":"normalise over all components","say":"Divide by the total, so each customer’s responsibilities add to 1."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-r}{r_{ij}} = \class{term t-num}{\pi_j\,\mathcal{N}(x_i \mid \mu_j,\Sigma_j)} \,/\, \class{term t-den}{\textstyle\sum_{l} \pi_l\,\mathcal{N}(x_i \mid \mu_l,\Sigma_l)}"></div></div>
+    <ol class="say"></ol>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Just maximise the likelihood directly"</h2>
+  <p>Fitting means finding the π, μ and Σ that make the data most likely. If we knew which component produced each customer, that would be easy: fit one Gaussian per group by its mean and covariance. We don't, and the log-likelihood has a sum inside the logarithm, so there's no closed-form answer. Worse, it has a trap: put one component on a single customer and shrink its covariance to zero, and the likelihood shoots to infinity. scikit-learn warns the algorithm "is known to diverge and find solutions with infinite likelihood unless one regularizes the covariances artificially" <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>. That's why implementations add a small <code>reg_covar</code> to every covariance.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>EM, and its Bayesian cousin</h2>
+  <p>The standard fitting method is <b>expectation–maximisation</b> (Dempster, Laird &amp; Rubin, 1977), a general recipe for models with hidden variables (here: which component produced each point). scikit-learn's <code>GaussianMixture</code> uses it, initialised from k-means by default. <code>BayesianGaussianMixture</code> uses variational inference with priors, which can switch off unneeded components and "avoids the singularities often found in expectation-maximization solutions but introduces some subtle biases" <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>Guess the hidden labels softly, refit, repeat</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 280" role="img" aria-label="One EM iteration">
+        <g data-show="1"><ellipse cx="250" cy="140" rx="110" ry="60" fill="none" stroke="var(--a)" stroke-width="2.5"/><ellipse cx="510" cy="140" rx="110" ry="60" fill="none" stroke="var(--b)" stroke-width="2.5"/><circle cx="250" cy="140" r="5" fill="var(--a)"/><circle cx="510" cy="140" r="5" fill="var(--b)"/><circle cx="380" cy="150" r="9" fill="var(--dim)"/><text x="380" y="40" text-anchor="middle" class="d" font-size="13">current guess: two components</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--info)"><rect x="300" y="190" width="160" height="56" rx="10" class="finfo"/><text x="380" y="212" text-anchor="middle" class="tinfo m">r = 0.45 · 0.55</text><text x="380" y="232" text-anchor="middle" class="d" font-size="11">E-step: soft membership</text><circle cx="380" cy="150" r="9" fill="var(--b)" opacity=".55"/><circle cx="380" cy="150" r="9" fill="none" stroke="var(--a)" stroke-width="3"/></g>
+        <g data-show="3"><circle cx="160" cy="120" r="6" fill="var(--a)"/><circle cx="200" cy="170" r="6" fill="var(--a)"/><circle cx="290" cy="110" r="6" fill="var(--a)"/><circle cx="600" cy="170" r="6" fill="var(--b)"/><circle cx="560" cy="110" r="6" fill="var(--b)"/><circle cx="470" cy="160" r="6" fill="var(--b)"/><text x="380" y="270" text-anchor="middle" class="d" font-size="12">every point gets responsibilities like this</text></g>
+        <g data-show="4" data-hl="4" style="color:var(--st)"><ellipse cx="240" cy="140" rx="120" ry="48" fill="none" stroke="var(--a)" stroke-width="2" stroke-dasharray="6 4" transform="rotate(-8 240 140)"/><ellipse cx="525" cy="140" rx="105" ry="52" fill="none" stroke="var(--b)" stroke-width="2" stroke-dasharray="6 4" transform="rotate(6 525 140)"/><text x="380" y="70" text-anchor="middle" class="tst" font-size="13">M-step: weighted means, covariances, weights</text></g>
+        <g data-show="5"><text x="380" y="18" text-anchor="middle" class="tinfo" font-size="12">log-likelihood never decreases → converges (to a local optimum)</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Start from a guess (usually k-means): two components, each with a centre, an ellipse and a weight. One customer sits between them.</li>
+      <li><b>E-step:</b> for that customer, compute the responsibilities with the current parameters: 45% component 1, 55% component 2. No hard choice.</li>
+      <li>Do this for every customer. Points deep inside an ellipse get ~100% for it; points in between are split.</li>
+      <li><b>M-step:</b> refit each component as if its responsibilities were fractional counts: its weight is its total responsibility over n, its mean is the responsibility-weighted average, and its covariance the weighted spread. The ellipses move and reshape.</li>
+      <li>Repeat. Each round can only increase (or keep) the likelihood, so EM converges, but, like k-means, to a local optimum that depends on the start.</li>
+    </ol>
+  </div>
+  <p class="small">scikit-learn: EM "computes for each point a probability of being generated by each component of the model. Then, one tweaks the parameters to maximize the likelihood of the data given those assignments. Repeating this process is guaranteed to always converge to a local optimum" <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>.</p>
+  <details class="deep"><summary>Go deeper: the M-step formulas</summary>
+    <p>With N<sub>j</sub> = Σ<sub>i</sub> r<sub>ij</sub>: π<sub>j</sub> = N<sub>j</sub>/n; μ<sub>j</sub> = (1/N<sub>j</sub>) Σ<sub>i</sub> r<sub>ij</sub> x<sub>i</sub>; Σ<sub>j</sub> = (1/N<sub>j</sub>) Σ<sub>i</sub> r<sub>ij</sub> (x<sub>i</sub> − μ<sub>j</sub>)(x<sub>i</sub> − μ<sub>j</sub>)<sup>T</sup>. These are just the usual mean and covariance with fractional counts. EM maximises a lower bound on the log-likelihood that touches it at the current parameters, which is why the likelihood can't go down (Bishop, PRML §9.4).</p>
+    <p><b>k-means as a limit:</b> give every component the same spherical covariance σ²I and equal weights, and let σ → 0. Responsibilities become 0/1 (nearest centre wins) and the M-step becomes "mean of the assigned points": exactly Lloyd's algorithm (PRML §9.3.2).</p>
+  </details>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Run EM">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Run it yourself</span>
+  <h2>Watch EM fit the tilted segments</h2>
+  <div class="card lab" id="labEM">
+    <label>EM iterations <input type="range" min="0" max="40" step="1" value="0" data-k="t"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 420" data-o="plot" role="img" aria-label="Gaussian mixture after t EM iterations"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">log-likelihood (higher is better)</div><div class="v info" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">agreement with true segments (ARI)</div><div class="v ok" data-o="ari">–</div></div>
+      <div class="stat"><div class="l">uncertain customers (top probability &lt; 0.8)</div><div class="v b" data-o="unc">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Colour = most likely component; faded points are uncertain (lighter = lower top responsibility). Ellipses are 2σ contours. Iteration 0 is the k-means start.</p>
+  </div>
+  <p>From the k-means start (ARI 0.57 after one iteration), the ellipses rotate to follow the tilt. The log-likelihood climbs from −1,006 to −656 by iteration 10 and settles at −651.8; ARI reaches 0.85, and 13 customers remain genuinely uncertain (top probability below 0.8), almost all where the two tilted segments overlap. Five different starts all converged to the same solution here.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Covariance types">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill st">Shape constraints</span>
+  <h2>Spherical, diagonal or full covariance</h2>
+  <p>A full 2-D covariance has 3 numbers per component; in d dimensions it has d(d + 1)/2, which grows fast. scikit-learn lets you constrain it: <b>spherical</b> (one variance, round), <b>diag</b> (axis-aligned ellipses), <b>tied</b> (all components share one full covariance), or <b>full</b> (each its own) <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>.</p>
+  <div class="card lab" id="labCov">
+    <div class="seg"><button data-v="spherical">spherical</button><button data-v="diag">diag</button><button data-v="full" class="on">full</button></div>
+    <div class="stage plot"><svg viewBox="0 0 760 420" data-o="plot" role="img" aria-label="GMM with a covariance constraint"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">ARI</div><div class="v ok" data-o="ari">–</div></div>
+      <div class="stat"><div class="l">BIC (lower is better)</div><div class="v info" data-o="bic">–</div></div>
+      <div class="stat"><div class="l">parameters</div><div class="v b" data-o="p">–</div></div>
+    </div>
+  </div>
+  <p>Only <b>full</b> covariance can tilt, so only it follows the correlated segments: ARI 0.85 vs 0.44 (diag) and 0.52 (spherical). BIC agrees without seeing the labels: 1,402 for full vs 1,538 and 1,883. In high dimensions with little data, full covariance overfits or becomes singular; diag or tied are the safer choices there.</p>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Choosing k: BIC">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill ok">Choosing k</span>
+  <h2>BIC: likelihood minus a price per parameter</h2>
+  <p>More components always raise the likelihood, so the likelihood alone always says "more". The Bayesian information criterion adds a penalty:</p>
+  <div class="reader" data-reader='[
+    {"t":"B","c":"info","label":"BIC","say":"Lower is better. Compare it across k (and covariance types)."},
+    {"t":"L","c":"a","label":"fit","say":"−2 × the maximised log-likelihood: smaller when the model explains the data well."},
+    {"t":"P","c":"bad","label":"complexity penalty","say":"p parameters × log n. Each extra component must earn its keep. Full covariance in 2-D: 6 parameters per component (2 mean, 3 covariance, 1 weight) minus 1."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-B}{\mathrm{BIC}} = \class{term t-L}{-2\log \hat L} + \class{term t-P}{p\,\log n}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <div class="card lab" id="labBIC">
+    <label>Number of components k <input type="range" min="1" max="6" step="1" value="3" data-k="k"><output></output></label>
+    <div class="two">
+      <div class="stage plot"><svg viewBox="0 0 560 420" data-o="plot" role="img" aria-label="GMM fit with k components"></svg></div>
+      <div class="stage plot"><svg viewBox="0 0 380 300" data-o="bicplot" role="img" aria-label="BIC versus k"></svg></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">log-likelihood</div><div class="v a" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">BIC</div><div class="v info" data-o="bic">–</div></div>
+    </div>
+  </div>
+  <p>BIC falls from 2,029 (k = 1) to 1,440 (k = 2) to a minimum of <b>1,402 at k = 3</b>, then rises (1,428, 1,455, 1,478) even though the log-likelihood keeps creeping up (−652, −648, −644, −638). scikit-learn's caveat: BIC "recovers the true number of components only in the asymptotic regime (i.e. if much data is available and assuming that the data was actually generated i.i.d. from a mixture of Gaussian distributions)" <span class="src"><a href="https://scikit-learn.org/stable/modules/mixture.html">mixture guide</a></span>.</p>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · Density uses">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill a">Beyond clustering</span>
+  <h2>A density model you can reuse</h2>
+  <ul>
+    <li><b>Anomaly detection:</b> p(x) is low for unusual customers; flag points below a density threshold (<code>score_samples</code>).</li>
+    <li><b>Generating data:</b> sample a component by its weight, then a point from its Gaussian (<code>sample</code>).</li>
+    <li><b>Soft features:</b> responsibilities as inputs to a downstream model.</li>
+    <li><b>Historically:</b> GMMs modelled acoustic features in speech recognition (GMM-HMM) and speaker verification for decades before neural networks replaced them. <span class="mine">my take</span></li>
+  </ul>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · The whole recipe">
+  <div class="chap">10 · The whole recipe</div>
+  <ol>
+    <li><b>Scale</b> features; reduce dimensions (PCA) if there are many.</li>
+    <li><b>Grid over k and covariance_type</b>; fit each with several initialisations (<code>n_init</code>).</li>
+    <li><b>Pick the lowest BIC</b>, then check the components make sense.</li>
+    <li><b>Use</b> predict_proba for soft membership, score_samples for density/anomaly scores.</li>
+  </ol>
+  <pre class="formula">from sklearn.mixture import GaussianMixture
+best = min((GaussianMixture(k, covariance_type=c, n_init=5, random_state=0).fit(X)
+            for k in range(1, 7) for c in ["spherical", "diag", "tied", "full"]),
+           key=lambda g: g.bic(X))
+probs = best.predict_proba(X)      # soft membership
+density = best.score_samples(X)    # log p(x): low = unusual</pre>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Evidence">
+  <div class="chap">11 · Evidence</div>
+  <div class="card"><h4>Tilted customers: ARI by method (this page's simulation)</h4>
+    <div class="bars" data-max="1">
+      <div class="bar"><span>k-means, k = 3 (best of 10)</span><div class="track"><div class="fill" style="--v:0.62;background:var(--bad)"></div></div><span class="v">0.62</span></div>
+      <div class="bar"><span>GMM, spherical</span><div class="track"><div class="fill" style="--v:0.52;background:var(--bad)"></div></div><span class="v">0.52</span></div>
+      <div class="bar"><span>GMM, diag</span><div class="track"><div class="fill" style="--v:0.435;background:var(--bad)"></div></div><span class="v">0.44</span></div>
+      <div class="bar"><span>GMM, full</span><div class="track"><div class="fill" style="--v:0.853;background:var(--ok)"></div></div><span class="v">0.85</span></div>
+    </div>
+    <p class="small">320 simulated customers; the two tilted segments genuinely overlap, so no method can reach 1.0. Illustrative.</p></div>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Caveats">
+  <div class="chap">12 · Takeaways and honest caveats</div>
+  <div class="two">
+    <div class="card ok"><h4>Strengths</h4><ul style="margin:0;padding-left:20px" class="small"><li>Elliptical, tilted, different-sized clusters</li><li>Soft membership probabilities</li><li>A real likelihood: BIC for k, densities for anomalies</li><li>"the fastest algorithm for learning mixture models" (scikit-learn, on EM)</li></ul></div>
+    <div class="card bad"><h4>Weaknesses</h4><ul style="margin:0;padding-left:20px" class="small"><li>Local optima; needs good initialisation and restarts</li><li>Assumes each cluster is Gaussian; curved shapes need many components</li><li>Covariances can collapse (singularities); needs regularisation</li><li>Full covariance scales as d² parameters per component</li></ul></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Key terms">
+  <div class="chap">13 · Key terms</div>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Component</b></td><td>One Gaussian in the mixture (π, μ, Σ).</td></tr>
+    <tr><td><b>Responsibility</b></td><td>P(component j | x<sub>i</sub>): soft membership.</td></tr>
+    <tr><td><b>EM</b></td><td>E-step (responsibilities), M-step (refit), repeat.</td></tr>
+    <tr><td><b>Covariance type</b></td><td>spherical / diag / tied / full shape constraint.</td></tr>
+    <tr><td><b>BIC</b></td><td>−2 log L + p log n; lower is better.</td></tr>
+  </table></div>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · When to use it">
+  <div class="chap">14 · When to use it</div>
+  <div class="two">
+    <div class="card ok"><h4>Use a GMM when</h4><ul style="margin:0;padding-left:20px" class="small"><li>Clusters are elliptical or overlap</li><li>You need membership probabilities</li><li>You want a density for anomaly scores or sampling</li></ul></div>
+    <div class="card"><h4>Reach for something else when</h4><ul style="margin:0;padding-left:20px" class="small"><li>Curved or arbitrary shapes: DBSCAN/HDBSCAN</li><li>Very large data and round clusters: k-means</li><li>Very high dimensions with few points: reduce first or use diag</li></ul></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">A Gaussian mixture models the data as a weighted sum of k Gaussians, each with its own mean and covariance. We fit it with EM: the E-step computes each point's responsibility, the posterior probability that each component generated it; the M-step re-estimates the weights, means and covariances using those responsibilities as fractional counts. The likelihood never decreases, so it converges to a local optimum, usually initialised from k-means. Compared with k-means it handles elliptical, tilted clusters and gives soft assignments; k is chosen with BIC, and the covariance type trades flexibility for parameters. k-means is the limit with equal spherical covariances shrinking to zero.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Explain EM in general.</summary><p>For models with hidden variables: E-step computes the posterior over hidden variables given current parameters; M-step maximises the expected complete-data log-likelihood. Each iteration doesn't decrease the observed-data likelihood; it converges to a local optimum.</p></details>
+  <details class="qa"><summary>How is k-means a special case?</summary><p>Equal weights, shared spherical covariance σ²I with σ → 0: responsibilities become hard nearest-centre assignments and the M-step becomes the mean of assigned points.</p></details>
+  <details class="qa"><summary>How do you choose k?</summary><p>BIC or AIC over k (lower is better), held-out log-likelihood, or a Bayesian GMM with a Dirichlet-process prior that switches off unneeded components.</p></details>
+  <details class="qa"><summary>What goes wrong with EM for GMMs?</summary><p>Local optima (use restarts), collapsing covariances giving infinite likelihood (add reg_covar), slow convergence when components overlap, and too many parameters with full covariance in high dimensions.</p></details>
+  <details class="qa"><summary>How would you use a GMM for anomaly detection?</summary><p>Fit on normal data, compute log p(x) with score_samples, and flag points below a threshold chosen on validation data (e.g. the 1st percentile).</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"EM finds the maximum-likelihood solution." It finds a local one.</li>
+    <li>"Higher likelihood means a better k." Likelihood always rises with k; use BIC or held-out data.</li>
+    <li>"GMMs handle any cluster shape." Each component is an ellipse.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/mixture.html">Gaussian mixture models user guide</a> (definition, EM description, covariance options, pros/cons, singularities, BIC, Bayesian GMM).</li>
+    <li>A. Dempster, N. Laird &amp; D. Rubin, "Maximum likelihood from incomplete data via the EM algorithm", <i>JRSS B</i> 39, 1977 (EM).</li>
+    <li>C. Bishop, <i>Pattern Recognition and Machine Learning</i>, Springer 2006, ch. 9 (mixtures and EM; k-means as a limit, §9.3.2; EM lower bound, §9.4).</li>
+    <li>G. Schwarz, "Estimating the dimension of a model", <i>Annals of Statistics</i> 6, 1978 (BIC; background).</li>
+  </ol>
+  <p class="small">Customer data is simulated with fixed seeds; EM runs live in your browser.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+// ---- unsupervised core: seeded data, k-means(++), agglomerative, DBSCAN, GMM (EM), PCA, t-SNE ----
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+const d2 = (a, b) => { let s = 0; for (let j = 0; j < a.length; j++) s += (a[j] - b[j]) ** 2; return s; };
+// mixture of 2-D Gaussians: spec = [{n, m:[x,y], s:[sx,sy], rho}]
+function mix(seed, spec) { const r = rng(seed), g = gaussR(r), X = [], y = [];
+  spec.forEach((c, k) => { for (let i = 0; i < c.n; i++) { const a = g(), b = g(), rho = c.rho || 0; X.push([c.m[0] + c.s[0] * a, c.m[1] + c.s[1] * (rho * a + Math.sqrt(1 - rho * rho) * b)]); y.push(k); } }); return { X, y }; }
+function moons2(seed, n, noise) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = Math.PI * r(); X.push(c ? [1 - Math.cos(a) + noise * g(), 0.5 - Math.sin(a) + noise * g()] : [Math.cos(a) + noise * g(), Math.sin(a) + noise * g()]); y.push(c); } return { X, y }; }
+function uniformNoise(seed, n, box) { const r = rng(seed), X = []; for (let i = 0; i < n; i++) X.push([box[0] + (box[1] - box[0]) * r(), box[2] + (box[3] - box[2]) * r()]); return X; }
+// k-means: init 'random' or '++'; returns {C, lab, inertia, iters}
+function kmeans(X, k, seed, init = '++', maxIt = 100) { const r = rng(seed), n = X.length; let C = [];
+  if (init === '++') { C.push(X[Math.floor(r() * n)]); while (C.length < k) { const D = X.map(x => Math.min(...C.map(c => d2(x, c)))), S = D.reduce((a, b) => a + b, 0); let u = r() * S, i = 0; while (u > D[i] && i < n - 1) { u -= D[i]; i++; } C.push(X[i]); } }
+  else { const idx = new Set(); while (idx.size < k) idx.add(Math.floor(r() * n)); C = [...idx].map(i => X[i]); }
+  C = C.map(c => [...c]); let lab = Array(n).fill(-1), it = 0;
+  for (; it < maxIt; it++) { let ch = 0; X.forEach((x, i) => { let b = 0, bd = Infinity; C.forEach((c, j) => { const d = d2(x, c); if (d < bd) { bd = d; b = j; } }); if (lab[i] !== b) { lab[i] = b; ch++; } });
+    if (!ch) break; C = C.map((c, j) => { const P = X.filter((_, i) => lab[i] === j); return P.length ? c.map((_, q) => P.reduce((a, p) => a + p[q], 0) / P.length) : c; }); }
+  const inertia = X.reduce((a, x, i) => a + d2(x, C[lab[i]]), 0); return { C, lab, inertia, iters: it }; }
+// agglomerative clustering via Lance–Williams updates, O(n³); linkage single|complete|average|ward; returns merges [a,b,height,size]
+function agglo(X, linkage) { const n = X.length, ward = linkage === 'ward', D = X.map(a => X.map(b => ward ? d2(a, b) : Math.sqrt(d2(a, b)))), id = X.map((_, i) => i), sz = X.map(() => 1), alive = X.map(() => true), merges = []; let next = n;
+  for (let step = 0; step < n - 1; step++) { let bi = -1, bj = -1, bd = Infinity; for (let i = 0; i < n; i++) if (alive[i]) for (let j = i + 1; j < n; j++) if (alive[j] && D[i][j] < bd) { bd = D[i][j]; bi = i; bj = j; }
+    const ni = sz[bi], nj = sz[bj]; for (let k = 0; k < n; k++) { if (!alive[k] || k === bi || k === bj) continue; const a = D[bi][k], b = D[bj][k], nk = sz[k];
+      const v = linkage === 'single' ? Math.min(a, b) : linkage === 'complete' ? Math.max(a, b) : linkage === 'average' ? (ni * a + nj * b) / (ni + nj) : ((ni + nk) * a + (nj + nk) * b - nk * bd) / (ni + nj + nk); D[bi][k] = D[k][bi] = v; }
+    merges.push([id[bi], id[bj], ward ? Math.sqrt(bd) : bd, ni + nj]); id[bi] = next++; sz[bi] = ni + nj; alive[bj] = false; } return merges; }
+// cut the merge tree into k clusters → labels
+function cutK(merges, n, k) { const par = Array.from({ length: 2 * n }, (_, i) => i); const f = i => par[i] === i ? i : (par[i] = f(par[i]));
+  merges.slice(0, n - k).forEach(([a, b], t) => { par[f(a)] = n + t; par[f(b)] = n + t; }); const roots = {}, lab = []; for (let i = 0; i < n; i++) { const r = f(i); if (!(r in roots)) roots[r] = Object.keys(roots).length; lab.push(roots[r]); } return lab; }
+// DBSCAN → labels (−1 = noise), core flags
+function dbscan(X, eps, minPts) { const n = X.length, e2 = eps * eps, N = X.map(a => X.map((b, j) => j).filter(j => d2(a, X[j]) <= e2)), core = N.map(l => l.length >= minPts), lab = Array(n).fill(-1); let c = 0;
+  for (let i = 0; i < n; i++) { if (lab[i] !== -1 || !core[i]) continue; const st = [i]; lab[i] = c; while (st.length) { const p = st.pop(); if (!core[p]) continue; for (const q of N[p]) if (lab[q] === -1) { lab[q] = c; st.push(q); } } c++; }
+  return { lab, core, k: c }; }
+// GMM with full 2x2 covariances via EM
+function gmm(X, k, seed, iters = 100, cov = 'full') { const n = X.length, km = kmeans(X, k, seed); let pi = Array(k).fill(1 / k), mu = km.C.map(c => [...c]), S = Array.from({ length: k }, () => [1, 0, 1]); let R = [], ll = 0;
+  const pdf = (x, m, s) => { const [a, b, d] = s, det = a * d - b * b, u = x[0] - m[0], v = x[1] - m[1]; return Math.exp(-0.5 * (d * u * u - 2 * b * u * v + a * v * v) / det) / (2 * Math.PI * Math.sqrt(det)); };
+  for (let t = 0; t < iters; t++) { ll = 0; R = X.map(x => { const p = mu.map((m, j) => pi[j] * pdf(x, m, S[j])), s = p.reduce((a, b) => a + b, 0) || 1e-300; ll += Math.log(s); return p.map(v => v / s); });
+    for (let j = 0; j < k; j++) { const Nk = R.reduce((a, r) => a + r[j], 0) + 1e-12; pi[j] = Nk / n; mu[j] = [0, 1].map(q => R.reduce((a, r, i) => a + r[j] * X[i][q], 0) / Nk);
+      let a = 0, b = 0, d = 0; X.forEach((x, i) => { const u = x[0] - mu[j][0], v = x[1] - mu[j][1]; a += R[i][j] * u * u; b += R[i][j] * u * v; d += R[i][j] * v * v; }); a /= Nk; b /= Nk; d /= Nk;
+      if (cov === 'diag') b = 0; if (cov === 'spherical') { a = d = (a + d) / 2; b = 0; } S[j] = [a + 1e-6, b, d + 1e-6]; } }
+  const params = cov === 'full' ? 5 : cov === 'diag' ? 4 : 3, p = k * params + (k - 1), bic = -2 * ll + p * Math.log(n);
+  return { pi, mu, S, R, ll, bic, lab: R.map(r => r.indexOf(Math.max(...r))) }; }
+// symmetric eigen (Jacobi) → {vals desc, vecs (columns as arrays)}
+function eig(A) { const n = A.length, a = A.map(r => [...r]), V = a.map((_, i) => a.map((_, j) => +(i === j)));
+  for (let sw = 0; sw < 100; sw++) { let off = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += a[i][j] ** 2; if (off < 1e-20) break;
+    for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) { if (Math.abs(a[p][q]) < 1e-15) continue; const th = (a[q][q] - a[p][p]) / (2 * a[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1)), c = 1 / Math.sqrt(t * t + 1), s = t * c;
+      for (let k = 0; k < n; k++) { const x = a[k][p], y = a[k][q]; a[k][p] = c * x - s * y; a[k][q] = s * x + c * y; } for (let k = 0; k < n; k++) { const x = a[p][k], y = a[q][k]; a[p][k] = c * x - s * y; a[q][k] = s * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; } } }
+  const o = a.map((_, i) => i).sort((i, j) => a[j][j] - a[i][i]); return { vals: o.map(i => a[i][i]), vecs: o.map(i => V.map(r => r[i])) }; }
+function pca(X) { const n = X.length, p = X[0].length, m = Array.from({ length: p }, (_, j) => X.reduce((a, x) => a + x[j], 0) / n), Xc = X.map(x => x.map((v, j) => v - m[j]));
+  const Cv = Array.from({ length: p }, (_, i) => Array.from({ length: p }, (_, j) => Xc.reduce((a, x) => a + x[i] * x[j], 0) / (n - 1))), e = eig(Cv), tot = e.vals.reduce((a, b) => a + b, 0);
+  return { mean: m, vals: e.vals, vecs: e.vecs, ratio: e.vals.map(v => v / tot), Xc }; }
+// exact t-SNE (small n)
+function tsne(X, perp, seed, iters = 600) { const n = X.length, D = X.map(a => X.map(b => d2(a, b))), P = Array.from({ length: n }, () => new Float64Array(n)), H = Math.log(perp);
+  for (let i = 0; i < n; i++) { let lo = 0, hi = Infinity, beta = 1; for (let t = 0; t < 60; t++) { let s = 0, sd = 0; for (let j = 0; j < n; j++) if (j !== i) { const v = Math.exp(-D[i][j] * beta); P[i][j] = v; s += v; sd += D[i][j] * v; }
+      const h = Math.log(s) + beta * sd / s; if (Math.abs(h - H) < 1e-5) break; if (h > H) { lo = beta; beta = hi === Infinity ? beta * 2 : (beta + hi) / 2; } else { hi = beta; beta = (beta + lo) / 2; } }
+    let s = 0; for (let j = 0; j < n; j++) s += P[i][j]; for (let j = 0; j < n; j++) P[i][j] /= s; }
+  const Pj = Array.from({ length: n }, (_, i) => Float64Array.from({ length: n }, (_, j) => Math.max((P[i][j] + P[j][i]) / (2 * n), 1e-12)));
+  const r = rng(seed), g = gaussR(r), Y = X.map(() => [1e-2 * g(), 1e-2 * g()]), U = X.map(() => [0, 0]), lr = Math.max(n / 12 / 4, 50);
+  for (let t = 0; t < iters; t++) { const ex = t < 100 ? 12 : 1, mom = t < 100 ? 0.5 : 0.8, Q = Array.from({ length: n }, () => new Float64Array(n)); let Z = 0;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { const q = 1 / (1 + d2(Y[i], Y[j])); Q[i][j] = Q[j][i] = q; Z += 2 * q; }
+    for (let i = 0; i < n; i++) { let gx = 0, gy = 0; for (let j = 0; j < n; j++) if (j !== i) { const q = Q[i][j], m = 4 * (ex * Pj[i][j] - q / Z) * q; gx += m * (Y[i][0] - Y[j][0]); gy += m * (Y[i][1] - Y[j][1]); }
+      U[i][0] = mom * U[i][0] - lr * gx; U[i][1] = mom * U[i][1] - lr * gy; }
+    for (let i = 0; i < n; i++) { Y[i][0] += U[i][0]; Y[i][1] += U[i][1]; } }
+  let kl = 0, Z = 0; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) Z += 1 / (1 + d2(Y[i], Y[j])); for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) kl += Pj[i][j] * Math.log(Pj[i][j] / ((1 / (1 + d2(Y[i], Y[j]))) / Z));
+  return { Y, kl }; }
+// adjusted Rand index
+function ari(a, b) { const n = a.length, key = {}, ra = {}, rb = {}; a.forEach((x, i) => { const k = x + '|' + b[i]; key[k] = (key[k] || 0) + 1; ra[x] = (ra[x] || 0) + 1; rb[b[i]] = (rb[b[i]] || 0) + 1; });
+  const c2 = v => v * (v - 1) / 2, s = Object.values(key).reduce((t, v) => t + c2(v), 0), sa = Object.values(ra).reduce((t, v) => t + c2(v), 0), sb = Object.values(rb).reduce((t, v) => t + c2(v), 0), e = sa * sb / c2(n), mx = (sa + sb) / 2; return (s - e) / (mx - e); }
+function silhouette(X, lab) { const n = X.length, ks = [...new Set(lab)].filter(k => k >= 0); if (ks.length < 2) return NaN; let tot = 0, cnt = 0;
+  X.forEach((x, i) => { if (lab[i] < 0) return; const m = {}; X.forEach((y, j) => { if (j === i || lab[j] < 0) return; const d = Math.sqrt(d2(x, y)); (m[lab[j]] = m[lab[j]] || [0, 0])[0] += d; m[lab[j]][1]++; });
+    const own = m[lab[i]]; if (!own) return; const a = own[0] / own[1], b = Math.min(...ks.filter(k => k !== lab[i] && m[k]).map(k => m[k][0] / m[k][1])); tot += (b - a) / Math.max(a, b); cnt++; }); return tot / cnt; }
+// ---- shared page helpers ----
+const COL = ['var(--a)', 'var(--b)', 'var(--st)', 'var(--info)', 'var(--ok)', 'var(--bad)', '#e879f9', '#facc15'];
+const ptsK = (F, X, lab, r = 4.5) => X.map((x, i) => `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="${r}" fill="${lab[i] < 0 ? 'var(--faint)' : COL[lab[i] % COL.length]}" ${lab[i] < 0 ? 'opacity=".9"' : ''}/>`).join('');
+const sq = (F, c, col, s = 9) => `<rect x="${F.X(c[0]) - s / 2}" y="${F.Y(c[1]) - s / 2}" width="${s}" height="${s}" fill="${col}" stroke="var(--ink)" stroke-width="2" transform="rotate(45 ${F.X(c[0])} ${F.Y(c[1])})"/>`;
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+// shared datasets: food-delivery customers (standardised orders/month, basket size)
+const SEG = mix(11, [{ n: 60, m: [-1.6, -0.8], s: [0.45, 0.45] }, { n: 60, m: [1.4, -1.0], s: [0.5, 0.5] }, { n: 60, m: [0, 1.5], s: [0.5, 0.5] }]);
+const SBOX = [-3, 3, -2.6, 3];
+const sframe = (H = 420, W = 560) => frame({ W, H, x0: SBOX[0], x1: SBOX[1], y0: SBOX[2], y1: SBOX[3], xt: [-3, -2, -1, 0, 1, 2, 3], yt: [-2, -1, 0, 1, 2, 3], xl: 'orders per month (standardised)', yl: 'basket size (standardised)' });
+
+// ---- GMM page ----
+const TILT = mix(32, [{ n: 120, m: [-1, 0], s: [1.2, 0.3], rho: 0.9 }, { n: 120, m: [1, 0], s: [1.2, 0.3], rho: 0.9 }, { n: 80, m: [0, -2.2], s: [0.4, 0.4] }]), TBOX = [-5, 4.2, -3.6, 1.2];
+const tframe = (W = 760, H = 420) => frame({ W, H, x0: TBOX[0], x1: TBOX[1], y0: TBOX[2], y1: TBOX[3], xt: [-4, -2, 0, 2, 4], yt: [-3, -2, -1, 0, 1], xl: 'orders per month (standardised)', yl: 'basket size' });
+function ellipse(F, m, S, col) { const [a, b, d] = S, tr = (a + d) / 2, q = Math.sqrt(((a - d) / 2) ** 2 + b * b), l1 = tr + q, l2 = Math.max(1e-9, tr - q), th = Math.abs(b) < 1e-12 ? (a >= d ? 0 : Math.PI / 2) : Math.atan2(l1 - a, b); let p = '';
+  for (let k = 0; k <= 72; k++) { const t = 2 * Math.PI * k / 72, ex = 2 * Math.sqrt(l1) * Math.cos(t), ey = 2 * Math.sqrt(l2) * Math.sin(t); p += (k ? 'L' : 'M') + F.X(m[0] + ex * Math.cos(th) - ey * Math.sin(th)).toFixed(1) + ' ' + F.Y(m[1] + ex * Math.sin(th) + ey * Math.cos(th)).toFixed(1); }
+  return `<path d="${p}" fill="none" stroke="${col}" stroke-width="2.5"/><circle cx="${F.X(m[0])}" cy="${F.Y(m[1])}" r="4" fill="${col}" stroke="var(--ink)"/>`; }
+const softPts = (F, X, R, r = 4) => X.map((x, i) => { const j = R[i].indexOf(Math.max(...R[i])), p = R[i][j]; return `<circle cx="${F.X(x[0]).toFixed(1)}" cy="${F.Y(x[1]).toFixed(1)}" r="${r}" fill="${COL[j]}" opacity="${(0.15 + 0.85 * Math.max(0, (p - 0.5) / 0.5)).toFixed(2)}"/>`; }).join('');
+const gmDraw = (svg, F, X, g, k) => { const id = 'cp' + svg.closest('.lab').id; svg.innerHTML = F.s + clipR(F, id) + `<g clip-path="url(#${id})">` + softPts(F, X, g.R) + g.mu.map((m, j) => ellipse(F, m, g.S[j], COL[j])).join('') + '</g>'; };
+
+// 6 · EM iterations
+(() => { const lab = document.getElementById('labEM'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg'), cache = {};
+  const upd = () => { const t = +r.value; r.nextElementSibling.textContent = t; const F = tframe();
+    if (t === 0) { const km = kmeans(TILT.X, 3, 1); svg.innerHTML = F.s + clipR(F, 'cpg0') + '<g clip-path="url(#cpg0)">' + ptsK(F, TILT.X, km.lab, 4) + km.C.map((c, j) => ellipse(F, c, [1, 0, 1], COL[j])).join('') + '</g>'; put(lab, 'll', '— (k-means start)'); put(lab, 'ari', ari(km.lab, TILT.y).toFixed(2)); put(lab, 'unc', '— (hard labels)'); return; }
+    const g = cache[t] || (cache[t] = gmm(TILT.X, 3, 1, t)); gmDraw(svg, F, TILT.X, g); put(lab, 'll', g.ll.toFixed(1)); put(lab, 'ari', ari(g.lab, TILT.y).toFixed(2)); put(lab, 'unc', g.R.filter(q => Math.max(...q) < 0.8).length); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 7 · covariance types
+(() => { const lab = document.getElementById('labCov'); if (!lab) return; const svg = lab.querySelector('svg'), cache = {}, np = { spherical: 3, diag: 4, full: 5 };
+  const upd = () => { const cv = onv(lab).dataset.v, g = cache[cv] || (cache[cv] = gmm(TILT.X, 3, 1, 150, cv)), F = tframe(); gmDraw(svg, F, TILT.X, g);
+    put(lab, 'ari', ari(g.lab, TILT.y).toFixed(2)); put(lab, 'bic', g.bic.toFixed(1)); put(lab, 'p', 3 * np[cv] + 2); };
+  segs(lab, upd); upd(); })();
+
+// 8 · BIC over k
+(() => { const lab = document.getElementById('labBIC'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('[data-o=plot]'), bs = lab.querySelector('[data-o=bicplot]'), ks = [1, 2, 3, 4, 5, 6], fits = ks.map(k => gmm(TILT.X, k, 1, 150)), bic = fits.map(f => f.bic);
+  const upd = () => { const k = +r.value; r.nextElementSibling.textContent = k; const g = fits[k - 1]; gmDraw(svg, tframe(560, 420), TILT.X, g);
+    const C = frame({ W: 380, H: 300, x0: 1, x1: 6, y0: 1300, y1: 2100, xt: ks, yt: [1400, 1600, 1800, 2000], xl: 'k', yl: 'BIC' });
+    bs.innerHTML = C.s + `<path d="${bic.map((v, i) => (i ? 'L' : 'M') + C.X(ks[i]) + ' ' + C.Y(v)).join('')}" fill="none" stroke="var(--info)" stroke-width="2.5"/>` + bic.map((v, i) => `<circle cx="${C.X(ks[i])}" cy="${C.Y(v)}" r="${ks[i] === k ? 7 : 4}" fill="${ks[i] === k ? 'none' : 'var(--info)'}" stroke="${ks[i] === k ? 'var(--ink)' : 'none'}" stroke-width="2"/>`).join('');
+    put(lab, 'll', g.ll.toFixed(1)); put(lab, 'bic', g.bic.toFixed(1)); };
+  r.addEventListener('input', upd); upd(); })();
+
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-23-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-29-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 17 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 23 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Naive Bayes**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/naive-bayes/) | 📐 Fundamentals › Machine Learning | Its core assumption is almost always wrong. Why does it still classify so well? |
-| [**k-Nearest Neighbours**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/k-nearest-neighbours/) | 📐 Fundamentals › Machine Learning | No training at all: how can copying your neighbours work, and when does it fail? |
-| [**Support Vector Machines**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/support-vector-machines/) | 📐 Fundamentals › Machine Learning | Of all the lines that separate the data, why pick the one with the widest street? |
+| [**t-SNE & UMAP**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/t-sne-and-umap/) | 📐 Fundamentals › Machine Learning | How do you see 768-dimensional data, and what are the plots lying about? |
+| [**Principal Component Analysis**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/pca/) | 📐 Fundamentals › Machine Learning | Ten correlated columns, two real ideas: how does PCA find them, and why scale first? |
+| [**Gaussian Mixture Models**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/gaussian-mixture-models/) | 📐 Fundamentals › Machine Learning | What if clusters are tilted, overlap, and you need a probability of membership? |
 
 ---
 
@@ -58,7 +58,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Machine Learning</b> · 17 lessons</summary>
+<summary><b>Machine Learning</b> · 23 lessons</summary>
 
 <br>
 
@@ -86,6 +86,17 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Support Vector Machines](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/support-vector-machines/) | 🟡 Intermediate | 35 min |
 | 2 | [k-Nearest Neighbours](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/k-nearest-neighbours/) | 🟢 Beginner | 30 min |
 | 3 | [Naive Bayes](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/naive-bayes/) | 🟢 Beginner | 30 min |
+
+**Unsupervised Learning**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [k-Means Clustering](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/k-means/) | 🟢 Beginner | 30 min |
+| 2 | [Hierarchical Clustering](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/hierarchical-clustering/) | 🟢 Beginner | 25 min |
+| 3 | [DBSCAN](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/dbscan/) | 🟡 Intermediate | 30 min |
+| 4 | [Gaussian Mixture Models](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/gaussian-mixture-models/) | 🟡 Intermediate | 35 min |
+| 5 | [Principal Component Analysis](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/pca/) | 🟢 Beginner | 30 min |
+| 6 | [t-SNE & UMAP](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/t-sne-and-umap/) | 🟡 Intermediate | 30 min |
 
 **Evaluation Metrics**
 
