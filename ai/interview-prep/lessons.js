@@ -5,6 +5,23 @@
 window.LESSONS = {
   sections: [
     { id: "fundamentals", title: "Fundamentals", desc: "The core ideas behind every model: classic ML, deep learning and LLMs.", tracks: [
+      { id: "maths-for-ml", dir: "fundamentals/maths-for-ml", title: "Maths for ML", desc: "The maths behind the models: linear algebra, calculus, probability, statistics, and interview-style probability practice.",
+        groups: [
+          {id: "linear-algebra",title: "Linear Algebra",desc: "Vectors, matrices, eigenvectors and SVD."},
+          {id: "calculus",title: "Calculus & Optimisation",desc: "Gradients, the chain rule and gradient descent."},
+          {id: "probability",title: "Probability",desc: "Bayes' rule, distributions, expectation and maximum likelihood."},
+          {id: "prob-practice",title: "Probability Practice",desc: "Interview questions on Bayes, coins, dice, cards and urns: about 5 minutes each, with worked answers."},
+          {id: "statistics",title: "Statistics",desc: "Confidence intervals, hypothesis tests and A/B testing."},
+          {id: "info-theory",title: "Information Theory",desc: "Entropy, cross-entropy and KL divergence."},
+        ],
+        lessons: [
+          {slug: "practice-bayes",group: "prob-practice",title: "Bayes' Rule Practice",sub: "You test positive for a rare disease. How worried should you be?",level: "Beginner",mins: 20},
+          {slug: "practice-coins",group: "prob-practice",title: "Coin Flip Practice",sub: "Why does HH take 6 flips on average but HT only 4?",level: "Intermediate",mins: 25},
+          {slug: "practice-dice",group: "prob-practice",title: "Dice Practice",sub: "Should you re-roll a 3? Expected values in five minutes.",level: "Beginner",mins: 20},
+          {slug: "practice-cards",group: "prob-practice",title: "Playing Card Practice",sub: "How many cards until the first ace? Counting without counting.",level: "Intermediate",mins: 25},
+          {slug: "practice-balls-and-urns",group: "prob-practice",title: "Balls & Urns Practice",sub: "With or without replacement, and the symmetry shortcut that saves minutes.",level: "Beginner",mins: 20},
+          {slug: "practice-classic-puzzles",group: "prob-practice",title: "Classic Probability Puzzles",sub: "Monty Hall, birthdays, broken sticks and the secretary problem.",level: "Intermediate",mins: 25},
+        ] },
       { id: "machine-learning", dir: "fundamentals/machine-learning", title: "Machine Learning", desc: "Classic ML that every AI/ML interview still asks about: models, metrics and core concepts.",
         groups: [
           {id: "data-features",title: "Data & Features",desc: "Turning raw columns into model-ready features: encoding, missing values and scaling."},

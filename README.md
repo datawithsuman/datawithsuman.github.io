@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-37-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-43-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 31 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 37 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Time-Series Forecasting Basics**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/forecasting-basics/) | 📐 Fundamentals › Machine Learning | Can your forecasting model beat 'same as last week'? And are you measuring it honestly? |
-| [**Anomaly Detection**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/anomaly-detection/) | 📐 Fundamentals › Machine Learning | How do you find fraud when you have no examples of fraud? |
-| [**Hyperparameter Tuning**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/hyperparameter-tuning/) | 📐 Fundamentals › Machine Learning | Grid, random or Bayesian: how do you spend 30 expensive training runs? |
+| [**Bayes' Rule Practice**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-bayes/) | 📐 Fundamentals › Maths for ML | You test positive for a rare disease. How worried should you be? |
+| [**Coin Flip Practice**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-coins/) | 📐 Fundamentals › Maths for ML | Why does HH take 6 flips on average but HT only 4? |
+| [**Classic Probability Puzzles**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-classic-puzzles/) | 📐 Fundamentals › Maths for ML | Monty Hall, birthdays, broken sticks and the secretary problem. |
 
 ---
 
@@ -56,6 +56,24 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 Tap a track to see its lessons, in the order to learn them.
 
 ### 📐 Fundamentals
+
+<details>
+<summary><b>Maths for ML</b> · 6 lessons</summary>
+
+<br>
+
+**Probability Practice**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Bayes' Rule Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-bayes/) | 🟢 Beginner | 20 min |
+| 2 | [Coin Flip Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-coins/) | 🟡 Intermediate | 25 min |
+| 3 | [Dice Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-dice/) | 🟢 Beginner | 20 min |
+| 4 | [Playing Card Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-cards/) | 🟡 Intermediate | 25 min |
+| 5 | [Balls & Urns Practice](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-balls-and-urns/) | 🟢 Beginner | 20 min |
+| 6 | [Classic Probability Puzzles](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/practice-classic-puzzles/) | 🟡 Intermediate | 25 min |
+
+</details>
 
 <details>
 <summary><b>Machine Learning</b> · 31 lessons</summary>
