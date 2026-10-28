@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-18-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-20-58C4DD?labelColor=0f0f12)
 ![Tracks](https://img.shields.io/badge/tracks-6-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -39,7 +39,7 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 | 🏗️ [**ML System Design**](https://datawithsuman.github.io/ai/interview-prep/ml-system-design/) | ML systems from an ML engineer's view: data, features, serving, monitoring | Soon |
 | 📄 [**ML Papers Explained**](https://datawithsuman.github.io/ai/interview-prep/ml-papers/) | The idea and the key result of important papers | 2 |
 | 🤖 [**GenAI & LLM Engineering**](https://datawithsuman.github.io/ai/interview-prep/genai-engineering/) | Building with LLMs: RAG, agents, fine-tuning, evaluation | 2 |
-| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | 12 |
+| 📐 [**ML Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/) | The core ideas every AI/ML interview still asks about | 14 |
 
 ---
 
@@ -47,9 +47,9 @@ Pick a track and go in order. Each lesson takes about 10 minutes.
 
 | Lesson | Track | The question it answers |
 |---|---|---|
+| [**Gradient Boosting**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/gradient-boosting/) | 📐 ML Fundamentals | How do hundreds of tiny trees, each fixing the last one's mistakes, win on tabular data? |
+| [**Decision Trees**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/decision-trees/) | 📐 ML Fundamentals | How does a tree choose its questions, and why does a deep tree memorise noise? |
 | [**Choosing the Right Metric**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/choosing-the-right-metric/) | 📐 ML Fundamentals | Which metric would you use for X? Twelve scenarios to practise. |
-| [**Probability Metrics**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/probability-metrics/) | 📐 ML Fundamentals | The model ranks perfectly, so why are the bids wrong? |
-| [**Ranking Metrics**](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/ranking-metrics/) | 📐 ML Fundamentals | How do you score a search page, a recommendation list, or a RAG retriever? |
 
 ---
 
@@ -104,7 +104,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>📐 ML Fundamentals</b> · 12 lessons</summary>
+<summary><b>📐 ML Fundamentals</b> · 14 lessons</summary>
 
 <br>
 
@@ -121,7 +121,9 @@ Tap a track to see its lessons, in the order to learn them.
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
+| 1 | [Decision Trees](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/decision-trees/) | 🟢 Beginner | 30 min |
+| 2 | [Random Forest](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/random-forest/) | 🟢 Beginner | 25 min |
+| 3 | [Gradient Boosting](https://datawithsuman.github.io/ai/interview-prep/ml-fundamentals/gradient-boosting/) | 🟡 Intermediate | 35 min |
 
 **Evaluation Metrics**
 
