@@ -26,7 +26,7 @@ Short, visual lessons you can **play with**, not just read. Every lesson has:
 - 🎤 **Interview follow-ups** with crisp answers
 - 🎬 **A short Reel** version on Instagram and YouTube
 
-Three sections: **Fundamentals**, **System Design** and **Papers**. Pick a track and go in order.
+Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a track and go in order.
 
 ---
 
@@ -35,7 +35,7 @@ Three sections: **Fundamentals**, **System Design** and **Papers**. Pick a track
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 17 |
-| 🏗️ [**System Design**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -111,7 +111,7 @@ Tap a track to see its lessons, in the order to learn them.
 <br>How large language models are built, trained, aligned and evaluated.
 </details>
 
-### 🏗️ System Design
+### 🏗️ AI Engineering
 
 <details>
 <summary><b>LLM Inference & Serving</b> · 2 lessons</summary>

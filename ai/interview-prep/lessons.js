@@ -53,7 +53,7 @@ window.LESSONS = {
         lessons: [
         ] },
     ] },
-    { id: "system-design", title: "System Design", desc: "Designing, serving and debugging ML and LLM systems in production.", tracks: [
+    { id: "system-design", title: "AI Engineering", desc: "Building, serving and running ML and LLM systems in production, including ML system design.", tracks: [
       { id: "llm-inference", dir: "system-design/llm-inference", title: "LLM Inference & Serving", desc: "How LLMs actually run: speed, memory, and the tricks that make serving fast and cheap.",
         lessons: [
           {slug: "prefill-vs-decode",title: "Prefill vs Decode",sub: "Why does an LLM read your prompt fast but write its answer slowly?",level: "Intermediate",mins: 30},
