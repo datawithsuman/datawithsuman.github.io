@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Random Forest, Explained · @datawithsuman</title>
+<meta name="description" content="Random Forest built from one wobbly tree: bagging, random features, out-of-bag error and feature importance, with interactive scenes, live examples and an interview section.">
+<meta property="og:title" content="Random Forest, Explained">
+<meta property="og:description" content="Random Forest built from one wobbly tree: bagging, random features, out-of-bag error and feature importance, with interactive scenes, live examples and an interview section.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- page: Random Forest ---- */
+.tablewrap{overflow-x:auto;margin:12px 0}
+table.data td,table.data th{text-align:center;font-variant-numeric:tabular-nums}
+table.data td.y{color:var(--ok);font-weight:600} table.data td.n{color:var(--bad);font-weight:600}
+table.data tr.flag td{background:rgba(167,139,250,.08)}
+.stage svg text.cap{fill:var(--dim);font-size:13px}
+.stage svg text.lbl{fill:var(--faint);font-size:12px}
+.stage svg text.sm{fill:var(--dim);font-size:12px}
+.stage svg text.big{fill:var(--ink);font-size:15px;font-weight:600}
+.stage svg text.yr{fill:var(--dim);font:500 13px var(--mono)}
+.stage svg text.nm{fill:var(--ink);font-size:14px;font-weight:600}
+.stage svg text.stTxt,.stage svg tspan.stTxt{fill:var(--st);font-weight:600}
+.stage svg text.okTxt,.stage svg tspan.okTxt{fill:var(--ok);font-weight:600}
+.stage svg text.badTxt,.stage svg tspan.badTxt{fill:var(--bad);font-weight:600}
+.stage svg text.aTxt{fill:var(--a)}
+.stage svg .edge{stroke:#56607a;stroke-width:1.6;fill:none}
+.stage svg .axis{stroke:var(--line);stroke-width:2;fill:none}
+.stage svg .nodeB{fill:#2a2214;stroke:var(--b);stroke-width:1.6}
+.stage svg .nodeA{fill:#0f2e2c;stroke:var(--a);stroke-width:1.6}
+.stage svg .nodeInfo,.stage svg .noteInfo{fill:#132440;stroke:var(--info);stroke-width:1.4}
+.stage svg .leafY{fill:#123322;stroke:var(--ok);stroke-width:1.4}
+.stage svg .leafN{fill:#3a1a1d;stroke:var(--bad);stroke-width:1.4}
+.stage svg .noteSt{fill:#221a3c;stroke:var(--st);stroke-width:1.4}
+.stage svg .noteBad{fill:#2c171b;stroke:var(--bad);stroke-width:1.4}
+.stage svg .feat{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .featOn{fill:rgba(167,139,250,.18);stroke:var(--st);stroke-width:2}
+.stage svg .dotA{fill:var(--a)} .stage svg .dotB{fill:var(--b)} .stage svg .dotSt{fill:var(--st)} .stage svg .dotBad{fill:var(--bad)}
+.stage svg .chipY{fill:#123322;stroke:var(--ok)} .stage svg .chipN{fill:#3a1a1d;stroke:var(--bad)}
+.stage svg .chipOut{fill:none;stroke:var(--bad);stroke-dasharray:4 3;stroke-width:2}
+.stage svg .ring{fill:none;stroke:var(--st);stroke-width:2.4}
+.stage svg .tbox{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .tboxOn{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cell{fill:var(--bg2);stroke:var(--line)} .stage svg .cellSt{fill:#221a3c;stroke:var(--st)}
+.sel{font:500 14px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+button.mini{font:600 13px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer;margin-left:6px}
+button.mini:hover{border-color:var(--a)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.side{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.side h5{margin:0 0 6px;font:600 13px Inter,system-ui,sans-serif;color:var(--dim)}
+.rowchips{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
+.rc{font:600 12px var(--mono);padding:4px 8px;border-radius:7px;border:1px solid}
+.rc.y{color:var(--ok);border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.08)}
+.rc.n{color:var(--bad);border-color:rgba(248,113,113,.5);background:rgba(248,113,113,.08)}
+.side .h{font:500 12px var(--mono);color:var(--faint);margin-top:6px}
+.vbar{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--bg2)}
+.vfloor{background:var(--bad)} .vrest{background:var(--a)}
+.rootBars{display:grid;gap:8px}
+.rootBars .bar .fill{transition:width .4s}
+.voteRows{display:grid;gap:8px}
+.voteRows label{display:grid;grid-template-columns:62px 1fr 56px 34px;align-items:center;gap:10px}
+.voteRows .vv{font:600 13px var(--mono);text-align:center;border-radius:6px;padding:2px 0}
+.vv.y{color:var(--ok)} .vv.n{color:var(--bad)}
+.voteOut{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.voteOut div{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.voteOut b{font-family:var(--mono)}
+.evid .bar{grid-template-columns:minmax(120px,32%) 1fr 54px}
+.evid .grp{font:600 13px Inter,system-ui,sans-serif;color:var(--dim);margin-top:8px}
+pre.code{overflow-x:auto;background:#0a0f19;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:13px/1.6 var(--mono);color:#cfd6e4}
+pre.code .kw{color:var(--st)} pre.code .st{color:var(--b)} pre.code .nm{color:var(--info)} pre.code .cm{color:var(--faint)}
+ul.cav li,.srcs li{margin-bottom:8px}
+dl.terms{display:grid;grid-template-columns:minmax(140px,30%) 1fr;gap:8px 16px;margin:0}
+dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
+.verdict{border:1px solid rgba(45,212,191,.45);border-radius:var(--r);background:var(--card);padding:18px 20px}
+@media(max-width:560px){.split,.voteOut{grid-template-columns:1fr} dl.terms{grid-template-columns:1fr} .voteRows label{grid-template-columns:52px 1fr 48px 30px}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML</div>
+  <h1>Random Forest, built from one wobbly tree</h1>
+  <div class="meta">Leo Breiman's 2001 method, as it runs in scikit-learn today · 16 sources · checked 27 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> a single decision tree is accurate on the data it saw but changes wildly when the data changes a little. A random forest grows hundreds of trees, each on a <span class="k">bootstrap sample</span> of the rows and each choosing every split from a <span class="k">random handful of features</span>, then lets them vote. The randomness makes the trees disagree, and averaging trees that disagree cancels their mistakes.<br><span class="small">After this you can derive why it works (the variance formula), explain every knob (n_estimators, max_features, bootstrap, oob_score), and answer the usual interview follow-ups.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>random forest</span><span><i style="background:var(--b)"></i>single tree / plain bagging</span><span><i style="background:var(--st)"></i>injected randomness</span><span><i style="background:var(--ok)"></i>repaid (Y)</span><span><i style="background:var(--bad)"></i>not repaid (N) / failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<section class="ch" id="example" data-toc="0 · The running example">
+  <div class="chap">0 · The running example</div>
+  <h2>Eight loan applicants, four features</h2>
+  <p>Everything on this page uses the same tiny dataset. A bank wants to predict whether an applicant will repay. The numbers are made up for teaching <span class="mine">illustrative</span>, but the widgets below run real computations on them.</p>
+  <div class="tablewrap"><table class="t data" id="dataTable">
+    <thead><tr><th>#</th><th>credit score</th><th>income (k/mo)</th><th>debt ratio</th><th>years at job</th><th>repaid?</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="small">One feature, credit score, separates these eight perfectly (650 and below never repaid). Remember that; it is what makes plain bagging fail in chapter 3.</p>
+</section>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>One decision tree is sharp but unstable</h2>
+  <p>A <span class="k">decision tree</span> asks yes/no questions about features until it reaches a leaf with an answer. Grown deep, it fits its training data almost perfectly, so its <span class="k">bias</span> is low. The catch is <span class="k">variance</span>: scikit-learn's own docs warn that "small variations in the data might result in a completely different tree being generated" <span class="src"><a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">sklearn trees</a></span>. Watch it happen with one relabelled applicant.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 330" role="img" aria-label="Two trees learned from almost the same data give different answers">
+        <defs><marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#8d96ab"/></marker></defs>
+        <g data-show="1">
+          <text x="190" y="24" text-anchor="middle" class="cap">Tree A · original 8 rows</text>
+          <rect x="105" y="42" width="170" height="44" rx="10" class="nodeB"/><text x="190" y="70" text-anchor="middle">credit ≤ 650?</text>
+          <path d="M150 86 L95 140" class="edge"/><path d="M230 86 L285 140" class="edge"/>
+          <text x="108" y="118" class="lbl">yes</text><text x="262" y="118" class="lbl">no</text>
+          <rect x="30" y="140" width="130" height="40" rx="20" class="leafN"/><text x="95" y="165" text-anchor="middle">Not repaid · 4</text>
+          <rect x="220" y="140" width="130" height="40" rx="20" class="leafY"/><text x="285" y="165" text-anchor="middle">Repaid · 4</text>
+        </g>
+        <g data-show="2" style="color:var(--st)">
+          <rect x="420" y="40" width="320" height="50" rx="10" class="noteSt"/>
+          <text x="580" y="61" text-anchor="middle" class="stTxt">Applicant #6 (credit 620, debt 0.17)</text>
+          <text x="580" y="80" text-anchor="middle" class="stTxt">relabelled: not repaid → repaid</text>
+        </g>
+        <g data-show="3">
+          <text x="570" y="124" text-anchor="middle" class="cap">Tree B · same rows, one label flipped</text>
+          <rect x="485" y="138" width="170" height="44" rx="10" class="nodeB"/><text x="570" y="166" text-anchor="middle">debt ≤ 0.42?</text>
+          <path d="M530 182 L475 236" class="edge"/><path d="M610 182 L665 236" class="edge"/>
+          <text x="488" y="214" class="lbl">yes</text><text x="642" y="214" class="lbl">no</text>
+          <rect x="410" y="236" width="130" height="40" rx="20" class="leafY"/><text x="475" y="261" text-anchor="middle">Repaid · 5</text>
+          <rect x="600" y="236" width="130" height="40" rx="20" class="leafN"/><text x="665" y="261" text-anchor="middle">Not repaid · 3</text>
+        </g>
+        <g data-show="4">
+          <rect x="40" y="226" width="300" height="64" rx="12" class="noteInfo"/>
+          <text x="190" y="252" text-anchor="middle">New applicant: credit 640, debt 0.20</text>
+          <text x="190" y="276" text-anchor="middle"><tspan class="badTxt">A says Not repaid</tspan> · <tspan class="okTxt">B says Repaid</tspan></text>
+        </g>
+        <g data-show="5"><text x="380" y="318" text-anchor="middle" class="big">One changed label → a different first question → opposite answers.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Trained on the eight rows, the best first question is "credit ≤ 650?". It splits the data perfectly.</li>
+      <li>Now relabel one applicant, #6, from not repaid to repaid. Nothing else changes.</li>
+      <li>The tree's first question flips to a different feature entirely, "debt ratio ≤ 0.42?", because that is now the perfect split.</li>
+      <li>Ask both trees about a new applicant with credit 640 and a debt ratio of 0.20. They disagree.</li>
+      <li>That is high variance: the model's answer depends heavily on which exact rows it happened to see.</li>
+    </ol>
+  </div>
+  <p>High variance means the error you see on new data is mostly noise from the particular sample, not a lack of capacity. The classic fix for variance is averaging. The rest of the page is about how to average trees so that it actually works.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · How one tree picks a split">
+  <div class="chap">2 · Building blocks</div>
+  <span class="pill b">How one tree picks a split</span>
+  <h2>Gini impurity: how mixed is a group?</h2>
+  <p>At each node, a tree (CART, which scikit-learn implements) tries every feature and every threshold, and keeps the split whose two children are the least <span class="k">mixed</span>. Mixedness is measured with <span class="k">Gini impurity</span>: 0 when a group is all one class, 0.5 when two classes are 50/50 <span class="src"><a href="https://scikit-learn.org/stable/modules/tree.html#classification-criteria" target="_blank" rel="noopener">sklearn §1.10.7</a></span>.</p>
+  <div class="reader" data-reader='[
+    {"t":"G","c":"info","label":"split score","say":"G is the score of one candidate split: lower is better. The tree computes it for every feature and threshold and keeps the minimum."},
+    {"t":"wl","c":"b","label":"share going left","say":"The fraction of the node’s rows that answer yes and go to the left child."},
+    {"t":"hl","c":"b","label":"left impurity","say":"How mixed the left child is. Each child is weighted by its size, so a tiny pure child does not count as much as a big one."},
+    {"t":"wr","c":"b","label":"share going right","say":"The same for the right child. The two weights add up to 1."},
+    {"t":"h","c":"st","label":"Gini of a group","say":"For one group: add up p(1 − p) over the classes, where p is the share of each class. All one class gives 0; half and half gives 0.25 + 0.25 = 0.5."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-G}{G(\theta)} = \class{term t-wl}{\tfrac{n_{L}}{n}}\,\class{term t-hl}{H(L)} + \class{term t-wr}{\tfrac{n_{R}}{n}}\,H(R),\qquad \class{term t-h}{H(Q)=\sum_k p_k\,(1-p_k)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn's mathematical formulation for classification trees <span class="src"><a href="https://scikit-learn.org/stable/modules/tree.html#mathematical-formulation" target="_blank" rel="noopener">sklearn §1.10.7</a></span> · hover any symbol for its meaning.</p>
+  </div>
+  <h3>Try it on the eight applicants</h3>
+  <div class="card lab" id="giniLab">
+    <label>Feature <select id="gFeat" class="sel"></select></label>
+    <label>Threshold (go left if value ≤) <input type="range" id="gThr" min="0" max="6" step="1" value="2"><output id="gThrOut"></output></label>
+    <div class="split" id="gSplit"></div>
+    <div>Split score <b class="mono" id="gScore">—</b> <span class="small">(0 = perfect; 0.5 = useless for a 4/4 node)</span> <button type="button" class="mini" id="gBest">Jump to the best threshold</button></div>
+  </div>
+  <p>Try every feature: only credit score reaches 0. A greedy tree will always take it first, and that is about to matter.</p>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix and its trap">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">Averaging copies does nothing</span>
+  <h2>Just average many trees? They come out the same</h2>
+  <p>Idea one: train 100 trees and average them. On the same data, a tree-growing algorithm with no randomness builds the same tree 100 times. The average of 100 identical answers is that answer.</p>
+  <p>Idea two, <span class="k">bagging</span> (Breiman, 1996): give each tree a different <span class="k">bootstrap sample</span>, the rows drawn at random with replacement <span class="src"><a href="https://statistics.berkeley.edu/node/1781" target="_blank" rel="noopener">Breiman 1996</a></span>. Better, but there is a trap. When one feature is much stronger than the rest, most samples still split on it first, so the trees stay similar.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 290" role="img" aria-label="Three bagged trees all start with the same credit score question">
+        <g data-show="1"><text x="125" y="28" text-anchor="middle" class="cap">Sample 1: rows 1,1,2,4,5,6,7,8</text>
+          <rect x="45" y="44" width="160" height="42" rx="10" class="nodeB"/><text x="125" y="71" text-anchor="middle">credit ≤ 670?</text>
+          <rect x="20" y="130" width="96" height="34" rx="17" class="leafN"/><text x="68" y="152" text-anchor="middle">N</text>
+          <rect x="134" y="130" width="96" height="34" rx="17" class="leafY"/><text x="182" y="152" text-anchor="middle">Y</text>
+          <path d="M100 86 L68 130" class="edge"/><path d="M150 86 L182 130" class="edge"/></g>
+        <g data-show="2"><text x="380" y="28" text-anchor="middle" class="cap">Sample 2: rows 1,3,3,4,5,6,7,8</text>
+          <rect x="300" y="44" width="160" height="42" rx="10" class="nodeB"/><text x="380" y="71" text-anchor="middle">credit ≤ 655?</text>
+          <rect x="275" y="130" width="96" height="34" rx="17" class="leafN"/><text x="323" y="152" text-anchor="middle">N</text>
+          <rect x="389" y="130" width="96" height="34" rx="17" class="leafY"/><text x="437" y="152" text-anchor="middle">Y</text>
+          <path d="M355 86 L323 130" class="edge"/><path d="M405 86 L437 130" class="edge"/></g>
+        <g data-show="3"><text x="635" y="28" text-anchor="middle" class="cap">Sample 3: rows 1,2,4,5,6,6,7,8</text>
+          <rect x="555" y="44" width="160" height="42" rx="10" class="nodeB"/><text x="635" y="71" text-anchor="middle">credit ≤ 670?</text>
+          <rect x="530" y="130" width="96" height="34" rx="17" class="leafN"/><text x="578" y="152" text-anchor="middle">N</text>
+          <rect x="644" y="130" width="96" height="34" rx="17" class="leafY"/><text x="692" y="152" text-anchor="middle">Y</text>
+          <path d="M610 86 L578 130" class="edge"/><path d="M660 86 L692 130" class="edge"/></g>
+        <g data-show="4" style="color:var(--bad)"><rect x="110" y="200" width="540" height="60" rx="12" class="noteBad"/>
+          <text x="380" y="226" text-anchor="middle">Different rows, same first question, nearly the same answers.</text>
+          <text x="380" y="248" text-anchor="middle" class="badTxt">Their errors are correlated, so averaging cancels very little.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Bootstrap sample 1 repeats row 1 and leaves out row 3. Its best first split is still credit score.</li>
+      <li>Sample 2 is different again. The threshold moves a little, from 670 to 655, but the question is the same.</li>
+      <li>Sample 3: same story. Credit score separates any sample of these rows perfectly, so it usually wins. Only now and then does a sample happen to let another feature tie.</li>
+      <li>The trees make the same mistakes on the same applicants. Averaging only helps when their mistakes differ.</li>
+    </ol>
+  </div>
+  <h3>Check it yourself: grow 60 bagged trees</h3>
+  <p>This grows 60 one-split trees, each on its own bootstrap sample, letting every split consider all four features (that is plain bagging). It counts which feature each tree splits on first.</p>
+  <div class="card lab rootLab" data-m="4" data-lock="1">
+    <div class="rootBars"></div>
+    <div class="small rootNote"></div>
+    <button type="button" class="mini rootGo">Grow 60 new trees</button>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it was done before">
+  <div class="chap">4 · How it's done today (in 2001)</div>
+  <h2>Five ways people already randomized ensembles</h2>
+  <p>Breiman's paper opens by listing the tricks it builds on <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=1" target="_blank" rel="noopener">Breiman 2001, p. 1–2</a></span>. Each injects randomness somewhere different.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Timeline of ensemble methods before random forests">
+        <path d="M40 150 H720" class="axis"/>
+        <g data-show="1" style="color:var(--b)"><circle cx="90" cy="150" r="7" class="dotB"/><text x="90" y="128" text-anchor="middle" class="yr">1996</text>
+          <text x="90" y="180" text-anchor="middle" class="nm">Bagging</text><text x="90" y="200" text-anchor="middle" class="sm">random rows</text><text x="90" y="218" text-anchor="middle" class="sm">per tree</text></g>
+        <g data-show="2" style="color:var(--bad)"><circle cx="220" cy="150" r="7" class="dotBad"/><text x="220" y="128" text-anchor="middle" class="yr">1996</text>
+          <text x="220" y="180" text-anchor="middle" class="nm">AdaBoost</text><text x="220" y="200" text-anchor="middle" class="sm">no randomness:</text><text x="220" y="218" text-anchor="middle" class="sm">reweight mistakes</text></g>
+        <g data-show="3" style="color:var(--st)"><circle cx="350" cy="150" r="7" class="dotSt"/><text x="350" y="128" text-anchor="middle" class="yr">1997</text>
+          <text x="350" y="180" text-anchor="middle" class="nm">Amit &amp; Geman</text><text x="350" y="200" text-anchor="middle" class="sm">random features</text><text x="350" y="218" text-anchor="middle" class="sm">searched per node</text></g>
+        <g data-show="3" style="color:var(--st)"><circle cx="480" cy="150" r="7" class="dotSt"/><text x="480" y="128" text-anchor="middle" class="yr">1998</text>
+          <text x="480" y="180" text-anchor="middle" class="nm">Random subspace</text><text x="480" y="200" text-anchor="middle" class="sm">random features</text><text x="480" y="218" text-anchor="middle" class="sm">per whole tree (Ho)</text></g>
+        <g data-show="3" style="color:var(--st)"><circle cx="600" cy="150" r="7" class="dotSt"/><text x="600" y="128" text-anchor="middle" class="yr">1998</text>
+          <text x="600" y="180" text-anchor="middle" class="nm">Random split</text><text x="600" y="200" text-anchor="middle" class="sm">pick among the K</text><text x="600" y="218" text-anchor="middle" class="sm">best splits</text></g>
+        <g data-show="4" style="color:var(--a)"><circle cx="705" cy="150" r="10" class="dotA"/><text x="705" y="122" text-anchor="middle" class="yr aTxt">2001</text>
+          <text x="380" y="262" text-anchor="middle" class="nm aTxt">Random forest = random rows per tree + random features at every split</text><text x="380" y="282" text-anchor="middle" class="sm">trees grown to full depth, no pruning</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Bagging (Breiman, 1996): each tree sees a bootstrap sample of the rows, then they vote.</li>
+      <li>AdaBoost (Freund &amp; Schapire, 1996) takes the opposite road. No randomness: each new tree focuses on the rows the previous ones got wrong. It was the accuracy leader at the time.</li>
+      <li>Three ideas randomize the features instead: Amit and Geman searched a random set of features at each node, Ho gave each whole tree a random feature subset, and Dietterich picked randomly among the K best splits. Breiman says Amit and Geman most shaped his thinking.</li>
+      <li>The random forest combines bagging with a fresh random feature subset at every single split, and grows each tree to full depth without pruning.</li>
+    </ol>
+  </div>
+  <p>Before random forests, these randomized ensembles were less accurate than AdaBoost: Breiman notes that random split selection beats bagging, "but none of these three forests do as well as Adaboost" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=7" target="_blank" rel="noopener">Breiman 2001, p. 7</a></span>. Closing that gap was the goal.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">Make the trees disagree, but keep each one good</span>
+  <h2>Averaging only cancels mistakes that differ</h2>
+  <p>Here is the one equation the whole method follows from. Average B trees whose predictions each have variance σ² and are correlated with each other by ρ <span class="src"><a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener">ESL Eq. 15.1, p. 588</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"v","c":"info","label":"error from wobble","say":"The variance of the averaged prediction: how much the forest’s answer would wobble if you redrew the training data. This is the part averaging can shrink."},
+    {"t":"rho","c":"bad","label":"the floor","say":"ρσ² does not depend on B. However many trees you add, this part stays. If the trees are perfectly correlated (ρ = 1), averaging gives exactly one tree’s variance."},
+    {"t":"B","c":"a","label":"shrinks with trees","say":"(1 − ρ)σ²/B goes to zero as B grows. This is the only part that more trees can remove."},
+    {"t":"r","c":"st","label":"correlation","say":"So the lever is ρ. Lower the correlation between trees and the floor drops. That is the entire reason random forests add randomness."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-v}{\mathrm{Var}\big(\bar f\,\big)} = \class{term t-rho}{\class{term t-r}{\rho}\,\sigma^{2}} + \class{term t-B}{\frac{1-\rho}{B}\,\sigma^{2}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Hastie, Tibshirani &amp; Friedman, <i>Elements of Statistical Learning</i>, §15.2 · hover any symbol for its meaning.</p>
+  </div>
+  <div class="card lab" id="varLab">
+    <label>Correlation between trees ρ <input type="range" id="vRho" min="0" max="1" step="0.05" value="0.9"><output id="vRhoOut"></output></label>
+    <label>Number of trees B <input type="range" id="vB" min="1" max="500" step="1" value="100"><output id="vBOut"></output></label>
+    <div class="vbar"><div class="vfloor" id="vFloor"></div><div class="vrest" id="vRest"></div></div>
+    <div>Variance of the average <b class="mono" id="vOut">—</b> <span class="small">(one tree = 1.00; red = the floor ρσ², teal = what more trees still remove)</span></div>
+  </div>
+  <p>Set ρ to 0.9 (very similar trees, like plain bagging with one dominant feature) and B to 500: the variance only drops to about 0.9. Set ρ to 0.3: it drops to about 0.3. The forest's job is to <b>lower ρ without making each tree much worse</b>. Breiman calls these two quantities the <span class="k">correlation</span> and the <span class="k">strength</span> of the trees, and chapter 7 shows his bound with both.</p>
+  <p class="small">Why only variance? Bagged trees are identically distributed, so the average has the same bias as one tree. ESL: "the only hope of improvement is through variance reduction" <span class="src">ESL p. 588</span>. That is also why forests use deep, low-bias trees.</p>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Ingredient 1: bootstrap rows">
+  <div class="chap">6 · Ingredient 1</div>
+  <span class="pill st">Bootstrap the rows</span>
+  <h2>Every tree trains on a resampled copy of the data</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 290" role="img" aria-label="A bootstrap sample with repeated rows and left-out rows">
+        <g data-show="1"><text x="380" y="26" text-anchor="middle" class="cap">Original training set (N = 8)</text>
+          <g class="chips" transform="translate(150,40)"></g></g>
+        <g data-show="2"><path d="M380 92 V122" class="edge" marker-end="url(#arA)"/><text x="392" y="112" class="lbl">draw 8 times, with replacement</text>
+          <text x="380" y="146" text-anchor="middle" class="cap">Bootstrap sample for one tree</text>
+          <g class="chipsS" transform="translate(150,160)"></g></g>
+        <g data-show="3" data-hl="3"><text x="380" y="240" text-anchor="middle" class="stTxt">Rows 3 and 6 appear twice</text></g>
+        <g data-show="4" data-hl="4"><text x="380" y="272" text-anchor="middle" class="badTxt">Rows 2 and 4 were never drawn: they are this tree's out-of-bag rows</text></g>
+      </svg>
+    </div>
+    <ol class="say">
+      <li>Start with the N = 8 training rows.</li>
+      <li>Draw 8 rows at random, putting each one back before the next draw. scikit-learn does exactly this with <code>randint(0, n, n)</code> <span class="src"><a href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py" target="_blank" rel="noopener">_forest.py</a></span>.</li>
+      <li>Some rows get picked twice or more, so this tree effectively weights them more.</li>
+      <li>Some rows are never picked. They are "out of bag" for this tree, which gives a free test set (chapter 9).</li>
+    </ol>
+  </div>
+  <p>How many rows does a tree miss? Each draw misses a given row with probability 1 − 1/N, and there are N independent draws:</p>
+  <div class="reader" data-reader='[
+    {"t":"p","c":"info","label":"chance a row is left out","say":"The probability that one particular row never appears in the bootstrap sample."},
+    {"t":"one","c":"b","label":"miss once","say":"On a single draw, N rows are equally likely, so this row is missed with probability 1 − 1/N."},
+    {"t":"N","c":"st","label":"N draws","say":"The N draws are independent, so the misses multiply: raise it to the power N."},
+    {"t":"e","c":"a","label":"about 36.8%","say":"As N grows this tends to 1/e ≈ 0.368. So each tree sees about 63.2% of the distinct rows, and about a third are out of bag, exactly Breiman’s “about one-third”."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-p}{P(\text{row never drawn})} = \class{term t-one}{\Big(1-\frac{1}{N}\Big)}^{\class{term t-N}{N}} \;\longrightarrow\; \class{term t-e}{e^{-1}\approx 0.368}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Standard bootstrap result; Breiman: "about one-third of the instances are left out" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8" target="_blank" rel="noopener">Breiman 2001, p. 8</a></span>.</p>
+  </div>
+  <div class="card lab" id="bootLab">
+    <label>Training rows N <input type="range" id="bN" min="2" max="1000" step="1" value="8"><output id="bNOut"></output></label>
+    <div>Left out of each tree: <b class="mono" id="bOut">—</b> · seen: <b class="mono" id="bIn">—</b></div>
+  </div>
+  <div class="card ok"><h4>Why keep bootstrapping once features are random?</h4><p>Breiman gives two reasons: bagging "seems to enhance accuracy when random features are used", and the left-out rows give running estimates of error, strength and correlation <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8" target="_blank" rel="noopener">p. 8</a></span>. scikit-learn: <code>bootstrap=True</code> by default; turn it off and every tree sees all rows (as Extra-Trees do).</p></div>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Ingredient 2: random features">
+  <div class="chap">7 · Ingredient 2</div>
+  <span class="pill st">A random handful of features at every split</span>
+  <h2>Hide the star feature sometimes</h2>
+  <p>This is the move that turns bagging into a random forest. Before each split, the tree may only look at <span class="k">m</span> features drawn at random from all p. It picks the best split among those m, and the next node draws a fresh m <span class="src"><a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener">ESL Alg. 15.1</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="At each node only m random features are offered">
+        <g data-show="1"><text x="380" y="26" text-anchor="middle" class="cap">Root node: all p = 4 features exist</text>
+          <g transform="translate(130,40)">
+            <rect x="0" y="0" width="110" height="34" rx="8" class="feat" data-f="0"/><text x="55" y="22" text-anchor="middle">credit</text>
+            <rect x="130" y="0" width="110" height="34" rx="8" class="feat"/><text x="185" y="22" text-anchor="middle">income</text>
+            <rect x="260" y="0" width="110" height="34" rx="8" class="feat"/><text x="315" y="22" text-anchor="middle">debt ratio</text>
+            <rect x="390" y="0" width="110" height="34" rx="8" class="feat"/><text x="445" y="22" text-anchor="middle">years</text></g></g>
+        <g data-show="2" style="color:var(--st)"><g transform="translate(130,40)">
+            <rect x="130" y="0" width="110" height="34" rx="8" class="featOn"/><rect x="390" y="0" width="110" height="34" rx="8" class="featOn"/></g>
+          <text x="380" y="100" text-anchor="middle" class="stTxt">Draw m = √4 = 2 at random: income, years. Credit is hidden at this node.</text></g>
+        <g data-show="3"><rect x="300" y="120" width="160" height="42" rx="10" class="nodeA"/><text x="380" y="147" text-anchor="middle">income ≤ 42?</text>
+          <text x="472" y="138" class="sm">best of the two offered: G = 0.33</text><text x="472" y="155" class="sm">(credit would have given 0)</text></g>
+        <g data-show="4" style="color:var(--st)"><path d="M340 162 L220 214" class="edge"/><path d="M420 162 L540 214" class="edge"/>
+          <rect x="120" y="214" width="200" height="40" rx="10" class="nodeA"/><text x="220" y="239" text-anchor="middle">fresh 2: credit, debt</text>
+          <rect x="440" y="214" width="200" height="40" rx="10" class="nodeA"/><text x="540" y="239" text-anchor="middle">fresh 2: income, credit</text></g>
+        <g data-show="5"><text x="380" y="288" text-anchor="middle" class="big">Different trees now ask different questions, so their mistakes differ.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>At the root, the tree could consider all four features, and credit score would win every time.</li>
+      <li>Instead, draw m of them at random. Here m = 2, and credit score is not among them.</li>
+      <li>The node splits on the best of what it was offered. It is a weaker split than credit score, on purpose.</li>
+      <li>Every child node draws its own fresh m. Credit score will still be used, just not always first, and not always in the same place.</li>
+      <li>That forced variety is what lowers the correlation ρ between trees.</li>
+    </ol>
+  </div>
+  <h3>Check it: grow 60 trees with m features per split</h3>
+  <p>Same experiment as chapter 3, but now you choose m. With m = 4 it is plain bagging. Watch the first-split feature spread out as m drops.</p>
+  <div class="card lab rootLab" data-m="2">
+    <label>Features per split m <input type="range" class="rootM" min="1" max="4" step="1" value="2"><output></output></label>
+    <div class="rootBars"></div>
+    <div class="small rootNote"></div>
+    <button type="button" class="mini rootGo">Grow 60 new trees</button>
+  </div>
+  <h3>The trade-off, in Breiman's own bound</h3>
+  <p>Lower m means less correlated trees, but each tree is also a bit weaker. The authors put it plainly: "Reducing m reduces both the correlation and the strength" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm" target="_blank" rel="noopener">Breiman &amp; Cutler</a></span>. Breiman's Theorem 2.3 bounds the forest's error with exactly these two numbers:</p>
+  <div class="reader" data-reader='[
+    {"t":"pe","c":"bad","label":"forest error","say":"PE* is the forest’s generalization error: the chance it misclassifies a new example."},
+    {"t":"rho","c":"st","label":"mean correlation","say":"ρ̄ is the average correlation between trees (of their margins). Random features push this down."},
+    {"t":"s","c":"a","label":"strength","say":"s is the strength: on average, how much more often the trees vote for the right class than for the best wrong class. Stronger trees push the bound down."},
+    {"t":"ratio","c":"info","label":"the c/s² ratio","say":"Breiman’s summary: the ratio correlation / strength² should be small. The bound is loose, but it says what to aim for."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-pe}{PE^{*}} \;\le\; \class{term t-ratio}{\frac{\class{term t-rho}{\bar\rho}\,\big(1-\class{term t-s}{s}^{2}\big)}{\class{term t-s}{s}^{2}}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Breiman 2001, Theorem 2.3 <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=6" target="_blank" rel="noopener">p. 6</a></span>. He adds that the bound "is likely to be loose".</p>
+  </div>
+  <div class="card lab" id="boundLab">
+    <label>Mean correlation ρ̄ <input type="range" id="kRho" min="0" max="1" step="0.01" value="0.3"><output></output></label>
+    <label>Strength s <input type="range" id="kS" min="0.05" max="1" step="0.01" value="0.6"><output></output></label>
+    <div>Upper bound on error <b class="mono" id="kOut">—</b> <span class="small rootNote" id="kNote"></span></div>
+  </div>
+  <h3>What m to use</h3>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Source</th><th>Classification</th><th>Regression</th></tr></thead>
+    <tbody>
+      <tr><td>Inventors' recommendation (via ESL)</td><td class="num">⌊√p⌋, min node size 1</td><td class="num">⌊p/3⌋, min node size 5</td></tr>
+      <tr><td>scikit-learn default</td><td class="num">"sqrt"</td><td class="num">1.0 = all features (plain bagging)</td></tr>
+      <tr><td>Breiman's 2001 experiments</td><td class="num" colspan="2">m = 1 and m = ⌊log₂p + 1⌋, picked by out-of-bag error</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Sources: ESL §15.3, p. 592; <a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests" target="_blank" rel="noopener">sklearn ensembles</a>, which also notes 0.3 "is a typical default in the literature" for regression; Breiman p. 9.</p>
+  <div class="card ok"><h4>It is not very sensitive to m</h4><p>Across Breiman's 20 datasets, the average absolute difference in test error between m = 1 and the larger m was under 1%. "It was surprising that using a single randomly chosen input variable to split on at each node could produce good accuracy" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=11" target="_blank" rel="noopener">p. 11</a></span>. ESL adds that the best m is problem-dependent and worth tuning (their Figure 15.3: m = 6 beats the default 2).</p></div>
+  <div class="card bad"><h4>What breaks without it</h4><p>Set m = p and you are back to bagging: scikit-learn calls <code>max_features=1.0</code> "equivalent to bagged trees". On data with one dominant feature, like ours, the trees stay correlated and the variance floor ρσ² stays high.</p></div>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Ingredient 3: vote or average">
+  <div class="chap">8 · Ingredient 3</div>
+  <span class="pill a">Combine the trees</span>
+  <h2>Vote, or average the probabilities</h2>
+  <p>For regression the forest averages the trees' numbers. For classification the original paper lets each tree cast one vote <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=2" target="_blank" rel="noopener">Def. 1.1, p. 2</a></span>.</p>
+  <div class="reader" data-reader='[
+    {"t":"f","c":"a","label":"forest prediction","say":"The random forest’s prediction at input x, using B trees."},
+    {"t":"avg","c":"info","label":"average over trees","say":"Add up the B trees’ outputs and divide by B. Every tree counts equally; no tree is trusted more than another."},
+    {"t":"T","c":"b","label":"one tree","say":"T(x; Θ_b) is tree number b’s output for x."},
+    {"t":"th","c":"st","label":"its randomness","say":"Θ_b holds everything random about tree b: which rows it drew and which features each split was offered."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-f}{\hat f^{\,B}_{\mathrm{rf}}(x)} = \class{term t-avg}{\frac{1}{B}\sum_{b=1}^{B}}\,\class{term t-T}{T(x;\,\class{term t-th}{\Theta_b})}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">ESL Eq. 15.2, p. 589 · hover any symbol for its meaning.</p>
+  </div>
+  <p>Here is a detail many explanations miss: <b>scikit-learn does not take a majority vote.</b> Its classifier averages each tree's predicted class probabilities ("in contrast to the original publication") <span class="src"><a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests" target="_blank" rel="noopener">sklearn ensembles</a></span>; the code divides the summed <code>predict_proba</code> by the number of trees <span class="src"><a href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py" target="_blank" rel="noopener">_forest.py</a></span>. Usually they agree. Not always:</p>
+  <div class="card lab" id="voteLab">
+    <div class="small">Each tree's probability that the applicant repays (leaf = share of repaid rows in that leaf). Example values, drag them.</div>
+    <div class="voteRows"></div>
+    <div class="voteOut"></div>
+  </div>
+  <h3>Do more trees overfit?</h3>
+  <p>No. Breiman's Theorem 1.2: as trees are added the error converges to a limit, "this result explains why random forests do not overfit as more trees are added" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=4" target="_blank" rel="noopener">p. 4</a></span>. More trees only cost time.</p>
+  <div class="card upd"><h4>But the forest itself can still overfit</h4><p>ESL is careful here: adding trees does not overfit, but the limit, an average of fully grown trees, "can overfit the data" and "incur unnecessary variance"; controlling depth gives small gains in some studies, though full trees "seldom cost much" <span class="src">ESL §15.3.4, p. 596</span>. The authors' site says "Random forests does not overfit" <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm" target="_blank" rel="noopener">Breiman &amp; Cutler</a></span>. Both are right about different things: B does not overfit; depth and leaf size can. <span class="mine">my take</span></p></div>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · The free test set (OOB)">
+  <div class="chap">9 · Bonus that falls out for free</div>
+  <span class="pill info">Out-of-bag error</span>
+  <h2>Every row is a test row for about a third of the trees</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 270" role="img" aria-label="Out-of-bag prediction for one applicant">
+        <g data-show="1"><rect x="20" y="105" width="130" height="50" rx="10" class="nodeInfo"/><text x="85" y="128" text-anchor="middle">Applicant #2</text><text x="85" y="146" text-anchor="middle" class="sm">truth: not repaid</text></g>
+        <g data-show="2"><g class="trees6" transform="translate(210,20)"></g></g>
+        <g data-show="3"><text x="440" y="236" text-anchor="middle" class="sm">Only trees 2, 4 and 6 never saw #2. Only they may vote on it.</text></g>
+        <g data-show="4"><rect x="610" y="105" width="130" height="50" rx="10" class="nodeA"/><text x="675" y="128" text-anchor="middle">OOB vote</text><text x="675" y="146" text-anchor="middle" class="badTxt">N, N, Y → N ✓</text></g>
+      </svg>
+    </div>
+    <ol class="say">
+      <li>Take one training row, applicant #2.</li>
+      <li>Look at the forest. Each tree trained on its own bootstrap sample, so some trees saw #2 and some did not.</li>
+      <li>Let only the trees that never saw #2 predict it. For them, #2 is genuinely new data.</li>
+      <li>Do this for every row and compare with the truth. That error rate is the out-of-bag (OOB) error, a test-set estimate without holding any data back.</li>
+    </ol>
+  </div>
+  <p>Breiman cites evidence that the OOB estimate "is as accurate as using a test set of the same size as the training set", and notes it is unbiased once you run past the point where the error has converged <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8" target="_blank" rel="noopener">p. 8</a></span>. ESL: almost identical to N-fold cross-validation, so you can stop adding trees once OOB error stabilizes <span class="src">ESL §15.3.1, p. 592</span>. In scikit-learn: <code>oob_score=True</code>, available only with <code>bootstrap=True</code>.</p>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · Which features matter">
+  <div class="chap">10 · Reading the forest</div>
+  <span class="pill info">Feature importance</span>
+  <h2>Shuffle a column and see how much worse it gets</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 260" role="img" aria-label="Permutation importance: shuffling a feature column">
+        <g data-show="1"><text x="190" y="28" text-anchor="middle" class="cap">Held-out rows, model error 10%</text><g class="permA" transform="translate(70,40)"></g></g>
+        <g data-show="2" style="color:var(--st)"><text x="560" y="28" text-anchor="middle" class="stTxt">Shuffle only the credit column</text><g class="permB" transform="translate(440,40)"></g></g>
+        <g data-show="3"><text x="560" y="230" text-anchor="middle" class="badTxt">error 10% → 35%: credit matters a lot</text></g>
+        <g data-show="4"><text x="190" y="230" text-anchor="middle" class="sm">shuffle years instead: 10% → 12%, matters little</text></g>
+      </svg>
+    </div>
+    <ol class="say">
+      <li>Measure the fitted forest's error on rows it did not train on (out-of-bag or a validation set).</li>
+      <li>Randomly shuffle one feature's column. This breaks its link to the label but keeps its distribution.</li>
+      <li>If error jumps, the model leaned on that feature. The numbers here are illustrative.</li>
+      <li>If error barely moves, the model did not need it. Repeat for every feature.</li>
+    </ol>
+  </div>
+  <div class="reader" data-reader='[
+    {"t":"i","c":"info","label":"importance of feature j","say":"How much the score drops when feature j is scrambled."},
+    {"t":"s","c":"a","label":"original score","say":"The model’s score on the data with nothing shuffled."},
+    {"t":"avg","c":"st","label":"average over K shuffles","say":"Shuffle column j K times (scikit-learn’s n_repeats) and average the scores, so one lucky shuffle does not decide."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-i}{i_j} = \class{term t-s}{s} - \class{term t-avg}{\frac{1}{K}\sum_{k=1}^{K} s_{k,j}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small"><a href="https://scikit-learn.org/stable/modules/permutation_importance.html" target="_blank" rel="noopener">sklearn permutation importance</a>; Breiman's original version permutes each variable in the out-of-bag rows <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=19" target="_blank" rel="noopener">p. 19</a></span>.</p>
+  </div>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th></th><th>Impurity importance (MDI) · <code>feature_importances_</code></th><th>Permutation importance</th></tr></thead>
+    <tbody>
+      <tr><td>Computed from</td><td>how much each feature's splits reduced Gini, on the training data</td><td>score drop when the feature is shuffled, on held-out data</td></tr>
+      <tr><td>Speed</td><td>free, already computed</td><td>needs extra predictions (K × features)</td></tr>
+      <tr><td>Known bias</td><td>favours features with many unique values; can rank useless features high when the model overfits</td><td>correlated features share the credit, so both can look unimportant</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card bad"><h4>Do not trust the default bar chart blindly</h4><p>scikit-learn: impurity-based importances "favor high cardinality features" and are computed on training data, so they "do not necessarily inform us on which features are most important" for new data <span class="src"><a href="https://scikit-learn.org/stable/modules/ensemble.html#feature-importance-evaluation" target="_blank" rel="noopener">sklearn</a></span>. Strobl et al. (2007) showed the measures are unreliable when predictors differ in scale or number of categories, and a 2008 follow-up found bias toward correlated predictors <span class="src"><a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-25" target="_blank" rel="noopener">Strobl 2007</a></span>. For correlated features, scikit-learn suggests clustering them and keeping one per cluster.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · The whole recipe">
+  <div class="chap">11 · The whole recipe</div>
+  <h2>Everything in one picture</h2>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 320" role="img" aria-label="Random forest training and prediction pipeline">
+        <g data-show="1"><rect x="20" y="130" width="110" height="56" rx="10" class="nodeInfo"/><text x="75" y="155" text-anchor="middle">training data</text><text x="75" y="173" text-anchor="middle" class="sm">N rows, p features</text></g>
+        <g data-show="2" style="color:var(--st)"><path d="M130 158 L180 70" class="edge"/><path d="M130 158 L180 158" class="edge"/><path d="M130 158 L180 246" class="edge"/>
+          <rect x="180" y="48" width="120" height="42" rx="10" class="noteSt"/><text x="240" y="74" text-anchor="middle">bootstrap 1</text>
+          <rect x="180" y="137" width="120" height="42" rx="10" class="noteSt"/><text x="240" y="163" text-anchor="middle">bootstrap 2</text>
+          <rect x="180" y="225" width="120" height="42" rx="10" class="noteSt"/><text x="240" y="251" text-anchor="middle">bootstrap B</text></g>
+        <g data-show="3"><path d="M300 69 H350" class="edge"/><path d="M300 158 H350" class="edge"/><path d="M300 246 H350" class="edge"/>
+          <rect x="350" y="44" width="150" height="50" rx="10" class="nodeA"/><text x="425" y="66" text-anchor="middle">tree 1</text><text x="425" y="84" text-anchor="middle" class="sm">m random features/split</text>
+          <rect x="350" y="133" width="150" height="50" rx="10" class="nodeA"/><text x="425" y="155" text-anchor="middle">tree 2</text><text x="425" y="173" text-anchor="middle" class="sm">grown deep, no pruning</text>
+          <rect x="350" y="221" width="150" height="50" rx="10" class="nodeA"/><text x="425" y="243" text-anchor="middle">tree B</text><text x="425" y="261" text-anchor="middle" class="sm">in parallel</text></g>
+        <g data-show="4"><path d="M500 69 L560 150" class="edge"/><path d="M500 158 L560 158" class="edge"/><path d="M500 246 L560 166" class="edge"/>
+          <rect x="560" y="130" width="180" height="56" rx="10" class="nodeA"/><text x="650" y="154" text-anchor="middle">vote / average</text><text x="650" y="172" text-anchor="middle" class="sm">→ prediction</text></g>
+        <g data-show="5"><text x="425" y="20" text-anchor="middle" class="sm">left-out rows of each tree → OOB error, permutation importance</text></g>
+        <g data-show="6"><text x="380" y="308" text-anchor="middle" class="big">Randomness in rows + features → low ρ → averaging works.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Start with N training rows and p features.</li>
+      <li>Make B bootstrap samples, one per tree.</li>
+      <li>Grow each tree to full depth on its sample, offering only m random features at every split. Trees are independent, so they train in parallel (<code>n_jobs</code>).</li>
+      <li>To predict, run the input down every tree and combine: vote (paper) or average probabilities (scikit-learn); average for regression.</li>
+      <li>The rows each tree left out give the OOB error and permutation importances for free.</li>
+      <li>That is the whole method. Every piece exists to keep the trees strong but decorrelated.</li>
+    </ol>
+  </div>
+  <details class="deep"><summary>Go deeper: the same thing in scikit-learn</summary>
+<pre class="code"><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> sklearn.inspection <span class="kw">import</span> permutation_importance
+
+rf = RandomForestClassifier(
+    n_estimators=<span class="nm">500</span>,      <span class="cm"># B: more is never worse, only slower</span>
+    max_features=<span class="st">"sqrt"</span>,   <span class="cm"># m: the decorrelation knob (default for classifiers)</span>
+    bootstrap=<span class="kw">True</span>,        <span class="cm"># resample rows per tree (default)</span>
+    oob_score=<span class="kw">True</span>,        <span class="cm"># free validation score from left-out rows</span>
+    min_samples_leaf=<span class="nm">1</span>,     <span class="cm"># full-depth trees (default); raise to regularize</span>
+    n_jobs=-<span class="nm">1</span>,              <span class="cm"># trees are independent: use all cores</span>
+    random_state=<span class="nm">0</span>,
+).fit(X_train, y_train)
+
+print(rf.oob_score_)                     <span class="cm"># OOB accuracy</span>
+imp = permutation_importance(rf, X_val, y_val, n_repeats=<span class="nm">30</span>, random_state=<span class="nm">0</span>)</pre>
+  <p class="small">Parameter names and defaults from the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html" target="_blank" rel="noopener">RandomForestClassifier docs</a>. Model size grows as O(M·N·log N) for M trees; <code>max_depth</code>, <code>min_samples_leaf</code> and <code>max_leaf_nodes</code> shrink it.</p>
+  </details>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Evidence">
+  <div class="chap">12 · Evidence</div>
+  <h2>Does it work?</h2>
+  <h3>One tree vs forest vs AdaBoost (Breiman, 2001)</h3>
+  <p>Test-set error, lower is better. Forest-RI with 100 trees; AdaBoost with 50; m chosen by out-of-bag error between 1 and ⌊log₂p + 1⌋; "one tree" is the average single tree in the forest <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=10" target="_blank" rel="noopener">Table 2, p. 10–11</a></span>.</p>
+  <div class="card evid">
+    <div class="bars" data-max="40" id="t2bars"></div>
+    <div class="legend"><span><i style="background:var(--b)"></i>one tree</span><span><i style="background:var(--bad)"></i>AdaBoost</span><span><i style="background:var(--a)"></i>random forest</span></div>
+  </div>
+  <p>The forest cuts the average single tree's error by about 1.8× (glass) to 9× (vowel) and matches AdaBoost, beating it on some datasets and trailing on others. Across all 20 datasets in the table the two stay within a few points of each other.</p>
+  <h3>With 5% of labels flipped</h3>
+  <p>Breiman flipped 5% of the training labels and measured how much each method's test error rose <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=16" target="_blank" rel="noopener">Table 4, p. 16</a></span>:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Dataset</th><th class="num">AdaBoost</th><th class="num">Random forest</th></tr></thead>
+    <tbody>
+      <tr><td>breast cancer</td><td class="num">+43.2%</td><td class="num">+1.8%</td></tr>
+      <tr><td>votes</td><td class="num">+48.9%</td><td class="num">+6.3%</td></tr>
+      <tr><td>ionosphere</td><td class="num">+27.7%</td><td class="num">+3.8%</td></tr>
+      <tr><td>soybean</td><td class="num">+26.9%</td><td class="num">+3.2%</td></tr>
+    </tbody>
+  </table></div>
+  <p>Why: AdaBoost keeps raising the weight of rows it gets wrong, and mislabelled rows are always wrong, so it "will concentrate increasing weight on these noisy instances and become warped". A forest weights no row specially.</p>
+  <div class="card ok"><h4>Fast, too</h4><p>Each split searches only m features. On the zip-code data with m = 1, 100 forest trees took 4.0 minutes versus almost three hours for 50 AdaBoost trees, about 40× faster (a 250 MHz Mac in 2000) <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=11" target="_blank" rel="noopener">p. 11</a></span>.</p></div>
+  <div class="card upd"><h4>Update · my check (27 Oct 2026)</h4>
+    <p>Twenty-five years on, tree ensembles still do well on tables. A 45-dataset NeurIPS 2022 benchmark found tree-based models such as XGBoost and random forests remain state of the art on medium-sized (~10K rows) tabular data, ahead of deep learning <span class="src"><a href="https://arxiv.org/abs/2207.08815" target="_blank" rel="noopener">Grinsztajn et al. 2022</a></span>. The NeurIPS 2025 TabArena benchmark finds gradient-boosted trees still strong, deep models catching up with large tuning budgets, and TabPFNv2 excelling on small datasets (≤10K rows) <span class="src"><a href="https://arxiv.org/abs/2506.16791" target="_blank" rel="noopener">TabArena</a></span>. In those benchmarks, tuned boosting usually edges out random forests on accuracy; forests win on how little tuning they need. A review of RF tuning agrees the defaults "work reasonably well" in most cases, with tuning adding some gains <span class="src"><a href="https://arxiv.org/abs/1804.03515" target="_blank" rel="noopener">Probst et al. 2019</a></span>.</p></div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Takeaways and caveats">
+  <div class="chap">13 · Takeaways and caveats</div>
+  <h2>The lesson, and where it bends</h2>
+  <p><b>The lesson.</b> Averaging reduces variance only as far as the averaged models disagree. A random forest is a recipe for cheap disagreement: random rows per tree, random features per split, deep trees that are individually low-bias. Everything else (OOB error, importance, parallelism) falls out of that design.</p>
+  <ul class="cav">
+    <li><b>It does not reduce bias.</b> The average has a single tree's bias, so if deep trees cannot represent the pattern, more trees will not help (ESL p. 588).</li>
+    <li><b>Default importances mislead.</b> Use permutation importance on held-out data, and watch correlated features.</li>
+    <li><b>Regression forests cannot extrapolate.</b> Every leaf predicts an average of training targets, so the forest never predicts beyond the range of y it saw. <span class="mine">my take</span></li>
+    <li><b>Size and latency.</b> Hundreds of deep trees take memory and per-prediction time; limit depth or leaf size if it matters (sklearn).</li>
+    <li><b>Usually behind tuned boosting on accuracy</b> in recent tabular benchmarks, but far less sensitive to settings.</li>
+  </ul>
+  <h3>What came after</h3>
+  <p><b>Extra-Trees</b> (Geurts et al., 2006) go further: random features and random thresholds, and by default no bootstrap, trading a bit more bias for a bit less variance <span class="src"><a href="https://doi.org/10.1007/s10994-006-6226-1" target="_blank" rel="noopener">Geurts 2006</a></span>. <b>Gradient boosting</b> (XGBoost, LightGBM) takes AdaBoost's sequential route and now usually leads tabular benchmarks.</p>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · Key terms">
+  <div class="chap">14 · Key terms</div>
+  <dl class="terms">
+    <dt>Bootstrap sample</dt><dd>N rows drawn with replacement from N; about 63.2% distinct rows.</dd>
+    <dt>Bagging</dt><dd>Bootstrap aggregating: one model per bootstrap sample, then vote or average.</dd>
+    <dt>m / max_features / mtry</dt><dd>How many randomly chosen features each split may consider.</dd>
+    <dt>Out-of-bag (OOB)</dt><dd>Rows a tree did not train on; used to estimate test error and importance.</dd>
+    <dt>Strength (s)</dt><dd>How much more the trees vote for the right class than the best wrong one, on average.</dd>
+    <dt>Correlation (ρ)</dt><dd>How alike the trees' predictions or errors are. Lower is better for averaging.</dd>
+    <dt>Gini impurity</dt><dd>Σ p(1 − p): 0 for a pure node, 0.5 for a 50/50 two-class node.</dd>
+    <dt>MDI</dt><dd>Mean decrease in impurity, scikit-learn's default <code>feature_importances_</code>.</dd>
+  </dl>
+</section>
+
+<!-- 15 -->
+<section class="ch" id="c15" data-toc="15 · When to use it">
+  <div class="chap">15 · When to use it</div>
+  <div class="verdict"><b>Reach for it</b> as a strong, low-effort baseline on tabular data, when you want a built-in validation score (OOB), robustness to label noise, and trivial parallelism. <b>Look elsewhere</b> when the last point of accuracy matters (try gradient boosting), when you must extrapolate beyond the training range, or when the data are images, text or audio.</div>
+</section>
+
+<!-- 16 -->
+<section class="ch" id="iv" data-toc="16 · Say it in an interview">
+  <div class="chap">16 · Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">"A random forest is many deep decision trees whose predictions are averaged. A single deep tree has low bias but high variance. Averaging reduces variance, but only if the trees make different mistakes, so the forest decorrelates them two ways: each tree trains on a bootstrap sample of the rows, and each split only considers a random subset of features. That keeps a dominant feature from making every tree the same. Bonus: the rows each tree didn't see give a free out-of-bag error estimate. The trade-off: it reduces variance, not bias, and tuned boosting often beats it on accuracy."</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Problem: a deep tree overfits and is unstable; change a few rows and you get a different tree. Intuition: average many trees, like asking many people and taking the majority, which only helps if they think independently. Mechanism: (1) B bootstrap samples, (2) grow each tree deep, at every split choosing among m random features (√p for classification), (3) vote or average. Why it works: the variance of an average is ρσ² + (1−ρ)σ²/B, so more trees remove the second term and random features lower ρ, the floor. Evidence: Breiman's 2001 paper matched AdaBoost across 20 datasets while being far more robust to label noise. Limitation: no bias reduction, biased default importances, no extrapolation.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why random features at each split, isn't bootstrapping enough?</summary><p>Bootstrapping alone (bagging) still lets one strong feature win the top split in almost every tree, so trees stay correlated and the ρσ² floor stays high. Hiding features at random forces different trees to use different structure, lowering ρ. The chapter 3 and 7 widgets show it on our data.</p></details>
+  <details class="qa"><summary>Random forest vs gradient boosting?</summary><p>Forest: deep trees trained independently and in parallel, averaged; reduces variance; few hyperparameters; robust to label noise. Boosting: shallow trees trained sequentially, each correcting the last; reduces bias; usually more accurate when tuned, but more sensitive to settings and noise (Breiman's Table 4 shows AdaBoost's sensitivity).</p></details>
+  <details class="qa"><summary>Does adding more trees overfit?</summary><p>No: error converges as trees are added (Breiman Thm 1.2), more trees only cost time. But the forest can still overfit through very deep trees; that is controlled with depth or leaf size, not tree count (ESL §15.3.4).</p></details>
+  <details class="qa"><summary>What is OOB error, and why about 37%?</summary><p>Each bootstrap sample misses a row with probability (1 − 1/N)^N → e⁻¹ ≈ 0.368. Predicting each row with only the trees that never saw it gives a test-like error estimate, close to N-fold cross-validation, without a holdout.</p></details>
+  <details class="qa"><summary>How would you choose max_features?</summary><p>Start from the defaults (√p classification; scikit-learn uses all features for regression, the literature often ⌊p/3⌋ or 0.3). Smaller m → more decorrelated but weaker trees. Tune it with OOB or cross-validated score; Breiman found results fairly insensitive to it.</p></details>
+  <details class="qa"><summary>Which feature importance would you trust?</summary><p>Permutation importance on held-out data. The default impurity-based importance is computed on training data and favours high-cardinality features. With correlated features, both methods split the credit, so group correlated features first. <span class="mine">my take</span></p></details>
+  <details class="qa"><summary>Does a random forest need feature scaling?</summary><p>No. Splits compare a feature with a threshold, so any monotone rescaling of a feature gives the same splits. <span class="mine">my take</span></p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Random forests can't overfit." Say: more trees don't overfit; deep trees still can.</li>
+    <li>"Random forest reduces bias." It reduces variance; bias stays at the level of one tree.</li>
+    <li>"It picks random features per tree." That is Ho's random subspace method; random forests resample features at every split.</li>
+    <li>"scikit-learn takes a majority vote." It averages class probabilities.</li>
+    <li>"feature_importances_ tells you what matters." Only with caveats; prefer permutation importance.</li>
+  </ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>Everything on this page comes from these</h2>
+  <ol class="srcs">
+    <li>Breiman, L. (2001). Random Forests. <i>Machine Learning</i> 45, 5–32. <a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf" target="_blank" rel="noopener">preprint PDF</a></li>
+    <li>Breiman, L. &amp; Cutler, A. Random Forests (authors' site). <a href="https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm" target="_blank" rel="noopener">stat.berkeley.edu</a></li>
+    <li>Hastie, Tibshirani, Friedman. <i>The Elements of Statistical Learning</i>, 2nd ed., Ch. 15. <a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener">book site</a></li>
+    <li>scikit-learn User Guide: <a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests" target="_blank" rel="noopener">Ensembles</a>, <a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">Decision trees</a>, <a href="https://scikit-learn.org/stable/modules/permutation_importance.html" target="_blank" rel="noopener">Permutation importance</a></li>
+    <li>scikit-learn source, <a href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py" target="_blank" rel="noopener">sklearn/ensemble/_forest.py</a></li>
+    <li>Breiman, L. (1996). Bagging Predictors. <a href="https://statistics.berkeley.edu/node/1781" target="_blank" rel="noopener">Berkeley Statistics</a></li>
+    <li>Geurts, Ernst, Wehenkel (2006). Extremely randomized trees. <a href="https://doi.org/10.1007/s10994-006-6226-1" target="_blank" rel="noopener">doi</a></li>
+    <li>Strobl, Boulesteix, Zeileis, Hothorn (2007). Bias in random forest variable importance measures. <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-25" target="_blank" rel="noopener">BMC Bioinformatics</a></li>
+    <li>Probst, Wright, Boulesteix (2019). Hyperparameters and Tuning Strategies for Random Forest. <a href="https://arxiv.org/abs/1804.03515" target="_blank" rel="noopener">arXiv 1804.03515</a></li>
+    <li>Grinsztajn, Oyallon, Varoquaux (2022). Why do tree-based models still outperform deep learning on tabular data? <a href="https://arxiv.org/abs/2207.08815" target="_blank" rel="noopener">arXiv 2207.08815</a></li>
+    <li>Erickson et al. (2025). TabArena: A Living Benchmark for Machine Learning on Tabular Data. <a href="https://arxiv.org/abs/2506.16791" target="_blank" rel="noopener">arXiv 2506.16791</a></li>
+    <li>Bootstrap aggregating. <a href="https://en.wikipedia.org/wiki/Bootstrap_aggregating" target="_blank" rel="noopener">Wikipedia</a> (63.2% / 36.8%)</li>
+    <li>Interview-question collections used to pick the follow-ups: <a href="https://www.analyticsvidhya.com/blog/2022/12/interview-questions-on-bagging-algorithms-in-machine-learning/" target="_blank" rel="noopener">Analytics Vidhya</a>, <a href="https://towardsai.net/p/machine-learning/top-20-random-forest-interview-questions-answers" target="_blank" rel="noopener">Towards AI</a>, <a href="https://dshandbook.substack.com/p/random-forest-interview-questions" target="_blank" rel="noopener">DS Handbook</a></li>
+  </ol>
+  <p class="small">The 8-applicant dataset and the numbers in the permutation and OOB scenes are illustrative. All other numbers come from the sources above. @datawithsuman</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- page content generated before the engine runs (scene parts with data-hl, bars) ----------
+const RF = {
+  feats: [['credit', 'credit score'], ['income', 'income (k/mo)'], ['debt', 'debt ratio'], ['years', 'years at job']],
+  rows: [
+    { id: 1, credit: 720, income: 105, debt: 0.15, years: 6, y: 1 },
+    { id: 2, credit: 650, income: 35, debt: 0.60, years: 2, y: 0 },
+    { id: 3, credit: 700, income: 50, debt: 0.25, years: 2, y: 1 },
+    { id: 4, credit: 580, income: 55, debt: 0.45, years: 4, y: 0 },
+    { id: 5, credit: 760, income: 85, debt: 0.30, years: 13, y: 1 },
+    { id: 6, credit: 620, income: 90, debt: 0.17, years: 6, y: 0 },
+    { id: 7, credit: 690, income: 50, debt: 0.40, years: 5, y: 1 },
+    { id: 8, credit: 600, income: 35, debt: 0.65, years: 0, y: 0 },
+  ],
+};
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, parent, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; parent.appendChild(e); return e; };
+  // data table
+  document.querySelector('#dataTable tbody').innerHTML = RF.rows.map(r =>
+    `<tr><td>${r.id}</td><td>${r.credit}</td><td>${r.income}</td><td>${r.debt.toFixed(2)}</td><td>${r.years}</td><td class="${r.y ? 'y' : 'n'}">${r.y ? 'Y' : 'N'}</td></tr>`).join('');
+  // bootstrap scene chips
+  const chip = (g, x, r, extra) => { const c = el('g', extra || {}, g); el('rect', { x, y: 0, width: 50, height: 34, rx: 8, class: r.y ? 'chipY' : 'chipN' }, c); el('text', { x: x + 25, y: 22, 'text-anchor': 'middle' }, c, '#' + r.id); return c; };
+  const g1 = document.querySelector('.chips');
+  RF.rows.forEach((r, i) => { const c = chip(g1, i * 58, r); if (r.id === 2 || r.id === 4) { const o = el('rect', { x: i * 58 - 4, y: -4, width: 58, height: 42, rx: 10, class: 'chipOut', 'data-show': 4 }, g1); } });
+  const g2 = document.querySelector('.chipsS'), sample = [1, 3, 3, 5, 6, 6, 7, 8];
+  sample.forEach((id, i) => { const r = RF.rows[id - 1]; chip(g2, i * 58, r); if (id === 3 || id === 6) el('rect', { x: i * 58 - 4, y: -4, width: 58, height: 42, rx: 10, class: 'ring', 'data-show': 3 }, g2); });
+  // OOB scene: six trees, which saw applicant #2
+  const t6 = document.querySelector('.trees6'), saw = [true, false, true, false, true, false], votes = { 1: 'N', 3: 'N', 5: 'Y' };
+  saw.forEach((s, k) => { const x = (k % 3) * 125, y = Math.floor(k / 3) * 100;
+    const g = el('g', s ? {} : { 'data-hl': '3 4', style: 'color:var(--a)' }, t6);
+    el('rect', { x, y, width: 110, height: 70, rx: 10, class: s ? 'tbox' : 'tboxOn' }, g);
+    el('text', { x: x + 55, y: y + 24, 'text-anchor': 'middle' }, g, 'tree ' + (k + 1));
+    el('text', { x: x + 55, y: y + 43, 'text-anchor': 'middle', class: 'sm' }, g, s ? 'saw #2' : 'never saw #2');
+    if (!s) el('text', { x: x + 55, y: y + 60, 'text-anchor': 'middle', class: votes[k] === 'Y' ? 'okTxt' : 'badTxt' }, g, 'votes ' + votes[k]); });
+  // permutation scene: tiny tables, credit column shuffled on the right
+  const tbl = (g, credits, shuffled) => { ['credit', 'years', 'repaid'].forEach((h, c) => el('text', { x: c * 80 + 35, y: 12, 'text-anchor': 'middle', class: 'sm' }, g, h));
+    RF.rows.slice(0, 5).forEach((r, i) => { const y = 22 + i * 30;
+      [credits[i], r.years, r.y ? 'Y' : 'N'].forEach((v, c) => { el('rect', { x: c * 80, y, width: 70, height: 24, rx: 5, class: shuffled && c === 0 ? 'cellSt' : 'cell' }, g);
+        el('text', { x: c * 80 + 35, y: y + 17, 'text-anchor': 'middle', class: c === 2 ? (r.y ? 'okTxt' : 'badTxt') : '' }, g, v); }); }); };
+  tbl(document.querySelector('.permA'), RF.rows.slice(0, 5).map(r => r.credit), false);
+  tbl(document.querySelector('.permB'), [650, 760, 580, 720, 700], true);
+  // evidence bars from Breiman Table 2 (test error %, lower is better)
+  const T2 = [['glass', 36.9, 22.0, 20.6], ['vowel', 30.4, 4.1, 3.4], ['letters', 19.8, 3.4, 3.5], ['sat-images', 17.2, 8.8, 8.6], ['zip-code', 20.6, 6.2, 6.3], ['twonorm', 24.7, 4.9, 3.9]];
+  document.getElementById('t2bars').innerHTML = T2.map(([n, t, a, f]) => `<div class="grp">${n}</div>` +
+    [['one tree', t, 'var(--b)'], ['AdaBoost', a, 'var(--bad)'], ['random forest', f, 'var(--a)']].map(([l, v, c]) =>
+      `<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="--v:${v};background:${c}"></div></div><span class="v">${v.toFixed(1)}%</span></div>`).join('')).join('');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets (live computations on the 8 applicants) ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const gini = (rows) => { if (!rows.length) return 0; const p = rows.filter(r => r.y).length / rows.length; return p * (1 - p) + (1 - p) * p; };
+  const score = (rows, f, t) => { const L = rows.filter(r => r[f] <= t), R = rows.filter(r => r[f] > t); return (L.length * gini(L) + R.length * gini(R)) / rows.length; };
+  const fmt = (v) => (Math.abs(v - Math.round(v)) < 1e-9 ? String(Math.round(v)) : v.toFixed(2));
+
+  // Gini lab
+  const gF = $('#gFeat'), gT = $('#gThr');
+  gF.innerHTML = RF.feats.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+  const vals = () => [...new Set(RF.rows.map(r => r[gF.value]))].sort((a, b) => a - b).slice(0, -1);
+  const chips = (rows) => rows.map(r => `<span class="rc ${r.y ? 'y' : 'n'}">#${r.id} ${r.y ? 'Y' : 'N'}</span>`).join('');
+  const drawG = () => { const v = vals(), t = v[Math.min(+gT.value, v.length - 1)], f = gF.value;
+    gT.max = v.length - 1; $('#gThrOut').textContent = '≤ ' + fmt(t);
+    const L = RF.rows.filter(r => r[f] <= t), R = RF.rows.filter(r => r[f] > t);
+    $('#gSplit').innerHTML = `<div class="side"><h5>Left · yes (${L.length})</h5><div class="rowchips">${chips(L)}</div><div class="h">H = ${gini(L).toFixed(3)}</div></div>` +
+      `<div class="side"><h5>Right · no (${R.length})</h5><div class="rowchips">${chips(R)}</div><div class="h">H = ${gini(R).toFixed(3)}</div></div>`;
+    $('#gScore').textContent = score(RF.rows, f, t).toFixed(3); };
+  gF.addEventListener('change', () => { gT.value = 0; drawG(); }); gT.addEventListener('input', drawG);
+  $('#gBest').addEventListener('click', () => { const v = vals(); let b = 0; v.forEach((t, i) => { if (score(RF.rows, gF.value, t) < score(RF.rows, gF.value, v[b]) - 1e-12) b = i; }); gT.value = b; drawG(); });
+  gF.value = 'credit'; gT.value = 2; drawG();
+
+  // root-feature experiment: bootstrap + m random features, one split per tree
+  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function rootFeature(R, m) {
+    const s = Array.from({ length: 8 }, () => RF.rows[Math.floor(R() * 8)]);
+    if (s.every(r => r.y === s[0].y)) return null;
+    const keys = RF.feats.map(f => f[0]); for (let i = keys.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [keys[i], keys[j]] = [keys[j], keys[i]]; }
+    let best = Infinity, winners = [];
+    for (const f of keys.slice(0, m)) { const u = [...new Set(s.map(r => r[f]))].sort((a, b) => a - b);
+      for (let i = 0; i < u.length - 1; i++) { const g = score(s, f, (u[i] + u[i + 1]) / 2);
+        if (g < best - 1e-12) { best = g; winners = [f]; } else if (Math.abs(g - best) < 1e-12 && !winners.includes(f)) winners.push(f); } }
+    return winners.length ? winners[Math.floor(R() * winners.length)] : null;
+  }
+  $$('.rootLab').forEach((lab, li) => { let seed = 7 + li * 101;
+    const slider = $('.rootM', lab), out = slider ? slider.nextElementSibling : null;
+    const run = () => { const m = slider ? +slider.value : +lab.dataset.m; if (out) out.textContent = m === 4 ? '4 (= bagging)' : String(m);
+      const R = rng(seed), cnt = { credit: 0, income: 0, debt: 0, years: 0 }; let n = 0;
+      for (let k = 0; k < 60; k++) { const f = rootFeature(R, m); if (f) { cnt[f]++; n++; } }
+      $('.rootBars', lab).innerHTML = RF.feats.map(([k, name]) => `<div class="bar"><span>${name}</span><div class="track"><div class="fill" style="width:${100 * cnt[k] / n}%;background:${k === 'credit' ? 'var(--b)' : 'var(--st)'}"></div></div><span class="v">${Math.round(100 * cnt[k] / n)}%</span></div>`).join('');
+      $('.rootNote', lab).textContent = `First split of ${n} trees (${60 - n} sample${60 - n === 1 ? ' was' : 's were'} all one class). ${Math.round(100 * cnt.credit / n)}% start with credit score.` + (m === 4 ? ' Plain bagging: most trees ask the same first question.' : m === 1 ? ' m = 1: the first question is mostly luck.' : ''); };
+    $('.rootGo', lab).addEventListener('click', () => { seed += 17; run(); });
+    if (slider) slider.addEventListener('input', run); run(); });
+
+  // variance of the average
+  const vR = $('#vRho'), vB = $('#vB');
+  const drawV = () => { const r = +vR.value, B = +vB.value, fl = r, rest = (1 - r) / B;
+    $('#vRhoOut').textContent = r.toFixed(2); $('#vBOut').textContent = B;
+    $('#vFloor').style.width = (100 * fl) + '%'; $('#vRest').style.width = (100 * rest) + '%';
+    $('#vOut').textContent = (fl + rest).toFixed(3); };
+  vR.addEventListener('input', drawV); vB.addEventListener('input', drawV); drawV();
+
+  // bootstrap fraction
+  const bN = $('#bN'); const drawB = () => { const N = +bN.value, p = Math.pow(1 - 1 / N, N);
+    $('#bNOut').textContent = N; $('#bOut').textContent = (100 * p).toFixed(1) + '%'; $('#bIn').textContent = (100 * (1 - p)).toFixed(1) + '%'; };
+  bN.addEventListener('input', drawB); drawB();
+
+  // Breiman bound
+  const kR = $('#kRho'), kS = $('#kS');
+  const drawK = () => { const r = +kR.value, s = +kS.value, b = r * (1 - s * s) / (s * s);
+    kR.nextElementSibling.textContent = r.toFixed(2); kS.nextElementSibling.textContent = s.toFixed(2);
+    $('#kOut').textContent = b >= 1 ? '≥ 1' : b.toFixed(3); $('#kNote').textContent = b >= 1 ? '(the bound says nothing here; it is loose)' : '(illustrative values; lower correlation or higher strength both help)'; };
+  kR.addEventListener('input', drawK); kS.addEventListener('input', drawK); drawK();
+
+  // hard vote vs probability average
+  const P0 = [0.9, 0.6, 0.45, 0.4, 0.4], vl = $('#voteLab');
+  $('.voteRows', vl).innerHTML = P0.map((p, i) => `<label>tree ${i + 1}<input type="range" id="vt${i}" min="0" max="1" step="0.05" value="${p}"><output></output><span class="vv"></span></label>`).join('');
+  const drawVote = () => { const ps = P0.map((_, i) => +$('#vt' + i).value);
+    $$('.voteRows label', vl).forEach((l, i) => { $('output', l).textContent = ps[i].toFixed(2); const v = $('.vv', l); v.textContent = ps[i] > 0.5 ? 'Y' : 'N'; v.className = 'vv ' + (ps[i] > 0.5 ? 'y' : 'n'); });
+    const yes = ps.filter(p => p > 0.5).length, avg = ps.reduce((a, b) => a + b, 0) / ps.length;
+    const tag = (ok) => `<b style="color:var(--${ok ? 'ok' : 'bad'})">${ok ? 'Repaid' : 'Not repaid'}</b>`;
+    $('.voteOut', vl).innerHTML = `<div>Majority vote (paper): ${yes} of 5 say Y → ${tag(yes >= 3)}</div><div>Average probability (scikit-learn): ${avg.toFixed(2)} → ${tag(avg > 0.5)}</div>`; };
+  vl.addEventListener('input', drawVote); drawVote();
+})();
+</script>
+</body>
+</html>

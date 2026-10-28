@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logistic Regression · @datawithsuman</title>
+<meta name="description" content="Sigmoid, log-odds, log-loss, odds ratios, separable data, thresholds and calibration, explained step by step.">
+<meta property="og:title" content="Logistic Regression">
+<meta property="og:description" content="Sigmoid, log-odds, log-loss, odds ratios, separable data, thresholds and calibration, explained step by step.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Classical ML · Linear models 3 of 4</div>
+  <h1>Logistic Regression</h1>
+  <div class="meta">Built from Stanford CS229 notes (§2–3), scikit-learn's linear-model and calibration docs · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> logistic regression is a <b>classifier</b>. It models the <b>log-odds</b> of the positive class as a weighted sum of features and squashes that through a sigmoid to get a probability between 0 and 1. It is trained by maximum likelihood, which is the same as minimising <b>log-loss</b> (cross-entropy): a convex problem with one best answer and no closed form. Its decision boundary is a straight line (a hyperplane), its weights read as odds multipliers, and with regularization its probabilities are often well calibrated.<br><span class="small">What you'll be able to do after this: explain why it's called "regression", why we don't use squared error, derive the gradient, interpret a coefficient as an odds ratio, and handle separable data, thresholds and calibration.</span></div>
+  <div class="legend"><span><i style="background:var(--ok)"></i>positive class (pass)</span><span><i style="background:var(--bad)"></i>negative class (fail) / errors</span><span><i style="background:var(--b)"></i>the model (curve / boundary)</span><span><i style="background:var(--info)"></i>maths, numbers</span><span><i style="background:var(--st)"></i>linear regression (for contrast)</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> 20 students, hours studied, and whether each passed the exam (illustrative data). Goal: given hours, predict the <i>probability</i> of passing.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Predict yes or no, and how sure you are</h2>
+  <p>Spam or not, churn or not, default or not, click or not: a huge share of real ML problems have a yes/no answer. You want two things: a decision, and a <b>probability</b> you can rank, threshold and trust ("82% likely to default" is far more useful than "yes"). The target is 0 or 1, which breaks the tool from the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/linear-regression/">last two lessons</a>, as chapter 3 shows.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Probability, odds and log-odds</h2>
+  <p>Three ways to say the same thing. A probability p lives in [0, 1]. The <b>odds</b> p / (1 − p) live in [0, ∞): p = 0.8 is odds of 4 ("4 to 1"). The <b>log-odds</b> (the <b>logit</b>) log(p / (1 − p)) live on the whole real line, from −∞ to +∞, with 0 meaning a coin flip.</p>
+  <div class="card lab" id="labOdds">
+    <label>Probability p <input type="range" min="0.01" max="0.99" step="0.01" value="0.8" data-k="p"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">odds p / (1 − p)</div><div class="v info" data-o="odds">–</div></div>
+      <div class="stat"><div class="l">log-odds (logit)</div><div class="v b" data-o="lo">–</div></div>
+    </div>
+    <p class="small" style="margin:0">That last scale is the key: a weighted sum of features can be any real number, and so can log-odds. So we let the linear part predict the log-odds.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Just run linear regression on the 0s and 1s"</h2>
+  <p>Fit a straight line to the 0/1 labels and call anything above 0.5 a pass. It sort of works on tidy data. Then one diligent student who studied a lot (and passed, obviously) joins the dataset:</p>
+  <div class="card lab" id="labNaive">
+    <label>Add a student who studied this many hours and passed <input type="range" min="9" max="60" step="1" value="9" data-k="h"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Linear and logistic fits on pass/fail data"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">linear regression's pass threshold</div><div class="v st" data-o="tl">–</div></div>
+      <div class="stat"><div class="l">logistic regression's threshold</div><div class="v b" data-o="tg">–</div></div>
+      <div class="stat"><div class="l">original 20 classified right (linear / logistic)</div><div class="v" data-o="acc">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Purple: least-squares line on 0/1 labels. Orange: logistic curve. The extra student is an easy, correct "pass", yet the straight line tilts to reach them, its 0.5 crossing slides right, and it starts misclassifying students it got right before. The logistic fit barely moves. (Axis shows 0–20 hours; points further right are off-screen.)</p>
+  </div>
+  <div class="card bad"><h4>What breaks</h4><p>A line predicts values below 0 and above 1, which aren't probabilities. Its squared error punishes being "too right" (predicting 1.4 for a sure pass), so easy points far from the boundary drag the fit. CS229 makes the same point: "it is easy to construct examples where this method performs very poorly" and "it also doesn't make sense for h<sub>θ</sub>(x) to take values larger than 1 or smaller than 0" <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §2</a></span>.</p></div>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>Still a workhorse</h2>
+  <p>Logistic regression is the default baseline for binary classification and still production-grade in credit scoring, medical risk scores, fraud and click-through-rate models, wherever probabilities and explainability matter. In scikit-learn it's <code>LogisticRegression</code> (L-BFGS by default, and <b>L2-regularised by default</b>, with <code>C = 1</code>); statsmodels' <code>Logit</code> gives the unregularised fit with standard errors; <code>SGDClassifier(loss="log_loss")</code> trains it on streams. scikit-learn notes the default penalty explicitly: "Regularization is applied by default, which is common in machine learning but not in statistics" <span class="src"><a href="https://scikit-learn.org/stable/modules/linear_model.html">scikit-learn docs</a></span>.</p>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill a">One principle</span>
+  <h2>A linear model for the log-odds, squashed into a probability</h2>
+  <div class="reader" data-reader='[
+    {"t":"h","c":"b","label":"the probability","say":"h(x) = P(y = 1 | x): the model&#39;s probability of a pass."},
+    {"t":"g","c":"info","label":"the sigmoid","say":"g(z) = 1 / (1 + e^(−z)). Maps any real number to (0, 1): very negative → near 0, 0 → 0.5, very positive → near 1."},
+    {"t":"z","c":"a","label":"the logit","say":"θᵀx: an ordinary weighted sum of features, exactly like linear regression. It can be any real number."},
+    {"t":"lo","c":"st","label":"the same thing, inverted","say":"Solve for the linear part: log-odds = θᵀx. Logistic regression is linear regression on the log-odds scale. That&#39;s where &quot;regression&quot; in the name comes from."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-h}{h_\theta(x)} = \class{term t-g}{g}\big(\class{term t-z}{\theta^{\top}x}\big) = 1\,/\,\big(1 + e^{-\theta^{\top}x}\big) \qquad \class{term t-lo}{\log\!\big(h/(1-h)\big) = \theta^{\top}x}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">CS229 §2.1 <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 notes</a></span>. The derivative is neat: g′(z) = g(z)(1 − g(z)), which makes the gradient in chapter 8 so simple.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · Shape the curve">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill b">Shape the curve</span>
+  <h2>w sets the steepness, b sets where it crosses 50%</h2>
+  <div class="card lab" id="labSig">
+    <label>Weight w (per hour) <input type="range" min="-1" max="4" step="0.05" value="0.4" data-k="w"><output></output></label>
+    <label>Bias b <input type="range" min="-16" max="4" step="0.1" value="-1" data-k="b"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Sigmoid over pass/fail data"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">log-loss (↓)</div><div class="v bad" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">best possible</div><div class="v ok" data-o="best">–</div></div>
+      <div class="stat"><div class="l">50% point = −b/w</div><div class="v info" data-o="thr">–</div></div>
+      <div class="stat"><div class="l">accuracy at 0.5</div><div class="v" data-o="acc">–</div></div>
+    </div>
+    <div class="seg"><button data-v="fit">Fit by maximum likelihood</button></div>
+    <p class="small" style="margin:0">Each student's contribution to the loss is drawn as a red bar: the bar is long when the curve gives low probability to what actually happened. Notice that a very steep curve (large w) gets punished hard for the few students on the "wrong" side.</p>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Log-loss">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill bad">The loss</span>
+  <h2>Maximum likelihood gives log-loss, not squared error</h2>
+  <p>Treat each label as a coin flip with probability h(x). The probability of all the observed labels is a product; take its log and you get the log-likelihood <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 Eq. 2.1</a></span>. Its negative is <b>log-loss</b>, also called binary cross-entropy:</p>
+  <div class="reader" data-reader='[
+    {"t":"l","c":"info","label":"log-likelihood","say":"How probable the observed passes and fails are under θ. Maximise it (or minimise its negative, the log-loss)."},
+    {"t":"one","c":"ok","label":"when y = 1","say":"Only this term is active for a pass: log of the predicted pass probability. Predict 0.99 → about 0; predict 0.01 → −4.6."},
+    {"t":"zero","c":"bad","label":"when y = 0","say":"Only this term is active for a fail: log of the predicted fail probability."},
+    {"t":"sum","c":"info","label":"over all students","say":"Add over the n examples. One term per example, one active part per term."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-l}{\ell(\theta)} = \class{term t-sum}{\sum_{i=1}^{n}}\Big[\class{term t-one}{y^{(i)}\log h(x^{(i)})} + \class{term t-zero}{(1-y^{(i)})\log\big(1-h(x^{(i)})\big)}\Big]"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <h3>Feel the penalty</h3>
+  <div class="card lab" id="labPen">
+    <label>Predicted probability of "pass", for a student who passed <input type="range" min="0.01" max="0.99" step="0.01" value="0.1" data-k="p"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 260" data-o="plot" role="img" aria-label="Log-loss versus squared error for one example"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">log-loss −log p</div><div class="v bad" data-o="ll">–</div></div>
+      <div class="stat"><div class="l">squared error (1 − p)²</div><div class="v st" data-o="se">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Squared error never exceeds 1, so a confident wrong answer costs at most 1. Log-loss goes to infinity as p → 0: a model that says "1% chance" about something that happened is punished severely. That's what makes it a proper scoring rule for probabilities.</p>
+  </div>
+  <h3>Why not squared error? The shape of the loss</h3>
+  <div class="card lab" id="labLand">
+    <div class="stage plot"><svg viewBox="0 0 760 280" data-o="plot" role="img" aria-label="MSE and log-loss as functions of the weight"></svg></div>
+    <p class="small" style="margin:0">Both losses on our 20 students as the weight w changes (bias kept so the curve crosses 50% at the fitted threshold). Log-loss (orange) is a single convex valley. Squared error on sigmoid outputs (purple) flattens into a plateau for wrong-sign weights and is non-convex there: gradients vanish, and an optimiser can stall. With log-loss, the gradient is simply (prediction − label) × feature (chapter 8), and it never vanishes while the model is wrong.</p>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · Training">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill ok">Training</span>
+  <h2>The gradient is (label − prediction) × feature, again</h2>
+  <p>Differentiate the log-likelihood using g′ = g(1 − g), and nearly everything cancels <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 Eq. 2.2</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"g","c":"info","label":"slope for weight j","say":"How the log-likelihood changes when weight j moves, for one example."},
+    {"t":"e","c":"bad","label":"the error","say":"Label minus predicted probability. If the model said 0.9 and the student passed, the error is only 0.1."},
+    {"t":"x","c":"a","label":"the feature","say":"Scaled by the feature value, just like linear regression&#39;s LMS rule."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-g}{\tfrac{\partial}{\partial\theta_j}\ell(\theta)} = \class{term t-e}{\big(y - h_\theta(x)\big)}\,\class{term t-x}{x_j}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <p>That's the same form as the least-squares update, but it isn't the same algorithm: h is now the sigmoid of θᵀx. CS229 asks whether the match is a coincidence and answers with generalized linear models (chapter 13): both are GLMs with their natural "canonical" link. Unlike linear regression, setting the gradient to zero has <b>no closed-form solution</b>, so we iterate: gradient descent, Newton's method or L-BFGS. The log-loss is convex, so they all reach the same optimum, when one exists (chapter 11).</p>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · Reading the weights">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill info" style="color:var(--info)">Reading the weights</span>
+  <h2>Each weight is an odds multiplier</h2>
+  <p>Because the model is linear in the log-odds, one extra unit of a feature adds w to the log-odds, which <b>multiplies the odds by e<sup>w</sup></b>, no matter where you start.</p>
+  <div class="card lab" id="labOR">
+    <label>Hours studied <input type="range" min="0" max="9" step="0.5" value="3" data-k="h"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">P(pass)</div><div class="v b" data-o="p">–</div></div>
+      <div class="stat"><div class="l">odds of passing</div><div class="v info" data-o="o">–</div></div>
+      <div class="stat"><div class="l">with one more hour</div><div class="v ok" data-o="o1">–</div></div>
+      <div class="stat"><div class="l">odds ratio e<sup>w</sup></div><div class="v" data-o="or">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Fitted on our 20 students. The odds ratio is constant, but the change in <i>probability</i> isn't: one extra hour moves P(pass) a lot near 50% and very little near 0% or 100%. Interview trap: "a coefficient of 0.86 means 86% more likely" is wrong; it means the odds multiply by e<sup>0.86</sup> ≈ 2.36.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · Decision boundary">
+  <div class="chap">10 · Mechanism 5</div>
+  <span class="pill b">The boundary</span>
+  <h2>With two features, the boundary is a straight line</h2>
+  <div data-scene>
+    <div class="stage scroll"><svg viewBox="0 0 760 320" role="img" aria-label="Students by hours studied and slept with the logistic decision boundary"><line class="grid" x1="56.0" x2="56.0" y1="14" y2="280"/><text class="tick" x="56.0" y="296" text-anchor="middle">0</text><line class="grid" x1="162.8" x2="162.8" y1="14" y2="280"/><text class="tick" x="162.8" y="296" text-anchor="middle">2</text><line class="grid" x1="269.6" x2="269.6" y1="14" y2="280"/><text class="tick" x="269.6" y="296" text-anchor="middle">4</text><line class="grid" x1="376.4" x2="376.4" y1="14" y2="280"/><text class="tick" x="376.4" y="296" text-anchor="middle">6</text><line class="grid" x1="483.2" x2="483.2" y1="14" y2="280"/><text class="tick" x="483.2" y="296" text-anchor="middle">8</text><line class="grid" x1="590.0" x2="590.0" y1="14" y2="280"/><text class="tick" x="590.0" y="296" text-anchor="middle">10</text><line class="grid" x1="56" x2="590" y1="259.5" y2="259.5"/><text class="tick" x="50" y="263.5" text-anchor="end">4</text><line class="grid" x1="56" x2="590" y1="177.7" y2="177.7"/><text class="tick" x="50" y="181.7" text-anchor="end">6</text><line class="grid" x1="56" x2="590" y1="95.8" y2="95.8"/><text class="tick" x="50" y="99.8" text-anchor="end">8</text><line class="grid" x1="56" x2="590" y1="14.0" y2="14.0"/><text class="tick" x="50" y="18.0" text-anchor="end">10</text><line class="ax" x1="56" x2="590" y1="280" y2="280"/><line class="ax" x1="56" x2="56" y1="14" y2="280"/><text x="323.0" y="314" text-anchor="middle" class="d" font-size="12">hours studied</text><text x="14" y="147.0" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 147.0)">hours slept</text>
+<g data-show="1"><circle cx="365.4" cy="107.8" r="6" class="sok"/><circle cx="510.5" cy="108.1" r="6" class="sok"/><circle cx="95.9" cy="164.3" r="6" class="sbad"/><circle cx="377.3" cy="75.2" r="6" class="sok"/><circle cx="295.6" cy="209.1" r="6" class="sbad"/><circle cx="343.2" cy="256.9" r="6" class="sbad"/><circle cx="209.6" cy="72.0" r="6" class="sbad"/><circle cx="155.1" cy="96.4" r="6" class="sok"/><circle cx="363.0" cy="233.6" r="6" class="sok"/><circle cx="478.2" cy="216.7" r="6" class="sok"/><circle cx="528.6" cy="81.0" r="6" class="sok"/><circle cx="519.1" cy="149.2" r="6" class="sok"/><circle cx="175.6" cy="67.0" r="6" class="sbad"/><circle cx="521.4" cy="76.7" r="6" class="sok"/><circle cx="246.6" cy="225.6" r="6" class="sbad"/><circle cx="112.3" cy="197.9" r="6" class="sbad"/><circle cx="84.2" cy="120.8" r="6" class="sbad"/><circle cx="223.4" cy="92.1" r="6" class="sbad"/><circle cx="226.0" cy="161.1" r="6" class="sbad"/><circle cx="108.6" cy="60.0" r="6" class="sok"/><circle cx="423.0" cy="86.7" r="6" class="sok"/><circle cx="440.3" cy="184.6" r="6" class="sok"/><circle cx="86.8" cy="250.0" r="6" class="sbad"/><circle cx="516.3" cy="219.3" r="6" class="sok"/><circle cx="504.7" cy="66.8" r="6" class="sok"/><circle cx="243.7" cy="152.2" r="6" class="sbad"/><text x="604" y="40" class="tok" font-size="12.5" font-weight="600">● passed</text><text x="604" y="60" class="tbad" font-size="12.5" font-weight="600">● failed</text></g>
+<g data-show="2" data-hl="2" style="color:var(--b)"><line x1="145.0" y1="14.0" x2="453.5" y2="280.0" stroke="var(--b)" stroke-width="3" /><text x="604" y="100" class="tb" font-size="12.5" font-weight="600">p = 0.5</text><text x="604" y="118" class="d" font-size="11.5">0.9·study + 0.8·sleep = 9.5</text></g>
+<g data-show="3"><line x1="56.0" y1="49.7" x2="323.2" y2="280.0" stroke="var(--b)" stroke-width="1.5" stroke-dasharray="5 4"/><line x1="275.4" y1="14.0" x2="583.9" y2="280.0" stroke="var(--b)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="604" y="150" class="d" font-size="12">dashed: p = 0.1 and 0.9</text><text x="604" y="168" class="d" font-size="12">parallel lines</text></g>
+<g data-show="4"><text x="604" y="210" class="tinfo" font-size="12" font-weight="600">w = (0.9, 0.8)</text><text x="604" y="228" class="d" font-size="12">points across the lines,</text><text x="604" y="246" class="d" font-size="12">toward higher pass odds</text></g>
+</svg></div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Now two features: hours studied and hours slept. Each dot is a student (illustrative).</li>
+      <li>P = 0.5 exactly where the logit is zero: 0.9·study + 0.8·sleep − 9.5 = 0. That's a straight line, the <b>decision boundary</b>.</li>
+      <li>Every probability level is a line parallel to it. Probability changes only as you move across the lines, never along them.</li>
+      <li>The weight vector is perpendicular to the boundary and points toward higher pass odds. In more dimensions the boundary is a flat hyperplane.</li>
+    </ol>
+  </div>
+  <p>A straight boundary is both the strength and the limit. If the classes are separated by a curve (a ring, an XOR pattern), plain logistic regression can't follow it. Add features (squares, products, splines), or use a non-linear model. That's exactly what a neural network's hidden layers do before its final logistic or softmax layer.</p>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · Separable data">
+  <div class="chap">11 · Mechanism 6</div>
+  <span class="pill bad">The separable trap</span>
+  <h2>Perfectly separable data: the weights run to infinity</h2>
+  <p>If a line separates passes from fails perfectly, the likelihood keeps improving as the sigmoid gets steeper, with no finite best weight. The optimiser just keeps going:</p>
+  <div class="card lab" id="labSep">
+    <div class="seg"><button data-v="100">100 steps</button><button data-v="1000" class="on">1,000</button><button data-v="10000">10,000</button><button data-v="100000">100,000</button></div>
+    <div class="tw"><table class="t" data-o="tbl"></table></div>
+    <div class="stage plot"><svg viewBox="0 0 760 240" data-o="plot" role="img" aria-label="Fitted curves on separable data"></svg></div>
+    <p class="small" style="margin:0">Same 20 students, but relabelled so everyone with ≥ 3.75 hours passed (perfectly separable). Gradient descent, learning rate 0.5. Without a penalty, w keeps growing and the curve becomes a step with fake 100%/0% certainty. With an L2 penalty (λ = 0.05) it converges to a finite, sensible slope.</p>
+  </div>
+  <p>This is one big reason scikit-learn regularises by default. The strength is set by <code>C</code>, the <i>inverse</i> of the penalty: small C means strong regularization <span class="src"><a href="https://scikit-learn.org/stable/modules/linear_model.html">scikit-learn docs</a></span>. With many features, separable data is common, and the same L1/L2/Elastic Net trade-offs from the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/regularized-linear-models/">last lesson</a> apply.</p>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Threshold & calibration">
+  <div class="chap">12 · Mechanism 7</div>
+  <span class="pill ok">From probability to decision</span>
+  <h2>0.5 is a default, not a law</h2>
+  <div class="card lab" id="labThr">
+    <label>Decision threshold <input type="range" min="0.05" max="0.95" step="0.05" value="0.5" data-k="t"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">precision (predicted pass → passed)</div><div class="v ok" data-o="pr">–</div></div>
+      <div class="stat"><div class="l">recall (passers caught)</div><div class="v b" data-o="re">–</div></div>
+      <div class="stat"><div class="l">accuracy</div><div class="v info" data-o="ac">–</div></div>
+    </div>
+    <p class="small" style="margin:0">On our 20 students with the fitted model. Lower the threshold and you catch more passers (recall up) but also more failers (precision down). Pick the threshold from the costs: missing a fraud costs far more than reviewing a false alarm, so fraud models use low thresholds.</p>
+  </div>
+  <p><b>Calibration</b> means "of all cases predicted at 70%, about 70% are positive." Logistic regression is good at this by construction. scikit-learn: it "is more likely to return well calibrated predictions by itself as it has a canonical link function for its loss," which in the unpenalised case gives the "balance property" <span class="src"><a href="https://scikit-learn.org/stable/modules/calibration.html">scikit-learn calibration docs</a></span>. The guarantee weakens with strong penalties, a mis-specified model, or resampled training data (e.g. after oversampling the rare class). Check a reliability curve, and recalibrate if needed.</p>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Family tree">
+  <div class="chap">13 · The family tree</div>
+  <h2>Perceptron, GLMs, and softmax</h2>
+  <details class="deep" open><summary>The perceptron: logistic regression with a hard step</summary><p>Replace the sigmoid with a hard threshold (output 1 if θᵀx ≥ 0, else 0) and use the same update θ<sub>j</sub> := θ<sub>j</sub> + α(y − h(x))x<sub>j</sub>, and you get the perceptron (1950s–60s). It finds a separating line if one exists, but CS229 notes "it is difficult to endow the perceptron's predictions with meaningful probabilistic interpretations" <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §2.2</a></span>. Logistic regression is the smooth, probabilistic version.</p></details>
+  <details class="deep"><summary>Generalized linear models: why sigmoid, and why the same gradient</summary><p>Linear and logistic regression are both GLMs: pick an exponential-family distribution for y given x, model its natural parameter as θᵀx, and predict its mean. Gaussian y gives linear regression (identity link); Bernoulli y gives logistic regression, and writing the Bernoulli in exponential-family form produces the sigmoid on its own. Poisson y (counts) gives Poisson regression. Every GLM with the canonical link has the gradient (y − prediction)·x, which answers the "coincidence" in chapter 8 <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §3</a></span>.</p></details>
+  <p>More than two classes? Give each class its own weight vector and replace the sigmoid with a softmax. That's the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/softmax-regression/">next lesson</a>.</p>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · The recipe">
+  <div class="chap">14 · The whole recipe</div>
+  <h2>Shipping a logistic regression</h2>
+  <ol>
+    <li>Split train/test (stratified, so both keep the class ratio).</li>
+    <li>Encode categories (one-hot), standardise numeric features (needed for the penalty and for fast convergence).</li>
+    <li>Fit with L2 (default) and cross-validate C; try L1 or Elastic Net if you want feature selection.</li>
+    <li>Evaluate with metrics that fit the problem: log-loss and ROC-AUC for ranking quality, PR-AUC when positives are rare. Accuracy misleads on imbalanced data.</li>
+    <li>Check calibration (a reliability curve); recalibrate if you resampled or regularised heavily.</li>
+    <li>Choose the threshold from business costs, on validation data.</li>
+    <li>Explain with odds ratios (e<sup>w</sup> per unit, or per standard deviation for standardised features).</li>
+  </ol>
+</section>
+
+<!-- 15 -->
+<section class="ch" id="c15" data-toc="15 · Caveats">
+  <div class="chap">15 · Takeaways and honest caveats</div>
+  <h2>What to keep</h2>
+  <p><b>The lesson:</b> logistic regression is linear regression on the log-odds, trained with log-loss. Convex, fast, calibrated-ish, explainable, and the building block (as the output layer) of most neural classifiers.</p>
+  <ul>
+    <li><b>Linear boundary only.</b> Interactions and curves must be engineered in.</li>
+    <li><b>Separable data and many features</b> need regularization, or weights explode.</li>
+    <li><b>Class imbalance</b> doesn't break the model but does break accuracy and the 0.5 threshold. Use class weights or threshold tuning, and remember that reweighting shifts the probabilities. <span class="mine">my take</span></li>
+    <li><b>Collinear features</b> make individual odds ratios unstable, exactly as in linear regression.</li>
+  </ul>
+</section>
+
+<!-- 16 -->
+<section class="ch" id="c16" data-toc="16 · Key terms">
+  <div class="chap">16 · Key terms</div>
+  <h2>Glossary</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Sigmoid / logistic function</b></td><td>g(z) = 1/(1 + e<sup>−z</sup>), squashes to (0, 1).</td></tr>
+    <tr><td><b>Logit / log-odds</b></td><td>log(p/(1 − p)); the linear part of the model.</td></tr>
+    <tr><td><b>Odds ratio</b></td><td>e<sup>w</sup>: how the odds multiply per unit of a feature.</td></tr>
+    <tr><td><b>Log-loss / binary cross-entropy</b></td><td>−[y log p + (1 − y) log(1 − p)], averaged.</td></tr>
+    <tr><td><b>Decision boundary</b></td><td>Where p = threshold; a hyperplane θᵀx = const.</td></tr>
+    <tr><td><b>Calibration</b></td><td>Predicted probabilities match observed frequencies.</td></tr>
+    <tr><td><b>C (scikit-learn)</b></td><td>Inverse regularization strength.</td></tr>
+    <tr><td><b>GLM</b></td><td>Generalized linear model: exponential-family response with a linear predictor.</td></tr>
+  </table></div>
+</section>
+
+<!-- 17 -->
+<section class="ch" id="c17" data-toc="17 · When to use it">
+  <div class="chap">17 · When to use it</div>
+  <h2>Use it, or reach for something else?</h2>
+  <div class="two">
+    <div class="card ok"><h4>Use logistic regression when</h4><ul style="margin:0;padding-left:20px"><li>You need probabilities and a strong, fast baseline</li><li>You need to explain decisions (regulated domains like credit and health)</li><li>Data is high-dimensional and sparse (text with TF-IDF, one-hot features)</li><li>Latency or memory is tight</li></ul></div>
+    <div class="card bad"><h4>Reach for something else when</h4><ul style="margin:0;padding-left:20px"><li>Strong non-linear interactions in tabular data → gradient boosting</li><li>Images, audio, raw text → neural networks (with a logistic/softmax output layer)</li><li>More than two classes → softmax regression (or one-vs-rest)</li></ul></div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">Logistic regression is a linear classifier. It models the log-odds of the positive class as a linear function of the features, and the sigmoid turns that into a probability. It's trained by maximum likelihood, which means minimising log-loss: convex, solved iteratively with gradient descent or L-BFGS, with gradient (prediction − label) × feature. Coefficients are log odds ratios, the decision boundary is a hyperplane, and in practice it's L2-regularised, which also handles separable data. It's called regression because it regresses the log-odds.</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Problem: binary target, want calibrated probabilities. Why not linear regression (outputs outside [0, 1], easy points drag the fit). Odds and log-odds; model logit = θᵀx; sigmoid. Bernoulli likelihood → log-loss; why not MSE (non-convex, vanishing gradients, weak penalty for confident errors). Gradient (y − h)x, no closed form, convex optimisation. Interpretation via odds ratios. Boundary is linear; feature engineering for curves. Separable data → infinite weights → regularization (C). Threshold from costs; calibration and the balance property.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why is it called regression if it's a classifier?</summary><p>It's a regression model for the log-odds (a GLM with a logit link): it predicts a continuous quantity, the probability, and classification only happens when you apply a threshold.</p></details>
+  <details class="qa"><summary>Why log-loss and not MSE?</summary><p>Log-loss is the negative Bernoulli log-likelihood, so it's the principled choice. With a sigmoid output it's convex in the weights and gives the clean gradient (h − y)x. MSE on sigmoid outputs is non-convex with flat regions where gradients vanish, and it penalises confident wrong predictions by at most 1, which undermines calibration.</p></details>
+  <details class="qa"><summary>How do you interpret a coefficient?</summary><p>A one-unit increase in the feature, holding others fixed, adds w to the log-odds, so it multiplies the odds by e<sup>w</sup>. The effect on probability depends on where you are on the curve: largest near 0.5.</p></details>
+  <details class="qa"><summary>What happens with perfectly separable data?</summary><p>The maximum-likelihood estimate doesn't exist: weights grow without bound while the loss keeps falling toward zero. Regularization (scikit-learn's default L2) or early stopping gives finite, sensible weights.</p></details>
+  <details class="qa"><summary>Is the decision boundary linear?</summary><p>Yes, in the features you give it: θᵀx = log(t/(1 − t)) for threshold t. Add polynomial or interaction features to get curved boundaries in the original space.</p></details>
+  <details class="qa"><summary>How would you handle class imbalance?</summary><p>Keep log-loss, but use class weights or resampling, evaluate with PR-AUC or recall at a fixed precision rather than accuracy, and tune the threshold. If you reweight or resample, the predicted probabilities shift, so recalibrate if you need true probabilities.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"It outputs a class." It outputs a probability; the class comes from your threshold.</li>
+    <li>"Coefficient 0.5 means 50% more likely." It's +0.5 log-odds, an odds ratio of about 1.65.</li>
+    <li>"It can't do non-linear problems." Not with raw features, but with engineered features it can.</li>
+    <li>"There's a closed-form solution like linear regression." There isn't; it's solved iteratively.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>A. Ng, T. Ma et al., <a href="https://cs229.stanford.edu/main_notes.pdf">Stanford CS229 lecture notes</a>, §2 (logistic regression, perceptron, multi-class) and §3 (GLMs).</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/linear_model.html">Linear models user guide</a>: LogisticRegression objective, C, default regularization, solvers.</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/calibration.html">Probability calibration</a>: why logistic regression tends to be calibrated.</li>
+    <li>Hastie, Tibshirani &amp; Friedman, <i>The Elements of Statistical Learning</i>, §4.4 (logistic regression), background.</li>
+    <li>Interview angle: <a href="https://www.analyticsvidhya.com/?p=37752">Analytics Vidhya, 30 logistic regression interview questions</a>; <a href="https://datalemur.com/blog/machine-learning-interview-questions">DataLemur ML interview questions</a>.</li>
+  </ol>
+  <p class="small">Student data is illustrative; every fit and curve on this page is computed live.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+// least squares for small dense systems (Gaussian elimination with partial pivoting)
+function solve(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+function lstsq(X, y, lam = 0, noPenFirst = true) { const p = X[0].length, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  X.forEach((r, i) => { for (let a = 0; a < p; a++) { b[a] += r[a] * y[i]; for (let c = 0; c < p; c++) A[a][c] += r[a] * r[c]; } });
+  for (let a = noPenFirst ? 1 : 0; a < p; a++) A[a][a] += lam; return solve(A, b); }
+const HRS = [0.5, 1, 1.5, 2, 2.25, 2.5, 3, 3.25, 3.5, 4, 4.25, 4.5, 4.75, 5, 5.5, 6, 6.5, 7, 8, 9];
+const PASS = [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1];
+const sig = z => 1 / (1 + Math.exp(-z));
+// logistic regression by Newton's method (1 feature + bias), optional L2 on w with strength lam (sklearn-style: lam = 1/C)
+function logfit(x, y, lam = 0, it = 50) { let w = 0, b = 0;
+  for (let k = 0; k < it; k++) { let gw = 0, gb = 0, hww = lam, hwb = 0, hbb = 1e-9; gw = lam * w;
+    x.forEach((xi, i) => { const p = sig(w * xi + b), e = p - y[i], v = p * (1 - p); gw += e * xi; gb += e; hww += v * xi * xi; hwb += v * xi; hbb += v; });
+    const det = hww * hbb - hwb * hwb; if (Math.abs(det) < 1e-12) break; const dw = (hbb * gw - hwb * gb) / det, db = (hww * gb - hwb * gw) / det; w -= dw; b -= db; if (Math.abs(dw) + Math.abs(db) < 1e-10) break; }
+  return { w, b }; }
+const logloss = (x, y, w, b) => x.reduce((a, xi, i) => { const p = Math.min(1 - 1e-12, Math.max(1e-12, sig(w * xi + b))); return a - (y[i] ? Math.log(p) : Math.log(1 - p)); }, 0) / x.length;
+const linfit = (x, y) => { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0; x.forEach((v, i) => { sxy += (v - mx) * (y[i] - my); sxx += (v - mx) ** 2; }); const w = sxy / sxx; return { w, b: my - w * mx }; };
+const FIT = logfit(HRS, PASS), THR = -FIT.b / FIT.w;
+const sframe = (x1 = 10, H = 300) => frame({ H, x0: 0, x1, y0: -0.1, y1: 1.1, xt: x1 > 12 ? [0, 5, 10, 15, 20] : [0, 2, 4, 6, 8, 10], yt: [0, 0.5, 1], xl: 'hours studied', yl: 'P(pass)' });
+const studs = (F, xs, ys) => dots(F, xs, ys, i => ys[i] ? 'sok' : 'sbad', 6);
+
+// 2 · odds
+(() => { const lab = document.getElementById('labOdds'); if (!lab) return; const r = lab.querySelector('input');
+  const upd = () => { const p = +r.value; r.nextElementSibling.textContent = p.toFixed(2); put(lab, 'odds', (p / (1 - p)).toFixed(2)); put(lab, 'lo', fx(Math.log(p / (1 - p)), 2)); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 3 · linear regression on 0/1
+(() => { const lab = document.getElementById('labNaive'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const acc = t => HRS.filter((v, i) => (v >= t ? 1 : 0) === PASS[i]).length;
+  const upd = () => { const h = +r.value, x = [...HRS, h], y = [...PASS, 1], l = linfit(x, y), g = logfit(x, y), tl = (0.5 - l.b) / l.w, tg = -g.b / g.w;
+    r.nextElementSibling.textContent = h + ' h'; const F = sframe(20);
+    svg.innerHTML = F.s + `<line x1="${F.L}" x2="${F.W - F.R}" y1="${F.Y(0.5)}" y2="${F.Y(0.5)}" stroke="var(--dim)" stroke-dasharray="4 4"/>`
+      + curve(F, v => l.w * v + l.b, 0, 20, 'var(--st)', 2.5, '', 50, -0.1, 1.1) + curve(F, v => sig(g.w * v + g.b), 0, 20, 'var(--b)', 2.5)
+      + `<line x1="${F.X(tl)}" x2="${F.X(tl)}" y1="${F.Y(0.5) - 10}" y2="${F.Y(0.5) + 10}" stroke="var(--st)" stroke-width="3"/><line x1="${F.X(tg)}" x2="${F.X(tg)}" y1="${F.Y(0.5) - 10}" y2="${F.Y(0.5) + 10}" stroke="var(--b)" stroke-width="3"/>`
+      + studs(F, HRS, PASS) + (h <= 20 ? `<circle cx="${F.X(h)}" cy="${F.Y(1)}" r="8" fill="none" stroke="var(--ok)" stroke-width="2.5"/>` : `<text x="${F.W - F.R - 4}" y="${F.Y(1) - 10}" text-anchor="end" class="tok" font-size="12">+ student at ${h} h →</text>`);
+    put(lab, 'tl', tl.toFixed(2) + ' h'); put(lab, 'tg', tg.toFixed(2) + ' h'); put(lab, 'acc', `${acc(tl)} / ${acc(tg)}`); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 6 · sigmoid sliders
+(() => { const lab = document.getElementById('labSig'); if (!lab) return; const [rw, rb] = lab.querySelectorAll('input'), svg = lab.querySelector('svg');
+  put(lab, 'best', logloss(HRS, PASS, FIT.w, FIT.b).toFixed(3));
+  const upd = () => { const w = +rw.value, b = +rb.value, F = sframe(); rw.nextElementSibling.textContent = fx(w); rb.nextElementSibling.textContent = fx(b, 1);
+    let bars = ''; HRS.forEach((x, i) => { const p = sig(w * x + b), q = PASS[i] ? p : 1 - p, L = Math.min(4, -Math.log(Math.max(1e-6, q))), y0 = PASS[i] ? 1 : 0, dir = PASS[i] ? 1 : -1;
+      bars += `<line x1="${F.X(x)}" x2="${F.X(x)}" y1="${F.Y(y0)}" y2="${F.Y(y0 - dir * L * 0.25)}" stroke="var(--bad)" stroke-width="4" opacity=".55"/>`; });
+    svg.innerHTML = F.s + bars + curve(F, v => sig(w * v + b), 0, 10, 'var(--b)', 3) + studs(F, HRS, PASS);
+    const ll = logloss(HRS, PASS, w, b), t = w ? -b / w : NaN; put(lab, 'll', ll.toFixed(3), ll < logloss(HRS, PASS, FIT.w, FIT.b) + 0.01 ? 'ok' : 'bad');
+    put(lab, 'thr', isFinite(t) && w > 0 ? t.toFixed(2) + ' h' : '—'); put(lab, 'acc', HRS.filter((x, i) => (sig(w * x + b) >= 0.5 ? 1 : 0) === PASS[i]).length + ' / 20'); };
+  lab.querySelector('.seg button').addEventListener('click', () => { rw.value = FIT.w.toFixed(2); rb.value = FIT.b.toFixed(1); upd(); });
+  rw.addEventListener('input', upd); rb.addEventListener('input', upd); upd(); })();
+
+// 7a · per-example penalty
+(() => { const lab = document.getElementById('labPen'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const upd = () => { const p = +r.value; r.nextElementSibling.textContent = p.toFixed(2);
+    const F = frame({ H: 260, x0: 0, x1: 1, y0: 0, y1: 4.7, xt: [0, 0.25, 0.5, 0.75, 1], yt: [0, 1, 2, 3, 4], xl: 'predicted P(pass) for a student who passed', yl: 'penalty' });
+    svg.innerHTML = F.s + curve(F, v => -Math.log(Math.max(0.0095, v)), 0.0095, 1, 'var(--bad)', 3, '', 300) + curve(F, v => (1 - v) ** 2, 0, 1, 'var(--st)', 3)
+      + `<circle cx="${F.X(p)}" cy="${F.Y(-Math.log(p))}" r="6" class="sbad"/><circle cx="${F.X(p)}" cy="${F.Y((1 - p) ** 2)}" r="6" class="sst"/>`
+      + `<text x="${F.X(0.06)}" y="${F.Y(4.3)}" class="tbad" font-size="12.5" font-weight="600">log-loss</text><text x="${F.X(0.06)}" y="${F.Y(1.25)}" class="tst" font-size="12.5" font-weight="600">squared error</text>`;
+    put(lab, 'll', (-Math.log(p)).toFixed(2)); put(lab, 'se', ((1 - p) ** 2).toFixed(2)); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 7b · loss landscape
+(() => { const lab = document.getElementById('labLand'); if (!lab) return; const svg = lab.querySelector('svg');
+  const mse = w => HRS.reduce((a, x, i) => a + (sig(w * (x - THR)) - PASS[i]) ** 2, 0) / 20, ll = w => logloss(HRS, PASS, w, -w * THR);
+  const F = frame({ H: 280, x0: -6, x1: 6, y0: 0, y1: 1, xt: [-6, -4, -2, 0, 2, 4, 6], yt: [0, 0.25, 0.5, 0.75, 1], xl: 'weight w (per hour)', yl: 'loss, scaled to max 1' });
+  let mxl = 0, mxm = 0; for (let w = -6; w <= 6; w += 0.05) { mxl = Math.max(mxl, ll(w)); mxm = Math.max(mxm, mse(w)); }
+  svg.innerHTML = F.s + curve(F, w => ll(w) / mxl, -6, 6, 'var(--b)', 3, '', 240) + curve(F, w => mse(w) / mxm, -6, 6, 'var(--st)', 3, '', 240)
+    + `<line x1="${F.X(FIT.w)}" x2="${F.X(FIT.w)}" y1="${F.T}" y2="${F.H - F.B}" stroke="var(--ok)" stroke-dasharray="4 4"/><text x="${F.X(FIT.w) + 6}" y="${F.T + 14}" class="tok" font-size="12">best w ≈ ${FIT.w.toFixed(2)}</text>`
+    + `<text x="${F.X(-3.6)}" y="${F.Y(0.38)}" class="tb" font-size="12.5" font-weight="600">log-loss: convex</text><text x="${F.X(-2.6)}" y="${F.Y(0.8)}" class="tst" font-size="12.5" font-weight="600">MSE: flat plateau</text>`; })();
+
+// 9 · odds ratio
+(() => { const lab = document.getElementById('labOR'); if (!lab) return; const r = lab.querySelector('input');
+  const upd = () => { const h = +r.value, p = sig(FIT.w * h + FIT.b), p1 = sig(FIT.w * (h + 1) + FIT.b); r.nextElementSibling.textContent = h + ' h';
+    put(lab, 'p', (100 * p).toFixed(0) + '%'); put(lab, 'o', (p / (1 - p)).toFixed(2)); put(lab, 'o1', (p1 / (1 - p1)).toFixed(2) + ` (P ${(100 * p1).toFixed(0)}%)`); put(lab, 'or', '× ' + Math.exp(FIT.w).toFixed(2)); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 11 · separable data
+(() => { const lab = document.getElementById('labSep'); if (!lab) return; const svg = lab.querySelector('svg'), y = HRS.map(h => h >= 3.75 ? 1 : 0);
+  const gd = (lam, N) => { let w = 0, b = 0; for (let t = 0; t < N; t++) { let gw = lam * w, gb = 0; HRS.forEach((x, i) => { const e = sig(w * x + b) - y[i]; gw += e * x / 20; gb += e / 20; }); w -= 0.5 * gw; b -= 0.5 * gb; } return { w, b }; };
+  const cache = {}; const get = (lam, N) => cache[lam + ':' + N] || (cache[lam + ':' + N] = gd(lam, N));
+  const upd = () => { const N = +onv(lab).dataset.v, a = get(0, N), c = get(0.05, N);
+    lab.querySelector('[data-o=tbl]').innerHTML = `<tr><th>after ${N.toLocaleString()} steps</th><th>weight w</th><th>training log-loss</th></tr><tr><td style="color:var(--bad)">no penalty</td><td class="num">${a.w.toFixed(2)}</td><td class="num">${logloss(HRS, y, a.w, a.b).toFixed(4)}</td></tr><tr class="hi"><td style="color:var(--ok)">L2 penalty</td><td class="num">${c.w.toFixed(2)}</td><td class="num">${logloss(HRS, y, c.w, c.b).toFixed(4)}</td></tr>`;
+    const F = sframe(10, 240); svg.innerHTML = F.s + curve(F, v => sig(a.w * v + a.b), 0, 10, 'var(--bad)', 3, '', 400) + curve(F, v => sig(c.w * v + c.b), 0, 10, 'var(--ok)', 3) + studs(F, HRS, y); };
+  segs(lab, upd); upd(); })();
+
+// 12 · threshold
+(() => { const lab = document.getElementById('labThr'); if (!lab) return; const r = lab.querySelector('input');
+  const upd = () => { const t = +r.value; r.nextElementSibling.textContent = t.toFixed(2); let tp = 0, fp = 0, fn = 0, ok = 0;
+    HRS.forEach((x, i) => { const pr = sig(FIT.w * x + FIT.b) >= t ? 1 : 0; if (pr && PASS[i]) tp++; if (pr && !PASS[i]) fp++; if (!pr && PASS[i]) fn++; if (pr === PASS[i]) ok++; });
+    put(lab, 'pr', tp + fp ? `${(100 * tp / (tp + fp)).toFixed(0)}% (${tp}/${tp + fp})` : '—'); put(lab, 're', `${(100 * tp / (tp + fn)).toFixed(0)}% (${tp}/${tp + fn})`); put(lab, 'ac', `${ok} / 20`); };
+  r.addEventListener('input', upd); upd(); })();
+
+</script>
+</body>
+</html>

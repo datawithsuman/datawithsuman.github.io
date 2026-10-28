@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thresholds & Misclassification Costs · @datawithsuman</title>
+<meta name="description" content="Cost-optimal thresholds, Youden's J, F-beta, MCC, balanced accuracy, G-mean, kappa, and class weights vs threshold moving.">
+<meta property="og:title" content="Thresholds & Misclassification Costs">
+<meta property="og:description" content="Cost-optimal thresholds, Youden's J, F-beta, MCC, balanced accuracy, G-mean, kappa, and class weights vs threshold moving.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Machine Learning</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Topic · Evaluation Metrics 3 of 7</div>
+  <h1>Thresholds &amp; Misclassification Costs</h1>
+  <div class="meta">Youden's J, cost matrices, F-beta, MCC, balanced accuracy, G-mean and Cohen's kappa · built from Elkan (2001), Chicco &amp; Jurman (2020), Fawcett (2006) and scikit-learn's docs · checked 28 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> a model gives scores; a <b>threshold</b> turns them into decisions, and the right threshold depends on what each mistake <b>costs</b>. If the probabilities are calibrated and you can price the errors, the cost-optimal rule is simple: flag when p ≥ C<sub>FP</sub> / (C<sub>FP</sub> + C<sub>FN</sub>). <b>Youden's J</b> (sensitivity + specificity − 1) picks a threshold as if a miss and a false alarm were equally bad <i>per class</i>; <b>F-beta</b> lets you say recall is β times as important as precision. When you need one fair number on imbalanced data, <b>MCC</b> and <b>balanced accuracy</b> use all four cells of the confusion matrix. And reweighting classes during training is just threshold moving in disguise.<br><span class="small">What you'll be able to do after this: turn business costs into a threshold, explain why "0.5" is arbitrary, and choose between Youden, F-beta, MCC, kappa, G-mean and expected cost for a scenario.</span></div>
+  <div class="legend"><span><i style="background:var(--bad)"></i>cost / misses</span><span><i style="background:var(--b)"></i>false alarms</span><span><i style="background:var(--ok)"></i>cost-optimal</span><span><i style="background:var(--info)"></i>Youden's J</span><span><i style="background:var(--st)"></i>F-scores</span><span><i style="background:var(--a)"></i>your threshold</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Scenarios with real-world-style costs</b> (illustrative): fraud (missed fraud ₹20,000; reviewing a false alarm ₹200), cancer screening (a miss is 100× worse than a follow-up test), loan approval (approving a defaulter ₹2,00,000; rejecting a good customer ₹30,000 of lost interest), spam (losing a real email 10× worse than one spam in the inbox). Scores come from the same calibrated model as the earlier lessons.</p>
+
+<!-- 1 -->
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>Why flag at 0.5?</h2>
+  <p>Most code says <code>predict = proba &gt;= 0.5</code>. That treats a missed ₹20,000 fraud and a ₹200 manual review as equally bad. Change the threshold and the business outcome changes by lakhs. In our fraud scenario, the cost per 100,000 transactions is about <b>₹28.7 lakh at 0.5</b> and <b>₹10.9 lakh at the cost-optimal threshold</b>: same model, same data, different line.</p>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="c2" data-toc="2 · Building blocks">
+  <div class="chap">2 · Building blocks</div>
+  <h2>A cost matrix: put a price on each cell</h2>
+  <div class="tw"><table class="t">
+    <tr><th></th><th>predict positive</th><th>predict negative</th></tr>
+    <tr><td>actually positive</td><td style="color:var(--ok)">C<sub>TP</sub> (often 0)</td><td style="color:var(--bad)">C<sub>FN</sub>: the miss</td></tr>
+    <tr><td>actually negative</td><td style="color:var(--b)">C<sub>FP</sub>: the false alarm</td><td style="color:var(--info)">C<sub>TN</sub> (often 0)</td></tr>
+  </table></div>
+  <p>Elkan's observation: from a decision-making point of view, a 2×2 cost matrix has essentially <b>one</b> degree of freedom, the ratio of the two error costs <span class="src"><a href="https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations">Elkan, IJCAI 2001</a></span>. You don't need exact rupee values; you need a defensible ratio ("a missed fraud costs about 100 reviews").</p>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="c3" data-toc="3 · The naive fix">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill bad">The trap</span>
+  <h2>"Pick the threshold that maximises F1"</h2>
+  <p>Maximising F1 is popular because it needs no cost numbers. But F1 has a hidden opinion: misses and false alarms are equally costly <i>relative to the positives</i>, and true negatives don't matter. In our scenarios, the F1-optimal threshold costs <b>2.1×</b> the optimum for fraud and <b>2.6×</b> for cancer screening. Any metric you maximise encodes a cost assumption; better to choose the assumption on purpose.</p>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="c4" data-toc="4 · How it's done today">
+  <div class="chap">4 · How it's done today</div>
+  <h2>Four ways teams choose a threshold</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Approach</th><th>What it assumes</th><th>Typical use</th></tr>
+    <tr><td><b>Minimise expected cost</b></td><td>You can price (or ratio) the errors; probabilities are calibrated</td><td>Fraud, credit, insurance, anything with money attached</td></tr>
+    <tr><td><b>Fix one rate, optimise the other</b></td><td>A hard constraint: "recall ≥ 95%", "≤ 500 alerts a day", "precision ≥ 90%"</td><td>Screening programmes, alert queues with fixed capacity</td></tr>
+    <tr><td><b>Maximise Youden's J</b></td><td>Sensitivity and specificity matter equally</td><td>Diagnostic test cut-offs in medicine</td></tr>
+    <tr><td><b>Maximise F1 / F-beta</b></td><td>Only the positive class matters; β sets recall vs precision</td><td>Information retrieval, detection tasks with no clear costs</td></tr>
+  </table></div>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="c5" data-toc="5 · The core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill ok">One principle</span>
+  <h2>Flag when the expected cost of flagging is lower</h2>
+  <p>For one case with calibrated probability p of being positive: flagging costs (1 − p)·C<sub>FP</sub> in expectation (it might be a false alarm); not flagging costs p·C<sub>FN</sub> (it might be a miss). Flag when the first is smaller:</p>
+  <div class="reader" data-reader='[
+    {"t":"flag","c":"b","label":"expected cost of flagging","say":"If you flag, you pay C_FP only when it is actually negative, with probability 1 − p."},
+    {"t":"pass","c":"bad","label":"expected cost of not flagging","say":"If you let it through, you pay C_FN only when it is actually positive, with probability p."},
+    {"t":"t","c":"ok","label":"the threshold","say":"Solve for p: flag whenever p ≥ C_FP / (C_FP + C_FN). Fraud: 200 / 20,200 ≈ 0.0099, so flag anything above 1%. Spam: 10 / 11 ≈ 0.91."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\text{flag if }\ \class{term t-flag}{(1-p)\,C_{FP}} \le \class{term t-pass}{p\,C_{FN}} \iff \class{term t-t}{p \ge C_{FP} \,/\, (C_{FP} + C_{FN})}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Bayes-optimal decision with zero cost for correct decisions; the threshold result is Elkan's (2001) <span class="src"><a href="https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations">IJCAI 2001</a></span>. It only holds if p is a calibrated probability (see <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/probability-metrics/">Probability Metrics</a>).</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="c6" data-toc="6 · The threshold lab">
+  <div class="chap">6 · Mechanism 1</div>
+  <span class="pill a">Every criterion picks a different line</span>
+  <h2>Cost, Youden, F1 and F2 on the same model</h2>
+  <div class="card lab" id="labCost">
+    <div class="seg"><button data-v="fraud" class="on">Fraud</button><button data-v="cancer">Cancer screening</button><button data-v="loan">Loan approval</button><button data-v="spam">Spam</button></div>
+    <label>Your threshold <input type="range" min="0" max="1000" step="1" value="500" data-k="t"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 280" data-o="plot" role="img" aria-label="Expected cost versus threshold with markers"></svg></div>
+    <div class="tw"><table class="t mt" data-o="tbl"></table></div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+  </div>
+  <p>Two patterns to notice. First, the cost curve's minimum lands exactly on C<sub>FP</sub>/(C<sub>FP</sub> + C<sub>FN</sub>), because these probabilities are calibrated. Second, <b>Youden's J always picks the threshold where the probability equals the prevalence</b> in this model. It agrees with the cost optimum only when the cost ratio happens to mirror the class ratio: almost exactly in cancer screening (100:1 costs, 99:1 classes), badly in spam and fraud.</p>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="c7" data-toc="7 · Youden's J">
+  <div class="chap">7 · Mechanism 2</div>
+  <span class="pill info" style="color:var(--info)">Youden's J</span>
+  <h2>Sensitivity + specificity − 1</h2>
+  <div class="reader" data-reader='[
+    {"t":"J","c":"info","label":"Youden&#39;s J (informedness)","say":"From 0 (no better than chance) to 1 (perfect). Also called informedness or bookmaker informedness."},
+    {"t":"se","c":"ok","label":"sensitivity","say":"Recall on positives."},
+    {"t":"sp","c":"info","label":"specificity","say":"Recall on negatives. J gives both classes equal weight regardless of how many cases are in each."},
+    {"t":"roc","c":"a","label":"on the ROC curve","say":"TPR − FPR: the vertical distance from the ROC curve to the diagonal. Its maximum is the KS statistic, and the threshold there is the classic &quot;optimal cut-off&quot;."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-J}{J} = \class{term t-se}{\text{sensitivity}} + \class{term t-sp}{\text{specificity}} - 1 = \class{term t-roc}{\text{TPR} - \text{FPR}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Youden (1950). scikit-learn: balanced accuracy with <code>adjusted=True</code> "in the binary case… is also known as Youden's J statistic, or informedness" <span class="src"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html">docs</a></span>.</p>
+  </div>
+  <div class="card"><h4>When Youden is right, and when it isn't</h4><p class="small" style="margin:0">Maximising J is equivalent to minimising cost when C<sub>FN</sub> × prevalence = C<sub>FP</sub> × (1 − prevalence), i.e. when the total cost at stake in each class is equal. It's a sensible default for diagnostic tests with no cost information, and wrong whenever one error is far more expensive than the class ratio suggests. <span class="mine">my derivation</span></p></div>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="c8" data-toc="8 · F-beta">
+  <div class="chap">8 · Mechanism 3</div>
+  <span class="pill st">F-beta</span>
+  <h2>"Recall is β times as important as precision"</h2>
+  <div class="reader" data-reader='[
+    {"t":"f","c":"st","label":"F-beta","say":"A weighted harmonic mean of precision and recall."},
+    {"t":"b","c":"info","label":"β²","say":"β = 2 weights recall more (screening, finding all relevant documents); β = 0.5 weights precision more (spam, auto-actions). β = 1 is F1."},
+    {"t":"cnt","c":"bad","label":"in counts","say":"β² multiplies the false negatives: larger β makes misses more expensive. True negatives still never appear."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-f}{F_\beta} = (1+\class{term t-b}{\beta^{2}})\,PR \,/\, (\beta^{2}P + R) = \class{term t-cnt}{(1+\beta^2)TP \,/\, \big((1+\beta^2)TP + FP + \beta^2 FN\big)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">scikit-learn's formula <span class="src"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html">docs</a></span>.</p>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="c9" data-toc="9 · One fair number">
+  <div class="chap">9 · Mechanism 4</div>
+  <span class="pill ok">One number for imbalanced data</span>
+  <h2>MCC, balanced accuracy, G-mean and Cohen's kappa</h2>
+  <div class="reader" data-reader='[
+    {"t":"mcc","c":"ok","label":"Matthews correlation","say":"The correlation between predictions and truth, from −1 (inverse) through 0 (random) to +1 (perfect). Uses all four cells."},
+    {"t":"num","c":"info","label":"agreement minus disagreement","say":"TP·TN − FP·FN: positive only if the right-diagonal outweighs the wrong one."},
+    {"t":"den","c":"info","label":"normaliser","say":"The geometric mean of all four row and column totals, so MCC is high only if the model does well on both classes."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-mcc}{\text{MCC}} = \class{term t-num}{(TP\cdot TN - FP\cdot FN)} \,/\, \class{term t-den}{\sqrt{(TP{+}FP)(TP{+}FN)(TN{+}FP)(TN{+}FN)}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Matthews (1975). Chicco &amp; Jurman: MCC "produces a high score only if the prediction obtained good results in all of the four confusion matrix categories", and should be preferred to accuracy and F1 for binary evaluation <span class="src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312">BMC Genomics 2020</a></span>.</p>
+  </div>
+  <div class="card lab" id="labOne">
+    <p class="small" style="margin:0 0 6px">Three fraud models on 100,000 transactions (0.2% fraud):</p>
+    <div class="tw"><table class="t mt" data-o="tbl"></table></div>
+    <p class="small" style="margin:0">Green = best in each row. "Never flag" scores 99.8% accuracy, beating model A, yet every metric designed for imbalance exposes it: balanced accuracy 0.5, MCC 0, kappa 0, G-mean 0. Between the two real models, the metrics disagree, because each encodes a different view of which mistake matters more.</p>
+  </div>
+  <div class="tw"><table class="t">
+    <tr><th>Metric</th><th>Definition</th><th>Reach for it when</th></tr>
+    <tr><td><b>Balanced accuracy</b></td><td>(sensitivity + specificity) / 2; macro-averaged recall</td><td>You want "accuracy" that isn't fooled by imbalance; equals Youden's J rescaled</td></tr>
+    <tr><td><b>MCC</b></td><td>Correlation between prediction and truth</td><td>One honest summary of a binary confusion matrix; symmetric in the classes</td></tr>
+    <tr><td><b>G-mean</b></td><td>√(sensitivity × specificity)</td><td>Imbalanced-learning papers; punishes neglecting either class</td></tr>
+    <tr><td><b>Cohen's kappa</b></td><td>(accuracy − chance agreement) / (1 − chance agreement)</td><td>Originally for agreement between human annotators; scikit-learn notes it's designed for "comparing labelings by different human annotators, not a classifier versus a ground truth" <span class="src"><a href="https://scikit-learn.org/stable/modules/model_evaluation.html">docs</a></span></td></tr>
+  </table></div>
+</section>
+
+<!-- 10 -->
+<section class="ch" id="c10" data-toc="10 · Weights vs thresholds">
+  <div class="chap">10 · Mechanism 5</div>
+  <span class="pill b">Class weights vs threshold moving</span>
+  <h2>Reweighting during training is (mostly) a threshold shift</h2>
+  <p>Two common ways to "handle imbalance": give positives weight w in the training loss, or train normally and lower the threshold afterwards. For a well-specified probabilistic model (like logistic regression), weighting positives by w multiplies the predicted odds by w. So a threshold of 0.5 on the weighted model is the same decision as a threshold of 1/(1 + w) on the unweighted one. <span class="mine">my derivation</span></p>
+  <div class="two">
+    <div class="card ok"><h4>Prefer threshold moving when</h4><ul style="margin:0;padding-left:20px" class="small"><li>You need calibrated probabilities (weights distort them)</li><li>Costs change over time: re-pick the threshold, no retraining</li><li>You want one model serving several cost policies</li></ul></div>
+    <div class="card"><h4>Class weights / resampling help when</h4><ul style="margin:0;padding-left:20px" class="small"><li>The model has limited capacity and should spend it on the rare class (trees, small nets)</li><li>The training loss would otherwise ignore positives entirely</li><li>Then recalibrate before using the probabilities</li></ul></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="ch" id="c11" data-toc="11 · The recipe">
+  <div class="chap">11 · The whole recipe</div>
+  <h2>Choosing a threshold in practice</h2>
+  <ol>
+    <li>Get calibrated probabilities on a validation set (check a reliability curve).</li>
+    <li>Agree the cost ratio C<sub>FN</sub> : C<sub>FP</sub> with the business, or the hard constraint (capacity, minimum recall).</li>
+    <li>Start from p* = C<sub>FP</sub>/(C<sub>FP</sub> + C<sub>FN</sub>); verify by computing expected cost across thresholds on validation data.</li>
+    <li>If there are constraints, pick the best threshold that satisfies them.</li>
+    <li>Report the confusion matrix and the money at that threshold, plus a threshold-free metric for model comparison.</li>
+    <li>Re-check when prevalence or costs change (fraud patterns, new pricing); the threshold is a business setting, not a model property.</li>
+  </ol>
+</section>
+
+<!-- 12 -->
+<section class="ch" id="c12" data-toc="12 · Which when">
+  <div class="chap">12 · Scenarios</div>
+  <h2>Which criterion, in which situation</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Scenario</th><th>Choose the threshold by</th><th>Why</th></tr>
+    <tr><td>Card fraud</td><td style="color:var(--ok)">Expected cost (₹), capped by analyst capacity</td><td>Clear money on both errors; alerts are a budget</td></tr>
+    <tr><td>Loan approval</td><td style="color:var(--ok)">Expected profit / cost per decision</td><td>Asymmetric and quantifiable; regulators also want a fixed, documented cut-off</td></tr>
+    <tr><td>Cancer screening</td><td style="color:var(--ok)">Minimum sensitivity (e.g. ≥ 95%), then best specificity; Youden as a no-cost default</td><td>Lives can't be priced comfortably; a constraint is easier to agree</td></tr>
+    <tr><td>Spam</td><td style="color:var(--ok)">High threshold (F0.5 or cost ratio 10:1)</td><td>False positives (lost email) are the expensive error</td></tr>
+    <tr><td>Search / retrieval without costs</td><td style="color:var(--ok)">F1 or F2</td><td>Only the positive class is of interest</td></tr>
+    <tr><td>Reporting one honest score on imbalanced data</td><td style="color:var(--ok)">MCC (or balanced accuracy)</td><td>Uses all four cells; not fooled by the majority class</td></tr>
+  </table></div>
+</section>
+
+<!-- 13 -->
+<section class="ch" id="c13" data-toc="13 · Caveats">
+  <div class="chap">13 · Takeaways and honest caveats</div>
+  <h2>What to keep</h2>
+  <ul>
+    <li><b>p* = C<sub>FP</sub>/(C<sub>FP</sub> + C<sub>FN</sub>) needs calibrated probabilities.</b> With an overconfident model, tune the threshold empirically on validation data instead.</li>
+    <li><b>Costs are often per-case</b> (a ₹2 lakh fraud vs a ₹500 one). Then use example-dependent costs: flag if p·amount ≥ review cost.</li>
+    <li><b>Every "optimal threshold" metric hides a cost assumption</b>: Youden (equal per-class weight), F1 (TN don't matter, P and R equal), accuracy (all errors equal). <span class="mine">my take</span></li>
+    <li><b>MCC and kappa are hard to explain</b> to non-technical stakeholders; translate the chosen operating point into counts and money.</li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="ch" id="c14" data-toc="14 · Key terms">
+  <div class="chap">14 · Key terms</div>
+  <h2>Glossary</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Cost matrix</b></td><td>Price of each (prediction, truth) outcome.</td></tr>
+    <tr><td><b>Cost-optimal threshold</b></td><td>p* = C<sub>FP</sub> / (C<sub>FP</sub> + C<sub>FN</sub>) for calibrated p.</td></tr>
+    <tr><td><b>Youden's J / informedness</b></td><td>Sensitivity + specificity − 1 = TPR − FPR.</td></tr>
+    <tr><td><b>F-beta</b></td><td>Weighted harmonic mean; β &gt; 1 favours recall.</td></tr>
+    <tr><td><b>MCC</b></td><td>Correlation between predicted and true labels (−1 to 1).</td></tr>
+    <tr><td><b>Balanced accuracy</b></td><td>Mean of per-class recall.</td></tr>
+    <tr><td><b>G-mean</b></td><td>√(sensitivity × specificity).</td></tr>
+    <tr><td><b>Cohen's kappa</b></td><td>Agreement corrected for chance.</td></tr>
+    <tr><td><b>Threshold moving</b></td><td>Changing the decision threshold after training instead of reweighting.</td></tr>
+  </table></div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">The threshold is a business decision, not a model property. If the model's probabilities are calibrated and I can estimate the costs of a false positive and a false negative, I flag when p is at least C_FP over C_FP plus C_FN, which minimises expected cost. Without costs, I'd use a constraint like minimum recall, Youden's J if sensitivity and specificity matter equally, or F-beta to weight recall versus precision. For a single summary on imbalanced data I prefer MCC or balanced accuracy over accuracy and F1. Class weighting during training is essentially threshold moving, so I usually train normally, calibrate, then pick the threshold.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Missing fraud costs 100× a false alarm. What threshold?</summary><p>p* = 1/(1 + 100) ≈ 0.0099: flag anything with at least about 1% fraud probability, assuming calibrated probabilities. Then check alert volume against review capacity.</p></details>
+  <details class="qa"><summary>What is Youden's J and when would you use it?</summary><p>Sensitivity + specificity − 1, i.e. TPR − FPR; its maximum on the ROC curve is a common "optimal" cut-off in diagnostics. It weights the two classes equally regardless of size, so it's right only when the total cost at stake in each class is equal. Use it when there's no cost information.</p></details>
+  <details class="qa"><summary>MCC vs F1?</summary><p>F1 ignores true negatives and changes if you swap which class is positive; MCC uses all four cells, is symmetric, and is 0 for random or constant predictions. On imbalanced data MCC is the more honest single number.</p></details>
+  <details class="qa"><summary>Class weights or threshold tuning for imbalance?</summary><p>For calibrated probabilistic models they're nearly equivalent: weighting positives by w ≈ moving the threshold to 1/(1 + w). Threshold tuning keeps probabilities calibrated and lets you change policy without retraining. Weights help low-capacity models focus on the rare class; recalibrate afterwards.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"The default threshold is 0.5 so that's what we use." It's only optimal when the costs are equal and the probabilities are calibrated.</li>
+    <li>"Maximise F1 to choose the threshold." Only if F1's hidden cost assumption fits.</li>
+    <li>"Kappa is the standard metric for classifiers." It was designed for annotator agreement; MCC is usually clearer.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>What this page is built from</h2>
+  <ol class="src-list">
+    <li>C. Elkan, <a href="https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations">The Foundations of Cost-Sensitive Learning</a>, IJCAI 2001 (cost matrix, one degree of freedom, optimal threshold); summary in <a href="https://en.wikipedia.org/wiki/Cost-sensitive_machine_learning">Cost-sensitive machine learning</a>.</li>
+    <li>W. J. Youden, "Index for rating diagnostic tests", <i>Cancer</i> 3 (1950); J as informedness in the <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">ROC article</a>.</li>
+    <li>D. Chicco &amp; G. Jurman, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312">MCC vs F1 and accuracy</a>, BMC Genomics 2020.</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">Metrics and scoring</a>: balanced accuracy (adjusted = Youden's J), MCC, Cohen's kappa, F-beta.</li>
+    <li>Interview angle: <a href="https://datalemur.com/blog/machine-learning-interview-questions">DataLemur</a>.</li>
+  </ol>
+  <p class="small">Costs are illustrative round numbers; expected counts and costs are computed exactly from a calibrated two-bell-curve score model.</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+// least squares for small dense systems (Gaussian elimination with partial pivoting)
+function solve(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+function lstsq(X, y, lam = 0, noPenFirst = true) { const p = X[0].length, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  X.forEach((r, i) => { for (let a = 0; a < p; a++) { b[a] += r[a] * y[i]; for (let c = 0; c < p; c++) A[a][c] += r[a] * r[c]; } });
+  for (let a = noPenFirst ? 1 : 0; a < p; a++) A[a][a] += lam; return solve(A, b); }
+// ---- shared metrics maths: binormal score model (positives ~ N(d,1), negatives ~ N(0,1) on the score scale) ----
+const erf = x => { const s = Math.sign(x), a = Math.abs(x), t = 1 / (1 + 0.3275911 * a), y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-a * a); return s * y; };
+const Phi = x => 0.5 * (1 + erf(x / Math.SQRT2));
+const logit = p => Math.log(p / (1 - p)), sgm = z => 1 / (1 + Math.exp(-z));
+// calibrated P(y=1 | s) for prevalence pi and separation d
+const probOf = (s, d, pi) => sgm(d * s - d * d / 2 + logit(pi));
+const scoreAt = (t, d, pi) => (logit(t) - logit(pi) + d * d / 2) / d;
+// expected confusion counts (population N) when flagging P(y=1|s) >= t
+function cm(t, d, pi, N = 10000) { const s = scoreAt(t, d, pi), P = N * pi, Ng = N - P; const TP = P * (1 - Phi(s - d)), FP = Ng * (1 - Phi(s)); return { TP, FP, FN: P - TP, TN: Ng - FP }; }
+function rates(c) { const { TP, FP, FN, TN } = c, N = TP + FP + FN + TN, s = (a, b) => b > 0 ? a / b : NaN;
+  const prec = s(TP, TP + FP), rec = s(TP, TP + FN), spec = s(TN, TN + FP), npv = s(TN, TN + FN), acc = (TP + TN) / N;
+  const f1 = prec + rec > 0 ? 2 * prec * rec / (prec + rec) : 0, bal = (rec + spec) / 2;
+  const mccD = Math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN)), mcc = mccD > 0 ? (TP * TN - FP * FN) / mccD : 0;
+  const pe = ((TP + FP) * (TP + FN) + (FN + TN) * (FP + TN)) / (N * N), kappa = pe < 1 ? (acc - pe) / (1 - pe) : 0;
+  return { prec, rec, spec, npv, acc, f1, bal, mcc, kappa, gmean: Math.sqrt(rec * spec), J: rec + spec - 1, fpr: 1 - spec, fnr: 1 - rec }; }
+const fbeta = (r, b) => r.prec + r.rec > 0 ? (1 + b * b) * r.prec * r.rec / (b * b * r.prec + r.rec) : 0;
+// ROC / PR curves by sweeping the score threshold
+function curves(d, pi, n = 400) { const roc = [], pr = []; for (let k = 0; k <= n; k++) { const s = 8 - 16 * k / n + d / 2, tpr = 1 - Phi(s - d), fpr = 1 - Phi(s); roc.push([fpr, tpr]); const pp = pi * tpr + (1 - pi) * fpr; pr.push([tpr, pp > 1e-12 ? pi * tpr / pp : 1]); } return { roc, pr }; }
+const aucOf = d => Phi(d / Math.SQRT2);
+function apOf(d, pi) { const { pr } = curves(d, pi, 2000); let ap = 0; for (let k = 1; k < pr.length; k++) ap += (pr[k][0] - pr[k - 1][0]) * pr[k][1]; return ap; }
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+const n0 = v => Math.round(v).toLocaleString();
+const SC = { fraud: { pi: 0.002, d: 3, N: 100000, cfp: 200, cfn: 20000, unit: '₹', per: '100,000 transactions' }, cancer: { pi: 0.01, d: 2.5, N: 10000, cfp: 1, cfn: 100, unit: '', per: '10,000 people (cost in follow-up-test units)' },
+  loan: { pi: 0.05, d: 1.8, N: 10000, cfp: 30000, cfn: 200000, unit: '₹', per: '10,000 applications' }, spam: { pi: 0.4, d: 3, N: 10000, cfp: 10, cfn: 1, unit: '', per: '10,000 emails (cost units)' } };
+const money = (v, u) => u === '₹' ? (v >= 1e7 ? '₹' + (v / 1e7).toFixed(2) + ' cr' : '₹' + (v / 1e5).toFixed(1) + ' L') : Math.round(v).toLocaleString();
+const tOf = v => sgm(-7 + 14 * v / 1000), vOf = t => (logit(t) + 7) / 14 * 1000;
+
+// 6 · cost lab
+(() => { const lab = document.getElementById('labCost'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const upd = () => { const s = SC[onv(lab).dataset.v], cost = t => { const c = cm(t, s.d, s.pi, s.N); return c.FP * s.cfp + c.FN * s.cfn; };
+    const ts = []; for (let v = 0; v <= 1000; v += 2) ts.push(tOf(v));
+    const scan = f => ts.reduce((b, t) => f(t) > f(b) ? t : b, ts[0]);
+    const tc = scan(t => -cost(t)), tj = scan(t => rates(cm(t, s.d, s.pi, s.N)).J), tf1 = scan(t => rates(cm(t, s.d, s.pi, s.N)).f1), tf2 = scan(t => fbeta(rates(cm(t, s.d, s.pi, s.N)), 2)), ps = s.cfp / (s.cfp + s.cfn), tu = tOf(+r.value);
+    r.nextElementSibling.textContent = tu < 0.01 ? tu.toFixed(4) : tu.toFixed(3);
+    const cmax = Math.max(...ts.map(cost)), F = frame({ H: 280, x0: 0, x1: 1000, y0: 0, y1: 1.05, xt: [], yt: [0, 0.5, 1], xl: 'threshold (log-odds scale)', yl: 'expected cost (÷ max)' });
+    let s2 = F.s; [0.001, 0.01, 0.1, 0.5, 0.9, 0.99].forEach(t => s2 += `<text class="tick" x="${F.X(vOf(t))}" y="${F.H - F.B + 16}" text-anchor="middle">${t}</text><line class="grid" x1="${F.X(vOf(t))}" x2="${F.X(vOf(t))}" y1="${F.T}" y2="${F.H - F.B}"/>`);
+    s2 += `<path d="${ts.map((t, k) => (k ? 'L' : 'M') + F.X(vOf(t)).toFixed(1) + ' ' + F.Y(cost(t) / cmax).toFixed(1)).join(' ')}" fill="none" stroke="var(--bad)" stroke-width="3"/>`;
+    const mark = (t, col, lbl, dy) => `<line x1="${F.X(vOf(t))}" x2="${F.X(vOf(t))}" y1="${F.T}" y2="${F.H - F.B}" stroke="${col}" stroke-width="2" stroke-dasharray="5 4"/><text x="${F.X(vOf(t)) + 4}" y="${F.T + 12 + dy}" fill="${col}" font-size="11.5" font-weight="600">${lbl}</text>`;
+    s2 += mark(tc, 'var(--ok)', 'min cost', 0) + mark(tj, 'var(--info)', 'Youden', 14) + mark(tf1, 'var(--st)', 'F1', 28) + mark(tf2, 'var(--st)', 'F2', 42) + `<circle cx="${F.X(vOf(tu))}" cy="${F.Y(cost(tu) / cmax)}" r="7" fill="var(--a)"/>`;
+    svg.innerHTML = s2;
+    const row = (n, t, cls = '') => { const c = cm(t, s.d, s.pi, s.N), m = rates(c), co = cost(t); return `<tr class="${cls}"><td>${n}</td><td class="num">${t < 0.01 ? t.toFixed(4) : t.toFixed(3)}</td><td class="num">${money(co, s.unit)}</td><td class="num">${(co / cost(tc)).toFixed(2)}×</td><td class="num">${pct(m.rec, 0)}</td><td class="num">${pct(m.prec, 0)}</td><td class="num">${n0(c.TP + c.FP)}</td></tr>`; };
+    lab.querySelector('[data-o=tbl]').innerHTML = `<tr><th>criterion</th><th>threshold</th><th>expected cost</th><th>vs best</th><th>recall</th><th>precision</th><th>flagged</th></tr>` + row('<b style="color:var(--a)">your threshold</b>', tu) + row('<b style="color:var(--ok)">minimum cost (scan)</b>', tc, 'hi') + row('C_FP / (C_FP + C_FN)', ps) + row('max Youden J', tj) + row('max F1', tf1) + row('max F2', tf2) + row('default 0.5', 0.5);
+    lab.querySelector('[data-o=note]').textContent = `Per ${s.per}. Costs: false alarm ${s.unit}${s.cfp.toLocaleString()}, miss ${s.unit}${s.cfn.toLocaleString()}; prevalence ${pct(s.pi, 1)}. Youden's J lands at p ≈ ${tj.toFixed(3)}, the prevalence.`; };
+  segs(lab, upd); r.addEventListener('input', upd); upd(); })();
+
+// 9 · one-number metrics on three fraud models
+(() => { const lab = document.getElementById('labOne'); if (!lab) return; const s = { pi: 0.002, d: 3, N: 100000 };
+  const C = { 'A: flag at p ≥ 0.01': cm(0.01, s.d, s.pi, s.N), 'B: flag at p ≥ 0.5': cm(0.5, s.d, s.pi, s.N), 'C: never flag': { TP: 0, FP: 0, FN: 200, TN: 99800 } };
+  const names = Object.keys(C), R = names.map(n => rates(C[n]));
+  const metrics = [['accuracy', 'acc'], ['precision', 'prec'], ['recall', 'rec'], ['F1', 'f1'], ['balanced accuracy', 'bal'], ['MCC', 'mcc'], ['G-mean', 'gmean'], ["Cohen's kappa", 'kappa'], ["Youden's J", 'J']];
+  lab.querySelector('[data-o=tbl]').innerHTML = `<tr><th>metric</th>${names.map(n => `<th>${n}</th>`).join('')}</tr>` + metrics.map(([lbl, k]) => { const v = R.map(r => isFinite(r[k]) ? r[k] : 0), mx = Math.max(...v);
+    return `<tr><td>${lbl}</td>${v.map((x, i) => `<td class="num ${x === mx ? 'best' : ''}">${isFinite(R[i][k]) ? (k === 'acc' ? x.toFixed(4) : x.toFixed(3)) : '—'}</td>`).join('')}</tr>`; }).join('')
+    + `<tr><td class="small">counts TP / FP / FN</td>${names.map(n => `<td class="num small">${n0(C[n].TP)} / ${n0(C[n].FP)} / ${n0(C[n].FN)}</td>`).join('')}</tr>`; })();
+
+</script>
+</body>
+</html>
