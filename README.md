@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-67-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-77-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · LLMs *(soon)* | 61 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · LLMs *(soon)* | 71 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**From Perceptron to MLP**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/perceptron-to-mlp/) | 📐 Fundamentals › Deep Learning | Why can't one neuron learn XOR, and what does a hidden layer add? |
-| [**Vanishing & Exploding Gradients**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/vanishing-exploding-gradients/) | 📐 Fundamentals › Deep Learning | Why do early layers stop learning, and how do residuals fix it? |
-| [**BatchNorm vs LayerNorm vs RMSNorm**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/normalisation-layers/) | 📐 Fundamentals › Deep Learning | Why do transformers use LayerNorm instead of BatchNorm? |
+| [**Weight Decay vs L2, and AdamW**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/weight-decay-and-adamw/) | 📐 Fundamentals › Deep Learning | Why is Adam with L2 not the same as AdamW? |
+| [**Pooling, Stride, Padding and Output Shapes**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/pooling-stride-padding/) | 📐 Fundamentals › Deep Learning | What's the output shape of this conv layer? (The interview favourite.) |
+| [**Transfer Learning and Fine-Tuning**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transfer-learning/) | 📐 Fundamentals › Deep Learning | Only 15 labelled examples? Reuse a model trained on 1,000. |
 
 ---
 
@@ -194,7 +194,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Deep Learning</b> · 9 lessons</summary>
+<summary><b>Deep Learning</b> · 19 lessons</summary>
 
 <br>
 
@@ -216,6 +216,27 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [BatchNorm vs LayerNorm vs RMSNorm](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/normalisation-layers/) | 🟡 Intermediate | 25 min |
 | 4 | [Learning-Rate Schedules](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/learning-rate-schedules/) | 🟡 Intermediate | 20 min |
 | 5 | [Batch Size and Learning Rate](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/batch-size-and-learning-rate/) | 🟡 Intermediate | 20 min |
+
+
+**Regularisation & Debugging**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Dropout](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/dropout/) | 🟡 Intermediate | 20 min |
+| 2 | [Weight Decay vs L2, and AdamW](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/weight-decay-and-adamw/) | 🟡 Intermediate | 20 min |
+| 3 | [Data Augmentation and Mixup](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/data-augmentation-and-mixup/) | 🟢 Beginner | 20 min |
+| 4 | [Early Stopping and Label Smoothing](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/early-stopping-and-label-smoothing/) | 🟢 Beginner | 20 min |
+| 5 | [Debugging Training: Loss Won't Go Down](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/debugging-training-practice-1/) | 🟡 Intermediate | 25 min |
+| 6 | [Debugging Training: It Trains, But Something's Off](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/debugging-training-practice-2/) | 🟡 Intermediate | 25 min |
+
+**CNNs**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Convolution and Receptive Field](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/convolution-and-receptive-field/) | 🟢 Beginner | 25 min |
+| 2 | [Pooling, Stride, Padding and Output Shapes](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/pooling-stride-padding/) | 🟢 Beginner | 20 min |
+| 3 | [ResNets and Skip Connections](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/resnets-and-skip-connections/) | 🟡 Intermediate | 20 min |
+| 4 | [Transfer Learning and Fine-Tuning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transfer-learning/) | 🟡 Intermediate | 20 min |
 
 </details>
 
