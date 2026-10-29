@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-58-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-67-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · Deep Learning *(soon)* · LLMs *(soon)* | 52 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · LLMs *(soon)* | 61 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**SVD & Low-Rank Approximation**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/svd-and-low-rank/) | 📐 Fundamentals › Maths for ML | How LoRA and compression keep most of a matrix with a fraction of the numbers. |
-| [**Gradient Descent, Momentum & Adam**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/gradient-descent/) | 📐 Fundamentals › Maths for ML | Why does a slightly bigger learning rate make training explode? |
-| [**Entropy, Cross-Entropy & KL Divergence**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/entropy-cross-entropy-kl/) | 📐 Fundamentals › Maths for ML | Why every classifier is trained on cross-entropy, and what KL adds. |
+| [**From Perceptron to MLP**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/perceptron-to-mlp/) | 📐 Fundamentals › Deep Learning | Why can't one neuron learn XOR, and what does a hidden layer add? |
+| [**Vanishing & Exploding Gradients**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/vanishing-exploding-gradients/) | 📐 Fundamentals › Deep Learning | Why do early layers stop learning, and how do residuals fix it? |
+| [**BatchNorm vs LayerNorm vs RMSNorm**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/normalisation-layers/) | 📐 Fundamentals › Deep Learning | Why do transformers use LayerNorm instead of BatchNorm? |
 
 ---
 
@@ -194,8 +194,29 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Deep Learning</b> · coming soon</summary>
-<br>Neural networks from the ground up: training, architectures and representations.
+<summary><b>Deep Learning</b> · 9 lessons</summary>
+
+<br>
+
+**Neural Network Basics**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [From Perceptron to MLP](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/perceptron-to-mlp/) | 🟢 Beginner | 20 min |
+| 2 | [Activation Functions](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/activation-functions/) | 🟢 Beginner | 20 min |
+| 3 | [Loss Functions for Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/loss-functions/) | 🟢 Beginner | 25 min |
+| 4 | [Backpropagation Through a Network](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/backpropagation/) | 🟡 Intermediate | 25 min |
+
+**Training Deep Nets**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Weight Initialisation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/weight-initialisation/) | 🟡 Intermediate | 20 min |
+| 2 | [Vanishing & Exploding Gradients](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/vanishing-exploding-gradients/) | 🟡 Intermediate | 25 min |
+| 3 | [BatchNorm vs LayerNorm vs RMSNorm](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/normalisation-layers/) | 🟡 Intermediate | 25 min |
+| 4 | [Learning-Rate Schedules](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/learning-rate-schedules/) | 🟡 Intermediate | 20 min |
+| 5 | [Batch Size and Learning Rate](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/batch-size-and-learning-rate/) | 🟡 Intermediate | 20 min |
+
 </details>
 
 <details>
