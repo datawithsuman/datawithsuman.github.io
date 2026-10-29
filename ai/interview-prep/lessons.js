@@ -4,7 +4,7 @@
 // Addresses use slugs (never numbers), so shared links keep working when lessons are reordered.
 window.LESSONS = {
   sections: [
-    { id: "fundamentals", title: "Fundamentals", desc: "The core ideas behind every model: classic ML, deep learning and LLMs.", tracks: [
+    { id: "fundamentals", title: "Fundamentals", desc: "The core ideas behind every model: classic ML, deep learning, NLP and LLMs.", tracks: [
       { id: "maths-for-ml", dir: "fundamentals/maths-for-ml", title: "Maths for ML", desc: "The maths behind the models: linear algebra, calculus, probability, statistics, and interview-style probability practice.",
         groups: [
           {id: "linear-algebra",title: "Linear Algebra",desc: "Vectors, matrices, eigenvectors and SVD."},
@@ -126,9 +126,26 @@ window.LESSONS = {
           {slug: "diffusion-models",group: "representation",title: "Diffusion Models",sub: "How does denoising noise produce new images?",level: "Intermediate",mins: 25},
           {slug: "contrastive-learning",group: "representation",title: "Contrastive Learning (SimCLR, CLIP)",sub: "How did CLIP learn to match photos and text without labels?",level: "Intermediate",mins: 25},
         ] },
+      { id: "nlp-fundamentals", dir: "fundamentals/nlp-fundamentals", title: "NLP Fundamentals", desc: "Classic NLP that still comes up in AI/ML interviews: text features, language models, tokenisation, tagging, retrieval and evaluation.",
+        groups: [
+          {id: "text-basics",title: "Text Basics",desc: "Preprocessing, bag-of-words, TF-IDF and text classification."},
+          {id: "lm-tokens",title: "Language Models & Tokenisation",desc: "N-gram models, perplexity and subword tokenisers (BPE, WordPiece, SentencePiece)."},
+          {id: "tasks-eval",title: "Tagging, Retrieval & Evaluation",desc: "NER, BM25 vs dense search, BLEU/ROUGE, and practice questions."},
+        ],
+        lessons: [
+          {slug: "text-preprocessing",group: "text-basics",title: "Text Preprocessing",sub: "Stemming, lemmas, stop words: what helps, and what quietly breaks sentiment?",level: "Beginner",mins: 20},
+          {slug: "bag-of-words-and-tf-idf",group: "text-basics",title: "Bag-of-Words, N-grams and TF-IDF",sub: "Why does TF-IDF find the right review when raw counts can't?",level: "Beginner",mins: 20},
+          {slug: "text-classification",group: "text-basics",title: "Text Classification: Naive Bayes vs Logistic Regression",sub: "Why does “not good” fool a unigram model, and how do bigrams fix it?",level: "Beginner",mins: 25},
+          {slug: "n-gram-language-models",group: "lm-tokens",title: "N-gram Language Models and Perplexity",sub: "How likely is this sentence, and what does perplexity mean?",level: "Intermediate",mins: 25},
+          {slug: "subword-tokenisation",group: "lm-tokens",title: "Subword Tokenisation (BPE, WordPiece, SentencePiece)",sub: "How do LLMs handle words they've never seen?",level: "Intermediate",mins: 25},
+          {slug: "sequence-labelling-and-ner",group: "tasks-eval",title: "Sequence Labelling and NER",sub: "BIO tags, CRFs, and why NER is scored with entity F1.",level: "Intermediate",mins: 20},
+          {slug: "search-and-retrieval",group: "tasks-eval",title: "Search: BM25, Dense and Hybrid Retrieval",sub: "Why does RAG search miss exact names, and how does hybrid fix it?",level: "Intermediate",mins: 25},
+          {slug: "nlp-evaluation-metrics",group: "tasks-eval",title: "NLP Evaluation: BLEU, ROUGE, EM/F1",sub: "Why can word salad beat a correct paraphrase on BLEU?",level: "Intermediate",mins: 20},
+          {slug: "nlp-practice",group: "tasks-eval",title: "NLP Fundamentals Practice",sub: "7 interview questions: TF-IDF, perplexity, BPE, BLEU, NER F1 and hybrid search.",level: "Intermediate",mins: 30},
+        ] },
       { id: "llms", dir: "fundamentals/llms", title: "LLMs", desc: "How large language models are built, trained, aligned and evaluated.",
         groups: [
-          {id: "building-blocks",title: "Building Blocks",desc: "Tokenization, embeddings, positional encodings, attention variants, MoE."},
+          {id: "building-blocks",title: "Building Blocks",desc: "LLM tokenisers in practice, attention variants, long context and MoE."},
           {id: "pretraining",title: "Pretraining",desc: "Next-token prediction, data and scaling laws."},
           {id: "post-training",title: "Post-training",desc: "SFT, RLHF, DPO, GRPO and reasoning models."},
           {id: "generation",title: "Generation",desc: "Decoding, sampling and hallucination."},
