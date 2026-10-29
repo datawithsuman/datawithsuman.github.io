@@ -240,8 +240,23 @@ window.LESSONS = {
       { id: "ml-scenarios", dir: "system-design/ml-scenarios", title: "ML Scenarios", prefix: "Q", desc: "Real interview scenarios: your model does X, what do you do? Diagnose first, then fix.",
         lessons: [
         ] },
-      { id: "mlops", dir: "system-design/mlops", title: "MLOps & Production", desc: "Pipelines, feature stores, deployment, monitoring, drift and A/B testing.",
+      { id: "mlops", dir: "system-design/mlops", title: "MLOps & Production", desc: "Running ML in production: training/serving skew, serving modes, safe deployment, reproducibility, drift monitoring, retraining and LLMOps. Concepts, not tools.",
+        groups: [
+          {id: "data",title: "Data & Features",desc: "Training/serving skew, feature stores and serving modes."},
+          {id: "ship",title: "Shipping Models",desc: "Staged deployment, rollback, tracking and the model registry."},
+          {id: "health",title: "Keeping Models Healthy",desc: "Drift detection, monitoring and retraining."},
+          {id: "llmops",title: "LLMOps",desc: "What changes for LLM applications. Updated as practice evolves."},
+          {id: "practice",title: "Practice",desc: "Production questions. New ones are added over time."},
+        ],
         lessons: [
+          {slug: "training-serving-skew-and-feature-stores",title: "Training/Serving Skew and Feature Stores",sub: "Why does a model look great offline and fail online?",level: "Intermediate",mins: 20,group: "data"},
+          {slug: "batch-vs-online-inference",title: "Batch vs Online vs Streaming Inference",sub: "When do you precompute predictions, and when compute them live?",level: "Beginner",mins: 20,group: "data"},
+          {slug: "deployment-patterns",title: "Deployment Patterns: Shadow, Canary, A/B and Rollback",sub: "How long must a canary run to catch a regression?",level: "Intermediate",mins: 20,group: "ship"},
+          {slug: "experiment-tracking-and-model-registry",title: "Experiment Tracking, Reproducibility and the Model Registry",sub: "Can you rebuild last month's model, and roll back in minutes?",level: "Beginner",mins: 20,group: "ship"},
+          {slug: "drift-detection-and-monitoring",title: "Drift Detection and Monitoring",sub: "How do you know a model is degrading before labels arrive?",level: "Intermediate",mins: 25,group: "health"},
+          {slug: "retraining-pipelines",title: "Retraining Pipelines and Continuous Training",sub: "How often should you retrain, and what stops a bad retrain?",level: "Intermediate",mins: 20,group: "health"},
+          {slug: "llmops",title: "LLMOps: What's Different",sub: "How do you ship prompt changes without breaking things?",level: "Intermediate",mins: 20,group: "llmops"},
+          {slug: "mlops-practice",title: "MLOps Practice",sub: "7 production questions: skew, drift alerts, canaries, audits, retraining, LLMOps.",level: "Intermediate",mins: 35,group: "practice"},
         ] },
     ] },
     { id: "papers", title: "Papers", desc: "The idea and the key result of important papers, explained step by step.", tracks: [

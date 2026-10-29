@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-152-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-160-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
-| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · [Agentic AI](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 34 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · [Agentic AI](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/) · ML System Design *(soon)* · ML Scenarios *(soon)* · [MLOps & Production](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/) | 42 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Agent Safety: the Lethal Trifecta**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-safety/) | 🏗️ AI Engineering › Agentic AI | How can one email make an agent leak data, and how do you stop it? |
-| [**MCP: The Model Context Protocol**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/model-context-protocol/) | 🏗️ AI Engineering › Agentic AI | What is MCP, and how is it different from function calling? |
-| [**Design a Refund-Handling Agent**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/design-refund-agent/) | 🏗️ AI Engineering › Agentic AI | Walk through an agent system design, from requirements to rollout. |
+| [**Training/Serving Skew and Feature Stores**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/training-serving-skew-and-feature-stores/) | 🏗️ AI Engineering › MLOps | Why does a model look great offline and fail online? |
+| [**Drift Detection and Monitoring**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/drift-detection-and-monitoring/) | 🏗️ AI Engineering › MLOps | How do you know a model is degrading before labels arrive? |
+| [**LLMOps: What's Different**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/llmops/) | 🏗️ AI Engineering › MLOps | How do you ship prompt changes without breaking things? |
 
 ---
 
@@ -462,6 +462,46 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Agent Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+
+</details>
+
+<details>
+<summary><b>MLOps & Production</b> · 8 lessons</summary>
+
+<br>
+
+**Data & Features**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Training/Serving Skew and Feature Stores](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/training-serving-skew-and-feature-stores/) | 🟡 Intermediate | 20 min |
+| 2 | [Batch vs Online vs Streaming Inference](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/batch-vs-online-inference/) | 🟢 Beginner | 20 min |
+
+**Shipping Models**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Deployment Patterns: Shadow, Canary, A/B and Rollback](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/deployment-patterns/) | 🟡 Intermediate | 20 min |
+| 2 | [Experiment Tracking, Reproducibility and the Model Registry](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/experiment-tracking-and-model-registry/) | 🟢 Beginner | 20 min |
+
+**Keeping Models Healthy**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Drift Detection and Monitoring](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/drift-detection-and-monitoring/) | 🟡 Intermediate | 25 min |
+| 2 | [Retraining Pipelines and Continuous Training](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/retraining-pipelines/) | 🟡 Intermediate | 20 min |
+
+**LLMOps *(updated as practice evolves)***
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [LLMOps: What's Different](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/llmops/) | 🟡 Intermediate | 20 min |
+
+**Practice *(new questions added over time)***
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [MLOps Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/mlops-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 
