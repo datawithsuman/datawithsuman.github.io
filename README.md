@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-100-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-110-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · LLMs *(soon)* | 94 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) *(building)* | 104 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Subword Tokenisation (BPE, WordPiece, SentencePiece)**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/subword-tokenisation/) | 📐 Fundamentals › NLP Fundamentals | How do LLMs handle words they've never seen? |
-| [**Search: BM25, Dense and Hybrid Retrieval**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/search-and-retrieval/) | 📐 Fundamentals › NLP Fundamentals | Why does RAG search miss exact names, and how does hybrid fix it? |
-| [**NLP Evaluation: BLEU, ROUGE, EM/F1**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/nlp-evaluation-metrics/) | 📐 Fundamentals › NLP Fundamentals | Why can word salad beat a correct paraphrase on BLEU? |
+| [**Mixture of Experts**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/mixture-of-experts/) | 📐 Fundamentals › LLMs | How does a 47B model run at 13B cost, and what goes wrong? |
+| [**Scaling Laws: Kaplan vs Chinchilla**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/scaling-laws/) | 📐 Fundamentals › LLMs | Bigger model or more tokens, and why was Llama 3 8B trained on 15T? |
+| [**Attention Variants: MQA, GQA and MLA**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/attention-variants-mqa-gqa-mla/) | 📐 Fundamentals › LLMs | How many conversations fit on one GPU, and how GQA and MLA raise that? |
 
 ---
 
@@ -302,8 +302,30 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>LLMs</b> · coming soon</summary>
-<br>How large language models are built, trained, aligned and evaluated.
+<summary><b>LLMs</b> · 10 lessons (post-training, generation and evaluation coming)</summary>
+
+<br>
+
+**Modern Architecture**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Anatomy of a Modern LLM](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/modern-llm-architecture/) | 🟡 Intermediate | 20 min |
+| 2 | [Attention Variants: MQA, GQA and MLA](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/attention-variants-mqa-gqa-mla/) | 🟡 Intermediate | 25 min |
+| 3 | [FlashAttention](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/flashattention/) | 🔴 Advanced | 25 min |
+| 4 | [Long Context: RoPE Scaling, Sliding Windows and Attention Sinks](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/long-context/) | 🔴 Advanced | 25 min |
+| 5 | [Mixture of Experts](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/mixture-of-experts/) | 🟡 Intermediate | 25 min |
+
+**Pretraining**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [The Next-Token Objective](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/next-token-prediction/) | 🟢 Beginner | 20 min |
+| 2 | [Pretraining Data: Deduplication, Filtering and Mixtures](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/pretraining-data/) | 🟡 Intermediate | 25 min |
+| 3 | [Scaling Laws: Kaplan vs Chinchilla](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/scaling-laws/) | 🟡 Intermediate | 25 min |
+| 4 | [Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distributed-training/) | 🔴 Advanced | 25 min |
+| 5 | [Training Instabilities: Loss Spikes, z-loss and QK-norm](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/training-instabilities/) | 🔴 Advanced | 20 min |
+
 </details>
 
 ### 🏗️ AI Engineering
