@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-77-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-91-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · LLMs *(soon)* | 71 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · LLMs *(soon)* | 85 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Weight Decay vs L2, and AdamW**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/weight-decay-and-adamw/) | 📐 Fundamentals › Deep Learning | Why is Adam with L2 not the same as AdamW? |
-| [**Pooling, Stride, Padding and Output Shapes**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/pooling-stride-padding/) | 📐 Fundamentals › Deep Learning | What's the output shape of this conv layer? (The interview favourite.) |
-| [**Transfer Learning and Fine-Tuning**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transfer-learning/) | 📐 Fundamentals › Deep Learning | Only 15 labelled examples? Reuse a model trained on 1,000. |
+| [**The Transformer, End to End**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transformer-end-to-end/) | 📐 Fundamentals › Deep Learning | Walk a sentence through a whole Transformer, with shapes. |
+| [**Self-Attention (Q, K, V)**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/self-attention/) | 📐 Fundamentals › Deep Learning | What do Q, K and V do, and why divide by √d? |
+| [**Diffusion Models**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/diffusion-models/) | 📐 Fundamentals › Deep Learning | How does denoising noise produce new images? |
 
 ---
 
@@ -194,7 +194,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Deep Learning</b> · 19 lessons</summary>
+<summary><b>Deep Learning</b> · 33 lessons</summary>
 
 <br>
 
@@ -237,6 +237,36 @@ Tap a track to see its lessons, in the order to learn them.
 | 2 | [Pooling, Stride, Padding and Output Shapes](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/pooling-stride-padding/) | 🟢 Beginner | 20 min |
 | 3 | [ResNets and Skip Connections](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/resnets-and-skip-connections/) | 🟡 Intermediate | 20 min |
 | 4 | [Transfer Learning and Fine-Tuning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transfer-learning/) | 🟡 Intermediate | 20 min |
+
+
+**Sequence Models**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [RNNs and Backprop Through Time](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/rnns-and-backprop-through-time/) | 🟡 Intermediate | 20 min |
+| 2 | [LSTM and GRU](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/lstm-and-gru/) | 🟡 Intermediate | 25 min |
+| 3 | [Seq2seq and Bahdanau Attention](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/seq2seq-and-attention/) | 🟡 Intermediate | 20 min |
+
+**Attention & Transformers**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Self-Attention (Q, K, V)](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/self-attention/) | 🟡 Intermediate | 25 min |
+| 2 | [Multi-Head Attention](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/multi-head-attention/) | 🟡 Intermediate | 25 min |
+| 3 | [Positional Encodings (incl. RoPE)](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/positional-encodings/) | 🟡 Intermediate | 25 min |
+| 4 | [The Transformer Block](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transformer-block/) | 🟡 Intermediate | 20 min |
+| 5 | [Encoder vs Decoder vs Encoder-Decoder](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/encoder-decoder-architectures/) | 🟡 Intermediate | 20 min |
+| 6 | [The Transformer, End to End](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/transformer-end-to-end/) | 🔴 Advanced | 30 min |
+
+**Representation & Generative Models**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Embeddings and Representation Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/embeddings/) | 🟢 Beginner | 20 min |
+| 2 | [Autoencoders and VAEs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/autoencoders-and-vaes/) | 🟡 Intermediate | 25 min |
+| 3 | [GANs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/gans/) | 🟡 Intermediate | 25 min |
+| 4 | [Diffusion Models](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/diffusion-models/) | 🟡 Intermediate | 25 min |
+| 5 | [Contrastive Learning (SimCLR, CLIP)](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/contrastive-learning/) | 🟡 Intermediate | 25 min |
 
 </details>
 
