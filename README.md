@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-115-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-122-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) *(building)* | 109 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Reasoning Models: RLVR, GRPO and Test-Time Compute**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/) | 📐 Fundamentals › LLMs | How did DeepSeek-R1 learn to think from right/wrong rewards alone? |
-| [**DPO and Preference Optimisation**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/) | 📐 Fundamentals › LLMs | How does DPO skip the reward model, and what can go wrong? |
-| [**Reward Models and RLHF (PPO)**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/rlhf-and-reward-models/) | 📐 Fundamentals › LLMs | Why does optimising a reward model too hard make answers worse? |
+| [**Hallucination: Why LLMs Make Things Up**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/hallucination/) | 📐 Fundamentals › LLMs | Why do models guess confidently, and how do you stop an invented refund policy? |
+| [**Decoding: Temperature, Top-k, Top-p and Min-p**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/decoding-and-sampling/) | 📐 Fundamentals › LLMs | Why does top-p fall apart at high temperature, and min-p doesn't? |
+| [**LLM-as-a-Judge and Human Preference**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/llm-as-a-judge/) | 📐 Fundamentals › LLMs | Can you trust a GPT judge's 62% win rate? |
 
 ---
 
@@ -302,7 +302,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>LLMs</b> · 15 lessons (generation and evaluation coming)</summary>
+<summary><b>LLMs</b> · 22 lessons</summary>
 
 <br>
 
@@ -335,6 +335,23 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [DPO and Preference Optimisation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/) | 🟡 Intermediate | 25 min |
 | 4 | [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/) | 🔴 Advanced | 25 min |
 | 5 | [Distillation: How Small Models Learn from Big Ones](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distillation/) | 🟡 Intermediate | 20 min |
+
+**Generation**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Decoding: Temperature, Top-k, Top-p and Min-p](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/decoding-and-sampling/) | 🟢 Beginner | 20 min |
+| 2 | [In-Context Learning and Chain-of-Thought](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/in-context-learning-and-cot/) | 🟢 Beginner | 20 min |
+| 3 | [Hallucination: Why LLMs Make Things Up](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/hallucination/) | 🟡 Intermediate | 20 min |
+
+**Evaluating LLMs &amp; Practice**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Benchmarks and Contamination](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/benchmarks-and-contamination/) | 🟡 Intermediate | 20 min |
+| 2 | [LLM-as-a-Judge and Human Preference](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/llm-as-a-judge/) | 🟡 Intermediate | 20 min |
+| 3 | [LLM Practice 1: Pretraining and Scaling Maths](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/llm-practice-scaling/) | 🟡 Intermediate | 35 min |
+| 4 | [LLM Practice 2: Post-training and Generation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/llm-practice-post-training/) | 🟡 Intermediate | 35 min |
 
 </details>
 
