@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-140-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-152-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
-| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 22 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · [Agentic AI](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 34 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Advanced RAG**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/advanced-rag/) | 🏗️ AI Engineering › GenAI Apps | Which upgrade cut retrieval failures by 67%? |
-| [**Evaluating LLM Apps**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/evaluating-llm-apps/) | 🏗️ AI Engineering › GenAI Apps | Why can a correct answer still fail your evaluation? |
-| [**Guardrails and Prompt Injection**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/guardrails-and-prompt-injection/) | 🏗️ AI Engineering › GenAI Apps | Why can't filters alone stop prompt injection? |
+| [**Agent Safety: the Lethal Trifecta**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-safety/) | 🏗️ AI Engineering › Agentic AI | How can one email make an agent leak data, and how do you stop it? |
+| [**MCP: The Model Context Protocol**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/model-context-protocol/) | 🏗️ AI Engineering › Agentic AI | What is MCP, and how is it different from function calling? |
+| [**Design a Refund-Handling Agent**](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/design-refund-agent/) | 🏗️ AI Engineering › Agentic AI | Walk through an agent system design, from requirements to rollout. |
 
 ---
 
@@ -418,6 +418,50 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [GenAI App Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
 | 2 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
 | 3 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-at-scale/) | 🟡 Intermediate | 8 min |
+
+</details>
+
+<details>
+<summary><b>Agentic AI</b> · 12 lessons</summary>
+
+<br>
+
+**Foundations**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [What Is an Agent? The ReAct Loop](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/what-is-an-agent/) | 🟢 Beginner | 20 min |
+| 2 | [Tool and Function Calling](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/tool-calling/) | 🟢 Beginner | 20 min |
+| 3 | [Planning and Reflection](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/planning-and-reflection/) | 🟡 Intermediate | 20 min |
+| 4 | [Memory and Context Engineering](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/memory-and-context-engineering/) | 🟡 Intermediate | 20 min |
+
+**Protocols & Systems**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [MCP: The Model Context Protocol](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/model-context-protocol/) | 🟡 Intermediate | 20 min |
+| 2 | [Multi-Agent Systems](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/multi-agent-systems/) | 🟡 Intermediate | 20 min |
+| 3 | [Agent Infrastructure: Durable Execution, Retries and Budgets](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-infrastructure/) | 🔴 Advanced | 20 min |
+
+**Quality & Safety**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Evaluating Agents](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/evaluating-agents/) | 🟡 Intermediate | 20 min |
+| 2 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-safety/) | 🟡 Intermediate | 25 min |
+| 3 | [Agentic AI Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
+
+**Agent System Design *(new ones added over time)***
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Design a Refund-Handling Agent](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/design-refund-agent/) | 🔴 Advanced | 30 min |
+
+**Agent Scenarios *(new sets added over time)***
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Agent Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
 
 </details>
 
