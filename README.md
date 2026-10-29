@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-130-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-140-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
-| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 12 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 22 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Speculative Decoding**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/speculative-decoding/) | 🏗️ AI Engineering › LLM Inference | How does a small draft make a big model faster with identical outputs? |
-| [**Serving Metrics and SLOs**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/serving-metrics-and-slos/) | 🏗️ AI Engineering › LLM Inference | TTFT, TPOT, p99 and goodput: why latency explodes near capacity. |
-| [**Scaling Inference**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/scaling-inference/) | 🏗️ AI Engineering › LLM Inference | How many GPUs for 1,000 users, and why FP8 weights may not help? |
+| [**Advanced RAG**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/advanced-rag/) | 🏗️ AI Engineering › GenAI Apps | Which upgrade cut retrieval failures by 67%? |
+| [**Evaluating LLM Apps**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/evaluating-llm-apps/) | 🏗️ AI Engineering › GenAI Apps | Why can a correct answer still fail your evaluation? |
+| [**Guardrails and Prompt Injection**](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/guardrails-and-prompt-injection/) | 🏗️ AI Engineering › GenAI Apps | Why can't filters alone stop prompt injection? |
 
 ---
 
@@ -378,14 +378,46 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>GenAI Application Design</b> · 2 lessons</summary>
+<summary><b>GenAI Application Design</b> · 12 lessons</summary>
 
 <br>
 
+**Retrieval-Augmented Generation**
+
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
-| 2 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-at-scale/) | 🟡 Intermediate | 8 min |
+| 1 | [RAG End to End](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-end-to-end/) | 🟢 Beginner | 25 min |
+| 2 | [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/advanced-rag/) | 🟡 Intermediate | 25 min |
+
+**Prompting & Output**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Prompt Engineering Patterns](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/prompt-engineering-patterns/) | 🟢 Beginner | 20 min |
+| 2 | [Structured Output and Constrained Decoding](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/structured-output/) | 🟡 Intermediate | 20 min |
+
+**Adapting Models**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/lora-and-qlora/) | 🟡 Intermediate | 25 min |
+| 2 | [Prompt vs RAG vs Fine-Tuning: How to Choose](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/prompt-vs-rag-vs-fine-tuning/) | 🟢 Beginner | 20 min |
+
+**Quality, Safety & Cost**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Evaluating LLM Apps](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/evaluating-llm-apps/) | 🟡 Intermediate | 25 min |
+| 2 | [Guardrails and Prompt Injection](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/guardrails-and-prompt-injection/) | 🟡 Intermediate | 25 min |
+| 3 | [Cost and Latency: Routing, Caching and Batching](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/cost-and-latency/) | 🟡 Intermediate | 20 min |
+
+**Scenarios** *(new ones added over time)*
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [GenAI App Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 2 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
+| 3 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-at-scale/) | 🟡 Intermediate | 8 min |
 
 </details>
 
