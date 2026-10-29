@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-110-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-115-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,7 +34,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) *(building)* | 104 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) *(building)* | 109 |
 | 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Mixture of Experts**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/mixture-of-experts/) | 📐 Fundamentals › LLMs | How does a 47B model run at 13B cost, and what goes wrong? |
-| [**Scaling Laws: Kaplan vs Chinchilla**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/scaling-laws/) | 📐 Fundamentals › LLMs | Bigger model or more tokens, and why was Llama 3 8B trained on 15T? |
-| [**Attention Variants: MQA, GQA and MLA**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/attention-variants-mqa-gqa-mla/) | 📐 Fundamentals › LLMs | How many conversations fit on one GPU, and how GQA and MLA raise that? |
+| [**Reasoning Models: RLVR, GRPO and Test-Time Compute**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/) | 📐 Fundamentals › LLMs | How did DeepSeek-R1 learn to think from right/wrong rewards alone? |
+| [**DPO and Preference Optimisation**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/) | 📐 Fundamentals › LLMs | How does DPO skip the reward model, and what can go wrong? |
+| [**Reward Models and RLHF (PPO)**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/rlhf-and-reward-models/) | 📐 Fundamentals › LLMs | Why does optimising a reward model too hard make answers worse? |
 
 ---
 
@@ -302,7 +302,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>LLMs</b> · 10 lessons (post-training, generation and evaluation coming)</summary>
+<summary><b>LLMs</b> · 15 lessons (generation and evaluation coming)</summary>
 
 <br>
 
@@ -325,6 +325,16 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [Scaling Laws: Kaplan vs Chinchilla](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/scaling-laws/) | 🟡 Intermediate | 25 min |
 | 4 | [Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distributed-training/) | 🔴 Advanced | 25 min |
 | 5 | [Training Instabilities: Loss Spikes, z-loss and QK-norm](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/training-instabilities/) | 🔴 Advanced | 20 min |
+
+**Post-training**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [SFT and Instruction Tuning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/supervised-fine-tuning/) | 🟢 Beginner | 20 min |
+| 2 | [Reward Models and RLHF (PPO)](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/rlhf-and-reward-models/) | 🟡 Intermediate | 25 min |
+| 3 | [DPO and Preference Optimisation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/) | 🟡 Intermediate | 25 min |
+| 4 | [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/) | 🔴 Advanced | 25 min |
+| 5 | [Distillation: How Small Models Learn from Big Ones](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distillation/) | 🟡 Intermediate | 20 min |
 
 </details>
 

@@ -147,7 +147,7 @@ window.LESSONS = {
         groups: [
           {id: "architecture",title: "Modern Architecture",desc: "What modern LLMs changed: RMSNorm, SwiGLU, GQA/MLA, FlashAttention, long context and MoE."},
           {id: "pretraining",title: "Pretraining",desc: "Next-token prediction, data pipelines, scaling laws, distributed training and stability."},
-          {id: "post-training",title: "Post-training",desc: "SFT, RLHF, DPO, GRPO and reasoning models."},
+          {id: "post-training",title: "Post-training",desc: "SFT, RLHF and reward models, DPO, reasoning models with GRPO, and distillation."},
           {id: "generation",title: "Generation",desc: "Decoding, sampling and hallucination."},
           {id: "llm-eval",title: "Evaluating LLMs",desc: "Benchmarks, LLM-as-judge and contamination."},
         ],
@@ -162,6 +162,11 @@ window.LESSONS = {
           {slug: "scaling-laws",group: "pretraining",title: "Scaling Laws: Kaplan vs Chinchilla",sub: "Bigger model or more tokens, and why was Llama 3 8B trained on 15T?",level: "Intermediate",mins: 25},
           {slug: "distributed-training",group: "pretraining",title: "Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP",sub: "Why does a 70B model need 1.1 TB to train, and how is it split?",level: "Advanced",mins: 25},
           {slug: "training-instabilities",group: "pretraining",title: "Training Instabilities: Loss Spikes, z-loss and QK-norm",sub: "Your loss spikes at step 40k. What happened, and what do you do?",level: "Advanced",mins: 20},
+          {slug: "supervised-fine-tuning",group: "post-training",title: "SFT and Instruction Tuning",sub: "How does a text-completer become an assistant, and why mask the prompt?",level: "Beginner",mins: 20},
+          {slug: "rlhf-and-reward-models",group: "post-training",title: "Reward Models and RLHF (PPO)",sub: "Why does optimising a reward model too hard make answers worse?",level: "Intermediate",mins: 25},
+          {slug: "dpo",group: "post-training",title: "DPO and Preference Optimisation",sub: "How does DPO skip the reward model, and what can go wrong?",level: "Intermediate",mins: 25},
+          {slug: "reasoning-models-grpo",group: "post-training",title: "Reasoning Models: RLVR, GRPO and Test-Time Compute",sub: "How did DeepSeek-R1 learn to think from right/wrong rewards alone?",level: "Advanced",mins: 25},
+          {slug: "distillation",group: "post-training",title: "Distillation: How Small Models Learn from Big Ones",sub: "Why did distilling R1 beat RL on the same 32B model?",level: "Intermediate",mins: 20},
         ] },
     ] },
     { id: "system-design", title: "AI Engineering", desc: "Building, serving and running ML and LLM systems in production, including ML system design.", tracks: [
