@@ -181,6 +181,14 @@ window.LESSONS = {
         lessons: [
           {slug: "prefill-vs-decode",title: "Prefill vs Decode",sub: "Why does an LLM read your prompt fast but write its answer slowly?",level: "Intermediate",mins: 30},
           {slug: "llm-quantization",title: "LLM Quantization",sub: "How does an LLM survive losing 75% of its bits?",level: "Intermediate",mins: 35},
+          {slug: "kv-cache-and-pagedattention",title: "KV Cache Management and PagedAttention",sub: "Why did naive serving waste most of its KV memory, and how do blocks fix it?",level: "Intermediate",mins: 20},
+          {slug: "continuous-batching",title: "Continuous Batching and Scheduling",sub: "Trace one request through a vLLM-style engine.",level: "Intermediate",mins: 20},
+          {slug: "prefix-caching",title: "Prefix and Prompt Caching",sub: "Why are repeated system prompts nearly free, until a timestamp breaks them?",level: "Beginner",mins: 20},
+          {slug: "speculative-decoding",title: "Speculative Decoding",sub: "How does a small draft make a big model faster with identical outputs?",level: "Intermediate",mins: 20},
+          {slug: "serving-metrics-and-slos",title: "Serving Metrics and SLOs",sub: "TTFT, TPOT, p99 and goodput: why latency explodes near capacity.",level: "Beginner",mins: 20},
+          {slug: "scaling-inference",title: "Scaling Inference: Parallelism, Replicas and Routing",sub: "How many GPUs for 1,000 users, and why FP8 weights may not help?",level: "Advanced",mins: 25},
+          {slug: "sizing-and-cost",title: "Sizing and Cost: Cost per Million Tokens",sub: "What does a million tokens cost to self-host, and when is an API cheaper?",level: "Intermediate",mins: 20},
+          {slug: "llm-inference-practice",title: "LLM Inference Practice",sub: "7 questions: KV maths, speculative speedup, a caching incident, fleet sizing.",level: "Intermediate",mins: 35},
         ] },
       { id: "genai-apps", dir: "system-design/genai-apps", title: "GenAI Application Design", desc: "Building with LLMs in practice: RAG, agents, fine-tuning, guardrails and evaluation.",
         groups: [

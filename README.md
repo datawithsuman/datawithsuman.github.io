@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/ai/interview-prep/)
 
-![Lessons](https://img.shields.io/badge/lessons-122-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-130-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/sections-3-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
-| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 4 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · ML System Design *(soon)* · ML Scenarios *(soon)* · MLOps & Production *(soon)* | 12 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -45,9 +45,9 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Lesson | Where | The question it answers |
 |---|---|---|
-| [**Hallucination: Why LLMs Make Things Up**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/hallucination/) | 📐 Fundamentals › LLMs | Why do models guess confidently, and how do you stop an invented refund policy? |
-| [**Decoding: Temperature, Top-k, Top-p and Min-p**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/decoding-and-sampling/) | 📐 Fundamentals › LLMs | Why does top-p fall apart at high temperature, and min-p doesn't? |
-| [**LLM-as-a-Judge and Human Preference**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/llm-as-a-judge/) | 📐 Fundamentals › LLMs | Can you trust a GPT judge's 62% win rate? |
+| [**Speculative Decoding**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/speculative-decoding/) | 🏗️ AI Engineering › LLM Inference | How does a small draft make a big model faster with identical outputs? |
+| [**Serving Metrics and SLOs**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/serving-metrics-and-slos/) | 🏗️ AI Engineering › LLM Inference | TTFT, TPOT, p99 and goodput: why latency explodes near capacity. |
+| [**Scaling Inference**](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/scaling-inference/) | 🏗️ AI Engineering › LLM Inference | How many GPUs for 1,000 users, and why FP8 weights may not help? |
 
 ---
 
@@ -358,7 +358,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 🏗️ AI Engineering
 
 <details>
-<summary><b>LLM Inference & Serving</b> · 2 lessons</summary>
+<summary><b>LLM Inference & Serving</b> · 10 lessons</summary>
 
 <br>
 
@@ -366,6 +366,14 @@ Tap a track to see its lessons, in the order to learn them.
 |:---:|---|:---:|:---:|
 | 1 | [Prefill vs Decode](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/prefill-vs-decode/) | 🟡 Intermediate | 30 min |
 | 2 | [LLM Quantization](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/llm-quantization/) | 🟡 Intermediate | 35 min |
+| 3 | [KV Cache Management and PagedAttention](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/kv-cache-and-pagedattention/) | 🟡 Intermediate | 20 min |
+| 4 | [Continuous Batching and Scheduling](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/continuous-batching/) | 🟡 Intermediate | 20 min |
+| 5 | [Prefix and Prompt Caching](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/prefix-caching/) | 🟢 Beginner | 20 min |
+| 6 | [Speculative Decoding](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/speculative-decoding/) | 🟡 Intermediate | 20 min |
+| 7 | [Serving Metrics and SLOs](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/serving-metrics-and-slos/) | 🟢 Beginner | 20 min |
+| 8 | [Scaling Inference: Parallelism, Replicas and Routing](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/scaling-inference/) | 🔴 Advanced | 25 min |
+| 9 | [Sizing and Cost: Cost per Million Tokens](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/sizing-and-cost/) | 🟡 Intermediate | 20 min |
+| 10 | [LLM Inference Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/llm-inference-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 

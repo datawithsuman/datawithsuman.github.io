@@ -218,7 +218,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Deep explainer · Topic · LLM Inference</div>
   <h1>Prefill vs Decode</h1>
-  <div class="meta">Built from Splitwise, DistServe, Sarathi-Serve, AWQ, the vLLM docs and NVIDIA's H100 specs · checked 28 Oct 2026</div>
+  <div class="meta">Built from Splitwise, DistServe, Sarathi-Serve, AWQ, the vLLM docs and NVIDIA's H100 specs · checked 28 Oct 2026 · updated 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> every LLM request runs in two phases. <b>Prefill</b> reads the whole prompt in one pass and is limited by the GPU's maths. <b>Decode</b> writes the answer one token per pass and is limited by how fast memory can feed the weights. Almost every inference trick (batching, quantization, chunked prefill, disaggregation) is a fix for one phase or for the two getting in each other's way.<br><span class="small">What you'll be able to do after this: estimate TTFT and tokens per second on a napkin, explain why decode is memory-bound, and pick the right fix when an LLM feels slow.</span></div>
   <div class="legend"><span><i style="background:var(--a)"></i>prefill (the prompt)</span><span><i style="background:var(--b)"></i>decode (the answer)</span><span><i style="background:var(--st)"></i>KV cache</span><span><i style="background:var(--info)"></i>memory, bandwidth, numbers</span><span><i style="background:var(--ok)"></i>fix that works</span><span><i style="background:var(--bad)"></i>stall or failure</span></div>
 </header>
@@ -662,6 +662,19 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 </section>
 
 <!-- ===== INTERVIEW ===== -->
+<section class="ch" id="more" data-toc="Go further">
+  <div class="chap">Go further</div>
+  <h2>Each fix has its own lesson</h2>
+  <div class="card upd"><ul>
+    <li><a href="../kv-cache-and-pagedattention/">KV Cache Management and PagedAttention</a>: how the cache for many users is stored without waste.</li>
+    <li><a href="../continuous-batching/">Continuous Batching and Scheduling</a>: the scheduler behind "batching decode", step by step.</li>
+    <li><a href="../prefix-caching/">Prefix and Prompt Caching</a>: skipping prefill for repeated prompts.</li>
+    <li><a href="../speculative-decoding/">Speculative Decoding</a>: several tokens per memory-bound decode step.</li>
+    <li><a href="../serving-metrics-and-slos/">Serving Metrics and SLOs</a>: TTFT, TPOT and goodput under real load.</li>
+    <li><a href="../scaling-inference/">Scaling Inference</a> and <a href="../sizing-and-cost/">Sizing and Cost</a>: disaggregation at cluster scale, GPU counts and cost per token.</li>
+  </ul></div>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>
