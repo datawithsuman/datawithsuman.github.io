@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <nav class="toc" aria-label="Contents"></nav>
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Deep explainer · RAG · 2 of 2</div>
+  <div class="kicker">Deep explainer · RAG · 2 of 3</div>
   <h1>Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG</h1>
   <div class="meta">The techniques that take a basic RAG system from "often finds the right passage" to "almost always does": hybrid sparse + dense retrieval, cross-encoder re-ranking, contextualised chunks, query rewriting and decomposition (including HyDE), multi-step retrieval, and graph-based RAG for questions about a whole corpus · built from Anthropic (Contextual Retrieval, 2024), Nogueira &amp; Cho (BERT re-ranking, 2019), Khattab &amp; Zaharia (ColBERT, SIGIR 2020), Gao et al. (HyDE, ACL 2023), Ma et al. (Query Rewriting, EMNLP 2023), Edge et al. (GraphRAG, 2024) and Asai et al. (Self-RAG, ICLR 2024) · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> when <a href="../rag-end-to-end/">basic RAG</a> misses, the fix is usually one of a few well-tested upgrades. <b>Hybrid search</b> combines BM25 (exact words, codes, names) with dense embeddings (meaning). <b>Re-ranking</b> runs a slower cross-encoder over the top 20–100 candidates to put the truly relevant ones first. <b>Contextual chunks</b> prepend a sentence of context to each chunk before indexing, so "capped at ₹150" knows it's about late refunds. <b>Query rewriting</b> turns vague or multi-part questions into better search queries. Together these cut Anthropic's measured top-20 retrieval failure rate from 5.7% to <b>1.9%</b> (−67%). For "summarise themes across all 10,000 tickets" questions, <b>GraphRAG</b> builds an entity graph with community summaries instead of retrieving a few chunks.<br><span class="small">What you'll be able to do after this: pick the right upgrade for a RAG failure, explain bi-encoders vs cross-encoders, and say when GraphRAG is worth it.</span></div>
@@ -280,7 +280,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">4 · How it's done today</div>
   <h2>Diagnose, then upgrade</h2>
   <ul>
-    <li><b>Measure first:</b> label 100–300 real questions with their relevant chunks; compute recall@k and MRR (<a href="../../applied-evals/evaluating-llm-apps/">Evaluating LLM Apps</a>). If recall@50 is high but recall@5 low, add a re-ranker; if recall@50 is low, fix chunking, hybrid search or query rewriting.</li>
+    <li><b>Measure first:</b> label 100–300 real questions with their relevant chunks; compute recall@k and MRR (<a href="../evaluating-llm-apps/">Evaluating LLM Apps</a>). If recall@50 is high but recall@5 low, add a re-ranker; if recall@50 is low, fix chunking, hybrid search or query rewriting.</li>
     <li><b>Default stack:</b> structure-aware chunks with context → hybrid retrieval of ~50 → cross-encoder re-rank to ~5–10 → answer with citations.</li>
     <li><b>GraphRAG</b> answers corpus-wide "what are the main themes" questions far better than chunk retrieval, but indexing is expensive (many LLM calls) and it isn't needed for specific factual questions.</li>
     <li><b>Long-context models</b> reduce the need for aggressive chunking on small corpora; for large or changing corpora, retrieval remains cheaper and more controllable.</li>

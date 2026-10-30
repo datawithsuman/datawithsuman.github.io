@@ -203,18 +203,19 @@ window.LESSONS = {
         ] },
       { id: "rag", dir: "system-design/rag", title: "RAG", desc: "Retrieval-augmented generation: grounding LLM answers in your own data, from basic pipelines to advanced retrieval.",
         groups: [
-          {id: "lessons",title: "Lessons",desc: "Building retrieval-augmented generation, from basic pipelines to advanced retrieval."},
+          {id: "lessons",title: "Lessons",desc: "Building retrieval-augmented generation, from basic pipelines to advanced retrieval, and how to evaluate it."},
           {id: "scenarios",title: "Scenarios",desc: "Practice questions and real-world incidents to diagnose. New ones are added over time."},
         ],
         lessons: [
           {slug: "rag-end-to-end",title: "RAG End to End",sub: "How do you build RAG, and how big should a chunk be?",level: "Beginner",mins: 25,group: "lessons"},
           {slug: "advanced-rag",title: "Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG",sub: "Which upgrade cut retrieval failures by 67%?",level: "Intermediate",mins: 25,group: "lessons"},
+          {slug: "evaluating-llm-apps",title: "Evaluating LLM Apps",sub: "Why can a correct answer still fail your evaluation?",level: "Intermediate",mins: 25,group: "lessons"},
           {slug: "rag-wrong-answer",title: "RAG: Wrong Answer, Where to Look First",sub: "Your chatbot gave a confident, wrong answer. Where do you look first?",level: "Intermediate",mins: 8,group: "scenarios"},
           {slug: "rag-at-scale",title: "RAG at Scale: Slow and Wrong",sub: "Your RAG worked on 100 docs, but broke at 10 million. Why?",level: "Intermediate",mins: 8,group: "scenarios"},
         ] },
       { id: "agentic-ai", dir: "system-design/agentic-ai", title: "Agentic AI", desc: "Agents that plan, call tools and act: the agent loop, tools, planning, memory, MCP, multi-agent systems, infrastructure and safety.",
         groups: [
-          {id: "lessons",title: "Lessons",desc: "The agent loop, tools, planning, memory, MCP, multi-agent systems, infrastructure and safety."},
+          {id: "lessons",title: "Lessons",desc: "The agent loop, tools, planning, memory, MCP, multi-agent systems, infrastructure, evaluation and safety."},
           {id: "scenarios",title: "Scenarios",desc: "Practice questions and real-world incidents to diagnose. New ones are added over time."},
         ],
         lessons: [
@@ -225,14 +226,10 @@ window.LESSONS = {
           {slug: "model-context-protocol",title: "MCP: The Model Context Protocol",sub: "What is MCP, and how is it different from function calling?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "multi-agent-systems",title: "Multi-Agent Systems",sub: "When do several agents beat one, and what does it cost?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "agent-infrastructure",title: "Agent Infrastructure: Durable Execution, Retries and Budgets",sub: "How do long agent runs survive failures without paying twice?",level: "Advanced",mins: 20,group: "lessons"},
+          {slug: "evaluating-agents",title: "Evaluating Agents",sub: "Why is 59% on one run not 59% for your customers?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "agent-safety",title: "Agent Safety: Permissions, Sandboxing and the Lethal Trifecta",sub: "How can one email make an agent leak data, and how do you stop it?",level: "Intermediate",mins: 25,group: "lessons"},
           {slug: "agentic-ai-practice",title: "Agentic AI Practice",sub: "7 questions: compounding errors, tool overload, durable runs, pass^k, trifecta.",level: "Intermediate",mins: 35,group: "scenarios"},
           {slug: "agent-scenarios-set-1",title: "Agent Scenarios: Set 1",sub: "7 incidents: loops, wrong tools, cost explosions, injection, forgetting.",level: "Intermediate",mins: 35,group: "scenarios"},
-        ] },
-      { id: "applied-evals", dir: "system-design/applied-evals", title: "Applied Evals", desc: "Evaluating real LLM applications: RAG systems, agents and other GenAI products.",
-        lessons: [
-          {slug: "evaluating-llm-apps",title: "Evaluating LLM Apps",sub: "Why can a correct answer still fail your evaluation?",level: "Intermediate",mins: 25},
-          {slug: "evaluating-agents",title: "Evaluating Agents",sub: "Why is 59% on one run not 59% for your customers?",level: "Intermediate",mins: 20},
         ] },
       { id: "mlops", dir: "system-design/mlops", title: "MLOps", desc: "Running ML models in production: training/serving skew, serving modes, safe deployment, reproducibility, drift and retraining. Concepts, not tools.",
         groups: [

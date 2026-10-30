@@ -286,7 +286,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h2>Prompts as code</h2>
   <ul>
     <li><b>Version and review</b> prompts in the repository, with the model version pinned; a prompt is tied to the model it was tested on.</li>
-    <li><b>Evaluate:</b> a golden set of 100–500 real inputs with expected behaviour, scored by code checks and an <a href="../../../fundamentals/llms/llm-as-a-judge/">LLM judge</a>; run it on every change (<a href="../../applied-evals/evaluating-llm-apps/">Evaluating LLM Apps</a>).</li>
+    <li><b>Evaluate:</b> a golden set of 100–500 real inputs with expected behaviour, scored by code checks and an <a href="../../../fundamentals/llms/llm-as-a-judge/">LLM judge</a>; run it on every change (<a href="../../rag/evaluating-llm-apps/">Evaluating LLM Apps</a>).</li>
     <li><b>Optimise automatically:</b> DSPy compiles prompts and few-shot examples against a metric; APE had LLMs propose and select instructions. Useful once you have a metric and data.</li>
     <li><b>Know when to stop:</b> if the prompt keeps growing to cover cases, consider retrieval for knowledge or <a href="../../../fundamentals/llms/lora-and-qlora/">fine-tuning</a> for consistent behaviour (<a href="../prompt-vs-rag-vs-fine-tuning/">how to choose</a>).</li>
   </ul>
