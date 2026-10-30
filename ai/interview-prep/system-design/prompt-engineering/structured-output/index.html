@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Structured Output and Constrained Decoding · @datawithsuman</title>
+<meta name="description" content="Prompted JSON vs JSON mode vs schema-constrained decoding, validation, and the reasoning trade-off, with a live validity lab.">
+<meta property="og:title" content="Structured Output and Constrained Decoding">
+<meta property="og:description" content="Prompted JSON vs JSON mode vs schema-constrained decoding, validation, and the reasoning trade-off, with a live validity lab.">
+<!-- Deep explainer kit: the reference video's look (dark navy, vignette, chapter tags, pill titles, colour = meaning)
+     turned into an interactive page. Components: scenes (build-in-place steppers), equation reader (MathJax + hover),
+     worked-example widgets, "breaks without it" cards, bar charts, figure walkthroughs, interview section. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Equations: MathJax SVG (self-contained; the Artifact CSP blocks KaTeX's CDN stylesheet and fonts). Terms: \class{term t-id}{…} -->
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+/* ---- page: SVG fills mixed from the colour tokens, so both themes stay readable ---- */
+.stage svg .fa{fill:color-mix(in srgb,var(--a) 16%,var(--card));stroke:var(--a)}
+.stage svg .fb{fill:color-mix(in srgb,var(--b) 16%,var(--card));stroke:var(--b)}
+.stage svg .fok{fill:color-mix(in srgb,var(--ok) 16%,var(--card));stroke:var(--ok)}
+.stage svg .fbad{fill:color-mix(in srgb,var(--bad) 16%,var(--card));stroke:var(--bad)}
+.stage svg .finfo{fill:color-mix(in srgb,var(--info) 14%,var(--card));stroke:var(--info)}
+.stage svg .fst{fill:color-mix(in srgb,var(--st) 16%,var(--card));stroke:var(--st)}
+.stage svg .fn{fill:var(--bg2);stroke:var(--line)}
+.stage svg .sa{fill:var(--a);stroke:none} .stage svg .sb{fill:var(--b);stroke:none} .stage svg .sst{fill:var(--st);stroke:none}
+.stage svg .sbad{fill:var(--bad);stroke:none} .stage svg .sok{fill:var(--ok);stroke:none} .stage svg .sinfo{fill:var(--info);stroke:none}
+.stage svg text.d{fill:var(--dim)} .stage svg text.f{fill:var(--faint)}
+.stage svg text.ta{fill:var(--a)} .stage svg text.tb{fill:var(--b)} .stage svg text.tok{fill:var(--ok)} .stage svg text.tbad{fill:var(--bad)}
+.stage svg text.tinfo{fill:var(--info)} .stage svg text.tst{fill:var(--st)}
+.stage svg text.m{font-family:var(--mono)!important;font-size:12px}
+.stage svg .ln{stroke:var(--dim);fill:none} .stage svg .lnf{stroke:var(--line);fill:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);min-width:0}
+.stat .l{font-size:12px;color:var(--dim)} .stat .v{font:600 18px var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.stat .v.a{color:var(--a)} .stat .v.b{color:var(--b)} .stat .v.bad{color:var(--bad)} .stat .v.ok{color:var(--ok)} .stat .v.info{color:var(--info)} .stat .v.st{color:var(--st)}
+.seg{display:flex;gap:6px;flex-wrap:wrap} .seg button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:6px 12px;cursor:pointer}
+.seg button.on{border-color:var(--a);color:var(--a)}
+.meter{height:12px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)} .meter i{display:block;height:100%;width:0;background:var(--a);transition:width .25s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.two{grid-template-columns:1fr}}
+.two>.card{margin:0;min-width:0}
+.tw{overflow-x:auto} .tw table.t{min-width:520px}
+ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{margin:4px 0;overflow-wrap:anywhere}
+.bar .v{white-space:nowrap}
+.formula{font:500 13.5px var(--mono);color:var(--dim);background:var(--bg2);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.stage svg .grid{stroke:var(--line);stroke-width:1} .stage svg .ax{stroke:var(--dim);stroke-width:1.2}
+.stage svg text.tick{fill:var(--faint);font-size:11px;font-family:var(--mono)}
+.plot{margin:4px 0;padding:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--dim)} .chips b{color:var(--ink);font-family:var(--mono)}
+.cmx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;font-size:14px}
+.cmx div{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);text-align:center}
+.cmx .h{background:none;border:0;color:var(--dim);font-size:12.5px}
+.cmx .tp{border-color:var(--ok);color:var(--ok)} .cmx .tn{border-color:var(--info);color:var(--info)} .cmx .fp{border-color:var(--b);color:var(--b)} .cmx .fn{border-color:var(--bad);color:var(--bad)}
+.cmx b{display:block;font:600 18px var(--mono)}
+.mt td.num.best{color:var(--ok);font-weight:600} .mt td.num.worst{color:var(--bad)}
+.quiz .opt{display:block;width:100%;text-align:left;margin:6px 0;font:500 14px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.quiz .opt.right{border-color:var(--ok);color:var(--ok)} .quiz .opt.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{display:none;margin-top:8px} .quiz.done .why{display:block}
+
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Prompt Engineering</a><a class="h" href="../../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Deep explainer · Prompt Engineering · 2 of 3</div>
+  <h1>Structured Output and Constrained Decoding</h1>
+  <div class="meta">Getting LLMs to return machine-readable output reliably: prompting for JSON, JSON mode, schema-constrained decoding (how grammars mask invalid tokens), validation and retries, schema design, and the cost of format restrictions on reasoning · built from OpenAI (Introducing Structured Outputs, 2024), Willard &amp; Louf (Outlines, 2023), Dong et al. (XGrammar, 2024), Tam et al. (Let Me Speak Freely?, EMNLP 2024), and the vLLM, SGLang and Pydantic documentation · checked 29 Oct 2026</div>
+  <div class="tldr"><b>In one breath:</b> apps need fields, not prose: <code>{"refund_inr": 42, "escalate": false}</code>. Asking nicely for JSON mostly works, but every field is a chance for a stray comment, a missing quote or a wrong key, and the chances multiply: at 1% per field, a 12-field object is valid only 88.6% of the time. <b>Constrained decoding</b> fixes the syntax: the schema is compiled into a grammar, and at every step the decoder <b>masks out</b> tokens that would break it, so output always parses (OpenAI reported 100% schema adherence with strict Structured Outputs, versus under 40% for gpt-4-0613 with prompting alone on its complex-schema eval). It doesn't fix <i>content</i>: a valid number can still be the wrong refund, so you still validate values in code. Forcing a format can also hurt reasoning, so let the model reason first (or in a <code>reasoning</code> field placed before the answer fields).<br><span class="small">What you'll be able to do after this: choose between prompting, JSON mode and constrained decoding, design schemas, and combine them with validation.</span></div>
+  <div class="legend"><span><i style="background:var(--a)"></i>model output</span><span><i style="background:var(--b)"></i>schema / grammar</span><span><i style="background:var(--ok)"></i>valid</span><span><i style="background:var(--bad)"></i>parse failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<p class="small" style="margin-top:22px"><b>Running example:</b> the support app needs every reply as JSON with fields like <code>reply</code>, <code>refund_inr</code>, <code>reason_code</code>, <code>escalate</code>, so the backend can issue refunds automatically.</p>
+
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <h2>One broken brace breaks the pipeline</h2>
+  <p>Downstream code needs exact keys and types. Free-text generation occasionally adds "Here's the JSON:", forgets a closing brace, invents a field or writes "forty-two" instead of 42. Each failure means a retry (latency and cost) or a crash.</p>
+</section>
+
+<section class="ch" id="c2" data-toc="2 · Methods">
+  <div class="chap">2 · Building blocks</div>
+  <h2>Three levels of enforcement</h2>
+  <div class="tw"><table class="t">
+    <tr><th>Level</th><th>How</th><th>Guarantee</th></tr>
+    <tr><td><b>Prompting</b></td><td>describe the format, show examples, parse and validate</td><td>none; failures need retries</td></tr>
+    <tr><td><b>JSON mode</b></td><td>the API/engine guarantees syntactically valid JSON</td><td>valid JSON, but not your schema</td></tr>
+    <tr><td><b>Schema-constrained decoding</b></td><td>a JSON Schema (or regex/grammar) is compiled to a state machine; at each step tokens that can't continue a valid output get probability 0 (Outlines, XGrammar, llguidance; OpenAI "strict", vLLM and SGLang guided decoding)</td><td>always matches the schema's structure and types</td></tr>
+  </table></div>
+  <p class="small">Masking happens on the logits before <a href="../../../fundamentals/llms/decoding-and-sampling/">sampling</a>, so it adds little overhead with modern grammar engines. It is the same mechanism used for function/tool-call arguments (Agentic AI track).</p>
+</section>
+
+<section class="ch" id="c3" data-toc="3 · Lab">
+  <div class="chap">3 · The naive idea and its trap</div>
+  <span class="pill a">Validity rate</span>
+  <h2>"Return JSON, please"</h2>
+  <div class="card lab" id="labJSON">
+    <div class="seg"><button data-v="free" class="on">prompted JSON</button><button data-v="cons">schema-constrained decoding</button></div>
+    <label>Fields in the schema <input type="range" min="1" max="40" step="1" value="12"><output></output></label>
+    <label>Chance a field comes out malformed <input type="range" min="0.1" max="5" step="0.1" value="1"><output></output></label>
+    <label>Retries on parse failure <input type="range" min="0" max="3" step="1" value="0"><output></output></label>
+    <div class="stats" aria-live="polite">
+      <div class="stat"><div class="l">valid on the first call</div><div class="v ok" data-o="v1">–</div></div>
+      <div class="stat"><div class="l">valid after retries</div><div class="v b" data-o="vk">–</div></div>
+      <div class="stat"><div class="l">average calls per request</div><div class="v info" data-o="calls">–</div></div>
+    </div>
+    <noscript><p class="small">Without JavaScript: at 1% per field, a prompted 12-field object is valid 88.6% of the time (74.0% with 30 fields); two retries reach 99.85% at 1.13 calls per request; constrained decoding is 100% valid in one call.</p></noscript>
+    <p class="small" style="margin:0">Simple model: each field independently malformed with the given probability; a retry is a fresh independent attempt. Real error rates depend on the model and schema; measure yours.</p>
+  </div>
+  <p>Prompted JSON with <b>12 fields</b> and a 1% chance per field of a formatting slip is valid only <b>88.6%</b> of the time; at 30 fields, <b>74.0%</b>. Retries rescue it (two retries reach 99.85%) but cost 13% more calls on average and add latency to the unlucky requests. <b>Constrained decoding</b> is valid <b>100%</b> of the time in a single call. The remaining trap is semantic: the schema can't know that a ₹420 refund breaks the "10%, capped at ₹150" rule, so validate values (ranges, enums, cross-field rules) in code and treat violations like errors.</p>
+</section>
+
+<section class="ch" id="c4" data-toc="4 · Practice">
+  <div class="chap">4 · How it's done today</div>
+  <h2>Schema design and the reasoning trade-off</h2>
+  <ul>
+    <li><b>Design schemas for the model:</b> descriptive field names, enums for categories, required fields, few optional ones, flat over deeply nested; put free-text <code>reasoning</code> <i>before</i> decision fields so the model "thinks" before committing.</li>
+    <li><b>Format restrictions can cost accuracy:</b> Tam et al. (2024) found strict format constraints lowered performance on reasoning tasks; common fixes are reasoning first in free text, then a second structured extraction call, or a reasoning field in the schema.</li>
+    <li><b>Validate in code</b> with Pydantic / Zod models generated from the same schema; log and alert on validation failures.</li>
+    <li><b>Version schemas</b> and keep backward compatibility, since prompts, examples and downstream code depend on them.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c5" data-toc="5 · Core idea">
+  <div class="chap">5 · The core idea</div>
+  <span class="pill ok">One sentence</span>
+  <h2>Enforce the shape in the decoder, check the values in code</h2>
+  <p>Constrained decoding makes the output always parse by masking invalid tokens; correctness of the values still needs validation, and reasoning should happen before the model is boxed into a format.</p>
+</section>
+
+<section class="ch" id="iv" data-toc="Interview">
+  <div class="chap">Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">There are three levels: prompting for JSON, which fails occasionally and the failures multiply with schema size; JSON mode, which guarantees valid JSON but not your schema; and schema-constrained decoding, which compiles the schema into a grammar and masks invalid tokens at each step so the output always matches the structure. I'd use constrained decoding, OpenAI strict mode or guided decoding in vLLM, then validate the values with Pydantic, because a valid field can still hold a wrong value. And since tight format constraints can hurt reasoning, I'd put a reasoning field before the decision fields or do a separate extraction step.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>How does constrained decoding work technically?</summary><p>The schema or grammar becomes a finite-state machine or pushdown automaton over tokens; at each step the engine computes which tokens keep the output valid and sets the others' logits to −∞ before sampling.</p></details>
+  <details class="qa"><summary>Does it slow generation down?</summary><p>Modern engines (XGrammar, llguidance) precompute token masks and add little overhead; very complex grammars can still cost some latency.</p></details>
+  <details class="qa"><summary>The JSON is valid but the refund amount is often wrong. Next step?</summary><p>That's a content problem: improve retrieval of the policy, compute amounts with a tool instead of the model, and add value checks and evals.</p></details>
+  <h3>What not to say</h3>
+  <ul><li>"JSON mode guarantees my schema." Only syntax.</li><li>"Constrained output means correct output." It means parseable output.</li></ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <ol class="src-list">
+    <li>OpenAI, "Introducing Structured Outputs in the API", Aug 2024.</li>
+    <li>B. Willard &amp; R. Louf, "Efficient Guided Generation for Large Language Models" (Outlines), 2023, <a href="https://arxiv.org/abs/2307.09702">arXiv:2307.09702</a>; Y. Dong et al., "XGrammar", 2024, <a href="https://arxiv.org/abs/2411.15100">arXiv:2411.15100</a>.</li>
+    <li>Z. R. Tam et al., "Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models", EMNLP Industry 2024, <a href="https://arxiv.org/abs/2408.02442">arXiv:2408.02442</a>.</li>
+    <li>vLLM and SGLang structured output / guided decoding documentation; Pydantic documentation.</li>
+  </ol>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+document.querySelectorAll('.card.lab .stats, .card.lab [data-out]').forEach(el => { if (!el.closest('[aria-live]')) el.setAttribute('aria-live', 'polite'); });
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+const d2 = (a, b) => { let s = 0; for (let j = 0; j < a.length; j++) s += (a[j] - b[j]) ** 2; return s; };
+// mixture of 2-D Gaussians: spec = [{n, m:[x,y], s:[sx,sy], rho}]
+function mix(seed, spec) { const r = rng(seed), g = gaussR(r), X = [], y = [];
+  spec.forEach((c, k) => { for (let i = 0; i < c.n; i++) { const a = g(), b = g(), rho = c.rho || 0; X.push([c.m[0] + c.s[0] * a, c.m[1] + c.s[1] * (rho * a + Math.sqrt(1 - rho * rho) * b)]); y.push(k); } }); return { X, y }; }
+function moons2(seed, n, noise) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = Math.PI * r(); X.push(c ? [1 - Math.cos(a) + noise * g(), 0.5 - Math.sin(a) + noise * g()] : [Math.cos(a) + noise * g(), Math.sin(a) + noise * g()]); y.push(c); } return { X, y }; }
+function uniformNoise(seed, n, box) { const r = rng(seed), X = []; for (let i = 0; i < n; i++) X.push([box[0] + (box[1] - box[0]) * r(), box[2] + (box[3] - box[2]) * r()]); return X; }
+// k-means: init 'random' or '++'; returns {C, lab, inertia, iters}
+function kmeans(X, k, seed, init = '++', maxIt = 100) { const r = rng(seed), n = X.length; let C = [];
+  if (init === '++') { C.push(X[Math.floor(r() * n)]); while (C.length < k) { const D = X.map(x => Math.min(...C.map(c => d2(x, c)))), S = D.reduce((a, b) => a + b, 0); let u = r() * S, i = 0; while (u > D[i] && i < n - 1) { u -= D[i]; i++; } C.push(X[i]); } }
+  else { const idx = new Set(); while (idx.size < k) idx.add(Math.floor(r() * n)); C = [...idx].map(i => X[i]); }
+  C = C.map(c => [...c]); let lab = Array(n).fill(-1), it = 0;
+  for (; it < maxIt; it++) { let ch = 0; X.forEach((x, i) => { let b = 0, bd = Infinity; C.forEach((c, j) => { const d = d2(x, c); if (d < bd) { bd = d; b = j; } }); if (lab[i] !== b) { lab[i] = b; ch++; } });
+    if (!ch) break; C = C.map((c, j) => { const P = X.filter((_, i) => lab[i] === j); return P.length ? c.map((_, q) => P.reduce((a, p) => a + p[q], 0) / P.length) : c; }); }
+  const inertia = X.reduce((a, x, i) => a + d2(x, C[lab[i]]), 0); return { C, lab, inertia, iters: it }; }
+// agglomerative clustering via Lance–Williams updates, O(n³); linkage single|complete|average|ward; returns merges [a,b,height,size]
+function agglo(X, linkage) { const n = X.length, ward = linkage === 'ward', D = X.map(a => X.map(b => ward ? d2(a, b) : Math.sqrt(d2(a, b)))), id = X.map((_, i) => i), sz = X.map(() => 1), alive = X.map(() => true), merges = []; let next = n;
+  for (let step = 0; step < n - 1; step++) { let bi = -1, bj = -1, bd = Infinity; for (let i = 0; i < n; i++) if (alive[i]) for (let j = i + 1; j < n; j++) if (alive[j] && D[i][j] < bd) { bd = D[i][j]; bi = i; bj = j; }
+    const ni = sz[bi], nj = sz[bj]; for (let k = 0; k < n; k++) { if (!alive[k] || k === bi || k === bj) continue; const a = D[bi][k], b = D[bj][k], nk = sz[k];
+      const v = linkage === 'single' ? Math.min(a, b) : linkage === 'complete' ? Math.max(a, b) : linkage === 'average' ? (ni * a + nj * b) / (ni + nj) : ((ni + nk) * a + (nj + nk) * b - nk * bd) / (ni + nj + nk); D[bi][k] = D[k][bi] = v; }
+    merges.push([id[bi], id[bj], ward ? Math.sqrt(bd) : bd, ni + nj]); id[bi] = next++; sz[bi] = ni + nj; alive[bj] = false; } return merges; }
+// cut the merge tree into k clusters → labels
+function cutK(merges, n, k) { const par = Array.from({ length: 2 * n }, (_, i) => i); const f = i => par[i] === i ? i : (par[i] = f(par[i]));
+  merges.slice(0, n - k).forEach(([a, b], t) => { par[f(a)] = n + t; par[f(b)] = n + t; }); const roots = {}, lab = []; for (let i = 0; i < n; i++) { const r = f(i); if (!(r in roots)) roots[r] = Object.keys(roots).length; lab.push(roots[r]); } return lab; }
+// DBSCAN → labels (−1 = noise), core flags
+function dbscan(X, eps, minPts) { const n = X.length, e2 = eps * eps, N = X.map(a => X.map((b, j) => j).filter(j => d2(a, X[j]) <= e2)), core = N.map(l => l.length >= minPts), lab = Array(n).fill(-1); let c = 0;
+  for (let i = 0; i < n; i++) { if (lab[i] !== -1 || !core[i]) continue; const st = [i]; lab[i] = c; while (st.length) { const p = st.pop(); if (!core[p]) continue; for (const q of N[p]) if (lab[q] === -1) { lab[q] = c; st.push(q); } } c++; }
+  return { lab, core, k: c }; }
+// GMM with full 2x2 covariances via EM
+function gmm(X, k, seed, iters = 100, cov = 'full') { const n = X.length, km = kmeans(X, k, seed); let pi = Array(k).fill(1 / k), mu = km.C.map(c => [...c]), S = Array.from({ length: k }, () => [1, 0, 1]); let R = [], ll = 0;
+  const pdf = (x, m, s) => { const [a, b, d] = s, det = a * d - b * b, u = x[0] - m[0], v = x[1] - m[1]; return Math.exp(-0.5 * (d * u * u - 2 * b * u * v + a * v * v) / det) / (2 * Math.PI * Math.sqrt(det)); };
+  for (let t = 0; t < iters; t++) { ll = 0; R = X.map(x => { const p = mu.map((m, j) => pi[j] * pdf(x, m, S[j])), s = p.reduce((a, b) => a + b, 0) || 1e-300; ll += Math.log(s); return p.map(v => v / s); });
+    for (let j = 0; j < k; j++) { const Nk = R.reduce((a, r) => a + r[j], 0) + 1e-12; pi[j] = Nk / n; mu[j] = [0, 1].map(q => R.reduce((a, r, i) => a + r[j] * X[i][q], 0) / Nk);
+      let a = 0, b = 0, d = 0; X.forEach((x, i) => { const u = x[0] - mu[j][0], v = x[1] - mu[j][1]; a += R[i][j] * u * u; b += R[i][j] * u * v; d += R[i][j] * v * v; }); a /= Nk; b /= Nk; d /= Nk;
+      if (cov === 'diag') b = 0; if (cov === 'spherical') { a = d = (a + d) / 2; b = 0; } S[j] = [a + 1e-6, b, d + 1e-6]; } }
+  const params = cov === 'full' ? 5 : cov === 'diag' ? 4 : 3, p = k * params + (k - 1), bic = -2 * ll + p * Math.log(n);
+  return { pi, mu, S, R, ll, bic, lab: R.map(r => r.indexOf(Math.max(...r))) }; }
+// symmetric eigen (Jacobi) → {vals desc, vecs (columns as arrays)}
+function eig(A) { const n = A.length, a = A.map(r => [...r]), V = a.map((_, i) => a.map((_, j) => +(i === j)));
+  for (let sw = 0; sw < 100; sw++) { let off = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += a[i][j] ** 2; if (off < 1e-20) break;
+    for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) { if (Math.abs(a[p][q]) < 1e-15) continue; const th = (a[q][q] - a[p][p]) / (2 * a[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1)), c = 1 / Math.sqrt(t * t + 1), s = t * c;
+      for (let k = 0; k < n; k++) { const x = a[k][p], y = a[k][q]; a[k][p] = c * x - s * y; a[k][q] = s * x + c * y; } for (let k = 0; k < n; k++) { const x = a[p][k], y = a[q][k]; a[p][k] = c * x - s * y; a[q][k] = s * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; } } }
+  const o = a.map((_, i) => i).sort((i, j) => a[j][j] - a[i][i]); return { vals: o.map(i => a[i][i]), vecs: o.map(i => V.map(r => r[i])) }; }
+function pca(X) { const n = X.length, p = X[0].length, m = Array.from({ length: p }, (_, j) => X.reduce((a, x) => a + x[j], 0) / n), Xc = X.map(x => x.map((v, j) => v - m[j]));
+  const Cv = Array.from({ length: p }, (_, i) => Array.from({ length: p }, (_, j) => Xc.reduce((a, x) => a + x[i] * x[j], 0) / (n - 1))), e = eig(Cv), tot = e.vals.reduce((a, b) => a + b, 0);
+  return { mean: m, vals: e.vals, vecs: e.vecs, ratio: e.vals.map(v => v / tot), Xc }; }
+// exact t-SNE (small n)
+function tsne(X, perp, seed, iters = 600) { const n = X.length, D = X.map(a => X.map(b => d2(a, b))), P = Array.from({ length: n }, () => new Float64Array(n)), H = Math.log(perp);
+  for (let i = 0; i < n; i++) { let lo = 0, hi = Infinity, beta = 1; for (let t = 0; t < 60; t++) { let s = 0, sd = 0; for (let j = 0; j < n; j++) if (j !== i) { const v = Math.exp(-D[i][j] * beta); P[i][j] = v; s += v; sd += D[i][j] * v; }
+      const h = Math.log(s) + beta * sd / s; if (Math.abs(h - H) < 1e-5) break; if (h > H) { lo = beta; beta = hi === Infinity ? beta * 2 : (beta + hi) / 2; } else { hi = beta; beta = (beta + lo) / 2; } }
+    let s = 0; for (let j = 0; j < n; j++) s += P[i][j]; for (let j = 0; j < n; j++) P[i][j] /= s; }
+  const Pj = Array.from({ length: n }, (_, i) => Float64Array.from({ length: n }, (_, j) => Math.max((P[i][j] + P[j][i]) / (2 * n), 1e-12)));
+  const r = rng(seed), g = gaussR(r), Y = X.map(() => [1e-2 * g(), 1e-2 * g()]), U = X.map(() => [0, 0]), lr = Math.max(n / 12 / 4, 50);
+  for (let t = 0; t < iters; t++) { const ex = t < 100 ? 12 : 1, mom = t < 100 ? 0.5 : 0.8, Q = Array.from({ length: n }, () => new Float64Array(n)); let Z = 0;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { const q = 1 / (1 + d2(Y[i], Y[j])); Q[i][j] = Q[j][i] = q; Z += 2 * q; }
+    for (let i = 0; i < n; i++) { let gx = 0, gy = 0; for (let j = 0; j < n; j++) if (j !== i) { const q = Q[i][j], m = 4 * (ex * Pj[i][j] - q / Z) * q; gx += m * (Y[i][0] - Y[j][0]); gy += m * (Y[i][1] - Y[j][1]); }
+      U[i][0] = mom * U[i][0] - lr * gx; U[i][1] = mom * U[i][1] - lr * gy; }
+    for (let i = 0; i < n; i++) { Y[i][0] += U[i][0]; Y[i][1] += U[i][1]; } }
+  let kl = 0, Z = 0; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) Z += 1 / (1 + d2(Y[i], Y[j])); for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) kl += Pj[i][j] * Math.log(Pj[i][j] / ((1 / (1 + d2(Y[i], Y[j]))) / Z));
+  return { Y, kl }; }
+// adjusted Rand index
+function ari(a, b) { const n = a.length, key = {}, ra = {}, rb = {}; a.forEach((x, i) => { const k = x + '|' + b[i]; key[k] = (key[k] || 0) + 1; ra[x] = (ra[x] || 0) + 1; rb[b[i]] = (rb[b[i]] || 0) + 1; });
+  const c2 = v => v * (v - 1) / 2, s = Object.values(key).reduce((t, v) => t + c2(v), 0), sa = Object.values(ra).reduce((t, v) => t + c2(v), 0), sb = Object.values(rb).reduce((t, v) => t + c2(v), 0), e = sa * sb / c2(n), mx = (sa + sb) / 2; return (s - e) / (mx - e); }
+function silhouette(X, lab) { const n = X.length, ks = [...new Set(lab)].filter(k => k >= 0); if (ks.length < 2) return NaN; let tot = 0, cnt = 0;
+  X.forEach((x, i) => { if (lab[i] < 0) return; const m = {}; X.forEach((y, j) => { if (j === i || lab[j] < 0) return; const d = Math.sqrt(d2(x, y)); (m[lab[j]] = m[lab[j]] || [0, 0])[0] += d; m[lab[j]][1]++; });
+    const own = m[lab[i]]; if (!own) return; const a = own[0] / own[1], b = Math.min(...ks.filter(k => k !== lab[i] && m[k]).map(k => m[k][0] / m[k][1])); tot += (b - a) / Math.max(a, b); cnt++; }); return tot / cnt; }
+// ---- maths-for-ML shared code ----
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+const normCdf = z => { const t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2), p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
+const normInv = p => { let lo = -10, hi = 10; for (let i = 0; i < 80; i++) { const m = (lo + hi) / 2; if (normCdf(m) < p) lo = m; else hi = m; } return (lo + hi) / 2; };
+// gradient-descent family on f(x,y) = 0.5(a x^2 + b y^2)
+function optPath(method, lr, a = 1, b = 10, steps = 200, start = [-4, 2]) { let p = [...start], v = [0, 0], m = [0, 0], s = [0, 0]; const path = [[...p]]; const g = q => [a * q[0], b * q[1]], f = q => 0.5 * (a * q[0] ** 2 + b * q[1] ** 2);
+  for (let t = 1; t <= steps; t++) { const gr = g(p); if (method === 'gd') p = [p[0] - lr * gr[0], p[1] - lr * gr[1]];
+    else if (method === 'mom') { v = [0.9 * v[0] + gr[0], 0.9 * v[1] + gr[1]]; p = [p[0] - lr * v[0], p[1] - lr * v[1]]; }
+    else { m = m.map((x, i) => 0.9 * x + 0.1 * gr[i]); s = s.map((x, i) => 0.999 * x + 0.001 * gr[i] ** 2); const mh = m.map(x => x / (1 - 0.9 ** t)), sh = s.map(x => x / (1 - 0.999 ** t)); p = p.map((x, i) => x - lr * mh[i] / (Math.sqrt(sh[i]) + 1e-8)); }
+    path.push([...p]); if (!isFinite(f(p)) || Math.abs(p[0]) > 1e6) break; }
+  const fs = path.map(f), hit = fs.findIndex(v => v < 1e-4); return { path, fs, hit, final: fs[fs.length - 1] }; }
+// 32x32 test "image": a delivery-scooter-ish icon made of shapes, values 0..1
+function iconImage(N = 32) { const A = []; for (let i = 0; i < N; i++) { const row = []; for (let j = 0; j < N; j++) { const x = (j + 0.5) / N, y = (i + 0.5) / N; let v = 0.08;
+  if (Math.hypot(x - 0.25, y - 0.78) < 0.11 || Math.hypot(x - 0.75, y - 0.78) < 0.11) v = 0.95;               // wheels
+  if (y > 0.5 && y < 0.66 && x > 0.2 && x < 0.82) v = 0.8;                                                      // body
+  if (x > 0.62 && x < 0.7 && y > 0.22 && y < 0.55) v = 0.7;                                                     // stem
+  if (y > 0.18 && y < 0.24 && x > 0.55 && x < 0.8) v = 0.9;                                                     // handle
+  if (x > 0.12 && x < 0.42 && y > 0.3 && y < 0.5) v = 0.6;                                                      // delivery box
+  row.push(v); } A.push(row); } return A; }
+function svd(A) { const m = A.length, n = A[0].length, AtA = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (_, j) => A.reduce((s, r) => s + r[i] * r[j], 0))), e = eig(AtA);
+  const sig = e.vals.map(v => Math.sqrt(Math.max(0, v))), V = e.vecs, U = V.map((v, k) => A.map(r => sig[k] > 1e-10 ? r.reduce((s, x, j) => s + x * v[j], 0) / sig[k] : 0)); return { sig, U, V }; }
+const lowRank = (S, k) => S.U[0].map((_, i) => S.V[0].map((_, j) => { let s = 0; for (let q = 0; q < k; q++) s += S.sig[q] * S.U[q][i] * S.V[q][j]; return s; }));
+function noisyIcon(seed = 3, s = 0.08) { const r = rng(seed), g = gaussR(r); return iconImage().map(row => row.map(v => v + s * g())); }
+
+
+// ---- deep-learning core (shared by the Deep Learning lessons) ----
+const sigm = z => 1 / (1 + Math.exp(-z));
+// delivery orders: [distance km, hour of day] → late (1) / on time (0). Late when far, or in the lunch/dinner rush.
+function lateData(seed, n) { const r = rng(seed), X = [], y = [];
+  for (let i = 0; i < n; i++) { const km = 10 * r(), hr = 10 + 13 * r(), rush = Math.exp(-((hr - 13) ** 2) / 1.2) + Math.exp(-((hr - 20.5) ** 2) / 1.6);
+    const s = km / 10 * 1.2 + 1.6 * rush - 0.95 + 0.18 * (r() - 0.5) * 2; X.push([km, hr]); y.push(s > 0 ? 1 : 0); }
+  return { X, y }; }
+// one-hidden-layer tanh MLP (H = 0 → logistic regression), sigmoid output, full-batch Adam on log loss
+function mlpTrain(X, y, H, { seed = 1, iters = 600, lr = 0.05 } = {}) {
+  const n = X.length, d = X[0].length, mu = [], sd = [];
+  for (let j = 0; j < d; j++) { const c = X.map(x => x[j]), m = c.reduce((a, b) => a + b, 0) / n; mu.push(m); sd.push(Math.sqrt(c.reduce((a, b) => a + (b - m) ** 2, 0) / n) || 1); }
+  const nx = x => x.map((v, j) => (v - mu[j]) / sd[j]), Z = X.map(nx), r = rng(seed), g = gaussR(r);
+  const h = Math.max(H, 0), P = { W1: Array.from({ length: h }, () => Array.from({ length: d }, () => g() * Math.sqrt(1 / d))), b1: Array(h).fill(0),
+    w2: Array.from({ length: h || d }, () => g() * Math.sqrt(1 / (h || d))), b2: 0 };
+  const flat = () => [...P.W1.flat(), ...P.b1, ...P.w2, P.b2], m1 = flat().map(() => 0), v1 = flat().map(() => 0);
+  const fwd = z => { if (!h) return { a: z, p: sigm(z.reduce((s, v, j) => s + v * P.w2[j], P.b2)) };
+    const a = P.W1.map((w, k) => Math.tanh(w[0] * z[0] + w[1] * z[1] + P.b1[k])); return { a, p: sigm(a.reduce((s, v, k) => s + v * P.w2[k], P.b2)) }; };
+  for (let t = 1; t <= iters; t++) {
+    const gW1 = P.W1.map(w => w.map(() => 0)), gb1 = Array(h).fill(0), gw2 = P.w2.map(() => 0); let gb2 = 0;
+    Z.forEach((z, i) => { const { a, p } = fwd(z), e = (p - y[i]) / n; gb2 += e;
+      if (!h) { z.forEach((v, j) => gw2[j] += e * v); return; }
+      a.forEach((v, k) => { gw2[k] += e * v; const dz = e * P.w2[k] * (1 - v * v); gb1[k] += dz; gW1[k][0] += dz * z[0]; gW1[k][1] += dz * z[1]; }); });
+    const G = [...gW1.flat(), ...gb1, ...gw2, gb2], th = flat();
+    const nt = th.map((p, q) => { m1[q] = 0.9 * m1[q] + 0.1 * G[q]; v1[q] = 0.999 * v1[q] + 0.001 * G[q] ** 2; return p - lr * (m1[q] / (1 - 0.9 ** t)) / (Math.sqrt(v1[q] / (1 - 0.999 ** t)) + 1e-8); });
+    let q = 0; P.W1.forEach(w => w.forEach((_, j) => w[j] = nt[q++])); for (let k = 0; k < h; k++) P.b1[k] = nt[q++]; for (let k = 0; k < P.w2.length; k++) P.w2[k] = nt[q++]; P.b2 = nt[q]; }
+  const prob = x => fwd(nx(x)).p, nParams = h ? h * d + h + h + 1 : d + 1;
+  return { prob, nParams, acc: (Xs, ys) => Xs.reduce((s, x, i) => s + ((prob(x) > 0.5 ? 1 : 0) === ys[i] ? 1 : 0), 0) / Xs.length }; }
+// heatmap of a classifier's probability on the (km, hour) plane
+function probMap(F, prob, x0, x1, y0, y1, nx = 48, ny = 26) { let s = ''; const dx = (x1 - x0) / nx, dy = (y1 - y0) / ny;
+  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) { const x = x0 + (i + 0.5) * dx, y = y0 + (j + 0.5) * dy, p = prob([x, y]);
+    s += `<rect x="${F.X(x0 + i * dx).toFixed(1)}" y="${F.Y(y0 + (j + 1) * dy).toFixed(1)}" width="${(F.X(x0 + dx) - F.X(x0) + 0.6).toFixed(1)}" height="${(F.Y(y0) - F.Y(y0 + dy) + 0.6).toFixed(1)}" fill="var(--${p > 0.5 ? 'b' : 'a'})" opacity="${(0.06 + 0.32 * Math.abs(p - 0.5) * 2).toFixed(2)}"/>`; }
+  return s; }
+// deep fully connected net at initialisation: per-layer activation std (forward) and gradient norm (backward)
+function deepStats({ L = 20, width = 128, batch = 32, std = w => Math.sqrt(1 / w), act = 'tanh', residual = false, gain = 1, seed = 5 }) {
+  const r = rng(seed), g = gaussR(r), f = { tanh: Math.tanh, relu: z => z > 0 ? z : 0, sigmoid: sigm }[act],
+    df = { tanh: z => { const a = Math.tanh(z); return 1 - a * a; }, relu: z => z > 0 ? 1 : 0, sigmoid: z => { const a = sigm(z); return a * (1 - a); } }[act];
+  const Ws = [], Zs = []; let A = Array.from({ length: batch }, () => Array.from({ length: width }, () => g()));
+  const astd = [], gnorm = [], sdv = M => { let s = 0, s2 = 0, c = 0; M.forEach(row => row.forEach(v => { s += v; s2 += v * v; c++; })); const m = s / c; return Math.sqrt(Math.max(0, s2 / c - m * m)); };
+  for (let l = 0; l < L; l++) { const sd = std(width) * gain, W = Array.from({ length: width }, () => Array.from({ length: width }, () => g() * sd)); Ws.push(W);
+    const Z = A.map(a => W.map(w => { let s = 0; for (let j = 0; j < width; j++) s += w[j] * a[j]; return s; }));
+    const An = Z.map((z, b) => z.map((v, k) => residual ? A[b][k] + f(v) : f(v))); Zs.push(Z); A = An; astd.push(sdv(A)); }
+  let D = A.map(() => Array.from({ length: width }, () => g() / Math.sqrt(width)));
+  for (let l = L - 1; l >= 0; l--) { const W = Ws[l], Z = Zs[l];
+    const Dz = D.map((d, b) => d.map((v, k) => v * df(Z[b][k])));
+    const Dprev = Dz.map(dz => { const o = Array(width).fill(0); for (let k = 0; k < width; k++) { const v = dz[k]; if (v) for (let j = 0; j < width; j++) o[j] += W[k][j] * v; } return o; });
+    D = residual ? Dprev.map((o, b) => o.map((v, j) => v + D[b][j])) : Dprev;
+    gnorm.unshift(Math.sqrt(D.reduce((s, d) => s + d.reduce((q, v) => q + v * v, 0), 0) / batch)); }
+  return { astd, gnorm }; }
+// noisy SGD on a 20-D quadratic (curvatures 0.01…1): loss = ½ Σ λ_i w_i². lrAt(t) gives the step size, noise ∝ 1/√batch.
+function noisyQuad({ steps = 1000, lrAt, batch = 32, seed = 11, noise = 1, sharpAt = () => 1 }) { const r = rng(seed), g = gaussR(r), D = 20,
+    lam = Array.from({ length: D }, (_, i) => Math.pow(10, -2 + 2 * i / (D - 1))); let w = lam.map(() => 3), loss = [], bad = false;
+  const L = () => 0.5 * lam.reduce((s, l, i) => s + l * w[i] * w[i], 0);
+  for (let t = 0; t < steps; t++) { const lr = lrAt(t), sh = sharpAt(t); w = w.map((v, i) => v - lr * (sh * lam[i] * v + noise * Math.sqrt(lam[i]) * g() / Math.sqrt(batch)));
+    const l = L(); if (!isFinite(l) || l > 1e6) { bad = true; loss.push(1e6); break; } loss.push(l); }
+  const tail = loss.slice(-Math.max(1, Math.floor(loss.length / 20)));
+  return { loss, bad, final: bad ? Infinity : tail.reduce((a, b) => a + b, 0) / tail.length }; }
+const sup = e => String(e).split('').map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'['0123456789'.indexOf(c)] || (c === '-' ? '⁻' : '')).join('');
+const sci = v => { if (!isFinite(v)) return '∞'; if (v === 0) return '0'; if (Math.abs(v) >= 0.01 && Math.abs(v) < 1e4) return v.toPrecision(3).replace(/\.?0+$/, '');
+  const [m, e] = v.toExponential(1).split('e'); return `${m} × 10${sup(+e)}`; };
+
+// ---- batch 2 additions ----
+// delivery data with adjustable rush hours / distance weight (for transfer learning: city A vs city B)
+function lateData2(seed, n, { rush = [13, 20.5], kmW = 1.2, noise = 0.18 } = {}) { const r = rng(seed), X = [], y = [];
+  for (let i = 0; i < n; i++) { const km = 10 * r(), hr = 10 + 13 * r(), ru = Math.exp(-((hr - rush[0]) ** 2) / 1.2) + Math.exp(-((hr - rush[1]) ** 2) / 1.6);
+    const s = km / 10 * kmW + 1.6 * ru - 0.95 + noise * (r() - 0.5) * 2; X.push([km, hr]); y.push(s > 0 ? 1 : 0); }
+  return { X, y }; }
+// flip a fraction of labels (label noise makes overfitting visible)
+const flipLabels = (d, frac, seed) => { const r = rng(seed); return { X: d.X, y: d.y.map(v => r() < frac ? 1 - v : v) }; };
+// richer MLP trainer: dropout, soft labels, warm start (init), frozen hidden layer, learning curve tracking, fixed feature scaling
+function mlpTrain2(X, y, H, { seed = 1, iters = 600, lr = 0.05, dropout = 0, init = null, freeze = false, track = null, every = 10, scale = null } = {}) {
+  const n = X.length, d = 2, sc = scale || (() => { const mu = [], sd = []; for (let j = 0; j < d; j++) { const c = X.map(x => x[j]), m = c.reduce((a, b) => a + b, 0) / n; mu.push(m); sd.push(Math.sqrt(c.reduce((a, b) => a + (b - m) ** 2, 0) / n) || 1); } return { mu, sd }; })();
+  const nx = x => x.map((v, j) => (v - sc.mu[j]) / sc.sd[j]), Z = X.map(nx), r = rng(seed), g = gaussR(r);
+  const P = init ? JSON.parse(JSON.stringify(init)) : { W1: Array.from({ length: H }, () => [g() * Math.sqrt(1 / d), g() * Math.sqrt(1 / d)]), b1: Array(H).fill(0), w2: Array.from({ length: H }, () => g() * Math.sqrt(1 / H)), b2: 0 };
+  const flat = () => [...P.W1.flat(), ...P.b1, ...P.w2, P.b2], m1 = flat().map(() => 0), v1 = flat().map(() => 0), keep = 1 - dropout;
+  const pred = z => { let s = P.b2; for (let k = 0; k < H; k++) s += P.w2[k] * Math.tanh(P.W1[k][0] * z[0] + P.W1[k][1] * z[1] + P.b1[k]); return sigm(s); };
+  const lossOn = (Xs, ys) => { let L = 0, c = 0; Xs.forEach((x, i) => { const p = Math.min(1 - 1e-7, Math.max(1e-7, pred(nx(x)))); L -= ys[i] * Math.log(p) + (1 - ys[i]) * Math.log(1 - p); c += ((p > 0.5 ? 1 : 0) === Math.round(ys[i])) ? 1 : 0; }); return { loss: L / Xs.length, acc: c / Xs.length }; };
+  const curve = [];
+  for (let t = 1; t <= iters; t++) {
+    const gW1 = P.W1.map(() => [0, 0]), gb1 = Array(H).fill(0), gw2 = Array(H).fill(0); let gb2 = 0;
+    Z.forEach((z, i) => { const a = Array(H), mk = Array(H); let s = P.b2;
+      for (let k = 0; k < H; k++) { a[k] = Math.tanh(P.W1[k][0] * z[0] + P.W1[k][1] * z[1] + P.b1[k]); mk[k] = dropout ? (r() < keep ? 1 / keep : 0) : 1; s += P.w2[k] * a[k] * mk[k]; }
+      const e = (sigm(s) - y[i]) / n; gb2 += e;
+      for (let k = 0; k < H; k++) { gw2[k] += e * a[k] * mk[k]; if (!freeze && mk[k]) { const dz = e * P.w2[k] * mk[k] * (1 - a[k] * a[k]); gb1[k] += dz; gW1[k][0] += dz * z[0]; gW1[k][1] += dz * z[1]; } } });
+    const G = [...gW1.flat(), ...gb1, ...gw2, gb2], th = flat();
+    const nt = th.map((p, q) => { if (freeze && q < 3 * H) return p; m1[q] = 0.9 * m1[q] + 0.1 * G[q]; v1[q] = 0.999 * v1[q] + 0.001 * G[q] ** 2; return p - lr * (m1[q] / (1 - 0.9 ** t)) / (Math.sqrt(v1[q] / (1 - 0.999 ** t)) + 1e-8); });
+    let q = 0; P.W1.forEach(w => { w[0] = nt[q++]; w[1] = nt[q++]; }); for (let k = 0; k < H; k++) P.b1[k] = nt[q++]; for (let k = 0; k < H; k++) P.w2[k] = nt[q++]; P.b2 = nt[q];
+    if (track && t % every === 0) curve.push({ t, ...lossOn(track.X, track.y), train: lossOn(X, y).loss }); }
+  return { P, sc, prob: x => pred(nx(x)), lossOn, curve, acc: (Xs, ys) => lossOn(Xs, ys).acc }; }
+// Beta(a, a) sample (Johnk's method) for mixup
+const betaS = (r, a) => { for (;;) { const x = Math.pow(r(), 1 / a), y = Math.pow(r(), 1 / a); if (x + y <= 1 && x + y > 0) return x / (x + y); } };
+// deep fully connected regression net (plain or residual), trained with Adam: returns training-loss curve
+function deepTrain({ L = 20, width = 16, residual = false, iters = 300, lr = 0.01, seed = 3, n = 64 }) {
+  const r = rng(seed), g = gaussR(r), xs = Array.from({ length: n }, (_, i) => -1 + 2 * i / (n - 1)), ys = xs.map(x => Math.sin(2.5 * Math.PI * x) * 0.8);
+  const Win = Array.from({ length: width }, () => g()), bin = Array.from({ length: width }, () => g() * 0.5);
+  const Ws = Array.from({ length: L }, () => Array.from({ length: width }, () => Array.from({ length: width }, () => g() * Math.sqrt(1 / width) * (residual ? 0.5 : 1))));
+  const bs = Array.from({ length: L }, () => Array(width).fill(0)), wout = Array.from({ length: width }, () => g() * Math.sqrt(1 / width));
+  const params = [Win, bin, ...Ws.flat(), ...bs, wout], M = params.map(p => p.map(() => 0)), V = params.map(p => p.map(() => 0)), curve = [];
+  for (let t = 1; t <= iters; t++) {
+    const gWin = Win.map(() => 0), gbin = bin.map(() => 0), gWs = Ws.map(W => W.map(row => row.map(() => 0))), gbs = bs.map(b => b.map(() => 0)), gw = wout.map(() => 0); let loss = 0;
+    xs.forEach((x, i) => { const A = [Win.map((w, k) => Math.tanh(w * x + bin[k]))], F = [];
+      for (let l = 0; l < L; l++) { const a = A[l], f = Ws[l].map((row, k) => Math.tanh(row.reduce((s, w, j) => s + w * a[j], bs[l][k]))); F.push(f); A.push(residual ? a.map((v, k) => v + f[k]) : f); }
+      const out = A[L].reduce((s, v, k) => s + v * wout[k], 0), e = out - ys[i]; loss += e * e / n;
+      let dA = wout.map(w => 2 * e * w / n); A[L].forEach((v, k) => gw[k] += 2 * e * v / n);
+      for (let l = L - 1; l >= 0; l--) { const f = F[l], a = A[l], dz = dA.map((v, k) => v * (1 - f[k] * f[k])); const dPrev = residual ? [...dA] : Array(width).fill(0);
+        for (let k = 0; k < width; k++) { gbs[l][k] += dz[k]; for (let j = 0; j < width; j++) { gWs[l][k][j] += dz[k] * a[j]; dPrev[j] += Ws[l][k][j] * dz[k]; } } dA = dPrev; }
+      const a0 = A[0]; for (let k = 0; k < width; k++) { const dz = dA[k] * (1 - a0[k] * a0[k]); gWin[k] += dz * x; gbin[k] += dz; } });
+    const grads = [gWin, gbin, ...gWs.flat(), ...gbs, gw];
+    params.forEach((p, q) => { for (let k = 0; k < p.length; k++) { M[q][k] = 0.9 * M[q][k] + 0.1 * grads[q][k]; V[q][k] = 0.999 * V[q][k] + 0.001 * grads[q][k] ** 2; p[k] -= lr * (M[q][k] / (1 - 0.9 ** t)) / (Math.sqrt(V[q][k] / (1 - 0.999 ** t)) + 1e-8); } });
+    curve.push(loss); }
+  return { curve, final: curve[curve.length - 1] }; }
+
+// ---- batch 3/4 additions: attention helpers + mini Transformer map ----
+const softmax = (a, T = 1) => { const m = Math.max(...a), e = a.map(v => Math.exp((v - m) / T)), s = e.reduce((x, y) => x + y, 0); return e.map(v => v / s); };
+const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+const SENT = ['the', 'biryani', 'was', 'cold', 'but', 'the', 'naan', 'was', 'great'];
+// mini decoder-only Transformer diagram; part ∈ embed | pe | attn | mha | norm | ffn | block | mask | out
+function miniTF(el, part) { if (!el) return; const on = p => part === p || (part === 'block' && ['attn', 'mha', 'norm', 'ffn', 'block'].includes(p)) || (part === 'mha' && p === 'attn');
+  const box = (y, h, t, p, extra = '') => `<rect x="40" y="${y}" width="200" height="${h}" rx="9" fill="${on(p) ? 'color-mix(in srgb,var(--b) 22%,var(--card))' : 'var(--bg2)'}" stroke="${on(p) ? 'var(--b)' : 'var(--line)'}" stroke-width="${on(p) ? 2.5 : 1.2}"/><text x="140" y="${y + h / 2 + 5}" text-anchor="middle" font-size="13" fill="${on(p) ? 'var(--b)' : 'var(--dim)'}" font-weight="${on(p) ? 700 : 500}">${t}</text>${extra}`;
+  let s = `<rect x="20" y="96" width="240" height="214" rx="12" fill="none" stroke="${on('block') && part === 'block' ? 'var(--b)' : 'var(--line)'}" stroke-dasharray="5 4"/><text x="268" y="206" font-size="13" fill="var(--dim)">× N</text>`;
+  s += box(330, 34, 'tokens → embeddings', 'embed') + `<text x="140" y="388" text-anchor="middle" font-size="12" fill="var(--faint)">"the biryani was …"</text>`;
+  s += `<circle cx="140" cy="314" r="0"/>` + box(270, 30, '+ positional encoding', 'pe');
+  s += box(226, 32, part === 'mask' ? 'masked self-attention' : 'multi-head self-attention', part === 'mask' ? 'mask' : 'attn') + box(190, 26, 'add & norm', 'norm') + box(142, 32, 'feed-forward (MLP)', 'ffn') + box(106, 26, 'add & norm', 'norm');
+  s += box(52, 30, 'linear → softmax', 'out') + `<text x="140" y="30" text-anchor="middle" font-size="12" fill="var(--faint)">next-token probabilities</text>`;
+  s += `<path d="M140 330V300M140 270V258M140 226V216M140 190V174M140 142V132M140 106V82" stroke="var(--dim)" stroke-width="1.5" fill="none"/>`;
+  s += `<path d="M30 287H18V203H40M30 203" stroke="var(--faint)" stroke-width="1.3" fill="none" stroke-dasharray="3 3"/><path d="M30 187H18V119H40" stroke="var(--faint)" stroke-width="1.3" fill="none" stroke-dasharray="3 3"/>`;
+  el.innerHTML = `<svg viewBox="0 0 300 400" style="width:100%;max-width:260px;display:block;margin:0 auto" role="img" aria-label="Transformer map with this lesson's part highlighted">${s}</svg>`; }
+document.querySelectorAll('[data-minitf]').forEach(el => miniTF(el, el.dataset.minitf));
+
+// ---- NLP core: restaurant-review corpus, tokeniser, stemmer, lemmas ----
+const STOP = new Set(['the', 'a', 'an', 'and', 'was', 'were', 'is', 'are', 'it', 'its', 'of', 'to', 'in', 'on', 'for', 'with', 'very', 'so', 'this', 'that', 'i', 'we', 'my', 'our', 'at', 'but', 'not', 'no', 'too', 'be', 'been', 'had', 'has', 'have', 'they', 'their', 'again', 'from', 'as']);
+const LEMMA = { was: 'be', were: 'be', is: 'be', are: 'be', ordered: 'order', ordering: 'order', orders: 'order', arrived: 'arrive', arriving: 'arrive', tasted: 'taste', tastes: 'taste', loved: 'love', loves: 'love', better: 'good', best: 'good', worse: 'bad', worst: 'bad', dishes: 'dish', curries: 'curry', delivered: 'deliver', delivery: 'delivery', spicier: 'spicy', burnt: 'burn' };
+const stem = w => { if (w.length <= 3) return w; let s = w; for (const [a, b] of [['ies', 'i'], ['ing', ''], ['edly', ''], ['ed', ''], ['ly', ''], ['ness', ''], ['es', ''], ['s', '']]) { if (s.endsWith(a) && s.length - a.length >= 3) { s = s.slice(0, -a.length) + b; break; } } return s; };
+function tokenize(text, o = {}) { let t = o.lower === false ? text : text.toLowerCase(); if (o.punct !== false) t = t.replace(/[^a-z0-9'\s-]/gi, ' ');
+  let w = t.split(/\s+/).filter(Boolean); if (o.stop) w = w.filter(x => !STOP.has(x.toLowerCase())); if (o.stem) w = w.map(stem); if (o.lemma) w = w.map(x => LEMMA[x] || x); return w; }
+// labelled reviews (1 = positive). "not" appears equally in both classes, so only word pairs reveal the meaning.
+function makeReviews(seed, n) { const R = rng(seed), pick = a => a[Math.floor(R() * a.length)];
+  const dish = ['biryani', 'pizza', 'paneer', 'noodles', 'burger', 'dosa', 'pasta', 'curry'], pos = ['great', 'delicious', 'fresh', 'tasty', 'hot', 'good'], neg = ['cold', 'soggy', 'bland', 'stale', 'burnt', 'bad'];
+  const out = []; for (let i = 0; i < n; i++) { let y = R() < 0.5 ? 1 : 0; const d = pick(dish), t = Math.floor(R() * 4); let s;
+    if (t === 0) s = `the ${d} was ${pick(y ? pos : neg)}`;
+    else if (t === 1) s = `the ${d} was not ${pick(y ? neg : pos)}`;
+    else if (t === 2) s = `the ${d} was ${pick(y ? pos : neg)} and not ${pick(y ? neg : pos)}`;
+    else s = `the ${d} was not ${pick(y ? neg : pos)} and the delivery was ${pick(['quick', 'late'])}`;
+    if (R() < 0.04) y = 1 - y; out.push({ text: s, y }); } return out; }
+const DOCS8 = ['the biryani was cold and the raita was cold', 'the biryani was spicy and the delivery was quick', 'the pizza was cold and the box was soggy', 'the pizza was hot and the delivery was quick',
+  'the biryani was soggy and the gravy was bland', 'the delivery was late and the rider was rude', 'the paneer was fresh and the naan was soft', 'the naan was soggy and the delivery was late'];
+const cosV = (a, b) => { let d = 0, na = 0, nb = 0; for (const k in a) { na += a[k] * a[k]; if (b[k]) d += a[k] * b[k]; } for (const k in b) nb += b[k] * b[k]; return na && nb ? d / Math.sqrt(na * nb) : 0; };
+const counts = toks => toks.reduce((m, t) => (m[t] = (m[t] || 0) + 1, m), {});
+// ---- structured output: valid JSON rate with and without constraints ----
+(() => { const lab = document.getElementById('labJSON'); if (!lab) return; const [rf, re, rr] = lab.querySelectorAll('input[type=range]');
+  const upd = () => { const f = +rf.value, e = +re.value / 100, k = +rr.value, m = onv(lab).dataset.v; rf.nextElementSibling.textContent = f; re.nextElementSibling.textContent = (e * 100).toFixed(1) + '%'; rr.nextElementSibling.textContent = k;
+    const v1 = m === 'cons' ? 1 : Math.pow(1 - e, f), vk = 1 - Math.pow(1 - v1, k + 1), calls = m === 'cons' ? 1 : (1 - Math.pow(1 - v1, k + 1)) / v1;
+    put(lab, 'v1', pct(v1), v1 < 0.95 ? 'bad' : 'ok'); put(lab, 'vk', pct(vk, 2)); put(lab, 'calls', fx(calls) + '×'); };
+  segs(lab, upd); [rf, re, rr].forEach(x => x.addEventListener('input', upd)); upd(); })();
+
+</script>
+</body>
+</html>

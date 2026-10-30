@@ -289,7 +289,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h2>Reading the loss in real training</h2>
   <ul>
     <li><b>Starting loss ≈ ln V:</b> a fresh model spreads probability evenly, so with Llama 3's 128,256-token vocabulary the first loss is about ln 128,256 ≈ 11.8. A much higher start means a bad initialisation of the output layer.</li>
-    <li><b>Exposure bias:</b> teacher forcing never shows the model its own mistakes, so errors can compound during generation (Bengio et al. 2015, scheduled sampling). In LLMs this is mostly addressed later, by <a href="../../llms/">post-training</a> on the model's own outputs.</li>
+    <li><b>Exposure bias:</b> teacher forcing never shows the model its own mistakes, so errors can compound during generation (Bengio et al. 2015, scheduled sampling). In LLMs this is mostly addressed later, by <a href="../">post-training</a> on the model's own outputs.</li>
     <li><b>Loss is per token, so it depends on the tokeniser:</b> compare models with different tokenisers in bits per byte or per word, not per-token loss.</li>
     <li>Variants: <b>multi-token prediction</b> (DeepSeek-V3 predicts an extra future token as an auxiliary objective), and <b>fill-in-the-middle</b> for code models.</li>
   </ul>
@@ -310,7 +310,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h3>Likely follow-ups</h3>
   <details class="qa"><summary>Why does a decoder-only model train efficiently?</summary><p>Every token is a target, and the causal mask makes all of them computable in one pass; a masked-LM like BERT only trains on the ~15% masked tokens.</p></details>
   <details class="qa"><summary>Your loss starts at 25 with a 50k vocabulary. What's wrong?</summary><p>ln 50,000 ≈ 10.8, so the initial logits are far too large: the output layer is initialised too big (or a scaling factor is missing).</p></details>
-  <details class="qa"><summary>Do you compute loss on padding or on the prompt?</summary><p>Not on padding (it's masked out). In pre-training all real tokens count; in <a href="../../llms/">SFT</a> the loss is usually masked to the response tokens only.</p></details>
+  <details class="qa"><summary>Do you compute loss on padding or on the prompt?</summary><p>Not on padding (it's masked out). In pre-training all real tokens count; in <a href="../">SFT</a> the loss is usually masked to the response tokens only.</p></details>
   <h3>What not to say</h3>
   <ul><li>"The model generates during training." Training is parallel with teacher forcing; generation is sequential.</li><li>"Lower training loss means a better model." Use held-out loss, and watch for memorisation.</li></ul>
 </section>

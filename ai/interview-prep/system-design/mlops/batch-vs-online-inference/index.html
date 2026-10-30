@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <nav class="toc" aria-label="Contents"></nav>
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Deep explainer · MLOps &amp; Production · Data &amp; Features · 2 of 2</div>
+  <div class="kicker">Deep explainer · MLOps · 2 of 6</div>
   <h1>Batch vs Online vs Streaming Inference</h1>
   <div class="meta">How and when predictions get computed: batch (precompute and look up), online (compute on request), and streaming features feeding online models; the trade-offs in freshness, latency, cost and complexity; which prediction types can be precomputed; and hybrid designs used in real systems · built from Huyen (Designing Machine Learning Systems, O'Reilly 2022, ch. 7), Zinkevich (Rules of ML), Sculley et al. (NeurIPS 2015), Hermann &amp; Del Balso (Meet Michelangelo, 2017) and Kleppmann (Designing Data-Intensive Applications, 2017) · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> <b>batch inference</b> computes predictions for every entity on a schedule (say every 6 hours) and stores them for instant lookup: cheap per prediction and simple, but predictions are as stale as the last run and you compute many that nobody asks for. <b>Online inference</b> computes a prediction when a request arrives, using the request's own inputs: needed whenever the prediction depends on things only known at request time (this customer, this address, right now), at the cost of serving infrastructure and latency. <b>Streaming</b> keeps features fresh (seconds, from event streams) for an online model, for when the world changes fast. Most production systems are hybrids: batch for slow-changing, entity-level scores; online for request-specific predictions; streaming only for the features where freshness pays.<br><span class="small">What you'll be able to do after this: choose a serving mode for a prediction, and explain the freshness / latency / cost trade-off.</span></div>
@@ -285,7 +285,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Batch features, online model:</b> slow features (restaurant history) computed in batch, fast features (current queue, traffic) via streams, both fed to an online model; keep them consistent with a <a href="../training-serving-skew-and-feature-stores/">feature store</a>.</li>
     <li><b>Fallbacks:</b> if the online service is slow or down, serve the last batch prediction or a simple heuristic, and monitor how often fallbacks fire.</li>
     <li><b>Edge / on-device</b> inference for latency or privacy, with model updates shipped periodically.</li>
-    <li><b>LLMs</b> are almost always online (inputs are open-ended); batch APIs are used for offline jobs like summarising yesterday's tickets (<a href="../../genai-apps/cost-and-latency/">cost and latency</a>).</li>
+    <li><b>LLMs</b> are almost always online (inputs are open-ended); batch APIs are used for offline jobs like summarising yesterday's tickets (<a href="../../llmops/cost-and-latency/">cost and latency</a>).</li>
   </ul>
 </section>
 

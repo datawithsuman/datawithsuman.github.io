@@ -34,8 +34,8 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 116 |
-| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [GenAI Application Design](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/) · [Agentic AI](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/) · ML System Design *(soon)* · ML Scenarios *(soon)* · [MLOps & Production](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/) | 42 |
+| 📐 [**Fundamentals**](https://datawithsuman.github.io/ai/interview-prep/fundamentals/) | [Maths for ML](https://datawithsuman.github.io/ai/interview-prep/fundamentals/maths-for-ml/) · [Machine Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/) · [Deep Learning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/deep-learning/) · [NLP Fundamentals](https://datawithsuman.github.io/ai/interview-prep/fundamentals/nlp-fundamentals/) · [LLMs](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/) | 117 |
+| 🏗️ [**AI Engineering**](https://datawithsuman.github.io/ai/interview-prep/system-design/) | [LLM Inference & Serving](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/) · [Prompt Engineering](https://datawithsuman.github.io/ai/interview-prep/system-design/prompt-engineering/) · [RAG](https://datawithsuman.github.io/ai/interview-prep/system-design/rag/) · [Agentic AI](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/) · [Applied Evals](https://datawithsuman.github.io/ai/interview-prep/system-design/applied-evals/) · [MLOps](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/) · [LLMOps](https://datawithsuman.github.io/ai/interview-prep/system-design/llmops/) · [AI/ML System Design](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-system-design/) · [AI/ML Scenario-Based Questions](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/) | 41 |
 | 📄 [**Papers**](https://datawithsuman.github.io/ai/interview-prep/papers/) | [Papers Explained](https://datawithsuman.github.io/ai/interview-prep/papers/) | 2 |
 
 
@@ -47,7 +47,7 @@ Three sections: **Fundamentals**, **AI Engineering** and **Papers**. Pick a trac
 |---|---|---|
 | [**Training/Serving Skew and Feature Stores**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/training-serving-skew-and-feature-stores/) | 🏗️ AI Engineering › MLOps | Why does a model look great offline and fail online? |
 | [**Drift Detection and Monitoring**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/drift-detection-and-monitoring/) | 🏗️ AI Engineering › MLOps | How do you know a model is degrading before labels arrive? |
-| [**LLMOps: What's Different**](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/llmops/) | 🏗️ AI Engineering › MLOps | How do you ship prompt changes without breaking things? |
+| [**LLMOps: What's Different**](https://datawithsuman.github.io/ai/interview-prep/system-design/llmops/llmops/) | 🏗️ AI Engineering › MLOps | How do you ship prompt changes without breaking things? |
 
 ---
 
@@ -302,7 +302,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>LLMs</b> · 22 lessons</summary>
+<summary><b>LLMs</b> · 23 lessons</summary>
 
 <br>
 
@@ -335,6 +335,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [DPO and Preference Optimisation](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/) | 🟡 Intermediate | 25 min |
 | 4 | [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/) | 🔴 Advanced | 25 min |
 | 5 | [Distillation: How Small Models Learn from Big Ones](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distillation/) | 🟡 Intermediate | 20 min |
+| 6 | [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/lora-and-qlora/) | 🟡 Intermediate | 25 min |
 
 **Generation**
 
@@ -358,7 +359,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 🏗️ AI Engineering
 
 <details>
-<summary><b>LLM Inference & Serving</b> · 10 lessons</summary>
+<summary><b>LLM Inference & Serving</b> · 9 lessons</summary>
 
 <br>
 
@@ -373,60 +374,38 @@ Tap a track to see its lessons, in the order to learn them.
 | 7 | [Serving Metrics and SLOs](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/serving-metrics-and-slos/) | 🟢 Beginner | 20 min |
 | 8 | [Scaling Inference: Parallelism, Replicas and Routing](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/scaling-inference/) | 🔴 Advanced | 25 min |
 | 9 | [Sizing and Cost: Cost per Million Tokens](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/sizing-and-cost/) | 🟡 Intermediate | 20 min |
-| 10 | [LLM Inference Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/llm-inference-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 
 <details>
-<summary><b>GenAI Application Design</b> · 12 lessons</summary>
+<summary><b>Prompt Engineering</b> · 3 lessons</summary>
 
 <br>
 
-**Retrieval-Augmented Generation**
-
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [RAG End to End](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-end-to-end/) | 🟢 Beginner | 25 min |
-| 2 | [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/advanced-rag/) | 🟡 Intermediate | 25 min |
-
-**Prompting & Output**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Prompt Engineering Patterns](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/prompt-engineering-patterns/) | 🟢 Beginner | 20 min |
-| 2 | [Structured Output and Constrained Decoding](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/structured-output/) | 🟡 Intermediate | 20 min |
-
-**Adapting Models**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/lora-and-qlora/) | 🟡 Intermediate | 25 min |
-| 2 | [Prompt vs RAG vs Fine-Tuning: How to Choose](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/prompt-vs-rag-vs-fine-tuning/) | 🟢 Beginner | 20 min |
-
-**Quality, Safety & Cost**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Evaluating LLM Apps](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/evaluating-llm-apps/) | 🟡 Intermediate | 25 min |
-| 2 | [Guardrails and Prompt Injection](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/guardrails-and-prompt-injection/) | 🟡 Intermediate | 25 min |
-| 3 | [Cost and Latency: Routing, Caching and Batching](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/cost-and-latency/) | 🟡 Intermediate | 20 min |
-
-**Scenarios** *(new ones added over time)*
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [GenAI App Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
-| 2 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
-| 3 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/rag-at-scale/) | 🟡 Intermediate | 8 min |
+| 1 | [Prompt Engineering Patterns](https://datawithsuman.github.io/ai/interview-prep/system-design/prompt-engineering/prompt-engineering-patterns/) | 🟢 Beginner | 20 min |
+| 2 | [Structured Output and Constrained Decoding](https://datawithsuman.github.io/ai/interview-prep/system-design/prompt-engineering/structured-output/) | 🟡 Intermediate | 20 min |
+| 3 | [Prompt vs RAG vs Fine-Tuning: How to Choose](https://datawithsuman.github.io/ai/interview-prep/system-design/prompt-engineering/prompt-vs-rag-vs-fine-tuning/) | 🟢 Beginner | 20 min |
 
 </details>
 
 <details>
-<summary><b>Agentic AI</b> · 12 lessons</summary>
+<summary><b>RAG</b> · 2 lessons</summary>
 
 <br>
 
-**Foundations**
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [RAG End to End](https://datawithsuman.github.io/ai/interview-prep/system-design/rag/rag-end-to-end/) | 🟢 Beginner | 25 min |
+| 2 | [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://datawithsuman.github.io/ai/interview-prep/system-design/rag/advanced-rag/) | 🟡 Intermediate | 25 min |
+
+</details>
+
+<details>
+<summary><b>Agentic AI</b> · 8 lessons</summary>
+
+<br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
@@ -434,90 +413,84 @@ Tap a track to see its lessons, in the order to learn them.
 | 2 | [Tool and Function Calling](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/tool-calling/) | 🟢 Beginner | 20 min |
 | 3 | [Planning and Reflection](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/planning-and-reflection/) | 🟡 Intermediate | 20 min |
 | 4 | [Memory and Context Engineering](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/memory-and-context-engineering/) | 🟡 Intermediate | 20 min |
-
-**Protocols & Systems**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [MCP: The Model Context Protocol](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/model-context-protocol/) | 🟡 Intermediate | 20 min |
-| 2 | [Multi-Agent Systems](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/multi-agent-systems/) | 🟡 Intermediate | 20 min |
-| 3 | [Agent Infrastructure: Durable Execution, Retries and Budgets](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-infrastructure/) | 🔴 Advanced | 20 min |
-
-**Quality & Safety**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Evaluating Agents](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/evaluating-agents/) | 🟡 Intermediate | 20 min |
-| 2 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-safety/) | 🟡 Intermediate | 25 min |
-| 3 | [Agentic AI Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
-
-**Agent System Design *(new ones added over time)***
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Design a Refund-Handling Agent](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/design-refund-agent/) | 🔴 Advanced | 30 min |
-
-**Agent Scenarios *(new sets added over time)***
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Agent Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 5 | [MCP: The Model Context Protocol](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/model-context-protocol/) | 🟡 Intermediate | 20 min |
+| 6 | [Multi-Agent Systems](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/multi-agent-systems/) | 🟡 Intermediate | 20 min |
+| 7 | [Agent Infrastructure: Durable Execution, Retries and Budgets](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-infrastructure/) | 🔴 Advanced | 20 min |
+| 8 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://datawithsuman.github.io/ai/interview-prep/system-design/agentic-ai/agent-safety/) | 🟡 Intermediate | 25 min |
 
 </details>
 
 <details>
-<summary><b>MLOps & Production</b> · 8 lessons</summary>
+<summary><b>Applied Evals</b> · 2 lessons</summary>
 
 <br>
 
-**Data & Features**
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Evaluating LLM Apps](https://datawithsuman.github.io/ai/interview-prep/system-design/applied-evals/evaluating-llm-apps/) | 🟡 Intermediate | 25 min |
+| 2 | [Evaluating Agents](https://datawithsuman.github.io/ai/interview-prep/system-design/applied-evals/evaluating-agents/) | 🟡 Intermediate | 20 min |
+
+</details>
+
+<details>
+<summary><b>MLOps</b> · 6 lessons</summary>
+
+<br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Training/Serving Skew and Feature Stores](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/training-serving-skew-and-feature-stores/) | 🟡 Intermediate | 20 min |
 | 2 | [Batch vs Online vs Streaming Inference](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/batch-vs-online-inference/) | 🟢 Beginner | 20 min |
-
-**Shipping Models**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Deployment Patterns: Shadow, Canary, A/B and Rollback](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/deployment-patterns/) | 🟡 Intermediate | 20 min |
-| 2 | [Experiment Tracking, Reproducibility and the Model Registry](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/experiment-tracking-and-model-registry/) | 🟢 Beginner | 20 min |
-
-**Keeping Models Healthy**
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Drift Detection and Monitoring](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/drift-detection-and-monitoring/) | 🟡 Intermediate | 25 min |
-| 2 | [Retraining Pipelines and Continuous Training](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/retraining-pipelines/) | 🟡 Intermediate | 20 min |
-
-**LLMOps *(updated as practice evolves)***
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [LLMOps: What's Different](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/llmops/) | 🟡 Intermediate | 20 min |
-
-**Practice *(new questions added over time)***
-
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [MLOps Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/mlops-practice/) | 🟡 Intermediate | 35 min |
+| 3 | [Deployment Patterns: Shadow, Canary, A/B and Rollback](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/deployment-patterns/) | 🟡 Intermediate | 20 min |
+| 4 | [Experiment Tracking, Reproducibility and the Model Registry](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/experiment-tracking-and-model-registry/) | 🟢 Beginner | 20 min |
+| 5 | [Drift Detection and Monitoring](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/drift-detection-and-monitoring/) | 🟡 Intermediate | 25 min |
+| 6 | [Retraining Pipelines and Continuous Training](https://datawithsuman.github.io/ai/interview-prep/system-design/mlops/retraining-pipelines/) | 🟡 Intermediate | 20 min |
 
 </details>
 
 <details>
-<summary><b>ML System Design</b> · coming soon</summary>
-<br>End-to-end ML systems: recommendations, search, ads, fraud, feeds and pricing.
+<summary><b>LLMOps</b> · 3 lessons</summary>
+
+<br>
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [LLMOps: What's Different](https://datawithsuman.github.io/ai/interview-prep/system-design/llmops/llmops/) | 🟡 Intermediate | 20 min |
+| 2 | [Guardrails and Prompt Injection](https://datawithsuman.github.io/ai/interview-prep/system-design/llmops/guardrails-and-prompt-injection/) | 🟡 Intermediate | 25 min |
+| 3 | [Cost and Latency: Routing, Caching and Batching](https://datawithsuman.github.io/ai/interview-prep/system-design/llmops/cost-and-latency/) | 🟡 Intermediate | 20 min |
+
 </details>
 
 <details>
-<summary><b>ML Scenarios</b> · coming soon</summary>
-<br>Real interview scenarios: your model does X, what do you do? Diagnose first, then fix.
+<summary><b>AI/ML System Design</b> · 1 lesson</summary>
+
+<br>
+
+End-to-end AI/ML system designs in interview format. New designs are added over time.
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Design a Refund-Handling Agent](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-system-design/design-refund-agent/) | 🔴 Advanced | 30 min |
+
 </details>
 
 <details>
-<summary><b>MLOps & Production</b> · coming soon</summary>
-<br>Pipelines, feature stores, deployment, monitoring, drift and A/B testing.
+<summary><b>AI/ML Scenario-Based Questions</b> · 7 lessons</summary>
+
+<br>
+
+Real-world incidents and practice questions to diagnose. New sets are added over time.
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [GenAI App Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 2 | [RAG: Wrong Answer, Where to Look First](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
+| 3 | [RAG at Scale: Slow and Wrong](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/rag-at-scale/) | 🟡 Intermediate | 8 min |
+| 4 | [Agent Scenarios: Set 1](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 5 | [LLM Inference Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/llm-inference-practice/) | 🟡 Intermediate | 35 min |
+| 6 | [Agentic AI Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
+| 7 | [MLOps Practice](https://datawithsuman.github.io/ai/interview-prep/system-design/ml-scenarios/mlops-practice/) | 🟡 Intermediate | 35 min |
+
 </details>
 
 ### 📄 Papers
@@ -565,7 +538,7 @@ datawithsuman.github.io/
     ├── lessons.js                  sections → tracks → groups → lessons (drives every menu)
     ├── kit/                        shared dark theme, fonts, navigation
     ├── fundamentals/               section page + tracks: machine-learning, deep-learning, llms
-    ├── system-design/              section page + tracks: llm-inference, genai-apps, ml-system-design, ml-scenarios, mlops
+    ├── system-design/              section page + tracks: llm-inference, prompt-engineering, rag, agentic-ai, applied-evals, mlops, llmops, ml-system-design, ml-scenarios
     ├── papers/                     papers track
     └── <old track folders>/        redirect pages, so old links keep working
 ```

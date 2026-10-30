@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <nav class="toc" aria-label="Contents"></nav>
 <div class="wrap">
 <header class="top">
-  <div class="kicker">Deep explainer · MLOps &amp; Production · Keeping Models Healthy · 1 of 2</div>
+  <div class="kicker">Deep explainer · MLOps · 5 of 6</div>
   <h1>Drift Detection and Monitoring</h1>
   <div class="meta">How to know a production model is degrading: data drift (inputs change), concept drift (the input→output relationship changes), label delay, what to monitor at each layer (system, data quality, input and prediction distributions, performance, business), drift statistics (PSI, KS test) and their pitfalls, and alerting that people won't ignore · built from Lu et al. (Learning under Concept Drift: A Review, IEEE TKDE 2019), Rabanser et al. (Failing Loudly, NeurIPS 2019), Gama et al. (A Survey on Concept Drift Adaptation, ACM CSUR 2014), Breck et al. (ML Test Score, 2017), Shankar et al. (Operationalizing ML, 2022) and Huyen (Designing ML Systems, 2022) · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> models degrade silently because the world changes. <b>Data drift</b> (covariate shift): the inputs change, e.g. longer delivery distances after expanding to suburbs. <b>Concept drift</b>: the same inputs now mean different outcomes, e.g. the same distance takes longer during monsoon traffic. The best signal is <b>performance</b> on fresh labels, but labels often arrive late (an ETA's truth is known within an hour; fraud's, after weeks of chargebacks), so you also watch <b>proxies</b>: data quality, input and prediction distributions. Drift statistics need judgement: <b>PSI</b> measures how much a distribution moved (rules of thumb: under 0.1 stable, 0.1–0.25 moderate, above 0.25 large); a <b>KS test</b> asks whether there's <i>any</i> difference, and with large samples it flags changes too small to matter. Alert on what affects the business, by slice, with owners and runbooks.<br><span class="small">What you'll be able to do after this: design a monitoring plan, explain data vs concept drift, and interpret PSI and KS sensibly.</span></div>
@@ -289,7 +289,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Slice everything</b> by city, segment and new vs existing entities; averages hide local breakage.</li>
     <li><b>Calibrate thresholds</b> on history (how often would this have fired, and did it matter?); prefer effect sizes and sustained changes over single-window p-values. Rabanser et al. found simple univariate tests with multiple-testing correction work well to detect that a shift exists; whether it matters is a separate question.</li>
     <li><b>Owners and runbooks:</b> every alert has an owner and a first step (check pipelines, compare slices, consider <a href="../retraining-pipelines/">retraining</a> or rollback).</li>
-    <li><b>LLM apps</b> add output-quality monitoring (sampled judge scores, escalations, user feedback); see <a href="../llmops/">LLMOps</a>.</li>
+    <li><b>LLM apps</b> add output-quality monitoring (sampled judge scores, escalations, user feedback); see <a href="../../llmops/llmops/">LLMOps</a>.</li>
   </ul>
 </section>
 
