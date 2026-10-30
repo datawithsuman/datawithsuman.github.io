@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG at Scale: Slow and Wrong at 10 Million Docs, Explained</title>
+  <meta name="description" content="Your RAG worked on 100 documents but broke at 10 million. Why vector search gets slow (exact vs approximate search, HNSW, IVF) and why answers get worse (look-alikes, metadata filtering, reranking), with interactive labs.">
+  <meta property="og:title" content="RAG worked on 100 docs, but broke at 10 million. Why?">
+  <meta property="og:description" content="Why RAG gets slow and wrong at scale, and the two fixes: an approximate index, then filter and rerank. An interactive lesson by @datawithsuman.">
+  <link rel="stylesheet" href="../../../kit/site.css?v=20261030b">
+  <style>
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .seg .btn { padding: 9px 13px; font-size: 14px; }
+    .seg .btn.on { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-soft); }
+    .vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .vs .card { padding: 16px 18px; }
+    .vs h3 { margin: 0 0 6px; font-size: 16px; }
+    .vs .big { font: 600 30px/1.1 var(--mono); }
+    .pic svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .docs { display: grid; gap: 8px; margin-top: 12px; }
+    .chunk { border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 15px; display: flex; gap: 12px; align-items: baseline; background: var(--surface-2); }
+    .chunk .rk { font: 600 13px/1 var(--mono); color: var(--muted); min-width: 2.2em; }
+    .chunk .meta { margin-left: auto; font: 500 12px/1 var(--mono); color: var(--muted); white-space: nowrap; }
+    .chunk.right { border-color: var(--green); background: var(--green-soft); }
+    .chunk.out { opacity: .45; }
+    .cut { border-top: 2px dashed var(--yellow); margin: 4px 0; position: relative; }
+    .cut span { position: absolute; right: 0; top: -11px; background: var(--bg); padding: 0 8px; font: 600 12px/1.6 var(--mono); color: var(--yellow); }
+    .toggles { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+    .toggles .btn.on { border-color: var(--green); color: var(--green); background: var(--green-soft); }
+    .verdict { margin-top: 12px; font-size: 15px; }
+    .src { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .src a { color: var(--blue); }
+    @media (max-width: 680px) { .vs { grid-template-columns: minmax(0, 1fr); } .chunk .meta { display: none; } }
+  </style>
+</head>
+<body data-page="lesson" data-root="../../../" data-track="genai-apps" data-lesson="rag-at-scale">
+
+<header class="top wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="chip">Scenario · GenAI</span>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <div class="kicker">RAG · AT SCALE</div>
+  <h1>Your RAG worked on 100 docs, but broke at 10 million. <span class="yellow">Why?</span></h1>
+  <p class="lead">Same code, same model, much bigger pile. Answers now take longer <em>and</em> come back wrong more often. These are two different problems with two different fixes: an index to make search fast, and filtering plus reranking to make it right.</p>
+  <p class="note" id="qual">–</p>
+</section>
+
+<section class="wrap" id="quiz">
+  <span class="step">01</span>
+  <h2>What would you <span class="yellow">check first?</span></h2>
+  <p class="sub">Tap an answer.</p>
+  <div class="quiz">
+    <button class="opt" data-ok="0" data-why="A bigger LLM makes generation slower and can't use a chunk that never reached it. The problem starts before the model.">Switch to a bigger LLM</button>
+    <button class="opt" data-ok="1" data-why="Right. Time each stage to find where the seconds go, and check whether the right chunk is still in the top results. Slow and wrong are separate problems.">Split it: time each stage, and check if the right chunk is still retrieved</button>
+    <button class="opt" data-ok="0" data-why="More chunks means a longer prompt (slower) and more look-alikes (noisier). It treats the symptom, not the cause.">Retrieve 50 chunks instead of 5</button>
+    <button class="opt" data-ok="0" data-why="Splitting into smaller chunks makes the pile even bigger. Find out which stage is failing first.">Re-chunk every document smaller</button>
+  </div>
+  <p class="quiz-why" aria-live="polite"></p>
+</section>
+
+<section class="wrap" id="slow">
+  <span class="step">02</span>
+  <h2>Why it's slow: exact search <span class="yellow">checks every vector</span></h2>
+  <p class="sub">Exact (brute-force) search compares your question with every stored vector. The work grows in step with the pile. Drag the slider.</p>
+  <div class="card lab">
+    <label class="slider"><span>Chunks in the index: <b id="nOut">–</b></span><input type="range" id="nDocs" min="0" max="7" value="1"></label>
+    <div class="readouts">
+      <div><span>similarities per query</span><b id="sims">–</b></div>
+      <div><span>multiply-adds per query</span><b id="macs">–</b></div>
+      <div><span>vectors in memory (float32)</span><b id="mem">–</b></div>
+      <div><span>work vs 100 chunks</span><b id="ratio">–</b></div>
+    </div>
+    <p class="note">Exact arithmetic for <span id="dimNote">768</span>-dimensional embeddings: one similarity = 768 multiply-adds, memory = chunks × 768 × 4 bytes. Real time also depends on hardware, batching and quantization.</p>
+  </div>
+</section>
+
+<section class="wrap" id="fast">
+  <span class="step">03</span>
+  <h2>The speed fix: <span class="yellow">an approximate index</span></h2>
+  <p class="sub">Approximate nearest neighbour (ANN) indexes skip most of the pile. IVF groups vectors into clusters and searches only the clusters nearest your question. HNSW builds a layered graph and hops from coarse to fine. Both check a small fraction of the vectors.</p>
+  <div class="card lab">
+    <div class="lab-top"><b>IVF in 2D: search only the nearest clusters</b><span class="badge info" id="probeBadge">–</span></div>
+    <div class="pic" id="pic"></div>
+    <label class="slider"><span>Clusters searched: <b id="probeOut">–</b></span><input type="range" id="probe" min="1" max="12" value="2"></label>
+    <p class="verdict" id="picNote">–</p>
+    <p class="note">Illustrative drawing. Yellow = your question, green rings = its true 5 nearest neighbours, bright dots = the vectors actually checked.</p>
+  </div>
+</section>
+
+<section class="wrap" id="catch">
+  <span class="step">04</span>
+  <h2>The catch: <span class="yellow">a little recall for a lot of speed</span></h2>
+  <p class="sub">Searching fewer clusters is faster but can miss some true neighbours. Recall@10 = how many of the true top 10 the index still finds. Move the slider and watch the trade-off.</p>
+  <div class="card lab">
+    <div class="chart" id="chart"></div>
+    <label class="slider"><span>Clusters searched (of <span id="nlist">64</span>): <b id="npOut">–</b></span><input type="range" id="np" min="0" max="11" value="3"></label>
+    <div class="readouts">
+      <div><span>vectors checked</span><b id="chk">–</b></div>
+      <div><span>recall@10</span><b id="rec">–</b></div>
+    </div>
+    <p class="note" id="toyNote">–</p>
+  </div>
+  <p class="note">HNSW has the same kind of knob (how many candidates it explores per query). In production you tune it on your own data until recall is good enough at the latency you need.</p>
+</section>
+
+<section class="wrap" id="buried">
+  <span class="step">05</span>
+  <h2>Why it's wrong: <span class="yellow">look-alikes bury the right chunk</span></h2>
+  <p class="sub">With 100 docs, there's one refund policy. With 10 million, there are old versions, drafts, other regions and copies in slide decks, and they all sound alike. Only the top 5 go to the LLM. Turn on the fixes.</p>
+  <div class="card lab">
+    <div class="lab-top"><b>Search: “What is our refund policy?”</b><span class="badge warn" id="rankBadge">–</span></div>
+    <div class="toggles">
+      <button class="btn" id="tFilter">Metadata filter: team = Support, year = 2026</button>
+      <button class="btn" id="tRerank">Rerank the candidates</button>
+    </div>
+    <div class="docs" id="results"></div>
+    <p class="verdict" id="rankNote">–</p>
+    <p class="note">Illustrative scores. The reranker reads the question and each chunk together, so it can tell “current Support policy” from a look-alike.</p>
+  </div>
+</section>
+
+<section class="wrap" id="fixes">
+  <span class="step">06</span>
+  <h2>Fixes, <span class="yellow">in order</span></h2>
+  <ol class="steps">
+    <li class="card"><span class="n">1</span><div><h3>Measure first</h3><p>Time each stage (embedding the query, vector search, reranking, the LLM call) and keep a small test set of questions with known answers and their source chunks. Then you know whether you have a speed problem, a quality problem or both.</p></div></li>
+    <li class="card"><span class="n">2</span><div><h3>Use an approximate index</h3><p>HNSW or IVF instead of brute force. Tune the search knob (clusters searched, or candidates explored) until recall@10 on your test set is high enough. Watch out: HNSW keeps graph links in memory, and IVF needs training and re-balancing as data grows.</p></div></li>
+    <li class="card"><span class="n">3</span><div><h3>Filter by metadata first</h3><p>Tag chunks with team, product, region, date and version, and restrict the search to what the question needs. It removes most look-alikes and shrinks the search. Watch out: filtering <em>after</em> the ANN search can leave fewer than k results, so prefer a database that filters during search.</p></div></li>
+    <li class="card"><span class="n">4</span><div><h3>Retrieve wide, then rerank</h3><p>Take the top 50 or so from the fast index, rerank them with a slower, sharper cross-encoder, and send only the best 5 to the LLM. Watch out: reranking adds latency, so keep the candidate list small.</p></div></li>
+    <li class="card"><span class="n">5</span><div><h3>Clean the pile</h3><p>Remove duplicates and superseded versions when you ingest. Fewer look-alikes is the cheapest quality fix of all.</p></div></li>
+  </ol>
+</section>
+
+<section class="wrap" id="mistakes">
+  <span class="step">07</span>
+  <h2>Mistakes <span class="yellow">to avoid</span></h2>
+  <div class="grid2">
+    <div class="card pad"><span class="badge bad">Common</span><ul class="muted">
+      <li>Blaming the LLM before timing the retrieval stages.</li>
+      <li>Raising top-k to 50 and sending it all to the LLM.</li>
+      <li>Switching to ANN without checking recall on real questions.</li>
+      <li>Keeping every old version of a document in the index.</li>
+    </ul></div>
+    <div class="card pad"><span class="badge good">✓ Better</span><ul class="muted">
+      <li>Measure latency per stage and retrieval recall separately.</li>
+      <li>Retrieve wide, rerank, and send a few chunks.</li>
+      <li>Tune the index knob on your own test set.</li>
+      <li>Store metadata at ingest so you can filter later.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section class="wrap" id="followups">
+  <span class="step">08</span>
+  <h2>Interview follow-ups</h2>
+  <div class="qa">
+    <details class="card"><summary><span>HNSW or IVF?</span></summary><p>HNSW usually gives high recall at low latency and handles inserts well, but uses more memory for its graph. IVF uses less memory, pairs well with compression (IVF-PQ) for very large sets, and needs a training step to learn its clusters. Many vector databases offer both; benchmark on your data.</p></details>
+    <details class="card"><summary><span>Why not just use exact search on a GPU?</span></summary><p>For a few million vectors, exact search on a GPU can be fast enough, and it gives perfect recall. As the pile and the query volume grow, the cost grows with them, so most large systems switch to an approximate index.</p></details>
+    <details class="card"><summary><span>Pre-filtering or post-filtering?</span></summary><p>Post-filtering runs the ANN search first, then drops chunks that don't match, which can leave you with fewer than k results. Pre-filtering (or filtering during the search) restricts the candidates up front, so you always get k matching chunks. Prefer filtering during search when your database supports it.</p></details>
+    <details class="card"><summary><span>Does hybrid search help here?</span></summary><p>Yes for exact terms. Keyword search (BM25) finds IDs, error codes and product names that embeddings blur together. Combine both result lists, then rerank.</p></details>
+  </div>
+</section>
+
+<section class="wrap"><div class="card recap">Index to make it fast. <span class="yellow">Filter and rerank to make it right.</span></div></section>
+
+<section class="wrap">
+  <p class="src" id="src">–</p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <span class="handle">@datawithsuman</span>
+  <span class="muted small">AI &amp; ML, explained simply</span>
+</footer>
+
+<script src="lesson.js"></script>
+<script src="../../../lessons.js?v=20261030b"></script>
+<script src="../../../kit/site.js?v=20261030b"></script>
+<script src="main.js"></script>
+</body>
+</html>
