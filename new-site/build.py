@@ -124,7 +124,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head=""):
 <body{f' class="t-{active["id"]}"' if active else ''} data-root="{root}">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head"><div class="{width} head-inner">
-<a class="brand" href="{root}">{LOGO}<span>datawithsuman</span></a>
+<a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
@@ -173,7 +173,7 @@ def home():
             ("Attention", "fundamentals/self-attention"), ("Embeddings and RAG", "fundamentals/embeddings"),
             ("Serving LLMs", "ai-engineering/prefill-vs-decode"), ("Agent design", "system-design/design-refund-agent")]
     road = "".join(f'<li><a class="chip chip-road t-{LESSONS[k]["track"]["id"]}" href="{LESSONS[k]["url"]}">{n}</a></li>' for n, k in path)
-    html = head_html("datawithsuman: learn AI until you can explain it",
+    html = head_html("AIML Rounds: learn AI until you can explain it",
                      "Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.", root)
     html += f"""<main id="main">
 <section class="page hero">
@@ -229,7 +229,7 @@ def track_page(t, idx):
         foot = f'<section class="panel next-track t-{nxt["id"]}"><div><p class="eyebrow">Next track</p><h2>Next track: {nxt["name"]}</h2><p>{nxt["desc"]}</p></div><a class="btn btn-secondary" href="../{nxt["id"]}/">Open {nxt["name"]}</a></section>'
     else:
         foot = f'<section class="panel next-track"><div><p class="eyebrow">Last track</p><h2>That is all four tracks.</h2><p>Go back to the roadmap to see what to revisit.</p></div><a class="btn btn-secondary" href="{root}#roadmap">See the roadmap</a></section>'
-    html = head_html(f'{t["name"]} · datawithsuman', t["desc"], root, t, "track")
+    html = head_html(f'{t["name"]} · AIML Rounds', t["desc"], root, t, "track")
     html += f"""<main id="main">
 <section class="band"><div class="page band-inner">
   <div>
@@ -721,7 +721,7 @@ def lesson_page(l):
         related = f'<aside class="related" aria-label="Related"><p class="eyebrow">Related</p><ul>{items}</ul></aside>'
 
     attrs = f'data-lesson="{l["key"]}"' if body or l.get("imported") or l["key"] in PLANS or l["key"] in PAPER_PLANS else ""
-    html = head_html(f'{l["title"]} · {t["name"]} · datawithsuman', l["lead"], root, t, "lesson", extra_head)
+    html = head_html(f'{l["title"]} · {t["name"]} · AIML Rounds', l["lead"], root, t, "lesson", extra_head)
     html += f"""<main id="main" class="page-wide lesson-grid" {attrs}>
 <aside class="contents" aria-label="{t['name']} contents">
   <details class="contents-box" open><summary>{t['name']} contents</summary>{contents_html(l, root)}</details>
@@ -754,7 +754,7 @@ def roadmaps_page():
     (DIST / "roadmaps").mkdir(parents=True, exist_ok=True)
     shutil.copy(ml_import.SRC.parent / "roadmaps/rag-roadmap.pdf", DIST / "roadmaps/rag-roadmap.pdf")
     desc = "One PDF per topic: the core concepts, the interview questions and a study plan. Free to download."
-    html = head_html("Free study roadmaps · datawithsuman", desc, root)
+    html = head_html("Free study roadmaps · AIML Rounds", desc, root)
     html += f"""<main id="main"><section class="page hero-roadmaps"><p class="eyebrow">ROADMAPS</p><h1 class="h1-home">Free study roadmaps.</h1><p class="lead">{desc}</p>
 <div class="card-grid"><a class="panel start" href="rag-roadmap.pdf"><span class="eyebrow">PDF</span><h3>The Complete RAG Roadmap</h3><p>30 core concepts, 24 interview questions, common mistakes, a debug-a-wrong-answer cheat sheet and a 6-week study plan.</p></a></div>
 </section></main>
@@ -766,7 +766,7 @@ def site_files():
     """What GitHub Pages needs at the site root: no Jekyll, a 404 page, the custom domain, a sitemap and robots."""
     write(".nojekyll", "")
     desc = "This page isn't here. Lessons sit under the four tracks."
-    html = head_html("Page not found · datawithsuman", desc, "/")
+    html = head_html("Page not found · AIML Rounds", desc, "/")
     html += f"""<main id="main"><section class="page hero-roadmaps"><p class="eyebrow">404</p><h1 class="h1-home">This page isn't here.</h1><p class="lead">{desc}</p>
 <div class="btn-row"><a class="btn btn-primary" href="/">Go to the home page</a><a class="btn btn-secondary" href="/#tracks">See the tracks</a></div></section></main>
 """
