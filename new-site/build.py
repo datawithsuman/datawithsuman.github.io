@@ -57,6 +57,7 @@ def track_lessons(t):
     return [l for l in ORDERED if l["track"] is t]
 
 
+BASE = "https://aimlrounds.com/"
 LOGO = '<svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg>'
 SEARCH_ICON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>'
 
@@ -95,7 +96,16 @@ def bars_html(selected):
         for i, tok in enumerate(TOKENS))
 
 
-def head_html(title, desc, root, active=None, page="home", extra_head=""):
+def preview_tags(title, desc, path):
+    """What LinkedIn, WhatsApp and search engines read. Pages with no address of their own, like the 404, skip the URL."""
+    url = "" if path is None else f'<link rel="canonical" href="{BASE}{path}">\n<meta property="og:url" content="{BASE}{path}">\n'
+    return (f'{url}<meta property="og:site_name" content="AIML Rounds">\n<meta property="og:type" content="website">\n'
+            f'<meta property="og:title" content="{esc(title)}">\n<meta property="og:description" content="{esc(desc)}">\n'
+            f'<meta property="og:image" content="{BASE}assets/og-image.png">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="627">\n'
+            '<meta name="twitter:card" content="summary_large_image">')
+
+
+def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
     if page == "home":
         nav = ('<nav class="links" aria-label="Main"><a href="#tracks">Tracks</a><a href="#how">How lessons work</a>'
                '<a href="#roadmap">Roadmap</a></nav>')
@@ -113,6 +123,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
+{preview_tags(title, desc, path)}
 <script>document.documentElement.classList.add('has-js')</script>
 <link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,7 +185,7 @@ def home():
             ("Serving LLMs", "ai-engineering/prefill-vs-decode"), ("Agent design", "system-design/design-refund-agent")]
     road = "".join(f'<li><a class="chip chip-road t-{LESSONS[k]["track"]["id"]}" href="{LESSONS[k]["url"]}">{n}</a></li>' for n, k in path)
     html = head_html("AIML Rounds: learn AI until you can explain it",
-                     "Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.", root)
+                     "Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.", root, path="")
     html += f"""<main id="main">
 <section class="page hero">
   <div class="hero-copy">
@@ -229,7 +240,7 @@ def track_page(t, idx):
         foot = f'<section class="panel next-track t-{nxt["id"]}"><div><p class="eyebrow">Next track</p><h2>Next track: {nxt["name"]}</h2><p>{nxt["desc"]}</p></div><a class="btn btn-secondary" href="../{nxt["id"]}/">Open {nxt["name"]}</a></section>'
     else:
         foot = f'<section class="panel next-track"><div><p class="eyebrow">Last track</p><h2>That is all four tracks.</h2><p>Go back to the roadmap to see what to revisit.</p></div><a class="btn btn-secondary" href="{root}#roadmap">See the roadmap</a></section>'
-    html = head_html(f'{t["name"]} · AIML Rounds', t["desc"], root, t, "track")
+    html = head_html(f'{t["name"]} · AIML Rounds', t["desc"], root, t, "track", path=f'tracks/{t["id"]}/')
     html += f"""<main id="main">
 <section class="band"><div class="page band-inner">
   <div>
@@ -721,7 +732,7 @@ def lesson_page(l):
         related = f'<aside class="related" aria-label="Related"><p class="eyebrow">Related</p><ul>{items}</ul></aside>'
 
     attrs = f'data-lesson="{l["key"]}"' if body or l.get("imported") or l["key"] in PLANS or l["key"] in PAPER_PLANS else ""
-    html = head_html(f'{l["title"]} · {t["name"]} · AIML Rounds', l["lead"], root, t, "lesson", extra_head)
+    html = head_html(f'{l["title"]} · {t["name"]} · AIML Rounds', l["lead"], root, t, "lesson", extra_head, path=l["url"])
     html += f"""<main id="main" class="page-wide lesson-grid" {attrs}>
 <aside class="contents" aria-label="{t['name']} contents">
   <details class="contents-box" open><summary>{t['name']} contents</summary>{contents_html(l, root)}</details>
@@ -754,7 +765,7 @@ def roadmaps_page():
     (DIST / "roadmaps").mkdir(parents=True, exist_ok=True)
     shutil.copy(ml_import.SRC.parent / "roadmaps/rag-roadmap.pdf", DIST / "roadmaps/rag-roadmap.pdf")
     desc = "One PDF per topic: the core concepts, the interview questions and a study plan. Free to download."
-    html = head_html("Free study roadmaps · AIML Rounds", desc, root)
+    html = head_html("Free study roadmaps · AIML Rounds", desc, root, path="roadmaps/")
     html += f"""<main id="main"><section class="page hero-roadmaps"><p class="eyebrow">ROADMAPS</p><h1 class="h1-home">Free study roadmaps.</h1><p class="lead">{desc}</p>
 <div class="card-grid"><a class="panel start" href="rag-roadmap.pdf"><span class="eyebrow">PDF</span><h3>The Complete RAG Roadmap</h3><p>30 core concepts, 24 interview questions, common mistakes, a debug-a-wrong-answer cheat sheet and a 6-week study plan.</p></a></div>
 </section></main>
@@ -772,7 +783,7 @@ def site_files():
 """
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
-    base = "https://aimlrounds.com/"
+    base = BASE
     urls = ["", "roadmaps/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
