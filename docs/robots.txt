@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://datawithsuman.github.io/sitemap.xml
+Sitemap: https://aimlrounds.com/sitemap.xml

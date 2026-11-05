@@ -763,7 +763,7 @@ def roadmaps_page():
 
 
 def site_files():
-    """What GitHub Pages needs at the site root: no Jekyll, a 404 page, a sitemap and robots."""
+    """What GitHub Pages needs at the site root: no Jekyll, a 404 page, the custom domain, a sitemap and robots."""
     write(".nojekyll", "")
     desc = "This page isn't here. Lessons sit under the four tracks."
     html = head_html("Page not found · datawithsuman", desc, "/")
@@ -771,7 +771,8 @@ def site_files():
 <div class="btn-row"><a class="btn btn-primary" href="/">Go to the home page</a><a class="btn btn-secondary" href="/#tracks">See the tracks</a></div></section></main>
 """
     write("404.html", html + foot_html("/"))
-    base = "https://datawithsuman.github.io/"
+    write("CNAME", "aimlrounds.com\n")
+    base = "https://aimlrounds.com/"
     urls = ["", "roadmaps/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
