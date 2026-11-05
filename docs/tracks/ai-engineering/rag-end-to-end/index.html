@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG End to End · AI Engineering · datawithsuman</title>
+<meta name="description" content="How do you build RAG, and how big should a chunk be?">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/lx-bba09c9d.css">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+</head>
+<body class="t-ai-engineering" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals" href="../../../tracks/fundamentals/">Fundamentals</a><a class="t-ai-engineering active" href="../../../tracks/ai-engineering/" aria-current="true">AI Engineering</a><a class="t-system-design" href="../../../tracks/system-design/">System Design</a><a class="t-papers" href="../../../tracks/papers/">Papers</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="ai-engineering/rag-end-to-end">
+<aside class="contents" aria-label="AI Engineering contents">
+  <details class="contents-box" open><summary>AI Engineering contents</summary><p class="contents-part">LLM inference and serving</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/prefill-vs-decode/"><span class="dot" data-key="ai-engineering/prefill-vs-decode" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prefill vs Decode</span></a></li><li><a href="../../../tracks/ai-engineering/llm-quantization/"><span class="dot" data-key="ai-engineering/llm-quantization" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Quantization</span></a></li><li><a href="../../../tracks/ai-engineering/kv-cache-and-pagedattention/"><span class="dot" data-key="ai-engineering/kv-cache-and-pagedattention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>KV Cache Management and PagedAttention</span></a></li><li><a href="../../../tracks/ai-engineering/continuous-batching/"><span class="dot" data-key="ai-engineering/continuous-batching" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Continuous Batching and Scheduling</span></a></li><li><a href="../../../tracks/ai-engineering/prefix-caching/"><span class="dot" data-key="ai-engineering/prefix-caching" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prefix and Prompt Caching</span></a></li><li><a href="../../../tracks/ai-engineering/speculative-decoding/"><span class="dot" data-key="ai-engineering/speculative-decoding" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Speculative Decoding</span></a></li><li><a href="../../../tracks/ai-engineering/serving-metrics-and-slos/"><span class="dot" data-key="ai-engineering/serving-metrics-and-slos" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Serving Metrics and SLOs</span></a></li><li><a href="../../../tracks/ai-engineering/scaling-inference/"><span class="dot" data-key="ai-engineering/scaling-inference" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Scaling Inference: Parallelism, Replicas and Routing</span></a></li><li><a href="../../../tracks/ai-engineering/sizing-and-cost/"><span class="dot" data-key="ai-engineering/sizing-and-cost" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Sizing and Cost: Cost per Million Tokens</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/llm-inference-practice/"><span class="dot" data-key="ai-engineering/llm-inference-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Inference Practice</span></a></li></ol></details><p class="contents-part">Prompt engineering</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/prompt-engineering-patterns/"><span class="dot" data-key="ai-engineering/prompt-engineering-patterns" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prompt Engineering Patterns</span></a></li><li><a href="../../../tracks/ai-engineering/structured-output/"><span class="dot" data-key="ai-engineering/structured-output" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Structured Output and Constrained Decoding</span></a></li><li><a href="../../../tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/"><span class="dot" data-key="ai-engineering/prompt-vs-rag-vs-fine-tuning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prompt vs RAG vs Fine-Tuning: How to Choose</span></a></li></ol></details><p class="contents-part">RAG</p><details class="mod" open><summary>Lessons</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/ai-engineering/rag-end-to-end/"><span class="dot" data-key="ai-engineering/rag-end-to-end" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG End to End</span></a></li><li><a href="../../../tracks/ai-engineering/advanced-rag/"><span class="dot" data-key="ai-engineering/advanced-rag" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG</span></a></li><li><a href="../../../tracks/ai-engineering/evaluating-llm-apps/"><span class="dot" data-key="ai-engineering/evaluating-llm-apps" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Evaluating LLM Apps</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/rag-wrong-answer/"><span class="dot" data-key="ai-engineering/rag-wrong-answer" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG: Wrong Answer, Where to Look First</span></a></li><li><a href="../../../tracks/ai-engineering/rag-at-scale/"><span class="dot" data-key="ai-engineering/rag-at-scale" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG at Scale: Slow and Wrong</span></a></li></ol></details><p class="contents-part">Agentic AI</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/what-is-an-agent/"><span class="dot" data-key="ai-engineering/what-is-an-agent" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>What Is an Agent? The ReAct Loop</span></a></li><li><a href="../../../tracks/ai-engineering/tool-calling/"><span class="dot" data-key="ai-engineering/tool-calling" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Tool and Function Calling</span></a></li><li><a href="../../../tracks/ai-engineering/planning-and-reflection/"><span class="dot" data-key="ai-engineering/planning-and-reflection" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Planning and Reflection</span></a></li><li><a href="../../../tracks/ai-engineering/memory-and-context-engineering/"><span class="dot" data-key="ai-engineering/memory-and-context-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Memory and Context Engineering</span></a></li><li><a href="../../../tracks/ai-engineering/model-context-protocol/"><span class="dot" data-key="ai-engineering/model-context-protocol" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>MCP: The Model Context Protocol</span></a></li><li><a href="../../../tracks/ai-engineering/multi-agent-systems/"><span class="dot" data-key="ai-engineering/multi-agent-systems" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Multi-Agent Systems</span></a></li><li><a href="../../../tracks/ai-engineering/agent-infrastructure/"><span class="dot" data-key="ai-engineering/agent-infrastructure" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Infrastructure: Durable Execution, Retries and Budgets</span></a></li><li><a href="../../../tracks/ai-engineering/evaluating-agents/"><span class="dot" data-key="ai-engineering/evaluating-agents" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Evaluating Agents</span></a></li><li><a href="../../../tracks/ai-engineering/agent-safety/"><span class="dot" data-key="ai-engineering/agent-safety" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Safety: Permissions, Sandboxing and the Lethal Trifecta</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/agentic-ai-practice/"><span class="dot" data-key="ai-engineering/agentic-ai-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agentic AI Practice</span></a></li><li><a href="../../../tracks/ai-engineering/agent-scenarios-set-1/"><span class="dot" data-key="ai-engineering/agent-scenarios-set-1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Scenarios: Set 1</span></a></li></ol></details><p class="contents-part">MLOps</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/training-serving-skew-and-feature-stores/"><span class="dot" data-key="ai-engineering/training-serving-skew-and-feature-stores" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Training/Serving Skew and Feature Stores</span></a></li><li><a href="../../../tracks/ai-engineering/batch-vs-online-inference/"><span class="dot" data-key="ai-engineering/batch-vs-online-inference" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Batch vs Online vs Streaming Inference</span></a></li><li><a href="../../../tracks/ai-engineering/deployment-patterns/"><span class="dot" data-key="ai-engineering/deployment-patterns" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Deployment Patterns: Shadow, Canary, A/B and Rollback</span></a></li><li><a href="../../../tracks/ai-engineering/experiment-tracking-and-model-registry/"><span class="dot" data-key="ai-engineering/experiment-tracking-and-model-registry" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Experiment Tracking, Reproducibility and the Model Registry</span></a></li><li><a href="../../../tracks/ai-engineering/drift-detection-and-monitoring/"><span class="dot" data-key="ai-engineering/drift-detection-and-monitoring" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Drift Detection and Monitoring</span></a></li><li><a href="../../../tracks/ai-engineering/retraining-pipelines/"><span class="dot" data-key="ai-engineering/retraining-pipelines" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Retraining Pipelines and Continuous Training</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/mlops-practice/"><span class="dot" data-key="ai-engineering/mlops-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>MLOps Practice</span></a></li></ol></details><p class="contents-part">LLMOps</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/llmops/"><span class="dot" data-key="ai-engineering/llmops" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLMOps: What&#x27;s Different</span></a></li><li><a href="../../../tracks/ai-engineering/guardrails-and-prompt-injection/"><span class="dot" data-key="ai-engineering/guardrails-and-prompt-injection" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Guardrails and Prompt Injection</span></a></li><li><a href="../../../tracks/ai-engineering/cost-and-latency/"><span class="dot" data-key="ai-engineering/cost-and-latency" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Cost and Latency: Routing, Caching and Batching</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/genai-scenarios-set-1/"><span class="dot" data-key="ai-engineering/genai-scenarios-set-1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>GenAI App Scenarios: Set 1</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/">AI Engineering</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/#module-4">Lessons</a><span aria-hidden="true">/</span><b aria-current="page">RAG End to End</b></nav>
+  <div class="lesson-meta"><span class="chip type-concept">Concept</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/search-and-retrieval/">Search: BM25, Dense and Hybrid Retrieval</a><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/embeddings/">Embeddings and Representation Learning</a></div>
+  <h1 class="h1-lesson">RAG End to End</h1>
+  <p class="lead">How do you build RAG, and how big should a chunk be?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">How it works</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">In practice</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="lx"><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
+<p class="sit-lead">The support assistant must answer from a 30-rule refund and service policy that changes every few weeks. Putting it all in every prompt is expensive, and a colleague&#x27;s plan to fine-tune on it would need redoing at every update. The interviewer asks:</p>
+<blockquote class="sit-q">How do you build RAG, and how big should a chunk be?</blockquote><div class="sit-more"><p class="small" style="margin-top:22px"><b>Running example (this track):</b> the food-delivery support assistant must answer from the company's 30-rule refund and service policy, which changes every few weeks.</p><section class="ch" id="c1" data-toc="1 · The problem">
+  <h3>The model doesn't know your documents</h3>
+  <p>Pre-trained knowledge is general, frozen at a cutoff and can't be cited. Putting every document in every prompt is slow and expensive, and models use <a href="../../fundamentals/long-context/">very long contexts</a> unevenly. Fine-tuning on documents teaches facts poorly and must be redone at every update. Retrieval gives the model just the passages it needs, fresh each time.</p>
+</section></div></section>
+<section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of an open-book exam. Nobody expects the student to memorise the book, but the answer can only be as good as the pages they turn to. So most of the work is indexing the book well and finding the right pages quickly.</p>
+<figure class="picture"><svg viewBox="0 0 480 104" role="img" aria-label="Offline: parse, chunk, embed and index your documents. Online: take the query, retrieve, re-rank and generate an answer from those chunks.">
+  <g font-size="13" font-weight="600" fill="var(--dim)"><text x="0" y="32">Offline</text><text x="0" y="86">Online</text></g>
+  <g fill="var(--tint)" stroke="var(--c)" stroke-width="2"><rect x="56" y="12" width="88" height="32" rx="6"/><rect x="164" y="12" width="88" height="32" rx="6"/><rect x="272" y="12" width="88" height="32" rx="6"/><rect x="380" y="12" width="96" height="32" rx="6"/><rect x="56" y="66" width="88" height="32" rx="6"/><rect x="164" y="66" width="88" height="32" rx="6"/><rect x="272" y="66" width="88" height="32" rx="6"/></g><rect x="380" y="66" width="96" height="32" rx="6" fill="var(--c)"/>
+  <path d="M144 28h20M252 28h20M360 28h20M144 82h20M252 82h20M360 82h20M428 44V55H208V66" stroke="var(--dim)" stroke-width="2"/>
+  <g font-size="14" font-weight="600" fill="var(--ink)" text-anchor="middle"><text x="100" y="33">Parse</text><text x="208" y="33">Chunk</text><text x="316" y="33">Embed</text><text x="428" y="33">Index</text><text x="100" y="87">Query</text><text x="208" y="87">Retrieve</text><text x="316" y="87">Re-rank</text><text x="428" y="87" fill="#fff">Generate</text></g>
+</svg><figcaption>The pipeline, stage by stage. Each stage has its own typical failure.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try to break it.</b> Try 1-sentence chunks, then 3, 5 and 10. Watch the questions answered and the context sent. Then try 2 sentences with a 1-sentence overlap.</p><section class="ch" id="c3" data-toc="3 · Lab">
+  <span class="pill a">Chunk the policy</span>
+  <h3>How big should a chunk be?</h3>
+  <div class="card lab" id="labChunk">
+    <div class="seg"><button data-v="1">1 sentence</button><button data-v="2">2 sentences</button><button data-v="3" class="on">3 sentences</button><button data-v="5">5 sentences</button><button data-v="10">10 sentences</button></div>
+    <div class="seg"><button data-v="0" class="on">no overlap</button><button data-v="1">1-sentence overlap</button></div>
+    <div class="stats" aria-live="polite">
+      <div class="stat"><div class="l">chunks in the index</div><div class="v info" data-o="n">–</div></div>
+      <div class="stat"><div class="l">questions whose full answer was retrieved</div><div class="v ok" data-o="rec">–</div></div>
+      <div class="stat"><div class="l">context sent per question</div><div class="v b" data-o="tok">–</div></div>
+    </div>
+    <noscript><p class="small">Without JavaScript: 1-sentence chunks retrieve the full answer for 4 of 8 questions; 3-sentence chunks for 7 of 8 at 115 tokens; 2-sentence chunks with a 1-sentence overlap for 8 of 8 at 77 tokens.</p></noscript>
+    <p class="small" style="margin:0">A 30-sentence refund and service policy; 8 customer questions, several needing two adjacent sentences (e.g. "10% refund" + "capped at ₹150"). Retrieval: TF-IDF cosine, top 3 chunks. A question counts as answered only if every sentence it needs is in the retrieved chunks. Tokens ≈ words × 1.3.</p>
+  </div>
+  <p>With <b>1-sentence</b> chunks, retrieval is precise (39 tokens per question) but only <b>4 of 8</b> questions get their full answer: answers that need two sentences ("the refund is 10%" + "capped at ₹150") are split across chunks that don't both make the top 3. Bigger chunks keep related sentences together: 3 sentences get 7 of 8 at 115 tokens, 5 get all 8 at 194, and 10-sentence chunks also get 8 of 8 but send <b>379</b> tokens of mostly irrelevant policy, which costs money and can distract the model. Adding a <b>1-sentence overlap</b> to 2-sentence chunks gets <b>all 8</b> at just <b>77 tokens</b>: boundaries no longer cut answers in half. Real systems tune chunk size and overlap on their own questions, and prefer splitting on document structure (sections, list items) over fixed counts.</p>
+</section><p class="play-why"><b>Now say why:</b> small chunks are so precise, so why do they miss half the answers?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: How it works</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">How it works</h2><section class="ch" id="summary"><h3>In one breath</h3>An LLM doesn't know your refund policy, and it was trained months ago. <b>RAG</b> fetches the relevant text at question time and puts it in the prompt, so answers are grounded, current and citable. The pipeline: <b>ingest</b> documents (parse PDFs, HTML, tables) → <b>chunk</b> them into passages → <b>embed</b> each chunk into a vector → store in a <b>vector index</b> (HNSW or IVF for approximate nearest-neighbour search) → at query time, embed the question, <b>retrieve</b> the top-k chunks (often <a href="../../fundamentals/search-and-retrieval/">hybrid with BM25</a>), and <b>generate</b> an answer from them with citations. Most quality problems are retrieval problems, and chunking is the first knob: chunks too small split answers across pieces; too large and you send lots of irrelevant text.<span class="small">What you'll be able to do after this: draw the RAG pipeline, choose chunking and index settings, and say where RAG systems fail.</span><div class="legend"><span><i style="background:var(--a)"></i>documents / chunks</span><span><i style="background:var(--b)"></i>query</span><span><i style="background:var(--ok)"></i>retrieved answer</span><span><i style="background:var(--bad)"></i>split or missed</span><span><i style="background:var(--info)"></i>numbers</span></div></section><section class="ch" id="c2" data-toc="2 · Pipeline">
+  <h3>The pipeline, stage by stage</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Stage</th><th>Choices</th><th>Typical failure</th></tr>
+    <tr><td><b>Ingest &amp; parse</b></td><td>PDF/HTML/table extraction, OCR, metadata (source, date, section)</td><td>tables garbled, headers lost, stale versions indexed</td></tr>
+    <tr><td><b>Chunk</b></td><td>fixed size (e.g. 200–800 tokens) with overlap; by structure (headings, paragraphs); semantic</td><td>answer split across chunks; chunks without context ("it is capped at…")</td></tr>
+    <tr><td><b>Embed</b></td><td>an embedding model chosen on a benchmark like MTEB and on your own queries; same model for docs and queries</td><td>domain terms, codes and names embed poorly</td></tr>
+    <tr><td><b>Index</b></td><td>HNSW graph (fast, memory-heavy), IVF/PQ (compressed, for billions); a vector DB or Postgres with pgvector</td><td>approximate search misses neighbours (recall &lt; 100%); no metadata filtering</td></tr>
+    <tr><td><b>Retrieve</b></td><td>top-k by cosine, hybrid with BM25, metadata filters (date, product), <a href="../advanced-rag/">re-ranking</a></td><td>right chunk ranked 12th; filters missing</td></tr>
+    <tr><td><b>Generate</b></td><td>prompt with chunks + instructions to answer only from them and cite sources; say "not found" otherwise</td><td>model ignores context or blends in its own knowledge</td></tr>
+  </table></div>
+  <p class="small">Barnett et al. (2024) list seven failure points, from missing content and missed top-ranked documents to answers not extracted from the context and wrong format. The two scenario pages in this track (<a href="../rag-wrong-answer/">wrong answer</a>, <a href="../rag-at-scale/">at scale</a>) practise diagnosing them.</p>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="practice">Next: In practice</button></div><div class="tab-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="-1"><div class="sec" id="practice"><h2 class="sec-title">In practice</h2><section class="ch" id="c4" data-toc="4 · Today">
+  <h3>Production defaults</h3>
+  <ul>
+    <li><b>Hybrid retrieval</b> (BM25 + dense, fused with RRF) plus a <b>re-ranker</b> on the top 20–50; see <a href="../advanced-rag/">Advanced RAG</a>.</li>
+    <li><b>Metadata</b> on every chunk (source, section, date, access rights) for filtering, citations and permission checks.</li>
+    <li><b>Index choice:</b> HNSW for up to tens of millions of vectors in memory; IVF with product quantization (FAISS) or disk-based indexes for larger corpora; keep exact search for small collections. Measure recall@k of the ANN index against exact search.</li>
+    <li><b>Prompt:</b> put the most relevant chunks first or last (models use the middle of long contexts less well), number them, and require citations; instruct the model to say when the answer isn't in the context.</li>
+    <li><b>Freshness:</b> incremental re-indexing when documents change, and remove old versions.</li>
+  </ul>
+</section><section class="ch" id="c5" data-toc="5 · Core idea">
+  <span class="pill ok">One sentence</span>
+  <h3>Retrieval quality caps answer quality</h3>
+  <p>RAG gives the model the right passages at question time; the generator can only be as good as what retrieval hands it, so most of the engineering goes into parsing, chunking, indexing and ranking.</p>
+</section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="trap-note"><h3>&quot;Just use a vector database&quot;</h3><p>It sounds right, since vector search is the part everyone talks about. But parsing, chunking and ranking matter more, and retrieval quality caps answer quality. RAG doesn't eliminate hallucination either: the model can still ignore or misread the context, so you have to measure faithfulness.</p></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
+<header class="say-head"><p class="eyebrow">Say it</p><h2>How do you build RAG, and how big should a chunk be?</h2></header>
+<ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>
+<div class="say-body">
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Say your answer out loud</h3>
+<p class="say-hint">Aim for 30 seconds. It feels different from reading it, and that's the point.</p>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="1">I've said it</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Tick what you covered</h3>
+<ul class="checks"><li><label><input type="checkbox" data-check><span>RAG retrieves passages from your own data at query time and puts them in the prompt.</span></label></li><li><label><input type="checkbox" data-check><span>So answers are grounded, up to date and citable, without retraining.</span></label></li><li><label><input type="checkbox" data-check><span>Offline: parse, chunk with some overlap or by structure, embed and store in an index with metadata.</span></label></li><li><label><input type="checkbox" data-check><span>Online: embed the query, retrieve with hybrid search and filters, then re-rank.</span></label></li><li><label><input type="checkbox" data-check><span>The prompt says to answer only from the context with citations, or to say it can&#x27;t find it.</span></label></li><li><label><input type="checkbox" data-check><span>Chunking is a trade-off: small chunks split answers, and large ones add noise and cost.</span></label></li><li><label><input type="checkbox" data-check><span>Evaluate retrieval recall and answer faithfulness separately.</span></label></li></ul>
+<div class="check-meter"><span class="meter"><i data-check-bar></i></span><span class="check-count" aria-live="polite" data-check-count></span></div>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="2">Take the follow-ups</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>The interviewer pushes further</h3>
+<div class="fu" data-fu>
+<p class="eyebrow">Follow-up 1 of 3</p>
+<p class="fu-q">How do you choose the embedding model?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu1-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu1-answer"><p>Shortlist from MTEB for retrieval in your languages and domain, then test recall@k on a few hundred real queries with labelled relevant chunks; consider cost, dimension and latency.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 2 of 3</p>
+<p class="fu-q">HNSW vs IVF-PQ?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu2-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu2-answer"><p>HNSW gives high recall and low latency but stores full vectors plus a graph in memory; IVF-PQ compresses vectors and scales to billions with some recall loss.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 3 of 3</p>
+<p class="fu-q">How do you handle access control?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="answer" id="fu3-answer"><p>Store permissions as chunk metadata and filter at retrieval time (before ranking), so users never retrieve documents they can't see.</p></div>
+</div>
+</div>
+<div class="say-step say-final" data-say-step tabindex="-1">
+<p class="say-score" data-say-score hidden></p>
+<h3>The 30-second answer</h3>
+  <p class="say30">RAG retrieves relevant passages from your own data at query time and puts them in the prompt, so answers are grounded, up to date and citable without retraining. Offline you parse documents, chunk them with some overlap or by structure, embed each chunk and store it in a vector index such as HNSW, with metadata. Online you embed the query, retrieve top-k with hybrid BM25 plus dense search and metadata filters, re-rank, and prompt the model to answer only from the context with citations or say it can't find it. Chunking is a key trade-off: small chunks split answers, large chunks add noise and cost. I'd evaluate retrieval recall and answer faithfulness separately.</p>
+  
+  
+  
+  
+  
+<details class="say-more"><summary>Go further</summary><h3>What not to say</h3>
+  <ul><li>"Just use a vector database." Parsing, chunking and ranking matter more.</li><li>"RAG eliminates hallucination." The model can still ignore or misread the context.</li></ul></details>
+</div>
+</div>
+</section>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How a retrieval-augmented generation system is built: ingestion and parsing, chunking (size, overlap, structure), embedding models, vector databases and approximate nearest-neighbour indexes (HNSW, IVF), retrieval, prompt assembly with citations, and the failure points at each stage · built from Lewis et al. (RAG, NeurIPS 2020), Karpukhin et al. (DPR, EMNLP 2020), Malkov &amp; Yashunin (HNSW, TPAMI 2018), Johnson et al. (FAISS, 2019), Muennighoff et al. (MTEB, EACL 2023), Liu et al. (Lost in the Middle, TACL 2024) and Barnett et al. (Seven Failure Points When Engineering a RAG System, 2024) · checked 29 Oct 2026</p><section class="ch" id="src" data-toc="Sources"><h3>Sources</h3>
+  <ol class="src-list">
+    <li>P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020, <a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a>; V. Karpukhin et al., "Dense Passage Retrieval", EMNLP 2020, <a href="https://arxiv.org/abs/2004.04906">arXiv:2004.04906</a>.</li>
+    <li>Y. Malkov &amp; D. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs", TPAMI 2018, <a href="https://arxiv.org/abs/1603.09320">arXiv:1603.09320</a>; J. Johnson, M. Douze &amp; H. Jégou, "Billion-scale similarity search with GPUs" (FAISS), 2019, <a href="https://arxiv.org/abs/1702.08734">arXiv:1702.08734</a>.</li>
+    <li>N. Muennighoff et al., "MTEB: Massive Text Embedding Benchmark", EACL 2023, <a href="https://arxiv.org/abs/2210.07316">arXiv:2210.07316</a>.</li>
+    <li>S. Barnett et al., "Seven Failure Points When Engineering a Retrieval Augmented Generation System", CAIN 2024, <a href="https://arxiv.org/abs/2401.05856">arXiv:2401.05856</a>; N. Liu et al., "Lost in the Middle", TACL 2024, <a href="https://arxiv.org/abs/2307.03172">arXiv:2307.03172</a>.</li>
+  </ol>
+</section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+  <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/"><span class="pn-label">Previous</span>Prompt vs RAG vs Fine-Tuning: How to Choose</a><a class="btn btn-track" rel="next" href="../../../tracks/ai-engineering/advanced-rag/"><span class="pn-label">Next</span>Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG</a></nav>
+</article>
+<div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="intuition"><a href="#play">Play</a></li><li data-panel="how"><a href="#summary">In one breath</a></li><li data-panel="how"><a href="#c2">Pipeline</a></li><li data-panel="practice"><a href="#c4">Today</a></li><li data-panel="practice"><a href="#c5">Core idea</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
+</main>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+document.querySelectorAll('.card.lab .stats, .card.lab [data-out]').forEach(el => { if (!el.closest('[aria-live]')) el.setAttribute('aria-live', 'polite'); });
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+const pct = (v, dg = 1) => isFinite(v) ? (100 * v).toFixed(dg) + '%' : '—';
+const rng = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const gaussR = r => () => { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); };
+const d2 = (a, b) => { let s = 0; for (let j = 0; j < a.length; j++) s += (a[j] - b[j]) ** 2; return s; };
+// mixture of 2-D Gaussians: spec = [{n, m:[x,y], s:[sx,sy], rho}]
+function mix(seed, spec) { const r = rng(seed), g = gaussR(r), X = [], y = [];
+  spec.forEach((c, k) => { for (let i = 0; i < c.n; i++) { const a = g(), b = g(), rho = c.rho || 0; X.push([c.m[0] + c.s[0] * a, c.m[1] + c.s[1] * (rho * a + Math.sqrt(1 - rho * rho) * b)]); y.push(k); } }); return { X, y }; }
+function moons2(seed, n, noise) { const r = rng(seed), g = gaussR(r), X = [], y = []; for (let i = 0; i < n; i++) { const c = i % 2, a = Math.PI * r(); X.push(c ? [1 - Math.cos(a) + noise * g(), 0.5 - Math.sin(a) + noise * g()] : [Math.cos(a) + noise * g(), Math.sin(a) + noise * g()]); y.push(c); } return { X, y }; }
+function uniformNoise(seed, n, box) { const r = rng(seed), X = []; for (let i = 0; i < n; i++) X.push([box[0] + (box[1] - box[0]) * r(), box[2] + (box[3] - box[2]) * r()]); return X; }
+// k-means: init 'random' or '++'; returns {C, lab, inertia, iters}
+function kmeans(X, k, seed, init = '++', maxIt = 100) { const r = rng(seed), n = X.length; let C = [];
+  if (init === '++') { C.push(X[Math.floor(r() * n)]); while (C.length < k) { const D = X.map(x => Math.min(...C.map(c => d2(x, c)))), S = D.reduce((a, b) => a + b, 0); let u = r() * S, i = 0; while (u > D[i] && i < n - 1) { u -= D[i]; i++; } C.push(X[i]); } }
+  else { const idx = new Set(); while (idx.size < k) idx.add(Math.floor(r() * n)); C = [...idx].map(i => X[i]); }
+  C = C.map(c => [...c]); let lab = Array(n).fill(-1), it = 0;
+  for (; it < maxIt; it++) { let ch = 0; X.forEach((x, i) => { let b = 0, bd = Infinity; C.forEach((c, j) => { const d = d2(x, c); if (d < bd) { bd = d; b = j; } }); if (lab[i] !== b) { lab[i] = b; ch++; } });
+    if (!ch) break; C = C.map((c, j) => { const P = X.filter((_, i) => lab[i] === j); return P.length ? c.map((_, q) => P.reduce((a, p) => a + p[q], 0) / P.length) : c; }); }
+  const inertia = X.reduce((a, x, i) => a + d2(x, C[lab[i]]), 0); return { C, lab, inertia, iters: it }; }
+// agglomerative clustering via Lance–Williams updates, O(n³); linkage single|complete|average|ward; returns merges [a,b,height,size]
+function agglo(X, linkage) { const n = X.length, ward = linkage === 'ward', D = X.map(a => X.map(b => ward ? d2(a, b) : Math.sqrt(d2(a, b)))), id = X.map((_, i) => i), sz = X.map(() => 1), alive = X.map(() => true), merges = []; let next = n;
+  for (let step = 0; step < n - 1; step++) { let bi = -1, bj = -1, bd = Infinity; for (let i = 0; i < n; i++) if (alive[i]) for (let j = i + 1; j < n; j++) if (alive[j] && D[i][j] < bd) { bd = D[i][j]; bi = i; bj = j; }
+    const ni = sz[bi], nj = sz[bj]; for (let k = 0; k < n; k++) { if (!alive[k] || k === bi || k === bj) continue; const a = D[bi][k], b = D[bj][k], nk = sz[k];
+      const v = linkage === 'single' ? Math.min(a, b) : linkage === 'complete' ? Math.max(a, b) : linkage === 'average' ? (ni * a + nj * b) / (ni + nj) : ((ni + nk) * a + (nj + nk) * b - nk * bd) / (ni + nj + nk); D[bi][k] = D[k][bi] = v; }
+    merges.push([id[bi], id[bj], ward ? Math.sqrt(bd) : bd, ni + nj]); id[bi] = next++; sz[bi] = ni + nj; alive[bj] = false; } return merges; }
+// cut the merge tree into k clusters → labels
+function cutK(merges, n, k) { const par = Array.from({ length: 2 * n }, (_, i) => i); const f = i => par[i] === i ? i : (par[i] = f(par[i]));
+  merges.slice(0, n - k).forEach(([a, b], t) => { par[f(a)] = n + t; par[f(b)] = n + t; }); const roots = {}, lab = []; for (let i = 0; i < n; i++) { const r = f(i); if (!(r in roots)) roots[r] = Object.keys(roots).length; lab.push(roots[r]); } return lab; }
+// DBSCAN → labels (−1 = noise), core flags
+function dbscan(X, eps, minPts) { const n = X.length, e2 = eps * eps, N = X.map(a => X.map((b, j) => j).filter(j => d2(a, X[j]) <= e2)), core = N.map(l => l.length >= minPts), lab = Array(n).fill(-1); let c = 0;
+  for (let i = 0; i < n; i++) { if (lab[i] !== -1 || !core[i]) continue; const st = [i]; lab[i] = c; while (st.length) { const p = st.pop(); if (!core[p]) continue; for (const q of N[p]) if (lab[q] === -1) { lab[q] = c; st.push(q); } } c++; }
+  return { lab, core, k: c }; }
+// GMM with full 2x2 covariances via EM
+function gmm(X, k, seed, iters = 100, cov = 'full') { const n = X.length, km = kmeans(X, k, seed); let pi = Array(k).fill(1 / k), mu = km.C.map(c => [...c]), S = Array.from({ length: k }, () => [1, 0, 1]); let R = [], ll = 0;
+  const pdf = (x, m, s) => { const [a, b, d] = s, det = a * d - b * b, u = x[0] - m[0], v = x[1] - m[1]; return Math.exp(-0.5 * (d * u * u - 2 * b * u * v + a * v * v) / det) / (2 * Math.PI * Math.sqrt(det)); };
+  for (let t = 0; t < iters; t++) { ll = 0; R = X.map(x => { const p = mu.map((m, j) => pi[j] * pdf(x, m, S[j])), s = p.reduce((a, b) => a + b, 0) || 1e-300; ll += Math.log(s); return p.map(v => v / s); });
+    for (let j = 0; j < k; j++) { const Nk = R.reduce((a, r) => a + r[j], 0) + 1e-12; pi[j] = Nk / n; mu[j] = [0, 1].map(q => R.reduce((a, r, i) => a + r[j] * X[i][q], 0) / Nk);
+      let a = 0, b = 0, d = 0; X.forEach((x, i) => { const u = x[0] - mu[j][0], v = x[1] - mu[j][1]; a += R[i][j] * u * u; b += R[i][j] * u * v; d += R[i][j] * v * v; }); a /= Nk; b /= Nk; d /= Nk;
+      if (cov === 'diag') b = 0; if (cov === 'spherical') { a = d = (a + d) / 2; b = 0; } S[j] = [a + 1e-6, b, d + 1e-6]; } }
+  const params = cov === 'full' ? 5 : cov === 'diag' ? 4 : 3, p = k * params + (k - 1), bic = -2 * ll + p * Math.log(n);
+  return { pi, mu, S, R, ll, bic, lab: R.map(r => r.indexOf(Math.max(...r))) }; }
+// symmetric eigen (Jacobi) → {vals desc, vecs (columns as arrays)}
+function eig(A) { const n = A.length, a = A.map(r => [...r]), V = a.map((_, i) => a.map((_, j) => +(i === j)));
+  for (let sw = 0; sw < 100; sw++) { let off = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += a[i][j] ** 2; if (off < 1e-20) break;
+    for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) { if (Math.abs(a[p][q]) < 1e-15) continue; const th = (a[q][q] - a[p][p]) / (2 * a[p][q]), t = Math.sign(th || 1) / (Math.abs(th) + Math.sqrt(th * th + 1)), c = 1 / Math.sqrt(t * t + 1), s = t * c;
+      for (let k = 0; k < n; k++) { const x = a[k][p], y = a[k][q]; a[k][p] = c * x - s * y; a[k][q] = s * x + c * y; } for (let k = 0; k < n; k++) { const x = a[p][k], y = a[q][k]; a[p][k] = c * x - s * y; a[q][k] = s * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - s * y; V[k][q] = s * x + c * y; } } }
+  const o = a.map((_, i) => i).sort((i, j) => a[j][j] - a[i][i]); return { vals: o.map(i => a[i][i]), vecs: o.map(i => V.map(r => r[i])) }; }
+function pca(X) { const n = X.length, p = X[0].length, m = Array.from({ length: p }, (_, j) => X.reduce((a, x) => a + x[j], 0) / n), Xc = X.map(x => x.map((v, j) => v - m[j]));
+  const Cv = Array.from({ length: p }, (_, i) => Array.from({ length: p }, (_, j) => Xc.reduce((a, x) => a + x[i] * x[j], 0) / (n - 1))), e = eig(Cv), tot = e.vals.reduce((a, b) => a + b, 0);
+  return { mean: m, vals: e.vals, vecs: e.vecs, ratio: e.vals.map(v => v / tot), Xc }; }
+// exact t-SNE (small n)
+function tsne(X, perp, seed, iters = 600) { const n = X.length, D = X.map(a => X.map(b => d2(a, b))), P = Array.from({ length: n }, () => new Float64Array(n)), H = Math.log(perp);
+  for (let i = 0; i < n; i++) { let lo = 0, hi = Infinity, beta = 1; for (let t = 0; t < 60; t++) { let s = 0, sd = 0; for (let j = 0; j < n; j++) if (j !== i) { const v = Math.exp(-D[i][j] * beta); P[i][j] = v; s += v; sd += D[i][j] * v; }
+      const h = Math.log(s) + beta * sd / s; if (Math.abs(h - H) < 1e-5) break; if (h > H) { lo = beta; beta = hi === Infinity ? beta * 2 : (beta + hi) / 2; } else { hi = beta; beta = (beta + lo) / 2; } }
+    let s = 0; for (let j = 0; j < n; j++) s += P[i][j]; for (let j = 0; j < n; j++) P[i][j] /= s; }
+  const Pj = Array.from({ length: n }, (_, i) => Float64Array.from({ length: n }, (_, j) => Math.max((P[i][j] + P[j][i]) / (2 * n), 1e-12)));
+  const r = rng(seed), g = gaussR(r), Y = X.map(() => [1e-2 * g(), 1e-2 * g()]), U = X.map(() => [0, 0]), lr = Math.max(n / 12 / 4, 50);
+  for (let t = 0; t < iters; t++) { const ex = t < 100 ? 12 : 1, mom = t < 100 ? 0.5 : 0.8, Q = Array.from({ length: n }, () => new Float64Array(n)); let Z = 0;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { const q = 1 / (1 + d2(Y[i], Y[j])); Q[i][j] = Q[j][i] = q; Z += 2 * q; }
+    for (let i = 0; i < n; i++) { let gx = 0, gy = 0; for (let j = 0; j < n; j++) if (j !== i) { const q = Q[i][j], m = 4 * (ex * Pj[i][j] - q / Z) * q; gx += m * (Y[i][0] - Y[j][0]); gy += m * (Y[i][1] - Y[j][1]); }
+      U[i][0] = mom * U[i][0] - lr * gx; U[i][1] = mom * U[i][1] - lr * gy; }
+    for (let i = 0; i < n; i++) { Y[i][0] += U[i][0]; Y[i][1] += U[i][1]; } }
+  let kl = 0, Z = 0; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) Z += 1 / (1 + d2(Y[i], Y[j])); for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j) kl += Pj[i][j] * Math.log(Pj[i][j] / ((1 / (1 + d2(Y[i], Y[j]))) / Z));
+  return { Y, kl }; }
+// adjusted Rand index
+function ari(a, b) { const n = a.length, key = {}, ra = {}, rb = {}; a.forEach((x, i) => { const k = x + '|' + b[i]; key[k] = (key[k] || 0) + 1; ra[x] = (ra[x] || 0) + 1; rb[b[i]] = (rb[b[i]] || 0) + 1; });
+  const c2 = v => v * (v - 1) / 2, s = Object.values(key).reduce((t, v) => t + c2(v), 0), sa = Object.values(ra).reduce((t, v) => t + c2(v), 0), sb = Object.values(rb).reduce((t, v) => t + c2(v), 0), e = sa * sb / c2(n), mx = (sa + sb) / 2; return (s - e) / (mx - e); }
+function silhouette(X, lab) { const n = X.length, ks = [...new Set(lab)].filter(k => k >= 0); if (ks.length < 2) return NaN; let tot = 0, cnt = 0;
+  X.forEach((x, i) => { if (lab[i] < 0) return; const m = {}; X.forEach((y, j) => { if (j === i || lab[j] < 0) return; const d = Math.sqrt(d2(x, y)); (m[lab[j]] = m[lab[j]] || [0, 0])[0] += d; m[lab[j]][1]++; });
+    const own = m[lab[i]]; if (!own) return; const a = own[0] / own[1], b = Math.min(...ks.filter(k => k !== lab[i] && m[k]).map(k => m[k][0] / m[k][1])); tot += (b - a) / Math.max(a, b); cnt++; }); return tot / cnt; }
+// ---- maths-for-ML shared code ----
+const clipR = (F, id) => `<clipPath id="${id}"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath>`;
+const normCdf = z => { const t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2), p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
+const normInv = p => { let lo = -10, hi = 10; for (let i = 0; i < 80; i++) { const m = (lo + hi) / 2; if (normCdf(m) < p) lo = m; else hi = m; } return (lo + hi) / 2; };
+// gradient-descent family on f(x,y) = 0.5(a x^2 + b y^2)
+function optPath(method, lr, a = 1, b = 10, steps = 200, start = [-4, 2]) { let p = [...start], v = [0, 0], m = [0, 0], s = [0, 0]; const path = [[...p]]; const g = q => [a * q[0], b * q[1]], f = q => 0.5 * (a * q[0] ** 2 + b * q[1] ** 2);
+  for (let t = 1; t <= steps; t++) { const gr = g(p); if (method === 'gd') p = [p[0] - lr * gr[0], p[1] - lr * gr[1]];
+    else if (method === 'mom') { v = [0.9 * v[0] + gr[0], 0.9 * v[1] + gr[1]]; p = [p[0] - lr * v[0], p[1] - lr * v[1]]; }
+    else { m = m.map((x, i) => 0.9 * x + 0.1 * gr[i]); s = s.map((x, i) => 0.999 * x + 0.001 * gr[i] ** 2); const mh = m.map(x => x / (1 - 0.9 ** t)), sh = s.map(x => x / (1 - 0.999 ** t)); p = p.map((x, i) => x - lr * mh[i] / (Math.sqrt(sh[i]) + 1e-8)); }
+    path.push([...p]); if (!isFinite(f(p)) || Math.abs(p[0]) > 1e6) break; }
+  const fs = path.map(f), hit = fs.findIndex(v => v < 1e-4); return { path, fs, hit, final: fs[fs.length - 1] }; }
+// 32x32 test "image": a delivery-scooter-ish icon made of shapes, values 0..1
+function iconImage(N = 32) { const A = []; for (let i = 0; i < N; i++) { const row = []; for (let j = 0; j < N; j++) { const x = (j + 0.5) / N, y = (i + 0.5) / N; let v = 0.08;
+  if (Math.hypot(x - 0.25, y - 0.78) < 0.11 || Math.hypot(x - 0.75, y - 0.78) < 0.11) v = 0.95;               // wheels
+  if (y > 0.5 && y < 0.66 && x > 0.2 && x < 0.82) v = 0.8;                                                      // body
+  if (x > 0.62 && x < 0.7 && y > 0.22 && y < 0.55) v = 0.7;                                                     // stem
+  if (y > 0.18 && y < 0.24 && x > 0.55 && x < 0.8) v = 0.9;                                                     // handle
+  if (x > 0.12 && x < 0.42 && y > 0.3 && y < 0.5) v = 0.6;                                                      // delivery box
+  row.push(v); } A.push(row); } return A; }
+function svd(A) { const m = A.length, n = A[0].length, AtA = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (_, j) => A.reduce((s, r) => s + r[i] * r[j], 0))), e = eig(AtA);
+  const sig = e.vals.map(v => Math.sqrt(Math.max(0, v))), V = e.vecs, U = V.map((v, k) => A.map(r => sig[k] > 1e-10 ? r.reduce((s, x, j) => s + x * v[j], 0) / sig[k] : 0)); return { sig, U, V }; }
+const lowRank = (S, k) => S.U[0].map((_, i) => S.V[0].map((_, j) => { let s = 0; for (let q = 0; q < k; q++) s += S.sig[q] * S.U[q][i] * S.V[q][j]; return s; }));
+function noisyIcon(seed = 3, s = 0.08) { const r = rng(seed), g = gaussR(r); return iconImage().map(row => row.map(v => v + s * g())); }
+
+
+// ---- deep-learning core (shared by the Deep Learning lessons) ----
+const sigm = z => 1 / (1 + Math.exp(-z));
+// delivery orders: [distance km, hour of day] → late (1) / on time (0). Late when far, or in the lunch/dinner rush.
+function lateData(seed, n) { const r = rng(seed), X = [], y = [];
+  for (let i = 0; i < n; i++) { const km = 10 * r(), hr = 10 + 13 * r(), rush = Math.exp(-((hr - 13) ** 2) / 1.2) + Math.exp(-((hr - 20.5) ** 2) / 1.6);
+    const s = km / 10 * 1.2 + 1.6 * rush - 0.95 + 0.18 * (r() - 0.5) * 2; X.push([km, hr]); y.push(s > 0 ? 1 : 0); }
+  return { X, y }; }
+// one-hidden-layer tanh MLP (H = 0 → logistic regression), sigmoid output, full-batch Adam on log loss
+function mlpTrain(X, y, H, { seed = 1, iters = 600, lr = 0.05 } = {}) {
+  const n = X.length, d = X[0].length, mu = [], sd = [];
+  for (let j = 0; j < d; j++) { const c = X.map(x => x[j]), m = c.reduce((a, b) => a + b, 0) / n; mu.push(m); sd.push(Math.sqrt(c.reduce((a, b) => a + (b - m) ** 2, 0) / n) || 1); }
+  const nx = x => x.map((v, j) => (v - mu[j]) / sd[j]), Z = X.map(nx), r = rng(seed), g = gaussR(r);
+  const h = Math.max(H, 0), P = { W1: Array.from({ length: h }, () => Array.from({ length: d }, () => g() * Math.sqrt(1 / d))), b1: Array(h).fill(0),
+    w2: Array.from({ length: h || d }, () => g() * Math.sqrt(1 / (h || d))), b2: 0 };
+  const flat = () => [...P.W1.flat(), ...P.b1, ...P.w2, P.b2], m1 = flat().map(() => 0), v1 = flat().map(() => 0);
+  const fwd = z => { if (!h) return { a: z, p: sigm(z.reduce((s, v, j) => s + v * P.w2[j], P.b2)) };
+    const a = P.W1.map((w, k) => Math.tanh(w[0] * z[0] + w[1] * z[1] + P.b1[k])); return { a, p: sigm(a.reduce((s, v, k) => s + v * P.w2[k], P.b2)) }; };
+  for (let t = 1; t <= iters; t++) {
+    const gW1 = P.W1.map(w => w.map(() => 0)), gb1 = Array(h).fill(0), gw2 = P.w2.map(() => 0); let gb2 = 0;
+    Z.forEach((z, i) => { const { a, p } = fwd(z), e = (p - y[i]) / n; gb2 += e;
+      if (!h) { z.forEach((v, j) => gw2[j] += e * v); return; }
+      a.forEach((v, k) => { gw2[k] += e * v; const dz = e * P.w2[k] * (1 - v * v); gb1[k] += dz; gW1[k][0] += dz * z[0]; gW1[k][1] += dz * z[1]; }); });
+    const G = [...gW1.flat(), ...gb1, ...gw2, gb2], th = flat();
+    const nt = th.map((p, q) => { m1[q] = 0.9 * m1[q] + 0.1 * G[q]; v1[q] = 0.999 * v1[q] + 0.001 * G[q] ** 2; return p - lr * (m1[q] / (1 - 0.9 ** t)) / (Math.sqrt(v1[q] / (1 - 0.999 ** t)) + 1e-8); });
+    let q = 0; P.W1.forEach(w => w.forEach((_, j) => w[j] = nt[q++])); for (let k = 0; k < h; k++) P.b1[k] = nt[q++]; for (let k = 0; k < P.w2.length; k++) P.w2[k] = nt[q++]; P.b2 = nt[q]; }
+  const prob = x => fwd(nx(x)).p, nParams = h ? h * d + h + h + 1 : d + 1;
+  return { prob, nParams, acc: (Xs, ys) => Xs.reduce((s, x, i) => s + ((prob(x) > 0.5 ? 1 : 0) === ys[i] ? 1 : 0), 0) / Xs.length }; }
+// heatmap of a classifier's probability on the (km, hour) plane
+function probMap(F, prob, x0, x1, y0, y1, nx = 48, ny = 26) { let s = ''; const dx = (x1 - x0) / nx, dy = (y1 - y0) / ny;
+  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) { const x = x0 + (i + 0.5) * dx, y = y0 + (j + 0.5) * dy, p = prob([x, y]);
+    s += `<rect x="${F.X(x0 + i * dx).toFixed(1)}" y="${F.Y(y0 + (j + 1) * dy).toFixed(1)}" width="${(F.X(x0 + dx) - F.X(x0) + 0.6).toFixed(1)}" height="${(F.Y(y0) - F.Y(y0 + dy) + 0.6).toFixed(1)}" fill="var(--${p > 0.5 ? 'b' : 'a'})" opacity="${(0.06 + 0.32 * Math.abs(p - 0.5) * 2).toFixed(2)}"/>`; }
+  return s; }
+// deep fully connected net at initialisation: per-layer activation std (forward) and gradient norm (backward)
+function deepStats({ L = 20, width = 128, batch = 32, std = w => Math.sqrt(1 / w), act = 'tanh', residual = false, gain = 1, seed = 5 }) {
+  const r = rng(seed), g = gaussR(r), f = { tanh: Math.tanh, relu: z => z > 0 ? z : 0, sigmoid: sigm }[act],
+    df = { tanh: z => { const a = Math.tanh(z); return 1 - a * a; }, relu: z => z > 0 ? 1 : 0, sigmoid: z => { const a = sigm(z); return a * (1 - a); } }[act];
+  const Ws = [], Zs = []; let A = Array.from({ length: batch }, () => Array.from({ length: width }, () => g()));
+  const astd = [], gnorm = [], sdv = M => { let s = 0, s2 = 0, c = 0; M.forEach(row => row.forEach(v => { s += v; s2 += v * v; c++; })); const m = s / c; return Math.sqrt(Math.max(0, s2 / c - m * m)); };
+  for (let l = 0; l < L; l++) { const sd = std(width) * gain, W = Array.from({ length: width }, () => Array.from({ length: width }, () => g() * sd)); Ws.push(W);
+    const Z = A.map(a => W.map(w => { let s = 0; for (let j = 0; j < width; j++) s += w[j] * a[j]; return s; }));
+    const An = Z.map((z, b) => z.map((v, k) => residual ? A[b][k] + f(v) : f(v))); Zs.push(Z); A = An; astd.push(sdv(A)); }
+  let D = A.map(() => Array.from({ length: width }, () => g() / Math.sqrt(width)));
+  for (let l = L - 1; l >= 0; l--) { const W = Ws[l], Z = Zs[l];
+    const Dz = D.map((d, b) => d.map((v, k) => v * df(Z[b][k])));
+    const Dprev = Dz.map(dz => { const o = Array(width).fill(0); for (let k = 0; k < width; k++) { const v = dz[k]; if (v) for (let j = 0; j < width; j++) o[j] += W[k][j] * v; } return o; });
+    D = residual ? Dprev.map((o, b) => o.map((v, j) => v + D[b][j])) : Dprev;
+    gnorm.unshift(Math.sqrt(D.reduce((s, d) => s + d.reduce((q, v) => q + v * v, 0), 0) / batch)); }
+  return { astd, gnorm }; }
+// noisy SGD on a 20-D quadratic (curvatures 0.01…1): loss = ½ Σ λ_i w_i². lrAt(t) gives the step size, noise ∝ 1/√batch.
+function noisyQuad({ steps = 1000, lrAt, batch = 32, seed = 11, noise = 1, sharpAt = () => 1 }) { const r = rng(seed), g = gaussR(r), D = 20,
+    lam = Array.from({ length: D }, (_, i) => Math.pow(10, -2 + 2 * i / (D - 1))); let w = lam.map(() => 3), loss = [], bad = false;
+  const L = () => 0.5 * lam.reduce((s, l, i) => s + l * w[i] * w[i], 0);
+  for (let t = 0; t < steps; t++) { const lr = lrAt(t), sh = sharpAt(t); w = w.map((v, i) => v - lr * (sh * lam[i] * v + noise * Math.sqrt(lam[i]) * g() / Math.sqrt(batch)));
+    const l = L(); if (!isFinite(l) || l > 1e6) { bad = true; loss.push(1e6); break; } loss.push(l); }
+  const tail = loss.slice(-Math.max(1, Math.floor(loss.length / 20)));
+  return { loss, bad, final: bad ? Infinity : tail.reduce((a, b) => a + b, 0) / tail.length }; }
+const sup = e => String(e).split('').map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'['0123456789'.indexOf(c)] || (c === '-' ? '⁻' : '')).join('');
+const sci = v => { if (!isFinite(v)) return '∞'; if (v === 0) return '0'; if (Math.abs(v) >= 0.01 && Math.abs(v) < 1e4) return v.toPrecision(3).replace(/\.?0+$/, '');
+  const [m, e] = v.toExponential(1).split('e'); return `${m} × 10${sup(+e)}`; };
+
+// ---- batch 2 additions ----
+// delivery data with adjustable rush hours / distance weight (for transfer learning: city A vs city B)
+function lateData2(seed, n, { rush = [13, 20.5], kmW = 1.2, noise = 0.18 } = {}) { const r = rng(seed), X = [], y = [];
+  for (let i = 0; i < n; i++) { const km = 10 * r(), hr = 10 + 13 * r(), ru = Math.exp(-((hr - rush[0]) ** 2) / 1.2) + Math.exp(-((hr - rush[1]) ** 2) / 1.6);
+    const s = km / 10 * kmW + 1.6 * ru - 0.95 + noise * (r() - 0.5) * 2; X.push([km, hr]); y.push(s > 0 ? 1 : 0); }
+  return { X, y }; }
+// flip a fraction of labels (label noise makes overfitting visible)
+const flipLabels = (d, frac, seed) => { const r = rng(seed); return { X: d.X, y: d.y.map(v => r() < frac ? 1 - v : v) }; };
+// richer MLP trainer: dropout, soft labels, warm start (init), frozen hidden layer, learning curve tracking, fixed feature scaling
+function mlpTrain2(X, y, H, { seed = 1, iters = 600, lr = 0.05, dropout = 0, init = null, freeze = false, track = null, every = 10, scale = null } = {}) {
+  const n = X.length, d = 2, sc = scale || (() => { const mu = [], sd = []; for (let j = 0; j < d; j++) { const c = X.map(x => x[j]), m = c.reduce((a, b) => a + b, 0) / n; mu.push(m); sd.push(Math.sqrt(c.reduce((a, b) => a + (b - m) ** 2, 0) / n) || 1); } return { mu, sd }; })();
+  const nx = x => x.map((v, j) => (v - sc.mu[j]) / sc.sd[j]), Z = X.map(nx), r = rng(seed), g = gaussR(r);
+  const P = init ? JSON.parse(JSON.stringify(init)) : { W1: Array.from({ length: H }, () => [g() * Math.sqrt(1 / d), g() * Math.sqrt(1 / d)]), b1: Array(H).fill(0), w2: Array.from({ length: H }, () => g() * Math.sqrt(1 / H)), b2: 0 };
+  const flat = () => [...P.W1.flat(), ...P.b1, ...P.w2, P.b2], m1 = flat().map(() => 0), v1 = flat().map(() => 0), keep = 1 - dropout;
+  const pred = z => { let s = P.b2; for (let k = 0; k < H; k++) s += P.w2[k] * Math.tanh(P.W1[k][0] * z[0] + P.W1[k][1] * z[1] + P.b1[k]); return sigm(s); };
+  const lossOn = (Xs, ys) => { let L = 0, c = 0; Xs.forEach((x, i) => { const p = Math.min(1 - 1e-7, Math.max(1e-7, pred(nx(x)))); L -= ys[i] * Math.log(p) + (1 - ys[i]) * Math.log(1 - p); c += ((p > 0.5 ? 1 : 0) === Math.round(ys[i])) ? 1 : 0; }); return { loss: L / Xs.length, acc: c / Xs.length }; };
+  const curve = [];
+  for (let t = 1; t <= iters; t++) {
+    const gW1 = P.W1.map(() => [0, 0]), gb1 = Array(H).fill(0), gw2 = Array(H).fill(0); let gb2 = 0;
+    Z.forEach((z, i) => { const a = Array(H), mk = Array(H); let s = P.b2;
+      for (let k = 0; k < H; k++) { a[k] = Math.tanh(P.W1[k][0] * z[0] + P.W1[k][1] * z[1] + P.b1[k]); mk[k] = dropout ? (r() < keep ? 1 / keep : 0) : 1; s += P.w2[k] * a[k] * mk[k]; }
+      const e = (sigm(s) - y[i]) / n; gb2 += e;
+      for (let k = 0; k < H; k++) { gw2[k] += e * a[k] * mk[k]; if (!freeze && mk[k]) { const dz = e * P.w2[k] * mk[k] * (1 - a[k] * a[k]); gb1[k] += dz; gW1[k][0] += dz * z[0]; gW1[k][1] += dz * z[1]; } } });
+    const G = [...gW1.flat(), ...gb1, ...gw2, gb2], th = flat();
+    const nt = th.map((p, q) => { if (freeze && q < 3 * H) return p; m1[q] = 0.9 * m1[q] + 0.1 * G[q]; v1[q] = 0.999 * v1[q] + 0.001 * G[q] ** 2; return p - lr * (m1[q] / (1 - 0.9 ** t)) / (Math.sqrt(v1[q] / (1 - 0.999 ** t)) + 1e-8); });
+    let q = 0; P.W1.forEach(w => { w[0] = nt[q++]; w[1] = nt[q++]; }); for (let k = 0; k < H; k++) P.b1[k] = nt[q++]; for (let k = 0; k < H; k++) P.w2[k] = nt[q++]; P.b2 = nt[q];
+    if (track && t % every === 0) curve.push({ t, ...lossOn(track.X, track.y), train: lossOn(X, y).loss }); }
+  return { P, sc, prob: x => pred(nx(x)), lossOn, curve, acc: (Xs, ys) => lossOn(Xs, ys).acc }; }
+// Beta(a, a) sample (Johnk's method) for mixup
+const betaS = (r, a) => { for (;;) { const x = Math.pow(r(), 1 / a), y = Math.pow(r(), 1 / a); if (x + y <= 1 && x + y > 0) return x / (x + y); } };
+// deep fully connected regression net (plain or residual), trained with Adam: returns training-loss curve
+function deepTrain({ L = 20, width = 16, residual = false, iters = 300, lr = 0.01, seed = 3, n = 64 }) {
+  const r = rng(seed), g = gaussR(r), xs = Array.from({ length: n }, (_, i) => -1 + 2 * i / (n - 1)), ys = xs.map(x => Math.sin(2.5 * Math.PI * x) * 0.8);
+  const Win = Array.from({ length: width }, () => g()), bin = Array.from({ length: width }, () => g() * 0.5);
+  const Ws = Array.from({ length: L }, () => Array.from({ length: width }, () => Array.from({ length: width }, () => g() * Math.sqrt(1 / width) * (residual ? 0.5 : 1))));
+  const bs = Array.from({ length: L }, () => Array(width).fill(0)), wout = Array.from({ length: width }, () => g() * Math.sqrt(1 / width));
+  const params = [Win, bin, ...Ws.flat(), ...bs, wout], M = params.map(p => p.map(() => 0)), V = params.map(p => p.map(() => 0)), curve = [];
+  for (let t = 1; t <= iters; t++) {
+    const gWin = Win.map(() => 0), gbin = bin.map(() => 0), gWs = Ws.map(W => W.map(row => row.map(() => 0))), gbs = bs.map(b => b.map(() => 0)), gw = wout.map(() => 0); let loss = 0;
+    xs.forEach((x, i) => { const A = [Win.map((w, k) => Math.tanh(w * x + bin[k]))], F = [];
+      for (let l = 0; l < L; l++) { const a = A[l], f = Ws[l].map((row, k) => Math.tanh(row.reduce((s, w, j) => s + w * a[j], bs[l][k]))); F.push(f); A.push(residual ? a.map((v, k) => v + f[k]) : f); }
+      const out = A[L].reduce((s, v, k) => s + v * wout[k], 0), e = out - ys[i]; loss += e * e / n;
+      let dA = wout.map(w => 2 * e * w / n); A[L].forEach((v, k) => gw[k] += 2 * e * v / n);
+      for (let l = L - 1; l >= 0; l--) { const f = F[l], a = A[l], dz = dA.map((v, k) => v * (1 - f[k] * f[k])); const dPrev = residual ? [...dA] : Array(width).fill(0);
+        for (let k = 0; k < width; k++) { gbs[l][k] += dz[k]; for (let j = 0; j < width; j++) { gWs[l][k][j] += dz[k] * a[j]; dPrev[j] += Ws[l][k][j] * dz[k]; } } dA = dPrev; }
+      const a0 = A[0]; for (let k = 0; k < width; k++) { const dz = dA[k] * (1 - a0[k] * a0[k]); gWin[k] += dz * x; gbin[k] += dz; } });
+    const grads = [gWin, gbin, ...gWs.flat(), ...gbs, gw];
+    params.forEach((p, q) => { for (let k = 0; k < p.length; k++) { M[q][k] = 0.9 * M[q][k] + 0.1 * grads[q][k]; V[q][k] = 0.999 * V[q][k] + 0.001 * grads[q][k] ** 2; p[k] -= lr * (M[q][k] / (1 - 0.9 ** t)) / (Math.sqrt(V[q][k] / (1 - 0.999 ** t)) + 1e-8); } });
+    curve.push(loss); }
+  return { curve, final: curve[curve.length - 1] }; }
+
+// ---- batch 3/4 additions: attention helpers + mini Transformer map ----
+const softmax = (a, T = 1) => { const m = Math.max(...a), e = a.map(v => Math.exp((v - m) / T)), s = e.reduce((x, y) => x + y, 0); return e.map(v => v / s); };
+const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+const SENT = ['the', 'biryani', 'was', 'cold', 'but', 'the', 'naan', 'was', 'great'];
+// mini decoder-only Transformer diagram; part ∈ embed | pe | attn | mha | norm | ffn | block | mask | out
+function miniTF(el, part) { if (!el) return; const on = p => part === p || (part === 'block' && ['attn', 'mha', 'norm', 'ffn', 'block'].includes(p)) || (part === 'mha' && p === 'attn');
+  const box = (y, h, t, p, extra = '') => `<rect x="40" y="${y}" width="200" height="${h}" rx="9" fill="${on(p) ? 'color-mix(in srgb,var(--b) 22%,var(--card))' : 'var(--bg2)'}" stroke="${on(p) ? 'var(--b)' : 'var(--line)'}" stroke-width="${on(p) ? 2.5 : 1.2}"/><text x="140" y="${y + h / 2 + 5}" text-anchor="middle" font-size="13" fill="${on(p) ? 'var(--b)' : 'var(--dim)'}" font-weight="${on(p) ? 700 : 500}">${t}</text>${extra}`;
+  let s = `<rect x="20" y="96" width="240" height="214" rx="12" fill="none" stroke="${on('block') && part === 'block' ? 'var(--b)' : 'var(--line)'}" stroke-dasharray="5 4"/><text x="268" y="206" font-size="13" fill="var(--dim)">× N</text>`;
+  s += box(330, 34, 'tokens → embeddings', 'embed') + `<text x="140" y="388" text-anchor="middle" font-size="12" fill="var(--faint)">"the biryani was …"</text>`;
+  s += `<circle cx="140" cy="314" r="0"/>` + box(270, 30, '+ positional encoding', 'pe');
+  s += box(226, 32, part === 'mask' ? 'masked self-attention' : 'multi-head self-attention', part === 'mask' ? 'mask' : 'attn') + box(190, 26, 'add & norm', 'norm') + box(142, 32, 'feed-forward (MLP)', 'ffn') + box(106, 26, 'add & norm', 'norm');
+  s += box(52, 30, 'linear → softmax', 'out') + `<text x="140" y="30" text-anchor="middle" font-size="12" fill="var(--faint)">next-token probabilities</text>`;
+  s += `<path d="M140 330V300M140 270V258M140 226V216M140 190V174M140 142V132M140 106V82" stroke="var(--dim)" stroke-width="1.5" fill="none"/>`;
+  s += `<path d="M30 287H18V203H40M30 203" stroke="var(--faint)" stroke-width="1.3" fill="none" stroke-dasharray="3 3"/><path d="M30 187H18V119H40" stroke="var(--faint)" stroke-width="1.3" fill="none" stroke-dasharray="3 3"/>`;
+  el.innerHTML = `<svg viewBox="0 0 300 400" style="width:100%;max-width:260px;display:block;margin:0 auto" role="img" aria-label="Transformer map with this lesson's part highlighted">${s}</svg>`; }
+document.querySelectorAll('[data-minitf]').forEach(el => miniTF(el, el.dataset.minitf));
+
+// ---- NLP core: restaurant-review corpus, tokeniser, stemmer, lemmas ----
+const STOP = new Set(['the', 'a', 'an', 'and', 'was', 'were', 'is', 'are', 'it', 'its', 'of', 'to', 'in', 'on', 'for', 'with', 'very', 'so', 'this', 'that', 'i', 'we', 'my', 'our', 'at', 'but', 'not', 'no', 'too', 'be', 'been', 'had', 'has', 'have', 'they', 'their', 'again', 'from', 'as']);
+const LEMMA = { was: 'be', were: 'be', is: 'be', are: 'be', ordered: 'order', ordering: 'order', orders: 'order', arrived: 'arrive', arriving: 'arrive', tasted: 'taste', tastes: 'taste', loved: 'love', loves: 'love', better: 'good', best: 'good', worse: 'bad', worst: 'bad', dishes: 'dish', curries: 'curry', delivered: 'deliver', delivery: 'delivery', spicier: 'spicy', burnt: 'burn' };
+const stem = w => { if (w.length <= 3) return w; let s = w; for (const [a, b] of [['ies', 'i'], ['ing', ''], ['edly', ''], ['ed', ''], ['ly', ''], ['ness', ''], ['es', ''], ['s', '']]) { if (s.endsWith(a) && s.length - a.length >= 3) { s = s.slice(0, -a.length) + b; break; } } return s; };
+function tokenize(text, o = {}) { let t = o.lower === false ? text : text.toLowerCase(); if (o.punct !== false) t = t.replace(/[^a-z0-9'\s-]/gi, ' ');
+  let w = t.split(/\s+/).filter(Boolean); if (o.stop) w = w.filter(x => !STOP.has(x.toLowerCase())); if (o.stem) w = w.map(stem); if (o.lemma) w = w.map(x => LEMMA[x] || x); return w; }
+// labelled reviews (1 = positive). "not" appears equally in both classes, so only word pairs reveal the meaning.
+function makeReviews(seed, n) { const R = rng(seed), pick = a => a[Math.floor(R() * a.length)];
+  const dish = ['biryani', 'pizza', 'paneer', 'noodles', 'burger', 'dosa', 'pasta', 'curry'], pos = ['great', 'delicious', 'fresh', 'tasty', 'hot', 'good'], neg = ['cold', 'soggy', 'bland', 'stale', 'burnt', 'bad'];
+  const out = []; for (let i = 0; i < n; i++) { let y = R() < 0.5 ? 1 : 0; const d = pick(dish), t = Math.floor(R() * 4); let s;
+    if (t === 0) s = `the ${d} was ${pick(y ? pos : neg)}`;
+    else if (t === 1) s = `the ${d} was not ${pick(y ? neg : pos)}`;
+    else if (t === 2) s = `the ${d} was ${pick(y ? pos : neg)} and not ${pick(y ? neg : pos)}`;
+    else s = `the ${d} was not ${pick(y ? neg : pos)} and the delivery was ${pick(['quick', 'late'])}`;
+    if (R() < 0.04) y = 1 - y; out.push({ text: s, y }); } return out; }
+const DOCS8 = ['the biryani was cold and the raita was cold', 'the biryani was spicy and the delivery was quick', 'the pizza was cold and the box was soggy', 'the pizza was hot and the delivery was quick',
+  'the biryani was soggy and the gravy was bland', 'the delivery was late and the rider was rude', 'the paneer was fresh and the naan was soft', 'the naan was soggy and the delivery was late'];
+const cosV = (a, b) => { let d = 0, na = 0, nb = 0; for (const k in a) { na += a[k] * a[k]; if (b[k]) d += a[k] * b[k]; } for (const k in b) nb += b[k] * b[k]; return na && nb ? d / Math.sqrt(na * nb) : 0; };
+const counts = toks => toks.reduce((m, t) => (m[t] = (m[t] || 0) + 1, m), {});
+// ---- RAG: chunk size vs retrieval recall and context size ----
+(() => { const lab = document.getElementById('labChunk'); if (!lab) return;
+  const S = ['Refunds are available for orders that arrive more than 30 minutes late.', 'The refund for a late order is 10 percent of the order value.', 'Late-delivery refunds are capped at 150 rupees per order.',
+    'Orders that arrive cold or damaged qualify for a full refund.', 'To claim a full refund, the customer must upload a photo within 2 hours of delivery.', 'Refunds are credited to the original payment method within 5 to 7 working days.',
+    'Wallet refunds are instant.', 'Cancellations are free until the restaurant accepts the order.', 'After the restaurant accepts, a cancellation fee of 50 percent applies.', 'If the restaurant cancels, the customer receives a full refund automatically.',
+    'Gold members get free delivery on orders above 199 rupees.', 'Gold membership costs 149 rupees per month.', 'Gold members also receive priority support.', 'Delivery partners are tipped through the app after delivery.',
+    'Tips go entirely to the delivery partner.', 'Allergy information is provided by restaurants and is not verified by the app.', 'Customers with severe allergies should contact the restaurant directly.', 'Bulk orders above 20 items must be placed 24 hours in advance.',
+    'Bulk orders are not eligible for late-delivery refunds.', 'Promo codes cannot be combined with Gold discounts.', 'Each promo code can be used once per account.', 'Expired promo codes are not reactivated.',
+    'Missing items are refunded in full after the restaurant confirms.', 'The restaurant has 4 hours to confirm a missing-item claim.', 'If the restaurant does not respond within 4 hours, the claim is approved automatically.', 'Support is available from 8 am to 2 am every day.',
+    'Outside support hours, customers can raise a ticket in the app.', 'Tickets are answered within 12 hours.', 'Account deletion removes order history after 30 days.', 'Deleted accounts cannot be restored after 30 days.'];
+  const QS = [['how much refund for a late order', [1, 2]], ['what refund if my food arrived cold', [3, 4]], ['when will my refund reach my card', [5]], ['can i cancel after the restaurant accepts', [8]],
+    ['restaurant has not confirmed my missing item', [23, 24]], ['do bulk orders get late refunds', [18]], ['how much is gold membership and free delivery minimum', [10, 11]], ['can i use a promo code with gold', [19]]];
+  const tok = t => tokenize(t, { stop: true, stem: true });
+  const upd = () => { const sz = +onv(lab, 0).dataset.v, ov = +onv(lab, 1).dataset.v, k = 3, ch = [];
+    for (let i = 0; i < S.length; i += Math.max(1, sz - ov)) { ch.push([...Array(sz)].map((_, j) => i + j).filter(j => j < S.length)); if (i + sz >= S.length) break; }
+    const docs = ch.map(c => tok(c.map(j => S[j]).join(' '))), df = {}; docs.forEach(d => new Set(d).forEach(w => df[w] = (df[w] || 0) + 1));
+    const vec = t => { const v = {}; t.forEach(w => v[w] = (v[w] || 0) + Math.log(1 + docs.length / (df[w] || 0.5))); return v; };
+    const cos = (a, b) => { let d = 0, na = 0, nb = 0; for (const w in a) { na += a[w] ** 2; if (b[w]) d += a[w] * b[w]; } for (const w in b) nb += b[w] ** 2; return d / (Math.sqrt(na * nb) || 1); };
+    const DV = docs.map(vec); let hit = 0, toks = 0;
+    QS.forEach(([q, ans]) => { const qv = vec(tok(q)), top = DV.map((d, i) => [cos(qv, d), i]).sort((a, b) => b[0] - a[0]).slice(0, k).map(x => x[1]);
+      const got = new Set(top.flatMap(i => ch[i])); if (ans.every(a => got.has(a))) hit++; toks += top.reduce((s, i) => s + ch[i].reduce((t, j) => t + Math.round(S[j].split(' ').length * 1.3), 0), 0); });
+    put(lab, 'n', String(ch.length)); put(lab, 'rec', `${hit} of ${QS.length}`, hit === QS.length ? 'ok' : 'bad'); put(lab, 'tok', Math.round(toks / QS.length) + ' tokens'); };
+  segs(lab, upd); upd(); })();
+
+</script>
+<footer class="site-foot"><div class="page-wide foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="../../../roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js"></script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

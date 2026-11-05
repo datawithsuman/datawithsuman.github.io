@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>datawithsuman: learn AI until you can explain it</title>
+<meta name="description" content="Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+
+</head>
+<body data-root="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page head-inner">
+<a class="brand" href=""><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="links" aria-label="Main"><a href="#tracks">Tracks</a><a href="#how">How lessons work</a><a href="#roadmap">Roadmap</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main">
+<section class="page hero">
+  <div class="hero-copy">
+    <p class="eyebrow">AI · ML · SYSTEM DESIGN</p>
+    <h1 class="h1-home">Learn AI until you can explain it.</h1>
+    <p class="lead">Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.</p>
+    <div class="btn-row"><a class="btn btn-primary" href="tracks/fundamentals/vectors-and-cosine-similarity/">Start with Maths for ML</a><a class="btn btn-secondary" href="#roadmap">See the roadmap</a></div>
+  </div>
+  <div class="panel preview t-fundamentals">
+    <span class="chip type-track">Fundamentals</span>
+    <h2>Self-attention</h2>
+    <p>Click a word. See what it looks at.</p>
+    <div class="tokens" aria-label="Example sentence: The cat chased its tail, with its selected"><span class="token" style="--w:0.041">The</span><span class="token is-top" style="--w:1">cat</span><span class="token" style="--w:0.083">chased</span><span class="token selected" style="--w:0.186">its</span><span class="token" style="--w:0.124">tail</span></div>
+    <div class="pills"><span class="tag">Intuition</span><span class="tag">Play</span><span class="tag">Maths</span><span class="tag">Say it</span></div>
+  </div>
+</section>
+<section class="page section"><h2>Where are you starting from?</h2><div class="card-grid"><a class="panel start dark" href="tracks/ai-engineering/llm-inference-practice/"><span class="eyebrow">Interview in 2 weeks</span><h3>Interview sprint</h3><p>Go straight to the interview rounds, then fill the gaps they show.</p></a><a class="panel start" href="tracks/fundamentals/"><span class="eyebrow">Starting from zero</span><h3>Fundamentals path</h3><p>Begin with the maths, then regression, and build up to neural nets one idea at a time.</p></a><a class="panel start" href="tracks/system-design/"><span class="eyebrow">I build production systems</span><h3>System design path</h3><p>Start with how real AI systems are designed, from requirements to rollout.</p></a></div></section>
+<section class="page section" id="tracks"><h2>Four tracks, one colour each</h2>
+<p class="section-lead">The colour follows you into every lesson, so you always know which track you are in.</p>
+<div class="card-grid"><a class="panel track-card t-fundamentals" href="tracks/fundamentals/"><span class="track-top"><span class="chip track-num">01</span><span class="status-note">Start here</span></span><h3>Fundamentals</h3><p>The core ideas behind every model, from maths and regression to neural nets.</p><ul><li>Vectors, gradients and probability</li><li>Linear and logistic regression</li><li>Trees and boosting</li><li>Neural nets and backprop</li></ul></a><a class="panel track-card t-ai-engineering" href="tracks/ai-engineering/"><span class="track-top"><span class="chip track-num">02</span><span class="status-note">Needs Fundamentals</span></span><h3>AI Engineering</h3><p>How LLM applications are served, built and run, from inference to retrieval and agents.</p><ul><li>LLM inference and serving</li><li>Prompts and RAG</li><li>Agents and tool use</li><li>MLOps and LLMOps</li></ul></a><a class="panel track-card t-system-design" href="tracks/system-design/"><span class="track-top"><span class="chip track-num">03</span><span class="status-note">Can run in parallel</span></span><h3>System Design</h3><p>How AI and ML systems are designed, from requirements to rollout.</p><ul><li>Design a refund agent</li><li>Design a recommendation system</li></ul></a><a class="panel track-card t-papers" href="tracks/papers/"><span class="track-top"><span class="chip track-num">04</span><span class="status-note">Any time</span></span><h3>Papers</h3><p>Important papers taught step by step: the gist, the method, the results and why they matter.</p><ul><li>Attention Is All You Need</li><li>Harness Engineering</li><li>Context Language Models</li></ul></a></div></section>
+<section class="page section" id="how"><h2>Every lesson starts and ends the same way.</h2>
+<p class="section-lead">The labels change with the track, and a lesson only shows what it really has. Each tab shows one part, so open only what you need. Paper lessons have their own path: gist, method, results and why it matters.</p>
+<ol class="grid-tiles"><li class="panel tile"><span class="eyebrow">1</span><h3>The situation</h3><p>The question an interviewer would actually ask.</p></li><li class="panel tile"><span class="eyebrow">2</span><h3>The idea</h3><p>One analogy, one picture.</p></li><li class="panel tile"><span class="eyebrow">3</span><h3>Play</h3><p>Change an input, try to break it, then say why.</p></li><li class="panel tile"><span class="eyebrow">4</span><h3>How it works</h3><p>ML: the formula. System design: the diagram. Papers: the method.</p></li><li class="panel tile"><span class="eyebrow">5</span><h3>In practice</h3><p>The steps and when to use it. System design gets capacity maths.</p></li><li class="panel tile"><span class="eyebrow">6</span><h3>The answer that sounds right</h3><p>The tempting wrong answer, and why it fails.</p></li><li class="panel tile dark"><span class="eyebrow">7</span><h3>Say it</h3><p>Say it out loud, tick what you covered, take the follow-ups.</p></li></ol></section>
+<section class="page section" id="roadmap"><div class="panel road-card"><h2>Not sure what's next? Follow the path.</h2>
+<ol class="road"><li><a class="chip chip-road t-fundamentals" href="tracks/fundamentals/vectors-and-cosine-similarity/">Maths for ML</a></li><li><a class="chip chip-road t-fundamentals" href="tracks/fundamentals/linear-regression/">Regression</a></li><li><a class="chip chip-road t-fundamentals" href="tracks/fundamentals/perceptron-to-mlp/">Neural nets</a></li><li><a class="chip chip-road t-fundamentals" href="tracks/fundamentals/self-attention/">Attention</a></li><li><a class="chip chip-road t-fundamentals" href="tracks/fundamentals/embeddings/">Embeddings and RAG</a></li><li><a class="chip chip-road t-ai-engineering" href="tracks/ai-engineering/prefill-vs-decode/">Serving LLMs</a></li><li><a class="chip chip-road t-system-design" href="tracks/system-design/design-refund-agent/">Agent design</a></li></ol>
+<p class="section-lead">Each step lists what you need before it. Nothing is locked, but the order is the one that makes the next idea easy.</p></div></section>
+</main>
+<footer class="site-foot"><div class="page foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="assets/search-index.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

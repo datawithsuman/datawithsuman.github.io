@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linear Regression · Fundamentals · datawithsuman</title>
+<meta name="description" content="What does least squares actually minimise, and when does it break?">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/lx-2be662d4.css">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+</head>
+<body class="t-fundamentals" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals active" href="../../../tracks/fundamentals/" aria-current="true">Fundamentals</a><a class="t-ai-engineering" href="../../../tracks/ai-engineering/">AI Engineering</a><a class="t-system-design" href="../../../tracks/system-design/">System Design</a><a class="t-papers" href="../../../tracks/papers/">Papers</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="fundamentals/linear-regression">
+<aside class="contents" aria-label="Fundamentals contents">
+  <details class="contents-box" open><summary>Fundamentals contents</summary><p class="contents-part">Maths for ML</p><details class="mod"><summary>Linear algebra</summary><ol><li><a href="../../../tracks/fundamentals/vectors-and-cosine-similarity/"><span class="dot" data-key="fundamentals/vectors-and-cosine-similarity" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Vectors, Dot Products &amp; Cosine Similarity</span></a></li><li><a href="../../../tracks/fundamentals/matrices-as-transformations/"><span class="dot" data-key="fundamentals/matrices-as-transformations" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Matrices as Transformations</span></a></li><li><a href="../../../tracks/fundamentals/eigenvalues-and-eigenvectors/"><span class="dot" data-key="fundamentals/eigenvalues-and-eigenvectors" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Eigenvalues &amp; Eigenvectors</span></a></li><li><a href="../../../tracks/fundamentals/svd-and-low-rank/"><span class="dot" data-key="fundamentals/svd-and-low-rank" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>SVD &amp; Low-Rank Approximation</span></a></li></ol></details><details class="mod"><summary>Calculus and optimisation</summary><ol><li><a href="../../../tracks/fundamentals/derivatives-and-chain-rule/"><span class="dot" data-key="fundamentals/derivatives-and-chain-rule" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Derivatives, Gradients &amp; the Chain Rule</span></a></li><li><a href="../../../tracks/fundamentals/gradient-descent/"><span class="dot" data-key="fundamentals/gradient-descent" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Gradient Descent, Momentum &amp; Adam</span></a></li><li><a href="../../../tracks/fundamentals/convexity-and-local-minima/"><span class="dot" data-key="fundamentals/convexity-and-local-minima" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Convexity &amp; Local Minima</span></a></li></ol></details><details class="mod"><summary>Probability</summary><ol><li><a href="../../../tracks/fundamentals/probability-and-bayes/"><span class="dot" data-key="fundamentals/probability-and-bayes" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Probability Basics &amp; Bayes&#x27; Rule</span></a></li><li><a href="../../../tracks/fundamentals/probability-distributions/"><span class="dot" data-key="fundamentals/probability-distributions" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Common Probability Distributions</span></a></li><li><a href="../../../tracks/fundamentals/expectation-and-variance/"><span class="dot" data-key="fundamentals/expectation-and-variance" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Expectation, Variance &amp; Covariance</span></a></li><li><a href="../../../tracks/fundamentals/mle-and-map/"><span class="dot" data-key="fundamentals/mle-and-map" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Maximum Likelihood &amp; MAP</span></a></li></ol></details><details class="mod"><summary>Probability practice</summary><ol><li><a href="../../../tracks/fundamentals/practice-bayes/"><span class="dot" data-key="fundamentals/practice-bayes" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Bayes&#x27; Rule Practice</span></a></li><li><a href="../../../tracks/fundamentals/practice-coins/"><span class="dot" data-key="fundamentals/practice-coins" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Coin Flip Practice</span></a></li><li><a href="../../../tracks/fundamentals/practice-dice/"><span class="dot" data-key="fundamentals/practice-dice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Dice Practice</span></a></li><li><a href="../../../tracks/fundamentals/practice-cards/"><span class="dot" data-key="fundamentals/practice-cards" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Playing Card Practice</span></a></li><li><a href="../../../tracks/fundamentals/practice-balls-and-urns/"><span class="dot" data-key="fundamentals/practice-balls-and-urns" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Balls &amp; Urns Practice</span></a></li><li><a href="../../../tracks/fundamentals/practice-classic-puzzles/"><span class="dot" data-key="fundamentals/practice-classic-puzzles" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Classic Probability Puzzles</span></a></li></ol></details><details class="mod"><summary>Statistics</summary><ol><li><a href="../../../tracks/fundamentals/confidence-intervals-and-bootstrap/"><span class="dot" data-key="fundamentals/confidence-intervals-and-bootstrap" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Confidence Intervals &amp; the Bootstrap</span></a></li><li><a href="../../../tracks/fundamentals/hypothesis-testing-and-ab-tests/"><span class="dot" data-key="fundamentals/hypothesis-testing-and-ab-tests" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Hypothesis Tests, p-values &amp; A/B Testing</span></a></li><li><a href="../../../tracks/fundamentals/correlation-vs-causation/"><span class="dot" data-key="fundamentals/correlation-vs-causation" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Correlation vs Causation</span></a></li></ol></details><details class="mod"><summary>Information theory</summary><ol><li><a href="../../../tracks/fundamentals/entropy-cross-entropy-kl/"><span class="dot" data-key="fundamentals/entropy-cross-entropy-kl" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Entropy, Cross-Entropy &amp; KL Divergence</span></a></li></ol></details><p class="contents-part">Classical ML</p><details class="mod"><summary>Data and features</summary><ol><li><a href="../../../tracks/fundamentals/categorical-encoding/"><span class="dot" data-key="fundamentals/categorical-encoding" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Encoding Categorical Features</span></a></li><li><a href="../../../tracks/fundamentals/missing-values-and-scaling/"><span class="dot" data-key="fundamentals/missing-values-and-scaling" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Missing Values &amp; Feature Scaling</span></a></li></ol></details><details class="mod" open><summary>Linear models</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/fundamentals/linear-regression/"><span class="dot" data-key="fundamentals/linear-regression" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Linear Regression</span></a></li><li><a href="../../../tracks/fundamentals/regularized-linear-models/"><span class="dot" data-key="fundamentals/regularized-linear-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Regularized Linear Models</span></a></li><li><a href="../../../tracks/fundamentals/logistic-regression/"><span class="dot" data-key="fundamentals/logistic-regression" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Logistic Regression</span></a></li><li><a href="../../../tracks/fundamentals/softmax-regression/"><span class="dot" data-key="fundamentals/softmax-regression" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Softmax Regression</span></a></li></ol></details><details class="mod"><summary>Tree-based models</summary><ol><li><a href="../../../tracks/fundamentals/decision-trees/"><span class="dot" data-key="fundamentals/decision-trees" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Decision Trees</span></a></li><li><a href="../../../tracks/fundamentals/random-forest/"><span class="dot" data-key="fundamentals/random-forest" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Random Forest</span></a></li><li><a href="../../../tracks/fundamentals/gradient-boosting/"><span class="dot" data-key="fundamentals/gradient-boosting" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Gradient Boosting</span></a></li></ol></details><details class="mod"><summary>Other classic classifiers</summary><ol><li><a href="../../../tracks/fundamentals/support-vector-machines/"><span class="dot" data-key="fundamentals/support-vector-machines" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Support Vector Machines</span></a></li><li><a href="../../../tracks/fundamentals/k-nearest-neighbours/"><span class="dot" data-key="fundamentals/k-nearest-neighbours" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>k-Nearest Neighbours</span></a></li><li><a href="../../../tracks/fundamentals/naive-bayes/"><span class="dot" data-key="fundamentals/naive-bayes" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Naive Bayes</span></a></li></ol></details><details class="mod"><summary>Unsupervised learning</summary><ol><li><a href="../../../tracks/fundamentals/k-means/"><span class="dot" data-key="fundamentals/k-means" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>k-Means Clustering</span></a></li><li><a href="../../../tracks/fundamentals/hierarchical-clustering/"><span class="dot" data-key="fundamentals/hierarchical-clustering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Hierarchical Clustering</span></a></li><li><a href="../../../tracks/fundamentals/dbscan/"><span class="dot" data-key="fundamentals/dbscan" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>DBSCAN</span></a></li><li><a href="../../../tracks/fundamentals/gaussian-mixture-models/"><span class="dot" data-key="fundamentals/gaussian-mixture-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Gaussian Mixture Models</span></a></li><li><a href="../../../tracks/fundamentals/pca/"><span class="dot" data-key="fundamentals/pca" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Principal Component Analysis</span></a></li><li><a href="../../../tracks/fundamentals/t-sne-and-umap/"><span class="dot" data-key="fundamentals/t-sne-and-umap" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>t-SNE &amp; UMAP</span></a></li><li><a href="../../../tracks/fundamentals/anomaly-detection/"><span class="dot" data-key="fundamentals/anomaly-detection" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Anomaly Detection</span></a></li></ol></details><details class="mod"><summary>Time series</summary><ol><li><a href="../../../tracks/fundamentals/forecasting-basics/"><span class="dot" data-key="fundamentals/forecasting-basics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Time-Series Forecasting Basics</span></a></li></ol></details><details class="mod"><summary>Evaluation metrics</summary><ol><li><a href="../../../tracks/fundamentals/classification-metrics/"><span class="dot" data-key="fundamentals/classification-metrics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Classification Metrics</span></a></li><li><a href="../../../tracks/fundamentals/roc-auc-vs-pr-auc/"><span class="dot" data-key="fundamentals/roc-auc-vs-pr-auc" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>ROC-AUC vs PR-AUC</span></a></li><li><a href="../../../tracks/fundamentals/thresholds-and-costs/"><span class="dot" data-key="fundamentals/thresholds-and-costs" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Thresholds &amp; Misclassification Costs</span></a></li><li><a href="../../../tracks/fundamentals/regression-metrics/"><span class="dot" data-key="fundamentals/regression-metrics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Regression Metrics</span></a></li><li><a href="../../../tracks/fundamentals/ranking-metrics/"><span class="dot" data-key="fundamentals/ranking-metrics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Ranking Metrics</span></a></li><li><a href="../../../tracks/fundamentals/probability-metrics/"><span class="dot" data-key="fundamentals/probability-metrics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Probability Metrics</span></a></li><li><a href="../../../tracks/fundamentals/choosing-the-right-metric/"><span class="dot" data-key="fundamentals/choosing-the-right-metric" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Choosing the Right Metric</span></a></li></ol></details><details class="mod"><summary>Core concepts</summary><ol><li><a href="../../../tracks/fundamentals/bias-variance/"><span class="dot" data-key="fundamentals/bias-variance" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>The Bias–Variance Trade-off</span></a></li><li><a href="../../../tracks/fundamentals/cross-validation-and-leakage/"><span class="dot" data-key="fundamentals/cross-validation-and-leakage" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Cross-Validation &amp; Data Leakage</span></a></li><li><a href="../../../tracks/fundamentals/class-imbalance/"><span class="dot" data-key="fundamentals/class-imbalance" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Class Imbalance</span></a></li><li><a href="../../../tracks/fundamentals/hyperparameter-tuning/"><span class="dot" data-key="fundamentals/hyperparameter-tuning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Hyperparameter Tuning</span></a></li></ol></details><p class="contents-part">Deep Learning</p><details class="mod"><summary>Neural network basics</summary><ol><li><a href="../../../tracks/fundamentals/perceptron-to-mlp/"><span class="dot" data-key="fundamentals/perceptron-to-mlp" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>From Perceptron to MLP</span></a></li><li><a href="../../../tracks/fundamentals/activation-functions/"><span class="dot" data-key="fundamentals/activation-functions" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Activation Functions</span></a></li><li><a href="../../../tracks/fundamentals/loss-functions/"><span class="dot" data-key="fundamentals/loss-functions" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Loss Functions for Deep Learning</span></a></li><li><a href="../../../tracks/fundamentals/backpropagation/"><span class="dot" data-key="fundamentals/backpropagation" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Backpropagation Through a Network</span></a></li></ol></details><details class="mod"><summary>Training deep nets</summary><ol><li><a href="../../../tracks/fundamentals/weight-initialisation/"><span class="dot" data-key="fundamentals/weight-initialisation" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Weight Initialisation</span></a></li><li><a href="../../../tracks/fundamentals/vanishing-exploding-gradients/"><span class="dot" data-key="fundamentals/vanishing-exploding-gradients" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Vanishing &amp; Exploding Gradients</span></a></li><li><a href="../../../tracks/fundamentals/normalisation-layers/"><span class="dot" data-key="fundamentals/normalisation-layers" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>BatchNorm vs LayerNorm vs RMSNorm</span></a></li><li><a href="../../../tracks/fundamentals/learning-rate-schedules/"><span class="dot" data-key="fundamentals/learning-rate-schedules" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Learning-Rate Schedules</span></a></li><li><a href="../../../tracks/fundamentals/batch-size-and-learning-rate/"><span class="dot" data-key="fundamentals/batch-size-and-learning-rate" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Batch Size and Learning Rate</span></a></li></ol></details><details class="mod"><summary>Regularisation and debugging</summary><ol><li><a href="../../../tracks/fundamentals/dropout/"><span class="dot" data-key="fundamentals/dropout" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Dropout</span></a></li><li><a href="../../../tracks/fundamentals/weight-decay-and-adamw/"><span class="dot" data-key="fundamentals/weight-decay-and-adamw" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Weight Decay vs L2, and AdamW</span></a></li><li><a href="../../../tracks/fundamentals/data-augmentation-and-mixup/"><span class="dot" data-key="fundamentals/data-augmentation-and-mixup" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Data Augmentation and Mixup</span></a></li><li><a href="../../../tracks/fundamentals/early-stopping-and-label-smoothing/"><span class="dot" data-key="fundamentals/early-stopping-and-label-smoothing" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Early Stopping and Label Smoothing</span></a></li><li><a href="../../../tracks/fundamentals/debugging-training-practice-1/"><span class="dot" data-key="fundamentals/debugging-training-practice-1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Debugging Training: Loss Won&#x27;t Go Down</span></a></li><li><a href="../../../tracks/fundamentals/debugging-training-practice-2/"><span class="dot" data-key="fundamentals/debugging-training-practice-2" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Debugging Training: It Trains, But Something&#x27;s Off</span></a></li></ol></details><details class="mod"><summary>CNNs</summary><ol><li><a href="../../../tracks/fundamentals/convolution-and-receptive-field/"><span class="dot" data-key="fundamentals/convolution-and-receptive-field" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Convolution and Receptive Field</span></a></li><li><a href="../../../tracks/fundamentals/pooling-stride-padding/"><span class="dot" data-key="fundamentals/pooling-stride-padding" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Pooling, Stride, Padding and Output Shapes</span></a></li><li><a href="../../../tracks/fundamentals/resnets-and-skip-connections/"><span class="dot" data-key="fundamentals/resnets-and-skip-connections" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>ResNets and Skip Connections</span></a></li><li><a href="../../../tracks/fundamentals/transfer-learning/"><span class="dot" data-key="fundamentals/transfer-learning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Transfer Learning and Fine-Tuning</span></a></li></ol></details><details class="mod"><summary>Sequence models</summary><ol><li><a href="../../../tracks/fundamentals/rnns-and-backprop-through-time/"><span class="dot" data-key="fundamentals/rnns-and-backprop-through-time" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RNNs and Backprop Through Time</span></a></li><li><a href="../../../tracks/fundamentals/lstm-and-gru/"><span class="dot" data-key="fundamentals/lstm-and-gru" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LSTM and GRU</span></a></li><li><a href="../../../tracks/fundamentals/seq2seq-and-attention/"><span class="dot" data-key="fundamentals/seq2seq-and-attention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Seq2seq and Bahdanau Attention</span></a></li></ol></details><details class="mod"><summary>Attention and Transformers</summary><ol><li><a href="../../../tracks/fundamentals/self-attention/"><span class="dot" data-key="fundamentals/self-attention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Self-Attention (Q, K, V)</span></a></li><li><a href="../../../tracks/fundamentals/multi-head-attention/"><span class="dot" data-key="fundamentals/multi-head-attention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Multi-Head Attention</span></a></li><li><a href="../../../tracks/fundamentals/positional-encodings/"><span class="dot" data-key="fundamentals/positional-encodings" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Positional Encodings (incl. RoPE)</span></a></li><li><a href="../../../tracks/fundamentals/transformer-block/"><span class="dot" data-key="fundamentals/transformer-block" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>The Transformer Block</span></a></li><li><a href="../../../tracks/fundamentals/encoder-decoder-architectures/"><span class="dot" data-key="fundamentals/encoder-decoder-architectures" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Encoder vs Decoder vs Encoder-Decoder</span></a></li><li><a href="../../../tracks/fundamentals/transformer-end-to-end/"><span class="dot" data-key="fundamentals/transformer-end-to-end" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>The Transformer, End to End</span></a></li></ol></details><details class="mod"><summary>Representation and generative models</summary><ol><li><a href="../../../tracks/fundamentals/embeddings/"><span class="dot" data-key="fundamentals/embeddings" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Embeddings and Representation Learning</span></a></li><li><a href="../../../tracks/fundamentals/autoencoders-and-vaes/"><span class="dot" data-key="fundamentals/autoencoders-and-vaes" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Autoencoders and VAEs</span></a></li><li><a href="../../../tracks/fundamentals/gans/"><span class="dot" data-key="fundamentals/gans" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>GANs</span></a></li><li><a href="../../../tracks/fundamentals/diffusion-models/"><span class="dot" data-key="fundamentals/diffusion-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Diffusion Models</span></a></li><li><a href="../../../tracks/fundamentals/contrastive-learning/"><span class="dot" data-key="fundamentals/contrastive-learning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Contrastive Learning (SimCLR, CLIP)</span></a></li></ol></details><p class="contents-part">NLP Fundamentals</p><details class="mod"><summary>Text basics</summary><ol><li><a href="../../../tracks/fundamentals/text-preprocessing/"><span class="dot" data-key="fundamentals/text-preprocessing" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Text Preprocessing</span></a></li><li><a href="../../../tracks/fundamentals/bag-of-words-and-tf-idf/"><span class="dot" data-key="fundamentals/bag-of-words-and-tf-idf" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Bag-of-Words, N-grams and TF-IDF</span></a></li><li><a href="../../../tracks/fundamentals/text-classification/"><span class="dot" data-key="fundamentals/text-classification" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Text Classification: Naive Bayes vs Logistic Regression</span></a></li></ol></details><details class="mod"><summary>Language models and tokenisation</summary><ol><li><a href="../../../tracks/fundamentals/n-gram-language-models/"><span class="dot" data-key="fundamentals/n-gram-language-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>N-gram Language Models and Perplexity</span></a></li><li><a href="../../../tracks/fundamentals/subword-tokenisation/"><span class="dot" data-key="fundamentals/subword-tokenisation" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Subword Tokenisation (BPE, WordPiece, SentencePiece)</span></a></li></ol></details><details class="mod"><summary>Tagging, retrieval and evaluation</summary><ol><li><a href="../../../tracks/fundamentals/sequence-labelling-and-ner/"><span class="dot" data-key="fundamentals/sequence-labelling-and-ner" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Sequence Labelling and NER</span></a></li><li><a href="../../../tracks/fundamentals/search-and-retrieval/"><span class="dot" data-key="fundamentals/search-and-retrieval" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Search: BM25, Dense and Hybrid Retrieval</span></a></li><li><a href="../../../tracks/fundamentals/nlp-evaluation-metrics/"><span class="dot" data-key="fundamentals/nlp-evaluation-metrics" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>NLP Evaluation: BLEU, ROUGE, EM/F1</span></a></li><li><a href="../../../tracks/fundamentals/nlp-practice/"><span class="dot" data-key="fundamentals/nlp-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>NLP Fundamentals Practice</span></a></li></ol></details><p class="contents-part">LLMs</p><details class="mod"><summary>Modern architecture</summary><ol><li><a href="../../../tracks/fundamentals/modern-llm-architecture/"><span class="dot" data-key="fundamentals/modern-llm-architecture" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Anatomy of a Modern LLM</span></a></li><li><a href="../../../tracks/fundamentals/attention-variants-mqa-gqa-mla/"><span class="dot" data-key="fundamentals/attention-variants-mqa-gqa-mla" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Attention Variants: MQA, GQA and MLA</span></a></li><li><a href="../../../tracks/fundamentals/flashattention/"><span class="dot" data-key="fundamentals/flashattention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>FlashAttention</span></a></li><li><a href="../../../tracks/fundamentals/long-context/"><span class="dot" data-key="fundamentals/long-context" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Long Context: RoPE Scaling, Sliding Windows and Attention Sinks</span></a></li><li><a href="../../../tracks/fundamentals/mixture-of-experts/"><span class="dot" data-key="fundamentals/mixture-of-experts" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mixture of Experts</span></a></li></ol></details><details class="mod"><summary>Pretraining</summary><ol><li><a href="../../../tracks/fundamentals/next-token-prediction/"><span class="dot" data-key="fundamentals/next-token-prediction" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>The Next-Token Objective</span></a></li><li><a href="../../../tracks/fundamentals/pretraining-data/"><span class="dot" data-key="fundamentals/pretraining-data" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Pretraining Data: Deduplication, Filtering and Mixtures</span></a></li><li><a href="../../../tracks/fundamentals/scaling-laws/"><span class="dot" data-key="fundamentals/scaling-laws" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Scaling Laws: Kaplan vs Chinchilla</span></a></li><li><a href="../../../tracks/fundamentals/distributed-training/"><span class="dot" data-key="fundamentals/distributed-training" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP</span></a></li><li><a href="../../../tracks/fundamentals/training-instabilities/"><span class="dot" data-key="fundamentals/training-instabilities" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Training Instabilities: Loss Spikes, z-loss and QK-norm</span></a></li></ol></details><details class="mod"><summary>Post-training</summary><ol><li><a href="../../../tracks/fundamentals/supervised-fine-tuning/"><span class="dot" data-key="fundamentals/supervised-fine-tuning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>SFT and Instruction Tuning</span></a></li><li><a href="../../../tracks/fundamentals/rlhf-and-reward-models/"><span class="dot" data-key="fundamentals/rlhf-and-reward-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Reward Models and RLHF (PPO)</span></a></li><li><a href="../../../tracks/fundamentals/dpo/"><span class="dot" data-key="fundamentals/dpo" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>DPO and Preference Optimisation</span></a></li><li><a href="../../../tracks/fundamentals/reasoning-models-grpo/"><span class="dot" data-key="fundamentals/reasoning-models-grpo" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Reasoning Models: RLVR, GRPO and Test-Time Compute</span></a></li><li><a href="../../../tracks/fundamentals/distillation/"><span class="dot" data-key="fundamentals/distillation" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Distillation: How Small Models Learn from Big Ones</span></a></li><li><a href="../../../tracks/fundamentals/lora-and-qlora/"><span class="dot" data-key="fundamentals/lora-and-qlora" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LoRA and QLoRA: Parameter-Efficient Fine-Tuning</span></a></li></ol></details><details class="mod"><summary>Generation</summary><ol><li><a href="../../../tracks/fundamentals/decoding-and-sampling/"><span class="dot" data-key="fundamentals/decoding-and-sampling" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Decoding: Temperature, Top-k, Top-p and Min-p</span></a></li><li><a href="../../../tracks/fundamentals/in-context-learning-and-cot/"><span class="dot" data-key="fundamentals/in-context-learning-and-cot" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>In-Context Learning and Chain-of-Thought</span></a></li><li><a href="../../../tracks/fundamentals/hallucination/"><span class="dot" data-key="fundamentals/hallucination" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Hallucination: Why LLMs Make Things Up</span></a></li></ol></details><details class="mod"><summary>Evaluating LLMs and practice</summary><ol><li><a href="../../../tracks/fundamentals/benchmarks-and-contamination/"><span class="dot" data-key="fundamentals/benchmarks-and-contamination" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Benchmarks and Contamination</span></a></li><li><a href="../../../tracks/fundamentals/llm-as-a-judge/"><span class="dot" data-key="fundamentals/llm-as-a-judge" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM-as-a-Judge and Human Preference</span></a></li><li><a href="../../../tracks/fundamentals/llm-practice-scaling/"><span class="dot" data-key="fundamentals/llm-practice-scaling" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Practice 1: Pretraining and Scaling Maths</span></a></li><li><a href="../../../tracks/fundamentals/llm-practice-post-training/"><span class="dot" data-key="fundamentals/llm-practice-post-training" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Practice 2: Post-training and Generation</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/fundamentals/">Fundamentals</a><span aria-hidden="true">/</span><a href="../../../tracks/fundamentals/#module-8">Linear models</a><span aria-hidden="true">/</span><b aria-current="page">Linear Regression</b></nav>
+  <div class="lesson-meta"><span class="chip type-concept">Concept</span><span class="mins">30 min</span></div>
+  <h1 class="h1-lesson">Linear Regression</h1>
+  <p class="lead">What does least squares actually minimise, and when does it break?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">Maths</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">In practice</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="lx"><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
+<p class="sit-lead">You have 12 flats with their size and price, and you need to predict the price of a new one. You could draw endless lines through them. The interviewer asks:</p>
+<blockquote class="sit-q">What is linear regression, and how is it fitted?</blockquote><div class="sit-more"><p class="small" style="margin-top:22px"><b>Running example:</b> 12 flats in one city, size in m² and price in ₹ lakh (illustrative numbers). Goal: predict the price of a flat from its size.</p><section class="ch" id="c1" data-toc="1 · The problem">
+  <h3>Draw the "best" straight line through a cloud of points</h3>
+  <p>You have flats you know the price of, and a new flat you don't. Plot price against size and the points roughly follow a line. Linear regression turns "roughly follows a line" into a precise answer: <i>which</i> line, and <i>why</i> that one.</p>
+  <div data-scene>
+    <div class="stage scroll"><svg viewBox="0 0 760 300" role="img" aria-label="Flat sizes and prices with the best line, residuals and squared residuals"><line class="grid" x1="101.9" x2="101.9" y1="14" y2="260"/><text class="tick" x="101.9" y="276" text-anchor="middle">40</text><line class="grid" x1="193.6" x2="193.6" y1="14" y2="260"/><text class="tick" x="193.6" y="276" text-anchor="middle">60</text><line class="grid" x1="285.3" x2="285.3" y1="14" y2="260"/><text class="tick" x="285.3" y="276" text-anchor="middle">80</text><line class="grid" x1="377.1" x2="377.1" y1="14" y2="260"/><text class="tick" x="377.1" y="276" text-anchor="middle">100</text><line class="grid" x1="468.8" x2="468.8" y1="14" y2="260"/><text class="tick" x="468.8" y="276" text-anchor="middle">120</text><line class="grid" x1="560.5" x2="560.5" y1="14" y2="260"/><text class="tick" x="560.5" y="276" text-anchor="middle">140</text><line class="grid" x1="652.3" x2="652.3" y1="14" y2="260"/><text class="tick" x="652.3" y="276" text-anchor="middle">160</text><line class="grid" x1="744.0" x2="744.0" y1="14" y2="260"/><text class="tick" x="744.0" y="276" text-anchor="middle">180</text><line class="grid" x1="56" x2="744" y1="242.4" y2="242.4"/><text class="tick" x="50" y="246.4" text-anchor="end">40</text><line class="grid" x1="56" x2="744" y1="189.7" y2="189.7"/><text class="tick" x="50" y="193.7" text-anchor="end">70</text><line class="grid" x1="56" x2="744" y1="137.0" y2="137.0"/><text class="tick" x="50" y="141.0" text-anchor="end">100</text><line class="grid" x1="56" x2="744" y1="84.3" y2="84.3"/><text class="tick" x="50" y="88.3" text-anchor="end">130</text><line class="grid" x1="56" x2="744" y1="31.6" y2="31.6"/><text class="tick" x="50" y="35.6" text-anchor="end">160</text><line class="ax" x1="56" x2="744" y1="260" y2="260"/><line class="ax" x1="56" x2="56" y1="14" y2="260"/><text x="400.0" y="294" text-anchor="middle" class="d" font-size="12">flat size (m²)</text><text x="14" y="137.0" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 137.0)">price (₹ lakh)</text>
+<g data-show="1"><circle cx="124.8" cy="228.4" r="5.5" class="sa"/><circle cx="184.4" cy="205.5" r="5.5" class="sa"/><circle cx="221.1" cy="202.0" r="5.5" class="sa"/><circle cx="257.8" cy="180.9" r="5.5" class="sa"/><circle cx="308.3" cy="173.9" r="5.5" class="sa"/><circle cx="340.4" cy="151.1" r="5.5" class="sa"/><circle cx="395.4" cy="144.0" r="5.5" class="sa"/><circle cx="459.6" cy="114.2" r="5.5" class="sa"/><circle cx="496.3" cy="115.9" r="5.5" class="sa"/><circle cx="560.5" cy="82.5" r="5.5" class="sa"/><circle cx="629.3" cy="70.2" r="5.5" class="sa"/><circle cx="698.1" cy="35.1" r="5.5" class="sa"/></g>
+<g data-show="2" data-hl="2" style="color:var(--b)"><line x1="56.0" y1="250.9" x2="744.0" y2="26.3" stroke="var(--b)" stroke-width="2.5"/><text x="101.9" y="49.1" class="tb" font-size="13" font-weight="600">ŷ = 0.85·size + 9.6</text></g>
+<g data-show="3" data-hl="3" style="color:var(--bad)"><line x1="124.8" x2="124.8" y1="228.4" y2="228.5" stroke="var(--bad)" stroke-width="2"/><line x1="184.4" x2="184.4" y1="205.5" y2="209.0" stroke="var(--bad)" stroke-width="2"/><line x1="221.1" x2="221.1" y1="202.0" y2="197.0" stroke="var(--bad)" stroke-width="2"/><line x1="257.8" x2="257.8" y1="180.9" y2="185.0" stroke="var(--bad)" stroke-width="2"/><line x1="308.3" x2="308.3" y1="173.9" y2="168.6" stroke="var(--bad)" stroke-width="2"/><line x1="340.4" x2="340.4" y1="151.1" y2="158.1" stroke="var(--bad)" stroke-width="2"/><line x1="395.4" x2="395.4" y1="144.0" y2="140.1" stroke="var(--bad)" stroke-width="2"/><line x1="459.6" x2="459.6" y1="114.2" y2="119.1" stroke="var(--bad)" stroke-width="2"/><line x1="496.3" x2="496.3" y1="115.9" y2="107.2" stroke="var(--bad)" stroke-width="2"/><line x1="560.5" x2="560.5" y1="82.5" y2="86.2" stroke="var(--bad)" stroke-width="2"/><line x1="629.3" x2="629.3" y1="70.2" y2="63.7" stroke="var(--bad)" stroke-width="2"/><line x1="698.1" x2="698.1" y1="35.1" y2="41.2" stroke="var(--bad)" stroke-width="2"/></g>
+<g data-show="4" data-hl="4" style="color:var(--bad)"><rect x="124.8" y="228.4" width="0.1" height="0.1" class="fbad" stroke-width="1"/><rect x="184.4" y="205.5" width="3.5" height="3.5" class="fbad" stroke-width="1"/><rect x="221.1" y="197.0" width="5.0" height="5.0" class="fbad" stroke-width="1"/><rect x="257.8" y="180.9" width="4.1" height="4.1" class="fbad" stroke-width="1"/><rect x="308.3" y="168.6" width="5.3" height="5.3" class="fbad" stroke-width="1"/><rect x="340.4" y="151.1" width="7.0" height="7.0" class="fbad" stroke-width="1"/><rect x="395.4" y="140.1" width="3.9" height="3.9" class="fbad" stroke-width="1"/><rect x="459.6" y="114.2" width="5.0" height="5.0" class="fbad" stroke-width="1"/><rect x="496.3" y="107.2" width="8.8" height="8.8" class="fbad" stroke-width="1"/><rect x="560.5" y="82.5" width="3.7" height="3.7" class="fbad" stroke-width="1"/><rect x="629.3" y="63.7" width="6.5" height="6.5" class="fbad" stroke-width="1"/><rect x="698.1" y="35.1" width="6.2" height="6.2" class="fbad" stroke-width="1"/></g>
+<g data-show="5"><text x="734.8" y="228.4" text-anchor="end" class="tok" font-size="13" font-weight="600">no other straight line has a smaller total red area</text></g></svg></div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Twelve flats. Bigger flats cost more, but not perfectly: the points scatter around a trend.</li>
+      <li>A candidate line: price ≈ 0.85 lakh per m² × size + 9.6 lakh. Any line makes a prediction ŷ for every size.</li>
+      <li>The vertical gaps between each point and the line are the errors, called <b>residuals</b>: y − ŷ.</li>
+      <li>Least squares squares each residual (literally: the red squares) and adds them up. Big misses count much more than small ones.</li>
+      <li>The fitted line is the one with the smallest total squared error. For these 12 flats, no other straight line does better.</li>
+    </ol>
+  </div>
+  <p>That's the whole idea. Everything else on this page is <i>how</i> to find that line, <i>why</i> squares, and <i>when</i> to distrust it.</p>
+</section></div></section>
+<section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of a stiff rod held by a spring to every data point. The further away a point is, the harder its spring pulls. The rod settles where the total pull balances out, and that&#x27;s the least-squares line.</p>
+<figure class="picture"><svg viewBox="0 0 480 170" role="img" aria-label="Points scattered around a straight line, with a short vertical gap from each point to the line.">
+  <path d="M40 10V150H470" fill="none" stroke="var(--dim)" stroke-width="1.5"/>
+  <path d="M50 140 450 30" stroke="var(--b)" stroke-width="3"/>
+  <g stroke="var(--bad)" stroke-width="2"><path d="M90 129V104M150 113V128M210 96V70M270 80V92M330 63V40M390 47V60"/></g>
+  <g fill="var(--a)"><circle cx="90" cy="104" r="5"/><circle cx="150" cy="128" r="5"/><circle cx="210" cy="70" r="5"/><circle cx="270" cy="92" r="5"/><circle cx="330" cy="40" r="5"/><circle cx="390" cy="60" r="5"/></g>
+  <text x="470" y="166" font-size="13" fill="var(--dim)" text-anchor="end">Flat size</text>
+  <text x="120" y="24" font-size="14" font-weight="600" fill="var(--bad)">Red gaps: the errors the line tries to shrink</text>
+</svg><figcaption>Illustrative. Squaring the gaps means big misses count far more than small ones.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try to break it.</b> Drag the slope and intercept until the red squares are as small as you can get them. Then snap to the least-squares line.</p><section class="ch" id="c6" data-toc="6 · Fit it by hand">
+  <span class="pill b">Fit it by hand</span>
+  <h3>Feel the bowl: move the line, watch the loss</h3>
+  <div class="card lab" id="labFit">
+    <label>Slope w (₹ lakh per m²) <input type="range" min="0.4" max="1.3" step="0.01" value="0.6" data-k="w"><output></output></label>
+    <label>Intercept b (₹ lakh) <input type="range" min="-30" max="50" step="0.5" value="30" data-k="b"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Your line with residual squares"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">your MSE</div><div class="v bad" data-o="mse">–</div></div>
+      <div class="stat"><div class="l">best possible MSE</div><div class="v ok" data-o="best">9.24</div></div>
+      <div class="stat"><div class="l">best line</div><div class="v info" data-o="bl">0.85·x + 9.6</div></div>
+    </div>
+    <div class="seg"><button data-v="snap">Snap to the least-squares line</button></div>
+    <p class="small" style="margin:0">Illustrative data: 12 flats. The red squares are the squared residuals; their total area (÷ 12) is the MSE. Notice that slope and intercept trade off: a steeper slope needs a lower intercept.</p>
+  </div>
+</section><p class="play-why"><b>Now say why:</b> why does a steeper slope need a lower intercept, and how close did you get to the best line?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: Maths</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Maths</h2><section class="ch" id="summary"><h3>In one breath</h3>Linear regression predicts a number as a weighted sum of features, ŷ = w·x + b, and picks the weights that make the <b>sum of squared errors</b> as small as possible. There's a closed-form answer (the normal equation) and an iterative one (gradient descent). Under Gaussian noise, least squares is exactly maximum likelihood. It's simple, fast and interpretable, and it breaks in predictable ways: outliers, curved relationships, and correlated features.<span class="small">What you'll be able to do after this: derive and explain the loss, solve it two ways, read the assumptions, spot when the line is lying to you, and answer the classic follow-ups.</span><div class="legend"><span><i style="background:var(--a)"></i>data points</span><span><i style="background:var(--b)"></i>the model's line / prediction</span><span><i style="background:var(--bad)"></i>errors (residuals)</span><span><i style="background:var(--ok)"></i>good fit / fix</span><span><i style="background:var(--info)"></i>maths, numbers</span><span><i style="background:var(--st)"></i>test data</span></div></section><section class="ch" id="c2" data-toc="2 · Building blocks">
+  <h3>A weighted sum of features</h3>
+  <p>With one feature, the model is a line: slope w and intercept b. With many features (size, floor, age, distance to metro), it's the same idea in more dimensions: each feature gets a weight, and the prediction is the weighted sum plus a bias.</p>
+  <div class="reader" data-reader='[
+    {"t":"yh","c":"b","label":"prediction","say":"The model&#39;s guess: the predicted price ŷ."},
+    {"t":"w","c":"info","label":"weights","say":"One number per feature: how much the price moves when that feature goes up by one unit, holding the others fixed. Here about 0.85 lakh per m²."},
+    {"t":"x","c":"a","label":"features","say":"The inputs for one flat: size, and any other columns you have."},
+    {"t":"b","c":"info","label":"bias / intercept","say":"The prediction when every feature is zero. Often not meaningful on its own (a 0 m² flat), but it lets the line sit at the right height."},
+    {"t":"mat","c":"st","label":"all rows at once","say":"Stack every flat as a row of X, with an extra column of 1s for the bias. Then all predictions are one matrix product: ŷ = Xθ."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-yh}{\hat{y}} = \class{term t-w}{w_1}\class{term t-x}{x_1} + \class{term t-w}{w_2}\class{term t-x}{x_2} + \dots + \class{term t-b}{b} \qquad \class{term t-mat}{\hat{\mathbf y} = X\theta}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">CS229 writes h<sub>θ</sub>(x) = θ<sup>⊤</sup>x with x<sub>0</sub> = 1 standing in for the bias <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §1</a></span> · hover any symbol.</p>
+  </div>
+  <p>"Linear" means linear in the <b>weights</b>, not necessarily in the raw inputs. You can feed in x², log(x) or a product of two features and it is still linear regression.</p>
+</section><section class="ch" id="c5" data-toc="5 · The core idea">
+  <span class="pill a">One principle</span>
+  <h3>Choose the weights that minimise the sum of squared residuals</h3>
+  <div class="reader" data-reader='[
+    {"t":"J","c":"bad","label":"the cost","say":"One number that scores a choice of weights θ. Lower is better."},
+    {"t":"h","c":"b","label":"prediction","say":"The model&#39;s prediction for example i: θᵀx⁽ⁱ⁾."},
+    {"t":"y","c":"a","label":"the truth","say":"The real price of flat i."},
+    {"t":"sq","c":"bad","label":"squared miss","say":"Square the residual: no cancelling, and big misses cost much more than small ones."},
+    {"t":"sum","c":"info","label":"over all examples","say":"Add up across all n training flats. The ½ is just there so the derivative comes out clean."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-J}{J(\theta)} = \class{term t-sum}{\tfrac12\sum_{i=1}^{n}}\class{term t-sq}{\big(}\class{term t-h}{\theta^{\top}x^{(i)}} - \class{term t-y}{y^{(i)}}\class{term t-sq}{\big)^2}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">The least-squares cost function, CS229 §1 <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 notes</a></span>. The mean squared error (MSE) is the same thing divided by n.</p>
+  </div>
+  <p>J is a bowl: a smooth, convex function of the weights with a single lowest point. That's why linear regression always has one best answer (or a flat valley of equally good answers when features are redundant), and why the methods below can find it reliably.</p>
+</section><section class="ch" id="c7" data-toc="7 · Normal equation">
+  <span class="pill ok">Solve it exactly</span>
+  <h3>The normal equation: set the slope of the bowl to zero</h3>
+  <p>At the bottom of a bowl, the gradient is zero. Differentiate J, set it to zero, and you get a linear system you can solve in one shot <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §1.2</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"th","c":"ok","label":"best weights","say":"The weights that minimise J exactly."},
+    {"t":"inv","c":"info","label":"undo the feature overlap","say":"XᵀX is the features&#39; correlation structure (p × p). Its inverse untangles how much each feature contributes on its own."},
+    {"t":"xty","c":"a","label":"feature–target overlap","say":"How much each feature moves together with the target."},
+    {"t":"warn","c":"bad","label":"needs an inverse","say":"Only works if XᵀX is invertible: fails when features are perfectly redundant (size in m² and in ft²) or when there are more features than rows. Nearly redundant features make it numerically shaky; that&#39;s what Ridge fixes."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-th}{\theta^{*}} = \class{term t-inv}{(X^{\top}X)^{-1}}\,\class{term t-xty}{X^{\top}\mathbf{y}} \qquad \class{term t-warn}{\text{if } X^{\top}X \text{ is invertible}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">From X<sup>⊤</sup>Xθ = X<sup>⊤</sup>y, CS229 §1.2 and footnote 3 on invertibility.</p>
+  </div>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 290" role="img" aria-label="Least squares as projection of y onto the plane spanned by the feature columns">
+        <defs><marker id="arP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--dim)"/></marker></defs>
+        <g data-show="1"><path d="M120 230 L520 230 L680 150 L280 150 Z" class="finfo" stroke-width="1.5"/><text x="120" y="256" class="tinfo" font-size="13" font-weight="600">every prediction Xθ the model can make</text><text x="120" y="274" class="d" font-size="12">(the plane spanned by the feature columns)</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--a)"><path d="M250 205 L420 50" stroke="var(--a)" stroke-width="3" marker-end="url(#arP)"/><text x="432" y="50" class="ta" font-weight="600">y: the real prices</text><text x="432" y="68" class="d" font-size="12">(sits off the plane: no exact fit)</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--b)"><path d="M250 205 L420 190" stroke="var(--b)" stroke-width="3" marker-end="url(#arP)"/><text x="300" y="186" class="tb" font-weight="600">ŷ = Xθ*</text></g>
+        <g data-show="4" data-hl="4" style="color:var(--bad)"><path d="M420 54 L420 186" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="6 4"/><path d="M420 176 L410 177 L409 187" fill="none" stroke="var(--bad)" stroke-width="1.5"/><text x="430" y="130" class="tbad" font-weight="600">residual y − ŷ</text><text x="430" y="148" class="d" font-size="12">perpendicular to the plane</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Think of all 12 prices as one vector in 12-dimensional space. Every choice of weights gives a prediction vector Xθ, and all of them lie on a flat surface: the space spanned by the feature columns.</li>
+      <li>The real prices y are almost never on that surface. No line passes through every point.</li>
+      <li>The best you can do is the point on the surface closest to y. That's ŷ = Xθ*.</li>
+      <li>"Closest" means the leftover error is perpendicular to the surface: Xᵀ(y − Xθ) = 0. Rearranged, that is exactly the normal equation. Least squares is a projection.</li>
+    </ol>
+  </div>
+  <div class="card bad"><h4>What breaks: cost and conditioning</h4><p>Inverting XᵀX costs about p³ operations, fine for hundreds or thousands of features, painful for millions. And when features are nearly collinear, tiny changes in the data swing the weights wildly; scikit-learn: the least-squares estimate "becomes highly sensitive to random errors in the observed target, producing a large variance" <span class="src"><a href="https://scikit-learn.org/stable/modules/linear_model.html">scikit-learn docs</a></span>. Libraries solve via QR or SVD rather than an explicit inverse for stability.</p></div>
+</section><section class="ch" id="c8" data-toc="8 · Gradient descent">
+  <span class="pill ok">Or walk downhill</span>
+  <h3>Gradient descent: small steps against the slope</h3>
+  <p>Instead of solving the system, start anywhere and repeatedly nudge each weight in the direction that lowers J. For least squares the update is the <b>LMS rule</b>: move each weight by the error times its feature <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §1.1</a></span>.</p>
+  <div class="reader" data-reader='[
+    {"t":"th","c":"info","label":"one weight","say":"Weight j, updated in place."},
+    {"t":"a","c":"b","label":"learning rate","say":"Step size α. Too small: painfully slow. Too big: overshoots and diverges."},
+    {"t":"e","c":"bad","label":"the error","say":"How wrong the prediction was on this example: truth minus prediction."},
+    {"t":"x","c":"a","label":"the feature","say":"Weights on features that were large for this example move more. That&#39;s also why feature scale matters so much."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-th}{\theta_j} := \class{term t-th}{\theta_j} + \class{term t-a}{\alpha}\,\class{term t-e}{\big(y^{(i)} - h_\theta(x^{(i)})\big)}\,\class{term t-x}{x^{(i)}_j}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <h4>Try it: learning rate and feature scaling</h4>
+  <div class="card lab" id="labGD">
+    <div class="seg"><button data-v="raw" class="on">raw size (m²)</button><button data-v="std">standardised size</button></div>
+    <div class="seg" data-o="lrs"></div>
+    <div class="stats">
+      <div class="stat"><div class="l">steps to get within 1% of the best MSE</div><div class="v" data-o="steps">–</div></div>
+    </div>
+    <div class="stage plot"><svg viewBox="0 0 760 220" data-o="plot" role="img" aria-label="MSE per step of gradient descent"></svg></div>
+    <p class="small" style="margin:0">Full-batch gradient descent on our 12 flats, starting from w = b = 0. With raw sizes (45–170), the slope and the intercept need wildly different step sizes, so any learning rate small enough not to blow up crawls on the intercept. Standardise the feature (subtract the mean, divide by the standard deviation) and the bowl becomes round: a few steps suffice.</p>
+  </div>
+</section><section class="ch" id="c9" data-toc="9 · Why squares?">
+  <span class="pill st">Why squares?</span>
+  <h3>Least squares = maximum likelihood under Gaussian noise</h3>
+  <p>Assume each price is the true line plus random noise ε that is Gaussian, independent, and has the same spread σ for every flat. Ask which weights make the observed prices most probable. Take the log of that probability and you get <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §1.3</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"l","c":"info","label":"log-likelihood","say":"How probable the data is under weights θ (on a log scale). Higher is better."},
+    {"t":"c","c":"st","label":"a constant","say":"Depends on n and σ, not on θ. It doesn&#39;t affect which θ wins."},
+    {"t":"s","c":"st","label":"a positive scale","say":"Also doesn&#39;t change which θ wins."},
+    {"t":"J","c":"bad","label":"the least-squares cost","say":"Maximising the likelihood means minimising exactly this sum of squares. Squared error isn&#39;t arbitrary: it&#39;s what Gaussian noise implies."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-l}{\ell(\theta)} = \class{term t-c}{n\log\tfrac{1}{\sqrt{2\pi}\,\sigma}} - \class{term t-s}{\tfrac{1}{\sigma^{2}}}\cdot\class{term t-J}{\tfrac12\sum_{i}\big(y^{(i)} - \theta^{\top}x^{(i)}\big)^2}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <p>This also explains the weakness. Gaussian noise almost never produces a point far from the line, so least squares treats a far point as very informative and bends to reach it:</p>
+  <div class="card lab" id="labOut">
+    <label>Price of the biggest flat (170 m²) <input type="range" min="60" max="260" step="2" value="158" data-k="y"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Fit with one point moved"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">fitted slope (₹ lakh / m²)</div><div class="v b" data-o="w">–</div></div>
+      <div class="stat"><div class="l">predicted price, 100 m² flat</div><div class="v b" data-o="p100">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Dashed line: the original fit. One mislabelled or unusual flat drags the whole line. Fixes: inspect residuals, use a robust loss (Huber, absolute error), or transform the target (e.g. log price).</p>
+  </div>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="practice">Next: In practice</button></div><div class="tab-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="-1"><div class="sec" id="practice"><h2 class="sec-title">In practice</h2><section class="ch" id="c4" data-toc="4 · How it's done today">
+  <h3>Two ways to the same answer, plus a statistics toolkit</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Approach</th><th>How</th><th>When</th></tr>
+    <tr><td><b>Closed form</b> (normal equation, or QR / SVD)</td><td>Solve XᵀXθ = Xᵀy directly</td><td>Up to a few thousand features; exact answer in one shot. scikit-learn's <code>LinearRegression</code> uses a least-squares solver</td></tr>
+    <tr><td><b>Gradient descent</b> / SGD</td><td>Repeatedly step the weights downhill on the loss</td><td>Huge data or many features; streaming data; the same machinery that trains neural nets</td></tr>
+    <tr><td><b>Statistical inference</b> (e.g. statsmodels)</td><td>Same fit, plus standard errors, p-values, confidence intervals</td><td>When you need to explain or test the coefficients, not just predict</td></tr>
+  </table></div>
+  <p>All three minimise the same squared-error loss. scikit-learn's docs: <code>LinearRegression</code> "fits a linear model with coefficients w = (w₁, …, w<sub>p</sub>) to minimize the residual sum of squares" <span class="src"><a href="https://scikit-learn.org/stable/modules/linear_model.html">scikit-learn docs</a></span>.</p>
+</section><section class="ch" id="c12" data-toc="12 · Measuring fit">
+  <h3>R²: how much of the variation the line explains</h3>
+  <div class="reader" data-reader='[
+    {"t":"r2","c":"ok","label":"R²","say":"Share of the target&#39;s variance explained by the model. 1 is perfect; 0 means no better than predicting the mean."},
+    {"t":"res","c":"bad","label":"what the model misses","say":"Sum of squared residuals around the fitted line."},
+    {"t":"tot","c":"info","label":"what a dumb model misses","say":"Sum of squared differences from the mean of y: the error of always predicting the average."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-r2}{R^{2}} = 1 - \class{term t-res}{\textstyle\sum_i (y_i - \hat y_i)^2} \,\big/\, \class{term t-tot}{\textstyle\sum_i (y_i - \bar y)^2}"></div></div>
+    <ol class="say"></ol>
+  </div>
+  <p>For our flats R² ≈ 0.99 (the illustrative points are very linear). Anscombe's sets all score 0.67 while being completely different, so R² alone is never enough. Report an error in the target's units too (RMSE or MAE: "off by ₹3 lakh on average"), and evaluate on held-out data. Training R² always goes up when you add a feature, even a useless one.</p>
+</section><section class="ch" id="c13" data-toc="13 · The recipe">
+  <h3>Fitting a linear regression you can trust</h3>
+  <ol>
+    <li><b>Plot first.</b> Scatter the target against key features; Anscombe's lesson.</li>
+    <li><b>Split the data</b> into train and test (or use cross-validation) before anything else.</li>
+    <li><b>Engineer features:</b> logs for skewed quantities like prices, polynomial or interaction terms where the relationship bends, one-hot encoding for categories.</li>
+    <li><b>Scale features</b> if you use gradient descent or regularization (not needed for plain closed-form OLS predictions).</li>
+    <li><b>Fit</b> by least squares (closed form for small p, gradient descent for big data).</li>
+    <li><b>Check residuals:</b> residuals vs fitted (curve? funnel?), outliers, high-leverage points.</li>
+    <li><b>Evaluate on held-out data</b> with RMSE or MAE in real units, plus R².</li>
+    <li><b>If the weights are unstable or there are many features,</b> move to Ridge, Lasso or Elastic Net.</li>
+  </ol>
+</section><section class="ch" id="c16" data-toc="16 · When to use it">
+  <h3>Use it, or reach for something else?</h3>
+  <div class="two">
+    <div class="card ok"><h4>Use linear regression when</h4><ul style="margin:0;padding-left:20px"><li>You need a fast, explainable baseline for a numeric target</li><li>You need coefficients you can explain to stakeholders</li><li>Data is small, or features are already well engineered</li><li>The relationship is roughly linear (or linear after a log)</li></ul></div>
+    <div class="card bad"><h4>Reach for something else when</h4><ul style="margin:0;padding-left:20px"><li>Many correlated features or p ≈ n → Ridge / Lasso / Elastic Net</li><li>Strong non-linearities and interactions → gradient boosting, random forests</li><li>Heavy outliers → Huber or quantile regression</li><li>A yes/no target → logistic regression</li></ul></div>
+  </div>
+</section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="c3" data-toc="3 · The naive fix">
+  <span class="pill bad">The trap</span>
+  <h3>"Make the errors add up to zero" picks terrible lines</h3>
+  <p>The obvious first idea: choose the line whose errors sum to zero, so the misses above and below cancel out. Try it. Every line through the average point (102.75 m², ₹97.2 lakh) has residuals that sum to exactly zero, no matter how wrong its slope is:</p>
+  <div class="card lab" id="labNaive">
+    <label>Slope of a line through the average point <input type="range" min="-1" max="2.5" step="0.05" value="0" data-k="w"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Line pivoting around the mean point"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">sum of residuals</div><div class="v ok" data-o="sum">–</div></div>
+      <div class="stat"><div class="l">sum of |residuals|</div><div class="v b" data-o="abs">–</div></div>
+      <div class="stat"><div class="l">sum of squared residuals</div><div class="v bad" data-o="sq">–</div></div>
+    </div>
+    <p class="small" style="margin:0">The first number stays at 0 for every slope, even a flat or downhill line. Positive and negative errors cancel, so "sum of errors" can't tell a good line from a bad one. Absolute or squared errors can't cancel, so they can.</p>
+  </div>
+  <div class="card bad"><h4>What breaks: errors that cancel</h4><p>You need a loss where every miss counts as a cost. The two natural choices are |error| (least absolute deviations) and error² (least squares). Least squares won historically because it's smooth, has a closed-form solution, and matches the maths of Gaussian noise (see the Maths tab). Its price is sensitivity to outliers, since a miss of 10 costs 100.</p></div>
+</section><section class="ch" id="c10" data-toc="10 · Assumptions">
+  <span class="pill bad">When the line lies</span>
+  <h3>Same line, same R², four completely different stories</h3>
+  <p>In 1973 the statistician Francis Anscombe built four small datasets that share the same mean of x (9), mean of y (7.50), correlation (0.816), regression line (y = 3.00 + 0.500x) and R² (0.67). Fit linear regression to each and the software reports the same numbers four times. Now look at them:</p>
+  <div class="card lab" id="labAns">
+    <div class="seg"><button data-v="0" class="on">I</button><button data-v="1">II</button><button data-v="2">III</button><button data-v="3">IV</button></div>
+    <div class="stage plot"><svg viewBox="0 0 760 280" data-o="plot" role="img" aria-label="Anscombe dataset with the shared regression line"></svg></div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+    <p class="small" style="margin:0">Real data: <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe's quartet</a> (Anscombe, 1973). The orange line is the fitted line, identical for all four.</p>
+  </div>
+  <p>The assumptions behind the usual statistics (standard errors, p-values, prediction intervals) are often remembered as <b>LINE</b>:</p>
+  <div class="tw"><table class="t">
+    <tr><th>Assumption</th><th>Means</th><th>How to check / fix</th></tr>
+    <tr><td><b>L</b>inearity</td><td>The mean of y really is linear in the features</td><td>Residuals vs fitted plot shows no curve; add x², logs, interactions (set II)</td></tr>
+    <tr><td><b>I</b>ndependence</td><td>Errors don't depend on each other</td><td>Watch for time series and grouped data; use time-aware or mixed models</td></tr>
+    <tr><td><b>N</b>ormality</td><td>Errors are roughly Gaussian</td><td>Q-Q plot of residuals; matters mostly for small-sample inference, not for the fit itself</td></tr>
+    <tr><td><b>E</b>qual variance</td><td>Error spread is the same for all x (homoscedasticity)</td><td>Funnel-shaped residuals → transform y (log) or use weighted least squares</td></tr>
+  </table></div>
+  <p class="small">Plus two practical ones: no extreme outliers or high-leverage points (sets III and IV), and features not too collinear (see the normal equation in the Maths tab, and the <a href="../regularized-linear-models/">Regularized Linear Models</a> lesson). For pure prediction you need fewer of these; for interpreting coefficients you need all of them. <span class="mine">my take</span></p>
+</section><section class="ch" id="c11" data-toc="11 · Curves & overfitting">
+  <span class="pill st">Curves, still linear</span>
+  <h3>Polynomial features: more wiggle, and the overfitting trap</h3>
+  <p>Add x², x³, … as extra columns and fit them with the same least squares. The model is still linear in its weights, but can now bend. Each extra degree lowers the training error. Watch what happens on new data:</p>
+  <div class="card lab" id="labPoly">
+    <label>Polynomial degree <input type="range" min="1" max="9" step="1" value="1" data-k="d"><output></output></label>
+    <div class="stage plot"><svg viewBox="0 0 760 300" data-o="plot" role="img" aria-label="Polynomial fit with training and test points"></svg></div>
+    <div class="stats">
+      <div class="stat"><div class="l">training MSE (10 points)</div><div class="v a" data-o="tr">–</div></div>
+      <div class="stat"><div class="l">test MSE (9 new points)</div><div class="v st" data-o="te">–</div></div>
+    </div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+    <p class="small" style="margin:0">Illustrative data: a smooth curve plus noise. <span style="color:var(--a)">●</span> training points, <span style="color:var(--st)">●</span> test points. With degree 9 and 10 points, the curve passes through every training point (training error 0) and swings wildly in between.</p>
+  </div>
+  <div class="card ok"><h4>Two fixes</h4><p>Choose the complexity with held-out data (cross-validation), or keep the flexible model and penalise large weights. The second fix is <a href="../regularized-linear-models/">Ridge, Lasso and Elastic Net</a>, the next lesson.</p></div>
+</section><section class="ch" id="c14" data-toc="14 · Caveats">
+  <h3>What to keep</h3>
+  <p><b>The lesson:</b> linear regression is a projection: it finds the closest prediction a weighted sum of features can make, measured by squared error. It is exact, fast and explainable, and it is the base that ridge, lasso, logistic and softmax regression (and every neural network's last layer) build on.</p>
+  <ul>
+    <li><b>Coefficients are "holding the others fixed".</b> With correlated features, a coefficient can even flip sign compared with a one-feature fit. Don't read them as causal effects.</li>
+    <li><b>Squared loss is outlier-sensitive.</b> One bad row can move the line (see the outlier lab in the Maths tab).</li>
+    <li><b>Linear in weights ≠ linear world.</b> If residuals curve, add features or use a more flexible model.</li>
+    <li><b>Extrapolation is risky.</b> The line knows nothing outside the range of x it saw. <span class="mine">my take</span></li>
+  </ul>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
+<header class="say-head"><p class="eyebrow">Say it</p><h2>What is linear regression, and how is it fitted?</h2></header>
+<ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>
+<div class="say-body">
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Say your answer out loud</h3>
+<p class="say-hint">Aim for 30 seconds. It feels different from reading it, and that's the point.</p>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="1">I've said it</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Tick what you covered</h3>
+<ul class="checks"><li><label><input type="checkbox" data-check><span>It models the target as a weighted sum of features plus a bias.</span></label></li><li><label><input type="checkbox" data-check><span>It fits the weights by minimising the sum of squared residuals.</span></label></li><li><label><input type="checkbox" data-check><span>There&#x27;s a closed form, the normal equation, or gradient descent at scale.</span></label></li><li><label><input type="checkbox" data-check><span>The normal equation is a projection of y onto the span of the features.</span></label></li><li><label><input type="checkbox" data-check><span>Under Gaussian noise, least squares is exactly maximum likelihood.</span></label></li><li><label><input type="checkbox" data-check><span>Its weak spots are outliers, non-linearity and collinear features.</span></label></li></ul>
+<div class="check-meter"><span class="meter"><i data-check-bar></i></span><span class="check-count" aria-live="polite" data-check-count></span></div>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="2">Take the follow-ups</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>The interviewer pushes further</h3>
+<div class="fu" data-fu>
+<p class="eyebrow">Follow-up 1 of 6</p>
+<p class="fu-q">Why squared error and not absolute error?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu1-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu1-answer"><p>Squared error is smooth and convex with a closed-form solution, and it's the maximum-likelihood loss under Gaussian noise. Absolute error (least absolute deviations) is the MLE under Laplace noise, is more robust to outliers, and predicts the conditional median instead of the mean, but it has no closed form and isn't differentiable at zero.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 2 of 6</p>
+<p class="fu-q">When does the normal equation fail?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu2-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu2-answer"><p>When XᵀX isn't invertible: perfectly collinear features (e.g. a one-hot encoding with every category kept plus an intercept, the "dummy variable trap"), or more features than examples. Near-collinearity makes it numerically unstable. Fixes: drop or combine features, use the pseudo-inverse (SVD), or add a ridge penalty, which makes XᵀX + λI invertible.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 3 of 6</p>
+<p class="fu-q">Normal equation or gradient descent?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu3-answer"><p>Normal equation for small to medium p (exact, no tuning). Gradient descent or SGD when n or p is huge, data streams in, or the model is part of something bigger. Gradient descent needs scaled features and a tuned learning rate.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 4 of 6</p>
+<p class="fu-q">What are the assumptions, and which matter for prediction?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu4-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu4-answer"><p>Linearity, independent errors, normal errors, equal variance (LINE), plus limited multicollinearity and no extreme outliers. For pure prediction, linearity (a correct functional form) and representative data matter most. Normality and equal variance matter mainly for valid standard errors, p-values and intervals.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 5 of 6</p>
+<p class="fu-q">How do you interpret a coefficient?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu5-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu5-answer"><p>The expected change in y for a one-unit increase in that feature, holding the other features constant. Correlated features make that "holding constant" unrealistic and the coefficients unstable, so be careful with interpretation and never read them as causal without a causal design.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 6 of 6</p>
+<p class="fu-q">Does adding a feature always increase R²?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu6-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="answer" id="fu6-answer"><p>On training data, yes (or keeps it the same), even for pure noise. That's why you use adjusted R² or, better, held-out error.</p></div>
+</div>
+</div>
+<div class="say-step say-final" data-say-step tabindex="-1">
+<p class="say-score" data-say-score hidden></p>
+<h3>The 30-second answer</h3>
+  <p class="say30">Linear regression models the target as a weighted sum of features plus a bias, and fits the weights by minimising the sum of squared residuals. That has a closed-form solution, the normal equation θ = (XᵀX)⁻¹Xᵀy, which is a projection of y onto the span of the features, or you can use gradient descent at scale. If the noise is Gaussian, least squares is exactly maximum likelihood. Its weak spots are outliers, non-linearity, and collinear features, which is where regularization comes in.</p>
+  
+<details class="say-more"><summary>Go further</summary><h3>The 2-minute walkthrough</h3>
+  <p>Start with the model ŷ = Xθ and why we need a loss where errors can't cancel. Write J(θ) = ½Σ(θᵀx − y)², a convex bowl. Solve two ways: normal equation (exact, about p³ cost, needs XᵀX invertible) or gradient descent (LMS update, needs feature scaling and a sensible learning rate). Justify squares via Gaussian maximum likelihood, and note the price: outlier sensitivity. Then the assumptions (LINE), why R² alone can lie (Anscombe), and polynomial features with the overfitting trade-off that motivates Ridge and Lasso.</p>
+  
+  
+  
+  
+  
+  
+  
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Linear regression can only fit straight lines." It's linear in the weights; polynomial and log features bend it.</li>
+    <li>"The features need to be normally distributed." The assumption is about the <i>errors</i>, not the features.</li>
+    <li>"High R² means the model is right." See Anscombe's quartet.</li>
+    <li>"A bigger coefficient means a more important feature." Only if the features are on the same scale, and not under strong collinearity.</li>
+  </ul></details>
+</div>
+</div>
+</section>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Built from Stanford CS229 notes (§1), scikit-learn's linear-model docs and Anscombe (1973) · checked 28 Oct 2026</p><section class="ch" id="c15" data-toc="15 · Key terms">
+  <h3>Glossary</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><b>Residual</b></td><td>y − ŷ for one example.</td></tr>
+    <tr><td><b>OLS</b></td><td>Ordinary least squares: minimise the sum of squared residuals.</td></tr>
+    <tr><td><b>Normal equation</b></td><td>XᵀXθ = Xᵀy, the closed-form solution.</td></tr>
+    <tr><td><b>Design matrix X</b></td><td>One row per example, one column per feature (plus a column of 1s).</td></tr>
+    <tr><td><b>Learning rate</b></td><td>Step size in gradient descent.</td></tr>
+    <tr><td><b>Multicollinearity</b></td><td>Features that are (nearly) linear combinations of each other.</td></tr>
+    <tr><td><b>Homoscedasticity</b></td><td>Error variance that's the same everywhere.</td></tr>
+    <tr><td><b>R² / RMSE / MAE</b></td><td>Share of variance explained / root mean squared error / mean absolute error.</td></tr>
+    <tr><td><b>Overfitting</b></td><td>Fitting training noise so well that new-data error goes up.</td></tr>
+  </table></div>
+</section><section class="ch" id="src" data-toc="Sources">
+  <h3>What this page is built from</h3>
+  <ol class="src-list">
+    <li>A. Ng, T. Ma et al., <a href="https://cs229.stanford.edu/main_notes.pdf">Stanford CS229 lecture notes</a>, §1: LMS, the normal equations, the probabilistic interpretation.</li>
+    <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/linear_model.html">Linear models user guide</a>: OLS objective, collinearity note.</li>
+    <li>F. J. Anscombe, "Graphs in Statistical Analysis", <i>The American Statistician</i>, 1973; data via <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe's quartet</a>.</li>
+    <li>Hastie, Tibshirani &amp; Friedman, <i>The Elements of Statistical Learning</i>, ch. 3 (linear methods for regression), background.</li>
+    <li>Interview angle: <a href="https://interviewquery.com/p/linear-regression-interview-questions">Interview Query, linear regression questions</a>; <a href="https://www.analyticsvidhya.com/blog/2025/11/linear-regression-interview-questions/">Analytics Vidhya</a>.</li>
+  </ol>
+  <p class="small">Flat sizes and prices, the polynomial dataset and the gradient-descent runs are illustrative and computed live in this page.</p>
+</section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+  <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/fundamentals/missing-values-and-scaling/"><span class="pn-label">Previous</span>Missing Values &amp; Feature Scaling</a><a class="btn btn-track" rel="next" href="../../../tracks/fundamentals/regularized-linear-models/"><span class="pn-label">Next</span>Regularized Linear Models</a></nav>
+</article>
+<div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="intuition"><a href="#play">Play</a></li><li data-panel="how"><a href="#summary">In one breath</a></li><li data-panel="how"><a href="#c2">Building blocks</a></li><li data-panel="how"><a href="#c5">The core idea</a></li><li data-panel="how"><a href="#c7">Normal equation</a></li><li data-panel="how"><a href="#c8">Gradient descent</a></li><li data-panel="how"><a href="#c9">Why squares?</a></li><li data-panel="practice"><a href="#c4">How it's done today</a></li><li data-panel="practice"><a href="#c12">Measuring fit</a></li><li data-panel="practice"><a href="#c13">The recipe</a></li><li data-panel="practice"><a href="#c16">When to use it</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
+</main>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// ---- shared plotting helpers (SVG strings) ----
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+const segs = (lab, fn) => lab.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === bt)); fn(); })));
+const onv = (lab, i = 0) => lab.querySelectorAll('.seg')[i].querySelector('button.on');
+const fx = (v, d = 2) => (Math.abs(v) < 1e-9 ? 0 : v).toFixed(d).replace('-', '−');
+function frame(o) { // o: {W,H,x0,x1,y0,y1,xt,yt,xl,yl}
+  const W = o.W || 760, H = o.H || 300, L = 56, R = 16, T = 14, B = 40;
+  const X = v => L + (v - o.x0) / (o.x1 - o.x0) * (W - L - R), Y = v => H - B - (v - o.y0) / (o.y1 - o.y0) * (H - T - B);
+  let s = '';
+  (o.xt || []).forEach(t => s += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text class="tick" x="${X(t)}" y="${H - B + 16}" text-anchor="middle">${t}</text>`);
+  (o.yt || []).forEach(t => s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tick" x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${t}</text>`);
+  s += `<line class="ax" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  if (o.xl) s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="d" font-size="12">${o.xl}</text>`;
+  if (o.yl) s += `<text x="14" y="${(T + H - B) / 2}" text-anchor="middle" class="d" font-size="12" transform="rotate(-90 14 ${(T + H - B) / 2})">${o.yl}</text>`;
+  return { X, Y, s, W, H, L, R, T, B, clipX: v => Math.max(o.x0, Math.min(o.x1, v)) };
+}
+const dots = (F, xs, ys, cls = 'sa', r = 5) => xs.map((x, i) => `<circle cx="${F.X(x)}" cy="${F.Y(ys[i])}" r="${r}" class="${typeof cls === 'function' ? cls(i) : cls}"/>`).join('');
+const curve = (F, f, x0, x1, color, w = 2.5, dash = '', n = 160, y0 = -Infinity, y1 = Infinity) => { let d = ''; for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n, y = Math.max(y0, Math.min(y1, f(x))); d += (k ? 'L' : 'M') + F.X(x).toFixed(1) + ' ' + F.Y(y).toFixed(1); } return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`; };
+// least squares for small dense systems (Gaussian elimination with partial pivoting)
+function solve(A, b) { const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  const x = Array(n).fill(0); for (let r = n - 1; r >= 0; r--) { let s = M[r][n]; for (let k = r + 1; k < n; k++) s -= M[r][k] * x[k]; x[r] = s / M[r][r]; } return x; }
+function lstsq(X, y, lam = 0, noPenFirst = true) { const p = X[0].length, A = Array.from({ length: p }, () => Array(p).fill(0)), b = Array(p).fill(0);
+  X.forEach((r, i) => { for (let a = 0; a < p; a++) { b[a] += r[a] * y[i]; for (let c = 0; c < p; c++) A[a][c] += r[a] * r[c]; } });
+  for (let a = noPenFirst ? 1 : 0; a < p; a++) A[a][a] += lam; return solve(A, b); }
+const HX = [45, 58, 66, 74, 85, 92, 104, 118, 126, 140, 155, 170], HY = [48, 61, 63, 75, 79, 92, 96, 113, 112, 131, 138, 158];
+const fit1 = (xs, ys) => { const n = xs.length, mx = xs.reduce((a, b) => a + b) / n, my = ys.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0;
+  xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; }); const w = sxy / sxx; return { w, b: my - w * mx, mx, my }; };
+const BEST = fit1(HX, HY);
+const house = () => frame({ x0: 30, x1: 180, y0: 30, y1: 170, xt: [40, 60, 80, 100, 120, 140, 160, 180], yt: [40, 70, 100, 130, 160], xl: 'flat size (m²)', yl: 'price (₹ lakh)' });
+const lineSeg = (F, w, b, x0, x1, col, dash = '') => `<line x1="${F.X(x0)}" y1="${F.Y(w * x0 + b)}" x2="${F.X(x1)}" y2="${F.Y(w * x1 + b)}" stroke="${col}" stroke-width="2.5" ${dash ? `stroke-dasharray="${dash}"` : ''}/>`;
+const clipLine = (F, w, b, col, dash) => { const yl = [30, 170]; let xa = 30, xb = 180; // clip to the plot box
+  const ys = x => w * x + b; if (w !== 0) { const xs = yl.map(y => (y - b) / w).sort((p, q) => p - q); xa = Math.max(30, xs[0]); xb = Math.min(180, xs[1]); } else if (b < 30 || b > 170) return '';
+  return xa < xb ? lineSeg(F, w, b, xa, xb, col, dash) : ''; };
+
+// 3 · naive: lines through the mean
+(() => { const lab = document.getElementById('labNaive'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const upd = () => { const w = +r.value, b = BEST.my - w * BEST.mx, F = house(); r.nextElementSibling.textContent = fx(w);
+    let s = 0, a = 0, q = 0, res = ''; HX.forEach((x, i) => { const e = HY[i] - (w * x + b); s += e; a += Math.abs(e); q += e * e;
+      res += `<line x1="${F.X(x)}" x2="${F.X(x)}" y1="${F.Y(HY[i])}" y2="${F.Y(Math.max(30, Math.min(170, w * x + b)))}" stroke="var(--bad)" stroke-width="2"/>`; });
+    svg.innerHTML = F.s + res + clipLine(F, w, b, 'var(--b)') + dots(F, HX, HY) + `<circle cx="${F.X(BEST.mx)}" cy="${F.Y(BEST.my)}" r="7" fill="none" stroke="var(--info)" stroke-width="2.5"/><text x="${F.X(BEST.mx) + 10}" y="${F.Y(BEST.my) + 24}" class="tinfo" font-size="12">average point</text>`;
+    put(lab, 'sum', fx(s, 1)); put(lab, 'abs', fx(a, 0)); put(lab, 'sq', Math.round(q).toLocaleString()); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 6 · fit by hand
+(() => { const lab = document.getElementById('labFit'); if (!lab) return; const [rw, rb] = lab.querySelectorAll('input'), svg = lab.querySelector('svg');
+  const upd = () => { const w = +rw.value, b = +rb.value, F = house(); rw.nextElementSibling.textContent = fx(w); rb.nextElementSibling.textContent = fx(b, 1);
+    let q = 0, sq = ''; HX.forEach((x, i) => { const p = w * x + b, e = HY[i] - p; q += e * e; const top = Math.min(F.Y(HY[i]), F.Y(p)), h = Math.abs(F.Y(HY[i]) - F.Y(p));
+      sq += `<rect x="${F.X(x)}" y="${top}" width="${h}" height="${h}" class="fbad" stroke-width="1" opacity=".8"/>`; });
+    svg.innerHTML = F.s + sq + clipLine(F, w, b, 'var(--b)') + dots(F, HX, HY); const m = q / HX.length;
+    put(lab, 'mse', m.toFixed(2), m < BEST_MSE * 1.02 ? 'ok' : 'bad'); };
+  const BEST_MSE = HX.reduce((a, x, i) => a + (HY[i] - BEST.w * x - BEST.b) ** 2, 0) / HX.length;
+  put(lab, 'best', BEST_MSE.toFixed(2)); put(lab, 'bl', `${BEST.w.toFixed(2)}·x + ${BEST.b.toFixed(1)}`);
+  lab.querySelector('.seg button').addEventListener('click', () => { rw.value = BEST.w.toFixed(2); rb.value = (Math.round(BEST.b * 2) / 2).toFixed(1); upd(); });
+  rw.addEventListener('input', upd); rb.addEventListener('input', upd); upd(); })();
+
+// 8 · gradient descent
+(() => { const lab = document.getElementById('labGD'); if (!lab) return; const svg = lab.querySelector('svg'), lrBox = lab.querySelector('[data-o=lrs]');
+  const n = HX.length, mx = BEST.mx, sd = Math.sqrt(HX.reduce((a, v) => a + (v - mx) ** 2, 0) / n), Z = HX.map(v => (v - mx) / sd);
+  const best = HX.reduce((a, x, i) => a + (HY[i] - BEST.w * x - BEST.b) ** 2, 0) / n;
+  const LR = { raw: [1e-5, 5e-5, 8e-5, 1e-4], std: [0.01, 0.1, 0.5, 0.9, 1.1] }; let mode = 'raw', lr = 8e-5;
+  const run = (xs, a) => { let w = 0, b = 0; const hist = []; for (let t = 1; t <= 200000; t++) { let gw = 0, gb = 0, J = 0;
+      for (let i = 0; i < n; i++) { const e = w * xs[i] + b - HY[i]; gw += 2 * e * xs[i] / n; gb += 2 * e / n; J += e * e / n; }
+      if (t <= 400 || t % 500 === 0) hist.push([t, J]); if (!isFinite(J) || J > 1e9) return { s: 'diverges', hist, bad: 1 }; if (J < best * 1.01) return { s: t.toLocaleString(), hist };
+      w -= a * gw; b -= a * gb; } return { s: '> 200,000', hist, slow: 1 }; };
+  const drawLr = () => { lrBox.innerHTML = LR[mode].map(v => `<button data-v="${v}" class="${v === lr ? 'on' : ''}">α = ${v}</button>`).join('');
+    lrBox.querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { lr = +bt.dataset.v; drawLr(); upd(); })); };
+  const upd = () => { const r = run(mode === 'raw' ? HX : Z, lr); put(lab, 'steps', r.s, r.bad || r.slow || +r.s.replace(/,/g, '') > 1000 ? 'bad' : 'ok');
+    const maxT = r.hist.length ? r.hist[r.hist.length - 1][0] : 1, F = frame({ W: 760, H: 220, x0: 0, x1: Math.log10(Math.max(10, maxT)), y0: 0, y1: 4, yt: [0, 1, 2, 3, 4], xl: 'step (log scale)', yl: 'log₁₀ MSE' });
+    const pts = r.hist.filter(h => isFinite(h[1])).map(h => [Math.log10(h[0]), Math.max(0, Math.min(4, Math.log10(h[1])))]);
+    let d = pts.map((p, k) => (k ? 'L' : 'M') + F.X(p[0]).toFixed(1) + ' ' + F.Y(p[1]).toFixed(1)).join('');
+    svg.innerHTML = F.s + `<line x1="${F.L}" x2="${F.W - F.R}" y1="${F.Y(Math.log10(best))}" y2="${F.Y(Math.log10(best))}" stroke="var(--ok)" stroke-dasharray="5 4"/><text x="${F.W - F.R - 4}" y="${F.Y(Math.log10(best)) - 6}" text-anchor="end" class="tok" font-size="11.5">best MSE</text>` + `<path d="${d}" fill="none" stroke="var(--b)" stroke-width="2.5"/>`; };
+  segs(lab, () => {}); lab.querySelector('.seg').querySelectorAll('button').forEach(bt => bt.addEventListener('click', () => { mode = bt.dataset.v; lr = mode === 'raw' ? 8e-5 : 0.1; drawLr(); upd(); }));
+  drawLr(); upd(); })();
+
+// 9 · outlier
+(() => { const lab = document.getElementById('labOut'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const upd = () => { const ys = [...HY]; ys[11] = +r.value; r.nextElementSibling.textContent = '₹' + r.value + ' L'; const f = fit1(HX, ys);
+    const F = frame({ x0: 30, x1: 180, y0: 30, y1: 270, xt: [40, 60, 80, 100, 120, 140, 160, 180], yt: [40, 100, 160, 220], xl: 'flat size (m²)', yl: 'price (₹ lakh)' });
+    svg.innerHTML = F.s + lineSeg(F, BEST.w, BEST.b, 35, 178, 'var(--dim)', '6 5') + lineSeg(F, f.w, f.b, 35, 178, 'var(--b)') + dots(F, HX, ys, i => i === 11 && Math.abs(ys[11] - 158) > 1 ? 'sbad' : 'sa', 5.5);
+    put(lab, 'w', fx(f.w)); put(lab, 'p100', '₹' + (f.w * 100 + f.b).toFixed(1) + ' L'); };
+  r.addEventListener('input', upd); upd(); })();
+
+// 10 · Anscombe's quartet (real data)
+(() => { const lab = document.getElementById('labAns'); if (!lab) return; const svg = lab.querySelector('svg');
+  const A = [[[10, 8.04], [8, 6.95], [13, 7.58], [9, 8.81], [11, 8.33], [14, 9.96], [6, 7.24], [4, 4.26], [12, 10.84], [7, 4.82], [5, 5.68]],
+    [[10, 9.14], [8, 8.14], [13, 8.74], [9, 8.77], [11, 9.26], [14, 8.10], [6, 6.13], [4, 3.10], [12, 9.13], [7, 7.26], [5, 4.74]],
+    [[10, 7.46], [8, 6.77], [13, 12.74], [9, 7.11], [11, 7.81], [14, 8.84], [6, 6.08], [4, 5.39], [12, 8.15], [7, 6.42], [5, 5.73]],
+    [[8, 6.58], [8, 5.76], [8, 7.71], [8, 8.84], [8, 8.47], [8, 7.04], [8, 5.25], [19, 12.50], [8, 5.56], [8, 7.91], [8, 6.89]]];
+  const N = ['A genuinely linear cloud with noise: the line is a fair summary.', 'A smooth curve, not a line: the linearity assumption fails; a squared term would fit it almost perfectly.', 'A perfect line except one outlier, which tilts the fit away from the other ten points.', 'No relationship at all for ten points; one high-leverage point at x = 19 creates the entire slope.'];
+  const upd = () => { const k = +onv(lab).dataset.v, F = frame({ H: 280, x0: 2, x1: 20, y0: 2, y1: 14, xt: [4, 8, 12, 16, 20], yt: [4, 8, 12], xl: 'x', yl: 'y' });
+    svg.innerHTML = F.s + lineSeg(F, 0.5, 3, 3, 20, 'var(--b)') + dots(F, A[k].map(p => p[0]), A[k].map(p => p[1]), 'sa', 6); lab.querySelector('[data-o=note]').textContent = `Set ${['I', 'II', 'III', 'IV'][k]}: ${N[k]}`; };
+  segs(lab, upd); upd(); })();
+
+// 11 · polynomial degree
+(() => { const lab = document.getElementById('labPoly'); if (!lab) return; const r = lab.querySelector('input'), svg = lab.querySelector('svg');
+  const f = x => Math.sin(2.6 * x) + 0.3, xtr = [0.02, 0.12, 0.25, 0.33, 0.46, 0.55, 0.68, 0.77, 0.88, 0.97], ntr = [0.12, -0.15, 0.08, -0.1, 0.14, -0.06, 0.1, -0.14, 0.05, -0.09];
+  const xte = [0.07, 0.19, 0.29, 0.4, 0.51, 0.62, 0.72, 0.83, 0.93], nte = [-0.08, 0.1, -0.12, 0.06, -0.1, 0.13, -0.05, 0.09, -0.11];
+  const ytr = xtr.map((x, i) => f(x) + ntr[i]), yte = xte.map((x, i) => f(x) + nte[i]), fe = (x, d) => Array.from({ length: d + 1 }, (_, k) => (2 * x - 1) ** k);
+  const upd = () => { const d = +r.value; r.nextElementSibling.textContent = 'degree ' + d; const w = lstsq(xtr.map(x => fe(x, d)), ytr, 0), p = x => fe(x, d).reduce((a, v, k) => a + v * w[k], 0);
+    const mtr = xtr.reduce((a, x, i) => a + (p(x) - ytr[i]) ** 2, 0) / xtr.length, mte = xte.reduce((a, x, i) => a + (p(x) - yte[i]) ** 2, 0) / xte.length;
+    const F = frame({ x0: 0, x1: 1, y0: -0.4, y1: 1.8, xt: [0, 0.25, 0.5, 0.75, 1], yt: [0, 0.5, 1, 1.5], xl: 'x', yl: 'y' });
+    svg.innerHTML = F.s + `<clipPath id="pc"><rect x="${F.L}" y="${F.T}" width="${F.W - F.L - F.R}" height="${F.H - F.T - F.B}"/></clipPath><g clip-path="url(#pc)">${curve(F, p, 0, 1, 'var(--b)', 2.5, '', 300, -2, 4)}</g>` + dots(F, xtr, ytr, 'sa', 5.5) + dots(F, xte, yte, 'sst', 5.5);
+    put(lab, 'tr', mtr.toFixed(4)); put(lab, 'te', mte.toFixed(4), mte > 0.02 ? 'bad' : 'st');
+    lab.querySelector('[data-o=note]').textContent = d === 1 ? 'Degree 1 underfits: a straight line can\'t follow the curve, so both errors are high.' : d <= 3 ? 'Sweet spot: the curve follows the trend, and test error is near its lowest.' : d < 9 ? 'Training error keeps falling, but test error starts rising: the curve is fitting noise.' : 'Degree 9 through 10 points: zero training error, terrible test error. Classic overfitting.'; };
+  r.addEventListener('input', upd); upd(); })();
+
+</script>
+<footer class="site-foot"><div class="page-wide foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="../../../roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js"></script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

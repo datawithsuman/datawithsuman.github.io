@@ -1,0 +1,53 @@
+# The Classical ML part of the Fundamentals track. Lesson text comes from the live pages (see ml_import.py).
+# Each lesson here adds its interview question and what to read first.
+
+GROUPS = [
+    ("data-features", "Data and features", "Turning raw columns into model-ready features."),
+    ("linear-models", "Linear models", "Weighted sums of features: regression, regularisation and classification."),
+    ("tree-models", "Tree-based models", "Splits, ensembles and boosting: the workhorses of tabular data."),
+    ("classic-classifiers", "Other classic classifiers", "Margins, neighbours and probabilities."),
+    ("unsupervised", "Unsupervised learning", "Finding structure without labels."),
+    ("time-series", "Time series", "Forecasting with trend and seasonality, and honest backtests."),
+    ("metrics", "Evaluation metrics", "Which number to trust, and when."),
+    ("core-concepts", "Core concepts", "Generalisation, evaluation and validation."),
+]
+
+LESSONS = {
+    "categorical-encoding": {"q": "How would you encode a categorical feature with 400 values?"},
+    "missing-values-and-scaling": {"q": "How do you handle missing values and feature scaling?"},
+    "linear-regression": {"q": "What is linear regression, and how is it fitted?"},
+    "regularized-linear-models": {"q": "What is the difference between Ridge and Lasso?", "prereqs": ["linear-regression", "mle-and-map"]},
+    "logistic-regression": {"q": "What is logistic regression, and why is it called regression?", "prereqs": ["linear-regression", "mle-and-map"]},
+    "softmax-regression": {"q": "What is softmax regression, and how is it trained?", "prereqs": ["logistic-regression", "entropy-cross-entropy-kl"],
+                           "related": ["fundamentals/self-attention"]},
+    "decision-trees": {"q": "How does a decision tree choose its splits?"},
+    "random-forest": {"q": "How does a random forest improve on one deep tree?", "prereqs": ["decision-trees"]},
+    "gradient-boosting": {"q": "How does gradient boosting work, and how does it differ from a random forest?", "prereqs": ["decision-trees", "random-forest"],
+                          "related": ["system-design/recommendation-system"]},
+    "support-vector-machines": {"q": "What does an SVM optimise, and what are support vectors?", "prereqs": ["logistic-regression"]},
+    "k-nearest-neighbours": {"q": "How does k-NN make a prediction, and what does k control?", "prereqs": ["vectors-and-cosine-similarity", "missing-values-and-scaling"],
+                             "related": ["ai-engineering/rag-end-to-end"]},
+    "naive-bayes": {"q": "What is naive about naive Bayes?", "prereqs": ["probability-and-bayes"]},
+    "k-means": {"q": "How does k-means work, and does it always find the best clustering?"},
+    "hierarchical-clustering": {"q": "How does hierarchical clustering work, and how do you pick the number of clusters?", "prereqs": ["k-means"]},
+    "dbscan": {"q": "How does DBSCAN find clusters, and what is its main weakness?", "prereqs": ["k-means"]},
+    "gaussian-mixture-models": {"q": "What is a Gaussian mixture model, and how is it fitted?", "prereqs": ["k-means"]},
+    "pca": {"q": "What does PCA do, and what are the principal components?", "prereqs": ["eigenvalues-and-eigenvectors"]},
+    "t-sne-and-umap": {"q": "How does t-SNE build its 2-D map?", "prereqs": ["pca"]},
+    "anomaly-detection": {"q": "How would you detect anomalies without labels?", "prereqs": ["random-forest", "k-nearest-neighbours"]},
+    "forecasting-basics": {"q": "How would you build a forecast for a time series?", "prereqs": ["linear-regression", "cross-validation-and-leakage"]},
+    "classification-metrics": {"q": "Your fraud model is 99.8% accurate. Is it good?", "prereqs": ["logistic-regression"]},
+    "roc-auc-vs-pr-auc": {"q": "When would you use PR-AUC instead of ROC-AUC?", "prereqs": ["classification-metrics"]},
+    "thresholds-and-costs": {"q": "How do you choose a classification threshold?", "prereqs": ["classification-metrics"]},
+    "regression-metrics": {"q": "How do you choose between RMSE and MAE?", "prereqs": ["linear-regression"]},
+    "ranking-metrics": {"q": "Which metrics would you use to evaluate a ranked list?", "prereqs": ["classification-metrics"],
+                        "related": ["system-design/recommendation-system"]},
+    "probability-metrics": {"q": "How do you check whether a model's probabilities can be trusted?", "prereqs": ["roc-auc-vs-pr-auc", "logistic-regression"]},
+    "choosing-the-right-metric": {"q": "Which metric would you use?", "prereqs": ["classification-metrics", "regression-metrics", "ranking-metrics", "probability-metrics"]},
+    "bias-variance": {"q": "What is the bias–variance trade-off?", "prereqs": ["linear-regression"]},
+    "cross-validation-and-leakage": {"q": "What is data leakage, and how does cross-validation help you avoid it?", "prereqs": ["bias-variance"]},
+    "class-imbalance": {"q": "How do you handle a 2% positive class?", "prereqs": ["classification-metrics", "thresholds-and-costs"]},
+    "hyperparameter-tuning": {"q": "How do you tune hyperparameters efficiently?", "prereqs": ["cross-validation-and-leakage"]},
+}
+for _l in LESSONS.values():
+    _l["prereqs"] = [f"fundamentals/{p}" for p in _l.get("prereqs", [])]

@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness Engineering · Papers · datawithsuman</title>
+<meta name="description" content="What is actually inside a coding agent?">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/lx-c36418d5.css">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+</head>
+<body class="t-papers" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals" href="../../../tracks/fundamentals/">Fundamentals</a><a class="t-ai-engineering" href="../../../tracks/ai-engineering/">AI Engineering</a><a class="t-system-design" href="../../../tracks/system-design/">System Design</a><a class="t-papers active" href="../../../tracks/papers/" aria-current="true">Papers</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="papers/harness-engineering">
+<aside class="contents" aria-label="Papers contents">
+  <details class="contents-box" open><summary>Papers contents</summary><details class="mod"><summary>Models</summary><ol><li><a href="../../../tracks/papers/attention-is-all-you-need/"><span class="dot" data-key="papers/attention-is-all-you-need" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Attention Is All You Need</span></a></li></ol></details><details class="mod" open><summary>Agents and memory</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/papers/harness-engineering/"><span class="dot" data-key="papers/harness-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Harness Engineering</span></a></li><li><a href="../../../tracks/papers/context-language-models/"><span class="dot" data-key="papers/context-language-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Context Language Models</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-2">Agents and memory</a><span aria-hidden="true">/</span><b aria-current="page">Harness Engineering</b></nav>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/what-is-an-agent/">What Is an Agent? The ReAct Loop</a></div>
+  <h1 class="h1-lesson">Harness Engineering</h1>
+  <p class="lead">What is actually inside a coding agent?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">Barbaste, Darrigol, Vu, Wiltberger · Inclusive Brains, Wavestone AI Lab · arXiv <a href="https://arxiv.org/abs/2609.00006" target="_blank" rel="noopener">2609.00006</a> · July 2026 · 9 sources, checked 27 Oct 2026</p><div class="paper-tldr">An agent is a model plus a harness, and the harness is everything except the model. The authors read the source code of eleven production coding agents (Claude Code, Codex CLI, Gemini CLI, Mistral Vibe, OpenHands, Aider, Mini-SWE-Agent, Hermes, Pi, OpenCode, OpenClaw) and found that every one of them is built from the same <span class="k">seven subsystems</span>. They also found two things none of them use: <span class="k">agent frameworks</span> and <span class="k">vector RAG over code</span>. <span class="small">After this you can draw a harness from memory, and explain how real agents handle loops, context, tools, safety, sub-agents and extensions.</span></div><div class="legend"><span><i style="background:var(--a)"></i>harness parts</span><span><i style="background:var(--b)"></i>the model</span><span><i style="background:var(--st)"></i>context and memory</span><span><i style="background:var(--ok)"></i>allowed / works</span><span><i style="background:var(--bad)"></i>blocked / failure</span><span><i style="background:var(--info)"></i>numbers</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="example" data-toc="0 · The running example">
+  <h3>One task, followed through every part</h3>
+  <div class="card task"><span class="mono small">you, in the terminal</span><p class="taskq">"The tests in <code>test_invoice.py</code> are failing. Fix it."</p><p class="small">A real coding agent has to find the file, read it, run the tests, edit the code, run the tests again, and stop. The Method tab shows which part of the harness handles which step. <span class="mine">illustrative task</span></p></div>
+</section><section class="ch" id="c1" data-toc="1 · The problem">
+  <h3>The model can write the fix. It cannot run anything.</h3>
+  <p>A language model takes text in and gives text out. It can suggest the fix for <code>test_invoice.py</code>, but on its own it cannot open the file, run pytest, or decide whether it is done. Everything that turns its text into actions is the <span class="k">harness</span>: "the runtime that couples an LLM to the world—its loop, its tools, its context, its safety controls, its orchestration, and its extension surfaces" <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=3" target="_blank" rel="noopener">p. 3</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="A model alone versus a model wrapped in a harness">
+        <g data-show="1"><rect x="40" y="110" width="170" height="70" rx="12" class="nodeB"/><text x="125" y="141" text-anchor="middle">Model</text><text x="125" y="162" text-anchor="middle" class="sm">text in → text out</text>
+          <text x="125" y="214" text-anchor="middle" class="badTxt">"Change line 42 to…"</text><text x="125" y="236" text-anchor="middle" class="sm">nothing actually happens</text></g>
+        <g data-show="2"><rect x="300" y="40" width="420" height="230" rx="18" class="harnessBox"/><text x="510" y="66" text-anchor="middle" class="aTxt nm">Harness</text>
+          <rect x="425" y="120" width="170" height="70" rx="12" class="nodeB"/><text x="510" y="151" text-anchor="middle">Model</text><text x="510" y="172" text-anchor="middle" class="sm">same model</text></g>
+        <g data-show="3"><text x="350" y="100" class="chipT">read files</text><text x="620" y="100" class="chipT">run pytest</text><text x="350" y="230" class="chipT">edit code</text><text x="620" y="230" class="chipT">stop when green</text></g>
+        <g data-show="4"><text x="510" y="292" text-anchor="middle" class="big">Agent = Model + Harness</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>On its own, the model only produces text. It can describe the fix to <code>test_invoice.py</code>, but nothing on disk changes.</li>
+      <li>Wrap the same model in a harness: a program that runs around it.</li>
+      <li>The harness gives it hands: it reads files, runs tests, applies edits, and decides when to stop.</li>
+      <li>That is the paper's one-line definition. The model supplies the intelligence; the harness turns it into work.</li>
+    </ol>
+  </div>
+  <p>By mid-2026 every major AI lab shipped one of these, and the term "harness engineering" was barely five months old (first used by Mitchell Hashimoto, then defined by LangChain's Vivek Trivedy in February 2026) <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=3" target="_blank" rel="noopener">p. 3</a></span>. What was missing was a reference: a description, from real source code, of what a harness is made of. That is this paper. It reads eleven production harnesses at source level and does not benchmark or rank them; it describes how they are built <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=1" target="_blank" rel="noopener">p. 1</a></span>.</p>
+</section></div><section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of an engine on a workbench. It has all the power, but it goes nowhere until you build a car around it, with steering, brakes and a fuel gauge. The model is the engine. The harness is everything else, and this paper opens up eleven real cars to see how they are built.</p><figure class="picture"><svg viewBox="0 0 480 186" role="img" aria-label="The model sits in the centre. Seven parts surround it: agent loop, LLM integration, tools, memory and context, safety, orchestration and extensibility.">
+  <g font-size="14" text-anchor="middle" fill="var(--ink)">
+    <g fill="none" stroke="var(--a)" stroke-width="2">
+      <rect x="4" y="6" width="148" height="44" rx="8"/><rect x="166" y="6" width="148" height="44" rx="8"/><rect x="328" y="6" width="148" height="44" rx="8"/>
+      <rect x="4" y="71" width="148" height="44" rx="8"/><rect x="328" y="71" width="148" height="44" rx="8"/>
+      <rect x="85" y="136" width="148" height="44" rx="8"/><rect x="247" y="136" width="148" height="44" rx="8"/>
+    </g>
+    <text x="78" y="33">Agent loop</text><text x="240" y="33">LLM integration</text><text x="402" y="33">Tools</text>
+    <text x="78" y="98">Memory, context</text><text x="402" y="98">Safety</text>
+    <text x="159" y="163">Orchestration</text><text x="321" y="163">Extensibility</text>
+    <rect x="166" y="66" width="148" height="54" rx="10" fill="var(--b)"/><text x="240" y="99" fill="#fff" font-weight="700" font-size="17">The model</text>
+  </g>
+</svg><figcaption>The paper&#x27;s seven subsystems around the model. Every system in the study takes a position on all seven.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try it.</b> Your agent keeps running the same test without changing anything. Drag the slider to repeat the call, and see when each real agent steps in.</p><section class="ch"><div class="card lab" id="stuckLab">
+    <label for="sN">Identical tool call repeated <input type="range" id="sN" min="1" max="10" step="1" value="3"><output></output></label>
+    <div class="tablewrap"><table class="t" id="stuckT"><thead><tr><th>Harness</th><th>Rule in the source</th><th>What happens now</th></tr></thead><tbody></tbody></table></div>
+    <p class="small">Rules from §6.2 and Table 5 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=15" target="_blank" rel="noopener">p. 15–17</a></span>. Simplified: real detectors also look at errors, alternating patterns and output chunks.</p>
+  </div></section><p class="play-why"><b>Notice:</b> some production agents never step in at all. The paper still calls them production-quality, and that's why it warns against over-engineering stuck detection.</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="method">Next: Method</button></div><div class="tab-panel" id="panel-method" role="tabpanel" aria-labelledby="tab-method" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Method</h2><section class="ch" id="c2" data-toc="2 · The agent loop">
+  <span class="pill a">The agent loop</span>
+  <h3>At the core: ask the model, run what it asks for, repeat</h3>
+  <p>Every system in the study runs a variation of the <span class="k">ReAct</span> loop: the model thinks, asks for an action, the harness runs it, and the result goes back into the conversation <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=13" target="_blank" rel="noopener">p. 13</a></span>. The smallest real example is Mini-SWE-Agent, whose loop fits on one screen. Step through it with our task.</p>
+  <div data-scene class="codewalk">
+    <pre class="code walk"><span class="cl" data-hl="1">def run(self, task):</span>
+<span class="cl" data-hl="1">    self.add_messages(system_prompt)</span>
+<span class="cl" data-hl="1">    self.add_messages(user_prompt(task))</span>
+<span class="cl" data-hl="2">    while True:</span>
+<span class="cl" data-hl="2 6">        result = self.step()</span>
+<span class="cl" data-hl="6">        if result.role == "exit":</span>
+<span class="cl" data-hl="6">            return result</span>
+<span class="cl" data-hl="3">def query(self):</span>
+<span class="cl" data-hl="3">    self.check_limits()</span>
+<span class="cl" data-hl="3">    msg = self.model.query(self.messages)</span>
+<span class="cl" data-hl="3">    self.add_messages(msg)</span>
+<span class="cl" data-hl="4">def execute_actions(self):</span>
+<span class="cl" data-hl="4">    for action in msg["extra"]["actions"]:</span>
+<span class="cl" data-hl="4">        obs = self.env.execute(action)   <span class="cm"># subprocess.run()</span></span>
+<span class="cl" data-hl="5">        self.add_messages(observation(obs))</span></pre>
+    <ol class="say">
+      <li>Start: a system prompt and your task ("tests in test_invoice.py are failing") become the first two messages.</li>
+      <li>Then loop forever. Each turn is one call to step().</li>
+      <li>Ask the model, after checking the step and cost limits. It replies with a thought and one bash command, say <code>pytest test_invoice.py</code>.</li>
+      <li>Run that command in a fresh subprocess. Every action is independent; there is no long-lived shell.</li>
+      <li>Append the output (the failing test's traceback) to the message list. The list only grows.</li>
+      <li>Repeat until the model replies with an exit. That is the whole agent.</li>
+    </ol>
+  </div>
+  <p class="small">Condensed from the paper's Listing 1 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=14" target="_blank" rel="noopener">p. 14</a></span>; the project README describes "just some 100 lines of python for the agent class", bash as the only tool, and a completely linear history <span class="src"><a href="https://github.com/SWE-agent/mini-swe-agent" target="_blank" rel="noopener">repo</a></span>.</p>
+</section><section class="ch" id="c3" data-toc="3 · The trap: is a loop enough?">
+  <span class="pill bad">"Just a loop and bash"</span>
+  <h3>A 100-line loop scores like the big ones. So why are the big ones huge?</h3>
+  <p>Mini-SWE-Agent reports 74%+ on SWE-bench Verified, in the same range as systems three orders of magnitude larger <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=5" target="_blank" rel="noopener">p. 5</a></span> (self-reported, different models and dates, so not a clean comparison). The paper's first observation: <b>loop sophistication does not predict benchmark performance</b> <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=12" target="_blank" rel="noopener">Obs. 1, p. 12</a></span>. So is the rest of a production harness wasted code?</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="What a minimal loop does not handle">
+        <g data-show="1"><rect x="40" y="40" width="200" height="60" rx="12" class="nodeA"/><text x="140" y="66" text-anchor="middle">while True + bash</text><text x="140" y="86" text-anchor="middle" class="sm">~100 lines</text></g>
+        <g data-show="2" style="color:var(--bad)"><rect x="300" y="30" width="420" height="44" rx="10" class="noteBad"/><text x="510" y="58" text-anchor="middle">Context: the message list grows forever</text></g>
+        <g data-show="3" style="color:var(--bad)"><rect x="300" y="88" width="420" height="44" rx="10" class="noteBad"/><text x="510" y="116" text-anchor="middle">Safety: nothing stops <tspan class="mono">rm -rf</tspan> or reading <tspan class="mono">.env</tspan></text></g>
+        <g data-show="4" style="color:var(--bad)"><rect x="300" y="146" width="420" height="44" rx="10" class="noteBad"/><text x="510" y="174" text-anchor="middle">Cost and stuck loops: only step and cost caps</text></g>
+        <g data-show="5" style="color:var(--bad)"><rect x="300" y="204" width="420" height="44" rx="10" class="noteBad"/><text x="510" y="232" text-anchor="middle">No team setup: no plugins, skills, IDE, sub-agents</text></g>
+        <g data-show="6"><text x="380" y="286" text-anchor="middle" class="big">Benchmarks reward finishing the task. Users also need everything else.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>The minimal loop solves benchmark tasks surprisingly well.</li>
+      <li>But on a long real session the history grows past the context window, and nothing compresses it.</li>
+      <li>It will run any command the model writes, with your permissions.</li>
+      <li>It has no stuck detection beyond simple caps, so a model repeating itself burns money.</li>
+      <li>And it has nothing for teams: no extension points, no IDE, no sub-agents.</li>
+      <li>The paper's answer: production code goes into "safety, user experience, extensibility—and increasingly clients and transport", which no benchmark measures (p. 12).</li>
+    </ol>
+  </div>
+  <div class="card ok"><h4>The resolution</h4><p>Production systems "invest in scaffolding not because models need it for task completion, but because users need it for safety, reliability, and workflow integration" <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=58" target="_blank" rel="noopener">p. 58</a></span>. Roughly three-fifths of OpenCode's non-test source is clients (TUI, web, desktop, SDK), not the harness proper <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=12" target="_blank" rel="noopener">p. 12</a></span>.</p></div>
+</section><section class="ch" id="c5" data-toc="5 · The core idea: seven subsystems">
+  <span class="pill a">The anatomy</span>
+  <h3>Every harness takes a position on the same seven parts</h3>
+  <p>From the 100-line baseline to the million-line Codex, every system "must take a position on the same seven subsystems … even when that position is deliberate absence" <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=4" target="_blank" rel="noopener">p. 4</a></span>. For each, the paper records the smallest and the largest version found.</p>
+  <div class="reader" data-reader='[
+    {"t":"ag","c":"info","label":"what you use","say":"The agent: the thing you type the task into, e.g. Claude Code or Codex."},
+    {"t":"m","c":"b","label":"the intelligence","say":"The language model, which only reads text and writes text."},
+    {"t":"h","c":"a","label":"everything else","say":"The harness: loop, model integration, tools, memory, safety, orchestration and extensions, plus the interface you drive it through."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-ag}{\text{Agent}} \;=\; \class{term t-m}{\text{Model}} \;+\; \class{term t-h}{\text{Harness}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">The paper's definition, popularized by Trivedy's LangChain series <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=3" target="_blank" rel="noopener">p. 3</a></span> · hover a term.</p>
+  </div>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 360" role="img" aria-label="The seven subsystems of a coding-agent harness">
+        <rect x="20" y="16" width="720" height="34" rx="9" class="tbox"/><text x="380" y="38" text-anchor="middle" class="sm">Interface layer: terminal UI · IDE · SDK · server</text>
+        <g data-show="1" data-hl="1" style="color:var(--a)"><circle cx="380" cy="195" r="62" class="hub"/><text x="380" y="190" text-anchor="middle" class="nm">Agent loop</text><text x="380" y="210" text-anchor="middle" class="sm">§6</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--a)"><rect x="70" y="80" width="180" height="56" rx="12" class="nodeA"/><text x="160" y="104" text-anchor="middle">LLM integration</text><text x="160" y="124" text-anchor="middle" class="sm">prompts · caching · routing</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--a)"><rect x="510" y="80" width="180" height="56" rx="12" class="nodeA"/><text x="600" y="104" text-anchor="middle">Tools &amp; actions</text><text x="600" y="124" text-anchor="middle" class="sm">bash · edit · search</text></g>
+        <g data-show="4" data-hl="4" style="color:var(--st)"><rect x="40" y="168" width="180" height="56" rx="12" class="noteSt"/><text x="130" y="192" text-anchor="middle">Memory &amp; context</text><text x="130" y="212" text-anchor="middle" class="sm">compaction · AGENTS.md</text></g>
+        <g data-show="5" data-hl="5" style="color:var(--bad)"><rect x="540" y="168" width="180" height="56" rx="12" class="noteBad"/><text x="630" y="192" text-anchor="middle">Safety &amp; permissions</text><text x="630" y="212" text-anchor="middle" class="sm">rules · sandbox · approval</text></g>
+        <g data-show="6" data-hl="6" style="color:var(--a)"><rect x="70" y="256" width="180" height="56" rx="12" class="nodeA"/><text x="160" y="280" text-anchor="middle">Orchestration</text><text x="160" y="300" text-anchor="middle" class="sm">sub-agents · protocols</text></g>
+        <g data-show="7" data-hl="7" style="color:var(--a)"><rect x="510" y="256" width="180" height="56" rx="12" class="nodeA"/><text x="600" y="280" text-anchor="middle">Extensibility</text><text x="600" y="300" text-anchor="middle" class="sm">hooks · skills · plugins · MCP</text></g>
+        <g data-show="2"><path d="M250 112 L325 160" class="edge"/></g><g data-show="3"><path d="M510 112 L435 160" class="edge"/></g>
+        <g data-show="4"><path d="M220 196 L318 196" class="edge"/></g><g data-show="5"><path d="M540 196 L442 196" class="edge"/></g>
+        <g data-show="6"><path d="M250 280 L328 232" class="edge"/></g><g data-show="7"><path d="M510 280 L432 232" class="edge"/></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li><b>Agent loop</b>: alternates model calls with actions; owns stopping and recovery. Smallest: a <code>while</code> over one bash tool. Largest: OpenHands' event-sourced conversation with parallel action batches.</li>
+      <li><b>LLM integration</b>: speaks the provider's API, assembles the prompt, manages caching and thinking. Smallest: one LiteLLM call. Largest: Hermes with five owned transports and 29 provider profiles.</li>
+      <li><b>Tools and actions</b>: what the agent can do, file editing above all. Smallest: bash only. Largest: Claude Code's 43 typed tools with deferred loading.</li>
+      <li><b>Memory and context</b>: rations the context window and keeps knowledge across turns and sessions. Smallest: an unbounded message list. Largest: Codex's agent-maintained cross-session memory.</li>
+      <li><b>Safety and permissions</b>: decides what runs, what asks, what is forbidden. Smallest: cost and step limits. Largest: Codex's policy rules, LLM reviewer and three-OS sandbox.</li>
+      <li><b>Orchestration</b>: spawns and coordinates sub-agents. Smallest: none (Aider). Largest: Claude Code's recursive composition.</li>
+      <li><b>Extensibility</b>: lets users add capability through config, hooks, skills, plugins and MCP. Smallest: Python protocols. Largest: Pi's everything-is-an-extension runtime and Codex's plugin marketplace.</li>
+    </ol>
+  </div>
+  <p class="small">Minimal and maximal forms from Table 1 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=5" target="_blank" rel="noopener">p. 5</a></span>. Chapters 6–12 take them one at a time.</p>
+</section><section class="ch" id="c6" data-toc="6 · Loop: when to stop">
+  <span class="pill a">Three loop shapes, and stuck detection</span>
+  <h3>The hard part of a loop is knowing when it is stuck</h3>
+  <p>The paper finds three loop shapes <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=13" target="_blank" rel="noopener">p. 13</a></span>: the plain <b>action–observation</b> loop (nine systems), the <b>reflection</b> loop (Aider lints and tests after each edit and re-asks the model, up to 3 times), and a <b>coordinator–worker</b> overlay where a lead agent dispatches workers (Claude Code, Codex; configuration-gated in Hermes).</p>
+  <p>Suppose our agent keeps running <code>pytest test_invoice.py</code> without changing anything. Each system reacts differently, and you can try that in the Play section of the Gist tab.</p>
+  
+  <div class="card ok"><h4>What the paper recommends</h4><p>Start with a linear <code>while</code> loop; move to a middleware pipeline (Mistral Vibe's design, where turn limits, cost caps and compaction are pluggable policies) only once you have three or more independent turn policies. Ship the cheap caps (they "cost a dozen lines"), but do not over-engineer stuck detection: Claude Code and Codex ship none and are production-quality <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=70" target="_blank" rel="noopener">Recs. 1, 18</a></span>.</p></div>
+</section><section class="ch" id="c7" data-toc="7 · LLM integration: caching">
+  <span class="pill a">Prompts built for the cache</span>
+  <h3>Split the prompt so most of it never changes</h3>
+  <p>Every turn re-sends the system prompt. Providers can cache a prompt prefix that is byte-identical to last time, so harnesses arrange the prompt around that. Claude Code splits its dozen-plus sections at a <code>SYSTEM_PROMPT_DYNAMIC_BOUNDARY</code>: identity, rules, tool guidance and tone go before it and stay cached; session guidance, memory, environment and MCP instructions go after it and are recomputed each turn <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=21" target="_blank" rel="noopener">p. 21</a></span>. OpenHands arrived at the same static/dynamic split independently.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 230" role="img" aria-label="Prompt split at a cache boundary">
+        <g data-show="1"><rect x="40" y="60" width="430" height="60" rx="10" class="nodeA"/><text x="255" y="86" text-anchor="middle">identity · rules · tool patterns · tone</text><text x="255" y="106" text-anchor="middle" class="sm">static prefix: the same every turn</text></g>
+        <g data-show="2"><path d="M480 40 V140" class="cut"/><text x="480" y="30" text-anchor="middle" class="stTxt sm">dynamic boundary</text></g>
+        <g data-show="2"><rect x="490" y="60" width="230" height="60" rx="10" class="noteSt"/><text x="605" y="86" text-anchor="middle">env · memory · MCP</text><text x="605" y="106" text-anchor="middle" class="sm">recomputed per turn</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--ok)"><text x="255" y="160" text-anchor="middle" class="okTxt">cache hit: not re-processed</text></g>
+        <g data-show="4"><text x="380" y="205" text-anchor="middle" class="sm">Sub-agents get the parent's rendered prompt byte-for-byte, so they hit the same cache (p. 42).</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Most of the system prompt is the same on every turn: who the agent is, its rules, how to use tools.</li>
+      <li>Claude Code puts a boundary after that part. Everything that changes per turn goes after it.</li>
+      <li>Because the prefix is byte-identical, the provider's prompt cache serves it instead of re-processing it.</li>
+      <li>Sub-agents are forked with the parent's exact rendered prompt, so they reuse the cache too.</li>
+    </ol>
+  </div>
+  <h4>Try it: tokens the model must process</h4>
+  <div class="card lab" id="cacheLab">
+    <label for="cS">Static prefix tokens <input type="range" id="cS" min="2000" max="30000" step="1000" value="12000"><output></output></label>
+    <label for="cD">Dynamic suffix tokens <input type="range" id="cD" min="500" max="10000" step="500" value="3000"><output></output></label>
+    <label for="cT">Turns in the session <input type="range" id="cT" min="1" max="60" step="1" value="30"><output></output></label>
+    <div class="vsrow"><div>No boundary, prompt changes every turn: <b class="mono" id="cNo">—</b></div><div>With boundary, prefix cached after turn 1: <b class="mono" id="cYes">—</b></div></div>
+    <p class="small">Illustrative model of the system prompt only (conversation history is cached separately). Real savings depend on the provider's cache rules and expiry.</p>
+  </div>
+  <div class="card"><h4>Coupling to one provider buys the update loop</h4><p>The paper's Observation 2: provider tricks like caching, thinking budgets and model-specific prompts are not exclusive to single-provider harnesses; multi-provider ones (Hermes, Pi, OpenCode) reach them by paying for per-provider code. What only the vendor keeps is <b>server-side co-evolution</b>: Codex downloads its per-model prompts from a catalog endpoint, so OpenAI can re-tune the harness on model-release day without shipping a client <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=19" target="_blank" rel="noopener">p. 19</a></span>.</p></div>
+</section><section class="ch" id="c8" data-toc="8 · Tools and file editing">
+  <span class="pill a">From 1 tool to 109</span>
+  <h3>How many tools, and how to edit a file safely</h3>
+  <div class="card evid"><h4>Built-in tools or edit formats per system (July 2026)</h4><div class="bars" id="toolBars" data-max="110"></div>
+    <p class="small">Figure 3 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=27" target="_blank" rel="noopener">p. 27</a></span>. Aider's 13 are edit formats; Pi builds 7 and exposes 4 by default; OpenClaw's count includes messaging channels.</p></div>
+  <h4>Deferred tool loading</h4>
+  <p>Every tool's schema costs prompt space. Claude Code marks most of its 43 tools as deferred: they stay out of the prompt until the model searches for them with a <code>ToolSearch</code> tool, which cuts the initial prompt by about 40% <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=77" target="_blank" rel="noopener">Table 18, p. 77</a></span>. Codex and Hermes later added the same idea with BM25 search. The paper recommends it once you pass about 15 tools <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=68" target="_blank" rel="noopener">Rec. 4</a></span>.</p>
+  <div class="card lab" id="deferLab">
+    <label for="dN">Tools in the harness <input type="range" id="dN" min="5" max="80" step="1" value="43"><output></output></label>
+    <label for="dK">Core tools always loaded <input type="range" id="dK" min="3" max="25" step="1" value="15"><output></output></label>
+    <label for="dT">Tokens per tool schema <input type="range" id="dT" min="100" max="800" step="50" value="300"><output></output></label>
+    <div class="vsrow"><div>Eager (every schema in the prompt): <b class="mono" id="dE">—</b></div><div>Deferred (core + search tool): <b class="mono" id="dD">—</b></div></div>
+    <p class="small">Illustrative token counts. The paper's measured figure for Claude Code's whole prompt is about 40% smaller.</p>
+  </div>
+  <h4>File editing: the most consequential tool</h4>
+  <p>The eleven systems use eight different editing strategies <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=28" target="_blank" rel="noopener">Table 7, p. 28</a></span>. For our task, the agent must change one line in <code>invoice.py</code>:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Strategy</th><th>Who</th><th>How the edit is located</th></tr></thead>
+    <tbody>
+      <tr><td>Exact unique string</td><td>Claude Code, Mistral Vibe</td><td>The old text must appear exactly once in the file, or the tool errors</td></tr>
+      <tr><td>Patch format</td><td>Codex</td><td>A custom <code>*** Begin Patch</code> diff language</td></tr>
+      <tr><td>Fuzzy cascade</td><td>OpenCode, Hermes</td><td>Nine fallbacks from exact to whitespace-tolerant to similarity matching</td></tr>
+      <tr><td>LLM repair</td><td>Gemini CLI</td><td>If matching fails, a model sub-call fixes the old/new pair</td></tr>
+      <tr><td>Per-model formats</td><td>Aider (13 formats), OpenCode</td><td>Pick the format the current model handles best</td></tr>
+      <tr><td>Just bash</td><td>Mini-SWE-Agent</td><td><code>sed</code> through the shell</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card ok"><h4>The trend</h4><p>Mistral Vibe deleted its fuzzy search-replace tool between April and July 2026 and moved to Claude Code's exact-match contract, "evidence that stronger models shift the optimum from tool-side drift tolerance toward strict contracts" <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=29" target="_blank" rel="noopener">p. 29</a></span>. Recommendation 5: exact matching for frontier models, a fuzzy cascade for weaker ones, and never line numbers.</p></div>
+</section><section class="ch" id="c9" data-toc="9 · Memory and context">
+  <span class="pill st">Compaction, then memory</span>
+  <h3>When the conversation outgrows the window, summarize the old part</h3>
+  <p>Long debugging sessions eventually overflow the context window. Four strategies appear <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=31" target="_blank" rel="noopener">Fig. 4, p. 31</a></span>: keep everything (Mini-SWE-Agent), recursive summarization (Aider), pluggable condensers (OpenHands), and <b>threshold compaction</b>, used by seven of the eleven, including all four provider-native systems.</p>
+  <div class="reader" data-reader='[
+    {"t":"n","c":"st","label":"tokens in context","say":"How many tokens the conversation currently occupies."},
+    {"t":"W","c":"info","label":"window size","say":"The model’s usable context window."},
+    {"t":"B","c":"bad","label":"safety buffer","say":"Room kept free for the next response. Claude Code uses 13,000 tokens."},
+    {"t":"act","c":"a","label":"then compact","say":"When the condition is true, an LLM summarizes the older messages, recent ones stay verbatim, and the summary replaces the history."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-n}{n_{\text{context}}} \;\ge\; \class{term t-W}{W} - \class{term t-B}{B} \;\;\Longrightarrow\;\; \class{term t-act}{\text{summarize the old, keep the recent}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Claude Code's trigger (<code>AUTOCOMPACT_BUFFER_TOKENS = 13 000</code>), §9.5 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=32" target="_blank" rel="noopener">p. 32</a></span>. Gemini CLI fires at 50% of the window instead; Pi at W − 16,384.</p>
+  </div>
+  <div class="card lab" id="compLab">
+    <label for="mW">Context window <input type="range" id="mW" min="100000" max="1000000" step="25000" value="200000"><output></output></label>
+    <label for="mG">Tokens added per turn <input type="range" id="mG" min="1000" max="20000" step="1000" value="6000"><output></output></label>
+    <div class="tablewrap"><table class="t" id="compT"><thead><tr><th>Harness</th><th>Fires when context reaches</th><th>First compaction at turn</th><th>What survives</th></tr></thead><tbody></tbody></table></div>
+    <p class="small">Trigger rules from §9.5 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=32" target="_blank" rel="noopener">p. 32–33</a></span>; tokens per turn is illustrative.</p>
+  </div>
+  <h4>The new frontier: who writes long-term memory?</h4>
+  <p>Compaction has converged. What differs now is cross-session memory, and the paper's Observation 5 sorts it by who writes it and who reviews it <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=34" target="_blank" rel="noopener">p. 34</a></span>:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Model</th><th>Example</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td>Agent-maintained</td><td>Codex</td><td>A sandboxed sub-agent extracts memories from past sessions and consolidates them into a git-tracked folder</td></tr>
+      <tr><td>Human-gated</td><td>Gemini CLI</td><td>A sub-agent proposes memory patches into an inbox you review with <code>/memory</code></td></tr>
+      <tr><td>Model-direct, bounded</td><td>Hermes, Claude Code, OpenHands</td><td>The model edits small Markdown files (Hermes caps MEMORY.md at 2,200 characters)</td></tr>
+      <tr><td>Pre-turn recall</td><td>OpenClaw</td><td>A memory sub-agent runs before every reply</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">And for the repository itself, every system auto-discovers Markdown context files (CLAUDE.md, AGENTS.md, GEMINI.md) from the project up to the root, often loading nested ones just in time when a tool touches that folder (§9.7).</p>
+</section><section class="ch" id="c10" data-toc="10 · Safety and permissions">
+  <span class="pill bad">Layers between the model and your machine</span>
+  <h3>Every command passes through checks before it runs</h3>
+  <p>Safety is where the systems differ most. Claude Code uses three layers: static hook rules, then an LLM permission classifier, then an interactive dialog <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=35" target="_blank" rel="noopener">Fig. 5, p. 35</a></span>. Codex grew to four <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=36" target="_blank" rel="noopener">p. 36</a></span>. Follow one command from our task through Codex's stack.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Codex four-layer permission stack">
+        <g data-show="1"><rect x="20" y="120" width="150" height="56" rx="12" class="nodeB"/><text x="95" y="144" text-anchor="middle">model asks</text><text x="95" y="164" text-anchor="middle" class="mono sm">git push</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--a)"><rect x="200" y="40" width="120" height="216" rx="12" class="nodeA"/><text x="260" y="70" text-anchor="middle">1 · Policy</text><text x="260" y="92" text-anchor="middle" class="sm">Starlark rules</text><text x="260" y="140" text-anchor="middle" class="sm">git status →</text><text x="260" y="158" text-anchor="middle" class="okTxt sm">allow</text><text x="260" y="190" text-anchor="middle" class="sm">git push →</text><text x="260" y="208" text-anchor="middle" class="stTxt sm">needs approval</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--a)"><rect x="335" y="40" width="120" height="216" rx="12" class="nodeA"/><text x="395" y="70" text-anchor="middle">2 · Hooks</text><text x="395" y="92" text-anchor="middle" class="sm">PreToolUse etc.</text><text x="395" y="150" text-anchor="middle" class="sm">your scripts can</text><text x="395" y="168" text-anchor="middle" class="sm">block or allow</text></g>
+        <g data-show="4" data-hl="4" style="color:var(--a)"><rect x="470" y="40" width="120" height="216" rx="12" class="nodeA"/><text x="530" y="70" text-anchor="middle">3 · Guardian</text><text x="530" y="92" text-anchor="middle" class="sm">LLM reviewer</text><text x="530" y="150" text-anchor="middle" class="sm">re-checks the</text><text x="530" y="168" text-anchor="middle" class="sm">action; fails closed</text></g>
+        <g data-show="5" data-hl="5" style="color:var(--a)"><rect x="605" y="40" width="135" height="216" rx="12" class="nodeA"/><text x="672" y="70" text-anchor="middle">4 · OS sandbox</text><text x="672" y="92" text-anchor="middle" class="sm">bubblewrap / Seatbelt</text><text x="672" y="150" text-anchor="middle" class="sm">read-only disk,</text><text x="672" y="168" text-anchor="middle" class="sm">network off</text></g>
+        <g data-show="2"><path d="M170 148 H200" class="edge"/></g><g data-show="3"><path d="M320 148 H335" class="edge"/></g><g data-show="4"><path d="M455 148 H470" class="edge"/></g><g data-show="5"><path d="M590 148 H605" class="edge"/></g>
+        <g data-show="6"><text x="380" y="290" text-anchor="middle" class="big">Rules first (cheap), a model second, the OS as the last wall.</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>After fixing the bug, the model asks to run <code>git push</code>.</li>
+      <li>Layer 1, execution policy written in Starlark: <code>git status</code> is allowed outright; <code>git push</code> is not matched by the allow rule, so it needs approval. Rules carry their own test examples, checked when the policy loads.</li>
+      <li>Layer 2, lifecycle hooks: your own scripts can block or allow. Codex copied Claude Code's hook names almost verbatim.</li>
+      <li>Layer 3, Guardian: when approval would be needed, an LLM reviewer re-assesses the exact action against a policy and fails closed on timeout.</li>
+      <li>Layer 4, the OS sandbox: even approved commands run with a read-only filesystem outside writable roots and network isolation (Bubblewrap on Linux, Seatbelt on macOS, restricted tokens on Windows); network rules can open specific hosts such as *.github.com.</li>
+      <li>Cheap deterministic checks first, then a model's judgment, then the operating system as the backstop.</li>
+    </ol>
+  </div>
+  <h4>Try it: what would stop each command?</h4>
+  <div class="card lab" id="safeLab">
+    <label for="sc">Command the model asks for <select id="sc" class="sel"></select></label>
+    <div id="safeOut"></div>
+    <p class="small">Illustrative stack built from the paper's examples (Codex's <code>git status</code> rule and GitHub network rule, Hermes' hardline floor, OpenCode's <code>.env</code> ask); no single harness has exactly these layers <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=36" target="_blank" rel="noopener">p. 36–38</a></span>.</p>
+  </div>
+  <div class="card bad"><h4>Sandboxing is a choice, not a side effect of size</h4><p>Hermes, about 642K lines, has zero OS-level isolation and spends its safety budget on scanning content for prompt injection instead; OpenCode is policy-only. Hermes' floor of twelve hardline patterns (<code>rm -rf /</code>, <code>mkfs</code>, fork bombs…) survives even <code>--yolo</code> mode, and the yolo flag is frozen at start-up so an injected skill cannot flip it <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=37" target="_blank" rel="noopener">Obs. 6, p. 37–38</a></span>.</p></div>
+</section><section class="ch" id="c11" data-toc="11 · Orchestration: sub-agents">
+  <span class="pill a">Coordinator and workers</span>
+  <h3>Hand slices of the task to sub-agents with their own context</h3>
+  <p>Nine of the eleven systems can spawn sub-agents, in six patterns from sequential delegation to recursive composition <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=39" target="_blank" rel="noopener">p. 39</a></span>. Claude Code's coordinator mode is the most structured.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Claude Code coordinator mode">
+        <g data-show="1"><rect x="290" y="20" width="180" height="56" rx="12" class="nodeB"/><text x="380" y="44" text-anchor="middle">Coordinator</text><text x="380" y="64" text-anchor="middle" class="sm">lead agent</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--a)"><rect x="40" y="150" width="190" height="56" rx="12" class="nodeA"/><text x="135" y="174" text-anchor="middle">Research</text><text x="135" y="194" text-anchor="middle" class="sm">find the failing code</text><path d="M330 76 L170 150" class="edge"/></g>
+        <g data-show="3" data-hl="3" style="color:var(--a)"><rect x="285" y="150" width="190" height="56" rx="12" class="nodeA"/><text x="380" y="174" text-anchor="middle">Implement</text><text x="380" y="194" text-anchor="middle" class="sm">edit invoice.py</text><path d="M380 76 L380 150" class="edge"/></g>
+        <g data-show="4" data-hl="4" style="color:var(--a)"><rect x="530" y="150" width="190" height="56" rx="12" class="nodeA"/><text x="625" y="174" text-anchor="middle">Verify</text><text x="625" y="194" text-anchor="middle" class="sm">run the tests</text><path d="M430 76 L590 150" class="edge"/></g>
+        <g data-show="5"><text x="380" y="240" text-anchor="middle" class="sm">each worker: forked context, 16-tool whitelist, results return as XML notifications</text></g>
+        <g data-show="6"><text x="380" y="280" text-anchor="middle" class="big">Research → Synthesis → Implementation → Verification</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A lead agent receives the task. It mostly plans and delegates.</li>
+      <li>A research worker explores the codebase to find why test_invoice.py fails. Its long search output stays in its own context.</li>
+      <li>After the coordinator synthesizes the findings, an implementation worker makes the edit.</li>
+      <li>A verification worker runs the tests.</li>
+      <li>Each worker gets a forked context and only 16 allowed tools, and reports back in a <code>&lt;task-notification&gt;</code> block (p. 42).</li>
+      <li>The workflow is fixed: research, synthesis, implementation, verification.</li>
+    </ol>
+  </div>
+  <div class="card bad"><h4>Why not always use sub-agents?</h4><p>Anthropic's multi-agent case study reported about 15× the tokens of a single chat <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=7" target="_blank" rel="noopener">p. 7</a></span>, and warns that coding has fewer truly parallel tasks than research. The paper finds sub-agents are mostly used for breadth-first exploration, not parallel implementation, and recommends staying single-agent until you can point to such a phase <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=69" target="_blank" rel="noopener">Rec. 12</a></span>.</p></div>
+</section><section class="ch" id="c12" data-toc="12 · Extensibility: skills vs MCP">
+  <span class="pill a">Hooks, skills, plugins, MCP</span>
+  <h3>Skills overtook MCP</h3>
+  <p>Two standards compete. <b>MCP</b> is a wire protocol: the agent talks to a separately running server that exposes tools. <b>Skills</b> are a file convention: a folder with a <code>SKILL.md</code> (instructions plus YAML front matter) that the agent reads when relevant. By July 2026 skills led 9 to 8, because Pi adopted skills while rejecting MCP ("build CLI tools with READMEs") <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=51" target="_blank" rel="noopener">Obs. 8, p. 51</a></span>.</p>
+  <div class="card evid"><h4>Adoption across the 11 systems</h4><div class="bars" id="extBars" data-max="11"></div>
+    <p class="small">§12.4–12.5 and §14.1 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=47" target="_blank" rel="noopener">p. 47–59</a></span>.</p></div>
+  <p>Eight of the nine skill adopters load only each skill's name and description up front and fetch the body on demand, the same trick as deferred tools. Some skills activate only when the agent touches matching files (Claude Code's <code>paths</code>, OpenHands' PathTrigger). And skills now have a supply chain: registries in four systems, trust tiers and quarantine in Hermes, and the first skills written by agents themselves.</p>
+  <div class="card ok"><h4>Recommendation 14</h4><p>Use skills for capability templates (workflows, domain knowledge, recipes) and MCP for external integrations (Slack, databases, internal APIs), in that order of priority. Treat third-party skills like packages: scan and quarantine them.</p></div>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="results">Next: Results</button></div><div class="tab-panel" id="panel-results" role="tabpanel" aria-labelledby="tab-results" tabindex="-1"><div class="sec" id="found"><h2 class="sec-title">What they found</h2><section class="ch" id="c13" data-toc="13 · The twin absences">
+  <span class="pill bad">What nobody uses</span>
+  <h3>No agent frameworks. No vector RAG over code.</h3>
+  <p>The authors grepped about four million lines of Python, TypeScript and Rust for imports of LangChain, LangGraph, LlamaIndex, AutoGen, CrewAI, Pydantic AI, Genkit, Google ADK, Semantic Kernel and more. <b>No production agent code path imports any of them.</b> Gemini CLI uses neither of Google's own frameworks <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=53" target="_blank" rel="noopener">p. 53</a></span>. Every loop is hand-written in the language's async primitives.</p>
+  <p>A parallel search for vector stores and embedding libraries found <b>zero systems that retrieve code with embeddings</b>. They use ripgrep, glob, tree-sitter and auto-discovered Markdown files. Embeddings appear only for chat memory, on by default in exactly one system (OpenClaw) <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=54" target="_blank" rel="noopener">p. 54–56</a></span>.</p>
+  <div class="grid2">
+    <div class="card"><h4>Why no frameworks</h4><p>Anthropic's guidance warned that frameworks "often create extra layers of abstraction that can obscure the underlying prompts and responses, making them harder to debug." When the agent edits real code, silent prompt corruption and opaque caching are too expensive to tolerate (p. 55).</p></div>
+    <div class="card"><h4>Why no code RAG</h4><p>Code has exact structure (paths, symbols, language servers) that similarity search cannot match, it changes minute to minute so embeddings go stale, and ripgrep is already a near-optimal search engine (p. 56).</p></div>
+  </div>
+  <h4>The platform turn</h4>
+  <p>The paper's thesis is that in the first half of 2026 the harness went from tool to platform <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=63" target="_blank" rel="noopener">Obs. 12, p. 63</a></span>. Harnesses became importable SDKs (Claude Agent SDK, openai-codex), framework vendors shipped harnesses (LangChain's Deep Agents), plugin marketplaces appeared, Codex shipped an importer for Claude Code's sessions and settings, and Databricks' Omnigent now orchestrates 23 harness adapters behind one API. That also resolves the framework puzzle: harnesses did not adopt frameworks, they replaced them.</p>
+</section><section class="ch" id="c15" data-toc="15 · Evidence">
+  <h3>What backs these claims</h3>
+  <p>This is a <b>source-code study, not a benchmark</b>. Its evidence is what the code contains, counted across systems:</p>
+  <div class="card evid"><h4>How many of the 11 harnesses do it</h4><div class="bars" id="adoptBars" data-max="11"></div>
+    <p class="small">Counts from Observations 5–9 and §14.1. "Native OS sandbox" counts the two with built-in cross-platform sandboxes (Codex, Gemini CLI); Claude Code's is opt-in.</p></div>
+  <h4>Independent evidence that structure matters</h4>
+  <p>The paper leans on a separate study, Agentic Harness Engineering (AHE), which evolves a harness automatically from a bash-only seed to 71.9% on SWE-bench Verified. Its ablation shows which parts carry the gain <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=66" target="_blank" rel="noopener">p. 66</a></span>:</p>
+  <div class="card evid"><h4>Percentage-point change from each evolved component (AHE)</h4><div class="bars signed" id="aheBars" data-max="6"></div>
+    <p class="small">Tools, middleware and long-term memory add points; the evolved system prompt alone costs 2.3. The paper reads this as "structural scaffold is more portable than prose-level prompt strategy."</p></div>
+  <div class="card upd"><h4>Update · my check (27 Oct 2026)</h4>
+    <p>A controlled study published 23 Oct 2026, <i>When Agents Fail: Model or Harness?</i> (Shanghai AI Lab), crossed four harnesses (OpenCode, Codex CLI, Pi CLI, DeepAgents) with four models over 52,168 trajectories. Harness rankings flip depending on the model. On LOCA-Bench, harness choice accounted for 67.2% of the variation in mean scores, against 9.4% for the model and 23.4% for their interaction <span class="src"><a href="https://arxiv.org/abs/2610.32483" target="_blank" rel="noopener">Zhang et al. 2026, Table 22</a></span>. That is the measurement this paper explicitly did not run, and it supports its premise that the harness matters as much as the model.</p>
+    <div class="bars" id="wafBars" data-max="100"></div>
+  </div>
+  <p class="small">Self-reported SWE-bench Verified figures from spring 2026, which the authors removed from their main table as not comparable: OpenHands 77.6%, Mini-SWE-Agent 74%+, Claude Code 72.7%, Codex 69.1% (p. 11).</p>
+</section></div><div class="sec" id="limits"><h2 class="sec-title">Where it falls short</h2><section class="ch" id="c16" data-toc="16 · Takeaways and caveats">
+  <h3>How far to trust it</h3>
+  <ul class="cav">
+    <li><b>It reads code, it does not run it.</b> No claims about speed or quality; benchmark numbers are the systems' own (p. 66).</li>
+    <li><b>Claude Code comes from a circulated March 2026 source snapshot</b>, not an official release, the weakest link for reproducibility (p. 67).</li>
+    <li><b>Inventory claims decay in weeks.</b> Three April observations had to be revised by July; tool counts and versions will be out of date. Structural claims (the seven parts, the absences) have held up (p. 63).</li>
+    <li><b>Scoring involves judgment calls</b>, and the Anthropic-guidance match (Obs. 10) shows correlation, not causation.</li>
+    <li><b>The paper was written with substantial help from Claude</b> (via Claude Code), with findings verified against the code, per its disclosure (p. 74). <span class="mine">my take</span> worth knowing when it praises Claude Code's design.</li>
+  </ul>
+  </section></div><button type="button" class="btn btn-track panel-next" data-tab-go="why">Next: Why it matters</button></div><div class="tab-panel" id="panel-why" role="tabpanel" aria-labelledby="tab-why" tabindex="-1"><div class="sec" id="changed"><h2 class="sec-title">What it changed</h2><section class="ch"><p>The paper is only a few months old, so it's too early to say what it changed. What it gives you today is a shared map: one vocabulary for parts that every agent has, and evidence from real source code instead of opinion.</p>
+<p><b>What to remember.</b> A coding agent is a small loop surrounded by a large amount of engineering whose job is not to make the model smarter but to make it safe, affordable, recoverable and extensible. The field converged fast: the same seven parts, hand-rolled loops, deterministic retrieval, threshold compaction, coordinator–worker sub-agents and skills. And it copies itself: Codex adopted Claude Code's hook vocabulary verbatim; Hermes' code comments credit OpenCode, Codex and OpenClaw <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=62" target="_blank" rel="noopener">p. 62</a></span>.</p>
+<h3>Since the paper</h3>
+<p>Gemini CLI's consumer tier was retired in June 2026 in a move toward the closed-source Antigravity CLI, so the paper's v0.50.0 pin captures the last major open-source state of that lineage (p. 8). Controlled harness × model studies have started (see the update card under What they found, in the Results tab).</p></section><section class="ch" id="c14" data-toc="14 · The whole recipe">
+  <h3>What the authors recommend</h3>
+  <p class="small">The paper closes with these 18 recommendations and a 90-line scaffold that implements 10 of them (Listing 3, p. 71–72). The scaffold deliberately omits, because the right answer depends on context: sandboxing, multi-agent orchestration, MCP and skills. "Start here, measure, add the minimum that your observed failure modes demand" (p. 72).</p>
+  <details class="deep" open><summary>All 18 recommendations</summary>
+    <ol class="recs">
+      <li>Start with a linear loop; move to a middleware pipeline at 3+ turn policies.</li>
+      <li>Couple to your home provider with a fallback; multi-provider can still reach native optimizations via per-model metadata.</li>
+      <li>Begin with just bash; add tools only for observed failures.</li>
+      <li>Adopt deferred tool loading above ~15 tools.</li>
+      <li>Exact matching for frontier models, fuzzy for weaker ones; never line numbers.</li>
+      <li>Auto-discover hierarchical Markdown context files, including neighbors' filenames.</li>
+      <li>Threshold compaction below the window, verbatim recent tail, incremental summaries, reactive on overflow.</li>
+      <li>Do not build RAG over code; use ripgrep, glob and tree-sitter.</li>
+      <li>Developer tools: PLAN / DEFAULT / YOLO modes with permission patterns.</li>
+      <li>Enterprise: OS-level sandbox, policy-as-code, per-agent audit trails.</li>
+      <li>Safety rules as data; keep a floor beneath any YOLO mode.</li>
+      <li>Stay single-agent until a breadth-first phase clearly benefits.</li>
+      <li>Ship an ACP server; keep your own sub-agents in-process.</li>
+      <li>Skills for capabilities, MCP for integrations.</li>
+      <li>Do not use agent frameworks for the runtime (or use a harness SDK instead).</li>
+      <li>Do not build a vector layer for code without proving it beats ripgrep.</li>
+      <li>Do not wrap every SaaS API one-to-one as a tool.</li>
+      <li>Do not over-engineer stuck detection, but ship the cheap caps.</li>
+    </ol>
+    <p class="small">§16 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=67" target="_blank" rel="noopener">p. 67–70</a></span>.</p>
+  </details>
+</section><section class="ch" id="c18" data-toc="18 · Verdict"><h3>Verdict</h3>
+  <div class="verdict"><b>Read</b> sections 2 (the anatomy), 9–10 (memory and safety), 13.2 (twin absences) and 16 (recommendations and the 90-line harness). <b>Skim</b> the per-system deep dives and prompt-rhetoric section unless you build harnesses. It is the best single map of how real coding agents are built, with the caveat that it describes code rather than measuring it.</div>
+</section></div><p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><details class="more" id="reference"><summary>Key terms and sources</summary><section class="ch" id="c4" data-toc="4 · How it was understood before">
+  <h3>Interfaces, frameworks and surveys, but no anatomy</h3>
+  <p>Three earlier lines of work circle the same object:</p>
+  <ul class="cav">
+    <li><b>SWE-agent's Agent-Computer Interface (2024).</b> It showed that designing tools for the model matters: custom file viewer, editor and search commands solved 10.7 points more SWE-bench Lite tasks than a plain shell (a 64% relative gain) <span class="src"><a href="https://arxiv.org/abs/2405.15793" target="_blank" rel="noopener">SWE-agent</a></span>. That is one subsystem (tools), studied alone.</li>
+    <li><b>Agent frameworks</b> (LangChain, LangGraph, AutoGen, CrewAI): libraries you import to build an agent. As the Results tab shows, no production coding harness uses them.</li>
+    <li><b>Surveys and taxonomies</b> describe patterns "without implementations"; the one concurrent source-level taxonomy (Rombaut, 13 open-source scaffolds) excludes the provider-native systems <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=2" target="_blank" rel="noopener">p. 2</a></span>.</li>
+  </ul>
+  <h4>Four things a harness is not</h4>
+  <div class="grid4">
+    <div class="card mini"><h4>Not quite a scaffold</h4><p>Near-synonyms. Scaffold = the loop and registries; harness = the shipped runtime around them.</p></div>
+    <div class="card mini"><h4>Not a framework</h4><p>A framework is a library you import. A harness is a runtime you work inside.</p></div>
+    <div class="card mini"><h4>Not an eval harness</h4><p>SWE-bench's "harness" wraps an agent to test it. Same word, opposite direction.</p></div>
+    <div class="card mini"><h4>Not an orchestrator</h4><p>A meta-harness coordinates harnesses from above and has no editing loop of its own.</p></div>
+  </div>
+  <p class="small">From §2.2 <span class="src"><a href="https://arxiv.org/pdf/2609.00006#page=3" target="_blank" rel="noopener">p. 3–4</a></span>.</p>
+</section><section class="ch" id="c17" data-toc="17 · Key terms"><h3>Key terms</h3>
+  <dl class="terms">
+    <dt>Harness</dt><dd>Everything in an agent except the model: loop, tools, context, safety, orchestration, extensions.</dd>
+    <dt>ReAct loop</dt><dd>Model reasons, picks an action, sees the result, repeats.</dd>
+    <dt>Compaction</dt><dd>Summarizing old conversation into a short note when the context fills up.</dd>
+    <dt>Deferred loading</dt><dd>Keeping tool or skill details out of the prompt until the model searches for them.</dd>
+    <dt>Prompt cache boundary</dt><dd>A split between the static part of the prompt (cached) and the per-turn part.</dd>
+    <dt>Policy-as-code</dt><dd>Safety rules written as data files (Starlark, TOML) instead of buried in code.</dd>
+    <dt>Sandbox</dt><dd>OS-level isolation limiting files, network and processes a command can touch.</dd>
+    <dt>MCP</dt><dd>Model Context Protocol: a wire protocol for calling tools on a separate server.</dd>
+    <dt>Skill</dt><dd>A folder with SKILL.md instructions and optional scripts, loaded when relevant.</dd>
+    <dt>ACP / A2A</dt><dd>Agent Client Protocol (editor ↔ agent, now also hosting one harness inside another); Agent-to-Agent (cross-vendor mesh).</dd>
+    <dt>Meta-harness</dt><dd>A layer that orchestrates several harnesses behind one API (Omnigent).</dd>
+  </dl>
+</section><section class="ch" id="src" data-toc="Sources">
+  <h3>Everything on this page comes from these</h3>
+  <ol class="srcs">
+    <li>Barbaste, Darrigol, Vu, Wiltberger (2026). Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents. <a href="https://arxiv.org/abs/2609.00006" target="_blank" rel="noopener">arXiv 2609.00006</a> (read in full)</li>
+    <li>mini-swe-agent repository and README. <a href="https://github.com/SWE-agent/mini-swe-agent" target="_blank" rel="noopener">github.com/SWE-agent/mini-swe-agent</a></li>
+    <li>Yang et al. (2024). SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering. <a href="https://arxiv.org/abs/2405.15793" target="_blank" rel="noopener">arXiv 2405.15793</a></li>
+    <li>Anthropic. Building Effective Agents (Dec 2024) and related engineering posts, as cited by the paper. <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">anthropic.com</a></li>
+    <li>Zhang et al. (2026). When Agents Fail: Model or Harness—Who's to Blame? <a href="https://arxiv.org/abs/2610.32483" target="_blank" rel="noopener">arXiv 2610.32483</a></li>
+    <li>Google Cloud Tech (2026). AI harness crash course. <a href="https://www.youtube.com/watch?v=2C_CefSQEAQ" target="_blank" rel="noopener">YouTube</a></li>
+    <li>Böckeler (2026). Harness engineering for coding agent users. <a href="https://martinfowler.com/articles/harness-engineering.html" target="_blank" rel="noopener">martinfowler.com</a></li>
+    <li>Further reading: <a href="https://www.philschmid.de/context-engineering-part-2" target="_blank" rel="noopener">Context Engineering for AI Agents (Schmid)</a>. The authors' own blog or talk: searched, none found.</li>
+  </ol>
+  <p class="small">The test_invoice.py task and the numbers inside the widgets (tokens per schema, tokens per turn, the example policy) are illustrative. All other facts and numbers come from the sources above. @datawithsuman</p>
+</section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+  <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/papers/attention-is-all-you-need/"><span class="pn-label">Previous</span>Attention Is All You Need</a><a class="btn btn-track" rel="next" href="../../../tracks/papers/context-language-models/"><span class="pn-label">Next</span>Context Language Models</a></nav>
+</article>
+<div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="gist"><a href="#paper">The paper</a></li><li data-panel="gist"><a href="#problem-sec">The problem</a></li><li data-panel="gist"><a href="#idea">The idea</a></li><li data-panel="gist"><a href="#play">Play</a></li><li data-panel="method"><a href="#c2">The agent loop</a></li><li data-panel="method"><a href="#c3">The trap: is a loop enough?</a></li><li data-panel="method"><a href="#c5">The core idea: seven subsystems</a></li><li data-panel="method"><a href="#c6">Loop: when to stop</a></li><li data-panel="method"><a href="#c7">LLM integration: caching</a></li><li data-panel="method"><a href="#c8">Tools and file editing</a></li><li data-panel="method"><a href="#c9">Memory and context</a></li><li data-panel="method"><a href="#c10">Safety and permissions</a></li><li data-panel="method"><a href="#c11">Orchestration: sub-agents</a></li><li data-panel="method"><a href="#c12">Extensibility: skills vs MCP</a></li><li data-panel="results"><a href="#found">What they found</a></li><li data-panel="results"><a href="#limits">Where it falls short</a></li><li data-panel="why"><a href="#changed">What it changed</a></li><li><a href="#reference">Key terms and sources</a></li></ul></nav><aside class="related" aria-label="Related"><p class="eyebrow">Related</p><ul><li><span class="mono-mini">Paper</span><a href="../../../tracks/papers/context-language-models/">Context Language Models</a></li></ul></aside></div>
+</main>
+<script>
+// ---------- page content generated before the engine runs (bars, code lines) ----------
+(() => {
+  // code walk: drop the newline text nodes between block-level lines
+  document.querySelectorAll('pre.walk').forEach(p => [...p.childNodes].forEach(n => { if (n.nodeType === 3 && !n.textContent.trim()) n.remove(); }));
+  const bar = (label, v, color, shown) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="--v:${v};background:${color}"></div></div><span class="v">${shown ?? v}</span></div>`;
+  const fill = (id, rows) => (document.getElementById(id).innerHTML = rows.map(r => bar(...r)).join(''));
+  // Figure 3, p. 27
+  fill('toolBars', [['Mini-SWE-Agent', 1, 'var(--a)'], ['Pi', 7, 'var(--a)'], ['Mistral Vibe', 12, 'var(--a)'], ['Aider (edit formats)', 13, 'var(--a)'], ['OpenCode', 17, 'var(--a)'],
+    ['OpenHands', 25, 'var(--a)'], ['Codex', 27, 'var(--a)'], ['Gemini CLI', 35, 'var(--a)'], ['Claude Code', 43, 'var(--a)'], ['Hermes', 69, 'var(--a)'], ['OpenClaw', 109, 'var(--a)', '109+']]);
+  fill('extBars', [['Skills', 9, 'var(--a)', '9/11'], ['Hooks', 9, 'var(--a)', '9/11'], ['MCP', 8, 'var(--info)', '8/11']]);
+  fill('adoptBars', [['Sub-agents', 9, 'var(--a)', '9/11'], ['Skills', 9, 'var(--a)', '9/11'], ['Lifecycle hooks', 9, 'var(--a)', '9/11'], ['MCP', 8, 'var(--info)', '8/11'],
+    ['Threshold compaction', 7, 'var(--st)', '7/11'], ['Native OS sandbox', 2, 'var(--bad)', '2/11'], ['Agent framework', 0, 'var(--bad)', '0/11'], ['Vector RAG over code', 0, 'var(--bad)', '0/11']]);
+  fill('wafBars', [['Harness', 67.2, 'var(--a)', '67.2%'], ['Harness × model', 23.4, 'var(--st)', '23.4%'], ['Model', 9.4, 'var(--b)', '9.4%']]);
+  // AHE ablation (signed, centred at 0)
+  const A = [['Long-term memory', 5.6], ['Tools', 3.3], ['Middleware', 2.2], ['System prompt', -2.3]], m = 6;
+  document.getElementById('aheBars').innerHTML = A.map(([l, v]) => { const w = 50 * Math.abs(v) / m;
+    return `<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="left:${v < 0 ? 50 - w : 50}%;width:${w}%;background:var(--${v < 0 ? 'bad' : 'ok'})"></div></div><span class="v" style="color:var(--${v < 0 ? 'bad' : 'ok'})">${v > 0 ? '+' : '−'}${Math.abs(v)}</span></div>`; }).join('');
+  document.getElementById('aheBars').classList.remove('bars'); document.getElementById('aheBars').classList.add('sbars');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const k = (n) => n >= 1e6 ? (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1000 ? Math.round(n / 1000) + 'K' : String(n);
+  const tag = (cls, t) => `<span class="verdictTag vt-${cls}">${t}</span>`;
+
+  // stuck detection (§6.2, Table 5)
+  const RULES = [
+    ['Gemini CLI', '5 identical tool calls abort; LLM self-check after 30 turns; 100-turn cap', n => n >= 5 ? tag('bad', 'loop aborted') : tag('dim', 'keeps going')],
+    ['OpenCode', '3 identical calls → "doom loop" permission ask', n => n >= 3 ? tag('st', 'asks you') : tag('dim', 'keeps going')],
+    ['Hermes', 'warns after 2 identical failures; halt at 8 ships disabled; 90-iteration budget', n => n >= 8 ? tag('b', 'warning (halt off by default)') : n >= 2 ? tag('b', 'warning added') : tag('dim', 'keeps going')],
+    ['Claude Code', 'no stuck detection', () => tag('dim', 'keeps going')],
+    ['Codex', 'no stuck detection', () => tag('dim', 'keeps going')],
+    ['Mini-SWE-Agent', 'step, cost and time limits only', () => tag('dim', 'keeps going')],
+  ];
+  const sN = $('#sN');
+  const drawS = () => { const n = +sN.value; sN.nextElementSibling.textContent = n + '×';
+    $('#stuckT tbody').innerHTML = RULES.map(([h, r, f]) => `<tr><td>${h}</td><td>${r}</td><td>${f(n)}</td></tr>`).join(''); };
+  sN.addEventListener('input', drawS); drawS();
+
+  // prompt cache boundary (illustrative)
+  const cS = $('#cS'), cD = $('#cD'), cT = $('#cT');
+  const drawC = () => { const s = +cS.value, d = +cD.value, t = +cT.value;
+    cS.nextElementSibling.textContent = k(s); cD.nextElementSibling.textContent = k(d); cT.nextElementSibling.textContent = t;
+    const no = (s + d) * t, yes = s + d * t;
+    $('#cNo').textContent = k(no) + ' tokens'; $('#cYes').textContent = `${k(yes)} tokens (${Math.round(100 * (1 - yes / no))}% fewer)`; };
+  [cS, cD, cT].forEach(e => e.addEventListener('input', drawC)); drawC();
+
+  // deferred tool loading (illustrative)
+  const dN = $('#dN'), dK = $('#dK'), dT = $('#dT');
+  const drawD = () => { const n = +dN.value, kk = Math.min(+dK.value, n), t = +dT.value;
+    dN.nextElementSibling.textContent = n; dK.nextElementSibling.textContent = kk; dT.nextElementSibling.textContent = t;
+    const eager = n * t, def = (kk + 1) * t + (n - kk) * 15; // + ToolSearch schema; ~15 tokens per deferred tool name
+    $('#dE').textContent = k(eager) + ' tokens'; $('#dD').textContent = `${k(def)} tokens (${Math.round(100 * (1 - def / eager))}% smaller)`; };
+  [dN, dK, dT].forEach(e => e.addEventListener('input', drawD)); drawD();
+
+  // compaction triggers (§9.5)
+  const mW = $('#mW'), mG = $('#mG');
+  const drawM = () => { const W = +mW.value, g = +mG.value;
+    mW.nextElementSibling.textContent = k(W); mG.nextElementSibling.textContent = k(g);
+    const rows = [['Claude Code', W - 13000, 'W − 13K buffer', 'summary + up to 5 files re-read (≤ 50K)'],
+                  ['Pi', W - 16384, 'W − 16,384', 'last 20K tokens'],
+                  ['Gemini CLI', W * 0.5, '50% of W', 'last 30% of history']];
+    $('#compT tbody').innerHTML = rows.map(([h, at, rule, keep]) => `<tr><td>${h}</td><td>${rule} = <span class="mono">${k(Math.round(at))}</span></td><td class="num">${Math.ceil(at / g)}</td><td>${keep}</td></tr>`).join(''); };
+  [mW, mG].forEach(e => e.addEventListener('input', drawM)); drawM();
+
+  // safety stack (illustrative, from the paper's examples)
+  const L = ['Rules (policy-as-code)', 'Hooks (your scripts)', 'LLM reviewer', 'You', 'OS sandbox'];
+  const CMDS = {
+    'pytest test_invoice.py': { v: ['ok', 'runs'], steps: ['Inside the project: allowed (OpenCode asks only for outside dirs, .env reads and doom loops).', 'No hook objects.', null, null, 'Runs with writes limited to the project.'] },
+    'git status': { v: ['ok', 'runs'], steps: ['Matches Codex\'s example prefix_rule ["git","status"] → allow.', 'No hook objects.', null, null, 'Runs inside the sandbox, read-only.'] },
+    'git push origin main': { v: ['st', 'asks first'], steps: ['Not covered by the allow rule (the rule\'s own not_match test is git push) → needs approval.', 'A hook could block pushes to main.', 'Codex\'s Guardian re-checks the exact action; fails closed on timeout.', 'You approve or deny.', 'Network is off unless a network_rule allows the host (*.github.com in the paper\'s example).'] },
+    'cat .env': { v: ['st', 'asks first'], steps: ['.env reads are an ask in OpenCode; Gemini CLI forces ask for .env writes.', null, null, 'You decide whether the secrets file may enter the context.', null] },
+    'rm -rf /': { v: ['bad', 'blocked'], steps: ['Hermes\' twelve-pattern hardline floor: forbidden, even with --yolo.', null, null, null, null] },
+  };
+  const sc = $('#sc'); sc.innerHTML = Object.keys(CMDS).map(c => `<option>${c}</option>`).join('');
+  const drawSafe = () => { const c = CMDS[sc.value];
+    $('#safeOut').innerHTML = `<div class="layers">${L.map((name, i) => { const t = c.steps[i];
+      return `<div class="layer ${t ? 'hit' : 'skip'}"><span class="ln">${i + 1} · ${name}</span><span>${t || (c.v[0] === 'bad' && i > 0 ? 'never reached' : 'not needed')}</span></div>`; }).join('')}</div>
+      <p style="margin:10px 0 0">Outcome: ${tag(c.v[0], c.v[1])}</p>`; };
+  sc.addEventListener('change', drawSafe); sc.value = 'git push origin main'; drawSafe();
+})();
+</script>
+<footer class="site-foot"><div class="page-wide foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="../../../roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js"></script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

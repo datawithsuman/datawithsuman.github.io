@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prefill vs Decode · AI Engineering · datawithsuman</title>
+<meta name="description" content="Why does an LLM read your prompt fast but write its answer slowly?">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/lx-33089fd7.css">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+</head>
+<body class="t-ai-engineering" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals" href="../../../tracks/fundamentals/">Fundamentals</a><a class="t-ai-engineering active" href="../../../tracks/ai-engineering/" aria-current="true">AI Engineering</a><a class="t-system-design" href="../../../tracks/system-design/">System Design</a><a class="t-papers" href="../../../tracks/papers/">Papers</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="ai-engineering/prefill-vs-decode">
+<aside class="contents" aria-label="AI Engineering contents">
+  <details class="contents-box" open><summary>AI Engineering contents</summary><p class="contents-part">LLM inference and serving</p><details class="mod" open><summary>Lessons</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/ai-engineering/prefill-vs-decode/"><span class="dot" data-key="ai-engineering/prefill-vs-decode" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prefill vs Decode</span></a></li><li><a href="../../../tracks/ai-engineering/llm-quantization/"><span class="dot" data-key="ai-engineering/llm-quantization" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Quantization</span></a></li><li><a href="../../../tracks/ai-engineering/kv-cache-and-pagedattention/"><span class="dot" data-key="ai-engineering/kv-cache-and-pagedattention" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>KV Cache Management and PagedAttention</span></a></li><li><a href="../../../tracks/ai-engineering/continuous-batching/"><span class="dot" data-key="ai-engineering/continuous-batching" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Continuous Batching and Scheduling</span></a></li><li><a href="../../../tracks/ai-engineering/prefix-caching/"><span class="dot" data-key="ai-engineering/prefix-caching" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prefix and Prompt Caching</span></a></li><li><a href="../../../tracks/ai-engineering/speculative-decoding/"><span class="dot" data-key="ai-engineering/speculative-decoding" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Speculative Decoding</span></a></li><li><a href="../../../tracks/ai-engineering/serving-metrics-and-slos/"><span class="dot" data-key="ai-engineering/serving-metrics-and-slos" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Serving Metrics and SLOs</span></a></li><li><a href="../../../tracks/ai-engineering/scaling-inference/"><span class="dot" data-key="ai-engineering/scaling-inference" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Scaling Inference: Parallelism, Replicas and Routing</span></a></li><li><a href="../../../tracks/ai-engineering/sizing-and-cost/"><span class="dot" data-key="ai-engineering/sizing-and-cost" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Sizing and Cost: Cost per Million Tokens</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/llm-inference-practice/"><span class="dot" data-key="ai-engineering/llm-inference-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLM Inference Practice</span></a></li></ol></details><p class="contents-part">Prompt engineering</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/prompt-engineering-patterns/"><span class="dot" data-key="ai-engineering/prompt-engineering-patterns" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prompt Engineering Patterns</span></a></li><li><a href="../../../tracks/ai-engineering/structured-output/"><span class="dot" data-key="ai-engineering/structured-output" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Structured Output and Constrained Decoding</span></a></li><li><a href="../../../tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/"><span class="dot" data-key="ai-engineering/prompt-vs-rag-vs-fine-tuning" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Prompt vs RAG vs Fine-Tuning: How to Choose</span></a></li></ol></details><p class="contents-part">RAG</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/rag-end-to-end/"><span class="dot" data-key="ai-engineering/rag-end-to-end" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG End to End</span></a></li><li><a href="../../../tracks/ai-engineering/advanced-rag/"><span class="dot" data-key="ai-engineering/advanced-rag" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG</span></a></li><li><a href="../../../tracks/ai-engineering/evaluating-llm-apps/"><span class="dot" data-key="ai-engineering/evaluating-llm-apps" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Evaluating LLM Apps</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/rag-wrong-answer/"><span class="dot" data-key="ai-engineering/rag-wrong-answer" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG: Wrong Answer, Where to Look First</span></a></li><li><a href="../../../tracks/ai-engineering/rag-at-scale/"><span class="dot" data-key="ai-engineering/rag-at-scale" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>RAG at Scale: Slow and Wrong</span></a></li></ol></details><p class="contents-part">Agentic AI</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/what-is-an-agent/"><span class="dot" data-key="ai-engineering/what-is-an-agent" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>What Is an Agent? The ReAct Loop</span></a></li><li><a href="../../../tracks/ai-engineering/tool-calling/"><span class="dot" data-key="ai-engineering/tool-calling" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Tool and Function Calling</span></a></li><li><a href="../../../tracks/ai-engineering/planning-and-reflection/"><span class="dot" data-key="ai-engineering/planning-and-reflection" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Planning and Reflection</span></a></li><li><a href="../../../tracks/ai-engineering/memory-and-context-engineering/"><span class="dot" data-key="ai-engineering/memory-and-context-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Memory and Context Engineering</span></a></li><li><a href="../../../tracks/ai-engineering/model-context-protocol/"><span class="dot" data-key="ai-engineering/model-context-protocol" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>MCP: The Model Context Protocol</span></a></li><li><a href="../../../tracks/ai-engineering/multi-agent-systems/"><span class="dot" data-key="ai-engineering/multi-agent-systems" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Multi-Agent Systems</span></a></li><li><a href="../../../tracks/ai-engineering/agent-infrastructure/"><span class="dot" data-key="ai-engineering/agent-infrastructure" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Infrastructure: Durable Execution, Retries and Budgets</span></a></li><li><a href="../../../tracks/ai-engineering/evaluating-agents/"><span class="dot" data-key="ai-engineering/evaluating-agents" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Evaluating Agents</span></a></li><li><a href="../../../tracks/ai-engineering/agent-safety/"><span class="dot" data-key="ai-engineering/agent-safety" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Safety: Permissions, Sandboxing and the Lethal Trifecta</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/agentic-ai-practice/"><span class="dot" data-key="ai-engineering/agentic-ai-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agentic AI Practice</span></a></li><li><a href="../../../tracks/ai-engineering/agent-scenarios-set-1/"><span class="dot" data-key="ai-engineering/agent-scenarios-set-1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Agent Scenarios: Set 1</span></a></li></ol></details><p class="contents-part">MLOps</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/training-serving-skew-and-feature-stores/"><span class="dot" data-key="ai-engineering/training-serving-skew-and-feature-stores" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Training/Serving Skew and Feature Stores</span></a></li><li><a href="../../../tracks/ai-engineering/batch-vs-online-inference/"><span class="dot" data-key="ai-engineering/batch-vs-online-inference" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Batch vs Online vs Streaming Inference</span></a></li><li><a href="../../../tracks/ai-engineering/deployment-patterns/"><span class="dot" data-key="ai-engineering/deployment-patterns" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Deployment Patterns: Shadow, Canary, A/B and Rollback</span></a></li><li><a href="../../../tracks/ai-engineering/experiment-tracking-and-model-registry/"><span class="dot" data-key="ai-engineering/experiment-tracking-and-model-registry" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Experiment Tracking, Reproducibility and the Model Registry</span></a></li><li><a href="../../../tracks/ai-engineering/drift-detection-and-monitoring/"><span class="dot" data-key="ai-engineering/drift-detection-and-monitoring" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Drift Detection and Monitoring</span></a></li><li><a href="../../../tracks/ai-engineering/retraining-pipelines/"><span class="dot" data-key="ai-engineering/retraining-pipelines" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Retraining Pipelines and Continuous Training</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/mlops-practice/"><span class="dot" data-key="ai-engineering/mlops-practice" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>MLOps Practice</span></a></li></ol></details><p class="contents-part">LLMOps</p><details class="mod"><summary>Lessons</summary><ol><li><a href="../../../tracks/ai-engineering/llmops/"><span class="dot" data-key="ai-engineering/llmops" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LLMOps: What&#x27;s Different</span></a></li><li><a href="../../../tracks/ai-engineering/guardrails-and-prompt-injection/"><span class="dot" data-key="ai-engineering/guardrails-and-prompt-injection" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Guardrails and Prompt Injection</span></a></li><li><a href="../../../tracks/ai-engineering/cost-and-latency/"><span class="dot" data-key="ai-engineering/cost-and-latency" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Cost and Latency: Routing, Caching and Batching</span></a></li></ol></details><details class="mod"><summary>Scenarios</summary><ol><li><a href="../../../tracks/ai-engineering/genai-scenarios-set-1/"><span class="dot" data-key="ai-engineering/genai-scenarios-set-1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>GenAI App Scenarios: Set 1</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/">AI Engineering</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/#module-1">Lessons</a><span aria-hidden="true">/</span><b aria-current="page">Prefill vs Decode</b></nav>
+  <div class="lesson-meta"><span class="chip type-concept">Concept</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/attention-variants-mqa-gqa-mla/">Attention Variants: MQA, GQA and MLA</a></div>
+  <h1 class="h1-lesson">Prefill vs Decode</h1>
+  <p class="lead">Why does an LLM read your prompt fast but write its answer slowly?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">How it works</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">In practice</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="lx"><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
+<p class="sit-lead">One user sends a 2,000-token document and asks for a 300-token summary. The first word comes quickly, and then the rest crawls. A colleague says to buy a faster GPU. The interviewer asks:</p>
+<blockquote class="sit-q">Why does an LLM read your prompt fast but write its answer slowly?</blockquote><div class="sit-more"><p class="small" style="margin-top:22px"><b>Running example, used on every chapter:</b> one user sends a 2,000-token document and asks for a 300-token summary. The model is Llama 3.1 8B in 16-bit on one H100 (989 TFLOP/s dense BF16, 3.35 TB/s memory bandwidth, 80 GB). All times are ideal ceilings from those specs: real engines reach less, but the shape holds.</p><section class="ch" id="c1" data-toc="1 · The problem">
+  <h3>The first word comes fast. The rest crawls.</h3>
+  <p>Ask a chatbot to summarise a long document and you see the same pattern every time: a short wait, then the answer streams out word by word. That isn't the UI being dramatic. It is the model doing two completely different kinds of work, and the second kind takes almost all the time.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 250" role="img" aria-label="Timeline of one request: a thin prefill sliver followed by 300 decode steps">
+        <defs><pattern id="ticks" width="2.2" height="40" patternUnits="userSpaceOnUse"><rect width="1.3" height="40" class="sb"/></pattern>
+          <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--dim)"/></marker></defs>
+        <line x1="40" y1="150" x2="720" y2="150" class="ln" stroke-width="1.5"/>
+        <text x="40" y="172" class="d m">0 s</text><text x="705" y="172" class="d m">1.47 s</text>
+        <g data-show="1" data-hl="1" style="color:var(--a)"><rect x="40" y="110" width="15" height="40" class="sa"/>
+          <path d="M47 108 V 54" stroke="var(--a)" stroke-width="1.5"/><text x="54" y="50" class="ta" font-size="13" font-weight="600">prefill: all 2,000 prompt tokens, one pass · ≈ 34 ms</text></g>
+        <g data-show="2"><line x1="55" y1="104" x2="55" y2="196" stroke="var(--ok)" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="60" y="212" class="tok" font-size="13" font-weight="600">first token appears = TTFT</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--b)"><rect x="56" y="110" width="664" height="40" fill="url(#ticks)"/>
+          <text x="460" y="98" text-anchor="middle" class="tb" font-size="13" font-weight="600">decode: 300 passes, one per answer token · ≈ 4.8 ms each → 1.44 s</text></g>
+        <g data-show="4"><path d="M56 228 H720" class="ln" stroke-width="1"/><path d="M56 222 V234 M720 222 V234" class="ln"/>
+          <text x="388" y="246" text-anchor="middle" class="tinfo" font-size="13" font-weight="600">98% of the wait is decode</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Prefill takes the whole 2,000-token prompt through the model in a single forward pass. Drawn to scale, it's this thin sliver: about 34 ms.</li>
+      <li>That pass also produces the first answer token. The time until it shows up is the <b>time to first token</b> (TTFT).</li>
+      <li>Every later token needs its own full pass through the model, because token 2 depends on token 1. 300 tokens means 300 passes at about 4.8 ms each.</li>
+      <li>So for this request, decode is about 1.44 s of the 1.47 s total. And as you'll see, during that time the GPU's maths units sit almost idle.</li>
+    </ol>
+  </div>
+  <p>The same pattern shows up in measurements, not just my arithmetic. Profiling Llama-2-7B on an RTX 4090, the AWQ authors found that reading a 200-token prompt took <b>10 ms</b> while generating 20 tokens took <b>310 ms</b> <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=5">AWQ, Fig. 3, p. 5</a></span>.</p>
+  <p>So "how fast is this LLM?" has two answers. The services that run LLMs track them separately:</p>
+  <div class="two">
+    <div class="card"><h4 style="color:var(--a)">TTFT · time to first token</h4><p class="small" style="margin:0">How long until the first word. Set by prefill, grows with prompt length. Matters most for chat, voice and code completion.</p></div>
+    <div class="card"><h4 style="color:var(--b)">TPOT / ITL · time per output token</h4><p class="small" style="margin:0">The gap between streamed tokens (also called TBT, time between tokens). Set by decode. 10 ms per token = 100 tokens per second for that user.</p></div>
+  </div>
+  <p><span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=1">DistServe, p. 1–2</a> · <a href="https://arxiv.org/pdf/2311.18677#page=2">Splitwise, Table II, p. 2</a></span></p>
+</section></div></section>
+<section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of a chef who works at incredible speed, with ingredients arriving down one narrow corridor. For prefill, one delivery feeds thousands of portions, so the chef is the limit. For decode, a whole delivery comes in for a single portion, so the corridor is the limit.</p>
+<figure class="picture"><svg viewBox="0 0 480 124" role="img" aria-label="Prefill: one read of the weights feeds 2,000 tokens, about 2,000 FLOPs per byte, so it is compute-bound. Decode: one read feeds one token, about 1 FLOP per byte, so it is memory-bound. An H100's balance point is about 295 FLOPs per byte.">
+  <g font-size="14" font-weight="600" fill="var(--ink)" text-anchor="middle"><text x="190" y="16">One read feeds</text><text x="320" y="16">FLOPs per byte</text><text x="430" y="16">Limited by</text></g>
+  <path d="M0 28H480M0 66H480" stroke="var(--line-strong)"/>
+  <g font-size="15" font-weight="700" fill="var(--ink)"><text x="4" y="52">Prefill</text><text x="4" y="90">Decode</text></g>
+  <g font-size="15" font-weight="700" text-anchor="middle"><g fill="var(--ink)"><text x="190" y="52">2,000 tokens</text><text x="320" y="52">About 2,000</text><text x="190" y="90">1 token</text><text x="320" y="90">About 1</text></g><text x="430" y="52" fill="var(--a)">Maths</text><text x="430" y="90" fill="var(--bad)">Memory</text></g>
+  <text x="240" y="118" font-size="13" fill="var(--dim)" text-anchor="middle">An H100 balances at about 295 FLOPs per byte.</text>
+</svg><figcaption>Rough figures from the lesson, for Llama 3.1 8B on one H100 serving one user.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try to break it.</b> Switch between 16, 8 and 4 bits. Watch the ideal time per token, and how busy the tensor cores are.</p><section class="ch" id="c7" data-toc="7 · Decode: memory-bound">
+  <span class="pill b">Decode is memory-bound</span>
+  <h3>Decode time ≈ bytes to read ÷ bandwidth</h3>
+  <p>For one user, a decode step does 2 FLOPs per weight but has to read 2 bytes per weight. The tensor cores finish their 16 GFLOPs in 0.016 ms, then wait 4.8 ms for the bytes. So the speed limit is set by bytes, and anything that shrinks them speeds decode up directly.</p>
+  <div class="reader" data-reader='[
+    {"t":"t","c":"b","label":"one decode step","say":"Time to produce one more token for every user in the batch."},
+    {"t":"w","c":"info","label":"the weights","say":"P × b bytes. Read once per step, no matter how many users share the step. 16.1 GB here."},
+    {"t":"kv","c":"st","label":"everyone&#39;s KV cache","say":"Each of the B users has a cache of n_ctx tokens × 128 KiB. Unlike the weights, it is not shared: every user adds their own bytes."},
+    {"t":"bw","c":"info","label":"bandwidth","say":"3.35 TB/s on an H100. Decode speed is tied to this number, not to FLOPs."},
+    {"t":"res","c":"b","label":"one user, short chat","say":"B = 1 and a small cache: about 16.1 GB ÷ 3.35 TB/s = 4.8 ms per token, or about 209 tokens per second at best."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-t}{t_{\text{step}}} \approx \big(\class{term t-w}{bP} + \class{term t-kv}{B\,n_{\text{ctx}}\,\text{KV}_{\text{tok}}}\big)\,\big/\,\class{term t-bw}{\text{BW}} \;\Rightarrow\; \class{term t-res}{16.1\ \text{GB} / 3.35\ \text{TB/s} \approx 4.8\ \text{ms}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Memory-bound estimate (my derivation, standard in the inference literature) · hover any symbol.</p>
+  </div>
+  <h4>Try it: shrink the bytes</h4>
+  <div class="card lab" id="labDec">
+    <div class="seg" data-k="bits"><button data-v="2" class="on">16-bit</button><button data-v="1">8-bit</button><button data-v="0.5">4-bit</button></div>
+    <div class="stats">
+      <div class="stat"><div class="l">bytes read per token</div><div class="v info" data-o="by">–</div></div>
+      <div class="stat"><div class="l">ideal time per token</div><div class="v b" data-o="ms">–</div></div>
+      <div class="stat"><div class="l">max speed, one user</div><div class="v b" data-o="tps">–</div></div>
+      <div class="stat"><div class="l">tensor cores busy</div><div class="v bad" data-o="util">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Weights only, batch of 1, Llama 3.1 8B on an H100. Halving the bytes halves the ideal time. In practice one precision step down (16 → 8 bits) is typically 30–50% faster, not 2×, because of kernels, the KV cache and other overheads (Inference Engineering, P. Kiely, ch. 5.1). AWQ's 4-bit TinyChat kernels measured about 3.2–3.3× over Hugging Face FP16 <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=2">AWQ, p. 2</a></span>.</p>
+  </div>
+  <div class="card bad"><h4>What breaks: the KV cache keeps growing</h4><p>Every generated token adds 128 KiB to every user's cache, and decode re-reads the whole cache each step. Splitwise: "each active generated token that is being processed accesses the KV cache of its entire context so far", which makes the token phase "limited by memory capacity" <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=5">Insight V, p. 5</a></span>. Long contexts slow decode even when the weights are tiny. That's why GQA, KV-cache quantization and paged cache memory exist.</p></div>
+</section><p class="play-why"><b>Now say why:</b> the tensor cores are almost idle, so what is decode actually waiting for?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: How it works</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">How it works</h2><section class="ch" id="summary"><h3>In one breath</h3>Every LLM request runs in two phases. <b>Prefill</b> reads the whole prompt in one pass and is limited by the GPU's maths. <b>Decode</b> writes the answer one token per pass and is limited by how fast memory can feed the weights. Almost every inference trick (batching, quantization, chunked prefill, disaggregation) is a fix for one phase or for the two getting in each other's way.<span class="small">What you'll be able to do after this: estimate TTFT and tokens per second on a napkin, explain why decode is memory-bound, and pick the right fix when an LLM feels slow.</span><div class="legend"><span><i style="background:var(--a)"></i>prefill (the prompt)</span><span><i style="background:var(--b)"></i>decode (the answer)</span><span><i style="background:var(--st)"></i>KV cache</span><span><i style="background:var(--info)"></i>memory, bandwidth, numbers</span><span><i style="background:var(--ok)"></i>fix that works</span><span><i style="background:var(--bad)"></i>stall or failure</span></div></section><section class="ch" id="c2" data-toc="2 · Building blocks">
+  <h3>A GPU is a fast calculator behind a narrow pipe</h3>
+  <p>You need three ideas: where the weights live, the KV cache, and the ratio between maths speed and memory speed. Think of a chef (the maths units) working at an incredible pace, while ingredients (the weights) arrive from a storeroom down a single corridor.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="GPU anatomy: HBM memory holding weights and KV cache, a bandwidth pipe, and tensor cores">
+        <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--info)"/></marker></defs>
+        <g data-show="1"><rect x="30" y="40" width="250" height="210" rx="14" class="finfo" stroke-width="1.5"/>
+          <text x="155" y="66" text-anchor="middle" class="tinfo" font-weight="600">HBM · 80 GB</text>
+          <rect x="52" y="84" width="206" height="74" rx="10" class="fn"/><text x="155" y="114" text-anchor="middle" font-weight="600">model weights</text><text x="155" y="136" text-anchor="middle" class="d m">8.03 B × 2 bytes = 16.1 GB</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--info)"><path d="M285 145 H 470" stroke="var(--info)" stroke-width="5" marker-end="url(#ar2)"/>
+          <text x="378" y="132" text-anchor="middle" class="tinfo" font-weight="600">3.35 TB/s</text><text x="378" y="170" text-anchor="middle" class="d" font-size="12">all 16.1 GB, every forward pass</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--a)"><rect x="480" y="70" width="250" height="150" rx="14" class="fa" stroke-width="1.5"/>
+          <text x="605" y="110" text-anchor="middle" class="ta" font-weight="600">tensor cores</text><text x="605" y="134" text-anchor="middle" class="d m">989 trillion FLOP/s</text><text x="605" y="160" text-anchor="middle" class="d" font-size="12">2 FLOPs per weight per token</text><text x="605" y="180" text-anchor="middle" class="d" font-size="12">(one multiply, one add)</text></g>
+        <g data-show="4"><text x="605" y="248" text-anchor="middle" font-weight="600">989 ÷ 3.35 ≈ <tspan class="tinfo">295 FLOPs per byte</tspan></text><text x="605" y="270" text-anchor="middle" class="d" font-size="12.5">fewer FLOPs per byte than this,</text><text x="605" y="288" text-anchor="middle" class="d" font-size="12.5">and the maths units wait on memory</text></g>
+        <g data-show="5" data-hl="5" style="color:var(--st)"><rect x="52" y="172" width="206" height="62" rx="10" class="fst"/><text x="155" y="198" text-anchor="middle" class="tst" font-weight="600">KV cache</text><text x="155" y="220" text-anchor="middle" class="d m">128 KiB per token, grows</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>The weights live in the GPU's high-bandwidth memory (HBM). Llama 3.1 8B in 16-bit is 8.03 billion numbers × 2 bytes ≈ 16.1 GB.</li>
+      <li>The maths units can't compute on HBM directly. For every forward pass, all 16.1 GB has to stream through a 3.35 TB/s pipe. That alone takes 16.1 ÷ 3.35 ≈ 4.8 ms.</li>
+      <li>The tensor cores do roughly 2 FLOPs per weight for each token they process: a multiply and an add.</li>
+      <li>Divide the two speeds: the H100 can do about 295 FLOPs in the time one byte arrives. This ratio is the GPU's <b>ridge point</b>. Work that does fewer FLOPs per byte is <b>memory-bound</b>. Work that does more is <b>compute-bound</b>.</li>
+      <li>Next to the weights sits the <b>KV cache</b>: for every token seen so far, each layer's key and value vectors, saved so they are never recomputed. Decode reads it every step, and it grows by one entry per token.</li>
+    </ol>
+  </div>
+  <p>The KV cache is why the model doesn't redo the whole prompt for every new token. Attention needs every past token's key and value, so prefill computes them once and stores them. Its size per token comes from the model's shape:</p>
+  <div class="reader" data-reader='[
+    {"t":"lhs","c":"st","label":"bytes per token","say":"How much KV cache one token adds, across the whole model."},
+    {"t":"two","c":"info","label":"K and V","say":"One key vector and one value vector per head. That is the 2."},
+    {"t":"L","c":"a","label":"layers","say":"Every layer has its own attention, so its own cache. Llama 3.1 8B has 32 layers."},
+    {"t":"H","c":"b","label":"KV heads","say":"Number of key/value heads. Llama 3.1 8B uses grouped-query attention: 32 query heads share 8 KV heads, which makes the cache 4× smaller."},
+    {"t":"d","c":"a","label":"head size","say":"Numbers per head vector: 128 for this model."},
+    {"t":"b","c":"info","label":"bytes each","say":"2 in 16-bit. Quantizing the cache to 8-bit halves everything."},
+    {"t":"res","c":"st","label":"the answer","say":"2 × 32 × 8 × 128 × 2 = 131,072 bytes = 128 KiB per token. Our 2,300-token conversation holds about 0.30 GB of KV cache."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-lhs}{\text{KV}_{\text{tok}}} = \class{term t-two}{2}\cdot\class{term t-L}{L}\cdot\class{term t-H}{H_{kv}}\cdot\class{term t-d}{d_h}\cdot\class{term t-b}{b} = \class{term t-res}{131{,}072\ \text{bytes}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Standard formula; model shape from the <a href="https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json">Llama 3.1 8B config</a> (32 layers, 8 KV heads, head size 128, bfloat16) · hover any symbol for its meaning.</p>
+  </div>
+  <details class="deep"><summary>Go deeper: why 2 FLOPs per parameter per token</summary><p>A linear layer computes y = Wx. Each weight w<sub>ij</sub> is used once per token: multiply it by x<sub>j</sub>, add it to y<sub>i</sub>. That is 2 FLOPs. Linear layers hold almost all of a transformer's parameters, so a forward pass costs about 2·P FLOPs per token, plus attention, which costs about 2·L·d·n per token at context length n (small until the context gets long). This is the standard estimate used in the inference literature; the attention term is why very long prompts make prefill grow faster than linearly <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=13">DistServe, p. 13</a></span>.</p></details>
+</section><section class="ch" id="c5" data-toc="5 · The core idea">
+  <span class="pill a">One principle</span>
+  <h3>Both phases read the same weights. Only prefill gets to reuse them.</h3>
+  <p>Every forward pass streams all the weights from memory once. What changes is how many tokens share that one read. Prefill pushes thousands of prompt tokens through together, so each weight byte gets used thousands of times. Decode pushes one token per user, so each byte is used once (per user) and thrown away. The number that captures this is <span class="k">arithmetic intensity</span>: FLOPs done per byte read.</p>
+  <div class="reader" data-reader='[
+    {"t":"I","c":"info","label":"intensity","say":"FLOPs per byte moved from memory. Compare it with the GPU ridge point (295 on an H100) to know which limit you hit."},
+    {"t":"fl","c":"a","label":"maths done","say":"About 2 FLOPs per parameter for each of the N tokens in the pass."},
+    {"t":"by","c":"info","label":"bytes read","say":"The weights, read once per pass: P parameters × b bytes each (2 in 16-bit). KV cache reads are ignored here; they only make decode worse."},
+    {"t":"res","c":"st","label":"it is just tokens per pass","say":"P cancels: intensity is about 2N ÷ b. In 16-bit that is simply N, the number of tokens sharing the read."},
+    {"t":"pre","c":"a","label":"prefill: N = 2,000","say":"Our 2,000-token prompt gives about 2,000 FLOPs per byte, well above 295. Compute-bound: the maths units are the limit."},
+    {"t":"dec","c":"b","label":"decode: N = 1","say":"One user decoding gives 1 FLOP per byte, about 300× below the ridge. Memory-bound: the maths units are idle 99.7% of the time."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-I}{I} = \class{term t-fl}{2PN}\,\big/\,\class{term t-by}{bP} = \class{term t-res}{2N/b} \qquad \class{term t-pre}{I_{\text{prefill}}\approx 2000} \quad \class{term t-dec}{I_{\text{decode}}\approx 1}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Weights-only roofline estimate (my derivation from the standard 2·P FLOPs rule). AWQ's profile of Llama-2-7B reports the same picture: intensity ≈ 1 for 16-bit decode and ≥ 165 for the prompt stage <span class="src"><a href="https://arxiv.org/pdf/2306.00978#page=5">AWQ, Fig. 3b, p. 5</a></span>.</p>
+  </div>
+  <p>Everything below follows from this one line. Prefill is fixed by doing maths faster or doing less of it. Decode is fixed by moving fewer bytes or by making more tokens share each byte. And when you mix them on one GPU, they fight.</p>
+</section><section class="ch" id="c6" data-toc="6 · Prefill: compute-bound">
+  <span class="pill a">Prefill is compute-bound</span>
+  <h3>Prefill time ≈ maths needed ÷ maths speed</h3>
+  <p>Once the prompt is a few hundred tokens long, the weights stream in faster than the tensor cores can use them, so the clock is set by FLOPs. Drag the prompt length and watch where the limit switches.</p>
+  <div class="card lab" id="labPre">
+    <label>Prompt length <input type="range" min="0" max="100" step="1" value="55" data-k="n"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">maths needed</div><div class="v" data-o="fl">–</div></div>
+      <div class="stat"><div class="l">time if compute-bound</div><div class="v a" data-o="tc">–</div></div>
+      <div class="stat"><div class="l">time to read weights</div><div class="v info" data-o="tm">4.8 ms</div></div>
+      <div class="stat"><div class="l">limit</div><div class="v" data-o="lim">–</div></div>
+      <div class="stat"><div class="l">attention share of maths</div><div class="v" data-o="att">–</div></div>
+    </div>
+    <div class="formula">TTFT ≈ max( (2·P·n + 2·L·d·n²) ÷ 989 TFLOP/s , 16.1 GB ÷ 3.35 TB/s )</div>
+    <p class="small" style="margin:0">Ideal H100 ceiling for Llama 3.1 8B (P = 8.03 B, L = 32, d = 4,096). Below about 300 tokens, prefill is actually memory-bound too. Above it, every extra token costs maths, and at very long prompts the n² attention term takes a growing share.</p>
+  </div>
+  <p>The papers see the same switch point on real hardware. DistServe found a single 512-token prompt "can fully engage an A100" for a 13B model <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=4">p. 4</a></span>. Sarathi-Serve notes the theory says about 200 tokens on an A100 (whose ridge is lower, about 153), but in practice it happens at about 500–600 tokens because of fixed overheads <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=6">p. 6, footnote 2</a></span>.</p>
+  <div class="card bad"><h4>What breaks: batching prefills doesn't help</h4><p>Once one prompt saturates compute, adding a second prompt to the same pass just doubles the time. DistServe: "adding more requests to the batch no longer improves GPU efficiency. Instead, it proportionally extends the total processing time" <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=4">p. 4</a></span>. That's why prefill fixes are about doing less maths (prefix caching, shorter prompts) or faster maths (FP8 tensor cores, more GPUs via tensor parallelism), not bigger batches.</p></div>
+</section><section class="ch" id="c8" data-toc="8 · Batching decode">
+  <span class="pill ok">The fix for decode: share the read</span>
+  <h3>Serve many users in one step</h3>
+  <p>If one read of the weights feeds 64 users instead of 1, the expensive part of the step is paid once and split 64 ways. This is why <b>continuous batching</b> (Orca's iteration-level scheduling, used by vLLM and every modern engine) is the single biggest throughput win in serving. But each user brings their own KV cache, and that part is never shared. Play with both dials.</p>
+  <div class="card lab" id="labBat">
+    <label>Users per batch <input type="range" min="0" max="9" step="1" value="5" data-k="B"><output></output></label>
+    <label>Context per user <input type="range" min="0" max="6" step="1" value="2" data-k="c"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">speed per user</div><div class="v b" data-o="pu">–</div></div>
+      <div class="stat"><div class="l">total throughput</div><div class="v ok" data-o="tot">–</div></div>
+      <div class="stat"><div class="l">what limits the step</div><div class="v" data-o="lim">–</div></div>
+      <div class="stat"><div class="l">KV cache needed (64 GB free)</div><div class="v st" data-o="kv">–</div></div>
+    </div>
+    <div class="meter" title="share of the step spent reading KV cache"><i data-o="kvbar" style="background:var(--st)"></i></div>
+    <p class="small" style="margin:0" data-o="note">–</p>
+    <p class="small" style="margin:0">Ideal H100 model, Llama 3.1 8B in 16-bit: step = max(compute, (weights + all KV) ÷ 3.35 TB/s). The purple bar is the share of each step spent reading KV cache. 80 GB − 16.1 GB of weights leaves about 64 GB for caches (ignoring activations and allocator overhead).</p>
+  </div>
+  <p>Three things to notice. Up to a point, total throughput climbs almost linearly while each user's speed barely drops: the step time is still "read the weights". Sarathi-Serve measured exactly this flat region: LLaMA2-70B's linear layers take about the same time for 128 to 512 tokens per batch <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=6">Fig. 6, p. 6</a></span>. With long contexts, the KV cache reads take over and per-user speed falls. And the batch often runs out of <i>memory capacity</i> for caches long before it reaches the compute ridge.</p>
+  <div class="card"><h4>Why "295" is only a rule of thumb</h4><p>Weights-only, a 16-bit decode batch reaches the ridge at about 295 users. But each user also reads their own cache: at 2,300 tokens that is about 0.3 GB per user per step against 16.1 GB of shared weights. Per user, the cache adds bytes without adding much maths, so intensity never reaches the ridge, and the step stays memory-bound however big the batch. Real engines hit KV memory limits first, which is why PagedAttention (removing cache fragmentation so more requests run at once) mattered so much: with iteration-level batching it reached an order of magnitude more throughput than FasterTransformer <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=7">Sarathi-Serve, p. 3 and 7</a></span>. <span class="mine">my take</span></p></div>
+</section><section class="ch" id="c9" data-toc="9 · Chunked prefill">
+  <span class="pill ok">Fix 1 for the collision</span>
+  <h3>Chunked prefill: hide prompt work in decode's idle maths</h3>
+  <p>Decode steps leave the tensor cores mostly idle. Sarathi-Serve's insight: fill that idle compute with a slice of someone's prompt. Each step gets a <span class="k">token budget</span>. First every running decode gets its one token, then the leftover budget goes to a chunk of a waiting prompt. Steps stay roughly the same size, so streaming users never see a multi-second freeze <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=8">§4.2, Algorithm 3, p. 8–9</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 250" role="img" aria-label="Token budget per step filled with decode tokens then a prompt chunk">
+        <g data-show="1"><text x="30" y="40" font-weight="600">one step, token budget 512</text>
+          <rect x="30" y="56" width="680" height="40" rx="6" class="fn"/><text x="370" y="81" text-anchor="middle" class="d">512 token slots</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--b)"><rect x="30" y="56" width="42" height="40" rx="6" class="fb"/><text x="51" y="116" text-anchor="middle" class="tb" font-size="12">32 decodes</text><text x="51" y="132" text-anchor="middle" class="d" font-size="11">1 token each</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--a)"><rect x="74" y="56" width="636" height="40" rx="6" class="fa"/><text x="392" y="81" text-anchor="middle" class="ta" font-weight="600">480 tokens of the new 8,000-token prompt</text></g>
+        <g data-show="4"><text x="30" y="176" font-weight="600">next steps</text>
+          <g><rect x="130" y="160" width="12" height="24" rx="3" class="fb"/><rect x="142" y="160" width="58" height="24" rx="3" class="fa"/><rect x="206" y="160" width="12" height="24" rx="3" class="fb"/><rect x="218" y="160" width="58" height="24" rx="3" class="fa"/><rect x="282" y="160" width="12" height="24" rx="3" class="fb"/><rect x="294" y="160" width="58" height="24" rx="3" class="fa"/><text x="372" y="177" class="d">… 17 steps until the prompt is done</text></g></g>
+        <g data-show="5" data-hl="5" style="color:var(--ok)"><text x="30" y="226" class="tok" font-weight="600">every step is about the same length, so the 32 streams keep flowing</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>Each iteration has a fixed budget of tokens, chosen so one step stays under the latency target. Here, 512.</li>
+      <li>Running decodes go in first: 32 users, one token each. They never wait.</li>
+      <li>The rest of the budget goes to a chunk of the waiting prompt: 480 tokens of a new 8,000-token document.</li>
+      <li>The prompt finishes over about 17 steps instead of one huge one.</li>
+      <li>No step is ever "one giant prefill", so nobody's stream freezes. The decode tokens ride along on maths that was idle anyway.</li>
+    </ol>
+  </div>
+  <h4>Try it: pick the token budget</h4>
+  <div class="card lab" id="labChunk">
+    <label>Token budget <input type="range" min="0" max="5" step="1" value="1" data-k="tb"><output></output></label>
+    <div class="stats">
+      <div class="stat"><div class="l">gap between tokens while the prompt loads</div><div class="v b" data-o="itl">–</div></div>
+      <div class="stat"><div class="l">without chunking (one big prefill)</div><div class="v bad" data-o="stall">–</div></div>
+      <div class="stat"><div class="l">steps to finish the prompt</div><div class="v" data-o="steps">–</div></div>
+      <div class="stat"><div class="l">new user's TTFT (ideal)</div><div class="v a" data-o="ttft">–</div></div>
+    </div>
+    <p class="small" style="margin:0">Illustrative ideal model: 32 users decoding with 1,500-token contexts, one new 8,000-token prompt, Llama 3.1 8B on an H100. A step = max(compute, memory). Normal decode gap with no prompt waiting: about 6.7 ms.</p>
+  </div>
+  <p>Smaller budgets mean smoother streams, but chunking isn't free, and the ideal model above hides the costs:</p>
+  <div class="card bad"><h4>What breaks with chunks that are too small</h4><ul style="margin:0;padding-left:20px">
+    <li>Each chunk's attention re-reads the KV cache of all earlier chunks: N chunks means O(N²) cache loads instead of O(N) <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=4">DistServe, p. 4</a></span>. Sarathi-Serve found attention prefill stays compute-bound even with small chunks, but fixed overheads like kernel launches add up <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=9">p. 9</a></span>.</li>
+    <li>Tile quantization: GPUs compute in tiles, so a chunk of 257 tokens can make prefill 32% slower than a chunk of 256 <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=9">Sarathi-Serve, p. 9</a></span>.</li>
+    <li>DistServe's critique: chunking "trades TTFT for TPOT and cannot eliminate the interference" <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=3">p. 3</a></span>.</li></ul></div>
+  <div class="card ok"><h4>What it buys</h4><p>Naively mixing a full prefill into a decode batch raised time-between-tokens by up to <b>28.3×</b> over a decode-only batch, while chunking kept it tightly bounded <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=8">p. 8</a></span>. Sarathi-Serve reports 2.6× higher serving capacity for Mistral-7B on one A100 and up to 3.7× for Yi-34B on two A100s, versus vLLM at the time <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=1">abstract</a></span>. vLLM V1 now turns chunked prefill on by default and schedules decodes first; a smaller <code>max_num_batched_tokens</code> (e.g. 2,048) gives better inter-token latency, a larger one better TTFT <span class="src"><a href="https://docs.vllm.ai/en/latest/configuration/optimization.html">vLLM docs</a></span>.</p></div>
+</section><section class="ch" id="c10" data-toc="10 · Disaggregation">
+  <span class="pill st">Fix 2 for the collision</span>
+  <h3>Disaggregation: give each phase its own GPUs</h3>
+  <p>If the two phases want opposite things, stop sharing. A prefill pool runs prompts and produces the KV cache. It sends the cache to a decode pool, which streams the answer. Each pool gets its own GPU count, batch policy and parallelism, tuned for TTFT or for TPOT <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=4">DistServe, p. 4</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 270" role="img" aria-label="Disaggregated serving: router, prefill pool, KV transfer, decode pool">
+        <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--dim)"/></marker></defs>
+        <g data-show="1"><rect x="20" y="105" width="110" height="50" rx="10" class="fn"/><text x="75" y="135" text-anchor="middle" font-weight="600">router</text></g>
+        <g data-show="2" data-hl="2" style="color:var(--a)"><path d="M130 130 H180" class="ln" stroke-width="2" marker-end="url(#ar3)"/>
+          <rect x="185" y="60" width="180" height="140" rx="12" class="fa"/><text x="275" y="92" text-anchor="middle" class="ta" font-weight="600">prefill pool</text>
+          <text x="275" y="116" text-anchor="middle" class="d" font-size="12">compute-bound</text><text x="275" y="136" text-anchor="middle" class="d" font-size="12">more tensor parallelism</text><text x="275" y="156" text-anchor="middle" class="d" font-size="12">tuned for TTFT</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--st)"><path d="M365 130 H440" stroke="var(--st)" stroke-width="3" marker-end="url(#ar3)"/><text x="402" y="118" text-anchor="middle" class="tst" font-size="12" font-weight="600">KV cache</text><text x="402" y="222" text-anchor="middle" class="d" font-size="11">over NVLink / InfiniBand</text></g>
+        <g data-show="4" data-hl="4" style="color:var(--b)"><rect x="445" y="60" width="180" height="140" rx="12" class="fb"/><text x="535" y="92" text-anchor="middle" class="tb" font-weight="600">decode pool</text>
+          <text x="535" y="116" text-anchor="middle" class="d" font-size="12">memory-bound</text><text x="535" y="136" text-anchor="middle" class="d" font-size="12">huge continuous batches</text><text x="535" y="156" text-anchor="middle" class="d" font-size="12">tuned for TPOT</text></g>
+        <g data-show="5"><path d="M625 130 H690" class="ln" stroke-width="2" marker-end="url(#ar3)"/><text x="720" y="135" text-anchor="middle" class="tok" font-weight="600">stream</text>
+          <text x="405" y="256" text-anchor="middle" class="d" font-size="12.5">ratio of pools is a dial: DistServe's OPT-175B placement used different parallelism for each</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li>A router assigns each request a prefill machine and a decode machine (Splitwise uses join-the-shortest-queue) <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=6">p. 6</a></span>.</li>
+      <li>The prefill pool only ever runs prompts. It can use more tensor parallelism to cut TTFT without slowing anyone's stream.</li>
+      <li>The KV cache is copied to the decode machine. Splitwise sends it layer by layer while the prompt is still computing, to hide the transfer <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=7">p. 7</a></span>.</li>
+      <li>The decode pool only ever decodes, so it can pack huge continuous batches and never stalls for a prompt.</li>
+      <li>Each pool scales on its own. DistServe searches for the best GPU split and parallelism per phase given the TTFT and TPOT targets <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=10">p. 10</a></span>.</li>
+    </ol>
+  </div>
+  <h4>Worked example: DistServe's opening experiment</h4>
+  <p>A 13B model on A100s, 512-token prompts, 64-token answers, with SLOs on both TTFT and TPOT. The metric is <span class="k">goodput</span>: the highest request rate per GPU at which 90% of requests meet both SLOs <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=2">p. 2</a></span>.</p>
+  <div class="card"><h4>Requests per second per GPU within SLO (↑ better)</h4>
+    <div class="bars" data-max="10">
+      <div class="bar"><span>both phases on one GPU</span><div class="track"><div class="fill" style="--v:1.6;background:var(--bad)"></div></div><span class="v">1.6</span></div>
+      <div class="bar"><span>a GPU doing prefill only</span><div class="track"><div class="fill" style="--v:5.6;background:var(--a)"></div></div><span class="v">5.6</span></div>
+      <div class="bar"><span>a GPU doing decode only</span><div class="track"><div class="fill" style="--v:10;background:var(--b)"></div></div><span class="v">10</span></div>
+      <div class="bar"><span>2 prefill + 1 decode GPU</span><div class="track"><div class="fill" style="--v:3.3;background:var(--ok)"></div></div><span class="v">3.3</span></div>
+    </div>
+    <p class="small">Two prefill GPUs (2 × 5.6 = 11.2) can feed one decode GPU (10 rps), so 3 GPUs serve 10 rps: 3.3 per GPU, 2.1× the colocated 1.6 <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=2">DistServe, Fig. 1, p. 2</a></span>.</p></div>
+  <div class="card bad"><h4>What it costs</h4><ul style="margin:0;padding-left:20px">
+    <li>A KV cache copy per request. With prefill and decode on the same node, DistServe measured transmission at under 0.1% of total latency for OPT-175B, and 95% of transfers under 30 ms, using intra-node NVLink <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=11">p. 11</a></span>. Across slower links it matters more.</li>
+    <li>Small setups lose. With one or a few GPUs there is little to rebalance, and DistServe says a non-disaggregated system can be the better choice <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=13">p. 13</a></span>. The Modular inference handbook reports 20–30% slowdowns on small or mistuned setups, and notes short or already-cached prompts are often faster prefilled locally.</li>
+    <li>It is a latency tool, not a raw throughput tool. vLLM's docs say plainly: disaggregated prefill "DOES NOT improve throughput"; it lets you tune TTFT and tail ITL separately <span class="src"><a href="https://docs.vllm.ai/en/latest/features/disagg_prefill.html">vLLM docs</a></span>.</li></ul></div>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="practice">Next: In practice</button></div><div class="tab-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="-1"><div class="sec" id="practice"><h2 class="sec-title">In practice</h2><section class="ch" id="c4" data-toc="4 · How it's done today">
+  <h3>Four ways to schedule the two phases, each with a cost</h3>
+  <p>A real server has many users at once: some mid-answer (decoding), some just arrived (needing prefill). How a server interleaves them decides whether you get high throughput, smooth streaming, or both. Here are the four families, following Sarathi-Serve's taxonomy <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=2">Sarathi-Serve, p. 2</a></span>.</p>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 330" role="img" aria-label="Four scheduling timelines: request-level batching, prefill-first, chunked stall-free, and disaggregated">
+        <g font-size="12.5">
+          <g data-show="1"><text x="20" y="46" font-weight="600">Request-level</text><text x="20" y="62" class="d" font-size="11">FasterTransformer</text>
+            <g class="fb"><rect x="170" y="34" width="28" height="26" rx="4"/><rect x="202" y="34" width="28" height="26" rx="4"/><rect x="234" y="34" width="28" height="26" rx="4"/><rect x="266" y="34" width="28" height="26" rx="4"/><rect x="298" y="34" width="28" height="26" rx="4"/></g>
+            <text x="184" y="52" text-anchor="middle" class="m" font-size="10.5">A B</text><text x="216" y="52" text-anchor="middle" class="m" font-size="10.5">A B</text><text x="248" y="52" text-anchor="middle" class="m" font-size="10.5">A B</text><text x="280" y="52" text-anchor="middle" class="m" font-size="10.5">B</text><text x="312" y="52" text-anchor="middle" class="m" font-size="10.5">B</text>
+            <rect x="334" y="34" width="120" height="26" rx="4" class="fa"/><text x="394" y="52" text-anchor="middle" class="m" font-size="10.5">C, D prefill</text>
+            <text x="470" y="52" class="d" font-size="12">C and D wait for A and B to finish</text></g>
+          <g data-show="2" data-hl="2" style="color:var(--bad)"><text x="20" y="118" font-weight="600">Prefill-first</text><text x="20" y="134" class="d" font-size="11">Orca, early vLLM</text>
+            <g class="fb"><rect x="170" y="106" width="28" height="26" rx="4"/><rect x="326" y="106" width="28" height="26" rx="4"/><rect x="358" y="106" width="28" height="26" rx="4"/><rect x="390" y="106" width="28" height="26" rx="4"/></g>
+            <text x="184" y="124" text-anchor="middle" class="m" font-size="10.5">A B</text><text x="340" y="124" text-anchor="middle" class="m" font-size="9.5">ABCD</text><text x="372" y="124" text-anchor="middle" class="m" font-size="9.5">ABCD</text><text x="404" y="124" text-anchor="middle" class="m" font-size="9.5">ABCD</text>
+            <rect x="202" y="106" width="120" height="26" rx="4" class="fa"/><text x="262" y="124" text-anchor="middle" class="m" font-size="10.5">C, D prefill</text>
+            <path d="M200 146 H322" stroke="var(--bad)" stroke-width="2"/><text x="262" y="162" text-anchor="middle" class="tbad" font-size="12" font-weight="600">A and B frozen: generation stall</text>
+            <text x="434" y="124" class="d" font-size="12">big batches, but streams freeze</text></g>
+          <g data-show="3" data-hl="3" style="color:var(--ok)"><text x="20" y="206" font-weight="600">Chunked, stall-free</text><text x="20" y="222" class="d" font-size="11">Sarathi-Serve, vLLM V1</text>
+            <g><rect x="170" y="194" width="28" height="26" rx="4" class="fb"/>
+              <rect x="202" y="194" width="16" height="26" rx="4" class="fb"/><rect x="218" y="194" width="40" height="26" rx="4" class="fa"/>
+              <rect x="262" y="194" width="16" height="26" rx="4" class="fb"/><rect x="278" y="194" width="40" height="26" rx="4" class="fa"/>
+              <rect x="322" y="194" width="16" height="26" rx="4" class="fb"/><rect x="338" y="194" width="40" height="26" rx="4" class="fa"/>
+              <rect x="382" y="194" width="56" height="26" rx="4" class="fb"/></g>
+            <text x="184" y="212" text-anchor="middle" class="m" font-size="10.5">A B</text><text x="238" y="212" text-anchor="middle" class="m" font-size="10">C₁</text><text x="298" y="212" text-anchor="middle" class="m" font-size="10">C₂</text><text x="358" y="212" text-anchor="middle" class="m" font-size="10">D₁</text><text x="410" y="212" text-anchor="middle" class="m" font-size="10">ABCD</text>
+            <text x="452" y="212" class="d" font-size="12">every step = decodes + one prompt chunk</text></g>
+          <g data-show="4" data-hl="4" style="color:var(--st)"><text x="20" y="276" font-weight="600">Disaggregated</text><text x="20" y="292" class="d" font-size="11">Splitwise, DistServe</text>
+            <text x="124" y="271" class="d m" font-size="10">GPU 1</text><rect x="170" y="256" width="76" height="22" rx="4" class="fa"/><rect x="250" y="256" width="76" height="22" rx="4" class="fa"/><text x="208" y="271" text-anchor="middle" class="m" font-size="10">C prefill</text><text x="288" y="271" text-anchor="middle" class="m" font-size="10">D prefill</text>
+            <text x="124" y="305" class="d m" font-size="10">GPU 2</text><g class="fb"><rect x="170" y="290" width="28" height="22" rx="4"/><rect x="202" y="290" width="28" height="22" rx="4"/><rect x="234" y="290" width="28" height="22" rx="4"/><rect x="266" y="290" width="28" height="22" rx="4"/><rect x="298" y="290" width="40" height="22" rx="4"/></g>
+            <path d="M300 279 C 312 284 322 286 330 290" stroke="var(--st)" stroke-width="2" fill="none"/><text x="350" y="286" class="tst" font-size="11.5">KV cache copied over</text>
+            <text x="470" y="302" class="d" font-size="12">no interference, extra GPUs + transfer</text></g>
+        </g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say">
+      <li><b>Request-level batching</b> finishes a whole batch before starting new prompts. Streams stay smooth, but the batch shrinks as requests finish and newcomers queue, so throughput is poor <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=2">p. 2</a></span>.</li>
+      <li><b>Iteration-level batching</b> (Orca) lets requests join and leave every step, and prefill-first schedulers run new prompts as soon as memory allows. Throughput jumps, but while a long prefill runs, every streaming user freezes. Sarathi-Serve calls this a <b>generation stall</b>, and measured stalls lasting several seconds in vLLM <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=1">Fig. 1, p. 1</a></span>.</li>
+      <li><b>Chunked prefill with stall-free batching</b> cuts each prompt into chunks and builds every step from all running decodes plus one chunk, up to a fixed token budget. Decodes never wait for a whole prefill <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=8">§4.2, p. 8</a></span>.</li>
+      <li><b>Disaggregation</b> runs prefill and decode on separate GPUs and ships the KV cache between them. No interference at all, and each pool can be sized and parallelised for its own job, at the price of more machines and a transfer <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=4">DistServe, p. 4</a></span>.</li>
+    </ol>
+  </div>
+  <p>The How it works tab takes the last two apart, starting with the one principle that explains all four.</p>
+</section><section class="ch" id="c11" data-toc="11 · The whole picture">
+  <h3>Which fix helps which phase</h3>
+  <p>Put the two phases side by side and every common optimisation falls into place.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Technique</th><th>Helps</th><th>Why it works</th></tr>
+    <tr><td>Continuous batching</td><td style="color:var(--b)">Decode</td><td>One weight read feeds many users' tokens</td></tr>
+    <tr><td>Weight quantization (8/4-bit)</td><td style="color:var(--b)">Decode</td><td>Fewer bytes to read per token</td></tr>
+    <tr><td>KV cache, GQA, KV quantization, PagedAttention</td><td style="color:var(--b)">Decode</td><td>Never recompute the past; shrink and pack the cache so bigger batches fit</td></tr>
+    <tr><td>Speculative decoding</td><td style="color:var(--b)">Decode</td><td>A small draft model proposes several tokens; the big model checks them in one pass, raising tokens per weight read</td></tr>
+    <tr><td>FlashAttention</td><td style="color:var(--a)">Prefill</td><td>Faster, memory-efficient attention for long prompts</td></tr>
+    <tr><td>Prefix caching</td><td style="color:var(--a)">Prefill</td><td>Skip recomputing a shared prefix (system prompt, documents)</td></tr>
+    <tr><td>FP8 / INT8 compute (W8A8)</td><td style="color:var(--a)">Prefill</td><td>Low-precision tensor cores do more maths per second</td></tr>
+    <tr><td>Tensor parallelism</td><td style="color:var(--a)">Prefill (mostly)</td><td>Splits the maths across GPUs, cutting TTFT; costs communication</td></tr>
+    <tr><td>Chunked prefill</td><td style="color:var(--ok)">Both</td><td>Hides prompt work in decode's idle compute, no stalls</td></tr>
+    <tr><td>Disaggregation</td><td style="color:var(--ok)">Both</td><td>Separates them entirely; each pool tuned for its own metric</td></tr>
+  </table></div>
+  <p>And one formula ties the user's experience together. A request's total latency is TTFT plus TPOT for every token after the first <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=2">DistServe, footnote 1, p. 2</a></span>:</p>
+  <div class="reader" data-reader='[
+    {"t":"T","c":"info","label":"what the user waits","say":"End-to-end latency for the full answer."},
+    {"t":"tt","c":"a","label":"prefill","say":"Time to first token: queueing plus the prefill pass. About 34 ms ideal in our example."},
+    {"t":"tp","c":"b","label":"decode, per token","say":"Time per output token. About 4.8 ms ideal for one user; more under a big batch or long context."},
+    {"t":"n","c":"b","label":"how many more tokens","say":"The answer length after the first token. 299 in our example, which is why decode dominates."},
+    {"t":"res","c":"info","label":"our request","say":"34 ms + 4.8 ms × 299 ≈ 1.47 s. Halve TPOT and you save 0.7 s; halve TTFT and you save 17 ms."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-T}{T_{\text{request}}} = \class{term t-tt}{\text{TTFT}} + \class{term t-tp}{\text{TPOT}}\cdot\class{term t-n}{(n_{\text{out}}-1)} \approx \class{term t-res}{1.47\ \text{s}}"></div></div>
+    <ol class="say"></ol>
+  </div>
+</section><section class="ch" id="c12" data-toc="12 · Evidence">
+  <h3>How much do the fixes buy?</h3>
+  <div class="card"><h4>Serving capacity vs vLLM under latency SLOs (↑ better, × the baseline)</h4>
+    <div class="bars" data-max="6">
+      <div class="bar"><span>Sarathi-Serve · Mistral-7B, 1 A100</span><div class="track"><div class="fill" style="--v:2.6;background:var(--ok)"></div></div><span class="v">2.6×</span></div>
+      <div class="bar"><span>Sarathi-Serve · Yi-34B, 2 A100s</span><div class="track"><div class="fill" style="--v:3.7;background:var(--ok)"></div></div><span class="v">3.7×</span></div>
+      <div class="bar"><span>Sarathi-Serve · Falcon-180B, pipeline</span><div class="track"><div class="fill" style="--v:5.6;background:var(--ok)"></div></div><span class="v">5.6×</span></div>
+      <div class="bar"><span>DistServe · OPT-66B code completion</span><div class="track"><div class="fill" style="--v:5.7;background:var(--st)"></div></div><span class="v">5.7×</span></div>
+      <div class="bar"><span>DistServe · OPT-66B summarization</span><div class="track"><div class="fill" style="--v:4.3;background:var(--st)"></div></div><span class="v">4.3×</span></div>
+      <div class="bar"><span>DistServe · OPT chatbot (13B–175B)</span><div class="track"><div class="fill" style="--v:4.6;background:var(--st)"></div></div><span class="v">2.0–4.6×</span></div>
+    </div>
+    <p class="small">Sarathi-Serve: capacity under P99 time-between-tokens SLOs <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=1">abstract</a></span>. DistServe: per-GPU request rate with 90% of requests meeting both TTFT and TPOT SLOs <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=10">p. 10–11</a></span>. Splitwise (cluster-level, simulated on production traces): 1.4× throughput at 20% lower cost, or 2.35× throughput at the same cost and power <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=1">abstract</a></span>.</p></div>
+  <div class="card"><h4>Read these numbers fairly</h4><ul style="margin:0;padding-left:20px">
+    <li>The baseline is 2023–24 vLLM, which then used prefill-first scheduling. Today's vLLM has chunked prefill on by default, so the gap against a current baseline is smaller. <span class="mine">my take</span></li>
+    <li>They measure capacity <i>under latency targets</i>, not raw tokens per second. With loose SLOs the gains shrink: Sarathi-Serve reports 3.5× under a strict 100 ms SLO (Mistral-7B) but 1.65× under a relaxed 1 s SLO (Yi-34B) <span class="src"><a href="https://arxiv.org/pdf/2403.02310#page=12">p. 12</a></span>.</li>
+    <li>The two papers each compare against a system without the other's idea, so the bars aren't a head-to-head. DistServe's own comparison with DeepSpeed-MII (which does chunked prefill) shows 1.6–7.4× on the chatbot workload <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=10">p. 10</a></span>.</li></ul></div>
+  <div class="card upd"><h4>Update · my check (28 Oct 2026)</h4><p>Disaggregation moved from paper to default. NVIDIA says production platforms such as NVIDIA Dynamo use concepts that came from DistServe's lab (<a href="https://blogs.nvidia.com/blog/ucsd-generative-ai-research-dgx-b200/">NVIDIA blog</a>), and coverage of the authors' 2025 retrospective lists NVIDIA, llm-d, vLLM and Mooncake among adopters (secondary source, 36Kr). vLLM still labels its disaggregated prefill "experimental", and chunked prefill is on by default in vLLM V1 (<a href="https://docs.vllm.ai/en/latest/features/disagg_prefill.html">vLLM docs</a>).</p></div>
+</section><section class="ch" id="c15" data-toc="15 · When to use what">
+  <h3>Your LLM feels slow. Diagnose it.</h3>
+  <ol>
+    <li><b>Measure TTFT and TPOT separately</b>, at P50 and P90/P99. One blended "latency" number hides which phase is the problem.</li>
+    <li><b>High TTFT?</b> Look at prefill: long prompts, no prefix caching, prompts queued behind other work. Try prefix caching, chunked prefill, shorter prompts, or more tensor parallelism.</li>
+    <li><b>High TPOT?</b> Look at decode: big model, long contexts, oversized batches. Try weight and KV quantization, speculative decoding, or a smaller model.</li>
+    <li><b>Spiky TPOT</b> (fine on average, bad at P99)? Prefills are stalling decodes. Turn on chunked prefill and lower the token budget; at scale with strict SLOs, consider disaggregation.</li>
+    <li><b>Low throughput while the GPU looks "busy"?</b> Probably memory-bound decode at small batch sizes. Batch more users (continuous batching) and free KV memory so the batch can grow.</li>
+  </ol>
+</section><section class="ch" id="c13" data-toc="13 · Caveats">
+  <h3>What to keep, and where the simple story bends</h3>
+  <p><b>The lesson:</b> prefill reuses each weight read across thousands of tokens and is compute-bound; decode uses each read for one token per user and is memory-bound. Measure TTFT and TPOT separately, and pick fixes by phase.</p>
+  <h4>Where it bends</h4>
+  <ul>
+    <li><b>The numbers here are ideal ceilings.</b> Real kernels reach maybe 60–80% of peak bandwidth or FLOPs, and there's scheduling and framework overhead. Use them for napkin estimates and for direction, not for SLAs. <span class="mine">my take</span></li>
+    <li><b>Long contexts change decode.</b> At long contexts, KV cache reads, not weights, dominate each decode step (see the batching section). GQA, KV quantization and attention kernels matter more than weight quantization there.</li>
+    <li><b>Mixture-of-experts models</b> read only the active experts per token, which lowers bytes per token at batch 1. But at big batches, different users hit different experts, so more of the model gets read each step. <span class="mine">my take</span></li>
+    <li><b>Short prompts are not compute-bound.</b> Below about 300 tokens on an H100, even prefill is limited by reading the weights (see the prefill section).</li>
+    <li><b>Disaggregation and chunking aren't rivals.</b> DistServe notes that when throughput matters more than strict latency, chunked prefill's fuller batches can be preferable <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=13">p. 13</a></span>; at long contexts the KV transfer grows linearly while prefill maths grows faster, which keeps disaggregation attractive <span class="src"><a href="https://arxiv.org/pdf/2401.09670#page=13">p. 13</a></span>.</li>
+  </ul>
+</section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="c3" data-toc="3 · The naive fix">
+  <span class="pill bad">The trap</span>
+  <h3>"Just buy a faster GPU" speeds up the wrong phase</h3>
+  <p>The obvious move when generation is slow: get the newer chip with far more FLOPs. Splitwise (Microsoft) measured exactly this on production traces. Going from an A100 to an H100 buys <b>3.43× more compute</b> but only <b>1.64× more memory bandwidth</b> <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=1">Splitwise, Table I, p. 1</a></span>. Look at what each phase got:</p>
+  <div class="card"><h4>Llama-70B, coding traces, P50 latency · H100 time as a fraction of A100 time (lower = faster)</h4>
+    <div class="bars" data-max="1">
+      <div class="bar"><span>TTFT (prefill)</span><div class="track"><div class="fill" style="--v:0.51;background:var(--a)"></div></div><span class="v">0.51×</span></div>
+      <div class="bar"><span>TBT (decode)</span><div class="track"><div class="fill" style="--v:0.70;background:var(--b)"></div></div><span class="v">0.70×</span></div>
+    </div>
+    <p class="small">Prefill got about 2× faster. Decode got only about 1.4× faster, close to the bandwidth gain, nowhere near the compute gain. The conversation trace shows the same split (0.54× vs 0.70×) <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=5">Splitwise, Table IV, p. 5</a></span>.</p></div>
+  <div class="card bad"><h4>What breaks: you pay for maths decode can't use</h4><p>Splitwise also capped H100 power from 700 W to 350 W per GPU. Prefill latency rose sharply, while decode latency barely moved <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=5">Fig. 9, p. 5</a></span>. Their conclusion: token generation "does not need the compute capability of the latest GPUs and can be run with lower power and cost" <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=1">abstract</a></span>. Decode is waiting on memory, so more FLOPs mostly sit idle.</p></div>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
+<header class="say-head"><p class="eyebrow">Say it</p><h2>Why does an LLM read your prompt fast but write its answer slowly?</h2></header>
+<ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>
+<div class="say-body">
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Say your answer out loud</h3>
+<p class="say-hint">Aim for 30 seconds. It feels different from reading it, and that's the point.</p>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="1">I've said it</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Tick what you covered</h3>
+<ul class="checks"><li><label><input type="checkbox" data-check><span>LLM inference has two phases.</span></label></li><li><label><input type="checkbox" data-check><span>Prefill processes the whole prompt in one pass, so each weight read is reused across thousands of tokens.</span></label></li><li><label><input type="checkbox" data-check><span>It&#x27;s compute-bound, and it sets time to first token.</span></label></li><li><label><input type="checkbox" data-check><span>Decode generates one token per pass, reading all the weights and the KV cache each time.</span></label></li><li><label><input type="checkbox" data-check><span>It&#x27;s memory-bandwidth-bound, and it sets time per output token.</span></label></li><li><label><input type="checkbox" data-check><span>So batching and quantization help decode, and faster FLOPs help prefill.</span></label></li><li><label><input type="checkbox" data-check><span>Mixing the two on one GPU needs chunked prefill or disaggregation.</span></label></li></ul>
+<div class="check-meter"><span class="meter"><i data-check-bar></i></span><span class="check-count" aria-live="polite" data-check-count></span></div>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="2">Take the follow-ups</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>The interviewer pushes further</h3>
+<div class="fu" data-fu>
+<p class="eyebrow">Follow-up 1 of 6</p>
+<p class="fu-q">Why does batching raise throughput but not per-user speed?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu1-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu1-answer"><p>In the memory-bound region a step takes about as long as reading the weights, whether it serves 1 user or 64. So total tokens per second grows almost linearly with batch size while each user's speed stays roughly flat. It stops when the KV caches fill memory or, with short contexts, when you reach the compute ridge. With long contexts, per-user speed does fall, because each user adds their own cache reads.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 2 of 6</p>
+<p class="fu-q">Estimate the max tokens per second for a model on one GPU.</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu2-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu2-answer"><p>For one user: bandwidth ÷ bytes of weights. Llama 3.1 8B in 16-bit is 16.1 GB; an H100 moves 3.35 TB/s, so about 209 tokens/s at best. In 4-bit it's about 4 GB, so roughly 830 tokens/s in theory, less in practice. Then add the KV cache term for long contexts and discount for real-world efficiency.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 3 of 6</p>
+<p class="fu-q">Does quantization speed up prefill?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu3-answer"><p>Weight-only quantization (W4A16) mostly doesn't: prefill is compute-bound and the maths still runs in 16-bit after dequantizing. To speed up prefill you need low-precision compute, i.e. quantized activations too (W8A8 with SmoothQuant, or FP8).</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 4 of 6</p>
+<p class="fu-q">Chunked prefill or disaggregation?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu4-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu4-answer"><p>Chunked prefill first: it's a scheduler setting, works on one GPU, and removes stalls. Disaggregation pays off at scale with long prompts and strict TTFT and TPOT targets, where you can size the pools separately and have fast interconnects for the KV transfer. On small or mistuned setups it can be slower, and it doesn't raise raw throughput. <span class="mine">my take</span></p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 5 of 6</p>
+<p class="fu-q">What does the KV cache cost, and how do you shrink it?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu5-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu5-answer"><p>2 × layers × KV heads × head size × bytes per token: 128 KiB per token for Llama 3.1 8B, so 0.26 GB for a 2,000-token prompt, per user. Shrink it with GQA or MQA (fewer KV heads), KV quantization (8 or 4 bits), paging to avoid fragmentation (PagedAttention), and eviction or windowing for very long contexts.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 6 of 6</p>
+<p class="fu-q">Why would someone put decode on older GPUs?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu6-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="answer" id="fu6-answer"><p>Decode doesn't use the compute, so the newest GPU's extra FLOPs are mostly wasted there. Splitwise found A100s could match or beat H100s on cost and energy for token generation and proposed H100 prefill with A100 decode (Splitwise-HA) <span class="src"><a href="https://arxiv.org/pdf/2311.18677#page=5">p. 5</a></span>.</p></div>
+</div>
+</div>
+<div class="say-step say-final" data-say-step tabindex="-1">
+<p class="say-score" data-say-score hidden></p>
+<h3>The 30-second answer</h3>
+  <p class="say30">LLM inference has two phases. Prefill processes the whole prompt in one forward pass, so each weight read is reused across thousands of tokens and it's compute-bound; it sets time to first token. Decode generates one token per pass, so each pass reads all the weights and the KV cache for very little maths; it's memory-bandwidth-bound and sets time per output token. That's why batching and quantization help decode, why faster FLOPs help prefill, and why mixing the two on one GPU needs chunked prefill or disaggregation.</p>
+  
+<details class="say-more"><summary>Go further</summary><h3>The 2-minute walkthrough</h3>
+  <p>Start with the symptom: the first word is fast, the rest streams. Explain prefill vs decode and the KV cache that links them. Then the roofline: an H100 does about 295 FLOPs per byte of bandwidth; prefill of a 2,000-token prompt does about 2,000 FLOPs per byte, decode for one user about 1. Napkin numbers for an 8B model in 16-bit: 16 GB of weights ÷ 3.35 TB/s ≈ 4.8 ms per token, about 200 tokens/s per user at best. Fixes by phase: batching and quantization for decode; prefix caching and FP8 for prefill. Then the collision: prefill-first scheduling causes generation stalls; chunked prefill (Sarathi-Serve, on by default in vLLM V1) packs decodes plus a prompt chunk into each step; disaggregation (Splitwise, DistServe) splits the phases across GPU pools for goodput under SLOs. Close with the limit: the KV cache grows with context and batch, so at long contexts it, not the weights, dominates decode.</p>
+  
+  
+  
+  
+  
+  
+  
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Decode is slow because attention is quadratic." For a single new token, attention is linear in context; the problem is reading weights and cache.</li>
+    <li>"Bigger batches make each user faster." They raise total throughput; per-user speed stays flat or drops.</li>
+    <li>"Disaggregation increases throughput." It improves goodput under latency SLOs; vLLM's docs say it does not improve raw throughput.</li>
+    <li>"An H100 is 3× faster for LLMs than an A100." For decode, the gain tracks bandwidth (about 1.6×), not FLOPs.</li>
+  </ul></details>
+</div>
+</div>
+</section>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Built from Splitwise, DistServe, Sarathi-Serve, AWQ, the vLLM docs and NVIDIA's H100 specs · checked 28 Oct 2026 · updated 29 Oct 2026</p><section class="ch" id="c14" data-toc="14 · Key terms">
+  <h3>Glossary</h3>
+  <div class="tw"><table class="t">
+    <tr><td><b>Prefill</b></td><td>The pass that processes the whole prompt in parallel, builds the KV cache and produces the first token.</td></tr>
+    <tr><td><b>Decode</b></td><td>Generating the answer one token per forward pass, reading the KV cache.</td></tr>
+    <tr><td><b>TTFT</b></td><td>Time to first token: queueing + prefill.</td></tr>
+    <tr><td><b>TPOT / ITL / TBT</b></td><td>Time per output token, inter-token latency, time between tokens: the streaming gap.</td></tr>
+    <tr><td><b>KV cache</b></td><td>Saved keys and values for every past token in every layer, so attention never recomputes them.</td></tr>
+    <tr><td><b>Arithmetic intensity</b></td><td>FLOPs done per byte read from memory.</td></tr>
+    <tr><td><b>Ridge point</b></td><td>Peak FLOPs ÷ peak bandwidth (≈ 295 on an H100). Below it you're memory-bound; above it, compute-bound.</td></tr>
+    <tr><td><b>Continuous batching</b></td><td>Requests join and leave the running batch every iteration (Orca's iteration-level scheduling).</td></tr>
+    <tr><td><b>Generation stall</b></td><td>Streaming users freezing while a long prefill runs on the same GPU.</td></tr>
+    <tr><td><b>Chunked prefill</b></td><td>Splitting a prompt into chunks that share each step with running decodes, under a token budget.</td></tr>
+    <tr><td><b>Disaggregation</b></td><td>Prefill and decode on separate GPU pools, with the KV cache transferred between them.</td></tr>
+    <tr><td><b>Goodput</b></td><td>Requests per second (per GPU) served while meeting the latency SLOs.</td></tr>
+  </table></div>
+</section><section class="ch" id="more" data-toc="Go further">
+  <h3>Each fix has its own lesson</h3>
+  <div class="card upd"><ul>
+    <li><a href="../kv-cache-and-pagedattention/">KV Cache Management and PagedAttention</a>: how the cache for many users is stored without waste.</li>
+    <li><a href="../continuous-batching/">Continuous Batching and Scheduling</a>: the scheduler behind "batching decode", step by step.</li>
+    <li><a href="../prefix-caching/">Prefix and Prompt Caching</a>: skipping prefill for repeated prompts.</li>
+    <li><a href="../speculative-decoding/">Speculative Decoding</a>: several tokens per memory-bound decode step.</li>
+    <li><a href="../serving-metrics-and-slos/">Serving Metrics and SLOs</a>: TTFT, TPOT and goodput under real load.</li>
+    <li><a href="../scaling-inference/">Scaling Inference</a> and <a href="../sizing-and-cost/">Sizing and Cost</a>: disaggregation at cluster scale, GPU counts and cost per token.</li>
+  </ul></div>
+</section><section class="ch" id="src" data-toc="Sources">
+  <h3>What this page is built from</h3>
+  <ol class="src-list">
+    <li>Patel et al., <a href="https://arxiv.org/abs/2311.18677">Splitwise: Efficient Generative LLM Inference Using Phase Splitting</a>, Microsoft / UW, ISCA 2024.</li>
+    <li>Zhong et al., <a href="https://arxiv.org/abs/2401.09670">DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving</a>, PKU / UCSD, OSDI 2024.</li>
+    <li>Agrawal et al., <a href="https://arxiv.org/abs/2403.02310">Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve</a>, Microsoft Research India / Georgia Tech, OSDI 2024.</li>
+    <li>Lin et al., <a href="https://arxiv.org/abs/2306.00978">AWQ: Activation-aware Weight Quantization</a>, MIT, MLSys 2024 (Fig. 3 bottleneck profile).</li>
+    <li>vLLM docs: <a href="https://docs.vllm.ai/en/latest/configuration/optimization.html">Optimization and tuning (chunked prefill)</a> and <a href="https://docs.vllm.ai/en/latest/features/disagg_prefill.html">Disaggregated prefilling</a>.</li>
+    <li>NVIDIA, <a href="https://www.nvidia.com/en-us/data-center/h100/">H100 specifications</a> (989 TFLOP/s dense BF16, 3.35 TB/s, SXM).</li>
+    <li>Meta, <a href="https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json">Llama 3.1 8B config</a> (layers, KV heads, head size).</li>
+    <li>P. Kiely, <i>Inference Engineering</i> (Baseten), ch. 1.4, 2.2, 2.4, 5.1: latency metrics, ops:byte, precision speedups.</li>
+    <li>Modular, LLM inference handbook: prefill-decode disaggregation (small-setup slowdowns, local prefill for short prompts).</li>
+    <li>NVIDIA blog, <a href="https://blogs.nvidia.com/blog/ucsd-generative-ai-research-dgx-b200/">UC San Diego lab and DistServe's influence on Dynamo</a>; 36Kr coverage of the 2025 disaggregation retrospective (secondary).</li>
+    <li>Interview angle: <a href="https://www.techinterview.org/post/3233477292/gptq-awq-fp8-llm-inference-interview/">techinterview.org, GPTQ, AWQ and FP8 in the LLM inference interview</a>.</li>
+  </ol>
+  <p class="small">Napkin numbers (4.8 ms, 34 ms, 209 tokens/s, 295 FLOPs/byte, 128 KiB per token) are my arithmetic from the specs above and are ideal ceilings.</p>
+</section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+  <nav class="prev-next" aria-label="Previous and next lesson"><p class="first-note">This is the first lesson</p><a class="btn btn-track" rel="next" href="../../../tracks/ai-engineering/llm-quantization/"><span class="pn-label">Next</span>LLM Quantization</a></nav>
+</article>
+<div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="intuition"><a href="#play">Play</a></li><li data-panel="how"><a href="#summary">In one breath</a></li><li data-panel="how"><a href="#c2">Building blocks</a></li><li data-panel="how"><a href="#c5">The core idea</a></li><li data-panel="how"><a href="#c6">Prefill: compute-bound</a></li><li data-panel="how"><a href="#c8">Batching decode</a></li><li data-panel="how"><a href="#c9">Chunked prefill</a></li><li data-panel="how"><a href="#c10">Disaggregation</a></li><li data-panel="practice"><a href="#c4">How it's done today</a></li><li data-panel="practice"><a href="#c11">The whole picture</a></li><li data-panel="practice"><a href="#c12">Evidence</a></li><li data-panel="practice"><a href="#c15">When to use what</a></li><li data-panel="practice"><a href="#c13">Caveats</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
+</main>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+// ---------- page-specific widgets
+// Ideal H100 + Llama 3.1 8B model shared by the labs (all numbers are ceilings, see chapter notes)
+const M = { P: 8.03e9, F: 989e12, BW: 3.35e12, L: 32, d: 4096, kv: 131072, mem: 80e9 };
+const fmtT = s => s < 1e-3 ? (s * 1e6).toFixed(0) + ' µs' : s < 1 ? (s * 1e3).toFixed(s < 0.01 ? 2 : 1) + ' ms' : s.toFixed(2) + ' s';
+const fmtN = x => x >= 1e15 ? (x / 1e15).toFixed(1) + ' PFLOP' : x >= 1e12 ? (x / 1e12).toFixed(1) + ' TFLOP' : (x / 1e9).toFixed(0) + ' GFLOP';
+const fmtGB = b => b >= 1e9 ? (b / 1e9).toFixed(b >= 1e10 ? 0 : 1) + ' GB' : (b / 1e6).toFixed(0) + ' MB';
+const put = (lab, k, v, cls) => { const el = lab.querySelector(`[data-o=${k}]`); if (!el) return; el.textContent = v; if (cls !== undefined) el.className = 'v ' + cls; };
+
+// prefill: prompt length → compute vs weight-read time
+(() => { const lab = document.getElementById('labPre'); if (!lab) return; const r = lab.querySelector('input');
+  const upd = () => { const raw = 64 * Math.pow(2, 9 * r.value / 100), q = raw > 1000 ? 100 : raw > 100 ? 10 : 1, n = Math.round(raw / q) * q; r.nextElementSibling.textContent = n.toLocaleString() + ' tok';
+    const lin = 2 * M.P * n, att = 2 * M.L * M.d * n * n, tc = (lin + att) / M.F, tm = 2 * M.P / M.BW;
+    put(lab, 'fl', fmtN(lin + att)); put(lab, 'tc', fmtT(tc)); put(lab, 'tm', fmtT(tm));
+    put(lab, 'lim', tc > tm ? 'compute' : 'memory', tc > tm ? 'a' : 'info'); put(lab, 'att', (100 * att / (lin + att)).toFixed(1) + '%'); };
+  r.addEventListener('input', upd); upd(); })();
+
+// decode: precision → bytes, time, speed, utilisation
+(() => { const lab = document.getElementById('labDec'); if (!lab) return;
+  const upd = (b) => { const by = M.P * b, t = by / M.BW;
+    put(lab, 'by', fmtGB(by)); put(lab, 'ms', fmtT(t)); put(lab, 'tps', Math.round(1 / t) + ' tok/s'); put(lab, 'util', ((2 * M.P / M.F) / t * 100).toFixed(1) + '%'); };
+  lab.querySelectorAll('.seg button').forEach(bt => bt.addEventListener('click', () => { lab.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === bt)); upd(+bt.dataset.v); }));
+  upd(2); })();
+
+// batching: users × context → per-user speed, throughput, limit, KV memory
+(() => { const lab = document.getElementById('labBat'); if (!lab) return;
+  const Bs = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512], Cs = [300, 1000, 2300, 4000, 8000, 16000, 32000];
+  const [rb, rc] = lab.querySelectorAll('input');
+  const upd = () => { const B = Bs[rb.value], c = Cs[rc.value];
+    rb.nextElementSibling.textContent = B; rc.nextElementSibling.textContent = c.toLocaleString() + ' tok';
+    const w = 2 * M.P, kv = B * c * M.kv, tm = (w + kv) / M.BW, tc = (2 * M.P * B + 4 * M.L * M.d * c * B) / M.F, t = Math.max(tm, tc);
+    const free = M.mem - w, fits = kv <= free;
+    put(lab, 'pu', Math.round(1 / t) + ' tok/s'); put(lab, 'tot', Math.round(B / t).toLocaleString() + ' tok/s', fits ? 'ok' : 'bad');
+    put(lab, 'lim', tc > tm ? 'compute' : kv > w ? 'memory: KV cache' : 'memory: weights', tc > tm ? 'a' : kv > w ? 'st' : 'info');
+    put(lab, 'kv', fmtGB(kv) + (fits ? '' : ' ✗'), fits ? 'st' : 'bad');
+    lab.querySelector('[data-o=kvbar]').style.width = (100 * (kv / M.BW) / t) + '%';
+    lab.querySelector('[data-o=note]').textContent = !fits ? `Doesn't fit: ${B} caches of ${c.toLocaleString()} tokens need ${fmtGB(kv)}, more than the ~64 GB left after the weights. Memory capacity, not compute, caps this batch.`
+      : tc > tm ? 'Compute-bound: the step now costs maths, so per-user speed falls as you add users.'
+      : kv > w ? 'Memory-bound on the KV cache: each user adds their own cache reads, so per-user speed drops as the batch grows.'
+      : (kv / w < 0.2 ? 'Memory-bound on the weights: adding users is almost free, so throughput grows nearly linearly.' : 'Memory-bound, mostly on the weights: each extra user adds their own cache reads, so per-user speed slips while throughput still climbs.'); };
+  rb.addEventListener('input', upd); rc.addEventListener('input', upd); upd(); })();
+
+// chunked prefill: token budget → decode gap, steps, TTFT
+(() => { const lab = document.getElementById('labChunk'); if (!lab) return;
+  const Ts = [256, 512, 1024, 2048, 4096, 8192], B = 32, ctx = 1500, n = 8000, r = lab.querySelector('input');
+  const decAttn = 4 * M.L * M.d * ctx * B, decKV = B * ctx * M.kv;
+  const step = (c, p) => Math.max((2 * M.P * (B + c) + decAttn + 4 * M.L * M.d * c * (p + c / 2)) / M.F, (2 * M.P + decKV + p * M.kv) / M.BW);
+  const upd = () => { const tb = Ts[r.value]; r.nextElementSibling.textContent = tb.toLocaleString() + ' tok';
+    const c = tb - B; let p = 0, tot = 0, worst = 0, k = 0;
+    while (p < n) { const cc = Math.min(c, n - p), t = step(cc, p); tot += t; worst = Math.max(worst, t); p += cc; k++; }
+    put(lab, 'itl', fmtT(worst)); put(lab, 'stall', fmtT(step(n, 0))); put(lab, 'steps', k); put(lab, 'ttft', fmtT(tot)); };
+  r.addEventListener('input', upd); upd(); })();
+
+</script>
+<footer class="site-foot"><div class="page-wide foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="../../../roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js"></script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

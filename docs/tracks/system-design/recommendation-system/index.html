@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design a recommendation system · System Design · datawithsuman</title>
+<meta name="description" content="How do you pick a few items for a user from millions?">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+
+</head>
+<body class="t-system-design" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>datawithsuman</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals" href="../../../tracks/fundamentals/">Fundamentals</a><a class="t-ai-engineering" href="../../../tracks/ai-engineering/">AI Engineering</a><a class="t-system-design active" href="../../../tracks/system-design/" aria-current="true">System Design</a><a class="t-papers" href="../../../tracks/papers/">Papers</a></nav>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="system-design/recommendation-system">
+<aside class="contents" aria-label="System Design contents">
+  <details class="contents-box" open><summary>System Design contents</summary><details class="mod"><summary>Designs</summary><ol><li><a href="../../../tracks/system-design/design-refund-agent/"><span class="dot" data-key="system-design/design-refund-agent" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Design a Refund-Handling Agent</span></a></li></ol></details><details class="mod" open><summary>Ranking systems</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/system-design/recommendation-system/"><span class="dot" data-key="system-design/recommendation-system" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Design a recommendation system</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/system-design/">System Design</a><span aria-hidden="true">/</span><a href="../../../tracks/system-design/#module-2">Ranking systems</a><span aria-hidden="true">/</span><b aria-current="page">Design a recommendation system</b></nav>
+  <div class="lesson-meta"><span class="chip type-design">Design</span><span class="mins">10 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/gradient-boosting/">Gradient Boosting</a><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/embeddings/">Embeddings and Representation Learning</a></div>
+  <h1 class="h1-lesson">Design a recommendation system</h1>
+  <p class="lead">How do you pick a few items for a user from millions?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">Architecture</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">Numbers</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
+<p class="sit-lead">You are designing the home feed for a video app with millions of videos. Each user sees only a few. The interviewer asks:</p>
+<blockquote class="sit-q">How would you pick a few videos for each user? Walk me through the design.</blockquote></section>
+<section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of hiring. A quick CV screen cuts thousands of applicants to a shortlist, and only the shortlist gets a slow, careful interview. You cannot score every item for every user, so you narrow in stages. Each stage trades accuracy for speed.</p>
+<figure class="picture"><svg viewBox="0 0 480 170" role="img" aria-label="A funnel: all items narrow to a few hundred candidates, then to the few items shown to the user">
+  <g font-size="15" text-anchor="middle" fill="var(--ink)">
+    <rect x="10" y="6" width="460" height="42" rx="8" fill="var(--tint)"/><text x="240" y="32" font-weight="600">Every item in the catalogue</text>
+    <text x="240" y="66" fill="var(--muted)" font-size="14">cheap step</text>
+    <rect x="110" y="74" width="260" height="38" rx="8" fill="var(--tint)"/><text x="240" y="98" font-weight="600">A few hundred candidates</text>
+    <text x="240" y="130" fill="var(--muted)" font-size="14">smart, slow step</text>
+    <rect x="175" y="136" width="130" height="30" rx="8" fill="var(--c)"/><text x="240" y="156" fill="#fff" font-weight="600">A few shown</text>
+  </g>
+</svg><figcaption>Illustrative stages. Real counts depend on your latency budget.</figcaption></figure></section><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: Architecture</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Architecture</h2><section class="panel block" id="architecture"><h2>Four stages</h2>
+<ol class="stages">
+  <li><span class="mono-num">1</span><b>Request</b><span>User, context</span></li>
+  <li><span class="mono-num">2</span><b>Candidate generation</b><span>Fast, high recall</span></li>
+  <li><span class="mono-num">3</span><b>Ranking model</b><span>Slow, high precision</span></li>
+  <li><span class="mono-num">4</span><b>Re-rank and filter</b><span>Business rules, diversity</span></li>
+</ol>
+<div class="dashed">Underneath all stages: a feature store for fresh user and item features, and an event log that feeds training.</div></section><section class="panel block" id="trade-offs"><h2>Trade-offs to name in the interview</h2>
+<ul class="explain">
+  <li>Candidate count vs latency.</li>
+  <li>Feature freshness vs serving cost.</li>
+  <li>Two-tower for retrieval vs cross-feature model for ranking.</li>
+</ul></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="practice">Next: Numbers</button></div><div class="tab-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="-1"><div class="sec" id="practice"><h2 class="sec-title">Numbers</h2><section class="panel block" id="numbers"><h2>Capacity maths</h2>
+<div class="mono-box">requests per second ≈ [daily users] × [requests per user] ÷ 86,400
+peak requests per second ≈ [requests per second] × [peak factor]
+ranking scores per second ≈ [peak requests per second] × [candidates per request]
+ranking servers ≈ [ranking scores per second] ÷ [scores per server per second]</div>
+<p class="note">Fill in the brackets with numbers from your interviewer or your own stated assumptions.</p></section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="panel block"><h3>&quot;Just rank every item with your best model&quot;</h3><p>It sounds right, because the best model gives the best scores. But cost grows with the catalogue size times the model cost per item. A cheap first stage cuts the catalogue to a few hundred, so the expensive model only runs where it can change the answer.</p></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
+<header class="say-head"><p class="eyebrow">Say it</p><h2>How would you pick a few videos for each user? Walk me through the design.</h2></header>
+<ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>
+<div class="say-body">
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Say your answer out loud</h3>
+<p class="say-hint">Aim for 30 seconds. It feels different from reading it, and that's the point.</p>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="1">I've said it</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>Tick what you covered</h3>
+<ul class="checks"><li><label><input type="checkbox" data-check><span>You cannot score everything, so you narrow in stages.</span></label></li><li><label><input type="checkbox" data-check><span>A fast candidate step aims for high recall.</span></label></li><li><label><input type="checkbox" data-check><span>A slower ranking model aims for high precision.</span></label></li><li><label><input type="checkbox" data-check><span>A final step applies business rules and diversity.</span></label></li><li><label><input type="checkbox" data-check><span>A feature store and an event log sit underneath all the stages.</span></label></li><li><label><input type="checkbox" data-check><span>You named at least one trade-off.</span></label></li></ul>
+<div class="check-meter"><span class="meter"><i data-check-bar></i></span><span class="check-count" aria-live="polite" data-check-count></span></div>
+<div class="say-actions"><button type="button" class="btn btn-track" data-say-go="2">Take the follow-ups</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
+</div>
+<div class="say-step" data-say-step tabindex="-1">
+<h3>The interviewer pushes further</h3>
+<div class="fu" data-fu>
+<p class="eyebrow">Follow-up 1 of 3</p>
+<p class="fu-q">How many candidates should you keep?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu1-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu1-answer"><p>Enough that good items survive the first stage, and few enough to meet the ranker's latency budget. There is no universal number, so you measure recall at different counts against that budget.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 2 of 3</p>
+<p class="fu-q">Why two towers for retrieval and a richer model for ranking?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu2-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu2-answer"><p>Two towers encode the user and item separately, so item vectors can be computed ahead of time and searched quickly. The ranker runs on only a few hundred items, so it can afford features that combine the user and the item.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 3 of 3</p>
+<p class="fu-q">What happens if your features go stale?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="answer" id="fu3-answer"><p>Relevance drops, but fresher features cost more to serve. Keep fast-changing signals fresh and compute slow ones in batches. Logging features at serving time also keeps training consistent with what the model saw.</p></div>
+</div>
+</div>
+<div class="say-step say-final" data-say-step tabindex="-1">
+<p class="say-score" data-say-score hidden></p>
+<h3>The 30-second answer</h3><p class="say30">You can't score every item for every user, so I'd narrow in stages. A fast candidate step finds a few hundred items with high recall. A slower ranking model orders those for precision. A final step applies business rules and diversity. Underneath, a feature store serves fresh user and item features, and an event log feeds training. The main trade-offs are candidate count against latency, and feature freshness against serving cost.</p>
+
+</div>
+</div>
+</section>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div>
+  <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/system-design/design-refund-agent/"><span class="pn-label">Previous</span>Design a Refund-Handling Agent</a><a class="btn btn-track" href="../../../tracks/papers/"><span class="pn-label">Next track</span>Papers</a></nav>
+</article>
+<div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="how"><a href="#architecture">Four stages</a></li><li data-panel="how"><a href="#trade-offs">Trade-offs to name in the interview</a></li><li data-panel="practice"><a href="#numbers">Capacity maths</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
+</main>
+<footer class="site-foot"><div class="page-wide foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="../../../roadmaps/">Free roadmaps</a></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js"></script>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>
