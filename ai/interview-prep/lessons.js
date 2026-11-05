@@ -263,6 +263,12 @@ window.LESSONS = {
         ],
         lessons: [
           {slug: "design-refund-agent",title: "Design a Refund-Handling Agent",sub: "Walk through an agent system design, from requirements to rollout.",level: "Advanced",mins: 30,group: "designs"},
+          {slug: "design-support-chatbot",title: "Design a Support Chatbot",sub: "Design a support chatbot for delivery partners that answers from your help articles and knows when to hand over to a human.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-store-assistant",title: "Design a Store Assistant",sub: "Merchants want an assistant that can act in their store, not just answer questions. Design it, knowing tools will grow from a handful to dozens.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-research-agent",title: "Design a Research Agent",sub: "Users ask open-ended questions that need many sources. Design an agent that splits the work across parallel subagents and writes one answer.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-text-to-sql",title: "Design a Text-to-SQL System",sub: "Analysts spend too long finding tables and writing SQL. Design a system that turns their questions into queries across a huge data warehouse.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-code-autocomplete",title: "Design Code Autocomplete",sub: "Design code autocomplete for hundreds of millions of requests a day, with suggestions arriving in under 200 ms.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-llm-platform",title: "Design a Shared LLM Platform",sub: "Dozens of teams want to use LLMs from different vendors, and customer data mustn't leak. Design a shared platform for them.",level: "Advanced",mins: 25,group: "designs"},
         ] },
     ] },
     { id: "papers", title: "Papers", desc: "The idea and the key result of important papers, explained step by step.", tracks: [

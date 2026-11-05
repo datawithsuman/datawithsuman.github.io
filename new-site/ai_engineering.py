@@ -74,8 +74,16 @@ for _p in PARTS:
     for _l in _p[2].LESSONS.values():
         _l.setdefault("prereqs", [])
 
-# The only existing System Design page so far. New designs go in this group.
+# New designs go in this group.
 DESIGNS = SimpleNamespace(
     GROUPS=[("designs", "Designs", "End-to-end AI/ML system designs in interview format. New designs are added over time.")],
-    LESSONS={"design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]}},
+    LESSONS={
+        "design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]},
+        "design-support-chatbot": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]},
+        "design-store-assistant": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("tool-calling")]},
+        "design-research-agent": {"type": "design", "prereqs": [_a("multi-agent-systems"), _a("agent-infrastructure")]},
+        "design-text-to-sql": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]},
+        "design-code-autocomplete": {"type": "design", "prereqs": [_a("continuous-batching"), _a("scaling-inference")]},
+        "design-llm-platform": {"type": "design", "prereqs": [_a("llmops"), _a("guardrails-and-prompt-injection")]},
+    },
 )

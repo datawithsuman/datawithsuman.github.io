@@ -23,7 +23,7 @@ TRACKS = [
     {
         "id": "system-design", "n": "03", "name": "System Design", "status": "Can run in parallel",
         "desc": "How AI and ML systems are designed, from requirements to rollout.",
-        "topics": ["Design a refund agent", "Design a recommendation system"],
+        "topics": ["Design a support chatbot", "Design a research agent", "Design code autocomplete", "Design a shared LLM platform"],
         "know": ["fundamentals/gradient-boosting"],
         "modules": [
             {"name": "Ranking systems", "desc": "Find a few good items from a very large catalogue.", "lessons": [

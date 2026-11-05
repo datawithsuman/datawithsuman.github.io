@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://datawithsuman.github.io/)
 
-![Lessons](https://img.shields.io/badge/lessons-162-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-168-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -45,6 +45,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 
 | Lesson | Where | The question it answers |
 |---|---|---|
+| [**Design a Support Chatbot**](https://datawithsuman.github.io/tracks/system-design/design-support-chatbot/) | System Design › Designs | How do you build a support chatbot that answers from your help articles and knows when to hand over to a human? |
 | [**Training/Serving Skew and Feature Stores**](https://datawithsuman.github.io/tracks/ai-engineering/training-serving-skew-and-feature-stores/) | 🏗️ AI Engineering › MLOps | Why does a model look great offline and fail online? |
 | [**Drift Detection and Monitoring**](https://datawithsuman.github.io/tracks/ai-engineering/drift-detection-and-monitoring/) | 🏗️ AI Engineering › MLOps | How do you know a model is degrading before labels arrive? |
 | [**LLMOps: What's Different**](https://datawithsuman.github.io/tracks/ai-engineering/llmops/) | 🏗️ AI Engineering › MLOps | How do you ship prompt changes without breaking things? |
@@ -459,7 +460,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>AI/ML System Design</b> · 1 lesson</summary>
+<summary><b>AI/ML System Design</b> · 7 lessons</summary>
 
 <br>
 
@@ -468,6 +469,12 @@ End-to-end AI/ML system designs in interview format. New designs are added over 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Design a Refund-Handling Agent](https://datawithsuman.github.io/tracks/system-design/design-refund-agent/) | 🔴 Advanced | 30 min |
+| 2 | [Design a Support Chatbot](https://datawithsuman.github.io/tracks/system-design/design-support-chatbot/) | 🔴 Advanced | 25 min |
+| 3 | [Design a Store Assistant](https://datawithsuman.github.io/tracks/system-design/design-store-assistant/) | 🔴 Advanced | 25 min |
+| 4 | [Design a Research Agent](https://datawithsuman.github.io/tracks/system-design/design-research-agent/) | 🔴 Advanced | 25 min |
+| 5 | [Design a Text-to-SQL System](https://datawithsuman.github.io/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
+| 6 | [Design Code Autocomplete](https://datawithsuman.github.io/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
+| 7 | [Design a Shared LLM Platform](https://datawithsuman.github.io/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
 
 </details>
 
