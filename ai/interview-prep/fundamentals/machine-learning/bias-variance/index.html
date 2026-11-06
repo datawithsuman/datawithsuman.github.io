@@ -448,6 +448,7 @@ params, tr, va = validation_curve(model, X, y, param_name="alpha", param_range=a
     <div class="card"><h4>Scenario: model is great offline, poor in production</h4><p class="small" style="margin:0">Check leakage and distribution shift first (<a href="../cross-validation-and-leakage/">next lesson</a>); if validation was honest and the gap is train vs validation, it's variance: regularise, simplify, get more data.</p></div>
     <div class="card"><h4>Scenario: more data didn't help</h4><p class="small" style="margin:0">Both errors high and close: a bias problem. Add features or capacity; more rows of the same features won't move it.</p></div>
   </div>
+<p class="small">To diagnose this on a real model, see <a href="../learning-curves-and-debugging/">learning curves and debugging</a>.</p>
 </section>
 
 <!-- INTERVIEW -->

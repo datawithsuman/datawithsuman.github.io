@@ -417,6 +417,7 @@ pre = ColumnTransformer([("num", num, ["distance_km", "prep_min"]), ("money", mo
     <div class="card"><h4>"Income is missing for 30% of loan applicants"</h4><p class="small" style="margin:0">Likely MNAR (people with unusual incomes skip it): median or model-based fill plus an indicator; check whether the indicator is predictive; consider gradient boosting with native NaN handling.</p></div>
     <div class="card"><h4>"Our k-NN recommender ignores rating counts"</h4><p class="small" style="margin:0">Unscaled features: popularity counts in thousands dwarf 1–5 ratings. Log-transform counts and standardise everything.</p></div>
   </div>
+<p class="small">Next: <a href="../feature-engineering/">feature engineering</a>.</p>
 </section>
 
 <!-- INTERVIEW -->

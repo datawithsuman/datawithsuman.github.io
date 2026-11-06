@@ -656,6 +656,7 @@ dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
     </tbody>
   </table></div>
   <div class="card bad"><h4>Do not trust the default bar chart blindly</h4><p>scikit-learn: impurity-based importances "favor high cardinality features" and are computed on training data, so they "do not necessarily inform us on which features are most important" for new data <span class="src"><a href="https://scikit-learn.org/stable/modules/ensemble.html#feature-importance-evaluation" target="_blank" rel="noopener">sklearn</a></span>. Strobl et al. (2007) showed the measures are unreliable when predictors differ in scale or number of categories, and a 2008 follow-up found bias toward correlated predictors <span class="src"><a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-25" target="_blank" rel="noopener">Strobl 2007</a></span>. For correlated features, scikit-learn suggests clustering them and keeping one per cluster.</p></div>
+<p class="small">To explain a model properly, see <a href="../explaining-models/">SHAP, permutation importance and partial dependence</a>. To compare combination methods, see <a href="../ensembles-voting-and-stacking/">ensembles</a>.</p>
 </section>
 
 <!-- 11 -->

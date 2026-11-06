@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-220-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-227-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -171,7 +171,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Machine Learning</b> · 31 lessons</summary>
+<summary><b>Machine Learning</b> · 38 lessons</summary>
 
 <br>
 
@@ -181,6 +181,8 @@ Tap a track to see its lessons, in the order to learn them.
 |:---:|---|:---:|:---:|
 | 1 | [Encoding Categorical Features](https://aimlrounds.com/tracks/fundamentals/categorical-encoding/) | 🟡 Intermediate | 30 min |
 | 2 | [Missing Values & Feature Scaling](https://aimlrounds.com/tracks/fundamentals/missing-values-and-scaling/) | 🟢 Beginner | 30 min |
+| 3 | [Feature Engineering](https://aimlrounds.com/tracks/fundamentals/feature-engineering/) | 🟡 Intermediate | 15 min |
+| 4 | [Feature Selection](https://aimlrounds.com/tracks/fundamentals/feature-selection/) | 🟡 Intermediate | 15 min |
 
 **Linear Models**
 
@@ -190,6 +192,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 2 | [Regularized Linear Models](https://aimlrounds.com/tracks/fundamentals/regularized-linear-models/) | 🟡 Intermediate | 30 min |
 | 3 | [Logistic Regression](https://aimlrounds.com/tracks/fundamentals/logistic-regression/) | 🟢 Beginner | 30 min |
 | 4 | [Softmax Regression](https://aimlrounds.com/tracks/fundamentals/softmax-regression/) | 🟡 Intermediate | 25 min |
+| 5 | [Generalised Linear Models](https://aimlrounds.com/tracks/fundamentals/generalised-linear-models/) | 🟡 Intermediate | 15 min |
 
 **Tree-Based Models**
 
@@ -198,6 +201,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Decision Trees](https://aimlrounds.com/tracks/fundamentals/decision-trees/) | 🟢 Beginner | 30 min |
 | 2 | [Random Forest](https://aimlrounds.com/tracks/fundamentals/random-forest/) | 🟢 Beginner | 25 min |
 | 3 | [Gradient Boosting](https://aimlrounds.com/tracks/fundamentals/gradient-boosting/) | 🟡 Intermediate | 35 min |
+| 4 | [Ensembles: Voting, Stacking and Bagging vs Boosting](https://aimlrounds.com/tracks/fundamentals/ensembles-voting-and-stacking/) | 🟡 Intermediate | 15 min |
 
 **Other Classic Classifiers**
 
@@ -245,6 +249,9 @@ Tap a track to see its lessons, in the order to learn them.
 | 2 | [Cross-Validation & Data Leakage](https://aimlrounds.com/tracks/fundamentals/cross-validation-and-leakage/) | 🟡 Intermediate | 30 min |
 | 3 | [Class Imbalance](https://aimlrounds.com/tracks/fundamentals/class-imbalance/) | 🟡 Intermediate | 30 min |
 | 4 | [Hyperparameter Tuning](https://aimlrounds.com/tracks/fundamentals/hyperparameter-tuning/) | 🟡 Intermediate | 30 min |
+| 5 | [Learning Curves and Debugging Models](https://aimlrounds.com/tracks/fundamentals/learning-curves-and-debugging/) | 🟡 Intermediate | 18 min |
+| 6 | [Explaining Models: SHAP, Permutation Importance and PDPs](https://aimlrounds.com/tracks/fundamentals/explaining-models/) | 🟡 Intermediate | 20 min |
+| 7 | [Classical ML Practice](https://aimlrounds.com/tracks/fundamentals/classical-ml-practice/) | 🟡 Intermediate | 20 min |
 
 </details>
 

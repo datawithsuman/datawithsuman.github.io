@@ -15,15 +15,19 @@ GROUPS = [
 LESSONS = {
     "categorical-encoding": {"q": "How would you encode a categorical feature with 400 values?"},
     "missing-values-and-scaling": {"q": "How do you handle missing values and feature scaling?"},
+    "feature-engineering": {"q": "How would you create useful features for a model, and how do you avoid leaking the future?", "prereqs": ["missing-values-and-scaling", "categorical-encoding"]},
+    "feature-selection": {"q": "How do you choose which features to keep, and how can selecting features leak information?", "prereqs": ["feature-engineering", "cross-validation-and-leakage"]},
     "linear-regression": {"q": "What is linear regression, and how is it fitted?"},
     "regularized-linear-models": {"q": "What is the difference between Ridge and Lasso?", "prereqs": ["linear-regression", "mle-and-map"]},
     "logistic-regression": {"q": "What is logistic regression, and why is it called regression?", "prereqs": ["linear-regression", "mle-and-map"]},
     "softmax-regression": {"q": "What is softmax regression, and how is it trained?", "prereqs": ["logistic-regression", "entropy-cross-entropy-kl"],
                            "related": ["fundamentals/self-attention"]},
+    "generalised-linear-models": {"q": "How would you predict counts or insurance costs, and what do linear and logistic regression have in common?", "prereqs": ["logistic-regression", "mle-and-map"]},
     "decision-trees": {"q": "How does a decision tree choose its splits?"},
     "random-forest": {"q": "How does a random forest improve on one deep tree?", "prereqs": ["decision-trees"]},
     "gradient-boosting": {"q": "How does gradient boosting work, and how does it differ from a random forest?", "prereqs": ["decision-trees", "random-forest"],
                           "related": ["system-design/recommendation-system"]},
+    "ensembles-voting-and-stacking": {"q": "Why does combining models help, when does it stop helping, and how would you build a stack?", "prereqs": ["random-forest", "gradient-boosting", "cross-validation-and-leakage"]},
     "support-vector-machines": {"q": "What does an SVM optimise, and what are support vectors?", "prereqs": ["logistic-regression"]},
     "k-nearest-neighbours": {"q": "How does k-NN make a prediction, and what does k control?", "prereqs": ["vectors-and-cosine-similarity", "missing-values-and-scaling"],
                              "related": ["ai-engineering/rag-end-to-end"]},
@@ -48,6 +52,9 @@ LESSONS = {
     "cross-validation-and-leakage": {"q": "What is data leakage, and how does cross-validation help you avoid it?", "prereqs": ["bias-variance"]},
     "class-imbalance": {"q": "How do you handle a 2% positive class?", "prereqs": ["classification-metrics", "thresholds-and-costs"]},
     "hyperparameter-tuning": {"q": "How do you tune hyperparameters efficiently?", "prereqs": ["cross-validation-and-leakage"]},
+    "learning-curves-and-debugging": {"q": "Your model isn't good enough. How do you decide whether to get more data, or change the model?", "prereqs": ["bias-variance", "cross-validation-and-leakage"]},
+    "explaining-models": {"q": "How would you explain what your model learned, and why it made a particular prediction?", "prereqs": ["random-forest", "cross-validation-and-leakage"]},
+    "classical-ml-practice": {"type": "interview", "prereqs": ["bias-variance", "classification-metrics"]},
 }
 for _l in LESSONS.values():
     _l["prereqs"] = [f"fundamentals/{p}" for p in _l.get("prereqs", [])]
