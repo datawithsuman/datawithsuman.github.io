@@ -5,9 +5,9 @@ TRACKS = [
     {
         "id": "fundamentals", "n": "01", "name": "Fundamentals", "status": "Start here",
         "desc": "The core ideas behind every model, from maths and regression to neural nets.",
-        "topics": ["Vectors, gradients and probability", "Linear and logistic regression", "Trees and boosting", "Neural nets and backprop"],
+        "topics": ["Vectors, gradients and probability", "A/B testing", "Linear and logistic regression", "Trees and boosting", "Neural nets and backprop"],
         "know": [],
-        # build.py adds the Maths for ML, Classical ML, Deep Learning, NLP and LLMs modules.
+        # build.py adds the Maths for ML, A/B Testing, Classical ML, Deep Learning, NLP and LLMs modules.
         "modules": [
         ],
     },

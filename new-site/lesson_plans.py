@@ -249,6 +249,7 @@ from nlp_plans import NLP_PLANS  # noqa: E402
 from llm_plans import LLM_PLANS  # noqa: E402
 from ai_plans import AI_PLANS, SD_PLANS  # noqa: E402
 from design_plans import DESIGN_PLANS  # noqa: E402
+from ab_plans import AB_PLANS  # noqa: E402
 
 PLANS.update(MATHS_PLANS)
 PLANS.update(ML_PLANS)
@@ -258,3 +259,4 @@ PLANS.update(LLM_PLANS)
 PLANS.update(AI_PLANS)
 PLANS.update(SD_PLANS)
 PLANS.update(DESIGN_PLANS)
+PLANS.update(AB_PLANS)

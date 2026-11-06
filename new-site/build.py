@@ -12,6 +12,7 @@ import nlp_fundamentals
 import llms
 import ai_engineering
 import maths_for_ml
+import ab_testing
 import ml_import
 from lesson_plans import PAPER_PLANS, PLANS
 from content import BODIES, TOKENS, TRACKS, WEIGHTS
@@ -34,6 +35,7 @@ def moved_modules(part, track_dir, source):
 
 
 TRACKS[0]["modules"] = (moved_modules("Maths for ML", "maths-for-ml", maths_for_ml)
+                        + moved_modules("A/B Testing", "ab-testing", ab_testing)
                         + moved_modules("Classical ML", "machine-learning", classical_ml)
                         + moved_modules("Deep Learning", "deep-learning", deep_learning)
                         + moved_modules("NLP Fundamentals", "nlp-fundamentals", nlp_fundamentals)

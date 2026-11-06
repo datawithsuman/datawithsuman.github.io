@@ -6,7 +6,7 @@ GROUPS = [
     ("calculus", "Calculus and optimisation", "Gradients, the chain rule and gradient descent."),
     ("probability", "Probability", "Bayes' rule, distributions, expectation and maximum likelihood."),
     ("prob-practice", "Probability practice", "Interview questions on Bayes, coins, dice, cards and urns, with worked answers."),
-    ("statistics", "Statistics", "Confidence intervals, hypothesis tests and A/B testing."),
+    ("statistics", "Statistics", "Confidence intervals, hypothesis tests and causation."),
     ("info-theory", "Information theory", "Entropy, cross-entropy and KL divergence."),
 ]
 
@@ -33,7 +33,7 @@ LESSONS = {
     "practice-balls-and-urns": {"type": "interview", "prereqs": ["probability-and-bayes"]},
     "practice-classic-puzzles": {"type": "interview", "prereqs": ["expectation-and-variance"]},
     "confidence-intervals-and-bootstrap": {"q": "What does a 95% confidence interval actually mean, and when would you use the bootstrap?", "prereqs": ["expectation-and-variance"]},
-    "hypothesis-testing-and-ab-tests": {"q": "How would you run an A/B test, and what does the p-value mean?", "prereqs": ["confidence-intervals-and-bootstrap"]},
+    "hypothesis-testing-and-ab-tests": {"q": "How would you run an A/B test, and what does the p-value mean?", "prereqs": ["confidence-intervals-and-bootstrap"], "related": ["fundamentals/randomisation-and-assignment"]},
     "correlation-vs-causation": {"q": "How can correlation mislead you, and how do you estimate a causal effect?", "prereqs": ["hypothesis-testing-and-ab-tests"]},
     "entropy-cross-entropy-kl": {"q": "How are entropy, cross-entropy and KL divergence related?", "prereqs": ["probability-distributions", "mle-and-map"],
                                  "related": ["fundamentals/softmax-regression"]},

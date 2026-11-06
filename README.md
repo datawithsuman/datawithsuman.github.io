@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-168-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-180-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -113,6 +113,26 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Entropy, Cross-Entropy & KL Divergence](https://aimlrounds.com/tracks/fundamentals/entropy-cross-entropy-kl/) | 🟡 Intermediate | 25 min |
+
+</details>
+
+<details>
+<summary><b>A/B Testing</b> · 12 lessons</summary>
+
+| # | Lesson | Level | Time |
+|---|---|---|---|
+| 1 | [Randomisation and Assignment](https://aimlrounds.com/tracks/fundamentals/randomisation-and-assignment/) | 🟡 Intermediate | 15 min |
+| 2 | [Choosing Metrics: OEC, Drivers and Guardrails](https://aimlrounds.com/tracks/fundamentals/choosing-ab-metrics/) | 🟡 Intermediate | 15 min |
+| 3 | [Sample Size, Power and Runtime](https://aimlrounds.com/tracks/fundamentals/sample-size-and-power/) | 🟡 Intermediate | 15 min |
+| 4 | [Reading the Result: Significance and Decisions](https://aimlrounds.com/tracks/fundamentals/reading-ab-results/) | 🟡 Intermediate | 15 min |
+| 5 | [Ratio Metrics and the Delta Method](https://aimlrounds.com/tracks/fundamentals/ratio-metrics-and-delta-method/) | 🟡 Intermediate | 15 min |
+| 6 | [Variance Reduction with CUPED](https://aimlrounds.com/tracks/fundamentals/variance-reduction-cuped/) | 🟡 Intermediate | 15 min |
+| 7 | [Peeking and Sequential Testing](https://aimlrounds.com/tracks/fundamentals/sequential-testing/) | 🟡 Intermediate | 15 min |
+| 8 | [Multiple Testing and Segments](https://aimlrounds.com/tracks/fundamentals/multiple-testing/) | 🟡 Intermediate | 15 min |
+| 9 | [Trust Checks: SRM and A/A Tests](https://aimlrounds.com/tracks/fundamentals/sample-ratio-mismatch/) | 🟡 Intermediate | 15 min |
+| 10 | [Novelty, Primacy and Long-Term Effects](https://aimlrounds.com/tracks/fundamentals/novelty-and-long-term-effects/) | 🟡 Intermediate | 15 min |
+| 11 | [Interference: When Groups Affect Each Other](https://aimlrounds.com/tracks/fundamentals/interference-in-experiments/) | 🟡 Intermediate | 15 min |
+| 12 | [Bandits vs A/B Tests](https://aimlrounds.com/tracks/fundamentals/bandits-vs-ab-tests/) | 🟡 Intermediate | 15 min |
 
 </details>
 

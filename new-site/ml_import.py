@@ -10,7 +10,7 @@ from pathlib import Path
 
 SRC = Path(__file__).parent.parent / "ai/interview-prep"
 FUNDAMENTALS = SRC / "fundamentals"
-MOVED = "machine-learning|maths-for-ml|deep-learning|nlp-fundamentals|llms"
+MOVED = "machine-learning|maths-for-ml|ab-testing|deep-learning|nlp-fundamentals|llms"
 AI_ENGINEERING = "llm-inference|prompt-engineering|rag|agentic-ai|mlops|llmops"
 LIVE = "https://datawithsuman.github.io/ai/interview-prep/"
 REFERENCE = ("evidence", "caveats", "key terms")
