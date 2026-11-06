@@ -267,7 +267,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">3 · The naive idea and its trap</div>
   <span class="pill bad">The trap</span>
   <h2>"Add each tree at full strength, as many as possible"</h2>
-  <p>Adding each correction in full (learning rate 1) fixes the training data fast, too fast: within about 10 trees the model starts fitting noise, and test error rises while training error keeps falling. In the lab in chapter 6, learning rate 1.0 with depth-2 trees reaches its best test MSE (≈ 3.2) almost immediately and then degrades to ≈ 4.2 by 300 trees. Boosting will always drive training error toward zero; the craft is in stopping it from memorising.</p>
+  <p>Adding each correction in full (learning rate 1) fixes the training data fast, too fast: within about 20 trees the model starts fitting noise, and test error rises while training error keeps falling. In the lab in chapter 6, learning rate 1.0 with depth-2 trees reaches its best test MSE (≈ 3.1) after about 17 trees and then degrades to ≈ 4.2 by 300 trees. Boosting will always drive training error toward zero; the craft is in stopping it from memorising.</p>
 </section>
 
 <!-- 4 -->
@@ -419,6 +419,26 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 </section>
 
 <!-- 11 -->
+<section class="ch" id="cAda" data-toc="AdaBoost">
+  <div class="chap">AdaBoost</div>
+  <h2>AdaBoost: boost by reweighting rows</h2>
+  <p>AdaBoost is the older form of boosting. Instead of fitting each tree to errors, it gives every row a weight, and trains each small tree on the weighted data. Rows it got wrong become heavier, so the next tree focuses on them.</p>
+  <div class="reader" data-reader='[{"t": "e", "c": "bad", "label": "weighted error", "say": "The share of weight on rows this tree got wrong."}, {"t": "a", "c": "ok", "label": "the tree’s vote", "say": "A more accurate tree gets a bigger say in the final vote."}, {"t": "w", "c": "a", "label": "new row weights", "say": "With labels of ±1, wrong rows grow and right rows shrink. Then all weights are rescaled to sum to 1."}, {"t": "f", "c": "info", "label": "the final answer", "say": "A weighted vote of all the trees."}]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-a}{\alpha_m} = \tfrac12 \ln\frac{1-\class{term t-e}{\epsilon_m}}{\epsilon_m}, \qquad \class{term t-w}{w_i} \leftarrow w_i\, e^{-\alpha_m y_i h_m(x_i)}, \qquad \class{term t-f}{F(x)} = \mathrm{sign}\sum_m \alpha_m h_m(x)"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Binary AdaBoost. Libraries may scale α by a constant, and scikit-learn uses the SAMME version for several classes.</p>
+  </div>
+  <p><b>A worked example, with illustrative numbers.</b> If a tree's weighted error is 0.2, then α = ½ ln 4 ≈ 0.69. Wrong rows are multiplied by about 2, and right rows by about 0.5. Wrong rows held 0.2 of the weight, and now hold 0.4, while right rows fall from 0.8 to 0.4. So after rescaling, the wrong rows hold exactly half, and that tree would be no better than chance on the new weights. The next tree must find something new.</p>
+  <div class="tw"><table class="t">
+    <tr><th></th><th>AdaBoost</th><th>Gradient boosting</th></tr>
+    <tr><td>Each new tree learns from</td><td>Reweighted rows</td><td>The gradient of the loss</td></tr>
+    <tr><td>Loss</td><td>Equivalent to exponential loss</td><td>Any differentiable loss</td></tr>
+    <tr><td>Label noise</td><td>Sensitive, as wrong rows keep gaining weight</td><td>Less sensitive with log-loss</td></tr>
+    <tr><td>Today</td><td>Simple baseline</td><td>The usual choice</td></tr>
+  </table></div>
+  <p class="small">Sources: <a href="https://scikit-learn.org/stable/modules/ensemble.html">scikit-learn on ensembles</a>; the link to exponential loss is from Friedman, Hastie and Tibshirani (2000).</p>
+</section>
+
 <section class="ch" id="c11" data-toc="11 · Evidence">
   <div class="chap">11 · Evidence</div>
   <h2>Why it's the tabular default</h2>
@@ -445,7 +465,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>Set many trees (thousands) with early stopping on validation loss (e.g. 50–100 rounds of patience).</li>
     <li>Tune tree size and minimum leaf size first, then regularisation; lower the learning rate at the end for a final boost.</li>
     <li>Handle categories natively (CatBoost, LightGBM, HistGradientBoosting) or with leakage-safe target encoding.</li>
-    <li>Explain with SHAP values; check calibration if probabilities are used (boosted trees often need it).</li>
+    <li>Explain with <a href="../explaining-models/">SHAP values</a>; check calibration if probabilities are used (boosted trees often need it).</li>
   </ol>
 </section>
 

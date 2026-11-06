@@ -733,6 +733,7 @@ imp = permutation_importance(rf, X_val, y_val, n_repeats=<span class="nm">30</sp
       <tr><td>soybean</td><td class="num">+26.9%</td><td class="num">+3.2%</td></tr>
     </tbody>
   </table></div>
+  <p class="small">These are 4 of the table's 9 datasets, where AdaBoost suffered most. The effect was small on glass (+1.6%), and on ecoli AdaBoost (+7.5%) was slightly better than the forest (+7.9%).</p>
   <p>Why: AdaBoost keeps raising the weight of rows it gets wrong, and mislabelled rows are always wrong, so it "will concentrate increasing weight on these noisy instances and become warped". A forest weights no row specially.</p>
   <div class="card ok"><h4>Fast, too</h4><p>Each split searches only m features. On the zip-code data with m = 1, 100 forest trees took 4.0 minutes versus almost three hours for 50 AdaBoost trees, about 40× faster (a 250 MHz Mac in 2000) <span class="src"><a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=11" target="_blank" rel="noopener">p. 11</a></span>.</p></div>
   <div class="card upd"><h4>Update · my check (27 Oct 2026)</h4>

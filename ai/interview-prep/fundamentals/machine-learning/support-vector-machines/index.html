@@ -437,6 +437,26 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 </section>
 
 <!-- 9 -->
+<section class="ch" id="cSvr" data-toc="Regression (SVR)">
+  <div class="chap">Regression (SVR)</div>
+  <h2>Support vector regression: a tube instead of a street</h2>
+  <p>SVMs can also predict numbers. Classification wants points outside the street. Regression does the opposite: it wants points <b>inside a tube</b> of width ε around the prediction, and errors within it cost nothing.</p>
+  <div class="reader" data-reader='[{"t": "w", "c": "ok", "label": "keep it flat", "say": "A short w gives a flatter, simpler function."}, {"t": "c", "c": "bad", "label": "pay for leaving the tube", "say": "ζ and ζ* measure how far a point lies above or below the tube. C sets the price."}, {"t": "t", "c": "a", "label": "the ε-tube", "say": "Errors smaller than ε are ignored completely."}]'>
+    <div class="stage"><div class="eq" data-tex="\min_{w,b,\zeta,\zeta^*}\ \class{term t-w}{\tfrac12\lVert w\rVert^2} + \class{term t-c}{C\sum_i(\zeta_i + \zeta_i^*)} \quad \text{s.t.} \quad \class{term t-t}{|y_i - f(x_i)| \le \varepsilon + \text{slack}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Written compactly. The full form has separate slacks above and below, as in scikit-learn’s guide.</p>
+  </div>
+  <p><b>A worked example, with illustrative numbers.</b> Take ε = 2 minutes and a prediction of 30. An actual of 31 costs 0, as it's inside the tube. An actual of 35 is 5 away, so it costs 5 − 2 = 3.</p>
+  <ul>
+    <li><b>Support vectors:</b> points on or outside the tube. Points inside it don't affect the solution, as with points beyond the street in classification.</li>
+    <li><b>Larger ε:</b> a wider tube, fewer support vectors and a simpler fit.</li>
+    <li><b>Larger C:</b> stricter about points outside the tube, so it fits more closely.</li>
+    <li><b>Kernels and scaling:</b> these work as in classification. So do the training costs, so large data needs a linear version.</li>
+    <li><b>Outliers:</b> the penalty grows linearly, not with the square, so one far point has less pull than in least squares.</li>
+  </ul>
+  <p class="small">Source: <a href="https://scikit-learn.org/stable/modules/svm.html#svm-regression">scikit-learn on SVR</a>.</p>
+</section>
+
 <section class="ch" id="c9" data-toc="9 · RBF, γ and C">
   <div class="chap">9 · Mechanism 4</div>
   <span class="pill b">The RBF kernel</span>

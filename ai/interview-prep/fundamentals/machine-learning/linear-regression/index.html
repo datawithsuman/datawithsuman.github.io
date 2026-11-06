@@ -350,7 +350,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <p>At the bottom of a bowl, the gradient is zero. Differentiate J, set it to zero, and you get a linear system you can solve in one shot <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §1.2</a></span>:</p>
   <div class="reader" data-reader='[
     {"t":"th","c":"ok","label":"best weights","say":"The weights that minimise J exactly."},
-    {"t":"inv","c":"info","label":"undo the feature overlap","say":"XᵀX is the features&#39; correlation structure (p × p). Its inverse untangles how much each feature contributes on its own."},
+    {"t":"inv","c":"info","label":"undo the feature overlap","say":"XᵀX shows how the features move together (p × p). Its inverse untangles how much each feature contributes on its own."},
     {"t":"xty","c":"a","label":"feature–target overlap","say":"How much each feature moves together with the target."},
     {"t":"warn","c":"bad","label":"needs an inverse","say":"Only works if XᵀX is invertible: fails when features are perfectly redundant (size in m² and in ft²) or when there are more features than rows. Nearly redundant features make it numerically shaky; that&#39;s what Ridge fixes."}
   ]'>
@@ -453,10 +453,31 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <tr><td><b>N</b>ormality</td><td>Errors are roughly Gaussian</td><td>Q-Q plot of residuals; matters mostly for small-sample inference, not for the fit itself</td></tr>
     <tr><td><b>E</b>qual variance</td><td>Error spread is the same for all x (homoscedasticity)</td><td>Funnel-shaped residuals → transform y (log) or use weighted least squares</td></tr>
   </table></div>
-  <p class="small">Plus two practical ones: no extreme outliers or high-leverage points (sets III and IV), and features not too collinear (chapter 7 and the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/regularized-linear-models/">Regularized Linear Models</a> lesson). For pure prediction you need fewer of these; for interpreting coefficients you need all of them. <span class="mine">my take</span></p>
+  <p class="small">Plus two practical ones: no extreme outliers or high-leverage points (sets III and IV), and features not too collinear (chapter 7 and the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/machine-learning/regularized-linear-models/">Regularized Linear Models</a> lesson). For pure prediction you need fewer of these. For interpreting coefficients, you need the right form and independent errors, and equal variance for the usual standard errors. Normal errors matter mainly with small samples. <span class="mine">my take</span></p>
 </section>
 
 <!-- 11 -->
+<section class="ch" id="cOvb" data-toc="Why OLS, and its bias">
+  <div class="chap">Why OLS, and its bias</div>
+  <h2>Why least squares, and what can bias it</h2>
+  <h3>Gauss-Markov: why least squares is a good default</h3>
+  <p>Suppose the model's form is right, errors average zero whatever the features are, errors have equal variance and aren't correlated, and no feature is a perfect mix of the others. Then least squares has the lowest variance among all <b>linear, unbiased</b> estimators. Normal errors aren't needed.</p>
+  <p>Note those two words. A biased method like <a href="../regularized-linear-models/">ridge</a> can still have lower total error, by accepting some bias for less variance.</p>
+  <h3>Omitted-variable bias</h3>
+  <p>Leave out a feature that affects y <b>and</b> is correlated with a feature you kept, and the coefficient you kept absorbs part of its effect.</p>
+  <div class="reader" data-reader='[{"t": "s", "c": "info", "label": "the slope you get", "say": "From a model that leaves out x₂."}, {"t": "b", "c": "ok", "label": "the true effect of x₁", "say": "Holding x₂ fixed."}, {"t": "o", "c": "bad", "label": "the left-out feature’s effect", "say": "How much x₂ moves y."}, {"t": "d", "c": "a", "label": "how they’re linked", "say": "The slope when you regress x₂ on x₁. If it’s zero, there’s no bias."}]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-s}{\tilde\beta_1} = \class{term t-b}{\beta_1} + \class{term t-o}{\beta_2}\,\class{term t-d}{\delta}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">The standard result for two features, in expectation.</p>
+  </div>
+  <p><b>A worked example, with illustrative numbers.</b> Say price truly rises ₹0.7 lakh per m², and being central adds ₹20 lakh. Central flats tend to be smaller, so "central" falls by 0.005 per extra m². Leave out "central", and the slope becomes 0.7 + 20 × (−0.005) = 0.6. The model now understates what size is worth.</p>
+  <ul>
+    <li><b>For prediction:</b> this may do no harm, as long as the link between the features stays the same in production.</li>
+    <li><b>For explanation:</b> it can be badly misleading, and can even flip a sign. No test on your data can reveal a variable you never measured, so this needs domain knowledge, or an <a href="../../maths-for-ml/causal-inference-without-experiments/">experiment or causal design</a>.</li>
+    <li><b>Correlated features:</b> to measure this problem, see <a href="../../maths-for-ml/inference-for-regression/">VIF in inference for regression</a>.</li>
+  </ul>
+</section>
+
 <section class="ch" id="c11" data-toc="11 · Curves & overfitting">
   <div class="chap">11 · Mechanism 6</div>
   <span class="pill st">Curves, still linear</span>

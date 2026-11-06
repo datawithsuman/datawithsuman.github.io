@@ -236,7 +236,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="legend"><span><i style="background:var(--a)"></i>cluster 1</span><span><i style="background:var(--b)"></i>cluster 2</span><span><i style="background:var(--st)"></i>cluster 3 (more clusters use more colours)</span><span><i style="background:var(--ink)"></i>centroids (◆)</span><span><i style="background:var(--info)"></i>numbers</span><span><i style="background:var(--bad)"></i>failure</span></div>
 </header>
 
-<p class="small" style="margin-top:22px"><b>Running example (shared by all six unsupervised lessons):</b> a food-delivery app wants to group its customers without any labels. Each customer has two numbers, orders per month and average basket size, both standardised (mean 0, standard deviation 1). The simulated base has 180 customers drawn from three hidden segments: occasional small orders, frequent small orders, and occasional big orders. The algorithm never sees the segment; we use it only to score the result (adjusted Rand index, ARI: 1 = perfect agreement, 0 = chance).</p>
+<p class="small" style="margin-top:22px"><b>Running example (shared by the unsupervised lessons):</b> a food-delivery app wants to group its customers without any labels. Each customer has two numbers, orders per month and average basket size, both standardised (mean 0, standard deviation 1). The simulated base has 180 customers drawn from three hidden segments: occasional small orders, frequent small orders, and occasional big orders. The algorithm never sees the segment; we use it only to score the result (adjusted Rand index, ARI: 1 = perfect agreement, 0 = chance).</p>
 
 <!-- 1 -->
 <section class="ch" id="c1" data-toc="1 · The problem">
@@ -278,7 +278,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <tr><th>Method</th><th>Finds</th><th>You choose</th><th>Lesson</th></tr>
     <tr><td><b>k-means</b></td><td>Round, similar-sized groups</td><td>k</td><td>this one</td></tr>
     <tr><td><b>Hierarchical</b></td><td>A tree of nested groups</td><td>linkage, where to cut</td><td><a href="../hierarchical-clustering/">next</a></td></tr>
-    <tr><td><b>DBSCAN / HDBSCAN</b></td><td>Any shape; marks noise</td><td>density (eps, min_samples)</td><td><a href="../dbscan/">lesson 3</a></td></tr>
+    <tr><td><b>DBSCAN / HDBSCAN</b></td><td>Any shape; marks noise</td><td>density (eps, min_samples)</td><td><a href="../dbscan/">DBSCAN</a></td></tr>
     <tr><td><b>Gaussian mixtures</b></td><td>Elliptical groups, soft membership</td><td>k, covariance type</td><td><a href="../gaussian-mixture-models/">lesson 4</a></td></tr>
   </table></div>
   <p class="small">scikit-learn ships all of these with the same fit/predict interface <span class="src"><a href="https://scikit-learn.org/stable/modules/clustering.html">clustering guide</a></span>.</p>

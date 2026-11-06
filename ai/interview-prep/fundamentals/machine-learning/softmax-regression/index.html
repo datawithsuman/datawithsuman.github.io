@@ -372,6 +372,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     </ol>
   </div>
   <details class="deep"><summary>Go deeper: two classes = the sigmoid</summary><p>With K = 2 and logits (t₁, t₂): P(class 1) = e<sup>t₁</sup> / (e<sup>t₁</sup> + e<sup>t₂</sup>) = 1 / (1 + e<sup>−(t₁ − t₂)</sup>) = σ(t₁ − t₂). Binary softmax is exactly logistic regression, with weight vector θ₁ − θ₂ (the redundancy from chapter 7 in action). In GLM terms, softmax is the canonical response function of the multinomial distribution, just as the sigmoid is for the Bernoulli <span class="src"><a href="https://cs229.stanford.edu/main_notes.pdf">CS229 §3</a></span>.</p></details>
+<p class="small">For the wider family, see <a href="../generalised-linear-models/">Generalised Linear Models</a>.</p>
 </section>
 
 <!-- 10 -->
@@ -391,7 +392,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">11 · Mechanism 6</div>
   <span class="pill info" style="color:var(--info)">The bridge to LLMs</span>
   <h2>Every LLM ends with softmax regression</h2>
-  <p>A language model's last step is exactly this lesson. The network turns the context into a hidden vector (4,096 numbers in Llama 3.1 8B), and a final linear layer produces one logit per token in the vocabulary: 128,256 of them. Softmax turns those into next-token probabilities, and training minimises cross-entropy against the actual next token <span class="src"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json">Llama 3.1 8B config</a></span>. That one output matrix alone holds 4,096 × 128,256 ≈ 525 million weights: softmax regression with 128,256 classes.</p>
+  <p>A language model's last step is exactly this lesson. The network turns the context into a hidden vector (4,096 numbers in Llama 3.1 8B), and a final linear layer produces one logit per token in the vocabulary: 128,256 of them. Softmax turns those into next-token probabilities, and training minimises cross-entropy against the actual next token <span class="src"><a href="https://huggingface.co/unsloth/Llama-3.1-8B/raw/main/config.json">Llama 3.1 8B config (a copy that needs no login)</a></span>. That one output matrix alone holds 4,096 × 128,256 ≈ 525 million weights: softmax regression with 128,256 classes.</p>
   <div class="reader" data-reader='[
     {"t":"q","c":"b","label":"softened probability","say":"The probability of class (or token) i at temperature T."},
     {"t":"z","c":"a","label":"logits ÷ T","say":"Divide every logit by T before the softmax."},
@@ -488,7 +489,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>A. Ng, T. Ma et al., <a href="https://cs229.stanford.edu/main_notes.pdf">Stanford CS229 lecture notes</a>, §2.3 (multi-class classification: softmax, cross-entropy, gradient Eqs. 2.9–2.19) and §3 (GLMs).</li>
     <li>scikit-learn, <a href="https://scikit-learn.org/stable/modules/linear_model.html">Linear models user guide</a>: multinomial logistic regression, solvers.</li>
     <li>G. Hinton, O. Vinyals &amp; J. Dean, <a href="https://arxiv.org/abs/1503.02531">Distilling the Knowledge in a Neural Network</a>, 2015: temperature softmax.</li>
-    <li>Meta, <a href="https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json">Llama 3.1 8B config</a>: hidden size 4,096, vocabulary 128,256.</li>
+    <li>Meta, <a href="https://huggingface.co/unsloth/Llama-3.1-8B/raw/main/config.json">Llama 3.1 8B config (a copy that needs no login)</a>: hidden size 4,096, vocabulary 128,256.</li>
     <li>Interview angle: <a href="https://datalemur.com/blog/machine-learning-interview-questions">DataLemur ML interview questions</a>; <a href="https://analyticsindiamag.com/60-interview-questions-on-machine-learning">AIM, 60 ML interview questions</a>.</li>
   </ol>
   <p class="small">Fruit data is illustrative; models are trained with a fixed seed and computed live in this page.</p>

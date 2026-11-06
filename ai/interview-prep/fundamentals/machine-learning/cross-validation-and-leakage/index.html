@@ -291,7 +291,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">3 · The naive idea and its trap</div>
   <span class="pill bad">The trap</span>
   <h2>"Prepare the data first, then cross-validate"</h2>
-  <p>The most common leak looks like good hygiene: scale, impute, select features or balance classes on the full dataset, then run CV on the result. But every one of those steps learned something from the rows that will later be the validation folds. scikit-learn: "Data leakage occurs when information that would not be available at prediction time is used when building the model … The general rule is to never call <code>fit</code> on the test data" <span class="src"><a href="https://scikit-learn.org/stable/common_pitfalls.html#data-leakage">common pitfalls</a></span>. How big can it get? Chapter 6 shows a model scoring 86% on pure noise.</p>
+  <p>The most common leak looks like good hygiene: scale, impute, select features or balance classes on the full dataset, then run CV on the result. But every one of those steps learned something from the rows that will later be the validation folds. scikit-learn: "Data leakage occurs when information that would not be available at prediction time is used when building the model … The general rule is to never call <code>fit</code> on the test data" <span class="src"><a href="https://scikit-learn.org/stable/common_pitfalls.html#data-leakage">common pitfalls</a></span>. How big can it get? The Leak 1 section shows a model scoring 86% on pure noise.</p>
 </section>
 
 <!-- 4 -->

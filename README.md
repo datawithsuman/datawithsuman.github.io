@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-227-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-229-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -171,7 +171,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Machine Learning</b> · 38 lessons</summary>
+<summary><b>Machine Learning</b> · 40 lessons</summary>
 
 <br>
 
@@ -210,6 +210,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Support Vector Machines](https://aimlrounds.com/tracks/fundamentals/support-vector-machines/) | 🟡 Intermediate | 35 min |
 | 2 | [k-Nearest Neighbours](https://aimlrounds.com/tracks/fundamentals/k-nearest-neighbours/) | 🟢 Beginner | 30 min |
 | 3 | [Naive Bayes](https://aimlrounds.com/tracks/fundamentals/naive-bayes/) | 🟢 Beginner | 30 min |
+| 4 | [Discriminant Analysis: LDA and QDA](https://aimlrounds.com/tracks/fundamentals/discriminant-analysis/) | 🟡 Intermediate | 15 min |
 
 **Unsupervised Learning**
 
@@ -228,6 +229,7 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Time-Series Forecasting Basics](https://aimlrounds.com/tracks/fundamentals/forecasting-basics/) | 🟢 Beginner | 30 min |
+| 2 | [Stationarity, ARIMA and Exponential Smoothing](https://aimlrounds.com/tracks/fundamentals/stationarity-arima-and-smoothing/) | 🟡 Intermediate | 20 min |
 
 **Evaluation Metrics**
 

@@ -412,7 +412,7 @@ labels_h = HDBSCAN(min_cluster_size=15).fit_predict(X)</pre>
   <div class="chap">12 · Takeaways and honest caveats</div>
   <div class="two">
     <div class="card ok"><h4>Strengths</h4><ul style="margin:0;padding-left:20px" class="small"><li>Any cluster shape</li><li>No k: the number of clusters comes from the data</li><li>Built-in outlier detection (noise label)</li><li>Few parameters with physical meaning (a radius and a count)</li></ul></div>
-    <div class="card bad"><h4>Weaknesses</h4><ul style="margin:0;padding-left:20px" class="small"><li>Very sensitive to eps</li><li>One global density: fails on clusters of different densities</li><li>Struggles in high dimensions</li><li>Border points between clusters are assigned arbitrarily</li></ul></div>
+    <div class="card bad"><h4>Weaknesses</h4><ul style="margin:0;padding-left:20px" class="small"><li>Very sensitive to eps</li><li>Can't score new points without refitting (scikit-learn)</li><li>One global density: fails on clusters of different densities</li><li>Struggles in high dimensions</li><li>Border points between clusters are assigned arbitrarily</li></ul></div>
   </div>
 </section>
 
@@ -449,7 +449,7 @@ labels_h = HDBSCAN(min_cluster_size=15).fit_predict(X)</pre>
   <details class="qa"><summary>How do you choose eps and min_samples?</summary><p>min_samples from domain sense or ~2 × dimensions; eps from the bend of the sorted k-distance plot with k = min_samples − 1, then check the clusters and noise share. If no single bend exists, use HDBSCAN.</p></details>
   <details class="qa"><summary>DBSCAN vs k-means?</summary><p>DBSCAN: any shape, no k, noise label, but eps-sensitive and single-density. k-means: round clusters, needs k, every point assigned, fast and simple.</p></details>
   <details class="qa"><summary>What are border points and why are they ambiguous?</summary><p>Non-core points within eps of a core. A border point near two clusters goes to whichever cluster reaches it first, so it can depend on data order.</p></details>
-  <details class="qa"><summary>How would you use it for anomaly detection?</summary><p>Fit DBSCAN/HDBSCAN on normal data; noise points (label −1) are candidate anomalies. HDBSCAN also gives outlier scores (GLOSH).</p></details>
+  <details class="qa"><summary>How would you use it for anomaly detection?</summary><p>Run it on a batch, and treat noise points (label −1) as candidates. scikit-learn's DBSCAN only labels the data it was fitted on, and can't score new points, so you refit on each batch. To score new points one by one, use a method built for that, such as LOF in novelty mode or Isolation Forest. HDBSCAN also gives outlier scores (GLOSH).</p></details>
   <details class="qa"><summary>Complexity?</summary><p>About O(n log n) with spatial indexes in low dimensions, O(n²) worst case or in high dimensions.</p></details>
   <h3>What not to say</h3>
   <ul>

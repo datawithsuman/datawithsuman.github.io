@@ -466,7 +466,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <details class="qa"><summary>Why are trees greedy, and what's the downside?</summary><p>Finding the optimal tree is NP-complete, so each split is chosen locally. A split that looks useless alone (XOR) can enable great splits below it, and greedy search misses it.</p></details>
   <details class="qa"><summary>How do you stop a tree from overfitting?</summary><p>Pre-pruning (max_depth, min_samples_leaf, min_impurity_decrease) or post-pruning (cost-complexity with ccp_alpha), chosen by cross-validation, or ensembles.</p></details>
   <details class="qa"><summary>Do trees need feature scaling? Can they handle missing values?</summary><p>No scaling: splits are threshold comparisons, invariant to monotonic transforms. Modern implementations (recent scikit-learn trees, XGBoost, LightGBM, HistGradientBoosting) learn which branch missing values take.</p></details>
-  <details class="qa"><summary>What's the complexity?</summary><p>Training about O(features × n log n) per level with presorting; prediction O(depth), about O(log n) for a balanced tree.</p></details>
+  <details class="qa"><summary>What's the complexity?</summary><p>Training about O(features × n log n) per level; prediction O(depth), about O(log n) for a balanced tree.</p></details>
   <h3>What not to say</h3>
   <ul>
     <li>"Trees find the optimal decision rules." They find greedy, locally optimal splits.</li>
