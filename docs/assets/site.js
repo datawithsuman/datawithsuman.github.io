@@ -314,4 +314,25 @@
   document.addEventListener("keydown", function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openSearch(); }
   });
+  // Track pages: modules collapse. Keep what the reader opened, and open whatever a link points to.
+  (function () {
+    var modules = document.querySelectorAll("details.module");
+    if (!modules.length) return;
+    var key = "aimlrounds:open-modules:" + location.pathname;
+    function save() {
+      var open = [];
+      modules.forEach(function (m) { if (m.open) open.push(m.id); });
+      try { localStorage.setItem(key, JSON.stringify(open)); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(key)); } catch (e) {}
+    if (Array.isArray(saved)) modules.forEach(function (m) { m.open = saved.indexOf(m.id) !== -1; });
+    function openFromHash() {
+      var el = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+      if (el && el.matches("details.module")) { el.open = true; el.scrollIntoView(); }
+    }
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    modules.forEach(function (m) { m.addEventListener("toggle", save); });
+  })();
 })();

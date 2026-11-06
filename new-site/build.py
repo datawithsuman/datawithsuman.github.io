@@ -235,8 +235,10 @@ def track_page(t, idx):
             f'<li><a class="row" href="{l["slug"]}/">{dot(l)}<span class="row-title">{esc(l["title"])}</span>{type_chip(l["type"])}<span class="mins">{l["minutes"]} min</span></a></li>'
             for l in m["lessons"])
         heading = "h3" if m.get("part") else "h2"
-        mods += (f'<section class="panel module" id="module-{mi}"><header><p class="eyebrow">Module {mi}</p><{heading}>{m["name"]}</{heading}><p>{m["desc"]}</p></header>'
-                 f'<ol class="rows">{rows}</ol></section>')
+        count = len(m["lessons"])
+        mods += (f'<details class="panel module" id="module-{mi}"{" open" if mi == 1 else ""}><summary><span class="module-text"><span class="eyebrow">Module {mi} · {count} lesson{"" if count == 1 else "s"}</span>'
+                 f'<{heading}>{m["name"]}</{heading}><span class="module-desc">{m["desc"]}</span></span></summary>'
+                 f'<ol class="rows">{rows}</ol></details>')
     nxt = TRACKS[idx + 1] if idx + 1 < len(TRACKS) else None
     if nxt:
         foot = f'<section class="panel next-track t-{nxt["id"]}"><div><p class="eyebrow">Next track</p><h2>Next track: {nxt["name"]}</h2><p>{nxt["desc"]}</p></div><a class="btn btn-secondary" href="../{nxt["id"]}/">Open {nxt["name"]}</a></section>'
