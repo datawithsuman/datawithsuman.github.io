@@ -331,6 +331,20 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cMore" data-toc="More shapes and CDFs">
+  <div class="chap">More shapes and CDFs</div>
+  <h2>Categorical, Beta, CDFs and transformed values</h2>
+  <div class="tw"><table class="t">
+  <tr><th>Tool</th><th>What it is</th><th>In ML</th></tr>
+  <tr><td><b>Categorical</b></td><td>One of k options, each with its own chance. Bernoulli is the case with k = 2.</td><td>Softmax outputs, and next-token prediction.</td></tr>
+  <tr><td><b>Beta</b></td><td>A distribution over a chance between 0 and 1.</td><td>Uncertainty about a click rate, and bandits.</td></tr>
+  <tr><td><b>CDF</b></td><td>F(x) = P(X ≤ x). It rises from 0 to 1.</td><td>Percentiles such as p99 latency, and generating samples.</td></tr>
+</table></div>
+<h3>Transforming a value changes its shape</h3>
+<p>If X is Normal, e^X is <b>log-normal</b>: always positive, with a long right tail, like many latencies and prices. A density has to change to keep the total area at 1. So regions a transformation stretches get lower density, and regions it squeezes get higher density. That's the change-of-variables rule, and it's the idea behind normalising flows.</p>
+<p>The CDF also gives a way of sampling. See <a href="../sampling-methods/">sampling methods</a>.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

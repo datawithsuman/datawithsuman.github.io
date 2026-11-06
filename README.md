@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-200-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-207-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -59,7 +59,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 35 lessons</summary>
+<summary><b>Maths for ML</b> · 42 lessons</summary>
 
 <br>
 
@@ -99,9 +99,16 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Probability Basics & Bayes' Rule](https://aimlrounds.com/tracks/fundamentals/probability-and-bayes/) | 🟢 Beginner | 20 min |
-| 2 | [Common Probability Distributions](https://aimlrounds.com/tracks/fundamentals/probability-distributions/) | 🟢 Beginner | 25 min |
-| 3 | [Expectation, Variance & Covariance](https://aimlrounds.com/tracks/fundamentals/expectation-and-variance/) | 🟡 Intermediate | 20 min |
-| 4 | [Maximum Likelihood & MAP](https://aimlrounds.com/tracks/fundamentals/mle-and-map/) | 🟡 Intermediate | 25 min |
+| 2 | [Joint, Marginal and Conditional Distributions](https://aimlrounds.com/tracks/fundamentals/joint-marginal-conditional/) | 🟡 Intermediate | 15 min |
+| 3 | [Common Probability Distributions](https://aimlrounds.com/tracks/fundamentals/probability-distributions/) | 🟢 Beginner | 25 min |
+| 4 | [Expectation, Variance & Covariance](https://aimlrounds.com/tracks/fundamentals/expectation-and-variance/) | 🟡 Intermediate | 20 min |
+| 5 | [The Multivariate Gaussian](https://aimlrounds.com/tracks/fundamentals/multivariate-gaussian/) | 🟡 Intermediate | 15 min |
+| 6 | [Law of Large Numbers and Central Limit Theorem](https://aimlrounds.com/tracks/fundamentals/law-of-large-numbers-and-clt/) | 🟡 Intermediate | 15 min |
+| 7 | [Concentration Inequalities](https://aimlrounds.com/tracks/fundamentals/concentration-inequalities/) | 🟡 Intermediate | 15 min |
+| 8 | [Maximum Likelihood & MAP](https://aimlrounds.com/tracks/fundamentals/mle-and-map/) | 🟡 Intermediate | 25 min |
+| 9 | [Bayesian Inference and Conjugate Priors](https://aimlrounds.com/tracks/fundamentals/bayesian-inference-and-conjugate-priors/) | 🟡 Intermediate | 15 min |
+| 10 | [Markov Chains](https://aimlrounds.com/tracks/fundamentals/markov-chains/) | 🟡 Intermediate | 15 min |
+| 11 | [Sampling Methods: Inverse Transform, Importance Sampling and MCMC](https://aimlrounds.com/tracks/fundamentals/sampling-methods/) | 🟡 Intermediate | 20 min |
 
 **Probability Practice**
 
