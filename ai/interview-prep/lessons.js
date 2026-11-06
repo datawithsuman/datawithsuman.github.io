@@ -281,6 +281,12 @@ window.LESSONS = {
           {slug: "design-text-to-sql",title: "Design a Text-to-SQL System",sub: "Analysts spend too long finding tables and writing SQL. Design a system that turns their questions into queries across a huge data warehouse.",level: "Advanced",mins: 25,group: "designs"},
           {slug: "design-code-autocomplete",title: "Design Code Autocomplete",sub: "Design code autocomplete for hundreds of millions of requests a day, with suggestions arriving in under 200 ms.",level: "Advanced",mins: 25,group: "designs"},
           {slug: "design-llm-platform",title: "Design a Shared LLM Platform",sub: "Dozens of teams want to use LLMs from different vendors, and customer data mustn't leak. Design a shared platform for them.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-llm-prompt-test",title: "Test an LLM Prompt in Production",sub: "Your new LLM tutor's prompt looks better in demos. How do you test it in production, and what's your metric?",level: "Advanced",mins: 25,group: "ab-designs"},
+          {slug: "design-ai-subject-lines",title: "Fix a Failing AI Feature",sub: "AI-written email subject lines lost to the old rule-based ones in an A/B test. What do you do next?",level: "Advanced",mins: 25,group: "ab-designs"},
+          {slug: "design-interleaving",title: "Test Rankers Faster with Interleaving",sub: "A ranking A/B test takes weeks, and you have many candidate models. How do you test faster?",level: "Advanced",mins: 25,group: "ab-designs"},
+          {slug: "design-network-experiment",title: "Measure a Feed Change with Network Effects",sub: "A feed change affects what a user's connections see. How do you measure its real effect?",level: "Advanced",mins: 25,group: "ab-designs"},
+          {slug: "design-image-personalisation",title: "Personalise Images with Bandits",sub: "You want to personalise which image each user sees for each title. How do you choose it, and how do you prove it helps?",level: "Advanced",mins: 25,group: "ab-designs"},
+          {slug: "design-launch-decision-rule",title: "Set a Launch Decision Rule",sub: "A launch wins on the main metric, but looks slightly worse on two guardrails. What's your decision rule before the test starts?",level: "Advanced",mins: 25,group: "ab-designs"},
         ] },
     ] },
     { id: "papers", title: "Papers", desc: "The idea and the key result of important papers, explained step by step.", tracks: [

@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-180-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-186-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -480,7 +480,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>AI/ML System Design</b> · 7 lessons</summary>
+<summary><b>AI/ML System Design</b> · 13 lessons</summary>
 
 <br>
 
@@ -495,6 +495,12 @@ End-to-end AI/ML system designs in interview format. New designs are added over 
 | 5 | [Design a Text-to-SQL System](https://aimlrounds.com/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
 | 6 | [Design Code Autocomplete](https://aimlrounds.com/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
 | 7 | [Design a Shared LLM Platform](https://aimlrounds.com/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
+| 8 | [Test an LLM Prompt in Production](https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/) | 🔴 Advanced | 25 min |
+| 9 | [Fix a Failing AI Feature](https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/) | 🔴 Advanced | 25 min |
+| 10 | [Test Rankers Faster with Interleaving](https://aimlrounds.com/tracks/system-design/design-interleaving/) | 🔴 Advanced | 25 min |
+| 11 | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
+| 12 | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
+| 13 | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
 
 </details>
 

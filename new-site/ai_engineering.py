@@ -76,7 +76,8 @@ for _p in PARTS:
 
 # New designs go in this group.
 DESIGNS = SimpleNamespace(
-    GROUPS=[("designs", "Designs", "End-to-end AI/ML system designs in interview format. New designs are added over time.")],
+    GROUPS=[("designs", "Designs", "End-to-end AI/ML system designs in interview format. New designs are added over time."),
+            ("ab-designs", "A/B Testing", "Experiment design scenarios based on documented real-world cases.")],
     LESSONS={
         "design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]},
         "design-support-chatbot": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]},
@@ -85,5 +86,11 @@ DESIGNS = SimpleNamespace(
         "design-text-to-sql": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]},
         "design-code-autocomplete": {"type": "design", "prereqs": [_a("continuous-batching"), _a("scaling-inference")]},
         "design-llm-platform": {"type": "design", "prereqs": [_a("llmops"), _a("guardrails-and-prompt-injection")]},
+        "design-llm-prompt-test": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("llm-as-a-judge")]},
+        "design-ai-subject-lines": {"type": "design", "prereqs": [_f("reading-ab-results"), _a("prompt-engineering-patterns")]},
+        "design-interleaving": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("ranking-metrics")]},
+        "design-network-experiment": {"type": "design", "prereqs": [_f("interference-in-experiments")]},
+        "design-image-personalisation": {"type": "design", "prereqs": [_f("bandits-vs-ab-tests")]},
+        "design-launch-decision-rule": {"type": "design", "prereqs": [_f("choosing-ab-metrics"), _f("multiple-testing")]},
     },
 )
