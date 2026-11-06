@@ -294,6 +294,25 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <p class="small">SimCLR found strong augmentation (especially crop + colour) and the projection head essential <span class="src"><a href="https://arxiv.org/abs/2002.05709">arXiv:2002.05709</a></span>. MoCo (He et al. 2020) keeps a queue of past embeddings from a slowly updated encoder to get many negatives without huge batches. CLIP <span class="src"><a href="https://arxiv.org/abs/2103.00020">arXiv:2103.00020</a></span> learns τ as a parameter.</p>
 </section>
 
+<section class="ch" id="cSsl" data-toc="Without negatives">
+  <div class="chap">Without negatives</div>
+  <h2>Learning without negatives: BYOL, DINO and MAE</h2>
+  <p>Negatives need large batches, and can push apart items that are really similar. Why not just pull two views together? Because the easy answer is <b>collapse</b>: output the same vector for everything. Three methods avoid it in different ways.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Method</th><th>How it works</th><th>What stops collapse</th><th>Reported ImageNet top-1</th></tr>
+    <tr><td><b>BYOL</b></td><td>An online network predicts a target network's output for another view.</td><td>A predictor on one side, and a target that's a slow average, with no gradients.</td><td>74.3% with ResNet-50</td></tr>
+    <tr><td><b>DINO</b></td><td>A student matches the output of a slow-average teacher.</td><td>Centering and sharpening of the teacher's output.</td><td>80.1% linear, with ViT-Base</td></tr>
+    <tr><td><b>MAE</b></td><td>Hide most image patches, and reconstruct them.</td><td>It's reconstruction, so no pairs are needed.</td><td>87.8% with ViT-Huge</td></tr>
+  </table></div>
+  <p class="small">DINO and BYOL report a linear classifier on frozen features. MAE's figure is after fine-tuning, so they aren't directly comparable.</p>
+  <ul>
+    <li><b>DINO's balance:</b> centering stops one dimension dominating, but pushes towards uniform outputs. Sharpening does the opposite. Together, they avoid both kinds of collapse.</li>
+    <li><b>MAE's trick:</b> it hides about 75% of patches, and the encoder processes only the visible ones, which makes training 3 or more times faster. A light decoder is used only during pretraining.</li>
+    <li><b>Which to use:</b> contrastive training still suits matching across types, like image and text. These methods suit pretraining a <a href="../vision-transformers/">vision backbone</a> from unlabelled images.</li>
+  </ul>
+  <p class="small">Sources: <a href="https://arxiv.org/abs/2006.07733">BYOL</a>, <a href="https://arxiv.org/abs/2104.14294">DINO</a> and <a href="https://arxiv.org/abs/2111.06377">MAE</a>.</p>
+</section>
+
 <section class="ch" id="c5" data-toc="5 · Uses">
   <div class="chap">5 · The core idea</div>
   <span class="pill ok">Where it's used</span>

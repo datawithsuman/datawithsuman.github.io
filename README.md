@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-229-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-235-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -258,7 +258,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Deep Learning</b> · 33 lessons</summary>
+<summary><b>Deep Learning</b> · 39 lessons</summary>
 
 <br>
 
@@ -300,7 +300,8 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Convolution and Receptive Field](https://aimlrounds.com/tracks/fundamentals/convolution-and-receptive-field/) | 🟢 Beginner | 25 min |
 | 2 | [Pooling, Stride, Padding and Output Shapes](https://aimlrounds.com/tracks/fundamentals/pooling-stride-padding/) | 🟢 Beginner | 20 min |
 | 3 | [ResNets and Skip Connections](https://aimlrounds.com/tracks/fundamentals/resnets-and-skip-connections/) | 🟡 Intermediate | 20 min |
-| 4 | [Transfer Learning and Fine-Tuning](https://aimlrounds.com/tracks/fundamentals/transfer-learning/) | 🟡 Intermediate | 20 min |
+| 4 | [CNN Architectures: AlexNet to ConvNeXt](https://aimlrounds.com/tracks/fundamentals/cnn-architectures/) | 🟡 Intermediate | 20 min |
+| 5 | [Transfer Learning and Fine-Tuning](https://aimlrounds.com/tracks/fundamentals/transfer-learning/) | 🟡 Intermediate | 20 min |
 
 
 **Sequence Models**
@@ -322,6 +323,15 @@ Tap a track to see its lessons, in the order to learn them.
 | 5 | [Encoder vs Decoder vs Encoder-Decoder](https://aimlrounds.com/tracks/fundamentals/encoder-decoder-architectures/) | 🟡 Intermediate | 20 min |
 | 6 | [The Transformer, End to End](https://aimlrounds.com/tracks/fundamentals/transformer-end-to-end/) | 🔴 Advanced | 30 min |
 
+**Computer Vision**
+
+| # | Lesson | Level | Time |
+|:---:|---|:---:|:---:|
+| 1 | [Vision Transformers](https://aimlrounds.com/tracks/fundamentals/vision-transformers/) | 🟡 Intermediate | 15 min |
+| 2 | [Object Detection](https://aimlrounds.com/tracks/fundamentals/object-detection/) | 🟡 Intermediate | 20 min |
+| 3 | [Image Segmentation](https://aimlrounds.com/tracks/fundamentals/image-segmentation/) | 🟡 Intermediate | 18 min |
+| 4 | [Interpreting Networks and Adversarial Examples](https://aimlrounds.com/tracks/fundamentals/interpreting-networks-and-adversarial-examples/) | 🟡 Intermediate | 18 min |
+
 **Representation & Generative Models**
 
 | # | Lesson | Level | Time |
@@ -331,6 +341,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [GANs](https://aimlrounds.com/tracks/fundamentals/gans/) | 🟡 Intermediate | 25 min |
 | 4 | [Diffusion Models](https://aimlrounds.com/tracks/fundamentals/diffusion-models/) | 🟡 Intermediate | 25 min |
 | 5 | [Contrastive Learning (SimCLR, CLIP)](https://aimlrounds.com/tracks/fundamentals/contrastive-learning/) | 🟡 Intermediate | 25 min |
+| 6 | [Deep Learning Practice](https://aimlrounds.com/tracks/fundamentals/deep-learning-practice/) | 🟡 Intermediate | 20 min |
 
 </details>
 

@@ -311,6 +311,24 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </ul>
 </section>
 
+<section class="ch" id="cFlow" data-toc="Flow matching">
+  <div class="chap">Flow matching</div>
+  <h2>Flow matching and consistency models</h2>
+  <p>Diffusion's paths from noise to data are curved, so sampling takes many steps. Two newer ideas aim for far fewer.</p>
+  <div class="reader" data-reader='[{"t": "x", "c": "a", "label": "a straight path", "say": "Mix a data point X₁ and a noise point X₀ in a straight line. Here t runs from noise at 0 to data at 1."}, {"t": "g", "c": "ok", "label": "the target", "say": "The direction of that line, which stays the same along the path."}, {"t": "l", "c": "info", "label": "the training loss", "say": "Train a network v to predict the direction. It’s plain regression, with no simulation during training."}]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-x}{X_t = tX_1 + (1-t)X_0}, \qquad \class{term t-l}{\min_v\ \mathbb{E}\big\|\class{term t-g}{(X_1 - X_0)} - v(X_t, t)\big\|^2}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">The rectified flow form. Flow matching with optimal-transport paths is closely related.</p>
+  </div>
+  <p><b>A worked example, with illustrative numbers.</b> Take noise X₀ = −1 and data X₁ = 3, at t = 0.25. Then X_t = 0.25 × 3 + 0.75 × (−1) = 0, and the target is 3 − (−1) = 4. To sample, start from noise, and follow the predicted direction in small steps. The straighter the paths, the fewer steps you need.</p>
+  <ul>
+    <li><b>Compared with noise prediction:</b> the two are closely related, and differ mainly in the path and the training target. Flow matching chooses simple, straight paths.</li>
+    <li><b>Consistency models:</b> these learn to jump to the end of a path, so one step is enough, with more steps possible for quality. The paper reports an FID of 3.55 on CIFAR-10 in one step.</li>
+    <li><b>The trade-off:</b> one-step models are very fast, but several steps usually still improve quality.</li>
+  </ul>
+  <p class="small">Sources: <a href="https://arxiv.org/abs/2210.02747">Flow Matching</a>, <a href="https://arxiv.org/abs/2209.03003">Rectified Flow</a> and <a href="https://arxiv.org/abs/2303.01469">Consistency Models</a>.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

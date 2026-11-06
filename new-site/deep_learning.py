@@ -8,6 +8,7 @@ GROUPS = [
     ("cnns", "CNNs", "Convolutions, pooling, ResNets and transfer learning."),
     ("sequence", "Sequence models", "RNNs, LSTMs, GRUs and seq2seq with attention."),
     ("transformers", "Attention and Transformers", "Self-attention, multi-head attention, positional encodings and the full Transformer."),
+    ("vision", "Computer vision", "Vision Transformers, detection, segmentation and how to inspect and attack vision models."),
     ("representation", "Representation and generative models", "Embeddings, VAEs, GANs, diffusion and contrastive learning."),
 ]
 
@@ -30,6 +31,7 @@ LESSONS = {
     "convolution-and-receptive-field": {"prereqs": ["perceptron-to-mlp"]},
     "pooling-stride-padding": {"prereqs": ["convolution-and-receptive-field"]},
     "resnets-and-skip-connections": {"prereqs": ["vanishing-exploding-gradients", "convolution-and-receptive-field"]},
+    "cnn-architectures": {"prereqs": ["resnets-and-skip-connections"]},
     "transfer-learning": {"prereqs": ["resnets-and-skip-connections"]},
     "rnns-and-backprop-through-time": {"prereqs": ["backpropagation"]},
     "lstm-and-gru": {"prereqs": ["rnns-and-backprop-through-time"]},
@@ -41,11 +43,16 @@ LESSONS = {
     "transformer-block": {"prereqs": ["multi-head-attention", "normalisation-layers"]},
     "encoder-decoder-architectures": {"prereqs": ["transformer-block"]},
     "transformer-end-to-end": {"prereqs": ["transformer-block", "positional-encodings"], "related": ["papers/attention-is-all-you-need"]},
+    "vision-transformers": {"prereqs": ["transformer-end-to-end", "convolution-and-receptive-field"]},
+    "object-detection": {"prereqs": ["cnn-architectures", "loss-functions"]},
+    "image-segmentation": {"prereqs": ["cnn-architectures", "pooling-stride-padding"]},
+    "interpreting-networks-and-adversarial-examples": {"prereqs": ["backpropagation", "convolution-and-receptive-field"]},
     "embeddings": {"prereqs": ["vectors-and-cosine-similarity", "backpropagation"], "related": ["ai-engineering/rag-end-to-end"]},
     "autoencoders-and-vaes": {"prereqs": ["embeddings", "entropy-cross-entropy-kl"]},
     "gans": {"prereqs": ["perceptron-to-mlp"]},
     "diffusion-models": {"prereqs": ["autoencoders-and-vaes"]},
     "contrastive-learning": {"prereqs": ["embeddings"]},
+    "deep-learning-practice": {"type": "interview", "prereqs": ["multi-head-attention", "pooling-stride-padding"]},
 }
 for _l in LESSONS.values():
     _l["prereqs"] = [f"fundamentals/{p}" for p in _l.get("prereqs", [])]
