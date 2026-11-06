@@ -84,7 +84,7 @@
 </table></div>
 <h4>Defending</h4>
 <p><b>Adversarial training</b> trains on attacked examples. Madry et al. framed this as a contest: find the worst allowed change, then minimise the loss on it. In the FGSM paper, error on attacked examples fell from 89.4% to 17.9%. It's slower, and can reduce accuracy on clean data. Be careful about claimed defences, because they must be tested against strong attacks designed for them.</p>
-<p>The idea goes beyond images. Text attacks on LLMs are a related problem, covered in <a href="https://datawithsuman.github.io/ai/interview-prep/system-design/genai-apps/guardrails-and-prompt-injection/">guardrails and prompt injection</a>.</p>
+<p>The idea goes beyond images. Text attacks on LLMs are a related problem, covered in <a href="../../ai-engineering/guardrails-and-prompt-injection/">guardrails and prompt injection</a>.</p>
 </section><section class="ch" id="c3" data-toc="3 · The maths">
   <h3>The maths</h3>
   <div class="reader" data-reader='[{"t": "c", "c": "info", "label": "the heat map", "say": "For class c. It has the same coarse grid as the feature maps."}, {"t": "a", "c": "a", "label": "a map’s importance", "say": "The average gradient of the class score across that map."}, {"t": "m", "c": "b", "label": "a feature map", "say": "An output from the last convolutional layer."}, {"t": "f", "c": "bad", "label": "FGSM", "say": "Add ε to each input, in the direction that raises the loss."}]'>
