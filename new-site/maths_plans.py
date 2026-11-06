@@ -374,7 +374,7 @@ MATHS_PLANS.update({
         "Think of surprise as a cost. Entropy is the surprise you can't avoid, even with perfect knowledge. Cross-entropy is the surprise you get when you bet using your model. KL divergence is the difference: the extra price of being wrong.",
         ENTROPY_PICTURE, "From the lesson's lab, for the confident and wrong prediction.",
         ("c5", "<b>Try to break it.</b> Move the model's prediction from close, to uniform, to confident and wrong. Watch the KL and compare its two directions.", "<b>Now say why:</b> why does uniform cost less than confident and wrong, and why do the two KL directions differ?"),
-        ["c2", "c4", "c6"], ["c7"], ["c3"], ["c8", "src"],
+        ["c2", "c4", "c6", "cBits"], ["c7"], ["c3"], ["c8", "src"],
         ["Entropy is the expected surprise, measuring uncertainty.",
          "Cross-entropy is the surprise when outcomes follow p but you predict q.",
          "With one-hot labels it's the log loss, and minimising it is maximum likelihood.",

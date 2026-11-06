@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-216-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-220-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -59,7 +59,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 51 lessons</summary>
+<summary><b>Maths for ML</b> · 55 lessons</summary>
 
 <br>
 
@@ -143,6 +143,10 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Entropy, Cross-Entropy & KL Divergence](https://aimlrounds.com/tracks/fundamentals/entropy-cross-entropy-kl/) | 🟡 Intermediate | 25 min |
+| 2 | [Information, Compression and Perplexity](https://aimlrounds.com/tracks/fundamentals/information-compression-and-perplexity/) | 🟡 Intermediate | 15 min |
+| 3 | [Mutual Information](https://aimlrounds.com/tracks/fundamentals/mutual-information/) | 🟡 Intermediate | 15 min |
+| 4 | [Comparing Distributions: KL, Jensen-Shannon and Wasserstein](https://aimlrounds.com/tracks/fundamentals/comparing-distributions/) | 🟡 Intermediate | 15 min |
+| 5 | [Information Theory Practice](https://aimlrounds.com/tracks/fundamentals/information-theory-practice/) | 🟡 Intermediate | 20 min |
 
 </details>
 

@@ -7,7 +7,7 @@ GROUPS = [
     ("probability", "Probability", "Bayes' rule, joint distributions, the Gaussian, limit theorems, Bayesian inference, Markov chains and sampling."),
     ("prob-practice", "Probability practice", "Interview questions on Bayes, coins, dice, cards and urns, with worked answers."),
     ("statistics", "Statistics", "Summaries, sampling, confidence intervals, the main tests, regression inference and causal inference."),
-    ("info-theory", "Information theory", "Entropy, cross-entropy and KL divergence."),
+    ("info-theory", "Information theory", "Entropy, compression and perplexity, mutual information and comparing distributions."),
 ]
 
 LESSONS = {
@@ -67,6 +67,10 @@ LESSONS = {
     "correlation-vs-causation": {"q": "How can correlation mislead you, and how do you estimate a causal effect?", "prereqs": ["hypothesis-testing-and-ab-tests"]},
     "entropy-cross-entropy-kl": {"q": "How are entropy, cross-entropy and KL divergence related?", "prereqs": ["probability-distributions", "mle-and-map"],
                                  "related": ["fundamentals/softmax-regression"]},
+    "information-compression-and-perplexity": {"q": "What does entropy have to do with compression, and what does perplexity tell you about a model?", "prereqs": ["entropy-cross-entropy-kl"], "related": ["fundamentals/n-gram-language-models"]},
+    "mutual-information": {"q": "What is mutual information, and when would it find a relationship that correlation misses?", "prereqs": ["entropy-cross-entropy-kl", "joint-marginal-conditional"], "related": ["fundamentals/decision-trees"]},
+    "comparing-distributions": {"q": "How do KL divergence, Jensen-Shannon and Wasserstein distance differ, and when would you use each?", "prereqs": ["entropy-cross-entropy-kl"], "related": ["fundamentals/gans"]},
+    "information-theory-practice": {"type": "interview", "prereqs": ["entropy-cross-entropy-kl"]},
 }
 for _l in LESSONS.values():
     _l["prereqs"] = [f"fundamentals/{p}" for p in _l.get("prereqs", [])]

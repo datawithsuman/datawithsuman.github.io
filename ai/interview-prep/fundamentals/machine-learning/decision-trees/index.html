@@ -324,6 +324,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <div class="seg"><button data-v="snap">Snap to the best split</button></div>
   </div>
   <p>The algorithm does exactly this for every feature, sorts the values once, and sweeps the threshold, which costs about O(features × n log n) per level <span class="src"><a href="https://scikit-learn.org/stable/modules/tree.html">docs</a></span>. Then it recurses on each child.</p>
+<p class="small">Information gain is <a href="../../maths-for-ml/mutual-information/">mutual information</a> between a split and the label.</p>
 </section>
 
 <!-- 7 -->

@@ -78,6 +78,10 @@ window.LESSONS = {
           {slug: "bayesian-vs-frequentist",group: "statistics",title: "Bayesian vs Frequentist",sub: "What's the difference between Bayesian and frequentist statistics, and when would you use each?",level: "Intermediate",mins: 15},
           {slug: "statistics-practice",group: "statistics",title: "Statistics Practice",sub: "Which test would you use, and can you work it out by hand?",level: "Intermediate",mins: 20},
           {slug: "entropy-cross-entropy-kl",group: "info-theory",title: "Entropy, Cross-Entropy & KL Divergence",sub: "Why every classifier is trained on cross-entropy, and what KL adds.",level: "Intermediate",mins: 25},
+          {slug: "information-compression-and-perplexity",group: "info-theory",title: "Information, Compression and Perplexity",sub: "What does entropy have to do with compression, and what does perplexity tell you about a model?",level: "Intermediate",mins: 15},
+          {slug: "mutual-information",group: "info-theory",title: "Mutual Information",sub: "What is mutual information, and when would it find a relationship that correlation misses?",level: "Intermediate",mins: 15},
+          {slug: "comparing-distributions",group: "info-theory",title: "Comparing Distributions: KL, Jensen-Shannon and Wasserstein",sub: "How do KL divergence, Jensen-Shannon and Wasserstein distance differ, and when would you use each?",level: "Intermediate",mins: 15},
+          {slug: "information-theory-practice",group: "info-theory",title: "Information Theory Practice",sub: "Entropy, surprise, KL and information gain: can you work them out by hand?",level: "Intermediate",mins: 20},
         ] },
       { id: "machine-learning", dir: "fundamentals/machine-learning", title: "Machine Learning", desc: "Classic ML that every AI/ML interview still asks about: models, metrics and core concepts.",
         groups: [
