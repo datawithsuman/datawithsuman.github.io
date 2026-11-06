@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-207-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-216-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -59,7 +59,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 42 lessons</summary>
+<summary><b>Maths for ML</b> · 51 lessons</summary>
 
 <br>
 
@@ -125,9 +125,18 @@ Tap a track to see its lessons, in the order to learn them.
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [Confidence Intervals & the Bootstrap](https://aimlrounds.com/tracks/fundamentals/confidence-intervals-and-bootstrap/) | 🟡 Intermediate | 25 min |
-| 2 | [Hypothesis Tests, p-values & A/B Testing](https://aimlrounds.com/tracks/fundamentals/hypothesis-testing-and-ab-tests/) | 🟡 Intermediate | 30 min |
-| 3 | [Correlation vs Causation](https://aimlrounds.com/tracks/fundamentals/correlation-vs-causation/) | 🟡 Intermediate | 25 min |
+| 1 | [Descriptive Statistics and Outliers](https://aimlrounds.com/tracks/fundamentals/descriptive-statistics-and-outliers/) | 🟡 Intermediate | 15 min |
+| 2 | [Sampling and Bias](https://aimlrounds.com/tracks/fundamentals/sampling-and-bias/) | 🟡 Intermediate | 15 min |
+| 3 | [Confidence Intervals & the Bootstrap](https://aimlrounds.com/tracks/fundamentals/confidence-intervals-and-bootstrap/) | 🟡 Intermediate | 25 min |
+| 4 | [Hypothesis Tests, p-values & A/B Testing](https://aimlrounds.com/tracks/fundamentals/hypothesis-testing-and-ab-tests/) | 🟡 Intermediate | 30 min |
+| 5 | [T-Tests and Z-Tests](https://aimlrounds.com/tracks/fundamentals/t-tests-and-z-tests/) | 🟡 Intermediate | 15 min |
+| 6 | [Chi-Squared Tests and ANOVA](https://aimlrounds.com/tracks/fundamentals/chi-squared-tests-and-anova/) | 🟡 Intermediate | 15 min |
+| 7 | [Non-Parametric and Permutation Tests](https://aimlrounds.com/tracks/fundamentals/non-parametric-and-permutation-tests/) | 🟡 Intermediate | 15 min |
+| 8 | [Inference for Regression](https://aimlrounds.com/tracks/fundamentals/inference-for-regression/) | 🟡 Intermediate | 15 min |
+| 9 | [Correlation vs Causation](https://aimlrounds.com/tracks/fundamentals/correlation-vs-causation/) | 🟡 Intermediate | 25 min |
+| 10 | [Causal Inference Without an Experiment](https://aimlrounds.com/tracks/fundamentals/causal-inference-without-experiments/) | 🟡 Intermediate | 20 min |
+| 11 | [Bayesian vs Frequentist](https://aimlrounds.com/tracks/fundamentals/bayesian-vs-frequentist/) | 🟡 Intermediate | 15 min |
+| 12 | [Statistics Practice](https://aimlrounds.com/tracks/fundamentals/statistics-practice/) | 🟡 Intermediate | 20 min |
 
 **Information Theory**
 
