@@ -3,7 +3,7 @@
 
 GROUPS = [
     ("linear-algebra", "Linear algebra", "Vectors, norms, matrices, rank, projections, eigenvectors, SVD, solving systems and matrix calculus."),
-    ("calculus", "Calculus and optimisation", "Gradients, the chain rule and gradient descent."),
+    ("calculus", "Calculus and optimisation", "Gradients, automatic differentiation, Taylor series, optimisers, Newton, Lagrange and integrals."),
     ("probability", "Probability", "Bayes' rule, distributions, expectation and maximum likelihood."),
     ("prob-practice", "Probability practice", "Interview questions on Bayes, coins, dice, cards and urns, with worked answers."),
     ("statistics", "Statistics", "Confidence intervals, hypothesis tests and causation."),
@@ -28,6 +28,12 @@ LESSONS = {
     "derivatives-and-chain-rule": {"q": "How does backpropagation use the chain rule?", "related": ["fundamentals/backpropagation"]},
     "gradient-descent": {"q": "Why can a larger learning rate make training diverge, and how do momentum and Adam help?", "prereqs": ["derivatives-and-chain-rule"]},
     "convexity-and-local-minima": {"q": "What does convexity guarantee, and which models have a convex loss?", "prereqs": ["gradient-descent"]},
+    "automatic-differentiation": {"q": "How does automatic differentiation work, and why does training use reverse mode?", "prereqs": ["derivatives-and-chain-rule"], "related": ["fundamentals/backpropagation"]},
+    "taylor-series-and-curvature": {"q": "What does a Taylor expansion tell you about optimisation, and why does curvature limit the learning rate?", "prereqs": ["derivatives-and-chain-rule", "matrix-calculus"]},
+    "newton-and-second-order-methods": {"q": "What is Newton's method, and why isn't it used to train deep networks?", "prereqs": ["taylor-series-and-curvature", "gradient-descent"], "related": ["fundamentals/gradient-boosting"]},
+    "lagrange-multipliers-and-kkt": {"q": "What are Lagrange multipliers, and how do they explain PCA, SVMs and regularisation?", "prereqs": ["convexity-and-local-minima"], "related": ["fundamentals/pca", "fundamentals/support-vector-machines"]},
+    "integrals-for-ml": {"q": "Where do integrals show up in machine learning, and what do you do when you can't compute one?", "prereqs": ["expectation-and-variance"], "related": ["fundamentals/autoencoders-and-vaes"]},
+    "calculus-practice": {"type": "interview", "prereqs": ["gradient-descent"]},
     "probability-and-bayes": {"q": "Why can an accurate test for a rare event still produce mostly false positives?"},
     "probability-distributions": {"q": "How does the distribution you assume for the target decide the loss?", "prereqs": ["probability-and-bayes"]},
     "expectation-and-variance": {"q": "Why does averaging correlated models help less than averaging independent ones?", "prereqs": ["probability-distributions"],

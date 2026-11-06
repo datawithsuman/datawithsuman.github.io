@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-194-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-200-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -59,7 +59,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 29 lessons</summary>
+<summary><b>Maths for ML</b> · 35 lessons</summary>
 
 <br>
 
@@ -85,8 +85,14 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Derivatives, Gradients & the Chain Rule](https://aimlrounds.com/tracks/fundamentals/derivatives-and-chain-rule/) | 🟢 Beginner | 25 min |
-| 2 | [Gradient Descent, Momentum & Adam](https://aimlrounds.com/tracks/fundamentals/gradient-descent/) | 🟡 Intermediate | 25 min |
-| 3 | [Convexity & Local Minima](https://aimlrounds.com/tracks/fundamentals/convexity-and-local-minima/) | 🟡 Intermediate | 20 min |
+| 2 | [Automatic Differentiation](https://aimlrounds.com/tracks/fundamentals/automatic-differentiation/) | 🟡 Intermediate | 15 min |
+| 3 | [Taylor Series and Curvature](https://aimlrounds.com/tracks/fundamentals/taylor-series-and-curvature/) | 🟡 Intermediate | 15 min |
+| 4 | [Gradient Descent, Momentum & Adam](https://aimlrounds.com/tracks/fundamentals/gradient-descent/) | 🟡 Intermediate | 25 min |
+| 5 | [Newton's Method and Second-Order Optimisation](https://aimlrounds.com/tracks/fundamentals/newton-and-second-order-methods/) | 🟡 Intermediate | 15 min |
+| 6 | [Convexity & Local Minima](https://aimlrounds.com/tracks/fundamentals/convexity-and-local-minima/) | 🟡 Intermediate | 20 min |
+| 7 | [Lagrange Multipliers and KKT](https://aimlrounds.com/tracks/fundamentals/lagrange-multipliers-and-kkt/) | 🟡 Intermediate | 20 min |
+| 8 | [Integrals for ML](https://aimlrounds.com/tracks/fundamentals/integrals-for-ml/) | 🟡 Intermediate | 15 min |
+| 9 | [Calculus Practice](https://aimlrounds.com/tracks/fundamentals/calculus-practice/) | 🟡 Intermediate | 20 min |
 
 **Probability**
 

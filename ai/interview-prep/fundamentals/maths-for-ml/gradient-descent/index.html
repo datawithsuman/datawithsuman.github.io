@@ -346,6 +346,20 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cOpt" data-toc="From Nesterov to Adam">
+  <div class="chap">From Nesterov to Adam</div>
+  <h2>Nesterov, AdaGrad and RMSProp: how Adam came about</h2>
+  <div class="tw"><table class="t">
+  <tr><th>Method</th><th>What it adds</th><th>Limitation</th></tr>
+  <tr><td><b>Momentum</b></td><td>Keeps a running average of past gradients, which smooths zig-zags.</td><td>Can overshoot.</td></tr>
+  <tr><td><b>Nesterov</b></td><td>Measures the gradient at the point momentum is about to reach, so it can correct earlier.</td><td>A small change in practice for noisy gradients.</td></tr>
+  <tr><td><b>AdaGrad</b></td><td>Divides each weight's step by the root of its summed squared gradients, which suits rare features.</td><td>The sum only grows, so steps can shrink too far.</td></tr>
+  <tr><td><b>RMSProp</b></td><td>Uses a decaying average instead of a sum, so old gradients are forgotten.</td><td>No momentum term.</td></tr>
+  <tr><td><b>Adam</b></td><td>Combines momentum with RMSProp's scaling, and corrects for starting at zero.</td><td>Can generalise less well in some settings. See <a href="../../deep-learning/weight-decay-and-adamw/">AdamW</a>.</td></tr>
+</table></div>
+<p>These per-weight scales use squared gradients, not true curvature. For that, see <a href="../newton-and-second-order-methods/">Newton's method</a>.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

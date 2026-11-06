@@ -352,6 +352,17 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cDir" data-toc="Steepest direction and kinks">
+  <div class="chap">Steepest direction and kinks</div>
+  <h2>Why the gradient is steepest, and what happens at kinks</h2>
+  <h3>Why the gradient points the steepest way</h3>
+<p>The rate of change in a unit direction u is the <b>directional derivative</b>: ∇f · u. A dot product is largest when both vectors point the same way, so the steepest increase is along the gradient, and the steepest decrease is directly against it. At right angles to the gradient, the function doesn't change at all, at first order. That's why contour lines are perpendicular to gradients.</p>
+<p>Example: if ∇f = (3, 4), its length of 5 is the steepest slope available. The direction (1, 0) gives a slope of only 3.</p>
+<h3>Points with no derivative</h3>
+<p>ReLU has a kink at 0, and so does |w| in L1 regularisation. Neither has a true derivative there. A <b>subgradient</b> is any slope that stays below the function at that point. For |w| at 0, anything from −1 to 1 qualifies. In practice, frameworks simply pick one value, such as 0 for ReLU at 0, and this causes little trouble as inputs rarely land exactly on the kink.</p>
+<p>Next: <a href="../automatic-differentiation/">automatic differentiation</a> and <a href="../taylor-series-and-curvature/">Taylor series and curvature</a>.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

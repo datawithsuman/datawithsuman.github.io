@@ -334,6 +334,14 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cStep" data-toc="Curvature and step size">
+  <div class="chap">Curvature and step size</div>
+  <h2>How curvature sets a safe step size</h2>
+  <p>If a loss never curves more sharply than L, called <b>L-smooth</b>, then gradient descent is guaranteed to reduce it with any step size below 2/L, and 1/L is the classic safe choice. On a convex loss, that means reaching the minimum, and <b>strong convexity</b>, a minimum curvature, makes it converge at a steady rate.</p>
+<p>The ratio of largest to smallest curvature is the condition number, and it sets how slowly gradient descent progresses.</p>
+<p>Next: <a href="../taylor-series-and-curvature/">Taylor series and curvature</a> derives this limit, <a href="../newton-and-second-order-methods/">Newton's method</a> removes the dependence on condition number, and <a href="../lagrange-multipliers-and-kkt/">Lagrange multipliers</a> add constraints.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>
