@@ -338,6 +338,15 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cRay" data-toc="Rayleigh quotient">
+  <div class="chap">Rayleigh quotient</div>
+  <h2>The Rayleigh quotient: why PCA picks the top eigenvector</h2>
+  <p>For a symmetric A, the <b>Rayleigh quotient</b> R(x) = xᵀAx / xᵀx says how much A stretches along x. It always lies between the smallest and largest eigenvalues, and it reaches the largest exactly at the top eigenvector.</p>
+<p>Example: for A = [[2, 1], [1, 2]], R(1, 0) = 2, while R(1, 1) = 3, the top eigenvalue.</p>
+<p>This explains PCA. The variance of data projected onto a unit vector w is wᵀΣw, which is the Rayleigh quotient of the covariance matrix. So the direction of most variance must be Σ's top eigenvector, and that variance is its eigenvalue.</p>
+<p>Next: <a href="../positive-definite-matrices/">positive definite matrices</a> look at what the signs of the eigenvalues mean.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

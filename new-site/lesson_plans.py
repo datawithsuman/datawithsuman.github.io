@@ -87,7 +87,7 @@ PLANS = {
                  "try": "<b>Try to break it.</b> Make the restaurant much longer without changing its angle. Then rotate it until it sits at 90° from the customer.",
                  "why": "<b>Now say why:</b> which measure ignored the extra length, and why did two of them hit zero at 90°?"},
         "how": ["c2", "c5", "c4"],
-        "practice": ["c7", "c8"],
+        "practice": ["c7", "c8", "cNext"],
         "trap": ["c3", "c9"],
         "reference": ["c10", "src"],
         "edits": [
@@ -250,6 +250,7 @@ from llm_plans import LLM_PLANS  # noqa: E402
 from ai_plans import AI_PLANS, SD_PLANS  # noqa: E402
 from design_plans import DESIGN_PLANS  # noqa: E402
 from ab_plans import AB_PLANS  # noqa: E402
+from la_plans import LA_PLANS  # noqa: E402
 
 PLANS.update(MATHS_PLANS)
 PLANS.update(ML_PLANS)
@@ -260,3 +261,4 @@ PLANS.update(AI_PLANS)
 PLANS.update(SD_PLANS)
 PLANS.update(DESIGN_PLANS)
 PLANS.update(AB_PLANS)
+PLANS.update(LA_PLANS)

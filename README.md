@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-186-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-194-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -59,7 +59,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 📐 Fundamentals
 
 <details>
-<summary><b>Maths for ML</b> · 21 lessons</summary>
+<summary><b>Maths for ML</b> · 29 lessons</summary>
 
 <br>
 
@@ -68,9 +68,17 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Vectors, Dot Products & Cosine Similarity](https://aimlrounds.com/tracks/fundamentals/vectors-and-cosine-similarity/) | 🟢 Beginner | 20 min |
-| 2 | [Matrices as Transformations](https://aimlrounds.com/tracks/fundamentals/matrices-as-transformations/) | 🟢 Beginner | 20 min |
-| 3 | [Eigenvalues & Eigenvectors](https://aimlrounds.com/tracks/fundamentals/eigenvalues-and-eigenvectors/) | 🟡 Intermediate | 25 min |
-| 4 | [SVD & Low-Rank Approximation](https://aimlrounds.com/tracks/fundamentals/svd-and-low-rank/) | 🟡 Intermediate | 25 min |
+| 2 | [Vector and Matrix Norms](https://aimlrounds.com/tracks/fundamentals/vector-and-matrix-norms/) | 🟡 Intermediate | 15 min |
+| 3 | [Matrices as Transformations](https://aimlrounds.com/tracks/fundamentals/matrices-as-transformations/) | 🟢 Beginner | 20 min |
+| 4 | [Matrix Multiplication and Tensor Shapes](https://aimlrounds.com/tracks/fundamentals/matrix-multiplication-and-tensor-shapes/) | 🟡 Intermediate | 15 min |
+| 5 | [Linear Independence, Basis and Rank](https://aimlrounds.com/tracks/fundamentals/linear-independence-basis-and-rank/) | 🟡 Intermediate | 15 min |
+| 6 | [Orthogonality and Projections](https://aimlrounds.com/tracks/fundamentals/orthogonality-and-projections/) | 🟡 Intermediate | 15 min |
+| 7 | [Eigenvalues & Eigenvectors](https://aimlrounds.com/tracks/fundamentals/eigenvalues-and-eigenvectors/) | 🟡 Intermediate | 25 min |
+| 8 | [Positive Definite Matrices](https://aimlrounds.com/tracks/fundamentals/positive-definite-matrices/) | 🟡 Intermediate | 15 min |
+| 9 | [SVD & Low-Rank Approximation](https://aimlrounds.com/tracks/fundamentals/svd-and-low-rank/) | 🟡 Intermediate | 25 min |
+| 10 | [Solving Ax = b: LU, QR, Cholesky and the Pseudoinverse](https://aimlrounds.com/tracks/fundamentals/solving-linear-systems/) | 🟡 Intermediate | 20 min |
+| 11 | [Matrix Calculus](https://aimlrounds.com/tracks/fundamentals/matrix-calculus/) | 🟡 Intermediate | 20 min |
+| 12 | [Linear Algebra Practice](https://aimlrounds.com/tracks/fundamentals/linear-algebra-practice/) | 🟡 Intermediate | 20 min |
 
 **Calculus & Optimisation**
 

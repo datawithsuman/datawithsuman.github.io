@@ -2,7 +2,7 @@
 # Each lesson here adds its interview question and what to read first. Practice pages have their own questions.
 
 GROUPS = [
-    ("linear-algebra", "Linear algebra", "Vectors, matrices, eigenvectors and SVD."),
+    ("linear-algebra", "Linear algebra", "Vectors, norms, matrices, rank, projections, eigenvectors, SVD, solving systems and matrix calculus."),
     ("calculus", "Calculus and optimisation", "Gradients, the chain rule and gradient descent."),
     ("probability", "Probability", "Bayes' rule, distributions, expectation and maximum likelihood."),
     ("prob-practice", "Probability practice", "Interview questions on Bayes, coins, dice, cards and urns, with worked answers."),
@@ -17,6 +17,14 @@ LESSONS = {
     "eigenvalues-and-eigenvectors": {"q": "What is an eigenvector, and how does PCA use eigenvectors?", "prereqs": ["matrices-as-transformations"],
                                      "related": ["fundamentals/pca"]},
     "svd-and-low-rank": {"q": "What is SVD, and what do you get by keeping only the top k singular values?", "prereqs": ["eigenvalues-and-eigenvectors"]},
+    "vector-and-matrix-norms": {"q": "What's the difference between L1 and L2 norms, and why does L1 give sparse weights?", "prereqs": ["vectors-and-cosine-similarity"], "related": ["fundamentals/regularized-linear-models"]},
+    "matrix-multiplication-and-tensor-shapes": {"q": "How do you reason about tensor shapes and the cost of matrix multiplication in a model?", "prereqs": ["matrices-as-transformations"], "related": ["fundamentals/self-attention"]},
+    "linear-independence-basis-and-rank": {"q": "What is the rank of a matrix, and why do correlated features break linear regression?", "prereqs": ["matrices-as-transformations"], "related": ["fundamentals/linear-regression"]},
+    "orthogonality-and-projections": {"q": "Why is least squares a projection, and why are orthogonal matrices so useful?", "prereqs": ["vectors-and-cosine-similarity", "linear-independence-basis-and-rank"], "related": ["fundamentals/linear-regression"]},
+    "positive-definite-matrices": {"q": "What is a positive definite matrix, and where does it show up in ML?", "prereqs": ["eigenvalues-and-eigenvectors"], "related": ["fundamentals/convexity-and-local-minima"]},
+    "solving-linear-systems": {"q": "Why shouldn't you invert a matrix to solve Ax = b, and what is the pseudoinverse?", "prereqs": ["svd-and-low-rank", "orthogonality-and-projections"]},
+    "matrix-calculus": {"q": "How do you differentiate a matrix expression, like the least-squares loss?", "prereqs": ["matrix-multiplication-and-tensor-shapes", "derivatives-and-chain-rule"], "related": ["fundamentals/backpropagation"]},
+    "linear-algebra-practice": {"type": "interview", "prereqs": ["svd-and-low-rank"]},
     "derivatives-and-chain-rule": {"q": "How does backpropagation use the chain rule?", "related": ["fundamentals/backpropagation"]},
     "gradient-descent": {"q": "Why can a larger learning rate make training diverge, and how do momentum and Adam help?", "prereqs": ["derivatives-and-chain-rule"]},
     "convexity-and-local-minima": {"q": "What does convexity guarantee, and which models have a convex loss?", "prereqs": ["gradient-descent"]},

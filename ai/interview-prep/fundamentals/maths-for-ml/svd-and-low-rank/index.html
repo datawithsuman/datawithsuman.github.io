@@ -354,6 +354,21 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cEig" data-toc="SVD and eigendecomposition">
+  <div class="chap">SVD and eigendecomposition</div>
+  <h2>SVD and eigendecomposition, and very large matrices</h2>
+  <h3>How they connect</h3>
+<ul>
+  <li><b>Scope:</b> eigendecomposition needs a square matrix, and may need complex numbers. SVD works for any matrix, and always gives real values.</li>
+  <li><b>The link:</b> AᵀA = VΣ²Vᵀ. So A's right singular vectors are the eigenvectors of AᵀA, and its eigenvalues are the squared singular values.</li>
+  <li><b>When they match:</b> for a symmetric positive semi-definite matrix, SVD and eigendecomposition are the same.</li>
+  <li><b>PCA:</b> for centred data X with n rows, the eigenvalues of the covariance matrix are σ²/(n − 1). Libraries often use the SVD of X, which avoids forming XᵀX and squaring its condition number.</li>
+</ul>
+<h3>Randomised SVD</h3>
+<p>A full SVD is too slow for very large matrices, and you usually only want the top k directions. So multiply A by a small random matrix, which captures most of its top directions with high probability. Then run an exact SVD on that much smaller matrix. With fast-decaying singular values, this gets close to the true result at far lower cost.</p>
+<p>Next: <a href="../solving-linear-systems/">the pseudoinverse</a> uses SVD to solve systems with no ordinary inverse, and <a href="../vector-and-matrix-norms/">norms</a> define the error sizes used here.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>

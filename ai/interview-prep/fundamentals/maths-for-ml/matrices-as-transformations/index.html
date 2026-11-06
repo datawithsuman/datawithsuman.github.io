@@ -350,6 +350,16 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </table></div>
 </section>
 
+<section class="ch" id="cBasis" data-toc="Trace and change of basis">
+  <div class="chap">Trace and change of basis</div>
+  <h2>Trace and change of basis</h2>
+  <h3>Trace</h3>
+<p>The trace is the sum of a matrix's diagonal entries. It looks simple, but it also equals the sum of the eigenvalues, so it doesn't change when you change coordinates. In ML, it appears in the Frobenius norm, since ‖A‖²<sub>F</sub> = tr(AᵀA), and in the total variance of a dataset, which is the trace of its covariance matrix.</p>
+<h3>Change of basis</h3>
+<p>The same transformation looks different in different coordinates. If P's columns are the new axes, the matrix in those coordinates is P⁻¹AP. Determinant, trace, rank and eigenvalues all stay the same, as they describe the transformation itself. Picking the eigenvectors as your axes makes the matrix diagonal, which is what eigendecomposition does.</p>
+<p>Next: <a href="../matrix-multiplication-and-tensor-shapes/">matrix multiplication and shapes</a>, and <a href="../linear-independence-basis-and-rank/">linear independence and rank</a>.</p>
+</section>
+
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>
