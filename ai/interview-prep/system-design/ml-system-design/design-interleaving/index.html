@@ -244,7 +244,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="kicker">A/B Testing Design · added 6 Nov 2026</div>
   <h1>Test Rankers Faster with Interleaving</h1>
   <div class="meta">Based on published work: <a href="https://arxiv.org/html/2508.00751v1">Airbnb's KDD 2025 paper</a> (part read directly and part through a summary), <a href="https://tech.walmart.com/content/walmart-global-tech/en_us/blog/post/driving-faster-experimentation-through-interleaving-in-walmart-search.html">Walmart's post</a> and <a href="https://careers.doordash.com/blog/doordash-experimentation-with-interleaving-designs">DoorDash's post</a>, which was blocked for us, so we used search excerpts. Uses <a href="../../../fundamentals/ab-testing/sample-size-and-power/">sample size</a> and <a href="../../../fundamentals/machine-learning/ranking-metrics/">ranking metrics</a>.</div>
-  <div class="tldr"><b>In one breath:</b> An A/B test gives each user one ranker, so most of what you measure is differences between users. <b>Interleaving</b> shows each user one list <b>blended from both rankers</b>, so the same person compares them directly. It can need far less traffic, reported at around 2% at one company. So use it as a <b>fast filter</b>, then confirm the winner with an A/B test, because it tells you which ranker users prefer, not what the launch will do to your business.</div>
+  <div class="tldr"><b>In one breath:</b> An A/B test gives each user one ranker, so most of what you measure is differences between users. <b>Interleaving</b> shows each user one list <b>blended from both rankers</b>, so the same person compares them directly. It can need far less traffic. So use it as a <b>fast filter</b>, then confirm the winner with an A/B test, because it tells you which ranker users prefer, not what the launch will do to your business.</div>
 </header>
 
 <section class="ch" id="c1" data-toc="1 · Requirements">
@@ -314,7 +314,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
       <div class="stat"><div class="l">or, same traffic, time</div><div class="v ok" data-o="h">–</div></div>
     </div>
     <noscript><p class="small">Without JavaScript: with A going first, the merged list is a (A), b (B), c (shared), d (A), f (B). At a 50 times speed-up, a 21-day test needs about 2% of the traffic, or about 10 hours at the same traffic.</p></noscript>
-    <p class="small" style="margin:0">The lists follow the real paper's worked example. Speed-up is the traffic saved for similar power, 50 times by one company's report. It varies by metric, and a real test should still cover daily patterns.</p>
+    <p class="small" style="margin:0">The lists are a simple example, and the speed-up is an illustration of how much less traffic you might need for similar power. It varies by metric, and a real test should still cover daily patterns.</p>
   </div>
   <p>Tap <b>c</b>: nobody gets credit, as both rankers wanted it. Flip the coin: the pairs swap order, and on average neither ranker gets the better position. That's what makes the comparison fair.</p>
 </section>
@@ -322,7 +322,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <section class="ch" id="c4" data-toc="4 · Estimate">
   <div class="chap">4 · Back-of-the-envelope</div>
   <h2>The numbers worth saying out loud</h2>
-  <p class="small">Assumptions for the interview. The 50 times speed-up is from a published report.</p>
+  <p class="small">All of these are assumptions for the interview, including the 50 times speed-up.</p>
   <div class="tw"><table class="t">
     <tr><th>Question</th><th>Working</th><th>Result</th></tr>
     <tr><td>A/B testing all candidates, one by one</td><td>20 models × 3 weeks</td><td><b>60 weeks</b></td></tr>
@@ -349,21 +349,20 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 
 <section class="ch" id="c6" data-toc="6 · Real-world check">
   <div class="chap">6 · Real-world check</div>
-  <h2>What real teams reported</h2>
+  <h2>How real teams approached it</h2>
   <ul>
-    <li><b>Traffic:</b> one travel site reports a 50 times speed-up, meaning the traffic needed for similar power, using competitive pairs.</li>
-    <li><b>Agreement:</b> across 29 comparisons with A/B tests on the same rankers, it picked the same winner 82% of the time, with a correlation of 0.6.</li>
-    <li><b>Limits seen:</b> a ranker with a secondary objective was significantly negative in interleaving but neutral in an A/B test, since users could compare listings side by side.</li>
-    <li><b>Food delivery:</b> interleaving gained 34 to 109 times in sensitivity across five experiments, and 282 to 545 times after removing diluted exposures, at about 1/20th of the A/B traffic. Click rate gained half as much as checkout conversion.</li>
-    <li><b>Retail:</b> it's used as an early filter, with A/B tests for validation, and not for layouts or fundamentally different search strategies.</li>
+    <li><b>Filter, then confirm:</b> Search and delivery teams use interleaving to narrow down candidates early, and A/B tests to confirm the winner.</li>
+    <li><b>Fix the fairness:</b> Competitive pairs make credit simpler, and one coin flip per search balances positions between the two rankers.</li>
+    <li><b>Remove what can't help:</b> Teams increase sensitivity by ignoring results both rankers agree on, and users who never engaged.</li>
+    <li><b>Check it against A/B:</b> Before trusting it, teams run both methods on the same rankers and measure how often they pick the same winner.</li>
+    <li><b>Know its blind spots:</b> Teams report cases where interleaving and A/B disagree, as seeing options side by side changes behaviour. They avoid it for layouts and fundamentally different search strategies.</li>
   </ul>
-  <p class="small">All self-reported, on those companies' own products. Your speed-up depends on your metric and traffic.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">
   <div class="chap">Say it in an interview</div>
   <h2>The 2-minute walkthrough</h2>
-  <p class="say30">An A/B test gives each user one ranker, so most of the variance is between users. I'd use interleaving as a filter. For each search, a coin picks which ranker goes first, then we take each ranker's top unused item. If they agree, it goes in once with no credit. If they differ, we add a competitive pair, tagged by ranker. When a user clicks or books a tagged item, that ranker wins the pair, and each user votes for whichever won more. I'd test user votes against an even split with a proportion test. Because the same user sees both rankers, and only disagreements count, published reports show far less traffic needed, around 50 times less at one company. It only tells me which is preferred, though, not the business effect. It doesn't suit layouts, set-level ranking like diversity, or marketplace effects. So offline shortlists, interleaving filters, and an A/B test confirms the winner. I'd run both on some pairs to measure agreement, and log which ranker owns each position.</p>
+  <p class="say30">An A/B test gives each user one ranker, so most of the variance is between users. I'd use interleaving as a filter. For each search, a coin picks which ranker goes first, then we take each ranker's top unused item. If they agree, it goes in once with no credit. If they differ, we add a competitive pair, tagged by ranker. When a user clicks or books a tagged item, that ranker wins the pair, and each user votes for whichever won more. I'd test user votes against an even split with a proportion test. Because the same user sees both rankers, and only disagreements count, it can need far less traffic. It only tells me which is preferred, though, not the business effect. It doesn't suit layouts, set-level ranking like diversity, or marketplace effects. So offline shortlists, interleaving filters, and an A/B test confirms the winner. I'd run both on some pairs to measure agreement, and log which ranker owns each position.</p>
   <details class="qa"><summary>Interleaving says B wins, but the A/B test is neutral. Which do you trust?</summary><p>The A/B test for the launch decision, because it measures the real experience. Interleaving makes users compare options side by side, which isn't how they'd normally use the product. Look at why they differ, though: B may have won clicks that don't turn into bookings.</p></details>
   <details class="qa"><summary>How do you handle bookings that happen days later?</summary><p>Keep the user's assignment and logged lists across the test, then credit a booking to the ranker that showed that listing as a competitive item in their searches. Users vote once over the whole period. You can test different attribution windows, and check them against A/B results.</p></details>
   <details class="qa"><summary>Why does a coin flip per search matter?</summary><p>Whoever goes first gets the higher position in each pair, and higher positions get more clicks. The coin gives each ranker the better position equally often, so position bias averages out across searches, and a ranker can't win just by being placed first.</p></details>

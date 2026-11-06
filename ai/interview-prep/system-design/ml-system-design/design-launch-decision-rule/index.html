@@ -317,7 +317,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <label class="gcheck"><input type="checkbox" data-c="4" checked> Quality checks passed</label>
     <div class="stats" aria-live="polite"><div class="stat"><div class="l">decision</div><div class="v a" data-o="d">–</div></div></div>
     <noscript><p class="small">Without JavaScript: with 5 guardrails at 80% power each, the chance all pass when nothing changed is about 33%. Powering each at about 97% brings the decision back to at least 80%, at about twice the users.</p></noscript>
-    <p class="small" style="margin:0">At α = 5% and β = 20%, using the simple rule from the paper's Proposition 3.1, with one-sided tests. "All pass" assumes independent guardrails, the worst case. Extra users compare the required size with one uncorrected test. Our own calculation.</p>
+    <p class="small" style="margin:0">At α = 5% and β = 20%, using the simple correction from the paper, with one-sided tests. "All pass" assumes independent guardrails, the worst case. Extra users compare the required size with one uncorrected test. Our own calculation.</p>
   </div>
   <p>Raise the guardrails to <b>10</b>. Without a correction, a harmless change would pass them all only about <b>11%</b> of the time, so nearly every good change would be blocked. That's the risk that goes unnoticed, and why guardrails need power, not α, corrected.</p>
 </section>
@@ -352,16 +352,14 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 
 <section class="ch" id="c6" data-toc="6 · Real-world check">
   <div class="chap">6 · Real-world check</div>
-  <h2>What the real team reported</h2>
+  <h2>How the real team approached it</h2>
   <ul>
-    <li><b>The rule:</b> the four conditions above are what the company uses.</li>
-    <li><b>False positives:</b> only success metrics are corrected, at α/S. They say guardrails shouldn't be corrected, as there aren't multiple chances to win.</li>
-    <li><b>False negatives:</b> without a correction, with independent guardrails at 80% power, simultaneous power is well under 40% for 5 guardrails, and about 11% for 10.</li>
-    <li><b>The correction:</b> β/(G+1) keeps power at a minimum of 1 − β, for any correlation between metrics.</li>
-    <li><b>The full version:</b> it also corrects for deterioration and quality tests, though at common levels like 1%, the effect on β is negligible.</li>
-    <li><b>Its limit:</b> the rule isn't suitable when a decision depends partly on factors the experiment can't model.</li>
+    <li><b>Make the rule explicit:</b> The team writes one rule covering success, guardrails, harm and quality, so the decision is agreed before anyone sees results.</li>
+    <li><b>Match the test to the job:</b> Success metrics use superiority tests, and guardrails use non-inferiority tests against a margin.</li>
+    <li><b>Correct what actually inflates:</b> Needing at least one win inflates false wins, so that's corrected for success metrics. Needing all guardrails to pass reduces power, so power is corrected instead.</li>
+    <li><b>Keep it practical:</b> The approach is built for clarity, and it holds however the metrics are correlated.</li>
+    <li><b>Know when not to use it:</b> They say it doesn't fit decisions that depend partly on factors the experiment can't model.</li>
   </ul>
-  <p class="small">From the company's post and paper. The paper covers two-group, one-sided tests, and assumes each test achieves its stated error rates.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">

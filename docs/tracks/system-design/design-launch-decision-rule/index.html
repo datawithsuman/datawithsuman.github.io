@@ -62,7 +62,7 @@
   <text x="240" y="86" font-size="13" font-weight="600" fill="var(--ok)" text-anchor="middle">Ship only if all four pass. Agree this before the test starts.</text>
   <rect x="2" y="98" width="476" height="32" rx="8" fill="none" stroke="var(--a)" stroke-width="2" stroke-dasharray="6 5"/>
   <text x="240" y="119" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="middle">Correct false wins for success metrics, and power for guardrails</text>
-</svg><figcaption>From a real company&#x27;s framework. Agree on it before you see any data.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try to break it.</b> Raise the guardrails to 10, and watch how often a harmless change would pass. Then see what correcting it costs.</p><section class="ch" id="c3" data-toc="3 · Decision lab">
+</svg><figcaption>Agree on it before you see any data.</figcaption></figure></section><div class="sec" id="play"><h2 class="sec-title">Play</h2><p class="play-try"><b>Try to break it.</b> Raise the guardrails to 10, and watch how often a harmless change would pass. Then see what correcting it costs.</p><section class="ch" id="c3" data-toc="3 · Decision lab">
   <span class="pill a">Safety against sample size</span>
   <h3>What do extra guardrails cost?</h3>
   <div class="card lab" id="labRule">
@@ -85,7 +85,7 @@
     <label class="gcheck"><input type="checkbox" data-c="4" checked> Quality checks passed</label>
     <div class="stats" aria-live="polite"><div class="stat"><div class="l">decision</div><div class="v a" data-o="d">–</div></div></div>
     <noscript><p class="small">Without JavaScript: with 5 guardrails at 80% power each, the chance all pass when nothing changed is about 33%. Powering each at about 97% brings the decision back to at least 80%, at about twice the users.</p></noscript>
-    <p class="small" style="margin:0">At α = 5% and β = 20%, using the simple rule from the paper's Proposition 3.1, with one-sided tests. "All pass" assumes independent guardrails, the worst case. Extra users compare the required size with one uncorrected test. Our own calculation.</p>
+    <p class="small" style="margin:0">At α = 5% and β = 20%, using the simple correction from the paper, with one-sided tests. "All pass" assumes independent guardrails, the worst case. Extra users compare the required size with one uncorrected test. Our own calculation.</p>
   </div>
   <p>Raise the guardrails to <b>10</b>. Without a correction, a harmless change would pass them all only about <b>11%</b> of the time, so nearly every good change would be blocked. That's the risk that goes unnoticed, and why guardrails need power, not α, corrected.</p>
 </section><p class="play-why"><b>Now say why:</b> why does needing all guardrails to pass reduce power, not raise false wins?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: Architecture</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Architecture</h2><section class="ch" id="summary"><h3>In one breath</h3>Agree the rule before the test. <b>Ship if and only if</b>: at least one success metric significantly wins, every guardrail is significantly <b>not worse than an agreed margin</b>, nothing shows clear harm, and the quality checks pass. "Slightly worse" is only a problem if you can't rule out harm beyond the margin. The surprising part is the error control: because you need <b>all</b> guardrails to pass, correct <b>power</b> for them, not false positives.</section><section class="ch" id="c2" data-toc="2 · Design">
@@ -142,16 +142,14 @@
     <li><b>Automation:</b> build the rule into the platform, so the sample size comes from the plan and the result comes from the rule.</li>
   </ul>
 </section><section class="ch" id="c6" data-toc="6 · Real-world check">
-  <h3>What the real team reported</h3>
+  <h3>How the real team approached it</h3>
   <ul>
-    <li><b>The rule:</b> the four conditions above are what the company uses.</li>
-    <li><b>False positives:</b> only success metrics are corrected, at α/S. They say guardrails shouldn't be corrected, as there aren't multiple chances to win.</li>
-    <li><b>False negatives:</b> without a correction, with independent guardrails at 80% power, simultaneous power is well under 40% for 5 guardrails, and about 11% for 10.</li>
-    <li><b>The correction:</b> β/(G+1) keeps power at a minimum of 1 − β, for any correlation between metrics.</li>
-    <li><b>The full version:</b> it also corrects for deterioration and quality tests, though at common levels like 1%, the effect on β is negligible.</li>
-    <li><b>Its limit:</b> the rule isn't suitable when a decision depends partly on factors the experiment can't model.</li>
+    <li><b>Make the rule explicit:</b> The team writes one rule covering success, guardrails, harm and quality, so the decision is agreed before anyone sees results.</li>
+    <li><b>Match the test to the job:</b> Success metrics use superiority tests, and guardrails use non-inferiority tests against a margin.</li>
+    <li><b>Correct what actually inflates:</b> Needing at least one win inflates false wins, so that's corrected for success metrics. Needing all guardrails to pass reduces power, so power is corrected instead.</li>
+    <li><b>Keep it practical:</b> The approach is built for clarity, and it holds however the metrics are correlated.</li>
+    <li><b>Know when not to use it:</b> They say it doesn't fit decisions that depend partly on factors the experiment can't model.</li>
   </ul>
-  <p class="small">From the company's post and paper. The paper covers two-group, one-sided tests, and assumes each test achieves its stated error rates.</p>
 </section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="trap-note"><h3>&quot;It&#x27;s not significantly worse, so the guardrails are fine&quot;</h3><p>It sounds right, since no alarm went off. But a small or noisy test can fail to detect real harm. Not significant means you haven't shown harm, not that there's none. So test whether the change is significantly no worse than an agreed margin. If the interval still includes unacceptable harm, you don't have evidence that it's safe.</p></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
 <header class="say-head"><p class="eyebrow">Say it</p><h2>A launch wins on the main metric, but looks slightly worse on two guardrails. What&#x27;s your decision rule before the test starts?</h2></header>
 <ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>

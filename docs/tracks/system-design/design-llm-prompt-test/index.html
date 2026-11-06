@@ -126,15 +126,14 @@
     <li><b>Rollout:</b> start at a small share, like 5%, and watch the guardrails before you widen it.</li>
   </ul>
 </section><section class="ch" id="c6" data-toc="6 · Real-world check">
-  <h3>What the real team reported</h3>
+  <h3>How real teams approached it</h3>
   <ul>
-    <li><b>The start:</b> prompt changes were first judged by feel, in chat threads among staff.</li>
-    <li><b>The metric:</b> cognitive engagement, using an adapted learning framework, with experts labelling chats against a rubric. They reached 85% agreement between raters on a test set.</li>
-    <li><b>The judge:</b> an LLM judge was tuned to match experts, then scored about 20% of chat data nightly.</li>
-    <li><b>The unit:</b> they randomised by chat thread, reasoning that tutoring quality belongs to a conversation.</li>
-    <li><b>The tests:</b> prompt versions, system instructions and model comparisons, sometimes as small as one sentence.</li>
-    <li><b>Metrics:</b> cognitive engagement and skills reaching proficiency, with guardrails on giving away answers, thread length, wordiness and latency.</li>
-    <li><b>Not published here:</b> effect sizes, judge accuracy and costs. This account comes from a vendor's write-up of a webinar.</li>
+    <li><b>Start from what good means:</b> The team moved from judging prompts by feel to first defining a measure of how much students were thinking, based on a learning framework.</li>
+    <li><b>Experts before automation:</b> Experts labelled real chats against a rubric, and checked that they agreed with each other. Only then was an LLM judge tuned to match them.</li>
+    <li><b>Sample, don't score everything:</b> The judge scored a share of production chats nightly, which kept the cost manageable.</li>
+    <li><b>Pick the unit that fits the question:</b> They randomised by chat thread, because tutoring quality belongs to a conversation.</li>
+    <li><b>Test small changes:</b> They tested prompts, system instructions and different models, sometimes as small as one sentence, and treated experiments as a safety net rather than a delay.</li>
+    <li><b>Balance the metrics:</b> Thinking and skills learned were the goal, while guardrails watched for giving away answers, long threads, wordiness and slow replies.</li>
   </ul>
 </section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="trap-note"><h3>&quot;Use thumbs-up ratings, since users decide what&#x27;s good&quot;</h3><p>It sounds right, since it's direct user feedback. But few people rate, and those who do aren't typical. Worse, a student may love a tutor that hands out answers, so the rating can reward the very behaviour you want to stop. Measure the outcome you care about, using a judge checked against experts, and treat ratings as a side signal.</p></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
 <header class="say-head"><p class="eyebrow">Say it</p><h2>Your new LLM tutor&#x27;s prompt looks better in demos. How do you test it in production, and what&#x27;s your metric?</h2></header>

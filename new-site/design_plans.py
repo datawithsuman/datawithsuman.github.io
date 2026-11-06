@@ -260,7 +260,7 @@ DESIGN_PLANS.update({
         "A test shows orders per user up significantly. Two of five guardrails, latency and cancellations, are slightly negative but not significant. One person wants to ship, and another wants to wait. You realise no one agreed on a rule. The interviewer asks:",
         "A launch wins on the main metric, but looks slightly worse on two guardrails. What's your decision rule before the test starts?",
         "Think of approving a new medicine. It must be proven to work on at least one main outcome. And for each safety measure, you need evidence that it's no worse than an agreed limit. Having no proof of harm isn't enough, because a small trial might simply have missed it.",
-        RULE_PICTURE, "From a real company's framework. Agree on it before you see any data.",
+        RULE_PICTURE, "Agree on it before you see any data.",
         ("c3", "<b>Try to break it.</b> Raise the guardrails to 10, and watch how often a harmless change would pass. Then see what correcting it costs.", "<b>Now say why:</b> why does needing all guardrails to pass reduce power, not raise false wins?"),
         ["c2", "c4"], ["c5", "c6"], [], [],
         ["You agree the rule before the test.",

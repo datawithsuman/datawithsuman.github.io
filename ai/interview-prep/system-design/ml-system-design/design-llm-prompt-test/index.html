@@ -336,15 +336,14 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 
 <section class="ch" id="c6" data-toc="6 · Real-world check">
   <div class="chap">6 · Real-world check</div>
-  <h2>What the real team reported</h2>
+  <h2>How real teams approached it</h2>
   <ul>
-    <li><b>The start:</b> prompt changes were first judged by feel, in chat threads among staff.</li>
-    <li><b>The metric:</b> cognitive engagement, using an adapted learning framework, with experts labelling chats against a rubric. They reached 85% agreement between raters on a test set.</li>
-    <li><b>The judge:</b> an LLM judge was tuned to match experts, then scored about 20% of chat data nightly.</li>
-    <li><b>The unit:</b> they randomised by chat thread, reasoning that tutoring quality belongs to a conversation.</li>
-    <li><b>The tests:</b> prompt versions, system instructions and model comparisons, sometimes as small as one sentence.</li>
-    <li><b>Metrics:</b> cognitive engagement and skills reaching proficiency, with guardrails on giving away answers, thread length, wordiness and latency.</li>
-    <li><b>Not published here:</b> effect sizes, judge accuracy and costs. This account comes from a vendor's write-up of a webinar.</li>
+    <li><b>Start from what good means:</b> The team moved from judging prompts by feel to first defining a measure of how much students were thinking, based on a learning framework.</li>
+    <li><b>Experts before automation:</b> Experts labelled real chats against a rubric, and checked that they agreed with each other. Only then was an LLM judge tuned to match them.</li>
+    <li><b>Sample, don't score everything:</b> The judge scored a share of production chats nightly, which kept the cost manageable.</li>
+    <li><b>Pick the unit that fits the question:</b> They randomised by chat thread, because tutoring quality belongs to a conversation.</li>
+    <li><b>Test small changes:</b> They tested prompts, system instructions and different models, sometimes as small as one sentence, and treated experiments as a safety net rather than a delay.</li>
+    <li><b>Balance the metrics:</b> Thinking and skills learned were the goal, while guardrails watched for giving away answers, long threads, wordiness and slow replies.</li>
   </ul>
 </section>
 

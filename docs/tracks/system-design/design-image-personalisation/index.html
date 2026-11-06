@@ -108,10 +108,10 @@
   <p>Replay filters candidates. Then run an <b>A/B test</b>, comparing the personalised system with an unpersonalised bandit. Compare with a good baseline, or you'll credit personalisation for what any bandit could do.</p>
 </section><section class="ch" id="c4" data-toc="4 · Estimate">
   <h3>The numbers worth saying out loud</h3>
-  <p class="small">The first row is from the real talk. The rest are assumptions for the interview.</p>
+  <p class="small">All of these are assumptions for the interview.</p>
   <div class="tw"><table class="t">
     <tr><th>Question</th><th>Working</th><th>Result</th></tr>
-    <tr><td>Image requests at peak</td><td>From the talk</td><td><b>over 20 million a second</b></td></tr>
+    <tr><td>Image requests at peak</td><td>Our assumption</td><td><b>say 20 million a second</b></td></tr>
     <tr><td>Can each be a live model call?</td><td>Even at 1 ms each, 20 million × 1 ms</td><td><b>20,000 CPU seconds, every second</b></td></tr>
     <tr><td>So compute ahead of time</td><td>Choices stored per user and title</td><td><b>a fast lookup at request time</b></td></tr>
     <tr><td>Log size</td><td>1 billion impressions × 500 bytes</td><td><b>about 500 GB a day</b></td></tr>
@@ -129,16 +129,15 @@
     <li><b>Monitoring:</b> set aside a small share for simple exploration, to compare against the model and keep unbiased data.</li>
   </ul>
 </section><section class="ch" id="c6" data-toc="6 · Real-world check">
-  <h3>What the real team reported</h3>
+  <h3>How the real team approached it</h3>
   <ul>
-    <li><b>The scale:</b> over 20 million image requests a second at peak, with up to a few dozen candidate images per title.</li>
-    <li><b>The stakes:</b> over 80% of what people watch comes from recommendations, so an image affects a lot of viewing.</li>
-    <li><b>The setting:</b> the environment is the homepage, the action is the image, and the reward is positive engagement. Designers choose the images available, which adds a guard against clickbait.</li>
-    <li><b>Offline:</b> replay across algorithms showed personalisation beating the unpersonalised baseline.</li>
-    <li><b>Online:</b> an A/B test of the best personalised bandits against unpersonalised bandits showed a significant lift in core metrics. They didn't publish a percentage.</li>
-    <li><b>Serving:</b> precomputed choices with an image lookup at request time, logging the exploration probability, candidates and a snapshot of facts for features.</li>
+    <li><b>Frame it as a bandit:</b> The homepage is the environment, showing an image is the action, and positive engagement is the reward.</li>
+    <li><b>Guard against clickbait:</b> Designers choose which images are available, and the reward is about enjoying a title, not only clicking.</li>
+    <li><b>Filter offline, prove online:</b> Replay compared algorithms on past sessions. Then an A/B test compared the best personalised bandits with unpersonalised ones.</li>
+    <li><b>Log at decision time:</b> They recorded the exploration probability, the candidates and a snapshot of the facts used for features, and shared feature code between training and serving.</li>
+    <li><b>Let scale shape the design:</b> With so many requests, they computed choices ahead of time and looked them up, with care to always show some image.</li>
   </ul>
-  <p class="small">From the talk's slides and a summary of the company's post. It's from 2018, so current systems may differ.</p>
+  <p class="small">This reflects a 2018 talk, so current systems may differ.</p>
 </section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="trap-note"><h3>&quot;Just train a classifier on past click data&quot;</h3><p>It sounds right, since you have plenty of logs. But past data only shows images that were chosen for a reason, so you can't tell what would've happened with others. Without exploration and logged probabilities, the model learns from its own past choices. Clicks also reward clickbait, so reward watching, and pay for some exploration.</p></section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
 <header class="say-head"><p class="eyebrow">Say it</p><h2>You want to personalise which image each user sees for each title. How do you choose it, and how do you prove it helps?</h2></header>
 <ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>

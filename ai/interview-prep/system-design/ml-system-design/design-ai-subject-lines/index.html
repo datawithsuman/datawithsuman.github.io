@@ -298,7 +298,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
       <div class="stat"><div class="l">posts using the AI line</div><div class="v info" data-o="s">–</div></div>
     </div>
     <noscript><p class="small">Without JavaScript: always using AI gives about −6% clicks. Using it only where a model with 67% precision and 37% recall picks it gives about +0.8%.</p></noscript>
-    <p class="small" style="margin:0">Our simple model, compared with the rule-based line at 0%. The default precision, recall and 40% share come from the real case. The lift and loss values are invented for illustration. It also assumes wins and losses are the same size across posts.</p>
+    <p class="small" style="margin:0">Our simple model, compared with the rule-based line at 0%. All the values are invented for illustration. It also assumes wins and losses are the same size across posts.</p>
   </div>
   <p>The default model is often wrong, and it misses most winners. Yet it flips <b>−6%</b> to a small gain, because it blocks most of the losing lines. Lower the precision until the gain disappears, and that's the break-even point: <b>precision must beat loss ÷ (lift + loss)</b>.</p>
 </section>
@@ -306,7 +306,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <section class="ch" id="c4" data-toc="4 · Estimate">
   <div class="chap">4 · Back-of-the-envelope</div>
   <h2>The numbers worth saying out loud</h2>
-  <p class="small">All of these are assumptions for the interview, apart from the 600 sends, which come from the real case.</p>
+  <p class="small">All of these are assumptions for the interview.</p>
   <div class="tw"><table class="t">
     <tr><th>Question</th><th>Working</th><th>Result</th></tr>
     <tr><td>Emails per day</td><td>10,000 posts × 600 sends</td><td><b>6 million</b></td></tr>
@@ -333,16 +333,15 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 
 <section class="ch" id="c6" data-toc="6 · Real-world check">
   <div class="chap">6 · Real-world check</div>
-  <h2>What the real team reported</h2>
+  <h2>How real teams approached it</h2>
   <ul>
-    <li><b>The first result:</b> the plain LLM subject lines got 56% of the click rate of the rule-based ones. A more informative line didn't mean more clicks.</li>
-    <li><b>Prompts alone weren't enough:</b> an extraction prompt improved sessions by 3.7% against writing from scratch, but it still lost to the rule.</li>
-    <li><b>The labels:</b> about 50,000 examples, with about 40% favouring the AI line. A win meant a click-rate ratio above 1.10, a loss meant below 0.90, and posts with under 300 sends were dropped.</li>
-    <li><b>The reward model:</b> a fine-tuned small model reached 66.85% accuracy, against a 42.5% baseline. When it picked the AI line, it had 67% precision and 37% recall.</li>
-    <li><b>The final test:</b> +1% sessions and +0.4% weekly active users, against the baseline. Trying more than two candidates per post didn't show a promising gain.</li>
-    <li><b>Operations:</b> each post goes out 600 times on average, so generating once cuts LLM cost by 600 times. Accuracy is checked daily, with a retrain if it falls by more than 10%.</li>
+    <li><b>Accept the surprise:</b> The plain LLM lines lost to a very simple rule. The team concluded that a more informative line doesn't mean more clicks.</li>
+    <li><b>Prompts have limits:</b> Asking the model to extract rather than write helped, but prompt changes alone couldn't beat the rule.</li>
+    <li><b>Turn tests into labels:</b> They used real click results as labels, rather than human opinions of which line was better, with thresholds to ignore close calls and low-volume posts.</li>
+    <li><b>Choose, don't replace:</b> A small fine-tuned model decided when to use the AI line, keeping the rule for everything else. Even an imperfect model was enough to turn the result around.</li>
+    <li><b>Keep it simple:</b> Generating many candidates per post wasn't clearly better than generating a couple.</li>
+    <li><b>Operate it properly:</b> They cached per post, retried failed calls, fell back to the rule, checked the model's accuracy daily and retrained it when it dropped.</li>
   </ul>
-  <p class="small">The company's own numbers. Some details come from our summary of the paper's later sections.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">
