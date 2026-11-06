@@ -109,8 +109,8 @@ def preview_tags(title, desc, path):
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
     if page == "home":
-        nav = ('<nav class="links" aria-label="Main"><a href="#tracks">Tracks</a><a href="#how">How lessons work</a>'
-               '<a href="#roadmap">Roadmap</a></nav>')
+        nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
+               f'<a href="{root}#roadmap">Roadmap</a><a href="{root}about/">About</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
@@ -144,8 +144,22 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 """
 
 
+EMAIL = "datawithsuman@gmail.com"
+SOCIAL = [
+    ("LinkedIn", "https://www.linkedin.com/in/sumandey02/", '<path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.54h.05c.53-1 1.82-2.05 3.75-2.05 4 0 4.75 2.63 4.75 6.06V21h-4v-5c0-1.2-.02-2.73-1.66-2.73-1.67 0-1.92 1.3-1.92 2.65V21h-4z"/>'),
+    ("GitHub", "https://github.com/datawithsuman/datawithsuman.github.io", '<path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/>'),
+    ("X", "https://x.com/datawithsuman", '<path d="M17.53 3h3.06l-6.69 7.65L21.77 21h-6.16l-4.83-6.31L5.26 21H2.2l7.16-8.18L1.8 3h6.32l4.36 5.77zm-1.07 16.17h1.7L7.2 4.73H5.38z"/>'),
+    ("Email", f"mailto:{EMAIL}", '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.4 7.5v9.5h15.2V7.5zM5.8 7l6.2 4.6L18.2 7z"/>'),
+]
+
+
+def social_html(cls="foot-social"):
+    links = "".join(f'<a href="{url}" aria-label="{name}" title="{name}"{"" if url.startswith("mailto") else " rel=me"}><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">{icon}</svg></a>' for name, url, icon in SOCIAL)
+    return f'<nav class="{cls}" aria-label="Find us elsewhere">{links}</nav>'
+
+
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span>@datawithsuman</span><span>AI &amp; ML, explained simply.</span><a href="{root}roadmaps/">Free roadmaps</a></div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -759,6 +773,8 @@ def search_index():
     rows = [{"track": l["track"]["id"], "trackName": l["track"]["name"], "n": l["track"]["n"], "title": l["title"],
              "module": l["module"]["name"], "type": TYPE_LABEL[l["type"]], "url": l["url"], "text": f'{l["lead"]} {l.get("q", "")}'} for l in ORDERED]
     roadmaps_page()
+    about_page()
+    privacy_page()
     site_files()
     write("assets/search-index.js", "window.SEARCH_INDEX=" + json.dumps(rows, ensure_ascii=False) + ";\n")
 
@@ -777,6 +793,52 @@ def roadmaps_page():
     write("roadmaps/index.html", html + foot_html(root))
 
 
+def about_page():
+    """What the site is for, in plain words, with common questions and how to get in touch."""
+    root = "../"
+    desc = "A free site for learning AI and machine learning until you can explain it, with interactive lessons and interview practice."
+    faq = [
+        ("Is it free?", "Yes. Every lesson is free to read, and you don't need an account."),
+        ("Who is it for?", "Anyone preparing for AI or ML interviews, and engineers who want to understand these ideas properly. You can start from zero, or jump straight to the part you need."),
+        ("Where should I start?", f'If you\'re new, begin with <a href="{root}tracks/fundamentals/">Fundamentals</a>. If you have an interview soon, go to the interview questions and fill the gaps they show. If you already build systems, try <a href="{root}tracks/system-design/">System Design</a>.'),
+        ("How much maths do I need?", f'Less than you might expect. <a href="{root}tracks/fundamentals/">Fundamentals</a> teaches the maths as it\'s used in ML, and each lesson lists what to read first. Nothing is locked, so you can skip what you know.'),
+        ("Will I learn to code models here?", "Lessons focus on how ideas work and how to explain them, so they have very little code. They pair well with a hands-on course or your own projects."),
+        ("Are the numbers from real companies?", "Where a lesson uses a real system, it links to its sources. Numbers in labs and estimates are examples for practice, unless the lesson says otherwise."),
+        ("Does it save my progress?", f'Yes, in your own browser. It isn\'t sent anywhere, so it won\'t follow you to another device. See the <a href="{root}privacy/">privacy note</a>.'),
+        ("I found a mistake. What should I do?", f'Please <a href="mailto:{EMAIL}">email me</a> with the lesson\'s name. Fixes go in as soon as they can.'),
+    ]
+    items = "".join(f'<details class="faq-item"><summary>{q}</summary><p>{a}</p></details>' for q, a in faq)
+    how = "".join(f"<li>{x}</li>" for x in [
+        "<b>It starts with a question.</b> Each lesson opens with what an interviewer would actually ask.",
+        "<b>You build the idea.</b> One analogy, one picture, then a lab you can try to break.",
+        "<b>You say it out loud.</b> Lessons end with you explaining the answer and taking follow-up questions, because reading isn't the same as knowing."])
+    html = head_html("About · AIML Rounds", desc, root, path="about/")
+    html += f"""<main id="main"><div class="page about">
+<section class="hero-roadmaps"><p class="eyebrow">ABOUT</p><h1 class="h1-home">Learn AI until you can explain it.</h1><p class="lead">{desc}</p></section>
+<section class="panel block" id="why"><h2>Why this site exists</h2><p>You can read about an idea, recognise it and still get stuck when someone asks you to explain it. AIML Rounds is built to close that gap. Its {len(ORDERED)} lessons cover maths, machine learning, deep learning, LLMs, AI engineering and system design.</p></section>
+<section class="panel block" id="how"><h2>How lessons work</h2><ul class="about-list">{how}</ul></section>
+<section class="panel block" id="faq"><h2>Common questions</h2><div class="faq">{items}</div></section>
+<section class="panel block" id="contact"><h2>Get in touch</h2><p>Questions, corrections and ideas are all welcome at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>{social_html("about-social")}</section>
+</div></main>
+"""
+    write("about/index.html", html + foot_html(root))
+
+
+def privacy_page():
+    """Plain facts about what the site stores. Update this if analytics or a sign-up is added."""
+    root = "../"
+    desc = "What this site stores, and which outside services your browser connects to."
+    html = head_html("Privacy · AIML Rounds", desc, root, path="privacy/")
+    html += f"""<main id="main"><div class="page about">
+<section class="hero-roadmaps"><p class="eyebrow">PRIVACY</p><h1 class="h1-home">Privacy, in plain words.</h1><p class="lead">{desc}</p></section>
+<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts, sign-ups, ads or analytics.</li><li>Your lesson progress and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
+<section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
+<section class="panel block"><h2>Questions</h2><p>Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></section>
+</div></main>
+"""
+    write("privacy/index.html", html + foot_html(root))
+
+
 def site_files():
     """What GitHub Pages needs at the site root: no Jekyll, a 404 page, the custom domain, a sitemap and robots."""
     write(".nojekyll", "")
@@ -788,7 +850,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "roadmaps/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
