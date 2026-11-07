@@ -252,7 +252,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <tr><td><b>MMLU</b> (2021)</td><td>57 subjects, 4-option multiple choice; 14,042 test questions</td><td>saturated near 90%; ~6.5% of questions have errors; MMLU-Pro uses 10 options and harder questions</td></tr>
     <tr><td><b>GPQA Diamond</b></td><td>198 "Google-proof" biology, physics and chemistry questions</td><td>experts 65%, skilled non-experts with 30+ minutes of web search 34%</td></tr>
     <tr><td><b>AIME</b></td><td>30 competition maths problems per year, integer answers</td><td>new problems each year limit contamination; tiny, so very noisy</td></tr>
-    <tr><td><b>SWE-bench Verified</b></td><td>500 real GitHub issues from Python repos; the patch must make hidden tests pass</td><td>human-validated subset of SWE-bench's 2,294 issues; measures agentic coding</td></tr>
+    <tr><td><b>SWE-bench Verified</b></td><td>500 real GitHub issues from Python repos; the patch must make hidden tests pass</td><td>human-validated subset of SWE-bench's 2,294 issues; OpenAI, which created it, stopped reporting it in 2026, citing contamination and flawed tests</td></tr>
     <tr><td>Others</td><td>HumanEval (saturated), GSM8K (saturated), Humanity's Last Exam, LiveCodeBench (rolling, post-cutoff problems), MT-Bench / Arena (open-ended; next lesson)</td><td>live and rolling benchmarks fight contamination</td></tr>
   </table></div>
 </section>
@@ -287,6 +287,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Mitigation:</b> private held-out sets, rolling benchmarks with problems newer than the model's cutoff (LiveCodeBench, new AIME years), decontaminating training data, and reporting contamination analyses.</li>
   </ul>
   <div class="card ok"><b>For your own product:</b> build a held-out set of real, representative tasks (support tickets with correct resolutions), never train on it, version it, and report confidence intervals. It predicts deployment quality far better than a public leaderboard.</div>
+  <div class="card bad" id="swe-retired"><b>A benchmark's life cycle: SWE-bench Verified.</b> In February 2026, OpenAI said it would stop reporting this benchmark, which it had helped create. It audited 27.6% of the problems its model had failed, and found that at least 59.4% of those had tests that rejected correct solutions. Frontier models could also reproduce some of the original fixes from memory. So rising scores increasingly measured exposure to the test. It recommended SWE-bench Pro instead, which keeps some of its data private. Expect any public benchmark to wear out this way, and re-check how much your own favourite is still telling you.</div>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -300,11 +301,11 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">Say it in an interview</div>
   <h2>How to explain it</h2>
   <h3>The 30-second answer</h3>
-  <p class="say30">LLM benchmarks include MMLU for broad knowledge, GPQA Diamond for expert-level science, AIME for competition maths and SWE-bench Verified for real coding tasks. I treat scores with care for three reasons: small test sets are noisy, for example GPQA Diamond's 198 questions give about plus or minus 7 points at 60 percent; older benchmarks are saturated and contain label errors; and test data leaks into training, which GSM1k exposed with drops of up to 13 points for some models. Contamination is detected with n-gram overlap, canary strings and membership-inference tests, and avoided with private or rolling benchmarks. For a product, I'd rely on our own held-out evaluation set.</p>
+  <p class="say30">LLM benchmarks include MMLU for broad knowledge, GPQA Diamond for expert-level science, AIME for competition maths and the SWE-bench family for real coding tasks, though its creator has now dropped SWE-bench Verified. I treat scores with care for three reasons: small test sets are noisy, for example GPQA Diamond's 198 questions give about plus or minus 7 points at 60 percent; older benchmarks are saturated and contain label errors; and test data leaks into training, which GSM1k exposed with drops of up to 13 points for some models. Contamination is detected with n-gram overlap, canary strings and membership-inference tests, and avoided with private or rolling benchmarks. For a product, I'd rely on our own held-out evaluation set.</p>
   <h3>Likely follow-ups</h3>
   <details class="qa"><summary>How many examples does an eval set need?</summary><p>For ±3 points at 95% confidence near 50% accuracy, n ≈ (1.96 × 0.5 / 0.03)² ≈ 1,070. To detect smaller differences, use paired comparisons on the same items.</p></details>
   <details class="qa"><summary>How would you check whether a model has seen a benchmark?</summary><p>Search training data for n-gram overlap or canary strings if you have it; otherwise compare performance on the original vs. paraphrased or newly written equivalent questions, and use membership-inference scores.</p></details>
-  <details class="qa"><summary>Why does SWE-bench need a "Verified" subset?</summary><p>Some original tasks had underspecified issues or tests that rejected valid fixes; human annotators filtered to 500 solvable, fairly tested tasks.</p></details>
+  <details class="qa"><summary>Why does SWE-bench need a "Verified" subset?</summary><p>Some original tasks had underspecified issues or tests that rejected valid fixes; human annotators filtered to 500 tasks. Even so, a 2026 audit by OpenAI found many remaining failures were due to flawed tests, and that models could recall some fixes from memory.</p></details>
   <h3>What not to say</h3>
   <ul><li>"Model A is better: it scored 1 point higher." Check the error bars.</li><li>"High MMLU means it'll work for our users." Test on your own tasks.</li></ul>
 </section>
@@ -314,7 +315,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <ol class="src-list">
     <li>D. Hendrycks et al., "Measuring Massive Multitask Language Understanding", ICLR 2021, <a href="https://arxiv.org/abs/2009.03300">arXiv:2009.03300</a>; A. Gema et al., "Are We Done with MMLU?", NAACL 2025, <a href="https://arxiv.org/abs/2406.04127">arXiv:2406.04127</a>.</li>
     <li>D. Rein et al., "GPQA: A Graduate-Level Google-Proof Q&amp;A Benchmark", COLM 2024, <a href="https://arxiv.org/abs/2311.12022">arXiv:2311.12022</a>.</li>
-    <li>C. Jimenez et al., "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", ICLR 2024, <a href="https://arxiv.org/abs/2310.06770">arXiv:2310.06770</a>; OpenAI, "Introducing SWE-bench Verified", 2024.</li>
+    <li>C. Jimenez et al., "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", ICLR 2024, <a href="https://arxiv.org/abs/2310.06770">arXiv:2310.06770</a>; OpenAI, "Introducing SWE-bench Verified", 2024; OpenAI, <a href="https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/">"Why we no longer evaluate SWE-bench Verified"</a>, 2026, as reported by <a href="https://the-decoder.com/openai-wants-to-retire-the-ai-coding-benchmark-that-everyone-has-been-competing-on/">The Decoder</a> and <a href="https://gigazine.net/gsc_news/en/20260429-swe-bench-verified">Gigazine</a>.</li>
     <li>H. Zhang et al., "A Careful Examination of Large Language Model Performance on Grade School Arithmetic" (GSM1k), NeurIPS 2024 Datasets &amp; Benchmarks, <a href="https://arxiv.org/abs/2405.00332">arXiv:2405.00332</a>; W. Shi et al., "Detecting Pretraining Data from Large Language Models" (Min-K% Prob), ICLR 2024, <a href="https://arxiv.org/abs/2310.16789">arXiv:2310.16789</a>.</li>
     <li>E. Miller, "Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations", 2024, <a href="https://arxiv.org/abs/2411.00640">arXiv:2411.00640</a>.</li>
   </ol>

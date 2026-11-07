@@ -427,7 +427,7 @@ LLM_PLANS.update({
         trap_html="<p>It sounds right, since fine-tuning changes the model. But fine-tuning teaches behaviour well and new facts poorly, so use retrieval for knowledge. LoRA isn't always as good as full fine-tuning either: on large-scale code and maths training it underperformed. For format, tone and narrow tasks, it usually matches.</p>"),
     "fundamentals/decoding-and-sampling": _plan(
         "The assistant is writing \"Your biryani will arrive in …\", and the next token should be a number of minutes, not \"purple\". A colleague turns the temperature up to 2 for livelier replies, with top-p at 0.9, and the text derails. The interviewer asks:",
-        "Why does top-p fall apart at high temperature, and min-p doesn't?",
+        "Why does top-p fall apart at high temperature, and is min-p really better?",
         "Think of choosing from a huge menu. Temperature is how adventurous you feel. Top-p says to keep the dishes that make up 90% of orders, and if tastes are flat, that's most of the menu. Min-p says to keep dishes at least a tenth as popular as the favourite, so the cut moves with how clear the favourite is.",
         TAIL_PICTURE, "From the lab: nine sensible tokens plus 1,000 junk tokens.",
         ("c3", "<b>Try to break it.</b> Set the temperature to 1, and switch between no truncation, greedy, top-k, top-p and min-p. Then raise it to 2 and repeat.", "<b>Now say why:</b> each junk token is negligible, so how does the tail derail the sentence?"),
@@ -437,8 +437,8 @@ LLM_PLANS.update({
          "Temperature divides the logits, to sharpen or flatten the distribution.",
          "The long tail adds up, so we truncate.",
          "Top-k keeps a fixed number, and top-p keeps the smallest set covering, say, 90%.",
-         "Min-p keeps tokens above a fraction of the top token's probability, so it's robust at high temperature.",
-         "You matched settings to tasks: near zero for extraction, moderate for chat and higher with min-p for creative work."],
+         "Min-p keeps tokens above a fraction of the top token's probability, so junk stays out, though its overall benefit is disputed.",
+         "You matched settings to tasks: near zero for extraction, moderate for chat and higher for creative work, tested on your own task."],
         trap_title="\"Top-p always cuts out bad tokens\"",
         trap_html="<p>It sounds right, since cutting the tail is its job. But on a flat distribution the nucleus can be huge. At T = 2 in the lab, top-p needs 887 tokens to reach 90%, and samples junk 79.7% of the time. Higher temperature doesn't make the model smarter or more creative either: it only flattens the distribution.</p>"),
     "fundamentals/in-context-learning-and-cot": _plan(

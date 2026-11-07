@@ -2,9 +2,9 @@
 # Each lesson here adds what to read first. Interview questions live in the lesson's plan once it's converted.
 
 GROUPS = [
-    ("architecture", "Modern architecture", "What modern LLMs changed: RMSNorm, SwiGLU, GQA, MLA, FlashAttention, long context and MoE."),
+    ("architecture", "Modern architecture", "What modern LLMs changed: RMSNorm, SwiGLU, GQA, MLA, hardware limits, FlashAttention, long context, attention alternatives, MoE and vision."),
     ("pretraining", "Pretraining", "Next-token prediction, data pipelines, scaling laws, distributed training and stability."),
-    ("post-training", "Post-training", "SFT, RLHF and reward models, DPO, reasoning models, distillation and LoRA."),
+    ("post-training", "Post-training", "SFT, policy gradients, RLHF and reward models, DPO, reasoning models, distillation, LoRA and safety."),
     ("generation", "Generation", "Decoding and sampling, prompting and chain-of-thought, and hallucination."),
     ("llm-eval", "Evaluating LLMs and practice", "Benchmarks, contamination, LLM-as-a-judge and two practice sets."),
 ]
@@ -12,20 +12,25 @@ GROUPS = [
 LESSONS = {
     "modern-llm-architecture": {"prereqs": ["transformer-end-to-end"]},
     "attention-variants-mqa-gqa-mla": {"prereqs": ["modern-llm-architecture", "multi-head-attention"]},
+    "gpus-tpus-and-memory-bandwidth": {"prereqs": ["modern-llm-architecture"]},
     "flashattention": {"prereqs": ["self-attention"]},
     "long-context": {"prereqs": ["positional-encodings", "attention-variants-mqa-gqa-mla"]},
+    "attention-alternatives": {"prereqs": ["long-context", "gpus-tpus-and-memory-bandwidth"]},
     "mixture-of-experts": {"prereqs": ["modern-llm-architecture"]},
+    "vision-language-models": {"prereqs": ["modern-llm-architecture", "vision-transformers"]},
     "next-token-prediction": {"prereqs": ["n-gram-language-models", "transformer-end-to-end"]},
     "pretraining-data": {"prereqs": ["next-token-prediction"]},
     "scaling-laws": {"prereqs": ["next-token-prediction"]},
     "distributed-training": {"prereqs": ["modern-llm-architecture"]},
     "training-instabilities": {"prereqs": ["next-token-prediction", "normalisation-layers"]},
     "supervised-fine-tuning": {"prereqs": ["next-token-prediction"]},
-    "rlhf-and-reward-models": {"prereqs": ["supervised-fine-tuning"]},
+    "policy-gradients-for-llms": {"prereqs": ["supervised-fine-tuning"]},
+    "rlhf-and-reward-models": {"prereqs": ["policy-gradients-for-llms"]},
     "dpo": {"prereqs": ["rlhf-and-reward-models"]},
     "reasoning-models-grpo": {"prereqs": ["rlhf-and-reward-models"]},
     "distillation": {"prereqs": ["supervised-fine-tuning"]},
     "lora-and-qlora": {"prereqs": ["supervised-fine-tuning"]},
+    "safety-training-and-jailbreaks": {"prereqs": ["supervised-fine-tuning", "rlhf-and-reward-models"]},
     "decoding-and-sampling": {"prereqs": ["next-token-prediction"]},
     "in-context-learning-and-cot": {"prereqs": ["decoding-and-sampling"]},
     "hallucination": {"prereqs": ["in-context-learning-and-cot"]},

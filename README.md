@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-240-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-245-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,9 +34,9 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 117 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 41 |
-| 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 2 |
+| 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 188 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 54 |
+| 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
 ---
@@ -382,7 +382,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>LLMs</b> · 23 lessons</summary>
+<summary><b>LLMs</b> · 28 lessons</summary>
 
 <br>
 
@@ -392,9 +392,12 @@ Tap a track to see its lessons, in the order to learn them.
 |:---:|---|:---:|:---:|
 | 1 | [Anatomy of a Modern LLM](https://aimlrounds.com/tracks/fundamentals/modern-llm-architecture/) | 🟡 Intermediate | 20 min |
 | 2 | [Attention Variants: MQA, GQA and MLA](https://aimlrounds.com/tracks/fundamentals/attention-variants-mqa-gqa-mla/) | 🟡 Intermediate | 25 min |
-| 3 | [FlashAttention](https://aimlrounds.com/tracks/fundamentals/flashattention/) | 🔴 Advanced | 25 min |
-| 4 | [Long Context: RoPE Scaling, Sliding Windows and Attention Sinks](https://aimlrounds.com/tracks/fundamentals/long-context/) | 🔴 Advanced | 25 min |
-| 5 | [Mixture of Experts](https://aimlrounds.com/tracks/fundamentals/mixture-of-experts/) | 🟡 Intermediate | 25 min |
+| 3 | [GPUs, TPUs and Memory Bandwidth](https://aimlrounds.com/tracks/fundamentals/gpus-tpus-and-memory-bandwidth/) | 🟡 Intermediate | 20 min |
+| 4 | [FlashAttention](https://aimlrounds.com/tracks/fundamentals/flashattention/) | 🔴 Advanced | 25 min |
+| 5 | [Long Context: RoPE Scaling, Sliding Windows and Attention Sinks](https://aimlrounds.com/tracks/fundamentals/long-context/) | 🔴 Advanced | 25 min |
+| 6 | [Attention Alternatives: Sparse, Linear and Compressed](https://aimlrounds.com/tracks/fundamentals/attention-alternatives/) | 🟡 Intermediate | 22 min |
+| 7 | [Mixture of Experts](https://aimlrounds.com/tracks/fundamentals/mixture-of-experts/) | 🟡 Intermediate | 25 min |
+| 8 | [Vision-Language Models](https://aimlrounds.com/tracks/fundamentals/vision-language-models/) | 🟡 Intermediate | 20 min |
 
 **Pretraining**
 
@@ -411,11 +414,13 @@ Tap a track to see its lessons, in the order to learn them.
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [SFT and Instruction Tuning](https://aimlrounds.com/tracks/fundamentals/supervised-fine-tuning/) | 🟢 Beginner | 20 min |
-| 2 | [Reward Models and RLHF (PPO)](https://aimlrounds.com/tracks/fundamentals/rlhf-and-reward-models/) | 🟡 Intermediate | 25 min |
-| 3 | [DPO and Preference Optimisation](https://aimlrounds.com/tracks/fundamentals/dpo/) | 🟡 Intermediate | 25 min |
-| 4 | [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://aimlrounds.com/tracks/fundamentals/reasoning-models-grpo/) | 🔴 Advanced | 25 min |
-| 5 | [Distillation: How Small Models Learn from Big Ones](https://aimlrounds.com/tracks/fundamentals/distillation/) | 🟡 Intermediate | 20 min |
-| 6 | [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://aimlrounds.com/tracks/fundamentals/lora-and-qlora/) | 🟡 Intermediate | 25 min |
+| 2 | [Policy Gradients for LLMs](https://aimlrounds.com/tracks/fundamentals/policy-gradients-for-llms/) | 🟡 Intermediate | 20 min |
+| 3 | [Reward Models and RLHF (PPO)](https://aimlrounds.com/tracks/fundamentals/rlhf-and-reward-models/) | 🟡 Intermediate | 25 min |
+| 4 | [DPO and Preference Optimisation](https://aimlrounds.com/tracks/fundamentals/dpo/) | 🟡 Intermediate | 25 min |
+| 5 | [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://aimlrounds.com/tracks/fundamentals/reasoning-models-grpo/) | 🔴 Advanced | 25 min |
+| 6 | [Distillation: How Small Models Learn from Big Ones](https://aimlrounds.com/tracks/fundamentals/distillation/) | 🟡 Intermediate | 20 min |
+| 7 | [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://aimlrounds.com/tracks/fundamentals/lora-and-qlora/) | 🟡 Intermediate | 25 min |
+| 8 | [Safety Training and Jailbreaks](https://aimlrounds.com/tracks/fundamentals/safety-training-and-jailbreaks/) | 🟡 Intermediate | 20 min |
 
 **Generation**
 

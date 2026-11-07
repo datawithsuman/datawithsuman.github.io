@@ -264,7 +264,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     {"t":"rms","c":"st","label":"RMSNorm","say":"Divide each vector by its root-mean-square and multiply by a learned gain g. No mean subtraction and no bias, unlike LayerNorm."},
     {"t":"gate","c":"ok","label":"gate branch","say":"x W₁ passes through Swish (SiLU), which decides how much of each hidden unit to let through."},
     {"t":"up","c":"a","label":"value branch","say":"x W₃ is a plain linear projection; it is multiplied element by element by the gate."},
-    {"t":"down","c":"b","label":"down projection","say":"W₂ maps the hidden size back to d. Three matrices instead of two, so the hidden size is shrunk to about 8d/3 to keep the parameter count similar (Llama 3 8B: 14,336 for d = 4,096)."}
+    {"t":"down","c":"b","label":"down projection","say":"W₂ maps the hidden size back to d. Three matrices instead of two, so the hidden size is shrunk to about 8d/3 to keep the parameter count similar. Models adjust this: Llama 3 8B uses 14,336 for d = 4,096, which is 3.5d."}
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-rms}{\mathrm{RMSNorm}(x) = \frac{x}{\sqrt{\tfrac1d\sum_i x_i^2 + \epsilon}}\odot g}, \qquad \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = \class{term t-down}{\big(}\class{term t-gate}{\mathrm{SiLU}(xW_1)}\odot \class{term t-up}{xW_3}\class{term t-down}{\big)W_2}"></div></div>
     <ol class="say"></ol>
@@ -303,6 +303,15 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Mistral 7B</b> added sliding-window attention; <b>Mixtral</b> and <b>DeepSeek-V3</b> replace the dense FFN with a <a href="../mixture-of-experts/">mixture of experts</a>; DeepSeek-V2/V3 replace GQA with <a href="../attention-variants-mqa-gqa-mla/">multi-head latent attention</a>.</li>
     <li>Newer stability tweaks include QK-norm (normalising queries and keys before the dot product, used in OLMo 2 and Qwen3) and extra norms after sub-layers; see <a href="../training-instabilities/">Training Instabilities</a>.</li>
   </ul>
+  <h3 id="since-2025">What changed in 2025 and 2026</h3>
+  <p>Llama 3 is still a good model to learn from, and it's our running example. Newer models keep most of its design, and change these parts:</p>
+  <ul>
+    <li><b>Norm placement is less settled.</b> OLMo 2 puts norms after attention and the FFN, inside the residual. Gemma 3 uses RMSNorm both before and after its attention.</li>
+    <li><b>QK-norm has spread.</b> OLMo 2, Gemma 3 and Qwen3 all use it for stability.</li>
+    <li><b>Attention is changing most.</b> Gemma 4's smallest models reuse keys and values across layers. Kimi Linear and Qwen3-Next mix linear attention with full attention, and DeepSeek-V4 compresses its cache. See <a href="../attention-alternatives/">Attention Alternatives</a>.</li>
+    <li><b>MoE keeps getting sparser.</b> Qwen3-Next has 80B parameters with 3B active, and DeepSeek-V4-Pro has 1.6T with 49B active.</li>
+  </ul>
+  <p class="small">From the models' technical reports and model cards, and Raschka's <a href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures">Recent Developments in LLM Architectures</a>. Gemma 4's KV sharing is as Raschka describes it.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -324,7 +333,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <p class="say30">Modern LLMs are decoder-only Transformers with a few standard changes from the 2017 design: pre-norm residual blocks with RMSNorm for stable deep training, SwiGLU gated feed-forward layers, rotary position embeddings applied to queries and keys, grouped-query attention to shrink the KV cache, no biases, and large vocabularies around 128k tokens. Most parameters sit in the feed-forward layers, about 70 percent in an 8B model and about 80 percent at 70B, with attention around 17 percent; that's why MoE replaces the FFN and why quantisation and pruning focus there.</p>
   <h3>Likely follow-ups</h3>
   <details class="qa"><summary>Why pre-norm instead of post-norm?</summary><p>With pre-norm the residual stream is an identity path from input to output, so gradients reach early layers undamped and training is stable without long warm-up (Xiong et al. 2020). Post-norm can reach slightly better quality but is harder to train deep.</p></details>
-  <details class="qa"><summary>Why is SwiGLU's hidden size 8d/3 instead of 4d?</summary><p>It has three weight matrices instead of two; shrinking the hidden size by 2/3 keeps the parameter count and compute about the same as a 4d two-matrix FFN.</p></details>
+  <details class="qa"><summary>Why is SwiGLU's hidden size 8d/3 instead of 4d?</summary><p>It has three weight matrices instead of two; shrinking the hidden size by 2/3 keeps the parameter count and compute about the same as a 4d two-matrix FFN. That's a starting point: Llama 3 8B actually uses 3.5d (14,336 for d = 4,096).</p></details>
   <details class="qa"><summary>Estimate the parameters of a model with d = 4,096 and 32 layers.</summary><p>About 12 · L · d² ≈ 6.4 B in the blocks, plus vocabulary × d for each embedding table: around 7–8 B in total.</p></details>
   <h3>What not to say</h3>
   <ul><li>"Most parameters are in attention." It's the FFN.</li><li>"LLMs use the original Transformer." They use a decoder-only variant with several changes.</li></ul>

@@ -309,6 +309,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <span class="pill ok">One sentence</span>
   <h2>Count bytes moved, not FLOPs</h2>
   <p>On modern GPUs, an algorithm that does a little more arithmetic but moves far fewer bytes between memory levels wins. FlashAttention fuses the whole attention computation into one kernel that keeps tiles in SRAM, made possible by an online softmax that never needs the full row.</p>
+  <p class="small" id="x-hw">For why bytes matter so much, read <a href="../gpus-tpus-and-memory-bandwidth/">GPUs, TPUs and Memory Bandwidth</a>.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">

@@ -268,6 +268,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <p class="small" style="margin:0">8 sampled answers to the refund problem above (correct answer ₹42); reward 1 if correct, else 0.</p>
   </div>
   <p>With <b>4 of 8</b> correct, correct answers get +1 and wrong ones −1. With only <b>1 of 8</b> correct, the rare success gets a big push (<b>+2.65</b>) and each failure a small one (−0.38): hard problems the model occasionally solves teach the most. With <b>0 or 8</b> correct, every advantage is 0: problems that are too hard or too easy teach nothing, which is why later recipes like DAPO filter such groups out and keep training data at the edge of the model's ability.</p>
+  <p class="small" id="x-pg2">For where the baseline comes from, read <a href="../policy-gradients-for-llms/">Policy Gradients for LLMs</a>.</p>
 </section>
 
 <section class="ch" id="c3" data-toc="3 · R1">
@@ -298,6 +299,12 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   </div>
   <p>With a 40% chance per sample, <b>self-consistency</b> (majority voting, Wang et al. 2023) lifts accuracy to <b>53.9%</b> with 5 samples and <b>78.6%</b> with 16, because wrong answers scatter while right ones agree. But at <b>20%</b>, no better than each wrong answer, voting stays around <b>20%</b> no matter how many samples. With a reliable <b>verifier</b> (unit tests, a checker, a good reward model), pass@k is what you get: 97.2% at 20% with 16 samples. Snell et al. (2024) found that allocating test-time compute adaptively can be over 4× more efficient than best-of-N, and can let a smaller model beat one about 14× larger on problems where the small model has a reasonable chance of success. Reasoning models internalise this: one long chain of thought explores, checks and revises before answering.</p>
   <div class="card bad"><b>Open question.</b> Yue et al. (2025) found that RLVR-trained models win at small k, but their base models often reach higher pass@k at large k: RL may mostly sharpen the model towards solutions it could already find, rather than create new reasoning abilities.</div>
+  <h3 id="tools-budgets">Beyond maths: tools and thinking budgets</h3>
+  <ul>
+    <li><b>Training tool use:</b> Qwen3's final RL stage lets the model run complete, multi-turn tool interactions with real environment feedback. On Qwen's in-house ToolUse test, Qwen3-32B with thinking on rose from 63.3 after reasoning RL to 85.5 after this stage.</li>
+    <li><b>Thinking on demand:</b> one model can now cover both modes. Qwen3 is trained to follow /think and /no_think flags.</li>
+    <li><b>Thinking budgets:</b> users can limit how much the model reasons, to trade quality against speed. Qwen3-235B's scores rose smoothly with the budget on maths, coding and science tests.</li>
+  </ul>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -327,6 +334,9 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning", 2025, <a href="https://arxiv.org/abs/2501.12948">arXiv:2501.12948</a>; OpenAI, "Learning to Reason with LLMs", 2024.</li>
     <li>N. Lambert et al., "Tülu 3: Pushing Frontiers in Open Language Model Post-Training", 2024, <a href="https://arxiv.org/abs/2411.15124">arXiv:2411.15124</a>; Q. Yu et al., "DAPO", 2025, <a href="https://arxiv.org/abs/2503.14476">arXiv:2503.14476</a>.</li>
     <li>X. Wang et al., "Self-Consistency Improves Chain of Thought Reasoning in Language Models", ICLR 2023, <a href="https://arxiv.org/abs/2203.11171">arXiv:2203.11171</a>; C. Snell et al., "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters", 2024, <a href="https://arxiv.org/abs/2408.03314">arXiv:2408.03314</a>.</li>
+    <li>Qwen Team, "Qwen3 Technical Report", 2025, <a href="https://arxiv.org/abs/2505.09388">arXiv:2505.09388</a> (tool use and thinking budgets).</li>
+    <li>Qwen Team, "Qwen3 Technical Report", 2025, <a href="https://arxiv.org/abs/2505.09388">arXiv:2505.09388</a> (tool use and thinking budgets).</li>
+    <li>Qwen Team, "Qwen3 Technical Report", 2025, <a href="https://arxiv.org/abs/2505.09388">arXiv:2505.09388</a> (tool use and thinking budgets).</li>
     <li>Y. Yue et al., "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?", 2025, <a href="https://arxiv.org/abs/2504.13837">arXiv:2504.13837</a>.</li>
   </ol>
 </section>

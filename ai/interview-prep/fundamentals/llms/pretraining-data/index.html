@@ -282,9 +282,16 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <ul>
     <li><b>Quality classifiers:</b> FineWeb-Edu had Llama-3-70B-Instruct rate hundreds of thousands of pages for educational value (0–5), trained a small classifier on those labels, and kept pages scoring ≥ 3: 1.3T tokens. At the same training budget (350B tokens) it raised MMLU from 33% to 37% and ARC from 46% to 57% compared with FineWeb. DCLM and Llama 3 also use model-based filters.</li>
     <li><b>Mixtures:</b> Llama 3's final pre-training mix was roughly 50% general knowledge, 25% maths and reasoning, 17% code and 8% multilingual tokens, chosen with small-scale experiments and scaling-law predictions; high-quality data is up-weighted again at the end of training (annealing).</li>
-    <li><b>Running out of data:</b> Muennighoff et al. (2023) found that repeating data for up to about 4 epochs is almost as good as fresh data, after which returns fall quickly; synthetic data and other languages fill the gap.</li>
+    <li><b>Running out of data:</b> Muennighoff et al. (2023) found that repeating data for up to about 4 epochs is almost as good as fresh data, after which returns fall quickly; synthetic data and other languages fill the gap (see below).</li>
   </ul>
   <div class="card bad"><b>Contamination.</b> If benchmark questions leak into pre-training data, scores measure memorisation. Labs filter n-gram overlaps with evaluation sets and report contamination analyses; see the evaluation lessons in this track.</div>
+  <h3 id="synthetic-data">Synthetic data</h3>
+  <p>When good text runs short, you can have a strong model write more. Stanford's CS336 now teaches this as a standard part of data work.</p>
+  <ul>
+    <li><b>For instructions:</b> Self-Instruct had GPT-3 write its own instructions, inputs and outputs, filtered out invalid or similar ones, then fine-tuned on the result. It gained 33% on one instruction benchmark, on par with InstructGPT-001.</li>
+    <li><b>For pre-training:</b> phi-1 used 6B tokens of filtered web data, plus 1B tokens of textbooks and exercises written by GPT-3.5. That 1.3B model reached 50.6% on HumanEval.</li>
+    <li><b>The risks:</b> errors and biases carry over from the model that wrote it, the variety can be narrow, and benchmarks can look better than real-world use. Check licences too, as many models forbid training on their outputs. This is close to <a href="../distillation/">sequence-level distillation</a>.</li>
+  </ul>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -315,6 +322,9 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>J. Rae et al., "Scaling Language Models: Methods, Analysis &amp; Insights from Training Gopher", 2021, <a href="https://arxiv.org/abs/2112.11446">arXiv:2112.11446</a>; C. Raffel et al. (T5 / C4), JMLR 2020, <a href="https://arxiv.org/abs/1910.10683">arXiv:1910.10683</a>.</li>
     <li>N. Muennighoff et al., "Scaling Data-Constrained Language Models", NeurIPS 2023, <a href="https://arxiv.org/abs/2305.16264">arXiv:2305.16264</a>.</li>
     <li>Llama Team, Meta, "The Llama 3 Herd of Models", 2024, <a href="https://arxiv.org/abs/2407.21783">arXiv:2407.21783</a> (§3.1, data mix).</li>
+    <li>Y. Wang et al., "Self-Instruct", 2022, <a href="https://arxiv.org/abs/2212.10560">arXiv:2212.10560</a>; S. Gunasekar et al., "Textbooks Are All You Need", 2023, <a href="https://arxiv.org/abs/2306.11644">arXiv:2306.11644</a>.</li>
+    <li>Y. Wang et al., "Self-Instruct", 2022, <a href="https://arxiv.org/abs/2212.10560">arXiv:2212.10560</a>; S. Gunasekar et al., "Textbooks Are All You Need", 2023, <a href="https://arxiv.org/abs/2306.11644">arXiv:2306.11644</a>.</li>
+    <li>Y. Wang et al., "Self-Instruct", 2022, <a href="https://arxiv.org/abs/2212.10560">arXiv:2212.10560</a>; S. Gunasekar et al., "Textbooks Are All You Need", 2023, <a href="https://arxiv.org/abs/2306.11644">arXiv:2306.11644</a>.</li>
   </ol>
 </section>
 
