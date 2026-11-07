@@ -330,7 +330,7 @@ window.LESSONS = {
           {slug: "evaluating-agents",title: "Evaluating Agents",sub: "Why is 59% on one run not 59% for your customers?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "agent-safety",title: "Agent Safety: Permissions, Sandboxing and the Lethal Trifecta",sub: "How can one email make an agent leak data, and how do you stop it?",level: "Intermediate",mins: 25,group: "lessons"},
           {slug: "agentic-ai-practice",title: "Agentic AI Practice",sub: "10 questions: compounding errors, tool overload, durable runs, pass^k, trifecta, skills, MCP auth, A2A.",level: "Intermediate",mins: 35,group: "scenarios"},
-          {slug: "agent-scenarios-set-1",title: "Agent Scenarios: Set 1",sub: "7 incidents: loops, wrong tools, cost explosions, injection, forgetting.",level: "Intermediate",mins: 35,group: "scenarios"},
+          {slug: "agent-scenarios-set-1",title: "Agent Scenarios: Set 1",sub: "9 incidents: loops, wrong tools, cost explosions, injection, forgetting, an exposed MCP server, a repeated email.",level: "Intermediate",mins: 35,group: "scenarios"},
         ] },
       { id: "mlops", dir: "system-design/mlops", title: "MLOps", desc: "Running ML models in production: training/serving skew, serving modes, safe deployment, reproducibility, drift and retraining. Concepts, not tools.",
         groups: [

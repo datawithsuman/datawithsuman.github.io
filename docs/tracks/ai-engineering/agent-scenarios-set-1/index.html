@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agent Scenarios: Set 1 · AI Engineering · AIML Rounds</title>
-<meta name="description" content="7 incidents: loops, wrong tools, cost explosions, injection, forgetting.">
+<meta name="description" content="9 incidents: loops, wrong tools, cost explosions, injection, forgetting, an exposed MCP server, a repeated email.">
 <link rel="canonical" href="https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-set-1/">
 <meta property="og:url" content="https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-set-1/">
 <meta property="og:site_name" content="AIML Rounds">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Agent Scenarios: Set 1 · AI Engineering · AIML Rounds">
-<meta property="og:description" content="7 incidents: loops, wrong tools, cost explosions, injection, forgetting.">
+<meta property="og:description" content="9 incidents: loops, wrong tools, cost explosions, injection, forgetting, an exposed MCP server, a repeated email.">
 <meta property="og:image" content="https://aimlrounds.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
@@ -40,7 +40,7 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/">AI Engineering</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/#module-8">Scenarios</a><span aria-hidden="true">/</span><b aria-current="page">Agent Scenarios: Set 1</b></nav>
   <div class="lesson-meta"><span class="chip type-interview">Interview</span><span class="mins">35 min</span><span class="before">Before this:</span><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/agentic-ai-practice/">Agentic AI Practice</a></div>
   <h1 class="h1-lesson">Agent Scenarios: Set 1</h1>
-  <p class="lead">7 incidents: loops, wrong tools, cost explosions, injection, forgetting.</p>
+  <p class="lead">9 incidents: loops, wrong tools, cost explosions, injection, forgetting, an exposed MCP server, a repeated email.</p>
   <div class="lx">
 <section class="panel block idea" id="idea"><p class="eyebrow">How to use this page</p><div class="idea-text">Give yourself about 5 minutes per question, as in an interview. Each is a production incident. Say the most likely cause first, how you'd confirm it from traces, and the fix; then open the answer and compare.<div class="tool"><b>The agent debugging order:</b> pull the trace for the failing runs → find the first wrong step (bad tool choice, bad argument, bad observation, bad decision) → check tools, prompt and context at that step → fix the cause, add the case to the agent eval set, and add a guard (budget, validation, approval) so the same failure can't do damage.</div></div></section>
 
