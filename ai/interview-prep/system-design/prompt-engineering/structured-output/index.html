@@ -281,7 +281,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h2>Schema design and the reasoning trade-off</h2>
   <ul>
     <li><b>Design schemas for the model:</b> descriptive field names, enums for categories, required fields, few optional ones, flat over deeply nested; put free-text <code>reasoning</code> <i>before</i> decision fields so the model "thinks" before committing.</li>
-    <li><b>Format restrictions can cost accuracy:</b> Tam et al. (2024) found strict format constraints lowered performance on reasoning tasks; common fixes are reasoning first in free text, then a second structured extraction call, or a reasoning field in the schema.</li>
+    <li><b>Format restrictions and accuracy are disputed:</b> Tam et al. (2024) found strict format constraints lowered performance on reasoning tasks. A rerun by the Outlines team (dottxt) used the same prompt for both and found structured output matched or slightly beat free text, for example 0.78 against 0.77 on GSM8K with Llama-3-8B, and argued the gap came from prompt differences and answer parsing. So test both on your own task. Either way, a reasoning field before the decision fields, or a second extraction call, lets the model think first.</li>
+  <li><b>Field descriptions are instructions too:</b> a 2026 study moved category definitions between the system prompt and the schema's field descriptions. When the two disagreed, accuracy fell by 5 to 45 points depending on the model, with Claude Haiku 4.5 dropping from 52.5% to 7.1%. A required reasoning field placed before the label added 15 to 24 points where there was room to improve. Keep one source of truth, and generate both the prompt and the schema from it.</li>
     <li><b>Validate in code</b> with Pydantic / Zod models generated from the same schema; log and alert on validation failures.</li>
     <li><b>Version schemas</b> and keep backward compatibility, since prompts, examples and downstream code depend on them.</li>
   </ul>
@@ -314,7 +315,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>B. Willard &amp; R. Louf, "Efficient Guided Generation for Large Language Models" (Outlines), 2023, <a href="https://arxiv.org/abs/2307.09702">arXiv:2307.09702</a>; Y. Dong et al., "XGrammar", 2024, <a href="https://arxiv.org/abs/2411.15100">arXiv:2411.15100</a>.</li>
     <li>Z. R. Tam et al., "Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models", EMNLP Industry 2024, <a href="https://arxiv.org/abs/2408.02442">arXiv:2408.02442</a>.</li>
     <li>vLLM and SGLang structured output / guided decoding documentation; Pydantic documentation.</li>
-  </ol>
+  <li>W. Kurt, <a href="https://blog.dottxt.ai/say-what-you-mean.html">"Say What You Mean: A Response to Let Me Speak Freely"</a>, dottxt, 2024; S.-Y. Lin, "Your Prompt Is Not the Only Prompt: How Much Do LLMs Weight Structured-Output Schema Descriptions?", 2026, <a href="https://arxiv.org/abs/2608.08254">arXiv:2608.08254</a>.</li>
+</ol>
 </section>
 
 </div>

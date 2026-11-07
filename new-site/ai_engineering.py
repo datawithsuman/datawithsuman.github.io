@@ -34,8 +34,13 @@ PARTS = [
     })),
     ("Prompt engineering", "system-design/prompt-engineering", _part("Structuring prompts, getting reliable output and choosing the right tool.", {
         "prompt-engineering-patterns": {"prereqs": [_f("in-context-learning-and-cot")]},
+        "prompting-reasoning-models": {"prereqs": [_a("prompt-engineering-patterns"), _f("reasoning-models-grpo")]},
         "structured-output": {"prereqs": [_a("prompt-engineering-patterns"), _f("decoding-and-sampling")]},
+        "system-prompts-with-many-rules": {"prereqs": [_a("prompt-engineering-patterns"), _a("guardrails-and-prompt-injection")]},
+        "automatic-prompt-optimization": {"prereqs": [_a("prompt-engineering-patterns"), _a("evaluating-llm-apps")]},
         "prompt-vs-rag-vs-fine-tuning": {"prereqs": [_a("prompt-engineering-patterns"), _f("lora-and-qlora")]},
+        "prompt-change-broke-production": {"prereqs": [_a("prompt-engineering-patterns"), _f("llm-as-a-judge")]},
+        "prompt-engineering-practice": {"type": "interview", "prereqs": [_a("prompt-change-broke-production")]},
     })),
     ("RAG", "system-design/rag", _part("Building retrieval-augmented generation: parsing, indexes, ranking, grounded answers, agents, security, upkeep and evaluation.", {
         "rag-end-to-end": {"prereqs": [_f("search-and-retrieval"), _f("embeddings")]},

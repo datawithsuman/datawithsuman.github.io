@@ -249,12 +249,14 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h2>The parts of a production prompt</h2>
   <ul>
     <li><b>Role and goal:</b> who the model is and what success looks like for this product.</li>
-    <li><b>Rules:</b> positive instructions ("only promise refunds in the policy"), hard limits ("never ask for card numbers") and a fallback ("if unsure, say so and offer an agent"). Explain <i>why</i> for non-obvious rules; models generalise better.</li>
+    <li><b>Rules:</b> positive instructions ("only promise refunds in the policy"), hard limits ("never ask for card numbers") and a fallback ("if unsure, say so and offer an agent"). Explain <i>why</i> for non-obvious rules, as models generalise from the reason. Say what to do, not only what to avoid, and check rules don't contradict each other: OpenAI's GPT-5 guide says contradictions can hurt newer models more.</li>
     <li><b>Delimited context:</b> wrap documents, order data and user text in tags (<code>&lt;policy&gt;</code>, <code>&lt;customer&gt;</code>) so the model knows what's instruction and what's data, which also helps against <a href="../../llmops/guardrails-and-prompt-injection/">prompt injection</a>.</li>
-    <li><b>Examples:</b> 2–5 diverse input → ideal output pairs, covering edge cases; they teach format and tone faster than descriptions.</li>
+    <li><b>Examples:</b> 3–5 diverse input → ideal output pairs, covering edge cases, as Anthropic suggests; they teach format and tone faster than descriptions. Too many similar ones can make the model copy them too closely.</li>
+  <li><b>Long documents first, question last:</b> with long inputs, put the documents at the top and the question at the end. Anthropic reports this can improve answers by up to 30% on complex, multi-document inputs.</li>
     <li><b>Output format:</b> an exact schema; enforce it with <a href="../structured-output/">structured output</a>.</li>
-    <li><b>Reasoning and chaining:</b> for multi-step tasks ask for reasoning before the answer, or split into a chain (classify → retrieve → draft → check).</li>
+    <li><b>Reasoning and chaining:</b> for multi-step tasks on models that don't reason by default, ask for reasoning before the answer, or split into a chain (classify → retrieve → draft → check). Reasoning models already think first, so give them the goal and constraints instead: see <a href="../prompting-reasoning-models/">Prompting Reasoning Models</a>.</li>
   </ul>
+<p id="minimal-first"><b>Start minimal.</b> Anthropic and OpenAI both suggest starting with a short, clear prompt on the best model, then adding instructions only for failures you actually see in testing. Prompts that grow by habit get long, slow and contradictory. See <a href="../system-prompts-with-many-rules/">System Prompts with Many Rules</a>.</p>
 </section>
 
 <section class="ch" id="c3" data-toc="3 · Lab">
@@ -287,7 +289,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <ul>
     <li><b>Version and review</b> prompts in the repository, with the model version pinned; a prompt is tied to the model it was tested on.</li>
     <li><b>Evaluate:</b> a golden set of 100–500 real inputs with expected behaviour, scored by code checks and an <a href="../../../fundamentals/llms/llm-as-a-judge/">LLM judge</a>; run it on every change (<a href="../../rag/evaluating-llm-apps/">Evaluating LLM Apps</a>).</li>
-    <li><b>Optimise automatically:</b> DSPy compiles prompts and few-shot examples against a metric; APE had LLMs propose and select instructions. Useful once you have a metric and data.</li>
+    <li><b>Optimise automatically:</b> DSPy compiles prompts and few-shot examples against a metric; APE had LLMs propose and select instructions, and GEPA rewrites prompts by reflecting on failures. Useful once you have a metric and data: see <a href="../automatic-prompt-optimization/">Automatic Prompt Optimisation</a>.</li>
     <li><b>Know when to stop:</b> if the prompt keeps growing to cover cases, consider retrieval for knowledge or <a href="../../../fundamentals/llms/lora-and-qlora/">fine-tuning</a> for consistent behaviour (<a href="../prompt-vs-rag-vs-fine-tuning/">how to choose</a>).</li>
   </ul>
 </section>
@@ -319,7 +321,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>M. Sclar et al., "Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design", ICLR 2024, <a href="https://arxiv.org/abs/2310.11324">arXiv:2310.11324</a>.</li>
     <li>O. Khattab et al., "DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines", ICLR 2024, <a href="https://arxiv.org/abs/2310.03714">arXiv:2310.03714</a>; Y. Zhou et al., "Large Language Models Are Human-Level Prompt Engineers" (APE), ICLR 2023, <a href="https://arxiv.org/abs/2211.01910">arXiv:2211.01910</a>.</li>
     <li>T. Brown et al. (GPT-3), NeurIPS 2020, <a href="https://arxiv.org/abs/2005.14165">arXiv:2005.14165</a>; J. Wei et al. (Chain-of-Thought), NeurIPS 2022, <a href="https://arxiv.org/abs/2201.11903">arXiv:2201.11903</a>.</li>
-  </ol>
+  <li>Anthropic, <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Prompting best practices</a> (examples, long-context layout, explaining rules), checked 7 Nov 2026; OpenAI, <a href="https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide">GPT-5 prompting guide</a> (contradictory instructions).</li>
+</ol>
 </section>
 
 </div>

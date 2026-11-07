@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-262-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-267-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 67 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 72 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -471,15 +471,20 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Prompt Engineering</b> · 3 lessons</summary>
+<summary><b>Prompt Engineering</b> · 8 lessons</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Prompt Engineering Patterns](https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-patterns/) | 🟢 Beginner | 20 min |
-| 2 | [Structured Output and Constrained Decoding](https://aimlrounds.com/tracks/ai-engineering/structured-output/) | 🟡 Intermediate | 20 min |
-| 3 | [Prompt vs RAG vs Fine-Tuning: How to Choose](https://aimlrounds.com/tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/) | 🟢 Beginner | 20 min |
+| 2 | [Prompting Reasoning Models](https://aimlrounds.com/tracks/ai-engineering/prompting-reasoning-models/) | 🟡 Intermediate | 18 min |
+| 3 | [Structured Output and Constrained Decoding](https://aimlrounds.com/tracks/ai-engineering/structured-output/) | 🟡 Intermediate | 20 min |
+| 4 | [System Prompts with Many Rules](https://aimlrounds.com/tracks/ai-engineering/system-prompts-with-many-rules/) | 🟡 Intermediate | 18 min |
+| 5 | [Automatic Prompt Optimisation](https://aimlrounds.com/tracks/ai-engineering/automatic-prompt-optimization/) | 🔴 Advanced | 20 min |
+| 6 | [Prompt vs RAG vs Fine-Tuning: How to Choose](https://aimlrounds.com/tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/) | 🟢 Beginner | 20 min |
+| 7 | [A Prompt Fix That Broke Production](https://aimlrounds.com/tracks/ai-engineering/prompt-change-broke-production/) | 🟡 Intermediate | 18 min |
+| 8 | [Prompt Engineering Practice](https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 

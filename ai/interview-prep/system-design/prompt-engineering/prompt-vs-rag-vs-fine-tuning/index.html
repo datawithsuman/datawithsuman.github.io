@@ -283,7 +283,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <ol>
     <li><b>Prompt a strong model</b> with clear rules and examples; build an evaluation set from day one.</li>
     <li><b>Add RAG</b> when answers need your data; measure retrieval recall and faithfulness separately.</li>
-    <li><b>Optimise the prompt and pipeline</b> (re-ranking, structured output, routing) against the eval set.</li>
+    <li><b>Optimise the prompt and pipeline</b> (re-ranking, structured output, routing) against the eval set. Automatic optimisers can help here: GEPA beat GRPO, a fine-tuning method, by about 10% on average with up to 35 times fewer runs, though its authors expect fine-tuning to win when data is plentiful. See <a href="../automatic-prompt-optimization/">Automatic Prompt Optimisation</a>.</li>
     <li><b>Fine-tune</b> when you have data and a clear behaviour gap, or when volume makes long prompts and big models too expensive; often <a href="../../../fundamentals/llms/distillation/">distil</a> a big model's outputs into a smaller one.</li>
     <li><b>Keep evaluating:</b> every step must beat the previous one on the same eval set.</li>
   </ol>
@@ -317,7 +317,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>T. Zhang et al., "RAFT: Adapting Language Model to Domain Specific RAG", 2024, <a href="https://arxiv.org/abs/2403.10131">arXiv:2403.10131</a>.</li>
     <li>P. Lewis et al. (RAG), NeurIPS 2020, <a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a>; E. Hu et al. (LoRA), ICLR 2022, <a href="https://arxiv.org/abs/2106.09685">arXiv:2106.09685</a>.</li>
     <li>OpenAI, "Optimizing LLM accuracy" guide; Anthropic, model customisation and prompt engineering documentation.</li>
-  </ol>
+  <li>L. A. Agrawal et al., "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning", 2025, <a href="https://arxiv.org/abs/2507.19457">arXiv:2507.19457</a>.</li>
+</ol>
 </section>
 
 </div>

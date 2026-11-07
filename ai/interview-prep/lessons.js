@@ -275,10 +275,19 @@ window.LESSONS = {
           {slug: "llm-inference-practice",title: "LLM Inference Practice",sub: "7 questions: KV maths, speculative speedup, a caching incident, fleet sizing.",level: "Intermediate",mins: 35,group: "scenarios"},
         ] },
       { id: "prompt-engineering", dir: "system-design/prompt-engineering", title: "Prompt Engineering", desc: "Production prompt patterns, reliable structured output, and when prompting is (and isn't) enough.",
+        groups: [
+          {id: "lessons",title: "Lessons",desc: "Structuring prompts, prompting reasoning models, reliable output, many rules, optimisation and choosing the right tool."},
+          {id: "scenarios",title: "Scenarios",desc: "Practice questions and real-world incidents to diagnose. New ones are added over time."},
+        ],
         lessons: [
-          {slug: "prompt-engineering-patterns",title: "Prompt Engineering Patterns",sub: "How should a production prompt be structured, ordered and tested?",level: "Beginner",mins: 20},
-          {slug: "structured-output",title: "Structured Output and Constrained Decoding",sub: "Why does 'return JSON' fail, and how do grammars fix it?",level: "Intermediate",mins: 20},
-          {slug: "prompt-vs-rag-vs-fine-tuning",title: "Prompt vs RAG vs Fine-Tuning: How to Choose",sub: "Knowledge or behaviour: which tool fixes which gap?",level: "Beginner",mins: 20},
+          {slug: "prompt-engineering-patterns",title: "Prompt Engineering Patterns",sub: "How should a production prompt be structured, ordered and tested?",level: "Beginner",mins: 20,group: "lessons"},
+          {slug: "prompting-reasoning-models",title: "Prompting Reasoning Models",sub: "Your team moved to a reasoning model, but kept the old prompt full of step-by-step instructions. What should change?",level: "Intermediate",mins: 18,group: "lessons"},
+          {slug: "structured-output",title: "Structured Output and Constrained Decoding",sub: "Why does 'return JSON' fail, and how do grammars fix it?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "system-prompts-with-many-rules",title: "System Prompts with Many Rules",sub: "Your assistant's system prompt has grown to 20 rules, and it keeps breaking one or another. Why, and how do you fix it?",level: "Intermediate",mins: 18,group: "lessons"},
+          {slug: "automatic-prompt-optimization",title: "Automatic Prompt Optimisation",sub: "Instead of hand-tuning prompts, your team wants an optimiser to write them. How do these work, and what can go wrong?",level: "Advanced",mins: 20,group: "lessons"},
+          {slug: "prompt-vs-rag-vs-fine-tuning",title: "Prompt vs RAG vs Fine-Tuning: How to Choose",sub: "Knowledge or behaviour: which tool fixes which gap?",level: "Beginner",mins: 20,group: "lessons"},
+          {slug: "prompt-change-broke-production",title: "A Prompt Fix That Broke Production",sub: "A one-line prompt fix solved a reported bug, passed five spot checks, and broke other cases in production. What went wrong, and what process prevents it?",level: "Intermediate",mins: 18,group: "scenarios"},
+          {slug: "prompt-engineering-practice",title: "Prompt Engineering Practice",sub: "8 questions: effort costs, layout, many rules, regression sets, optimisers, schemas and migrations.",level: "Intermediate",mins: 35,group: "scenarios"},
         ] },
       { id: "rag", dir: "system-design/rag", title: "RAG", desc: "Retrieval-augmented generation: grounding LLM answers in your own data, from basic pipelines to advanced retrieval.",
         groups: [
