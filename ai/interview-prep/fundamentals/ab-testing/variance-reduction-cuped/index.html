@@ -314,12 +314,14 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <li><b>Check it on past tests:</b> run it on old experiments to measure the variance reduction you actually get.</li>
   <li><b>Report the same effect:</b> the adjusted difference still estimates the same lift, so read it as usual.</li>
 </ul>
+  <h3 id="ml-covariates">Using a model as the covariate</h3>
+  <p>One past metric is only one predictor. You can train an ML model on pre-experiment features to predict the metric, then use its prediction as X. Yandex reported 63% average variance reduction on loyalty metrics this way, 5.1 points better than the best method it compared with. The same rule applies: every feature must come from before the test, or you'll remove part of the effect.</p>
 </section>
 
 <section class="ch" id="src" data-toc="Sources">
   <div class="chap">Sources</div>
   <h2>Sources</h2>
-  <ul><li><a href="https://exp-platform.com/cuped/">Deng, Xu, Kohavi and Walker, CUPED (WSDM 2013)</a></li><li><a href="https://dpananos.github.io/posts/2025-03-03-cuped">A walkthrough of CUPED and regression</a></li><li><a href="https://docs.statsig.com/stats-engine/variance_reduction">Statsig documentation on variance reduction</a></li></ul>
+  <ul><li><a href="https://exp-platform.com/cuped/">Deng, Xu, Kohavi and Walker, CUPED (WSDM 2013)</a></li><li><a href="https://dpananos.github.io/posts/2025-03-03-cuped">A walkthrough of CUPED and regression</a></li><li><a href="https://docs.statsig.com/stats-engine/variance_reduction">Statsig documentation on variance reduction</a></li><li><a href="https://www.kdd.org/kdd2016/papers/files/adf0653-poyarkovA.pdf">Poyarkov et al., Boosted Decision Tree Regression Adjustment (KDD 2016)</a></li></ul>
   <p class="small">Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.</p>
 </section>
 

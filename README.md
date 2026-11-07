@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-245-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-250-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -34,8 +34,8 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 
 | Section | Tracks | Lessons |
 |---|---|:---:|
-| 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 188 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 54 |
+| 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 55 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -151,7 +151,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>A/B Testing</b> · 12 lessons</summary>
+<summary><b>A/B Testing</b> · 16 lessons</summary>
 
 | # | Lesson | Level | Time |
 |---|---|---|---|
@@ -161,12 +161,16 @@ Tap a track to see its lessons, in the order to learn them.
 | 4 | [Reading the Result: Significance and Decisions](https://aimlrounds.com/tracks/fundamentals/reading-ab-results/) | 🟡 Intermediate | 15 min |
 | 5 | [Ratio Metrics and the Delta Method](https://aimlrounds.com/tracks/fundamentals/ratio-metrics-and-delta-method/) | 🟡 Intermediate | 15 min |
 | 6 | [Variance Reduction with CUPED](https://aimlrounds.com/tracks/fundamentals/variance-reduction-cuped/) | 🟡 Intermediate | 15 min |
-| 7 | [Peeking and Sequential Testing](https://aimlrounds.com/tracks/fundamentals/sequential-testing/) | 🟡 Intermediate | 15 min |
-| 8 | [Multiple Testing and Segments](https://aimlrounds.com/tracks/fundamentals/multiple-testing/) | 🟡 Intermediate | 15 min |
-| 9 | [Trust Checks: SRM and A/A Tests](https://aimlrounds.com/tracks/fundamentals/sample-ratio-mismatch/) | 🟡 Intermediate | 15 min |
-| 10 | [Novelty, Primacy and Long-Term Effects](https://aimlrounds.com/tracks/fundamentals/novelty-and-long-term-effects/) | 🟡 Intermediate | 15 min |
-| 11 | [Interference: When Groups Affect Each Other](https://aimlrounds.com/tracks/fundamentals/interference-in-experiments/) | 🟡 Intermediate | 15 min |
-| 12 | [Bandits vs A/B Tests](https://aimlrounds.com/tracks/fundamentals/bandits-vs-ab-tests/) | 🟡 Intermediate | 15 min |
+| 7 | [Revenue and Heavy-Tailed Metrics](https://aimlrounds.com/tracks/fundamentals/revenue-and-heavy-tailed-metrics/) | 🟡 Intermediate | 18 min |
+| 8 | [Peeking and Sequential Testing](https://aimlrounds.com/tracks/fundamentals/sequential-testing/) | 🟡 Intermediate | 15 min |
+| 9 | [Multiple Testing and Segments](https://aimlrounds.com/tracks/fundamentals/multiple-testing/) | 🟡 Intermediate | 15 min |
+| 10 | [Trust Checks: SRM and A/A Tests](https://aimlrounds.com/tracks/fundamentals/sample-ratio-mismatch/) | 🟡 Intermediate | 15 min |
+| 11 | [Novelty, Primacy and Long-Term Effects](https://aimlrounds.com/tracks/fundamentals/novelty-and-long-term-effects/) | 🟡 Intermediate | 15 min |
+| 12 | [Interference: When Groups Affect Each Other](https://aimlrounds.com/tracks/fundamentals/interference-in-experiments/) | 🟡 Intermediate | 15 min |
+| 13 | [Bandits vs A/B Tests](https://aimlrounds.com/tracks/fundamentals/bandits-vs-ab-tests/) | 🟡 Intermediate | 15 min |
+| 14 | [Running Many Tests at Once](https://aimlrounds.com/tracks/fundamentals/running-many-tests-at-once/) | 🟡 Intermediate | 18 min |
+| 15 | [Heterogeneous Effects and Uplift Modelling](https://aimlrounds.com/tracks/fundamentals/heterogeneous-effects-and-uplift/) | 🟡 Intermediate | 20 min |
+| 16 | [A/B Testing Practice](https://aimlrounds.com/tracks/fundamentals/ab-testing-practice/) | 🟡 Intermediate | 40 min |
 
 </details>
 
@@ -544,7 +548,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>AI/ML System Design</b> · 13 lessons</summary>
+<summary><b>AI/ML System Design</b> · 14 lessons</summary>
 
 <br>
 
@@ -565,6 +569,7 @@ End-to-end AI/ML system designs in interview format. New designs are added over 
 | 11 | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
 | 12 | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
 | 13 | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
+| 14 | [Design an Experimentation Platform](https://aimlrounds.com/tracks/system-design/design-experimentation-platform/) | 🔴 Advanced | 30 min |
 
 </details>
 

@@ -1,9 +1,9 @@
 # The A/B Testing part of the Fundamentals track. Lesson text comes from the source pages (see ml_import.py).
 GROUPS = [
     ("ab-design", "Designing a test", "Random assignment, choosing metrics, and working out how long to run."),
-    ("ab-reading", "Reading the result", "Making decisions, ratio metrics, CUPED, peeking and multiple testing."),
+    ("ab-reading", "Reading the result", "Making decisions, ratio metrics, CUPED, heavy tails, peeking and multiple testing."),
     ("ab-trust", "Can you trust it?", "Sample ratio mismatch, novelty effects and interference."),
-    ("ab-beyond", "Beyond the fixed test", "Bandits, and when to use them."),
+    ("ab-beyond", "Beyond the fixed test", "Bandits, many tests at once, uplift modelling and practice."),
 ]
 
 LESSONS = {
@@ -13,12 +13,16 @@ LESSONS = {
     "reading-ab-results": {"prereqs": ["sample-size-and-power", "confidence-intervals-and-bootstrap"]},
     "ratio-metrics-and-delta-method": {"prereqs": ["reading-ab-results"]},
     "variance-reduction-cuped": {"prereqs": ["sample-size-and-power"]},
+    "revenue-and-heavy-tailed-metrics": {"prereqs": ["sample-size-and-power"]},
     "sequential-testing": {"prereqs": ["reading-ab-results"]},
     "multiple-testing": {"prereqs": ["reading-ab-results"]},
     "sample-ratio-mismatch": {"prereqs": ["reading-ab-results"]},
     "novelty-and-long-term-effects": {"prereqs": ["reading-ab-results"]},
     "interference-in-experiments": {"prereqs": ["randomisation-and-assignment"]},
     "bandits-vs-ab-tests": {"prereqs": ["reading-ab-results"]},
+    "running-many-tests-at-once": {"prereqs": ["randomisation-and-assignment", "multiple-testing"]},
+    "heterogeneous-effects-and-uplift": {"prereqs": ["multiple-testing", "reading-ab-results"]},
+    "ab-testing-practice": {"type": "interview", "prereqs": ["running-many-tests-at-once", "heterogeneous-effects-and-uplift"]},
 }
 for _l in LESSONS.values():
     _l["prereqs"] = [f"fundamentals/{k}" for k in _l.get("prereqs", [])]

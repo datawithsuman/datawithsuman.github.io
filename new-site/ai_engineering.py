@@ -92,5 +92,6 @@ DESIGNS = SimpleNamespace(
         "design-network-experiment": {"type": "design", "prereqs": [_f("interference-in-experiments")]},
         "design-image-personalisation": {"type": "design", "prereqs": [_f("bandits-vs-ab-tests")]},
         "design-launch-decision-rule": {"type": "design", "prereqs": [_f("choosing-ab-metrics"), _f("multiple-testing")]},
+        "design-experimentation-platform": {"type": "design", "prereqs": [_f("running-many-tests-at-once"), _f("sample-ratio-mismatch")]},
     },
 )
