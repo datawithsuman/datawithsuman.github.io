@@ -257,6 +257,7 @@ from stat_plans import STAT_PLANS  # noqa: E402
 from info_plans import INFO_PLANS  # noqa: E402
 from ml2_plans import ML2_PLANS  # noqa: E402
 from dl2_plans import DL2_PLANS  # noqa: E402
+from nlp2_plans import NLP2_PLANS  # noqa: E402
 
 PLANS.update(MATHS_PLANS)
 PLANS.update(ML_PLANS)
@@ -274,3 +275,4 @@ PLANS.update(STAT_PLANS)
 PLANS.update(INFO_PLANS)
 PLANS.update(ML2_PLANS)
 PLANS.update(DL2_PLANS)
+PLANS.update(NLP2_PLANS)

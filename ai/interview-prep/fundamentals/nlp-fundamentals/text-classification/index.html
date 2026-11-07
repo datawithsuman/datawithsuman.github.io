@@ -231,7 +231,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Deep explainer · NLP Fundamentals · 3 of 9</div>
   <h1>Text Classification: Naive Bayes and Logistic Regression</h1>
-  <div class="meta">Classic text classifiers on bag-of-words / TF-IDF features: multinomial Naive Bayes with smoothing, logistic regression, why negation breaks unigram models, n-gram features, and how these baselines compare with fine-tuned Transformers · built from Pang, Lee &amp; Vaithyanathan (2002), McCallum &amp; Nigam (1998), Wang &amp; Manning (ACL 2012), Jurafsky &amp; Martin (SLP3, ch. 4–5) and Devlin et al. (2019) · checked 29 Oct 2026</div>
+  <div class="meta">Classic text classifiers on bag-of-words / TF-IDF features: multinomial Naive Bayes with smoothing, logistic regression, why negation breaks unigram models, n-gram features, and how these baselines compare with fine-tuned Transformers · built from Pang, Lee &amp; Vaithyanathan (2002), McCallum &amp; Nigam (1998), Wang &amp; Manning (ACL 2012), Jurafsky &amp; Martin (SLP3, ch. 4 and Appendix B) and Devlin et al. (2019) · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> to classify text (positive or negative review, spam or not, which topic), turn each document into a <a href="../bag-of-words-and-tf-idf/">bag-of-words or TF-IDF</a> vector and train a linear model. <b>Multinomial Naive Bayes</b> counts how often each word appears in each class and multiplies the probabilities (with add-1 smoothing so unseen words don't zero everything); <b>logistic regression</b> learns one weight per word. Both are fast, interpretable and strong on topic-like tasks. Their weakness is <b>word order</b>: with unigrams, "not cold" and "cold" look alike, so negations confuse them. Adding <b>bigrams</b> ("not_cold") fixes much of this. Fine-tuned Transformers do better still, at far higher cost.<br><span class="small">What you'll be able to do after this: build NB and logistic-regression text classifiers, explain smoothing and the independence assumption, and fix negation with n-grams.</span></div>
   <div class="legend"><span><i style="background:var(--a)"></i>positive review</span><span><i style="background:var(--b)"></i>negative review</span><span><i style="background:var(--ok)"></i>correct</span><span><i style="background:var(--bad)"></i>wrong</span><span><i style="background:var(--info)"></i>numbers</span></div>
 </header>
@@ -254,7 +254,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   ]'>
     <div class="stage"><div class="eq" data-tex="\hat{c} = \arg\max_c \Big[\class{term t-p}{\log P(c)} + \sum_{w\in d}\class{term t-l}{\log P(w\mid c)}\Big], \qquad \class{term t-s}{P(w\mid c) = \frac{\mathrm{count}(w,c)+1}{\sum_{w'}\mathrm{count}(w',c) + |V|}}"></div></div>
     <ol class="say"></ol>
-    <p class="small">McCallum &amp; Nigam (1998) compared event models for text; Jurafsky &amp; Martin SLP3 ch. 4. In practice we sum log-probabilities to avoid underflow. Logistic regression (ch. 5) instead learns weights directly by minimising log loss: no independence assumption, usually more accurate with enough data (<a href="../../machine-learning/naive-bayes/">Naive Bayes</a>, <a href="../../machine-learning/logistic-regression/">logistic regression</a>).</p>
+    <p class="small">McCallum &amp; Nigam (1998) compared event models for text; Jurafsky &amp; Martin SLP3 Appendix B. In practice we sum log-probabilities to avoid underflow. Logistic regression (SLP3 ch. 4) instead learns weights directly by minimising log loss: no independence assumption, usually more accurate with enough data (<a href="../../machine-learning/naive-bayes/">Naive Bayes</a>, <a href="../../machine-learning/logistic-regression/">logistic regression</a>).</p>
   </div>
 </section>
 
@@ -288,6 +288,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>Wang &amp; Manning (ACL 2012) found NB works better on short snippets and SVM/LR on longer documents, that bigrams consistently help sentiment, and proposed NB-SVM, which combines them into a very strong baseline.</li>
     <li>Fine-tuned Transformers such as BERT (Devlin et al. 2019) beat these baselines, especially on negation, contrast and context, at the cost of GPU training and slower inference. Today a common path is: TF-IDF + LR as the baseline, then a small fine-tuned Transformer or an LLM if the gap justifies the cost.</li>
   </ul>
+<p class="small">For how to fine-tune one, read <a href="../bert-and-masked-language-models/">BERT and Masked Language Models</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Practice">
@@ -321,7 +322,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>B. Pang, L. Lee &amp; S. Vaithyanathan, "Thumbs up? Sentiment Classification using Machine Learning Techniques", EMNLP 2002.</li>
     <li>A. McCallum &amp; K. Nigam, "A Comparison of Event Models for Naive Bayes Text Classification", AAAI Workshop 1998.</li>
     <li>S. Wang &amp; C. Manning, "Baselines and Bigrams: Simple, Good Sentiment and Topic Classification", ACL 2012.</li>
-    <li>D. Jurafsky &amp; J. Martin, <i>Speech and Language Processing</i>, 3rd ed. draft, ch. 4–5, <a href="https://web.stanford.edu/~jurafsky/slp3/">web.stanford.edu/~jurafsky/slp3</a>.</li>
+    <li>D. Jurafsky &amp; J. Martin, <i>Speech and Language Processing</i>, 3rd ed. draft, ch. 4 and Appendix B, <a href="https://web.stanford.edu/~jurafsky/slp3/">web.stanford.edu/~jurafsky/slp3</a>.</li>
     <li>J. Devlin, M.-W. Chang, K. Lee &amp; K. Toutanova, "BERT", NAACL 2019, <a href="https://arxiv.org/abs/1810.04805">arXiv:1810.04805</a>.</li>
   </ol>
 </section>

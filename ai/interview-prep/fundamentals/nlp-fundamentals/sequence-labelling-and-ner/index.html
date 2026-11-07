@@ -231,7 +231,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Deep explainer · NLP Fundamentals · 6 of 9</div>
   <h1>Sequence Labelling and NER</h1>
-  <div class="meta">Assigning a label to every token: part-of-speech tagging and named entity recognition, the BIO tagging scheme, models from HMMs and CRFs to BiLSTM-CRF and fine-tuned Transformers, and why NER is scored with entity-level F1 rather than token accuracy · built from Ramshaw &amp; Marcus (1995), Lafferty et al. (2001), Tjong Kim Sang &amp; De Meulder (CoNLL-2003), Lample et al. (2016), Devlin et al. (2019) and Jurafsky &amp; Martin (SLP3, ch. 8) · checked 29 Oct 2026</div>
+  <div class="meta">Assigning a label to every token: part-of-speech tagging and named entity recognition, the BIO tagging scheme, models from HMMs and CRFs to BiLSTM-CRF and fine-tuned Transformers, and why NER is scored with entity-level F1 rather than token accuracy · built from Ramshaw &amp; Marcus (1995), Lafferty et al. (2001), Tjong Kim Sang &amp; De Meulder (CoNLL-2003), Lample et al. (2016), Devlin et al. (2019) and Jurafsky &amp; Martin (SLP3, ch. 18) · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> many NLP tasks need a label for <b>every token</b>, not one for the whole text. <b>Part-of-speech tagging</b> labels nouns, verbs and so on; <b>named entity recognition (NER)</b> finds spans like dish names, restaurants, cities and times. Spans are turned into per-token labels with the <b>BIO</b> scheme: B- marks the beginning of an entity, I- the inside, O outside, so adjacent entities stay separate. Models went from HMMs and <b>CRFs</b> (which score whole label sequences, so "I-" can't follow "O") to <b>BiLSTM-CRF</b> and now fine-tuned <b>Transformers</b> with a classifier per token. NER is evaluated with <b>entity-level precision, recall and F1</b>: a span counts only if both its boundaries and type are exactly right.<br><span class="small">What you'll be able to do after this: convert spans to BIO tags, explain why a CRF layer helps, and compute entity-level F1.</span></div>
   <div class="legend"><span><i style="background:var(--a)"></i>entity tokens</span><span><i style="background:var(--b)"></i>predicted tags</span><span><i style="background:var(--ok)"></i>correct</span><span><i style="background:var(--bad)"></i>wrong</span><span><i style="background:var(--info)"></i>numbers</span></div>
 </header>
@@ -267,6 +267,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>BiLSTM-CRF</b> (Lample et al., NAACL 2016) used neural features from both directions plus a CRF layer, reaching about 90.9 F1 on CoNLL-2003 English NER.</li>
     <li><b>Today:</b> fine-tune BERT-style encoders with a token classifier (Devlin et al. 2019); subword tokens are labelled by their first piece. LLMs can also extract entities with a prompt and a JSON schema, useful when labelled data is scarce.</li>
   </ul>
+<p class="small">To see how whole sequences are decoded, read <a href="../hmms-crfs-and-viterbi/">HMMs, CRFs and Viterbi</a>.</p>
 </section>
 
 <section class="ch" id="c4" data-toc="4 · Lab">
@@ -297,6 +298,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Search and query understanding:</b> "biryani near Koramangala under 300" → DISH, LOCATION, PRICE filters.</li>
     <li><b>Benchmarks:</b> CoNLL-2003 (person, location, organisation, miscellaneous) is the classic English NER dataset (Tjong Kim Sang &amp; De Meulder 2003).</li>
   </ul>
+<p class="small">To go from names to facts, read <a href="../information-extraction/">Information Extraction</a>.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">
@@ -319,7 +321,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>J. Lafferty, A. McCallum &amp; F. Pereira, "Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data", ICML 2001.</li>
     <li>E. Tjong Kim Sang &amp; F. De Meulder, "Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition", CoNLL 2003.</li>
     <li>G. Lample et al., "Neural Architectures for Named Entity Recognition", NAACL 2016, <a href="https://arxiv.org/abs/1603.01360">arXiv:1603.01360</a>.</li>
-    <li>J. Devlin et al., "BERT", NAACL 2019, <a href="https://arxiv.org/abs/1810.04805">arXiv:1810.04805</a>; D. Jurafsky &amp; J. Martin, SLP3 ch. 8, <a href="https://web.stanford.edu/~jurafsky/slp3/">web.stanford.edu/~jurafsky/slp3</a>.</li>
+    <li>J. Devlin et al., "BERT", NAACL 2019, <a href="https://arxiv.org/abs/1810.04805">arXiv:1810.04805</a>; D. Jurafsky &amp; J. Martin, SLP3 ch. 18, <a href="https://web.stanford.edu/~jurafsky/slp3/">web.stanford.edu/~jurafsky/slp3</a>.</li>
   </ol>
 </section>
 

@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-235-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-240-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -346,7 +346,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>NLP Fundamentals</b> · 9 lessons</summary>
+<summary><b>NLP Fundamentals</b> · 14 lessons</summary>
 
 <br>
 
@@ -357,22 +357,27 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Text Preprocessing](https://aimlrounds.com/tracks/fundamentals/text-preprocessing/) | 🟢 Beginner | 20 min |
 | 2 | [Bag-of-Words, N-grams and TF-IDF](https://aimlrounds.com/tracks/fundamentals/bag-of-words-and-tf-idf/) | 🟢 Beginner | 20 min |
 | 3 | [Text Classification: Naive Bayes vs Logistic Regression](https://aimlrounds.com/tracks/fundamentals/text-classification/) | 🟢 Beginner | 25 min |
+| 4 | [Topic Modelling: LDA, NMF and BERTopic](https://aimlrounds.com/tracks/fundamentals/topic-modelling/) | 🟡 Intermediate | 15 min |
 
 **Language Models & Tokenisation**
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [N-gram Language Models and Perplexity](https://aimlrounds.com/tracks/fundamentals/n-gram-language-models/) | 🟡 Intermediate | 25 min |
-| 2 | [Subword Tokenisation (BPE, WordPiece, SentencePiece)](https://aimlrounds.com/tracks/fundamentals/subword-tokenisation/) | 🟡 Intermediate | 25 min |
+| 2 | [Edit Distance and Spelling Correction](https://aimlrounds.com/tracks/fundamentals/edit-distance-and-spelling-correction/) | 🟡 Intermediate | 15 min |
+| 3 | [Subword Tokenisation (BPE, WordPiece, SentencePiece)](https://aimlrounds.com/tracks/fundamentals/subword-tokenisation/) | 🟡 Intermediate | 25 min |
 
 **Tagging, Retrieval & Evaluation**
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [Sequence Labelling and NER](https://aimlrounds.com/tracks/fundamentals/sequence-labelling-and-ner/) | 🟡 Intermediate | 20 min |
-| 2 | [Search: BM25, Dense and Hybrid Retrieval](https://aimlrounds.com/tracks/fundamentals/search-and-retrieval/) | 🟡 Intermediate | 25 min |
-| 3 | [NLP Evaluation: BLEU, ROUGE, EM/F1](https://aimlrounds.com/tracks/fundamentals/nlp-evaluation-metrics/) | 🟡 Intermediate | 20 min |
-| 4 | [NLP Fundamentals Practice](https://aimlrounds.com/tracks/fundamentals/nlp-practice/) | 🟡 Intermediate | 30 min |
+| 2 | [HMMs, CRFs and the Viterbi Algorithm](https://aimlrounds.com/tracks/fundamentals/hmms-crfs-and-viterbi/) | 🟡 Intermediate | 18 min |
+| 3 | [BERT and Masked Language Models](https://aimlrounds.com/tracks/fundamentals/bert-and-masked-language-models/) | 🟡 Intermediate | 18 min |
+| 4 | [Information Extraction: Relations, Coreference and Entity Linking](https://aimlrounds.com/tracks/fundamentals/information-extraction/) | 🟡 Intermediate | 18 min |
+| 5 | [Search: BM25, Dense and Hybrid Retrieval](https://aimlrounds.com/tracks/fundamentals/search-and-retrieval/) | 🟡 Intermediate | 25 min |
+| 6 | [NLP Evaluation: BLEU, ROUGE, EM/F1](https://aimlrounds.com/tracks/fundamentals/nlp-evaluation-metrics/) | 🟡 Intermediate | 20 min |
+| 7 | [NLP Fundamentals Practice](https://aimlrounds.com/tracks/fundamentals/nlp-practice/) | 🟡 Intermediate | 30 min |
 
 </details>
 
