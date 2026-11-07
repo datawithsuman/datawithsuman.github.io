@@ -286,6 +286,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Upstream changes:</b> pin model versions; re-run the gate before adopting a new one; hosted models can change behaviour between versions (Chen, Zaharia &amp; Zou 2023).</li>
     <li><b>Same rollout discipline</b> as models: <a href="../../mlops/deployment-patterns/">shadow or canary</a>, instant rollback to the previous configuration.</li>
   </ul>
+  <p id="x-llmops-2026"><b>Added 7 Nov 2026.</b> Averages hide regressions: in a 2026 study, one model upgrade gained 7.3 points on maths while 6% of items got reliably worse, and a single run per item couldn't detect any of the changes. So compare old and new configurations case by case, with several runs. Practice also leans on people: in a 2025 study of 86 deployed agents, 74% relied mainly on human evaluation and 52% used LLM judges. See <a href="../tracing-and-observability/">Tracing and Observability</a>, <a href="../model-upgrades-and-retirements/">Model Upgrades and Retirements</a> and <a href="../llm-api-reliability/">LLM API Reliability</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -315,7 +316,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>L. Chen, M. Zaharia &amp; J. Zou, "How Is ChatGPT's Behavior Changing over Time?", 2023, <a href="https://arxiv.org/abs/2307.09009">arXiv:2307.09009</a>.</li>
     <li>L. Zheng et al., "Judging LLM-as-a-Judge", NeurIPS 2023, <a href="https://arxiv.org/abs/2306.05685">arXiv:2306.05685</a>; P. Liang et al., "HELM", 2022, <a href="https://arxiv.org/abs/2211.09110">arXiv:2211.09110</a>.</li>
     <li>OpenTelemetry, semantic conventions for generative AI systems; D. Sculley et al., NeurIPS 2015.</li>
-  </ol>
+  <li>X. Xu &amp; W. Wu, "What Aggregate Scores Miss: Measuring Item-Level Regressions in Commercial LLM API Migrations", 2026, <a href="https://arxiv.org/abs/2608.17719">arXiv:2608.17719</a>; M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, <a href="https://arxiv.org/abs/2512.04123">arXiv:2512.04123</a>.</li>
+</ol>
 </section>
 
 </div>

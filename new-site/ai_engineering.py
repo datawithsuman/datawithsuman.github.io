@@ -76,13 +76,18 @@ PARTS = [
         "deployment-patterns": {"prereqs": [_a("batch-vs-online-inference")]},
         "experiment-tracking-and-model-registry": {},
         "drift-detection-and-monitoring": {"prereqs": [_a("training-serving-skew-and-feature-stores")]},
+        "monitoring-without-labels": {"prereqs": [_a("drift-detection-and-monitoring")]},
         "retraining-pipelines": {"prereqs": [_a("drift-detection-and-monitoring"), _a("deployment-patterns")]},
+        "feedback-loops-and-unbiased-data": {"prereqs": [_a("retraining-pipelines"), _f("bandits-vs-ab-tests")]},
         "mlops-practice": {"type": "interview", "prereqs": [_a("retraining-pipelines")]},
     })),
     ("LLMOps", "system-design/llmops", _part("Versioned configurations and release gates, guardrails, cost and latency.", {
         "llmops": {"prereqs": [_a("deployment-patterns"), _a("evaluating-llm-apps")]},
+        "tracing-and-observability": {"prereqs": [_a("llmops")]},
+        "model-upgrades-and-retirements": {"prereqs": [_a("llmops")]},
         "guardrails-and-prompt-injection": {"prereqs": [_a("llmops")]},
         "cost-and-latency": {"prereqs": [_a("llmops"), _a("prefix-caching")]},
+        "llm-api-reliability": {"prereqs": [_a("cost-and-latency")]},
         "genai-scenarios-set-1": {"type": "interview", "prereqs": [_a("cost-and-latency")]},
     })),
 ]

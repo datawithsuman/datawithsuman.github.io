@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-267-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-272-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 72 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 77 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -533,7 +533,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>MLOps</b> · 7 lessons</summary>
+<summary><b>MLOps</b> · 9 lessons</summary>
 
 <br>
 
@@ -544,22 +544,27 @@ Tap a track to see its lessons, in the order to learn them.
 | 3 | [Deployment Patterns: Shadow, Canary, A/B and Rollback](https://aimlrounds.com/tracks/ai-engineering/deployment-patterns/) | 🟡 Intermediate | 20 min |
 | 4 | [Experiment Tracking, Reproducibility and the Model Registry](https://aimlrounds.com/tracks/ai-engineering/experiment-tracking-and-model-registry/) | 🟢 Beginner | 20 min |
 | 5 | [Drift Detection and Monitoring](https://aimlrounds.com/tracks/ai-engineering/drift-detection-and-monitoring/) | 🟡 Intermediate | 25 min |
-| 6 | [Retraining Pipelines and Continuous Training](https://aimlrounds.com/tracks/ai-engineering/retraining-pipelines/) | 🟡 Intermediate | 20 min |
-| 7 | [MLOps Practice](https://aimlrounds.com/tracks/ai-engineering/mlops-practice/) | 🟡 Intermediate | 35 min |
+| 6 | [Monitoring Without Labels: Estimating Performance](https://aimlrounds.com/tracks/ai-engineering/monitoring-without-labels/) | 🔴 Advanced | 18 min |
+| 7 | [Retraining Pipelines and Continuous Training](https://aimlrounds.com/tracks/ai-engineering/retraining-pipelines/) | 🟡 Intermediate | 20 min |
+| 8 | [Feedback Loops and Unbiased Training Data](https://aimlrounds.com/tracks/ai-engineering/feedback-loops-and-unbiased-data/) | 🔴 Advanced | 18 min |
+| 9 | [MLOps Practice](https://aimlrounds.com/tracks/ai-engineering/mlops-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 
 <details>
-<summary><b>LLMOps</b> · 4 lessons</summary>
+<summary><b>LLMOps</b> · 7 lessons</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [LLMOps: What's Different](https://aimlrounds.com/tracks/ai-engineering/llmops/) | 🟡 Intermediate | 20 min |
-| 2 | [Guardrails and Prompt Injection](https://aimlrounds.com/tracks/ai-engineering/guardrails-and-prompt-injection/) | 🟡 Intermediate | 25 min |
-| 3 | [Cost and Latency: Routing, Caching and Batching](https://aimlrounds.com/tracks/ai-engineering/cost-and-latency/) | 🟡 Intermediate | 20 min |
-| 4 | [GenAI App Scenarios: Set 1](https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 2 | [Tracing and Observability for LLM Apps and Agents](https://aimlrounds.com/tracks/ai-engineering/tracing-and-observability/) | 🟡 Intermediate | 20 min |
+| 3 | [Model Upgrades and Retirements](https://aimlrounds.com/tracks/ai-engineering/model-upgrades-and-retirements/) | 🟡 Intermediate | 18 min |
+| 4 | [Guardrails and Prompt Injection](https://aimlrounds.com/tracks/ai-engineering/guardrails-and-prompt-injection/) | 🟡 Intermediate | 25 min |
+| 5 | [Cost and Latency: Routing, Caching and Batching](https://aimlrounds.com/tracks/ai-engineering/cost-and-latency/) | 🟡 Intermediate | 20 min |
+| 6 | [LLM API Reliability: Rate Limits, Retries and Fallbacks](https://aimlrounds.com/tracks/ai-engineering/llm-api-reliability/) | 🟡 Intermediate | 20 min |
+| 7 | [GenAI App Scenarios: Set 1](https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-1/) | 🟡 Intermediate | 35 min |
 
 </details>
 

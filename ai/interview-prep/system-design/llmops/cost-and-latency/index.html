@@ -287,6 +287,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Semantic cache hygiene:</b> high similarity thresholds, exclude personalised or time-sensitive answers, include policy version in the cache key, expire entries when documents change.</li>
     <li><b>Track</b> cost per resolved conversation, not just cost per call: a cheaper model that causes more escalations to humans may cost more overall.</li>
   </ul>
+  <p id="x-reasoning-cost"><b>Reasoning models add hidden tokens.</b> They write reasoning tokens before the answer, billed as output, so the effort setting can change cost and latency more than any prompt edit. See <a href="../../prompt-engineering/prompting-reasoning-models/">Prompting Reasoning Models</a>. For rate limits, retries and fallbacks, see <a href="../llm-api-reliability/">LLM API Reliability</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">

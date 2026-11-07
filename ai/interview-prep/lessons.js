@@ -338,8 +338,10 @@ window.LESSONS = {
           {slug: "deployment-patterns",title: "Deployment Patterns: Shadow, Canary, A/B and Rollback",sub: "How long must a canary run to catch a regression?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "experiment-tracking-and-model-registry",title: "Experiment Tracking, Reproducibility and the Model Registry",sub: "Can you rebuild last month's model, and roll back in minutes?",level: "Beginner",mins: 20,group: "lessons"},
           {slug: "drift-detection-and-monitoring",title: "Drift Detection and Monitoring",sub: "How do you know a model is degrading before labels arrive?",level: "Intermediate",mins: 25,group: "lessons"},
+          {slug: "monitoring-without-labels",title: "Monitoring Without Labels: Estimating Performance",sub: "Your fraud model's labels arrive 60 days late. How do you know its accuracy today?",level: "Advanced",mins: 18,group: "lessons"},
           {slug: "retraining-pipelines",title: "Retraining Pipelines and Continuous Training",sub: "How often should you retrain, and what stops a bad retrain?",level: "Intermediate",mins: 20,group: "lessons"},
-          {slug: "mlops-practice",title: "MLOps Practice",sub: "7 production questions: skew, drift alerts, canaries, audits, retraining, LLMOps.",level: "Intermediate",mins: 35,group: "scenarios"},
+          {slug: "feedback-loops-and-unbiased-data",title: "Feedback Loops and Unbiased Training Data",sub: "Your recommender is retrained on its own clicks every week, and it keeps showing the same few items. Why, and how do you get data it can learn from?",level: "Advanced",mins: 18,group: "lessons"},
+          {slug: "mlops-practice",title: "MLOps Practice",sub: "10 production questions: skew, drift alerts, canaries, audits, retraining, label-free estimation, feedback loops, LLMOps.",level: "Intermediate",mins: 35,group: "scenarios"},
         ] },
       { id: "llmops", dir: "system-design/llmops", title: "LLMOps", desc: "Running LLM applications in production: versioned configurations and release gates, guardrails and prompt injection, cost and latency.",
         groups: [
@@ -348,9 +350,12 @@ window.LESSONS = {
         ],
         lessons: [
           {slug: "llmops",title: "LLMOps: What's Different",sub: "How do you ship prompt changes without breaking things?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "tracing-and-observability",title: "Tracing and Observability for LLM Apps and Agents",sub: "Users say your assistant 'got worse this week', but every dashboard is green. What should you have been recording, and how do you find the problem?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "model-upgrades-and-retirements",title: "Model Upgrades and Retirements",sub: "Your provider is retiring the model your product uses in 60 days. The new one scores higher on benchmarks. How do you migrate safely?",level: "Intermediate",mins: 18,group: "lessons"},
           {slug: "guardrails-and-prompt-injection",title: "Guardrails and Prompt Injection",sub: "Why can't filters alone stop prompt injection?",level: "Intermediate",mins: 25,group: "lessons"},
           {slug: "cost-and-latency",title: "Cost and Latency: Routing, Caching and Batching",sub: "How do you cut an LLM bill by 80% without losing quality?",level: "Intermediate",mins: 20,group: "lessons"},
-          {slug: "genai-scenarios-set-1",title: "GenAI App Scenarios: Set 1",sub: "7 incidents: stale citations, broken JSON, a bad fine-tune, a cost spike, injection, routing.",level: "Intermediate",mins: 35,group: "scenarios"},
+          {slug: "llm-api-reliability",title: "LLM API Reliability: Rate Limits, Retries and Fallbacks",sub: "Your provider starts returning overload errors at peak time, and your retries make it worse. How do you design calls to an LLM API so they fail gracefully?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "genai-scenarios-set-1",title: "GenAI App Scenarios: Set 1",sub: "9 incidents: stale citations, broken JSON, a bad fine-tune, a cost spike, injection, routing, a retry storm, a retired model.",level: "Intermediate",mins: 35,group: "scenarios"},
         ] },
       { id: "ml-system-design", dir: "system-design/ml-system-design", title: "AI/ML System Design", desc: "End-to-end AI/ML system designs in interview format. New designs are added over time.",
         groups: [
