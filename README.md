@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-277-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-286-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 82 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 91 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -512,7 +512,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Agentic AI</b> · 16 lessons</summary>
+<summary><b>Agentic AI</b> · 25 lessons</summary>
 
 <br>
 
@@ -533,7 +533,16 @@ Tap a track to see its lessons, in the order to learn them.
 | 13 | [Evaluating Agents](https://aimlrounds.com/tracks/ai-engineering/evaluating-agents/) | 🟡 Intermediate | 20 min |
 | 14 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://aimlrounds.com/tracks/ai-engineering/agent-safety/) | 🟡 Intermediate | 25 min |
 | 15 | [Agentic AI Practice](https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
-| 16 | [Agent Scenarios: Set 1](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 16 | [Agent Scenarios: Context and Memory](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/) | 🟡 Intermediate | 10 min |
+| 17 | [Agent Scenarios: Tools and MCP](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-tools-and-mcp/) | 🟡 Intermediate | 12 min |
+| 18 | [Agent Scenarios: Planning and Reliability](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-planning-and-reliability/) | 🟡 Intermediate | 10 min |
+| 19 | [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/) | 🟡 Intermediate | 10 min |
+| 20 | [Agent Scenarios: Observability and Debugging](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-observability/) | 🟡 Intermediate | 10 min |
+| 21 | [Agent Scenarios: Evaluation](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-evaluation/) | 🟡 Intermediate | 10 min |
+| 22 | [Agent Scenarios: Safety and Security](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-safety-and-security/) | 🟡 Intermediate | 10 min |
+| 23 | [Agent Scenarios: Cost and Latency](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-cost-and-latency/) | 🟡 Intermediate | 10 min |
+| 24 | [Agent Scenarios: Human in the Loop](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-human-in-the-loop/) | 🟡 Intermediate | 10 min |
+| 25 | [Agent Scenarios: Long-Running and Scheduled Agents](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-long-running/) | 🟡 Intermediate | 10 min |
 
 </details>
 

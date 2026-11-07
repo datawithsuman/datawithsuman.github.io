@@ -856,6 +856,15 @@ def site_files():
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
 
 
+# Old lesson addresses that moved, mapped to their new pages.
+REDIRECTS = {"tracks/ai-engineering/agent-scenarios-set-1/": "/tracks/ai-engineering/agent-scenarios-context-and-memory/"}
+
+
+def redirects():
+    for old, new in REDIRECTS.items():
+        write(old + "index.html", f'<!doctype html><meta charset="utf-8"><title>Moved</title><link rel="canonical" href="{new}"><meta http-equiv="refresh" content="0; url={new}"><p>This page moved to <a href="{new}">{new}</a>.</p>\n')
+
+
 def write(rel, text):
     p = DIST / rel
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -871,4 +880,5 @@ if __name__ == "__main__":
     for l in ORDERED:
         lesson_page(l)
     search_index()
+    redirects()
     print(f"Built {1 + len(TRACKS) + len(ORDERED)} pages into {DIST}")
