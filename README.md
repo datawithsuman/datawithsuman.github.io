@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-259-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-262-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 64 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 67 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -448,7 +448,7 @@ Tap a track to see its lessons, in the order to learn them.
 ### 🏗️ AI Engineering
 
 <details>
-<summary><b>LLM Inference & Serving</b> · 10 lessons</summary>
+<summary><b>LLM Inference & Serving</b> · 13 lessons</summary>
 
 <br>
 
@@ -457,13 +457,16 @@ Tap a track to see its lessons, in the order to learn them.
 | 1 | [Prefill vs Decode](https://aimlrounds.com/tracks/ai-engineering/prefill-vs-decode/) | 🟡 Intermediate | 30 min |
 | 2 | [LLM Quantization](https://aimlrounds.com/tracks/ai-engineering/llm-quantization/) | 🟡 Intermediate | 35 min |
 | 3 | [KV Cache Management and PagedAttention](https://aimlrounds.com/tracks/ai-engineering/kv-cache-and-pagedattention/) | 🟡 Intermediate | 20 min |
-| 4 | [Continuous Batching and Scheduling](https://aimlrounds.com/tracks/ai-engineering/continuous-batching/) | 🟡 Intermediate | 20 min |
-| 5 | [Prefix and Prompt Caching](https://aimlrounds.com/tracks/ai-engineering/prefix-caching/) | 🟢 Beginner | 20 min |
-| 6 | [Speculative Decoding](https://aimlrounds.com/tracks/ai-engineering/speculative-decoding/) | 🟡 Intermediate | 20 min |
-| 7 | [Serving Metrics and SLOs](https://aimlrounds.com/tracks/ai-engineering/serving-metrics-and-slos/) | 🟢 Beginner | 20 min |
-| 8 | [Scaling Inference: Parallelism, Replicas and Routing](https://aimlrounds.com/tracks/ai-engineering/scaling-inference/) | 🔴 Advanced | 25 min |
-| 9 | [Sizing and Cost: Cost per Million Tokens](https://aimlrounds.com/tracks/ai-engineering/sizing-and-cost/) | 🟡 Intermediate | 20 min |
-| 10 | [LLM Inference Practice](https://aimlrounds.com/tracks/ai-engineering/llm-inference-practice/) | 🟡 Intermediate | 35 min |
+| 4 | [KV Cache Compression, Eviction and Offloading](https://aimlrounds.com/tracks/ai-engineering/kv-cache-compression/) | 🔴 Advanced | 20 min |
+| 5 | [Continuous Batching and Scheduling](https://aimlrounds.com/tracks/ai-engineering/continuous-batching/) | 🟡 Intermediate | 20 min |
+| 6 | [Prefix and Prompt Caching](https://aimlrounds.com/tracks/ai-engineering/prefix-caching/) | 🟢 Beginner | 20 min |
+| 7 | [Speculative Decoding](https://aimlrounds.com/tracks/ai-engineering/speculative-decoding/) | 🟡 Intermediate | 20 min |
+| 8 | [Serving Metrics and SLOs](https://aimlrounds.com/tracks/ai-engineering/serving-metrics-and-slos/) | 🟢 Beginner | 20 min |
+| 9 | [Scaling Inference: Parallelism, Replicas and Routing](https://aimlrounds.com/tracks/ai-engineering/scaling-inference/) | 🔴 Advanced | 25 min |
+| 10 | [Serving Mixture-of-Experts Models](https://aimlrounds.com/tracks/ai-engineering/serving-moe-models/) | 🔴 Advanced | 20 min |
+| 11 | [Serving Agents and Reasoning Models](https://aimlrounds.com/tracks/ai-engineering/serving-agents-and-reasoning-models/) | 🔴 Advanced | 18 min |
+| 12 | [Sizing and Cost: Cost per Million Tokens](https://aimlrounds.com/tracks/ai-engineering/sizing-and-cost/) | 🟡 Intermediate | 20 min |
+| 13 | [LLM Inference Practice](https://aimlrounds.com/tracks/ai-engineering/llm-inference-practice/) | 🟡 Intermediate | 35 min |
 
 </details>
 

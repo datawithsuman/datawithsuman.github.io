@@ -294,6 +294,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <tr><td><b>N-gram / prompt lookup</b></td><td>copy candidate continuations from the prompt itself</td><td>free; great for editing, code refactors and RAG answers that quote the context</td></tr>
   </table></div>
   <p class="small">Measure on your own traffic: acceptance depends on the task (code and quoting accept more than creative writing) and on temperature.</p>
+  <p id="mtp-note"><b>Drafts built into the model.</b> Some models are trained to predict more than one token ahead. DeepSeek-V3 reported that its multi-token prediction head's second token was accepted 85 to 90% of the time, giving about 1.8× more tokens per second. Engines now use such heads as the draft, with no separate model to load.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -323,7 +324,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>C. Chen et al., "Accelerating Large Language Model Decoding with Speculative Sampling", 2023, <a href="https://arxiv.org/abs/2302.01318">arXiv:2302.01318</a>.</li>
     <li>T. Cai et al., "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads", ICML 2024, <a href="https://arxiv.org/abs/2401.10774">arXiv:2401.10774</a>.</li>
     <li>Y. Li et al., "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test", NeurIPS 2025, <a href="https://arxiv.org/abs/2503.01840">arXiv:2503.01840</a>.</li>
-  </ol>
+  <li>DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, <a href="https://arxiv.org/abs/2412.19437">arXiv:2412.19437</a> (§5.4.3, multi-token prediction for speculative decoding).</li>
+    </ol>
 </section>
 
 </div>

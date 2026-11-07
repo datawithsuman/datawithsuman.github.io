@@ -286,6 +286,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Routing:</b> balance on queue length and KV usage, and send requests with the same prefix to the same replica (prefix-aware routing); sticky sessions keep multi-turn chats on warm caches.</li>
     <li><b>Autoscaling:</b> scale on queue depth, TTFT or KV-cache usage; large models take minutes to load, so keep warm spare capacity, pre-load weights from fast storage, and use request queues to absorb bursts.</li>
   </ul>
+  <p id="moe-at-scale"><b>Large MoE serving, 2025–26.</b> Teams now spread experts across dozens of GPUs, and balance load by copying busy experts. SGLang reported $0.20 per million output tokens for DeepSeek-V3 on 96 H100s, and vLLM 954K tokens per second per GPU, counting input and output, on one GB300 rack. These are their own results. See <a href="../serving-moe-models/">Serving Mixture-of-Experts Models</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">

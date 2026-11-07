@@ -241,7 +241,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <section class="ch" id="c1" data-toc="1 · The problem">
   <div class="chap">1 · The problem</div>
   <h2>GPU-hours are easy to price; tokens per GPU-hour are not</h2>
-  <p>An on-demand H100 rents for roughly $2–7 per hour depending on provider and commitment (public surveys put the median around $4 in late 2026). Whether that becomes $0.30 or $15 per million tokens depends on batch size, sequence lengths, model size, precision, engine and how busy the GPU actually is.</p>
+  <p>An on-demand H100 rents for roughly $3–4 per hour at the median in November 2026, and rental prices rose about 30% over the previous year, by one index. A B200 costs roughly $7.50–9.50. Whether that becomes $0.30 or $15 per million tokens depends on batch size, sequence lengths, model size, precision, engine and how busy the GPU actually is.</p>
 </section>
 
 <section class="ch" id="c2" data-toc="2 · Napkin model">
@@ -322,7 +322,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>R. Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, <a href="https://arxiv.org/abs/2211.05102">arXiv:2211.05102</a>.</li>
     <li>W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, <a href="https://arxiv.org/abs/2309.06180">arXiv:2309.06180</a>.</li>
     <li>NVIDIA H100 Tensor Core GPU datasheet (3.35 TB/s HBM3, 989 TFLOPS dense BF16, SXM).</li>
-    <li>GPU rental price surveys, Oct 2026 (e.g. getdeploying.com GPU price trends; cloud provider pricing pages): H100 on-demand roughly $2–7/hour, median around $4.</li>
+    <li>GPU rental price surveys, Nov 2026: <a href="https://getdeploying.com/gpu-price-trends">GetDeploying price trends</a> (H100 median about $3.87, up 30% over 12 months) and the <a href="https://data.ornn.com/">Ornn compute price index</a> (H100 SXM $3.13, B200 $9.46 on 5 Nov). Indices differ by provider mix.</li>
     <li>vLLM, SGLang, TensorRT-LLM and llama.cpp documentation.</li>
   </ol>
 </section>

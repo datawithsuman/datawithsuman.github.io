@@ -251,7 +251,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Why it works:</b> in a causal model, the K and V at position t depend only on tokens 1…t. Two requests that share their first n tokens have identical KV for those n positions.</li>
     <li><b>vLLM automatic prefix caching:</b> each full <a href="../kv-cache-and-pagedattention/">KV block</a> is identified by a hash of its tokens <i>and</i> all tokens before it; a new request reuses every leading block whose hash is already cached. Unused cached blocks are evicted least-recently-used.</li>
     <li><b>SGLang RadixAttention:</b> cached prefixes are stored in a radix tree, so any shared prefix (including branches like many few-shot variants) is found; the SGLang paper reports up to 6.4× higher throughput on workloads with heavy sharing.</li>
-    <li><b>API prompt caching:</b> Anthropic uses explicit cache breakpoints, with cache writes billed at 1.25× and reads at 0.1× the base input price for a 5-minute cache; OpenAI caches prompts of 1,024+ tokens automatically. Discounts and lifetimes differ by provider and model, so check current pricing.</li>
+    <li><b>API prompt caching:</b> Anthropic uses cache breakpoints. Writes cost 1.25× the base input price for a 5-minute cache, or 2× for an hour, and reads cost 0.1×, or less on its newest models. Its newest models can cache from 512 tokens. OpenAI caches automatically from 1,024 tokens. Its newest models bill writes at 1.25× for a 30-minute default, with discounts of up to 95%. These change often, so check current pricing (checked 7 Nov 2026).</li>
   </ul>
 </section>
 

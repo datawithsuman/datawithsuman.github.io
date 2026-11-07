@@ -229,7 +229,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <section class="ch" id="c1" data-toc="1 · The problem">
   <div class="chap">1 · The problem</div>
   <h2>An LLM is mostly numbers you have to store and move</h2>
-  <p>A 70B model in 16-bit is 141 GB of weights before you've served a single user. That's two H100s just to hold it. And every decode step reads every weight from memory, so the bytes also set your speed limit (see <a href="https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/prefill-vs-decode/">Prefill vs Decode</a>). Fewer bits per weight attacks both problems at once.</p>
+  <p>A 70B model in 16-bit is 141 GB of weights before you've served a single user. That's two H100s just to hold it. And every decode step reads every weight from memory, so the bytes also set your speed limit (see <a href="../prefill-vs-decode/">Prefill vs Decode</a>). Fewer bits per weight attacks both problems at once.</p>
   <div class="card lab" id="labSize">
     <div class="seg" data-k="m"><button data-v="0">Llama 3.1 8B</button><button data-v="1" class="on">Llama 3.1 70B</button><button data-v="2">Llama 3.1 405B</button></div>
     <div class="seg" data-k="b"><button data-v="16" class="on">16-bit</button><button data-v="8">8-bit</button><button data-v="4">4-bit</button></div>
@@ -655,6 +655,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Quantize the KV cache too.</b> At high concurrency the KV cache, not the weights, limits batch size; an FP8 KV cache halves it. See <a href="../scaling-inference/">Scaling Inference</a> for why FP8 weights alone may not reduce GPU count.</li>
     <li><b>Evaluate on tasks, not just perplexity.</b> Perplexity can hide drops on reasoning, maths, code and long-context tasks; check your own task metrics before and after quantizing.</li>
   </ul></div>
+  <p class="small" id="dq-note"><b>Added 7 Nov 2026:</b> since prefill and decode want different formats, a 2026 paper from NVIDIA and ISTA proposes quantizing them differently, with low-precision maths for prefill and compact weights for decode. It's early research, but it fits the phase split in <a href="../prefill-vs-decode/">Prefill vs Decode</a>.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">
@@ -694,7 +695,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>P. Kiely, <i>Inference Engineering</i> (Baseten), ch. 5.1: precision speedups, sensitivity ordering, π example.</li>
     <li>Qwen2.5-0.5B-Instruct weights (layer 12, MLP down-projection) for the 32-weight example.</li>
     <li>Interview angle: <a href="https://www.techinterview.org/post/3233477292/gptq-awq-fp8-llm-inference-interview/">techinterview.org, GPTQ, AWQ and FP8 in the LLM inference interview</a>.</li>
-  </ol>
+  <li>"Disaggregated Quantization: Specializing LLM Prefill and Decode", 2026, <a href="https://arxiv.org/abs/2609.26333">arXiv:2609.26333</a>.</li>
+    </ol>
 </section>
 
 </div>

@@ -282,6 +282,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Offloading and tiering:</b> evicted or idle conversations' blocks move to CPU memory or SSD and come back on the next turn (e.g. LMCache with vLLM), useful for long multi-turn chats and agents.</li>
     <li><b>Alternatives:</b> vAttention (Prabhu et al. 2024) keeps the cache virtually contiguous using the GPU's own virtual memory, so unmodified attention kernels work; architecture changes (<a href="../../../fundamentals/llms/attention-variants-mqa-gqa-mla/">GQA, MLA</a>, sliding windows) shrink the cache itself.</li>
   </ul>
+  <p class="small" id="x-kvc">To shrink, evict or offload the cache itself, read <a href="../kv-cache-compression/">KV Cache Compression, Eviction and Offloading</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
