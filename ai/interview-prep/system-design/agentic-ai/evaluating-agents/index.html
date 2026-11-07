@@ -289,6 +289,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Caveats:</b> scores depend on the agent scaffold, budget and number of attempts; leaderboards move monthly; benchmarks can leak or be over-fitted. Compare like with like and report cost.</li>
     <li><b>Your own eval:</b> 100–300 real cases with expected end states, a sandbox (copies of tools and data), a simulated user where needed, k runs per case, trajectory rules, and cost tracking; run on every prompt, model or tool change.</li>
   </ul>
+  <p id="x-eval-2026"><b>Added 7 Nov 2026.</b> Terminal-Bench 2.0 has 89 hand-checked terminal tasks, and the best agent in its paper solved 63%. Its authors found model choice usually mattered more than the agent scaffold, and more tokens or turns didn't predict success. In practice, a 2025 study of 86 deployed agents found 74% relied mainly on human evaluation and 52% used LLM judges, and 75% of the 20 teams it interviewed had no formal benchmark set.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -318,7 +319,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>C. Jimenez et al., "SWE-bench", ICLR 2024, <a href="https://arxiv.org/abs/2310.06770">arXiv:2310.06770</a>; S. Zhou et al., "WebArena", ICLR 2024, <a href="https://arxiv.org/abs/2307.13854">arXiv:2307.13854</a>; T. Xie et al., "OSWorld", NeurIPS 2024, <a href="https://arxiv.org/abs/2404.07972">arXiv:2404.07972</a>.</li>
     <li>G. Mialon et al., "GAIA", ICLR 2024, <a href="https://arxiv.org/abs/2311.12983">arXiv:2311.12983</a>; T. Kwa et al. (METR), "Measuring AI Ability to Complete Long Tasks", 2025, <a href="https://arxiv.org/abs/2503.14499">arXiv:2503.14499</a>.</li>
     <li>S. Kapoor et al., "AI Agents That Matter", 2024, <a href="https://arxiv.org/abs/2407.01502">arXiv:2407.01502</a>.</li>
-  </ol>
+  <li>M. Merrill et al., "Terminal-Bench", 2026, <a href="https://arxiv.org/abs/2601.11868">arXiv:2601.11868</a>; M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, <a href="https://arxiv.org/abs/2512.04123">arXiv:2512.04123</a>.</li>
+</ol>
 </section>
 
 </div>

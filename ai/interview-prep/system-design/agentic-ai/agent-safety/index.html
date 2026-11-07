@@ -290,6 +290,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Design patterns:</b> plan actions before reading untrusted content, then don't let that content change the plan; quarantine untrusted text in a model without tools (Beurer-Kellner et al. 2025; CaMeL).</li>
     <li><b>Test and monitor:</b> red-team with injected content (AgentDojo-style), log every tool call with its triggering input, alert on unusual data access or destinations.</li>
   </ul>
+  <p id="x-rule-of-two"><b>Added 7 Nov 2026.</b> Meta's <b>Agents Rule of Two</b> (Oct 2025) restates the trifecta: in one session, an agent should have at most two of untrusted input, access to sensitive data or systems, and the ability to change state or communicate externally, unless a person or reliable check approves. The OWASP Top 10 for Agentic Applications (Dec 2025) lists risks such as goal hijack, tool misuse, privilege abuse, memory poisoning and cascading failures. And filters alone don't hold: attacks tuned to each defence beat 12 published defences, most with over 90% success.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -319,7 +320,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>OWASP, "Top 10 for LLM Applications 2025" (LLM01 Prompt Injection, LLM06 Excessive Agency).</li>
     <li>E. Debenedetti et al., "AgentDojo", NeurIPS 2024 Datasets &amp; Benchmarks, <a href="https://arxiv.org/abs/2406.13352">arXiv:2406.13352</a>; "Defeating Prompt Injections by Design" (CaMeL), 2025, <a href="https://arxiv.org/abs/2503.18813">arXiv:2503.18813</a>.</li>
     <li>L. Beurer-Kellner et al., "Design Patterns for Securing LLM Agents against Prompt Injections", 2025, <a href="https://arxiv.org/abs/2506.08837">arXiv:2506.08837</a>; K. Greshake et al., AISec 2023, <a href="https://arxiv.org/abs/2302.12173">arXiv:2302.12173</a>.</li>
-  </ol>
+  <li>Meta, <a href="https://ai.meta.com/blog/practical-ai-agent-security/">"Agents Rule of Two"</a>, Oct 2025; OWASP, Top 10 for Agentic Applications 2026; M. Nasr et al., "The Attacker Moves Second", 2025, <a href="https://arxiv.org/abs/2510.09023">arXiv:2510.09023</a>.</li>
+</ol>
 </section>
 
 </div>

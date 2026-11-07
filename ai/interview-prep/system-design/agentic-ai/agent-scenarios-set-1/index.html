@@ -237,7 +237,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Scenarios · Agentic AI · Set 1 · added 29 Oct 2026</div>
   <h1>Agent Scenarios: Set 1</h1>
-  <div class="meta">7 interview questions, easy to hard · answers hidden until you click · checked 29 Oct 2026</div>
+  <div class="meta">9 interview questions, easy to hard · answers hidden until you click · checked 29 Oct 2026</div>
   <div class="tldr"><b>How to use:</b> give yourself about 5 minutes per question, as in an interview. Each is a production incident. Say the most likely cause first, how you'd confirm it from traces, and the fix; then open the answer and compare.<div class="tool"><b>The agent debugging order:</b> pull the trace for the failing runs → find the first wrong step (bad tool choice, bad argument, bad observation, bad decision) → check tools, prompt and context at that step → fix the cause, add the case to the agent eval set, and add a guard (budget, validation, approval) so the same failure can't do damage.</div></div>
 </header>
 <section class="ch" id="qs" data-toc="Questions">
@@ -263,10 +263,17 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <div class="qcard" id="q7"><div class="qhead"><span class="qn">Q7</span><span class="lvl h">Hard</span><span class="small">multi-agent conflict</span></div>
 <p class="qtext">Your research pipeline uses 5 parallel sub-agents per question. Reports increasingly contain contradictory statements, and token costs are high. What do you do?</p>
 <details class="qa"><summary>Show answer</summary><p class="ans">Answer: <b>improve delegation and synthesis, give sub-agents clearer non-overlapping briefs, and check whether parallelism is needed at all</b></p><ol><li>Contradictions come from overlapping briefs and sub-agents working with partial context; the orchestrator merges without reconciling.</li><li>Write distinct, scoped briefs with output formats and sources; have the orchestrator check conflicts and resolve or flag them with citations.</li><li>Measure quality and cost per report against a single-agent baseline; reduce sub-agents for narrow questions (scale effort to the query).</li></ol><p class="small" style="margin:8px 0 0"><b>Follow-up:</b> When is multi-agent worth its tokens? For broad, parallel, read-heavy questions where breadth matters more than cost.</p></details></div>
+<div class="qcard" id="q8"><div class="qhead"><span class="qn">Q8</span><span class="lvl m">Medium</span><span class="small">exposed MCP server</span></div>
+<p class="qtext">A developer deployed an internal MCP server for the CRM to a public host for a demo. It has no authentication, and its tools include a customer search. What's the exposure, and what do you change?</p>
+<details class="qa"><summary>Show answer</summary><p class="ans">Answer: <b>Anyone on the internet can call its tools and read customer records</b></p><ol><li>Unauthenticated remote servers are common: 40.6% of 7,973 found in one study, including one exposing over 5,000 CRM records.</li><li>Take it down, rotate any credentials it held, and check access logs.</li><li>Require OAuth with PKCE and audience checks, scope tools to the signed-in user, and add server scanning before deploys.</li></ol><p class="small" style="margin:6px 0 0">Why does this keep happening? Starting a server is one command, and authentication is opt-in in many templates.</p></details></div>
+<div class="qcard" id="q9"><div class="qhead"><span class="qn">Q9</span><span class="lvl h">Hard</span><span class="small">resume side effects</span></div>
+<p class="qtext">Your agent drafts an email, pauses for a manager's approval, then sends it. After approval, the customer received the email twice. The graph's send step sits in the same node as the approval pause. Why?</p>
+<details class="qa"><summary>Show answer</summary><p class="ans">Answer: <b>Resuming restarts the node from its beginning, so the send ran again</b></p><ol><li>In graph runtimes like LangGraph, a resumed node re-runs from its start, repeating code before the pause.</li><li>If a send happened before the pause, as an earlier draft or a retry did, it repeats.</li><li>Fix: put side effects in their own node after approval, and make them idempotent with a key.</li></ol><p class="small" style="margin:6px 0 0">What else re-runs on resume? Any tool call or write before the interrupt in that node, so keep those safe to repeat.</p></details></div>
 </section>
 <section class="ch" id="more" data-toc="Keep practising">
   <div class="chap">Keep practising</div>
   <p class="small">Uses the lessons in this track: <a href="../tool-calling/">Tool Calling</a>, <a href="../memory-and-context-engineering/">Memory</a>, <a href="../agent-infrastructure/">Agent Infrastructure</a>, <a href="../evaluating-agents/">Evaluating Agents</a>, <a href="../agent-safety/">Agent Safety</a>, <a href="../multi-agent-systems/">Multi-Agent Systems</a>. New scenario sets are added over time.</p>
+<p class="small">New lessons: <a href="../agent-frameworks-and-harnesses/">Agent Frameworks and Harnesses</a> and <a href="../mcp-under-the-hood/">MCP Under the Hood</a>.</p>
 </section>
 
 </div>

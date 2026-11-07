@@ -231,7 +231,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Deep explainer · Agentic AI · 5 of 9</div>
   <h1>MCP: The Model Context Protocol</h1>
-  <div class="meta">What MCP is and why it spread: the N×M integration problem, hosts, clients and servers, the primitives (tools, resources, prompts; and client features like sampling and elicitation), JSON-RPC messages, transports (stdio, Streamable HTTP), authorisation, how MCP relates to plain function calling, security concerns, and how the dated spec evolves · built from the Model Context Protocol specification and changelogs (modelcontextprotocol.io), Anthropic's MCP announcement (Nov 2024), the Linux Foundation Agentic AI Foundation announcement (Dec 2025), and the OWASP and Invariant Labs analyses of MCP tool poisoning · checked 29 Oct 2026</div>
+  <div class="meta">What MCP is and why it spread: the N×M integration problem, hosts, clients and servers, the primitives (tools, resources, prompts; and and how servers ask for more input), JSON-RPC messages, transports (stdio, Streamable HTTP), authorisation, how MCP relates to plain function calling, security concerns, and how the dated spec evolves · built from the Model Context Protocol specification and changelogs (modelcontextprotocol.io), Anthropic's MCP announcement (Nov 2024), the Linux Foundation Agentic AI Foundation announcement (Dec 2025), and the OWASP and Invariant Labs analyses of MCP tool poisoning · checked 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> every AI app (chat assistant, IDE, agent) wants to connect to every tool and data source (GitHub, Slack, databases, your order system). Without a standard, that's <b>N apps × M tools</b> custom integrations. The <b>Model Context Protocol</b>, introduced by Anthropic in Nov 2024 and since adopted widely (and donated to the Linux Foundation's Agentic AI Foundation in Dec 2025), standardises the connection: a tool provider writes one <b>MCP server</b>; any MCP-capable <b>host</b> connects to it through a <b>client</b>, so it's <b>N + M</b>. Servers expose <b>tools</b> (actions the model can call), <b>resources</b> (data to read) and <b>prompts</b> (templates); messages are <b>JSON-RPC 2.0</b> over <b>stdio</b> (local) or <b>Streamable HTTP</b> (remote, with OAuth). MCP doesn't replace <a href="../tool-calling/">function calling</a>; it's how the tools get discovered and invoked across apps. The spec is versioned by date and changes often, so check the current revision.<br><span class="small">What you'll be able to do after this: explain MCP's architecture and primitives, compare it with function calling, and name its security risks.</span></div>
   <div class="legend"><span><i style="background:var(--a)"></i>host / client</span><span><i style="background:var(--b)"></i>MCP server</span><span><i style="background:var(--ok)"></i>standard integration</span><span><i style="background:var(--bad)"></i>custom glue</span><span><i style="background:var(--info)"></i>numbers</span></div>
 </header>
@@ -250,11 +250,12 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <ul>
     <li><b>Host:</b> the AI application (a desktop assistant, IDE, agent runtime). It runs one <b>client</b> per connected server and decides what the model sees and is allowed to do.</li>
     <li><b>Server:</b> a program exposing capabilities. <b>Tools</b> (model-invoked actions with JSON-schema inputs), <b>resources</b> (readable data, by URI), <b>prompts</b> (reusable templates the user can pick).</li>
-    <li><b>Client features:</b> servers can ask the host for <b>sampling</b> (an LLM completion), <b>roots</b> (allowed directories) and <b>elicitation</b> (asking the user for input).</li>
-    <li><b>Protocol:</b> JSON-RPC 2.0 messages: <code>initialize</code> (capability negotiation), <code>tools/list</code>, <code>tools/call</code>, <code>resources/read</code>, notifications for changes.</li>
-    <li><b>Transports:</b> <b>stdio</b> for local servers launched by the host; <b>Streamable HTTP</b> for remote servers (replaced the older HTTP+SSE transport in the 2025-03-26 revision), with OAuth-based authorisation.</li>
+    <li><b>Asking for more:</b> when a server needs input mid-call, such as a user confirmation, it returns <b>input required</b>, and the client repeats the call with the answers. Since the 2026-07-28 spec, this replaces server-initiated requests, and <b>sampling</b> (borrowing the client's model), <b>roots</b> and logging are deprecated.</li>
+    <li><b>Protocol:</b> JSON-RPC 2.0 messages: <code>server/discover</code>, <code>tools/list</code>, <code>tools/call</code>, <code>resources/read</code>, and <code>subscriptions/listen</code> for changes. Since the 2026-07-28 spec there is no <code>initialize</code> handshake or session: every request carries its protocol version and capabilities, so any server instance can answer it.</li>
+    <li><b>Transports:</b> <b>stdio</b> for local servers launched by the host; <b>Streamable HTTP</b> for remote servers, with OAuth 2.1 authorisation. The older HTTP+SSE transport is deprecated.</li>
+    <li><b>Extensions:</b> optional features negotiated through capabilities: <b>tasks</b> for long-running work, and <b>MCP Apps</b> (Jan 2026), which lets a tool return an interactive interface.</li>
   </ul>
-  <p class="small">The spec is dated: 2025-03-26 (Streamable HTTP, OAuth 2.1 authorisation), 2025-06-18 (elicitation, structured tool output), 2025-11-25 (experimental tasks, authorisation updates), with later revisions continuing. Treat feature lists as "check the current revision".</p>
+  <p class="small">The spec is dated: 2025-03-26 (Streamable HTTP, OAuth 2.1), 2025-06-18 (elicitation, structured tool output, resource indicators), 2025-11-25 (experimental tasks, client ID metadata documents) and 2026-07-28 (stateless requests, no sessions, input-required results, tasks as an extension, sampling and dynamic client registration deprecated). Deprecated features get at least 12 months' notice. For the details, see <a href="../mcp-under-the-hood/">MCP Under the Hood</a>; for A2A and other protocols, <a href="../agent-protocols/">Agent Protocols</a>. (Updated 7 Nov 2026.)</p>
 </section>
 
 <section class="ch" id="c3" data-toc="3 · Lab">
@@ -284,6 +285,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Too many servers:</b> every connected server adds tool definitions to context; enable only what the task needs, or use tool search (<a href="../tool-calling/">tool calling</a>).</li>
     <li><b>Ecosystem:</b> official SDKs in many languages, registries of servers, and support across major assistants, IDEs and agent frameworks. Related protocols: A2A (agent-to-agent) addresses agents calling other agents rather than tools.</li>
   </ul>
+  <p id="x-mcp-numbers"><b>Measured, 2026.</b> A scan found 7,973 live remote MCP servers, and 40.6% exposed tools with no authentication. Of 119 OAuth-enabled servers tested, every one had at least one flaw, and 96.6% had client registration flaws. Another study audited 414 internet-facing servers: 91.8% lacked OAuth, and 687 tools offered shell execution with no access control. Standard plumbing isn't safe plumbing.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -313,7 +315,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>Anthropic, "Introducing the Model Context Protocol", Nov 2024.</li>
     <li>Linux Foundation, announcement of the Agentic AI Foundation (MCP contributed by Anthropic), Dec 2025.</li>
     <li>Invariant Labs, "MCP Security Notification: Tool Poisoning Attacks", 2025; OWASP GenAI Security Project guidance on agentic applications.</li>
-  </ol>
+  <li>MCP specification 2026-07-28 and <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">changelog</a>; H. Zhou et al., "A First Measurement Study on Authentication Security in Real-World Remote MCP Servers", 2026, <a href="https://arxiv.org/abs/2605.22333">arXiv:2605.22333</a>; N. Padilla, "Exposed by Design", 2026, <a href="https://arxiv.org/abs/2608.00150">arXiv:2608.00150</a>.</li>
+</ol>
 </section>
 
 </div>

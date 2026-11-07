@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-272-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-277-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 77 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 82 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -512,7 +512,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>Agentic AI</b> · 11 lessons</summary>
+<summary><b>Agentic AI</b> · 16 lessons</summary>
 
 <br>
 
@@ -522,13 +522,18 @@ Tap a track to see its lessons, in the order to learn them.
 | 2 | [Tool and Function Calling](https://aimlrounds.com/tracks/ai-engineering/tool-calling/) | 🟢 Beginner | 20 min |
 | 3 | [Planning and Reflection](https://aimlrounds.com/tracks/ai-engineering/planning-and-reflection/) | 🟡 Intermediate | 20 min |
 | 4 | [Memory and Context Engineering](https://aimlrounds.com/tracks/ai-engineering/memory-and-context-engineering/) | 🟡 Intermediate | 20 min |
-| 5 | [MCP: The Model Context Protocol](https://aimlrounds.com/tracks/ai-engineering/model-context-protocol/) | 🟡 Intermediate | 20 min |
-| 6 | [Multi-Agent Systems](https://aimlrounds.com/tracks/ai-engineering/multi-agent-systems/) | 🟡 Intermediate | 20 min |
-| 7 | [Agent Infrastructure: Durable Execution, Retries and Budgets](https://aimlrounds.com/tracks/ai-engineering/agent-infrastructure/) | 🔴 Advanced | 20 min |
-| 8 | [Evaluating Agents](https://aimlrounds.com/tracks/ai-engineering/evaluating-agents/) | 🟡 Intermediate | 20 min |
-| 9 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://aimlrounds.com/tracks/ai-engineering/agent-safety/) | 🟡 Intermediate | 25 min |
-| 10 | [Agentic AI Practice](https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
-| 11 | [Agent Scenarios: Set 1](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
+| 5 | [Agent Skills and Self-Improving Context](https://aimlrounds.com/tracks/ai-engineering/agent-skills-and-self-improving-context/) | 🟡 Intermediate | 18 min |
+| 6 | [MCP: The Model Context Protocol](https://aimlrounds.com/tracks/ai-engineering/model-context-protocol/) | 🟡 Intermediate | 20 min |
+| 7 | [MCP Under the Hood: Messages, Transports and Authorization](https://aimlrounds.com/tracks/ai-engineering/mcp-under-the-hood/) | 🔴 Advanced | 22 min |
+| 8 | [Agent Protocols: MCP, A2A, AG-UI and Commerce](https://aimlrounds.com/tracks/ai-engineering/agent-protocols/) | 🟡 Intermediate | 20 min |
+| 9 | [Multi-Agent Systems](https://aimlrounds.com/tracks/ai-engineering/multi-agent-systems/) | 🟡 Intermediate | 20 min |
+| 10 | [Agent Infrastructure: Durable Execution, Retries and Budgets](https://aimlrounds.com/tracks/ai-engineering/agent-infrastructure/) | 🔴 Advanced | 20 min |
+| 11 | [Agent Frameworks and Harnesses: Graphs, State and Middleware](https://aimlrounds.com/tracks/ai-engineering/agent-frameworks-and-harnesses/) | 🟡 Intermediate | 22 min |
+| 12 | [Long-Running and Scheduled Agents](https://aimlrounds.com/tracks/ai-engineering/long-running-and-scheduled-agents/) | 🔴 Advanced | 20 min |
+| 13 | [Evaluating Agents](https://aimlrounds.com/tracks/ai-engineering/evaluating-agents/) | 🟡 Intermediate | 20 min |
+| 14 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://aimlrounds.com/tracks/ai-engineering/agent-safety/) | 🟡 Intermediate | 25 min |
+| 15 | [Agentic AI Practice](https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
+| 16 | [Agent Scenarios: Set 1](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-set-1/) | 🟡 Intermediate | 35 min |
 
 </details>
 

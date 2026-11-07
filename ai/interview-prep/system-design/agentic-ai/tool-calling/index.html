@@ -288,6 +288,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Idempotency</b> for side effects: an <code>issue_refund</code> called twice must not pay twice (idempotency keys).</li>
     <li><b>Evaluate tools</b> like prompts: test sets of tasks, track wrong-tool and bad-argument rates.</li>
   </ul>
+  <p id="x-code-exec"><b>Added 7 Nov 2026: code instead of definitions.</b> With many MCP tools, an agent can write code that calls them, instead of loading every definition and passing every result through its context. Anthropic reported one workflow falling from 150,000 to 2,000 tokens, a 98.7% saving. Its tool guide also caps Claude Code tool responses at 25,000 tokens by default, and found a concise response used 72 tokens against 206 for a detailed one.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -316,7 +317,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>T. Schick et al., "Toolformer", NeurIPS 2023, <a href="https://arxiv.org/abs/2302.04761">arXiv:2302.04761</a>; S. Patil et al., "Gorilla: Large Language Model Connected with Massive APIs", NeurIPS 2024, <a href="https://arxiv.org/abs/2305.15334">arXiv:2305.15334</a>.</li>
     <li>T. Gan &amp; Q. Sun, "RAG-MCP: Mitigating Prompt Bloat in LLM Tool Selection via Retrieval-Augmented Generation", 2025, <a href="https://arxiv.org/abs/2505.03275">arXiv:2505.03275</a>.</li>
     <li>Anthropic, "Writing effective tools for agents", 2025; Anthropic and OpenAI tool-use / function-calling documentation.</li>
-  </ol>
+  <li>Anthropic, <a href="https://www.anthropic.com/engineering/code-execution-with-mcp">"Code execution with MCP"</a>, Nov 2025; <a href="https://www.anthropic.com/engineering/writing-tools-for-agents">"Writing effective tools for agents"</a>, Sep 2025.</li>
+</ol>
 </section>
 
 </div>

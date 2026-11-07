@@ -287,6 +287,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Isolate:</b> run sub-tasks in <a href="../multi-agent-systems/">sub-agents</a> with their own contexts and return only the result.</li>
     <li><b>Cache the stable prefix</b> (system prompt, tools) with <a href="../../llm-inference/prefix-caching/">prompt caching</a>, and keep it unchanged between turns.</li>
   </ul>
+  <p id="x-ace"><b>Added 7 Nov 2026.</b> Frameworks now separate per-conversation memory, saved as checkpoints under a thread ID, from a long-term <b>store</b> shared across conversations. Agents can also keep a playbook of lessons from past runs: ACE gained 10.6% on agent tasks with small, itemised updates. Rewriting the whole playbook at once risks <b>context collapse</b>: in one case, 18,282 tokens shrank to 122 and accuracy fell below having no playbook. See <a href="../agent-skills-and-self-improving-context/">Agent Skills and Self-Improving Context</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -316,7 +317,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>J. S. Park et al., "Generative Agents: Interactive Simulacra of Human Behavior", UIST 2023, <a href="https://arxiv.org/abs/2304.03442">arXiv:2304.03442</a>.</li>
     <li>N. Liu et al., "Lost in the Middle", TACL 2024, <a href="https://arxiv.org/abs/2307.03172">arXiv:2307.03172</a>; K. Hong et al. (Chroma), "Context Rot: How Increasing Input Tokens Impacts LLM Performance", 2025.</li>
     <li>Anthropic, "Effective context engineering for AI agents", 2025; LangChain / LangGraph memory documentation.</li>
-  </ol>
+  <li>Q. Zhang et al., "Agentic Context Engineering", ICLR 2026, <a href="https://arxiv.org/abs/2510.04618">arXiv:2510.04618</a>; LangGraph memory documentation (checkpointers and stores).</li>
+</ol>
 </section>
 
 </div>
