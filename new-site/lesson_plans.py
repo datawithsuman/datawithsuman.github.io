@@ -260,6 +260,7 @@ from dl2_plans import DL2_PLANS  # noqa: E402
 from nlp2_plans import NLP2_PLANS  # noqa: E402
 from llm2_plans import LLM2_PLANS  # noqa: E402
 from ab2_plans import AB2_PLANS  # noqa: E402
+from rag2_plans import RAG2_PLANS  # noqa: E402
 
 PLANS.update(MATHS_PLANS)
 PLANS.update(ML_PLANS)
@@ -280,3 +281,4 @@ PLANS.update(DL2_PLANS)
 PLANS.update(NLP2_PLANS)
 PLANS.update(LLM2_PLANS)
 PLANS.update(AB2_PLANS)
+PLANS.update(RAG2_PLANS)

@@ -845,7 +845,7 @@ REFUND_PICTURE = """<svg viewBox="0 0 480 106" role="img" aria-label="A workflow
 
 AI_PLANS.update({
     "ai-engineering/rag-wrong-answer": _plan(
-        "You're the ML engineer at Amazon. Your support chatbot just gave a customer the wrong refund policy, confidently. A colleague wants to rewrite the prompt. The interviewer asks:",
+        "You're the ML engineer on a support team. Your chatbot just gave a customer the wrong refund policy, confidently. A colleague wants to rewrite the prompt. The interviewer asks:",
         "Your chatbot gave a confident, wrong answer. Where do you look first?",
         "Think of a parcel that arrives with the wrong item. You don't start by retraining the driver. You check whether the right item ever left the warehouse. That one check tells you which half of the operation to look at.",
         SPLIT_CHECK_PICTURE, "A practical debugging order, not a result from the study.",

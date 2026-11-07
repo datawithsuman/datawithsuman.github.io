@@ -284,10 +284,18 @@ window.LESSONS = {
         ],
         lessons: [
           {slug: "rag-end-to-end",title: "RAG End to End",sub: "How do you build RAG, and how big should a chunk be?",level: "Beginner",mins: 25,group: "lessons"},
+          {slug: "parsing-and-chunking",title: "Parsing and Chunking",sub: "Your RAG misreads tables and splits answers in half. How do you parse and chunk documents?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "embeddings-and-vector-indexes",title: "Embeddings and Vector Indexes",sub: "You have 100 million chunks. Which embedding model and index do you use, and what does it cost?",level: "Intermediate",mins: 22,group: "lessons"},
           {slug: "advanced-rag",title: "Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG",sub: "Which upgrade cut retrieval failures by 67%?",level: "Intermediate",mins: 25,group: "lessons"},
+          {slug: "reranking-and-late-interaction",title: "Re-ranking and Late Interaction",sub: "The right chunk is retrieved, but it's ranked 12th. What do you do, and what's late interaction?",level: "Intermediate",mins: 18,group: "lessons"},
+          {slug: "grounded-answers",title: "Grounded Answers: Citations, Conflicts and Saying No",sub: "The right chunk was retrieved, but the answer is still wrong. Why, and how do you make answers trustworthy?",level: "Intermediate",mins: 18,group: "lessons"},
+          {slug: "agentic-rag",title: "Agentic RAG, and When Not to Index",sub: "Should your RAG be an agent? When do you skip the index altogether?",level: "Intermediate",mins: 20,group: "lessons"},
+          {slug: "permissions-and-poisoning",title: "Permissions and Poisoning in RAG",sub: "How do you stop users retrieving documents they can't see, or attackers planting bad ones?",level: "Advanced",mins: 20,group: "lessons"},
+          {slug: "keeping-an-index-current",title: "Keeping an Index Current",sub: "Documents change daily, and a better embedding model has come out. How do you keep your index current?",level: "Intermediate",mins: 18,group: "lessons"},
           {slug: "evaluating-llm-apps",title: "Evaluating LLM Apps",sub: "Why can a correct answer still fail your evaluation?",level: "Intermediate",mins: 25,group: "lessons"},
           {slug: "rag-wrong-answer",title: "RAG: Wrong Answer, Where to Look First",sub: "Your chatbot gave a confident, wrong answer. Where do you look first?",level: "Intermediate",mins: 8,group: "scenarios"},
           {slug: "rag-at-scale",title: "RAG at Scale: Slow and Wrong",sub: "Your RAG worked on 100 docs, but broke at 10 million. Why?",level: "Intermediate",mins: 8,group: "scenarios"},
+          {slug: "rag-practice",title: "RAG Practice",sub: "12 questions to work by hand: recall, MRR, fusion, memory, filters, tokens, faithfulness and migrations.",level: "Intermediate",mins: 40,group: "scenarios"},
         ] },
       { id: "agentic-ai", dir: "system-design/agentic-ai", title: "Agentic AI", desc: "Agents that plan, call tools and act: the agent loop, tools, planning, memory, MCP, multi-agent systems, infrastructure and safety.",
         groups: [
@@ -340,6 +348,7 @@ window.LESSONS = {
         lessons: [
           {slug: "design-refund-agent",title: "Design a Refund-Handling Agent",sub: "Walk through an agent system design, from requirements to rollout.",level: "Advanced",mins: 30,group: "designs"},
           {slug: "design-support-chatbot",title: "Design a Support Chatbot",sub: "Design a support chatbot for delivery partners that answers from your help articles and knows when to hand over to a human.",level: "Advanced",mins: 25,group: "designs"},
+          {slug: "design-enterprise-rag",title: "Design an Enterprise RAG System",sub: "Design a system that answers employees' questions across 10 million internal documents, respecting who can see what.",level: "Advanced",mins: 30,group: "designs"},
           {slug: "design-store-assistant",title: "Design a Store Assistant",sub: "Merchants want an assistant that can act in their store, not just answer questions. Design it, knowing tools will grow from a handful to dozens.",level: "Advanced",mins: 25,group: "designs"},
           {slug: "design-research-agent",title: "Design a Research Agent",sub: "Users ask open-ended questions that need many sources. Design an agent that splits the work across parallel subagents and writes one answer.",level: "Advanced",mins: 25,group: "designs"},
           {slug: "design-text-to-sql",title: "Design a Text-to-SQL System",sub: "Analysts spend too long finding tables and writing SQL. Design a system that turns their questions into queries across a huge data warehouse.",level: "Advanced",mins: 25,group: "designs"},

@@ -250,7 +250,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="tw"><table class="t">
     <tr><th>Stage</th><th>Choices</th><th>Typical failure</th></tr>
     <tr><td><b>Ingest &amp; parse</b></td><td>PDF/HTML/table extraction, OCR, metadata (source, date, section)</td><td>tables garbled, headers lost, stale versions indexed</td></tr>
-    <tr><td><b>Chunk</b></td><td>fixed size (e.g. 200–800 tokens) with overlap; by structure (headings, paragraphs); semantic</td><td>answer split across chunks; chunks without context ("it is capped at…")</td></tr>
+    <tr><td><b>Chunk</b></td><td>fixed size (e.g. 200–800 tokens) with overlap; by structure (headings, paragraphs); semantic, though evidence for it is weak</td><td>answer split across chunks; chunks without context ("it is capped at…")</td></tr>
     <tr><td><b>Embed</b></td><td>an embedding model chosen on a benchmark like MTEB and on your own queries; same model for docs and queries</td><td>domain terms, codes and names embed poorly</td></tr>
     <tr><td><b>Index</b></td><td>HNSW graph (fast, memory-heavy), IVF/PQ (compressed, for billions); a vector DB or Postgres with pgvector</td><td>approximate search misses neighbours (recall &lt; 100%); no metadata filtering</td></tr>
     <tr><td><b>Retrieve</b></td><td>top-k by cosine, hybrid with BM25, metadata filters (date, product), <a href="../advanced-rag/">re-ranking</a></td><td>right chunk ranked 12th; filters missing</td></tr>
@@ -275,6 +275,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <p class="small" style="margin:0">A 30-sentence refund and service policy; 8 customer questions, several needing two adjacent sentences (e.g. "10% refund" + "capped at ₹150"). Retrieval: TF-IDF cosine, top 3 chunks. A question counts as answered only if every sentence it needs is in the retrieved chunks. Tokens ≈ words × 1.3.</p>
   </div>
   <p>With <b>1-sentence</b> chunks, retrieval is precise (39 tokens per question) but only <b>4 of 8</b> questions get their full answer: answers that need two sentences ("the refund is 10%" + "capped at ₹150") are split across chunks that don't both make the top 3. Bigger chunks keep related sentences together: 3 sentences get 7 of 8 at 115 tokens, 5 get all 8 at 194, and 10-sentence chunks also get 8 of 8 but send <b>379</b> tokens of mostly irrelevant policy, which costs money and can distract the model. Adding a <b>1-sentence overlap</b> to 2-sentence chunks gets <b>all 8</b> at just <b>77 tokens</b>: boundaries no longer cut answers in half. Real systems tune chunk size and overlap on their own questions, and prefer splitting on document structure (sections, list items) over fixed counts.</p>
+  <p class="small" id="overlap-note">Overlap rescues this small example, as answers sit right next to each other. Larger studies have found little average gain from overlap, so test it on your own data. See <a href="../parsing-and-chunking/">Parsing and Chunking</a>.</p>
 </section>
 
 <section class="ch" id="c4" data-toc="4 · Today">
@@ -287,6 +288,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Prompt:</b> put the most relevant chunks first or last (models use the middle of long contexts less well), number them, and require citations; instruct the model to say when the answer isn't in the context.</li>
     <li><b>Freshness:</b> incremental re-indexing when documents change, and remove old versions.</li>
   </ul>
+  <p class="small" id="go-deeper">Go deeper: <a href="../parsing-and-chunking/">Parsing and Chunking</a>, <a href="../embeddings-and-vector-indexes/">Embeddings and Vector Indexes</a>, <a href="../permissions-and-poisoning/">Permissions and Poisoning</a> and <a href="../keeping-an-index-current/">Keeping an Index Current</a>. If your documents are small, you may not need an index: see <a href="../agentic-rag/">When Not to Index</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">

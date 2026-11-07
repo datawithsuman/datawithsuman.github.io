@@ -34,12 +34,20 @@ PARTS = [
         "structured-output": {"prereqs": [_a("prompt-engineering-patterns"), _f("decoding-and-sampling")]},
         "prompt-vs-rag-vs-fine-tuning": {"prereqs": [_a("prompt-engineering-patterns"), _f("lora-and-qlora")]},
     })),
-    ("RAG", "system-design/rag", _part("Building retrieval-augmented generation, from basic pipelines to advanced retrieval, and how to evaluate it.", {
+    ("RAG", "system-design/rag", _part("Building retrieval-augmented generation: parsing, indexes, ranking, grounded answers, agents, security, upkeep and evaluation.", {
         "rag-end-to-end": {"prereqs": [_f("search-and-retrieval"), _f("embeddings")]},
+        "parsing-and-chunking": {"prereqs": [_a("rag-end-to-end")]},
+        "embeddings-and-vector-indexes": {"prereqs": [_a("rag-end-to-end"), _f("embeddings")]},
         "advanced-rag": {"prereqs": [_a("rag-end-to-end")]},
+        "reranking-and-late-interaction": {"prereqs": [_a("advanced-rag")]},
+        "grounded-answers": {"prereqs": [_a("rag-end-to-end")]},
+        "agentic-rag": {"prereqs": [_a("advanced-rag"), _a("what-is-an-agent")]},
+        "permissions-and-poisoning": {"prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]},
+        "keeping-an-index-current": {"prereqs": [_a("embeddings-and-vector-indexes")]},
         "evaluating-llm-apps": {"prereqs": [_a("rag-end-to-end"), _f("llm-as-a-judge")]},
         "rag-wrong-answer": {"type": "interview", "prereqs": [_a("rag-end-to-end")]},
         "rag-at-scale": {"type": "interview", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]},
+        "rag-practice": {"type": "interview", "prereqs": [_a("reranking-and-late-interaction"), _a("evaluating-llm-apps")]},
     })),
     ("Agentic AI", "system-design/agentic-ai", _part("The agent loop, tools, planning, memory, MCP, multi-agent systems, infrastructure, evaluation and safety.", {
         "what-is-an-agent": {"prereqs": [_a("prompt-engineering-patterns")]},
@@ -81,6 +89,7 @@ DESIGNS = SimpleNamespace(
     LESSONS={
         "design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]},
         "design-support-chatbot": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]},
+        "design-enterprise-rag": {"type": "design", "prereqs": [_a("permissions-and-poisoning"), _a("advanced-rag")]},
         "design-store-assistant": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("tool-calling")]},
         "design-research-agent": {"type": "design", "prereqs": [_a("multi-agent-systems"), _a("agent-infrastructure")]},
         "design-text-to-sql": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]},

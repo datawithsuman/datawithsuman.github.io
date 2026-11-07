@@ -281,10 +281,12 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <h2>Diagnose, then upgrade</h2>
   <ul>
     <li><b>Measure first:</b> label 100–300 real questions with their relevant chunks; compute recall@k and MRR (<a href="../evaluating-llm-apps/">Evaluating LLM Apps</a>). If recall@50 is high but recall@5 low, add a re-ranker; if recall@50 is low, fix chunking, hybrid search or query rewriting.</li>
-    <li><b>Default stack:</b> structure-aware chunks with context → hybrid retrieval of ~50 → cross-encoder re-rank to ~5–10 → answer with citations.</li>
-    <li><b>GraphRAG</b> answers corpus-wide "what are the main themes" questions far better than chunk retrieval, but indexing is expensive (many LLM calls) and it isn't needed for specific factual questions.</li>
+    <li><b>Default stack:</b> structure-aware chunks with context → hybrid retrieval of ~50 to 150 → cross-encoder re-rank to ~5–20 → answer with citations.</li>
+    <li><b>GraphRAG</b> answers corpus-wide "what are the main themes" questions far better than chunk retrieval, in its authors' tests, but classic indexing is expensive (many LLM calls), and it isn't needed for specific factual questions. Microsoft's LazyGraphRAG reports 0.1% of that indexing cost, by deferring LLM work to query time. One 2026 test found simply adding related facts to each document beat a more complex GraphRAG setup, so try simple structure first.</li>
     <li><b>Long-context models</b> reduce the need for aggressive chunking on small corpora; for large or changing corpora, retrieval remains cheaper and more controllable.</li>
   </ul>
+  <div class="card bad" id="no-stack"><b>Upgrades don't simply add up.</b> In the lab above, each step shows a gain on Anthropic's tests. But a 2026 study of 450 setups found three strong retrieval techniques predicted +47% together, and delivered +17%, because they overlap. Across 17 combinations, the shortfall ranged from 7% to 72%. The best setup also changed as the corpus grew. So test upgrades in your full pipeline, at your real scale.</div>
+  <p class="small">Go deeper: <a href="../reranking-and-late-interaction/">Re-ranking and Late Interaction</a>, and <a href="../agentic-rag/">Agentic RAG</a>.</p>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -315,7 +317,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>L. Gao et al., "Precise Zero-Shot Dense Retrieval without Relevance Labels" (HyDE), ACL 2023, <a href="https://arxiv.org/abs/2212.10496">arXiv:2212.10496</a>; X. Ma et al., "Query Rewriting for Retrieval-Augmented Large Language Models", EMNLP 2023, <a href="https://arxiv.org/abs/2305.14283">arXiv:2305.14283</a>.</li>
     <li>D. Edge et al., "From Local to Global: A Graph RAG Approach to Query-Focused Summarization", 2024, <a href="https://arxiv.org/abs/2404.16130">arXiv:2404.16130</a>.</li>
     <li>A. Asai et al., "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", ICLR 2024, <a href="https://arxiv.org/abs/2310.11511">arXiv:2310.11511</a>.</li>
-  </ol>
+  <li>I. Levy, S. Shlomov &amp; L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, <a href="https://arxiv.org/abs/2610.29722">arXiv:2610.29722</a>; L. Chen et al., "Is GraphRAG Needed?", 2026, <a href="https://arxiv.org/abs/2606.25656">arXiv:2606.25656</a>; Microsoft Research, <a href="https://www.microsoft.com/en-us/research/blog/lazygraphrag-setting-a-new-standard-for-quality-and-cost">LazyGraphRAG</a>, 2024.</li>
+    </ol>
 </section>
 
 </div>

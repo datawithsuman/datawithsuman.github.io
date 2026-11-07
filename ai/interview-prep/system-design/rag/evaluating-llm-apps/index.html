@@ -286,6 +286,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Regression-test in CI:</b> run the suite on every prompt, model, retriever or index change; block releases that regress, and report confidence intervals (<a href="../../../fundamentals/llms/benchmarks-and-contamination/">error bars</a>).</li>
     <li><b>Online:</b> track escalation rate, thumbs-down, re-asks, resolution, cost and latency; A/B test big changes; sample conversations for review.</li>
   </ul>
+  <div class="card" id="two-metrics"><b>Retrieval and faithfulness can move separately.</b> Across matched setups in a 450-setup study, the two were essentially unrelated (r = −0.01), and different components drove each. Citations need care too: Wallat et al. found up to 57% of citations weren't what the model truly relied on. So score both, and see <a href="../grounded-answers/">Grounded Answers</a> for how to test citations.</div>
 </section>
 
 <section class="ch" id="c5" data-toc="5 · Core idea">
@@ -316,7 +317,8 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li>L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, <a href="https://arxiv.org/abs/2306.05685">arXiv:2306.05685</a>.</li>
     <li>S. Shankar et al., "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences", UIST 2024, <a href="https://arxiv.org/abs/2404.12272">arXiv:2404.12272</a>.</li>
     <li>P. Liang et al., "Holistic Evaluation of Language Models" (HELM), 2022, <a href="https://arxiv.org/abs/2211.09110">arXiv:2211.09110</a>; OpenAI and Anthropic evaluation guides.</li>
-  </ol>
+  <li>I. Levy, S. Shlomov &amp; L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, <a href="https://arxiv.org/abs/2610.29722">arXiv:2610.29722</a>; J. Wallat et al., "Correctness is not Faithfulness in RAG Attributions", 2024, <a href="https://arxiv.org/abs/2412.18004">arXiv:2412.18004</a>.</li>
+    </ol>
 </section>
 
 </div>

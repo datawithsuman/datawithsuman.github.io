@@ -6,7 +6,7 @@
 
 [![Start learning](https://img.shields.io/badge/▶_Start_learning-datawithsuman.github.io-F4D345?style=for-the-badge&labelColor=0f0f12)](https://aimlrounds.com/)
 
-![Lessons](https://img.shields.io/badge/lessons-250-58C4DD?labelColor=0f0f12)
+![Lessons](https://img.shields.io/badge/lessons-259-58C4DD?labelColor=0f0f12)
 ![Sections](https://img.shields.io/badge/tracks-4-58C4DD?labelColor=0f0f12)
 ![Price](https://img.shields.io/badge/price-free-83C167?labelColor=0f0f12)
 
@@ -35,7 +35,7 @@ Four tracks: **Fundamentals**, **AI Engineering**, **System Design** and **Paper
 | Section | Tracks | Lessons |
 |---|---|:---:|
 | 📐 [**Fundamentals**](https://aimlrounds.com/tracks/fundamentals/) | [Maths for ML](https://aimlrounds.com/tracks/fundamentals/) · [Machine Learning](https://aimlrounds.com/tracks/fundamentals/) · [Deep Learning](https://aimlrounds.com/tracks/fundamentals/) · [NLP Fundamentals](https://aimlrounds.com/tracks/fundamentals/) · [LLMs](https://aimlrounds.com/tracks/fundamentals/) | 192 |
-| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 55 |
+| 🏗️ [**AI Engineering**](https://aimlrounds.com/tracks/ai-engineering/) | [LLM Inference & Serving](https://aimlrounds.com/tracks/ai-engineering/) · [Prompt Engineering](https://aimlrounds.com/tracks/ai-engineering/) · [RAG](https://aimlrounds.com/tracks/ai-engineering/) · [Agentic AI](https://aimlrounds.com/tracks/ai-engineering/) · [MLOps](https://aimlrounds.com/tracks/ai-engineering/) · [LLMOps](https://aimlrounds.com/tracks/ai-engineering/) · [AI/ML System Design](https://aimlrounds.com/tracks/system-design/) | 64 |
 | 📄 [**Papers**](https://aimlrounds.com/tracks/papers/) | [Papers Explained](https://aimlrounds.com/tracks/papers/) | 3 |
 
 
@@ -481,17 +481,25 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>RAG</b> · 5 lessons</summary>
+<summary><b>RAG</b> · 13 lessons</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
 | 1 | [RAG End to End](https://aimlrounds.com/tracks/ai-engineering/rag-end-to-end/) | 🟢 Beginner | 25 min |
-| 2 | [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://aimlrounds.com/tracks/ai-engineering/advanced-rag/) | 🟡 Intermediate | 25 min |
-| 3 | [Evaluating LLM Apps](https://aimlrounds.com/tracks/ai-engineering/evaluating-llm-apps/) | 🟡 Intermediate | 25 min |
-| 4 | [RAG: Wrong Answer, Where to Look First](https://aimlrounds.com/tracks/ai-engineering/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
-| 5 | [RAG at Scale: Slow and Wrong](https://aimlrounds.com/tracks/ai-engineering/rag-at-scale/) | 🟡 Intermediate | 8 min |
+| 2 | [Parsing and Chunking](https://aimlrounds.com/tracks/ai-engineering/parsing-and-chunking/) | 🟡 Intermediate | 20 min |
+| 3 | [Embeddings and Vector Indexes](https://aimlrounds.com/tracks/ai-engineering/embeddings-and-vector-indexes/) | 🟡 Intermediate | 22 min |
+| 4 | [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://aimlrounds.com/tracks/ai-engineering/advanced-rag/) | 🟡 Intermediate | 25 min |
+| 5 | [Re-ranking and Late Interaction](https://aimlrounds.com/tracks/ai-engineering/reranking-and-late-interaction/) | 🟡 Intermediate | 18 min |
+| 6 | [Grounded Answers: Citations, Conflicts and Saying No](https://aimlrounds.com/tracks/ai-engineering/grounded-answers/) | 🟡 Intermediate | 18 min |
+| 7 | [Agentic RAG, and When Not to Index](https://aimlrounds.com/tracks/ai-engineering/agentic-rag/) | 🟡 Intermediate | 20 min |
+| 8 | [Permissions and Poisoning in RAG](https://aimlrounds.com/tracks/ai-engineering/permissions-and-poisoning/) | 🔴 Advanced | 20 min |
+| 9 | [Keeping an Index Current](https://aimlrounds.com/tracks/ai-engineering/keeping-an-index-current/) | 🟡 Intermediate | 18 min |
+| 10 | [Evaluating LLM Apps](https://aimlrounds.com/tracks/ai-engineering/evaluating-llm-apps/) | 🟡 Intermediate | 25 min |
+| 11 | [RAG: Wrong Answer, Where to Look First](https://aimlrounds.com/tracks/ai-engineering/rag-wrong-answer/) | 🟡 Intermediate | 8 min |
+| 12 | [RAG at Scale: Slow and Wrong](https://aimlrounds.com/tracks/ai-engineering/rag-at-scale/) | 🟡 Intermediate | 8 min |
+| 13 | [RAG Practice](https://aimlrounds.com/tracks/ai-engineering/rag-practice/) | 🟡 Intermediate | 40 min |
 
 </details>
 
@@ -548,7 +556,7 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>AI/ML System Design</b> · 14 lessons</summary>
+<summary><b>AI/ML System Design</b> · 15 lessons</summary>
 
 <br>
 
@@ -558,18 +566,19 @@ End-to-end AI/ML system designs in interview format. New designs are added over 
 |:---:|---|:---:|:---:|
 | 1 | [Design a Refund-Handling Agent](https://aimlrounds.com/tracks/system-design/design-refund-agent/) | 🔴 Advanced | 30 min |
 | 2 | [Design a Support Chatbot](https://aimlrounds.com/tracks/system-design/design-support-chatbot/) | 🔴 Advanced | 25 min |
-| 3 | [Design a Store Assistant](https://aimlrounds.com/tracks/system-design/design-store-assistant/) | 🔴 Advanced | 25 min |
-| 4 | [Design a Research Agent](https://aimlrounds.com/tracks/system-design/design-research-agent/) | 🔴 Advanced | 25 min |
-| 5 | [Design a Text-to-SQL System](https://aimlrounds.com/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
-| 6 | [Design Code Autocomplete](https://aimlrounds.com/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
-| 7 | [Design a Shared LLM Platform](https://aimlrounds.com/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
-| 8 | [Test an LLM Prompt in Production](https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/) | 🔴 Advanced | 25 min |
-| 9 | [Fix a Failing AI Feature](https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/) | 🔴 Advanced | 25 min |
-| 10 | [Test Rankers Faster with Interleaving](https://aimlrounds.com/tracks/system-design/design-interleaving/) | 🔴 Advanced | 25 min |
-| 11 | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
-| 12 | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
-| 13 | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
-| 14 | [Design an Experimentation Platform](https://aimlrounds.com/tracks/system-design/design-experimentation-platform/) | 🔴 Advanced | 30 min |
+| 3 | [Design an Enterprise RAG System](https://aimlrounds.com/tracks/system-design/design-enterprise-rag/) | 🔴 Advanced | 30 min |
+| 4 | [Design a Store Assistant](https://aimlrounds.com/tracks/system-design/design-store-assistant/) | 🔴 Advanced | 25 min |
+| 5 | [Design a Research Agent](https://aimlrounds.com/tracks/system-design/design-research-agent/) | 🔴 Advanced | 25 min |
+| 6 | [Design a Text-to-SQL System](https://aimlrounds.com/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
+| 7 | [Design Code Autocomplete](https://aimlrounds.com/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
+| 8 | [Design a Shared LLM Platform](https://aimlrounds.com/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
+| 9 | [Test an LLM Prompt in Production](https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/) | 🔴 Advanced | 25 min |
+| 10 | [Fix a Failing AI Feature](https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/) | 🔴 Advanced | 25 min |
+| 11 | [Test Rankers Faster with Interleaving](https://aimlrounds.com/tracks/system-design/design-interleaving/) | 🔴 Advanced | 25 min |
+| 12 | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
+| 13 | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
+| 14 | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
+| 15 | [Design an Experimentation Platform](https://aimlrounds.com/tracks/system-design/design-experimentation-platform/) | 🔴 Advanced | 30 min |
 
 </details>
 
