@@ -72,6 +72,7 @@ PARTS = [
         "long-running-and-scheduled-agents": {"prereqs": [_a("agent-frameworks-and-harnesses"), _a("multi-agent-systems")]},
         "evaluating-agents": {"prereqs": [_a("what-is-an-agent")]},
         "agent-safety": {"prereqs": [_a("tool-calling")]},
+        "human-in-the-loop-design": {"prereqs": [_a("agent-safety"), _a("agent-frameworks-and-harnesses")]},
         "agentic-ai-practice": {"type": "interview", "prereqs": [_a("agent-safety")]},
         "agent-scenarios-context-and-memory": {"type": "interview", "prereqs": [_a("memory-and-context-engineering")]},
         "agent-scenarios-tools-and-mcp": {"type": "interview", "prereqs": [_a("tool-calling"), _a("mcp-under-the-hood")]},
@@ -81,7 +82,7 @@ PARTS = [
         "agent-scenarios-evaluation": {"type": "interview", "prereqs": [_a("evaluating-agents")]},
         "agent-scenarios-safety-and-security": {"type": "interview", "prereqs": [_a("agent-safety")]},
         "agent-scenarios-cost-and-latency": {"type": "interview", "prereqs": [_a("agent-infrastructure")]},
-        "agent-scenarios-human-in-the-loop": {"type": "interview", "prereqs": [_a("agent-frameworks-and-harnesses")]},
+        "agent-scenarios-human-in-the-loop": {"type": "interview", "prereqs": [_a("human-in-the-loop-design")]},
         "agent-scenarios-long-running": {"type": "interview", "prereqs": [_a("long-running-and-scheduled-agents")]},
     })),
     ("MLOps", "system-design/mlops", _part("Skew, serving modes, deployment, reproducibility, drift and retraining.", {
