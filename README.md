@@ -534,7 +534,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 14 | [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://aimlrounds.com/tracks/ai-engineering/agent-safety/) | 🟡 Intermediate | 25 min |
 | 15 | [Human-in-the-Loop Design for Agents](https://aimlrounds.com/tracks/ai-engineering/human-in-the-loop-design/) | 🟡 Intermediate | 20 min |
 | 16 | [Agentic AI Practice](https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/) | 🟡 Intermediate | 35 min |
-| 17 | [Agent Scenarios: Context and Memory](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/) | 🟡 Intermediate | 10 min |
+| 17 | [Agent Scenarios: Context and Memory](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/) | 🟡 Intermediate | 54 min |
 | 18 | [Agent Scenarios: Tools and MCP](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-tools-and-mcp/) | 🟡 Intermediate | 48 min |
 | 19 | [Agent Scenarios: Planning and Reliability](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-planning-and-reliability/) | 🟡 Intermediate | 48 min |
 | 20 | [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/) | 🟡 Intermediate | 48 min |
