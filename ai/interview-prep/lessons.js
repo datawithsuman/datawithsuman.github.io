@@ -340,7 +340,7 @@ window.LESSONS = {
           {slug: "agent-scenarios-safety-and-security",title: "Agent Scenarios: Safety and Security",sub: "Prompt injection, the Rule of Two, excessive permissions, sandbox escapes and malicious skills.",level: "Intermediate",mins: 54,group: "scenarios"},
           {slug: "agent-scenarios-cost-and-latency",title: "Agent Scenarios: Cost and Latency",sub: "Hidden reasoning tokens, cache misses on long histories, too many sub-agents and agents that run too often.",level: "Intermediate",mins: 10,group: "scenarios"},
           {slug: "agent-scenarios-human-in-the-loop",title: "Agent Scenarios: Human in the Loop",sub: "Approval design, rubber-stamping, pauses that resume wrongly, and which actions need a person.",level: "Intermediate",mins: 48,group: "scenarios"},
-          {slug: "agent-scenarios-long-running",title: "Agent Scenarios: Long-Running and Scheduled Agents",sub: "Hand-offs between sessions, self-judged work, duplicated effort and proactive agents that spam.",level: "Intermediate",mins: 10,group: "scenarios"},
+          {slug: "agent-scenarios-long-running",title: "Agent Scenarios: Long-Running and Scheduled Agents",sub: "Hand-offs between sessions, self-judged work, duplicated effort and proactive agents that spam.",level: "Intermediate",mins: 54,group: "scenarios"},
         ] },
       { id: "mlops", dir: "system-design/mlops", title: "MLOps", desc: "Running ML models in production: training/serving skew, serving modes, safe deployment, reproducibility, drift and retraining. Concepts, not tools.",
         groups: [
