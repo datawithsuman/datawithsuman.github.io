@@ -26,7 +26,7 @@ TRACKS = [
         "topics": ["Design a support chatbot", "Design a research agent", "Design code autocomplete", "Design a shared LLM platform", "A/B testing design scenarios"],
         "know": ["fundamentals/gradient-boosting"],
         "modules": [
-            {"name": "Ranking systems", "desc": "Find a few good items from a very large catalogue.", "lessons": [
+            {"part": "Recommendation Systems", "name": "Designs", "desc": "Find a few good items for each user from a very large catalogue.", "lessons": [
                 {"slug": "recommendation-system", "title": "Design a recommendation system", "type": "design", "minutes": 10,
                  "lead": "How do you pick a few items for a user from millions?",
                  "prereqs": ["fundamentals/gradient-boosting", "fundamentals/embeddings"],

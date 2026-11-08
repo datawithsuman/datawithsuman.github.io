@@ -44,7 +44,11 @@ TRACKS[0]["modules"] = (moved_modules("Maths for ML", "maths-for-ml", maths_for_
 
 TRACKS[1]["modules"] = [m for part, track_dir, source in ai_engineering.PARTS for m in moved_modules(part, track_dir, source) if m["lessons"]]
 
-TRACKS[2]["modules"] = moved_modules("", "system-design/ml-system-design", ai_engineering.DESIGNS) + TRACKS[2]["modules"]
+_sd_old = TRACKS[2]["modules"]
+for _m in _sd_old:
+    _m.setdefault("part", "Recommendation Systems")
+TRACKS[2]["modules"] = [m for part, src in ai_engineering.SD_PARTS
+                        for m in (_sd_old if src is None else moved_modules(part, "system-design/ml-system-design", src)) if m["lessons"]]
 
 LESSONS, ORDERED = {}, []
 for t in TRACKS:

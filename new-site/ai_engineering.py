@@ -111,25 +111,18 @@ for _p in PARTS:
     for _l in _p[2].LESSONS.values():
         _l.setdefault("prereqs", [])
 
-# New designs go in this group.
-DESIGNS = SimpleNamespace(
-    GROUPS=[("designs", "Designs", "End-to-end AI/ML system designs in interview format. New designs are added over time."),
-            ("ab-designs", "A/B Testing", "Experiment design scenarios based on documented real-world cases.")],
-    LESSONS={
-        "design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]},
-        "design-support-chatbot": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]},
-        "design-enterprise-rag": {"type": "design", "prereqs": [_a("permissions-and-poisoning"), _a("advanced-rag")]},
-        "design-store-assistant": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("tool-calling")]},
-        "design-research-agent": {"type": "design", "prereqs": [_a("multi-agent-systems"), _a("agent-infrastructure")]},
-        "design-text-to-sql": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]},
-        "design-code-autocomplete": {"type": "design", "prereqs": [_a("continuous-batching"), _a("scaling-inference")]},
-        "design-llm-platform": {"type": "design", "prereqs": [_a("llmops"), _a("guardrails-and-prompt-injection")]},
-        "design-llm-prompt-test": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("llm-as-a-judge")]},
-        "design-ai-subject-lines": {"type": "design", "prereqs": [_f("reading-ab-results"), _a("prompt-engineering-patterns")]},
-        "design-interleaving": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("ranking-metrics")]},
-        "design-network-experiment": {"type": "design", "prereqs": [_f("interference-in-experiments")]},
-        "design-image-personalisation": {"type": "design", "prereqs": [_f("bandits-vs-ab-tests")]},
-        "design-launch-decision-rule": {"type": "design", "prereqs": [_f("choosing-ab-metrics"), _f("multiple-testing")]},
-        "design-experimentation-platform": {"type": "design", "prereqs": [_f("running-many-tests-at-once"), _f("sample-ratio-mismatch")]},
-    },
-)
+# System Design sub-sections (8 Nov 2026). Each holds its designs, and later its scenarios.
+# New designs go in the matching sub-section.
+def _sd(lessons, group="designs", desc="End-to-end system designs in interview format. New designs are added over time."):
+    return SimpleNamespace(GROUPS=[(group, "Designs", desc)], LESSONS=lessons)
+
+
+SD_PARTS = [
+    ("LLM Apps and Chatbots", _sd({"design-support-chatbot": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("guardrails-and-prompt-injection")]}, "design-store-assistant": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("tool-calling")]}})),
+    ("RAG and Search", _sd({"design-enterprise-rag": {"type": "design", "prereqs": [_a("permissions-and-poisoning"), _a("advanced-rag")]}, "design-text-to-sql": {"type": "design", "prereqs": [_a("rag-end-to-end"), _a("advanced-rag")]}})),
+    ("Agents", _sd({"design-refund-agent": {"type": "design", "prereqs": [_a("what-is-an-agent"), _a("agent-safety")]}, "design-research-agent": {"type": "design", "prereqs": [_a("multi-agent-systems"), _a("agent-infrastructure")]}})),
+    ("Recommendation Systems", None),  # its existing design lives in content.py
+    ("Developer Tools", _sd({"design-code-autocomplete": {"type": "design", "prereqs": [_a("continuous-batching"), _a("scaling-inference")]}})),
+    ("ML and LLM Platforms", _sd({"design-llm-platform": {"type": "design", "prereqs": [_a("llmops"), _a("guardrails-and-prompt-injection")]}})),
+    ("Experimentation", _sd({"design-llm-prompt-test": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("llm-as-a-judge")]}, "design-ai-subject-lines": {"type": "design", "prereqs": [_f("reading-ab-results"), _a("prompt-engineering-patterns")]}, "design-interleaving": {"type": "design", "prereqs": [_f("sample-size-and-power"), _f("ranking-metrics")]}, "design-network-experiment": {"type": "design", "prereqs": [_f("interference-in-experiments")]}, "design-image-personalisation": {"type": "design", "prereqs": [_f("bandits-vs-ab-tests")]}, "design-launch-decision-rule": {"type": "design", "prereqs": [_f("choosing-ab-metrics"), _f("multiple-testing")]}, "design-experimentation-platform": {"type": "design", "prereqs": [_f("running-many-tests-at-once"), _f("sample-ratio-mismatch")]}}, "ab-designs", "Experiment design scenarios based on documented real-world cases.")),
+]

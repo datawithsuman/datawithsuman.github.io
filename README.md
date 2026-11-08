@@ -585,29 +585,30 @@ Tap a track to see its lessons, in the order to learn them.
 </details>
 
 <details>
-<summary><b>AI/ML System Design</b> · 15 lessons</summary>
+<summary><b>AI/ML System Design</b> · 16 lessons</summary>
 
 <br>
 
-End-to-end AI/ML system designs in interview format. New designs are added over time.
+End-to-end AI/ML system designs in interview format, grouped into sub-sections. New designs and scenarios are added over time.
 
-| # | Lesson | Level | Time |
-|:---:|---|:---:|:---:|
-| 1 | [Design a Refund-Handling Agent](https://aimlrounds.com/tracks/system-design/design-refund-agent/) | 🔴 Advanced | 30 min |
-| 2 | [Design a Support Chatbot](https://aimlrounds.com/tracks/system-design/design-support-chatbot/) | 🔴 Advanced | 25 min |
-| 3 | [Design an Enterprise RAG System](https://aimlrounds.com/tracks/system-design/design-enterprise-rag/) | 🔴 Advanced | 30 min |
-| 4 | [Design a Store Assistant](https://aimlrounds.com/tracks/system-design/design-store-assistant/) | 🔴 Advanced | 25 min |
-| 5 | [Design a Research Agent](https://aimlrounds.com/tracks/system-design/design-research-agent/) | 🔴 Advanced | 25 min |
-| 6 | [Design a Text-to-SQL System](https://aimlrounds.com/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
-| 7 | [Design Code Autocomplete](https://aimlrounds.com/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
-| 8 | [Design a Shared LLM Platform](https://aimlrounds.com/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
-| 9 | [Test an LLM Prompt in Production](https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/) | 🔴 Advanced | 25 min |
-| 10 | [Fix a Failing AI Feature](https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/) | 🔴 Advanced | 25 min |
-| 11 | [Test Rankers Faster with Interleaving](https://aimlrounds.com/tracks/system-design/design-interleaving/) | 🔴 Advanced | 25 min |
-| 12 | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
-| 13 | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
-| 14 | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
-| 15 | [Design an Experimentation Platform](https://aimlrounds.com/tracks/system-design/design-experimentation-platform/) | 🔴 Advanced | 30 min |
+| # | Sub-section | Lesson | Level | Time |
+|:---:|---|---|:---:|:---:|
+| 1 | LLM Apps and Chatbots | [Design a Support Chatbot](https://aimlrounds.com/tracks/system-design/design-support-chatbot/) | 🔴 Advanced | 25 min |
+| 2 | LLM Apps and Chatbots | [Design a Store Assistant](https://aimlrounds.com/tracks/system-design/design-store-assistant/) | 🔴 Advanced | 25 min |
+| 3 | RAG and Search | [Design an Enterprise RAG System](https://aimlrounds.com/tracks/system-design/design-enterprise-rag/) | 🔴 Advanced | 30 min |
+| 4 | RAG and Search | [Design a Text-to-SQL System](https://aimlrounds.com/tracks/system-design/design-text-to-sql/) | 🔴 Advanced | 25 min |
+| 5 | Agents | [Design a Refund-Handling Agent](https://aimlrounds.com/tracks/system-design/design-refund-agent/) | 🔴 Advanced | 30 min |
+| 6 | Agents | [Design a Research Agent](https://aimlrounds.com/tracks/system-design/design-research-agent/) | 🔴 Advanced | 25 min |
+| 7 | Recommendation Systems | [Design a Recommendation System](https://aimlrounds.com/tracks/system-design/recommendation-system/) | 🔴 Advanced | 10 min |
+| 8 | Developer Tools | [Design Code Autocomplete](https://aimlrounds.com/tracks/system-design/design-code-autocomplete/) | 🔴 Advanced | 25 min |
+| 9 | ML and LLM Platforms | [Design a Shared LLM Platform](https://aimlrounds.com/tracks/system-design/design-llm-platform/) | 🔴 Advanced | 25 min |
+| 10 | Experimentation | [Test an LLM Prompt in Production](https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/) | 🔴 Advanced | 25 min |
+| 11 | Experimentation | [Fix a Failing AI Feature](https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/) | 🔴 Advanced | 25 min |
+| 12 | Experimentation | [Test Rankers Faster with Interleaving](https://aimlrounds.com/tracks/system-design/design-interleaving/) | 🔴 Advanced | 25 min |
+| 13 | Experimentation | [Measure a Feed Change with Network Effects](https://aimlrounds.com/tracks/system-design/design-network-experiment/) | 🔴 Advanced | 25 min |
+| 14 | Experimentation | [Personalise Images with Bandits](https://aimlrounds.com/tracks/system-design/design-image-personalisation/) | 🔴 Advanced | 25 min |
+| 15 | Experimentation | [Set a Launch Decision Rule](https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/) | 🔴 Advanced | 25 min |
+| 16 | Experimentation | [Design an Experimentation Platform](https://aimlrounds.com/tracks/system-design/design-experimentation-platform/) | 🔴 Advanced | 30 min |
 
 </details>
 
