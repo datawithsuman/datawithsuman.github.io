@@ -537,7 +537,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 17 | [Agent Scenarios: Context and Memory](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/) | 🟡 Intermediate | 10 min |
 | 18 | [Agent Scenarios: Tools and MCP](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-tools-and-mcp/) | 🟡 Intermediate | 48 min |
 | 19 | [Agent Scenarios: Planning and Reliability](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-planning-and-reliability/) | 🟡 Intermediate | 48 min |
-| 20 | [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/) | 🟡 Intermediate | 10 min |
+| 20 | [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/) | 🟡 Intermediate | 48 min |
 | 21 | [Agent Scenarios: Observability and Debugging](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-observability/) | 🟡 Intermediate | 48 min |
 | 22 | [Agent Scenarios: Evaluation](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-evaluation/) | 🟡 Intermediate | 48 min |
 | 23 | [Agent Scenarios: Safety and Security](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-safety-and-security/) | 🟡 Intermediate | 54 min |
