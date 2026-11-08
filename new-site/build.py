@@ -49,6 +49,8 @@ for _m in _sd_old:
     _m.setdefault("part", "Recommendation Systems")
 TRACKS[2]["modules"] = [m for part, src in ai_engineering.SD_PARTS
                         for m in (_sd_old if src is None else moved_modules(part, "system-design/ml-system-design", src)) if m["lessons"]]
+for _m in TRACKS[2]["modules"]:
+    _m["hide_name"] = True  # the sub-section title above already names it
 
 LESSONS, ORDERED = {}, []
 for t in TRACKS:
@@ -255,7 +257,7 @@ def track_page(t, idx):
         heading = "h3" if m.get("part") else "h2"
         count = len(m["lessons"])
         mods += (f'<details class="panel module" id="module-{mi}"{" open" if mi == 1 else ""}><summary><span class="module-text"><span class="eyebrow">Module {mi} · {count} lesson{"" if count == 1 else "s"}</span>'
-                 f'<{heading}>{m["name"]}</{heading}><span class="module-desc">{m["desc"]}</span></span></summary>'
+                 + ("" if m.get("hide_name") else f'<{heading}>{m["name"]}</{heading}>') + f'<span class="module-desc">{m["desc"]}</span></span></summary>'
                  f'<ol class="rows">{rows}</ol></details>')
     nxt = TRACKS[idx + 1] if idx + 1 < len(TRACKS) else None
     if nxt:
