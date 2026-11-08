@@ -74,7 +74,7 @@ AG2_PLANS = dict([
        "You own a support agent with six tools. Which metrics would you track for each tool call, each trajectory, each task and in production, and what does each one miss?",
        "Think of a driving test. The examiner checks each manoeuvre, the route you took, whether you reached the destination, and later whether you have accidents on real roads. One pass or fail can't tell you which part needs practice.",
        _cards("Four levels. Each call. Each trajectory. Each task. Production.",
-              [("Calls", ["Tool, arguments,", "when not to call"], "Selection, args, invalid", "a"), ("Trajectory", ["Match modes,", "precision, recall"], "Extra and destructive calls", "info"), ("Task", ["Final state,", "pass^k, progress"], "Plus cost and policy", "ok")]),
+              [("Calls", ["Tool, arguments,", "when not to call"], "Right tool, args", "a"), ("Trajectory", ["Match modes,", "precision, recall"], "Extra calls too", "info"), ("Task", ["Final state,", "pass^k, progress"], "Cost and policy", "ok")]),
        "One score hides where it failed.",
        ("<b>Try to break it.</b> Switch between exact and normalised arguments, then try each match mode.", "<b>Now say why:</b> why does the same run pass superset matching but fail the order rule?"),
        ["Tool selection and argument accuracy per call.", "Test cases where no tool should be called.", "Strict, unordered, subset and superset matching.", "Tool-call precision and recall.", "Count destructive extra calls and duplicate writes.", "Final state, pass^k and progress rate.", "Audit the evaluator against human labels."],

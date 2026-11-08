@@ -2,6 +2,11 @@
 from maths_plans import _plan
 
 
+def _fit(text, w, size=14):
+    """Shrink a bold label so it stays inside its card (about 0.56 em per character, measured)."""
+    return min(size, round((w - 14) / (0.56 * len(text)), 1))
+
+
 def _cards(label, cards):
     """Two or three cards in a row: a heading, up to two lines and a coloured result."""
     n = len(cards)
@@ -14,7 +19,7 @@ def _cards(label, cards):
         out += (f'<rect x="{x:g}" y="2" width="{w:g}" height="112" rx="8" fill="var(--tint)" stroke="var(--c)" stroke-width="2"/>'
                 f'<text x="{c:g}" y="27" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">{head}</text>'
                 f'<g font-size="13" fill="var(--dim)" text-anchor="middle">{rows}</g>'
-                f'<text x="{c:g}" y="102" font-size="14" font-weight="700" fill="var(--{colour})" text-anchor="middle">{foot}</text>')
+                f'<text x="{c:g}" y="102" font-size="{_fit(foot, w):g}" font-weight="700" fill="var(--{colour})" text-anchor="middle">{foot}</text>')
     return f'<svg viewBox="0 0 480 116" role="img" aria-label="{label}">{out}</svg>'
 
 
