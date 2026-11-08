@@ -540,7 +540,7 @@ Tap a track to see its lessons, in the order to learn them.
 | 20 | [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/) | 🟡 Intermediate | 10 min |
 | 21 | [Agent Scenarios: Observability and Debugging](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-observability/) | 🟡 Intermediate | 10 min |
 | 22 | [Agent Scenarios: Evaluation](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-evaluation/) | 🟡 Intermediate | 10 min |
-| 23 | [Agent Scenarios: Safety and Security](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-safety-and-security/) | 🟡 Intermediate | 10 min |
+| 23 | [Agent Scenarios: Safety and Security](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-safety-and-security/) | 🟡 Intermediate | 54 min |
 | 24 | [Agent Scenarios: Cost and Latency](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-cost-and-latency/) | 🟡 Intermediate | 10 min |
 | 25 | [Agent Scenarios: Human in the Loop](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-human-in-the-loop/) | 🟡 Intermediate | 48 min |
 | 26 | [Agent Scenarios: Long-Running and Scheduled Agents](https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-long-running/) | 🟡 Intermediate | 10 min |
