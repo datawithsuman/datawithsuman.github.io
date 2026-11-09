@@ -41,10 +41,10 @@ TRACKS = [
         "know": ["fundamentals/self-attention"],
         "modules": [
             {"name": "Models", "desc": "The architecture behind modern LLMs.", "lessons": [
-                {"slug": "attention-is-all-you-need", "title": "Attention Is All You Need", "type": "paper", "minutes": 8,
+                {"slug": "attention-is-all-you-need", "title": "Attention Is All You Need", "type": "paper", "minutes": 30, "imported": True,
                  "lead": "What happens if you remove recurrence and keep only attention?",
                  "prereqs": ["fundamentals/self-attention"],
-                 "related": ["fundamentals/multi-head-attention"], "body": "aiayn"},
+                 "related": ["fundamentals/multi-head-attention"]},
             ]},
             {"name": "Agents and memory", "desc": "How AI agents are built, and how they manage context.", "lessons": [
                 {"slug": "harness-engineering", "title": "Harness Engineering", "type": "paper", "minutes": 25, "imported": True,

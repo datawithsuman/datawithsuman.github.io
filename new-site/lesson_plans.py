@@ -216,29 +216,21 @@ PAPER_PLANS = {
         "analogy": "Think of a meeting. In a recurrent model, a message passes from person to person down a line, and it fades on the way. With attention, everyone in the room can hear everyone else directly, and each person decides who to listen to.",
         "picture": AIAYN_PICTURE,
         "caption": "Illustrative. A recurrent model reads a sentence in order. Attention connects every word in one step.",
-        "tldr": "This 2017 paper removed recurrence entirely and built a translation model from attention alone.",
-        "meta": 'Vaswani et al., Google · <a href="https://arxiv.org/abs/1706.03762">arXiv 1706.03762</a> · 2017',
-        "problem_html": "<p>Recurrent models read a sentence one word at a time, which makes them slow to train and weak over long distances. Each step has to wait for the one before it, so training is hard to run in parallel.</p>",
-        "method_html": """<ul class="explain">
-  <li>An encoder and a decoder, each a stack of 6 identical layers.</li>
-  <li>Multi-head attention with 8 heads and a model size of 512.</li>
-  <li>A feed-forward layer applied to each position on its own.</li>
-  <li>Sine and cosine position signals, since attention alone ignores word order.</li>
-</ul>""",
-        "found_html": """<ul class="explain">
-  <li>On English-to-German translation (WMT 2014), it reached a BLEU score of 28.4, more than 2 points above the best existing results at the time, including ensembles.</li>
-  <li>It trained in 12 hours on eight GPUs, far less time than the best earlier models reported.</li>
-  <li>It also worked on English parsing, which showed the idea wasn't limited to translation.</li>
-</ul>
-<p class="note">Figures from the paper's abstract. <a href="https://arxiv.org/abs/1706.03762">Read the abstract</a>.</p>""",
-        "limits_html": """<ul class="explain">
-  <li>Attention compares every position with every other, so its cost grows with the square of the sequence length.</li>
-  <li>Word order has to be added separately, because attention alone ignores it.</li>
-  <li>The results cover translation and parsing, so the paper itself doesn't show how far the idea would go.</li>
-</ul>""",
-        "changed_html": """<p>Training could now run in parallel across a sequence, and distant words were one step apart. This architecture became the base of modern LLMs.</p>
-<p><b>What to remember.</b> Attention can replace recurrence entirely, and that's what made today's large models practical to train.</p>""",
-        "verdict_html": "<p><b>Read</b> the architecture section and the attention figures. <b>Skim</b> the training details unless you plan to reproduce it.</p>",
+        "problem": ["example", "c1"],
+        "play": {"lab": "attnLab", "chapter": "c3",
+                 "try": "<b>Try it.</b> The word \"its\" is looking for what it refers to. Change the key size, then switch off the scaling.",
+                 "why": "<b>Notice:</b> without dividing by √d<sub>k</sub>, bigger keys make softmax pick one word almost completely, and the head stops learning. That one division is why the paper calls it <i>scaled</i> dot-product attention."},
+        "how": ["c2", "c3", "c4", "c5", "c6", "c7"],
+        "found": ["c8", "c9", "c10"],
+        "limits": ["c11"],
+        "changed_chapters": ["c12"],
+        "verdict": ["c14"],
+        "reference": ["c13", "src"],
+        "hidden": ["iv"],
+        "changed_html": """<p>Training could now run in parallel across a whole sequence, and any two words were one step apart. Within two years the same blocks, split into encoder-only and decoder-only models, became BERT and GPT, and the architecture now underlies almost every large language model.</p>
+<p><b>What to remember.</b> Attention alone, with multiple heads, position signals and residual layers, replaced recurrence. The core equation, softmax(QK<sup>T</sup>/√d<sub>k</sub>)V, is still the heart of today's models.</p>""",
+        "strip": [r'<h3>Try it: what "its" attends to</h3>\s*'],
+        "edits": [],
     },
 }
 
