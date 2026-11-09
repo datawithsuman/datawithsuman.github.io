@@ -615,14 +615,15 @@ End-to-end AI/ML system designs in interview format, grouped into sub-sections. 
 ### 📄 Papers
 
 <details>
-<summary><b>Papers Explained</b> · 2 lessons</summary>
+<summary><b>Papers Explained</b> · 3 lessons</summary>
 
 <br>
 
 | # | Lesson | Level | Time |
 |:---:|---|:---:|:---:|
-| 1 | [Context Language Models](https://aimlrounds.com/tracks/papers/context-language-models/) | 🟡 Intermediate | 8 min |
+| 1 | [Attention Is All You Need](https://aimlrounds.com/tracks/papers/attention-is-all-you-need/) | 🟡 Intermediate | 30 min |
 | 2 | [Harness Engineering](https://aimlrounds.com/tracks/papers/harness-engineering/) | 🟡 Intermediate | 25 min |
+| 3 | [Context Language Models](https://aimlrounds.com/tracks/papers/context-language-models/) | 🟡 Intermediate | 8 min |
 
 </details>
 
