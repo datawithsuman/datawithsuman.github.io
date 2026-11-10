@@ -228,16 +228,6 @@ def home():
         topics = "".join(f"<li>{esc(x)}</li>" for x in t["topics"])
         tracks += (f'<a class="panel track-card t-{t["id"]}" href="tracks/{t["id"]}/"><span class="track-top"><span class="chip track-num">{t["n"]}</span>'
                    f'<span class="status-note">{t["status"]}</span></span><h3>{t["name"]}</h3><p>{t["desc"]}</p><ul>{topics}</ul></a>')
-    tiles = [
-        ("1", "The situation", "The question an interviewer would actually ask.", ""),
-        ("2", "The idea", "One analogy, one picture.", ""),
-        ("3", "Play", "Change an input, try to break it, then say why.", ""),
-        ("4", "How it works", "ML: the formula. System design: the diagram. Papers: the method.", ""),
-        ("5", "In practice", "The steps and when to use it. System design gets capacity maths.", ""),
-        ("6", "The answer that sounds right", "The tempting wrong answer, and why it fails.", ""),
-        ("7", "Say it", "Say it out loud, tick what you covered, take the follow-ups.", " dark"),
-    ]
-    tile_html = "".join(f'<li class="panel tile{d}"><span class="eyebrow">{n}</span><h3>{h}</h3><p>{p}</p></li>' for n, h, p, d in tiles)
     path = [("Maths for ML", "fundamentals/vectors-and-cosine-similarity"), ("Regression", "fundamentals/linear-regression"), ("Neural nets", "fundamentals/perceptron-to-mlp"),
             ("Attention", "fundamentals/self-attention"), ("Embeddings and RAG", "fundamentals/embeddings"),
             ("Serving LLMs", "ai-engineering/prefill-vs-decode"), ("Agent design", "system-design/design-refund-agent")]
@@ -269,9 +259,6 @@ def home():
 <section class="page section" id="tracks"><h2>Four tracks, one colour each</h2>
 <p class="section-lead">The colour follows you into every lesson, so you always know which track you are in.</p>
 <div class="card-grid">{tracks}</div></section>
-<section class="page section" id="how"><h2>Every lesson starts and ends the same way.</h2>
-<p class="section-lead">The labels change with the track, and a lesson only shows what it really has. Each tab shows one part, so open only what you need. Paper lessons have their own path: gist, method, results and why it matters.</p>
-<ol class="grid-tiles">{tile_html}</ol></section>
 <section class="page section" id="roadmap"><h2>Pick a role. Follow its roadmap.</h2>
 <p class="section-lead">Each role has its own map of topics, in the order that makes the next one easy. Your progress is saved in this browser.</p>
 <div class="card-grid role-cards">{role_cards}</div></section>
