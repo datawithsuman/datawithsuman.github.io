@@ -44,7 +44,7 @@ TOPICS = {
     "mlops": ("MLOps", ("run", "training-serving-skew-and-feature-stores")),
     "llmops": ("LLMOps", ("run", "llmops")),
     "sdllm": ("LLM and agent system design", ("group", "system-design", "designs")),
-    "sdrec": ("Recommenders and ranking", ("slugs", ["recommendation-system", "design-interleaving", "design-image-personalisation"])),
+    "sdrec": ("Recommenders and ranking", ("slugs", ["recommendation-system", "design-semantic-search", "design-interleaving", "design-image-personalisation"])),
     "sdexp": ("Experiment design", ("slugs", ["design-llm-prompt-test", "design-ai-subject-lines", "design-network-experiment", "design-launch-decision-rule", "design-experimentation-platform"])),
     "papers": ("Key papers", ("group", "papers", None)),
 }
@@ -102,7 +102,9 @@ def build_data(ordered, type_label):
         elif kind == "slugs":
             ls = [l for l in ordered if l["slug"] in spec[1]]
         else:
-            ls = [l for l in ordered if l["track"]["id"] == spec[1] and (spec[2] is None or l.get("group") == spec[2])]
+            # A whole track group, minus lessons another topic lists by name.
+            named = {x for _, (_, sp) in TOPICS.items() if sp[0] == "slugs" for x in sp[1]}
+            ls = [l for l in ordered if l["track"]["id"] == spec[1] and (spec[2] is None or l.get("group") == spec[2]) and l["slug"] not in named]
         if not ls:
             raise SystemExit(f"roadmap topic {tid} has no lessons")
         for l in ls:

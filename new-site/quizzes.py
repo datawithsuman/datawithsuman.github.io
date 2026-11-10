@@ -444,6 +444,18 @@ QUIZZES = {
         Q(("For a coding agent that opens pull requests, which failure is the most serious?",
            ["The agent fails to open a PR", "The PR fails CI", "The PR passes CI but makes the wrong change", "The PR has a long description"],
            2, "A wrong change that passes CI can merge unnoticed and erodes trust in the whole system; verifiers and a scope-checking judge reduce it.", "design-coding-agent")),
+        Q(("Why do large platforms moderate chat with many small classifiers instead of one big LLM per message?",
+           ["LLMs can't read chat", "At hundreds of thousands of messages a second with a millisecond budget, a big LLM is too slow and costly; LLMs are used on the smaller flagged stream",
+            "Small models are always more accurate", "Regulations require it"],
+           1, "Distilled, quantized specialist models carry the volume; context-aware LLMs and people handle the hard cases.", "design-content-moderation")),
+        Q(("An AI tutor's users rate it highly. Why isn't that enough to show it works?",
+           ["Ratings are always fake", "Students may enjoy being given answers; the real test is whether they solve the next problem alone",
+            "Ratings can't be collected", "Only teachers can judge"],
+           1, "Measure learning, such as next-item correctness without help, and track answers given away as a guardrail.", "design-ai-tutor")),
+        Q(("LoRA fine-tuning made a small vision model accurate on Indonesian IDs but not on Thai. What's the likely fix?",
+           ["More LoRA epochs", "Fully train the vision parts on Thai text images (for example synthetic renders), then fine-tune on documents",
+            "Use a bigger prompt", "Lower the image resolution"],
+           1, "If the vision encoder has rarely seen a script, small adapters can't teach it to read; it needs full training on that script.", "design-vision-llm")),
     ],
     # ---------- Batch 2: AI Engineering ----------
     "rag": [
@@ -978,6 +990,10 @@ QUIZZES = {
            ["Bandits need no data", "A bandit shifts traffic towards better images while it learns, balancing exploration and exploitation",
             "A/B tests can't compare images", "Bandits are always unbiased"],
            1, "Keep a holdout or a proper test alongside it to prove the personalisation actually helps.", "design-image-personalisation")),
+        Q(("Why keep the keyword index when adding embedding-based product search?",
+           ["Embeddings are too slow", "Embeddings blur rare exact tokens like model numbers, and the keyword index already supports filters and facets",
+            "Keyword search is always more relevant", "To save storage"],
+           1, "Hybrid retrieval runs both and lets the re-ranker combine them; embeddings help most on long-tail queries.", "design-semantic-search")),
     ],
     # ---------- Batch 4: Data Science ----------
     "ab": [
