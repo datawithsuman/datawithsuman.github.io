@@ -111,6 +111,7 @@
     drawer.innerHTML = '<div class="rm-drawer-head"><div><p class="eyebrow">' + (isUseful(role, tid) ? "Useful topic" : "Core topic") + '</p><h2 id="rmDrawerTitle">' + esc(t.name) + '</h2>' +
       '<p class="note">' + c.done + " of " + c.total + ' lessons done</p></div><button type="button" class="btn-close" id="rmClose">Close</button></div>' +
       '<span class="rm-bar rm-bar-big" aria-hidden="true"><i style="width:' + Math.round(100 * c.done / c.total) + '%"></i></span>' +
+      (t.quiz ? '<a class="panel rm-quiz" href="' + root + t.quiz + '"><span><b>Take the ' + esc(t.name) + ' quiz</b><span>' + t.quizN + ' questions, each with the answer</span></span><span aria-hidden="true">→</span></a>' : "") +
       (pre.length ? '<h3 class="rm-sub">Learn first</h3><div class="rm-pre">' + pre.map(function (p) {
         var pc = count(p); return '<button type="button" class="panel rm-pre-card" data-topic="' + p + '"><b>' + esc(D.topics[p].name) + "</b><span>" + pc.done + " / " + pc.total + " done</span></button>";
       }).join("") + "</div>" : "") +

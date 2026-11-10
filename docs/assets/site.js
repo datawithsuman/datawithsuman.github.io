@@ -269,10 +269,11 @@
     var score = box.querySelector("[data-say-score]"), furthest = 0, ticked = false, shownFu = 0;
     function tally() {
       var n = Array.prototype.filter.call(checks, function (c) { return c.checked; }).length;
-      count.textContent = n + " of " + checks.length + " covered";
-      bar.style.width = (n / checks.length * 100) + "%";
+      // Practice pages have a say card without a checklist.
+      if (count) count.textContent = n + " of " + checks.length + " covered";
+      if (bar && checks.length) bar.style.width = (n / checks.length * 100) + "%";
       ticked = ticked || n > 0;
-      if (ticked) { score.hidden = false; score.textContent = "You covered " + n + " of " + checks.length + " key points."; }
+      if (ticked && score) { score.hidden = false; score.textContent = "You covered " + n + " of " + checks.length + " key points."; }
     }
     function go(i, move) {
       furthest = Math.max(furthest, i);

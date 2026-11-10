@@ -68,6 +68,21 @@ def track_lessons(t):
 import roadmap  # noqa: E402  (needs the lessons above)
 RM = roadmap.build_data(ORDERED, TYPE_LABEL)
 
+import quizzes  # noqa: E402
+QUIZ_SLUG, QUIZ_AFTER = {}, {}
+for _tid in quizzes.READY:
+    _keys = RM["topics"][_tid]["lessons"]
+    for _q in quizzes.QUIZZES[_tid]:
+        _k = next((k for k in _keys if k.endswith("/" + _q[4])), None)
+        if _k is None:
+            raise SystemExit(f"quiz {_tid}: lesson {_q[4]} is not in that topic")
+        if not 0 <= _q[2] < len(_q[1]) == 4:
+            raise SystemExit(f"quiz {_tid}: bad options or answer in {_q[0][:50]}")
+    QUIZ_SLUG[_tid] = re.sub(r"[^a-z0-9]+", "-", RM["topics"][_tid]["name"].lower()).strip("-")
+    QUIZ_AFTER[_keys[-1]] = _tid
+    RM["topics"][_tid]["quiz"] = f"quiz/{QUIZ_SLUG[_tid]}/"
+    RM["topics"][_tid]["quizN"] = len(quizzes.QUIZZES[_tid])
+
 import hashlib  # noqa: E402
 # Changes with every edit to the shared files or lessons, so browsers fetch the new copy at once.
 ASSET_V = hashlib.md5(b"".join((HERE / "assets" / n).read_bytes() for n in ("site.css", "site.js", "roadmap.js"))
@@ -123,7 +138,7 @@ def preview_tags(title, desc, path):
 
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
-    if page in ("home", "jobs", "roadmap"):
+    if page in ("home", "jobs", "roadmap", "quiz"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
                f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
     else:
@@ -154,7 +169,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
-{"" if page in ("home", "jobs", "roadmap") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
+{"" if page in ("home", "jobs", "roadmap", "quiz") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -254,6 +269,52 @@ def home():
     write("index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script>'))
 
 
+def quiz_row(key, root):
+    """The quiz link that closes a topic, shown after the topic's last lesson."""
+    tid = QUIZ_AFTER.get(key)
+    if not tid:
+        return ""
+    n = len(quizzes.QUIZZES[tid])
+    return (f'<li class="quiz-li"><a class="row quiz-row" href="{root}quiz/{QUIZ_SLUG[tid]}/"><span class="quiz-mark" aria-hidden="true">?</span>'
+            f'<span class="row-title">Quiz: {esc(RM["topics"][tid]["name"])}</span><span class="chip">Quiz</span><span class="mins">{n} Qs</span></a></li>')
+
+
+def quiz_cta(l, root):
+    tid = QUIZ_AFTER.get(l["key"])
+    if not tid:
+        return ""
+    name = RM["topics"][tid]["name"]
+    return (f'<section class="panel quiz-cta"><div><p class="eyebrow">End of {esc(name)}</p><h2>Ready? Try the {esc(name)} quiz.</h2>'
+            f'<p>{len(quizzes.QUIZZES[tid])} questions across this topic, each with the answer and the lesson to revisit.</p></div>'
+            f'<a class="btn btn-primary" href="{root}quiz/{QUIZ_SLUG[tid]}/">Take the quiz</a></section>')
+
+
+def quiz_page(tid):
+    root = "../../"
+    t, qs = RM["topics"][tid], quizzes.QUIZZES[tid]
+    name = t["name"]
+    desc = f"{len(qs)} questions on {name}, from {len(t['lessons'])} lessons. Pick an answer in your head, then open it."
+    items = ""
+    for i, (q, opts, ans, why, slug) in enumerate(qs, 1):
+        key = next(k for k in t["lessons"] if k.endswith("/" + slug))
+        les = LESSONS[key]
+        letters = "ABCD"
+        options = "".join(f'<li><b>{letters[j]}.</b> {esc(o)}</li>' for j, o in enumerate(opts))
+        items += (f'<li class="panel quiz-q" id="q{i}"><p class="quiz-num">Question {i} of {len(qs)}</p><h2>{esc(q)}</h2><ol class="quiz-opts">{options}</ol>'
+                  f'<details class="quiz-ans"><summary>View answer</summary><p class="quiz-right">✓ {letters[ans]}. {esc(opts[ans])}</p><p>{esc(why)}</p>'
+                  f'<p class="quiz-lesson">Lesson: <a href="{root}{les["url"]}">{esc(les["title"])}</a></p></details></li>')
+    roles = [r["name"] for r in RM["roles"] if tid in [x for row in r["rows"] for x in row]]
+    html = head_html(f"{name} quiz · AIML Rounds", desc, root, page="quiz", path=f"quiz/{QUIZ_SLUG[tid]}/")
+    html += f"""<main id="main"><section class="page quiz-page t-{t['track']}"><nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}roadmap/">Roadmap</a><span aria-hidden="true">/</span><b aria-current="page">{esc(name)} quiz</b></nav>
+<p class="eyebrow">QUIZ</p><h1 class="h1-track">{esc(name)}</h1><p class="lead">{esc(desc)}</p>
+<p class="note">On the roadmap for: {", ".join(roles)}.</p>
+<ol class="quiz-list">{items}</ol>
+<div class="btn-row"><a class="btn btn-secondary" href="{root}roadmap/">Back to the roadmap</a></div>
+</section></main>
+"""
+    write(f"quiz/{QUIZ_SLUG[tid]}/index.html", html + foot_html(root))
+
+
 def track_page(t, idx):
     root = "../../"
     lessons = track_lessons(t)
@@ -268,6 +329,7 @@ def track_page(t, idx):
             mods += f'<h2 class="part-title">{part}</h2>'
         rows = "".join(
             f'<li><a class="row" href="{l["slug"]}/">{dot(l)}<span class="row-title">{esc(l["title"])}</span>{type_chip(l["type"])}<span class="mins">{l["minutes"]} min</span></a></li>'
+            + quiz_row(l["key"], root)
             for l in m["lessons"])
         heading = "h3" if m.get("part") else "h2"
         count = len(m["lessons"])
@@ -782,6 +844,7 @@ def lesson_page(l):
   <h1 class="h1-lesson">{esc(l['title'])}</h1>
   <p class="lead">{esc(l['lead'])}</p>
   {center}
+  {quiz_cta(l, root)}
   <nav class="prev-next" aria-label="Previous and next lesson">{prev_html}{next_html}</nav>
 </article>
 <div class="rail">{toc_html}{related}</div>
@@ -796,6 +859,8 @@ def search_index():
     roadmaps_page()
     about_page()
     roadmap_page()
+    for tid in quizzes.READY:
+        quiz_page(tid)
     jobs_page()
     privacy_page()
     site_files()
@@ -911,7 +976,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "roadmap/", "jobs/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "roadmap/", "jobs/"] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + [ "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
