@@ -596,3 +596,17 @@ body.rm-open { overflow: hidden; }
 .quiz-ans p + p { margin-top: 6px; }
 .quiz-right { font-weight: 600; color: var(--chip); padding: 10px 14px; border-radius: var(--radius-control); background: var(--tint); }
 .quiz-lesson { font-size: 14px; color: var(--muted) !important; }
+
+/* Mock interviews */
+.mock-page { display: grid; gap: 18px; padding-block: clamp(28px, 5vw, 48px); }
+.mock-how { list-style: decimal; padding-left: 20px; display: grid; gap: 6px; }
+.mock-timer { position: sticky; top: 8px; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; }
+.mock-timer .btn { min-height: 40px; margin-left: auto; }
+.mock-clock { font: 600 16px var(--mono); }
+.mock-timer.is-over .mock-clock { color: #B42318; }
+.mock-answer p + p { margin-top: 8px; }
+.mock-sub { font-size: 15px; margin-top: 14px; }
+.mock-listen { list-style: none; display: grid; gap: 6px; margin-top: 8px; }
+.mock-listen li { position: relative; padding-left: 24px; }
+.mock-listen li::before { content: "✓"; position: absolute; left: 4px; color: var(--chip); font-weight: 700; }
+@media (max-width: 720px) { .mock-timer { position: static; } }

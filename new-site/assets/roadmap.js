@@ -98,6 +98,7 @@
       '<ul class="rm-types">' + types + "</ul>" +
       (L ? '<a class="btn btn-primary rm-continue" href="' + root + L[1] + '"><span class="pn-label">' + (n ? "Continue" : "Start here") + "</span>" + esc(L[0]) + "</a>"
          : '<p class="note">All core lessons done. Try the useful topics next.</p>') +
+      (role.mock ? '<a class="btn btn-secondary rm-continue" href="' + root + role.mock + '">Mock interviews for ' + esc(role.name) + '</a>' : "") +
       '<p class="note">Plus ' + usefulCount + " lessons in useful topics. Progress is saved in this browser only.</p>";
   }
 

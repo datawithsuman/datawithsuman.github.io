@@ -83,6 +83,17 @@ for _tid in quizzes.READY:
     RM["topics"][_tid]["quiz"] = f"quiz/{QUIZ_SLUG[_tid]}/"
     RM["topics"][_tid]["quizN"] = len(quizzes.QUIZZES[_tid])
 
+import mocks  # noqa: E402
+for _m in mocks.MOCKS:
+    for _r in _m["rounds"]:
+        for _q in _r["questions"]:
+            for _k in _q["lessons"]:
+                if _k not in LESSONS:
+                    raise SystemExit(f"mock {_m['id']}/{_r['id']}: unknown lesson {_k}")
+    for _role in RM["roles"]:
+        if _role["id"] == _m["id"]:
+            _role["mock"] = f"mock/{_m['id']}/"
+
 import hashlib  # noqa: E402
 # Changes with every edit to the shared files or lessons, so browsers fetch the new copy at once.
 ASSET_V = hashlib.md5(b"".join((HERE / "assets" / n).read_bytes() for n in ("site.css", "site.js", "roadmap.js"))
@@ -138,9 +149,9 @@ def preview_tags(title, desc, path):
 
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
-    if page in ("home", "jobs", "roadmap", "quiz"):
+    if page in ("home", "jobs", "roadmap", "quiz", "mock"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
-               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
+               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
@@ -169,7 +180,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
-{"" if page in ("home", "jobs", "roadmap", "quiz") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
+{"" if page in ("home", "jobs", "roadmap", "quiz", "mock") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}mock/">Mocks</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -190,7 +201,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}jobs/">Jobs</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}mock/">Mock interviews</a><a href="{root}jobs/">Jobs</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -861,6 +872,7 @@ def search_index():
     roadmap_page()
     for tid in quizzes.READY:
         quiz_page(tid)
+    mock_pages()
     jobs_page()
     privacy_page()
     site_files()
@@ -899,6 +911,59 @@ def roadmap_page():
 <aside class="rm-drawer" id="rmDrawer" role="dialog" aria-modal="true" aria-labelledby="rmDrawerTitle" hidden></aside>
 """
     write("roadmap/index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script><script src="{root}assets/roadmap.js?v={ASSET_V}"></script>'))
+
+
+def mock_pages():
+    """Mock interviews: /mock/ hub, /mock/<role>/ rounds, /mock/<role>/<round>/ questions."""
+    desc = "Practice interview rounds for AI and ML roles. Answer out loud, then compare with a model answer and what the interviewer listens for."
+    cards = "".join(
+        f'<a class="panel role-card" href="{m["id"]}/"><span class="eyebrow">{len(m["rounds"])} rounds</span><h3>{m["name"]}</h3><p>{esc(m["blurb"])}</p></a>'
+        for m in mocks.MOCKS)
+    soon = [r["name"] for r in RM["roles"] if r["id"] not in {m["id"] for m in mocks.MOCKS}]
+    soon_html = f'<p class="note">Coming soon: {", ".join(soon)}.</p>' if soon else ""
+    html = head_html("Mock interviews · AIML Rounds", desc, "../", page="mock", path="mock/")
+    html += f"""<main id="main"><section class="page mock-page"><p class="eyebrow">MOCK INTERVIEWS</p><h1 class="h1-track">Mock interviews</h1><p class="lead">{desc}</p>
+<div class="card-grid role-cards">{cards}</div>{soon_html}
+<section class="panel block"><h2>How to use a mock</h2><ol class="mock-how"><li>Set the timer, or just note the time.</li><li>Read a question and answer it out loud, as you would to an interviewer.</li><li>Open the model answer and tick off what the interviewer listens for.</li><li>Revisit the linked lessons for anything you missed.</li></ol></section>
+</section></main>
+"""
+    write("mock/index.html", html + foot_html("../"))
+    for m in mocks.MOCKS:
+        root = "../../"
+        rounds = "".join(
+            f'<a class="panel role-card" href="{r["id"]}/"><span class="eyebrow">Round {i} · {len(r["questions"])} questions · {r["minutes"]} min</span><h3>{r["name"]}</h3><p>{esc(r["intro"])}</p></a>'
+            for i, r in enumerate(m["rounds"], 1))
+        html = head_html(f'{m["name"]} mock interviews · AIML Rounds', m["blurb"], root, page="mock", path=f'mock/{m["id"]}/')
+        html += f"""<main id="main"><section class="page mock-page"><nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}mock/">Mock interviews</a><span aria-hidden="true">/</span><b aria-current="page">{m['name']}</b></nav>
+<p class="eyebrow">MOCK INTERVIEWS</p><h1 class="h1-track">{m['name']}</h1><p class="lead">{esc(m['blurb'])}</p>
+<div class="card-grid role-cards">{rounds}</div>
+<div class="btn-row"><a class="btn btn-secondary" href="{root}roadmap/#{m['id']}">See the {m['name']} roadmap</a></div>
+</section></main>
+"""
+        write(f'mock/{m["id"]}/index.html', html + foot_html(root))
+        for i, r in enumerate(m["rounds"], 1):
+            root = "../../../"
+            qs = ""
+            for j, q in enumerate(r["questions"], 1):
+                answer = "".join(f"<p>{esc(p)}</p>" for p in q["a"])
+                listen = "".join(f"<li>{esc(x)}</li>" for x in q["listen"])
+                links = ", ".join(f'<a href="{root}{LESSONS[k]["url"]}">{esc(LESSONS[k]["title"])}</a>' for k in q["lessons"])
+                qs += (f'<li class="panel quiz-q mock-q" id="q{j}"><p class="quiz-num">Question {j} of {len(r["questions"])}</p><h2>{esc(q["q"])}</h2>'
+                       f'<p class="note">Answer out loud first, then open the model answer.</p>'
+                       f'<details class="quiz-ans"><summary>View model answer</summary><div class="mock-answer">{answer}</div>'
+                       f'<h3 class="mock-sub">What the interviewer listens for</h3><ul class="mock-listen">{listen}</ul>'
+                       f'<p class="quiz-lesson">Lessons: {links}</p></details></li>')
+            nxt = m["rounds"][i] if i < len(m["rounds"]) else None
+            nxt_html = f'<a class="btn btn-primary" href="../{nxt["id"]}/">Next round: {nxt["name"]}</a>' if nxt else ""
+            html = head_html(f'{r["name"]} · {m["name"]} mock · AIML Rounds', r["intro"], root, page="mock", path=f'mock/{m["id"]}/{r["id"]}/')
+            html += f"""<main id="main"><section class="page quiz-page mock-page"><nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}mock/">Mock interviews</a><span aria-hidden="true">/</span><a href="../">{m['name']}</a><span aria-hidden="true">/</span><b aria-current="page">{r['name']}</b></nav>
+<p class="eyebrow">{m['name'].upper()} · ROUND {i} OF {len(m['rounds'])}</p><h1 class="h1-track">{r['name']}</h1><p class="lead">{esc(r['intro'])}</p>
+<div class="panel mock-timer" data-minutes="{r['minutes']}"><span>{len(r['questions'])} questions · suggested time <b>{r['minutes']} min</b></span><span class="mock-clock" aria-live="off" hidden></span><button type="button" class="btn btn-secondary" data-timer>Start timer</button></div>
+<ol class="quiz-list">{qs}</ol>
+<div class="btn-row">{nxt_html}<a class="btn btn-secondary" href="../">All {m['name']} rounds</a></div>
+</section></main>
+"""
+            write(f'mock/{m["id"]}/{r["id"]}/index.html', html + foot_html(root))
 
 
 def jobs_page():
@@ -976,7 +1041,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "roadmap/", "jobs/"] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + [ "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + [ "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")

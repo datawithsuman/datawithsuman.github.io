@@ -460,4 +460,19 @@
       card.querySelector(".role-note").textContent = n ? n + " of " + keys.length + " core lessons done" : keys.length + " core lessons";
     });
   }
+
+  // Mock interview timer: optional countdown for a round.
+  document.querySelectorAll(".mock-timer").forEach(function (box) {
+    var btn = box.querySelector("[data-timer]"), clock = box.querySelector(".mock-clock"), t, left;
+    function show() {
+      var m = Math.floor(Math.abs(left) / 60), sec = Math.abs(left) % 60;
+      clock.textContent = (left < 0 ? "Over by " : "") + m + ":" + (sec < 10 ? "0" : "") + sec + (left < 0 ? "" : " left");
+      box.classList.toggle("is-over", left < 0);
+    }
+    btn.addEventListener("click", function () {
+      if (t) { clearInterval(t); t = null; btn.textContent = "Start timer"; clock.hidden = true; box.classList.remove("is-over"); return; }
+      left = +box.dataset.minutes * 60; clock.hidden = false; btn.textContent = "Stop timer"; show();
+      t = setInterval(function () { left--; show(); }, 1000);
+    });
+  });
 })();
