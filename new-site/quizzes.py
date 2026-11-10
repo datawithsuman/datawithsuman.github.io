@@ -456,6 +456,10 @@ QUIZZES = {
            ["More LoRA epochs", "Fully train the vision parts on Thai text images (for example synthetic renders), then fine-tune on documents",
             "Use a bigger prompt", "Lower the image resolution"],
            1, "If the vision encoder has rarely seen a script, small adapters can't teach it to read; it needs full training on that script.", "design-vision-llm")),
+        Q(("Fraud is about 1 in 1,000 payments. Why is '99.9% accuracy' a poor way to describe a fraud model?",
+           ["It's too low", "Approving every payment also scores 99.9%; you need fraud caught and good payments blocked",
+            "Accuracy can't be computed for payments", "Fraud models are always 100% accurate"],
+           1, "With rare positives, accuracy hides the trade-off; set thresholds from the cost of each mistake and use verification for the uncertain middle.", "design-fraud-detection")),
     ],
     # ---------- Batch 2: AI Engineering ----------
     "rag": [
@@ -994,6 +998,10 @@ QUIZZES = {
            ["Embeddings are too slow", "Embeddings blur rare exact tokens like model numbers, and the keyword index already supports filters and facets",
             "Keyword search is always more relevant", "To save storage"],
            1, "Hybrid retrieval runs both and lets the re-ranker combine them; embeddings help most on long-tail queries.", "design-semantic-search")),
+        Q(("In a feed ranker, why combine several predicted actions in a value model instead of ranking by click probability?",
+           ["It's faster", "Clicks reward clickbait people regret; weighting likes and shares and subtracting 'see less' ranks by what people value",
+            "Click probability can't be predicted", "Value models need no data"],
+           1, "Multi-task predictions plus tunable weights let the product balance engagement types without retraining.", "design-feed-ranking")),
     ],
     # ---------- Batch 4: Data Science ----------
     "ab": [

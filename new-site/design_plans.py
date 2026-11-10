@@ -107,6 +107,15 @@ VISION_PICTURE = _flow("Try what exists first. If it fails on tail latency or sc
                        "New scripts need the vision side retrained.",
                        "Measured per field, per language, at p99")
 
+FRAUD_PICTURE = _flow("A payment arrives. Hundreds of fresh features are fetched, many counted across the whole network. The model scores it in milliseconds. Rules and thresholds decide: allow, verify or block.",
+                      [("Payment", "Checkout"), ("Features", "Network counts"), ("Score", "Under 100 ms"), ("Decide", "Allow, verify, block")],
+                      "Labels arrive weeks later, so log everything.",
+                      "Judged on fraud caught and good customers blocked")
+FEED_PICTURE = _flow("Many sources pull thousands of candidates. A light model keeps about a hundred. A heavy model predicts each action, and a value model combines them before integrity and diversity rules.",
+                     [("Retrieve", "Many sources"), ("Light rank", "Thousands to 100"), ("Heavy rank", "Each action"), ("Value", "Weighted score")],
+                     "Negative actions are subtracted, so clickbait loses.",
+                     "Final step: integrity and diversity rules")
+
 DESIGN_PLANS = {
     "system-design/design-store-assistant": _plan(
         "An e-commerce platform wants an assistant for its merchants. It should do things in the store, like finding customers, writing product descriptions and creating discounts. It starts with a handful of tools, and teams keep adding more. Say 100,000 conversations a day. The interviewer asks:",
@@ -460,4 +469,43 @@ DESIGN_PLANS.update({
         tabs=_TABS,
         trap_title="\"The API is accurate on average, so it's good enough\"",
         trap_html="<p>It sounds right, since the average looks fine. But users wait at the tail, where API latency can be several times the median, and averages hide languages where accuracy is poor. Measure p99 and accuracy per language before deciding.</p>"),
+})
+
+DESIGN_PLANS.update({
+    "system-design/design-fraud-detection": _plan(
+        "An online payments company handles 10 million payments a day for many merchants. About 1 in 1,000 is fraud. Each payment needs a decision inside checkout, in under 100 ms, and every good customer blocked is a lost sale. The interviewer asks:",
+        "An online payments company must decide in under 100 ms whether each payment is fraud. Fraud is about 1 in 1,000 payments, and blocking good customers loses money too. Design the system.",
+        "Think of a bank teller who has seen every customer at every branch. A stranger's card was tried at ten shops this morning? The teller notices instantly. Unsure cases get a quick ID check instead of a refusal, and whether they got it right only shows up weeks later.",
+        FRAUD_PICTURE, "Network-wide signals catch what one shop never sees.",
+        ("c3", "<b>Try to break it.</b> Drag the threshold from 0.9 down to 0.6. Then turn on verification, then network features.", "<b>Now say why:</b> why do better features beat any choice of threshold?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified volume, latency, actions and the cost of each mistake.",
+         "Features come from a fast online store, fed by streaming counters.",
+         "You used network-wide signals, like cards per IP across merchants.",
+         "Thresholds and merchant rules decide allow, verify or block.",
+         "You handled delayed labels and early feedback signals.",
+         "You avoided a feedback loop by letting a small share through.",
+         "You explained declines, and failed safe if the scorer is down.",
+         "You measured fraud caught and good payments blocked, in shadow first."],
+        tabs=_TABS,
+        trap_title="\"Our model is 99.9% accurate\"",
+        trap_html="<p>It sounds great, but with 1 fraud in 1,000 payments, approving everything is also 99.9% accurate. Accuracy hides the trade-off that matters. Report fraud caught and good payments blocked, and set thresholds from the cost of each mistake.</p>"),
+    "system-design/design-feed-ranking": _plan(
+        "A photo and video app has hundreds of millions of daily users and billions of posts. Its discovery feed shows posts from accounts users don't follow. Engagement is up, but so are complaints about clickbait and repetitive feeds. The interviewer asks:",
+        "A photo and video app shows each user a feed of posts from billions of candidates. Design the ranking so people see what they value, quickly, without filling the feed with clickbait.",
+        "Think of a magazine editor with a mountain of submissions. Assistants quickly shortlist a few hundred, a senior editor reads the best hundred closely and predicts how readers will react, and the final layout avoids two pieces by the same writer side by side.",
+        FEED_PICTURE, "Cheap steps cut the pile; the expensive model sees only the best.",
+        ("c3", "<b>Try to break it.</b> Set all three weights to zero. Then raise the \"see less\" penalty. Then turn on the diversity rule.", "<b>Now say why:</b> why does ranking by clicks alone push clickbait to the top?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the surface, scale, latency and what good means.",
+         "Several retrieval sources, mixed with tunable weights.",
+         "A light ranker, distilled from the heavy one, narrows to about 100.",
+         "A heavy multi-task model predicts each action.",
+         "A value model combines them, subtracting negative actions.",
+         "Integrity and diversity rules run last.",
+         "You cached embeddings and precomputed at peak.",
+         "You kept exploration and tested changes with guardrails."],
+        tabs=_TABS,
+        trap_title="\"Rank by predicted engagement and you're done\"",
+        trap_html="<p>It sounds right, since engagement is what you want. But the most clicked posts are often regretted, and one engagement number hides likes, shares and \"see less\". Predict each action, subtract the negative ones in a value model, and watch negative feedback as a guardrail.</p>"),
 })
