@@ -106,8 +106,11 @@ PARTS = [
         "cost-and-latency": {"prereqs": [_a("llmops"), _a("prefix-caching")]},
         "llm-api-reliability": {"prereqs": [_a("cost-and-latency")]},
         "genai-scenarios-set-1": {"type": "interview", "prereqs": [_a("cost-and-latency")]},
+        "genai-scenarios-set-2": {"type": "interview", "prereqs": [_a("genai-scenarios-set-1")]},
         "fine-tuning-incidents": {"type": "interview", "prereqs": [_f("supervised-fine-tuning"), _f("lora-and-qlora")]},
         "safety-and-guardrail-incidents": {"type": "interview", "prereqs": [_a("guardrails-and-prompt-injection"), _a("agent-safety")]},
+        "evaluation-incidents": {"type": "interview", "prereqs": [_a("evaluating-llm-apps"), _f("llm-as-a-judge")]},
+        "cost-and-reliability-incidents": {"type": "interview", "prereqs": [_a("cost-and-latency"), _a("llm-api-reliability")]},
     })),
 ]
 for _p in PARTS:
