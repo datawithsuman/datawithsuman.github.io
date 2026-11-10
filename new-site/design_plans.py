@@ -73,6 +73,23 @@ RULE_PICTURE = _flow("Four checks. Success metrics must beat control. Guardrails
                      "Ship only if all four pass. Agree this before the test starts.",
                      "Correct false wins for success metrics, and power for guardrails")
 
+VOICE_PICTURE = _flow("The caller speaks. A model decides they've finished. Lookups and checks run in parallel. Speech starts from the first sentence. Every stage is timed.",
+                      [("Hear", "Speech to text"), ("End of turn", "Not a timer"), ("Think", "In parallel"), ("Speak", "Stream early")],
+                      "The caller hears something useful as soon as possible.",
+                      "Every turn traced: time per stage")
+EVAL_PICTURE = _flow("Versioned datasets, scorers and judges run as gates: a small set on every change, a big set before release, and sampled live traffic after.",
+                     [("Datasets", "Real, synthetic"), ("Scorers", "Rules, judges"), ("Run", "Saved with an ID"), ("Gate", "Block or pass")],
+                     "Judges are calibrated against people every few weeks.",
+                     "Live traffic sampled and scored, with drift alerts")
+DOC_PICTURE = _flow("Files become one format, OCR reads them, an LLM fills a fixed schema, and rules check the result before a person reviews anything uncertain.",
+                    [("Ingest", "Email, upload"), ("Read", "Convert, OCR"), ("Extract", "Fixed schema"), ("Check", "Rules, review")],
+                    "Only proven, confident cases skip the person.",
+                    "Accuracy measured per field, per supplier")
+CODING_PICTURE = _flow("A tested prompt runs per repository. The agent works in a sandbox, verifiers build and test, a judge checks scope, and only then does a PR open.",
+                       [("Task", "Tested prompt"), ("Agent", "Sandbox, few tools"), ("Verify", "Build, test, judge"), ("PR", "Normal review")],
+                       "No PR opens until every verifier passes.",
+                       "Worst case: passes CI but wrong")
+
 DESIGN_PLANS = {
     "system-design/design-store-assistant": _plan(
         "An e-commerce platform wants an assistant for its merchants. It should do things in the store, like finding customers, writing product descriptions and creating discounts. It starts with a handful of tools, and teams keep adding more. Say 100,000 conversations a day. The interviewer asks:",
@@ -277,3 +294,78 @@ DESIGN_PLANS.update({
 })
 for _key in DESIGN_PLANS:
     DESIGN_PLANS[_key]["say_hint"] = _HINT
+
+DESIGN_PLANS.update({
+    "system-design/design-voice-agent": _plan(
+        "A retailer wants an AI agent to answer its customer support line. Callers ask about orders, returns and deliveries, and the agent must look things up and sometimes make changes. Say 20,000 calls a day. Callers hang up if the line goes quiet too long. The interviewer asks:",
+        "Customers call a support line, and an AI agent answers. Design it so it responds fast enough to feel natural and can still look up orders and take actions.",
+        "Think of a good call-centre worker. They know when you've finished talking without waiting for an awkward pause, start checking your order while you're still explaining, and say \"one moment, pulling that up\" only when they really are. They never act on an order number until they've read it back.",
+        VOICE_PICTURE, "Silence is the enemy, but filler isn't the fix.",
+        ("c3", "<b>Try to break it.</b> Start with everything off and read the breakdown. Turn on each fix. Then drag the end-of-speech wait down to 200 ms.", "<b>Now say why:</b> why does a shorter silence timer make the agent feel worse, not better?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified call reasons, allowed actions, volume and response time.",
+         "You measured time to the first useful audio, not filler.",
+         "An end-of-speech model decides the turn, not a fixed timer.",
+         "Lookups and checks run in parallel, with small models for small jobs.",
+         "Speech streams from the first sentence, and common phrases are cached.",
+         "You kept separate steps so the agent can call systems and be traced.",
+         "Numbers are read back before acting, and callers are verified.",
+         "Callers can always reach a person, with a summary passed on."],
+        tabs=_TABS,
+        trap_title="\"Fill the silence with 'uh-huh' and it feels fast\"",
+        trap_html="<p>It sounds right, since filler stops the line going quiet. But callers notice when nothing useful follows, and a metric that counts filler as a response hides the real delay. Measure time to the first useful words, cut real waits with parallel work and streaming, and use short, specific progress messages only while real work runs.</p>"),
+    "system-design/design-llm-eval-platform": _plan(
+        "A company has an AI assistant and 20 teams changing its prompts, retrievers and models every week. Quality keeps slipping, and nobody notices until users complain. Results from last month's experiments can't be reproduced. The interviewer asks:",
+        "Teams change prompts, models and retrieval every week, and quality keeps slipping without anyone noticing. Design a platform that catches regressions before users do.",
+        "Think of a school's exams. Questions are written in advance and kept on file, markers follow a marking scheme, and a senior teacher re-marks a sample to check the markers are fair. A quick test each week catches big problems; the full exam at the end of term catches the rest.",
+        EVAL_PICTURE, "Evaluation works like testing code: versioned, repeatable and gated.",
+        ("c3", "<b>Try to break it.</b> Keep 150 questions and set a 5-point drop. Then drag the questions up. Then raise the drop to 10.", "<b>Now say why:</b> why does a small gate set catch big regressions but miss small ones?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified what's evaluated, who changes it and how fast checks must be.",
+         "Datasets are versioned, built from real, synthetic and hard cases.",
+         "You used code checks, reference metrics and rubric-based judges.",
+         "Judges are versioned and calibrated against human labels.",
+         "Every run records the dataset, prompt, retriever and model.",
+         "Gates are layered: pull request, release and live sampling.",
+         "Hard rules block, budgets limit, rubric scores are tracked.",
+         "Bad live answers flow back into the test suite."],
+        tabs=_TABS,
+        trap_title="\"If the judge score went up, quality went up\"",
+        trap_html="<p>It sounds right, since the judge is the measure. But judges drift, have biases such as preferring longer answers, and can be gamed by prompt changes that please the judge rather than users. Re-check judges against people regularly, keep a held-out set, and compare offline gains with what users actually experience.</p>"),
+    "system-design/design-document-extraction": _plan(
+        "A large company pays thousands of suppliers. Invoices arrive by email and upload, in over 25 languages and many layouts, some scanned or handwritten. People type in about 20 fields per invoice, and rule-based tools break on every new layout. Say 10,000 invoices a day. The interviewer asks:",
+        "Thousands of suppliers send invoices in different layouts and languages, and people type them in by hand. Design a system that extracts the data accurately and knows when to ask a person.",
+        "Think of a careful new clerk. They read any invoice layout, copy the details onto a standard form, then check the sums add up and the supplier is real before passing it on. Anything odd goes to a senior clerk, who sees the invoice and the form side by side.",
+        DOC_PICTURE, "The model fills the form; rules and people decide what's safe to pay.",
+        ("c3", "<b>Try to break it.</b> Start with the top band only. Lower the line one step at a time. Then turn on the rule checks.", "<b>Now say why:</b> why do rule checks catch errors that the model's confidence misses?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified document types, languages, fields, volume and error cost.",
+         "Files become one standard format before OCR and extraction.",
+         "The LLM fills a fixed schema with structured output.",
+         "Business rules cross-check totals, suppliers and orders.",
+         "Uncertain cases go to people, with document and fields side by side.",
+         "You measured accuracy per field, exact and fuzzy, per supplier.",
+         "You chose the model by per-field accuracy, especially line items.",
+         "You rolled out in parallel first, and automated only proven cases."],
+        tabs=_TABS,
+        trap_title="\"The model is 99% confident, so skip the review\"",
+        trap_html="<p>It sounds right, since confidence seems to mean accuracy. But models can be confidently wrong, especially on new layouts and line items, and a wrong amount means a wrong payment. Check money fields with rules that don't depend on the model, and only auto-approve suppliers and fields with a long, proven record.</p>"),
+    "system-design/design-coding-agent": _plan(
+        "A company has thousands of code repositories. Upgrades and migrations are written as scripts that keep growing, and engineers spend weeks on repetitive changes. Leadership wants an AI agent to make these changes and open pull requests. The interviewer asks:",
+        "Engineers want an agent that makes code changes across thousands of repositories, like migrations and upgrades, and opens pull requests for review. Design it so its changes can be trusted.",
+        "Think of a contractor renovating hundreds of identical flats. They get one clear brief, work only inside each flat, and an inspector checks the wiring and plumbing before the owner is called. A second inspector checks they did only what was asked, not a surprise new kitchen.",
+        CODING_PICTURE, "Keep the agent's world small, and check its work before anyone sees it.",
+        ("c3", "<b>Try to break it.</b> Start with no checks. Turn on verifiers, then the judge. Then drag the turns down to 3.", "<b>Now say why:</b> why is a PR that passes CI but is wrong worse than no PR at all?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the tasks, the number of repositories and who reviews.",
+         "Tasks are versioned prompts, describing the end state with examples.",
+         "The agent runs in a sandbox with few tools, and Git can't push.",
+         "Verifiers build and test, returning only the key errors.",
+         "An LLM judge vetoes changes outside the task.",
+         "PRs open only after checks pass, through the normal review process.",
+         "You ranked failure modes, with passing-but-wrong as the worst.",
+         "You rolled out in waves, tracking merges, CI failures and reverts."],
+        tabs=_TABS,
+        trap_title="\"Tests pass, so the change is safe to merge\"",
+        trap_html="<p>It sounds right, since tests are the safety net. But many repositories have thin coverage, and agents sometimes disable a flaky test or refactor code they weren't asked to touch. Passing CI then proves little. Keep human review, add a judge that checks the change against the task, and be extra careful where tests are weak.</p>"),
+})
