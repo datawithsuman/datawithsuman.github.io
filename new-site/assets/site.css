@@ -531,7 +531,8 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 /* Topic side panel */
 .rm-drawer-back { position: fixed; inset: 0; background: rgba(17, 20, 27, .35); z-index: 20; }
 .rm-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 21; width: min(620px, 100%); overflow-y: auto; overscroll-behavior: contain;
-  display: grid; align-content: start; grid-auto-rows: max-content; gap: 14px; padding: 24px clamp(16px, 3vw, 28px) 40px; background: var(--surface); border-left: 1px solid var(--line); box-shadow: -12px 0 32px rgba(17, 20, 27, .12); }
+  display: block; padding: 24px clamp(16px, 3vw, 28px) 40px; background: var(--surface); border-left: 1px solid var(--line); box-shadow: -12px 0 32px rgba(17, 20, 27, .12); }
+.rm-drawer > * + * { margin-top: 14px; }
 body.rm-open { overflow: hidden; }
 .rm-drawer-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
 .rm-drawer h2 { font-size: 26px; margin-block: 2px 4px; }
@@ -541,8 +542,10 @@ body.rm-open { overflow: hidden; }
 .rm-pre-card { display: grid; gap: 4px; padding: 12px 14px; text-align: left; }
 .rm-pre-card:hover { background: var(--line-soft); }
 .rm-pre-card span { font-size: 13px; color: var(--muted); }
-.rm-table-wrap { border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden; }
-.rm-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.rm-table-wrap { border: 1px solid var(--line); border-radius: var(--radius-card); }
+.rm-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14.5px; }
+.rm-table th:first-child { border-top-left-radius: var(--radius-card); }
+.rm-table th:last-child { border-top-right-radius: var(--radius-card); }
 .rm-table th { text-align: left; font: 500 11px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 10px 12px; background: var(--line-soft); }
 .rm-table td { padding: 10px 12px; border-top: 1px solid var(--line-soft); vertical-align: middle; }
 .rm-table td a { font-weight: 500; text-decoration: none; }

@@ -68,6 +68,11 @@ def track_lessons(t):
 import roadmap  # noqa: E402  (needs the lessons above)
 RM = roadmap.build_data(ORDERED, TYPE_LABEL)
 
+import hashlib  # noqa: E402
+# Changes with every edit to the shared files or lessons, so browsers fetch the new copy at once.
+ASSET_V = hashlib.md5(b"".join((HERE / "assets" / n).read_bytes() for n in ("site.css", "site.js", "roadmap.js"))
+                      + json.dumps(RM).encode() + json.dumps([l["key"] for l in ORDERED]).encode()).hexdigest()[:8]
+
 
 BASE = "https://aimlrounds.com/"
 LOGO = '<svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg>'
@@ -141,7 +146,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="{root}assets/site.css">
+<link rel="stylesheet" href="{root}assets/site.css?v={ASSET_V}">
 {extra_head}
 </head>
 <body{f' class="t-{active["id"]}"' if active else ''} data-root="{root}">
@@ -175,8 +180,8 @@ def foot_html(root, width="page", scripts=""):
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="{root}assets/search-index.js"></script>
-<script src="{root}assets/site.js"></script>
+<script src="{root}assets/search-index.js?v={ASSET_V}"></script>
+<script src="{root}assets/site.js?v={ASSET_V}"></script>
 </body>
 </html>
 """
@@ -246,7 +251,7 @@ def home():
 <div class="card-grid role-cards">{role_cards}</div></section>
 </main>
 """
-    write("index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js"></script>'))
+    write("index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script>'))
 
 
 def track_page(t, idx):
@@ -828,7 +833,7 @@ def roadmap_page():
 <div class="rm-drawer-back" id="rmBack" hidden></div>
 <aside class="rm-drawer" id="rmDrawer" role="dialog" aria-modal="true" aria-labelledby="rmDrawerTitle" hidden></aside>
 """
-    write("roadmap/index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js"></script><script src="{root}assets/roadmap.js"></script>'))
+    write("roadmap/index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script><script src="{root}assets/roadmap.js?v={ASSET_V}"></script>'))
 
 
 def jobs_page():
