@@ -1,0 +1,41 @@
+name: Update jobs
+
+on:
+  schedule:
+    - cron: "30 1 * * *"   # 07:00 IST every day
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: jobs
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch AI/ML job postings
+        run: python3 new-site/jobs/fetch_jobs.py docs/jobs/jobs.json
+      - name: Commit if changed
+        id: commit
+        run: |
+          git config user.name "jobs-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add new-site/jobs/jobs.json docs/jobs/jobs.json
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git commit -m "Update jobs $(date -u +%F)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Rebuild GitHub Pages
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

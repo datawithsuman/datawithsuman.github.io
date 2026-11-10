@@ -409,4 +409,39 @@
     window.addEventListener("hashchange", openFromHash);
     modules.forEach(function (m) { m.addEventListener("toggle", save); });
   })();
+
+  // Jobs: the /jobs/ list and the home page strip both read jobs/jobs.json, refreshed daily.
+  var jobList = document.getElementById("jobsList"), strip = document.querySelector("[data-jobs-strip]");
+  if (jobList || strip) {
+    var rootPath = document.body.dataset.root || "";
+    fetch(rootPath + "jobs/jobs.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+      if (strip && data.count) {
+        strip.querySelector("[data-jobs-count]").textContent = data.count;
+        strip.hidden = false;
+      }
+      if (!jobList) return;
+      var meta = document.getElementById("jobsMeta"), search = document.getElementById("jobSearch");
+      var today = new Date(data.updated + "T00:00:00");
+      function ago(day) {
+        var n = Math.round((today - new Date(day + "T00:00:00")) / 864e5);
+        return n <= 0 ? "Today" : n === 1 ? "1 day ago" : n + " days ago";
+      }
+      function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+      var updated = today.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+      function draw() {
+        var q = (search.value || "").trim().toLowerCase();
+        var shown = data.jobs.filter(function (j) { return !q || (j.title + " " + j.company + " " + j.location).toLowerCase().indexOf(q) > -1; });
+        jobList.innerHTML = shown.length ? shown.map(function (j) {
+          return '<li class="job"><a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + '</span>' +
+            '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
+        }).join("") : '<li class="jobs-empty">No jobs match that search.</li>';
+        meta.textContent = (q ? shown.length + " of " + data.count + " jobs" : data.count + " jobs") + " · Updated " + updated;
+      }
+      search.addEventListener("input", draw);
+      draw();
+    }).catch(function () {
+      var meta = document.getElementById("jobsMeta");
+      if (meta) meta.textContent = "The job list couldn't load. Try again in a minute.";
+    });
+  }
 })();

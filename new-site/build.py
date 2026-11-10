@@ -114,9 +114,9 @@ def preview_tags(title, desc, path):
 
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
-    if page == "home":
+    if page in ("home", "jobs"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
-               f'<a href="{root}#roadmap">Roadmap</a><a href="{root}about/">About</a></nav>')
+               f'<a href="{root}#roadmap">Roadmap</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
@@ -145,6 +145,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
+{"" if page in ("home", "jobs") else f'<a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -165,7 +166,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}jobs/">Jobs</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -224,6 +225,7 @@ def home():
     <div class="pills">{pills}</div>
   </div>
 </section>
+<section class="page jobs-strip-wrap" data-jobs-strip hidden><a class="panel jobs-strip" href="jobs/"><span class="chip">Jobs</span><span><b data-jobs-count></b> new AI/ML job postings this week</span><span class="jobs-strip-go">See jobs →</span></a></section>
 <section class="page section"><h2>Where are you starting from?</h2><div class="card-grid">{start_html}</div></section>
 <section class="page section" id="tracks"><h2>Four tracks, one colour each</h2>
 <p class="section-lead">The colour follows you into every lesson, so you always know which track you are in.</p>
@@ -780,6 +782,7 @@ def search_index():
              "module": l["module"]["name"], "type": TYPE_LABEL[l["type"]], "url": l["url"], "text": f'{l["lead"]} {l.get("q", "")}'} for l in ORDERED]
     roadmaps_page()
     about_page()
+    jobs_page()
     privacy_page()
     site_files()
     write("assets/search-index.js", "window.SEARCH_INDEX=" + json.dumps(rows, ensure_ascii=False) + ";\n")
@@ -797,6 +800,24 @@ def roadmaps_page():
 </section></main>
 """
     write("roadmaps/index.html", html + foot_html(root))
+
+
+def jobs_page():
+    """AI/ML job postings in India from the last 7 days. jobs/fetch_jobs.py writes jobs.json; site.js draws the list."""
+    root = "../"
+    (DIST / "jobs").mkdir(parents=True, exist_ok=True)
+    if (HERE / "jobs/jobs.json").exists():
+        shutil.copy(HERE / "jobs/jobs.json", DIST / "jobs/jobs.json")
+    desc = "AI and ML roles in India, posted in the last 7 days on companies' own careers pages. Updated daily."
+    html = head_html("AI/ML Job postings this week · AIML Rounds", desc, root, page="jobs", path="jobs/")
+    html += f"""<main id="main"><section class="page jobs-page"><p class="eyebrow">JOBS</p><h1 class="h1-track">AI/ML Job postings this week</h1><p class="lead">{desc}</p>
+<div class="jobs-tools"><label class="sr" for="jobSearch">Search jobs</label><input id="jobSearch" class="jobs-search" type="search" placeholder="Search by title, company or city" autocomplete="off"><p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
+<ul class="panel jobs-list" id="jobsList"></ul>
+<noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
+<p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>
+</section></main>
+"""
+    write("jobs/index.html", html + foot_html(root))
 
 
 def about_page():
@@ -856,7 +877,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "jobs/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")

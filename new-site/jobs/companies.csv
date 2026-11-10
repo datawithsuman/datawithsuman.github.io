@@ -1,0 +1,92 @@
+domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
+1. AI labs and AI-first startups,OpenAI,Automatic,3,ashby,openai
+1. AI labs and AI-first startups,Anthropic,Automatic,4,greenhouse,anthropic
+1. AI labs and AI-first startups,Sarvam AI,Automatic,6,ashby,sarvam
+1. AI labs and AI-first startups,Ola / Krutrim,Careers link only,?,turbohire,olacareers
+1. AI labs and AI-first startups,Ema,Automatic,3,ashby,ema
+1. AI labs and AI-first startups,Composio,Automatic,1,ashby,composio
+1. AI labs and AI-first startups,Bolna,Automatic,1,ashby,bolna
+1. AI labs and AI-first startups,Giga ML,Automatic,0,ashby,gigaml
+1. AI labs and AI-first startups,Smallest AI,Automatic,0,ashby,smallest
+1. AI labs and AI-first startups,Observe AI,Automatic,1,greenhouse,observeai
+1. AI labs and AI-first startups,Glean,Automatic,4,greenhouse,gleanwork
+1. AI labs and AI-first startups,Turing,Automatic,3,greenhouse,turing
+1. AI labs and AI-first startups,Haptik,Careers link only,?,freshteam,haptik
+1. AI labs and AI-first startups,Yellow AI,Careers link only,?,own site,
+1. AI labs and AI-first startups,Uniphore,Careers link only,?,own site,
+1. AI labs and AI-first startups,Gupshup,Careers link only,?,own site,
+1. AI labs and AI-first startups,Qure AI,Careers link only,?,own site,
+1. AI labs and AI-first startups,Wadhwani AI,Careers link only,?,zoho recruit,wadhwaniai
+1. AI labs and AI-first startups,Mad Street Den,Careers link only,?,darwinbox,msd
+2. AI and analytics services,Fractal Analytics,Automatic,1+,workday,fractal/wd1/Careers
+2. AI and analytics services,Tiger Analytics,Automatic,0,workable,tiger-analytics
+2. AI and analytics services,Sigmoid,Automatic,5,greenhouse,sigmoid
+2. AI and analytics services,LatentView,Careers link only,?,darwinbox,latentview
+3. Big tech,Google,Custom work needed,?,custom,
+3. Big tech,Microsoft,Custom work needed,?,custom,
+3. Big tech,Amazon,Custom work needed,?,custom,amazon.jobs
+3. Big tech,Meta,Custom work needed,?,custom,
+3. Big tech,Apple,Custom work needed,?,custom,
+3. Big tech,NVIDIA,Automatic,?,workday,nvidia/wd5/NVIDIAExternalCareerSite
+3. Big tech,Intel,Automatic,5+,workday,intel/wd1/External
+3. Big tech,Cisco,Automatic,4+,workday,cisco/wd5/Cisco_Careers
+3. Big tech,HP,Automatic,2+,workday,hp/wd5/ExternalCareerSite
+3. Big tech,Samsung R&D India,Automatic,1+,workday,sec/wd3/Samsung_Careers
+3. Big tech,Atlassian,Custom work needed,?,custom,
+"4. Data, cloud and security",Databricks,Automatic,11,greenhouse,databricks
+"4. Data, cloud and security",Snowflake,Automatic,1,ashby,snowflake
+"4. Data, cloud and security",MongoDB,Automatic,4,greenhouse,mongodb
+"4. Data, cloud and security",Elastic,Automatic,1,greenhouse,elastic
+"4. Data, cloud and security",Atlan,Automatic,1,ashby,atlan
+"4. Data, cloud and security",Hevo Data,Automatic,1,lever,hevodata
+"4. Data, cloud and security",Rubrik,Automatic,6,greenhouse,rubrik
+"4. Data, cloud and security",Druva,Automatic,0,greenhouse,druva
+"4. Data, cloud and security",Cohesity,Automatic,?,workday,cohesity/wd5/Cohesity_Careers
+"4. Data, cloud and security",Zscaler,Automatic,2,greenhouse,zscaler
+"4. Data, cloud and security",Okta,Automatic,0,greenhouse,okta
+"4. Data, cloud and security",Harness,Automatic,0,greenhouse,harnessinc
+"4. Data, cloud and security",BrowserStack,Automatic,0,workday,browserstack/wd3/External
+"4. Data, cloud and security",Twilio,Automatic,1,greenhouse,twilio
+5. Enterprise software (SaaS),Salesforce,Automatic,1+,workday,salesforce/wd12/External_Career_Site
+5. Enterprise software (SaaS),ServiceNow,Automatic,10,smartrecruiters,servicenow
+5. Enterprise software (SaaS),Adobe,Automatic,3+,workday,adobe/wd5/external_experienced
+5. Enterprise software (SaaS),Freshworks,Automatic,3,smartrecruiters,Freshworks
+5. Enterprise software (SaaS),Sprinklr,Automatic,0,workday,sprinklr/wd1/careers
+5. Enterprise software (SaaS),Mindtickle,Automatic,1,lever,mindtickle
+5. Enterprise software (SaaS),HighRadius,Automatic,0,greenhouse,highradius
+"6. E-commerce, food and retail",Flipkart,Careers link only,?,own site,
+"6. E-commerce, food and retail",Meesho,Automatic,6,lever,meesho
+"6. E-commerce, food and retail",Myntra,Careers link only,?,own site,
+"6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy
+"6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal
+"6. E-commerce, food and retail",Zepto,Careers link only,?,own site,
+"6. E-commerce, food and retail",Walmart Global Tech,Custom work needed,?,custom,
+"6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers
+"7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance
+"7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi
+"7. Consumer apps, media and mobility",Pocket FM,Automatic,0,ashby,pocket
+"7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy
+"7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna
+"7. Consumer apps, media and mobility",Uber,Custom work needed,?,custom,
+"7. Consumer apps, media and mobility",Spinny,Careers link only,?,darwinbox,spinzone
+"7. Consumer apps, media and mobility",CarDekho,Careers link only,?,darwinbox,cardekho
+"7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search
+"7. Consumer apps, media and mobility",Sabre,Automatic,2+,workday,sabre/wd1/SabreJobs
+8. Fintech and payments,PhonePe,Careers link only,?,own site,
+8. Fintech and payments,Paytm,Automatic,2,lever,paytm
+8. Fintech and payments,Razorpay,Automatic,1,greenhouse,razorpaysoftwareprivatelimited
+8. Fintech and payments,CRED,Automatic,0,lever,cred
+8. Fintech and payments,Groww,Automatic,0,greenhouse,groww
+8. Fintech and payments,Slice,Automatic,0,greenhouse,slice
+8. Fintech and payments,Navi,Automatic,0,ashby,navi
+8. Fintech and payments,Zeta,Automatic,1,lever,zeta
+8. Fintech and payments,Jupiter,Careers link only,?,keka,jupiter
+8. Fintech and payments,Stripe,Automatic,1,greenhouse,stripe
+8. Fintech and payments,PayPal,Automatic,?,workday,paypal/wd1/jobs
+8. Fintech and payments,Coinbase,Automatic,2,greenhouse,coinbase
+8. Fintech and payments,Mastercard,Automatic,7+,workday,mastercard/wd1/CorporateCareers
+9. Banking and trading,JPMorgan Chase,Automatic,?,oracle,jpmc/CX_1001
+9. Banking and trading,Goldman Sachs,Custom work needed,?,graphql,higher.gs.com
+9. Banking and trading,American Express,Careers link only,?,eightfold,aexp
+9. Banking and trading,Graviton Research,Automatic,1,greenhouse,gravitonresearchcapital
+9. Banking and trading,Tower Research,Automatic,0,greenhouse,towerresearchcapital

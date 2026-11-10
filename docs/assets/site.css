@@ -446,3 +446,30 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .hero-roadmaps { padding-block: clamp(40px, 7vw, 72px); }
 .hero-roadmaps .lead { margin-bottom: 28px; }
 .foot-inner a { color: inherit; }
+
+/* Jobs */
+.head-link { order: 2; display: inline-flex; align-items: center; min-height: 44px; padding-inline: 12px; border-radius: var(--radius-control); font-weight: 500; text-decoration: none; }
+.head-link:hover { background: var(--line-soft); }
+.links a[aria-current="page"] { text-decoration: underline; text-underline-offset: 4px; }
+.jobs-strip-wrap { margin-top: 8px; }
+.jobs-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 14px 18px; text-decoration: none; }
+.jobs-strip:hover { border-color: var(--line-strong); background: var(--line-soft); }
+.jobs-strip-go { margin-left: auto; font-weight: 600; }
+.jobs-page { display: grid; gap: 18px; padding-block: clamp(32px, 6vw, 56px); }
+.jobs-tools { display: grid; gap: 8px; max-width: 620px; }
+.jobs-search { width: 100%; height: 48px; padding-inline: 14px; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-control); }
+.jobs-list { overflow: hidden; }
+.jobs-list:empty { display: none; }
+.job + .job { border-top: 1px solid var(--line-soft); }
+.job a { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; padding: 14px 18px; text-decoration: none; }
+.job a:hover { background: var(--line-soft); }
+.job-title { font-weight: 600; line-height: 1.35; }
+.job-meta { grid-column: 1; font-size: 14px; color: var(--muted); }
+.job-meta b { font-weight: 500; color: var(--ink); }
+.job-apply { grid-column: 2; grid-row: 1 / span 2; font-weight: 600; white-space: nowrap; }
+.jobs-empty { padding: 18px; color: var(--muted); }
+.jobs-note { max-width: 620px; }
+@media (max-width: 560px) {
+  .job a { grid-template-columns: 1fr; padding: 14px 16px; }
+  .job-apply { grid-column: 1; grid-row: auto; font-size: 14px; }
+}
