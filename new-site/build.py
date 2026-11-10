@@ -201,7 +201,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}mock/">Mock interviews</a><a href="{root}jobs/">Jobs</a><a href="{root}roadmaps/">Free roadmaps</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}mock/">Mock interviews</a><a href="{root}jobs/">Jobs</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -880,17 +880,10 @@ def search_index():
 
 
 def roadmaps_page():
-    """Free study roadmaps. One PDF per topic, kept where the current site keeps them."""
-    root = "../"
-    (DIST / "roadmaps").mkdir(parents=True, exist_ok=True)
-    shutil.copy(ml_import.SRC.parent / "roadmaps/rag-roadmap.pdf", DIST / "roadmaps/rag-roadmap.pdf")
-    desc = "One PDF per topic: the core concepts, the interview questions and a study plan. Free to download."
-    html = head_html("Free study roadmaps · AIML Rounds", desc, root, path="roadmaps/")
-    html += f"""<main id="main"><section class="page hero-roadmaps"><p class="eyebrow">ROADMAPS</p><h1 class="h1-home">Free study roadmaps.</h1><p class="lead">{desc}</p>
-<div class="card-grid"><a class="panel start" href="rag-roadmap.pdf"><span class="eyebrow">PDF</span><h3>The Complete RAG Roadmap</h3><p>30 core concepts, 24 interview questions, common mistakes, a debug-a-wrong-answer cheat sheet and a 6-week study plan.</p></a></div>
-</section></main>
-"""
-    write("roadmaps/index.html", html + foot_html(root))
+    """No roadmaps page any more (removed 10 Nov 2026). Only the RAG PDF stays, at the old address the
+    Instagram comment-to-DM automation links to (/ai/roadmaps/rag-roadmap.pdf), so those DMs keep working."""
+    (DIST / "ai/roadmaps").mkdir(parents=True, exist_ok=True)
+    shutil.copy(ml_import.SRC.parent / "roadmaps/rag-roadmap.pdf", DIST / "ai/roadmaps/rag-roadmap.pdf")
 
 
 def roadmap_page():
@@ -1041,7 +1034,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + [ "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
