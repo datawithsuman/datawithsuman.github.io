@@ -67,12 +67,16 @@
     if (natural > avail) mj.style.fontSize = Math.max(avail / natural, MIN_SCALE) * 100 + "%";
     return true;
   }
+  function hideExtras(eq) {
+    eq.querySelectorAll(".brace-extra").forEach(function (x) { x.style.opacity = 0; });
+  }
   function placeBrace(eq) {
     var brace = eq.querySelector(".brace"), mj = eq.querySelector("mjx-container");
     if (!eq.dataset.fitted && fitEq(eq)) eq.dataset.fitted = "1";
-    if (!brace || !mj || +brace.style.opacity === 0) return;
-    var terms = Array.prototype.filter.call(eq.querySelectorAll(".term.on"), function (t) { return t.getBoundingClientRect().width; });
-    if (!terms.length) return;
+    if (!brace || !mj) return;
+    if (+brace.style.opacity === 0) { hideExtras(eq); return; }
+    var terms = Array.prototype.filter.call(eq.querySelectorAll("svg .term.on"), function (t) { return t.getBoundingClientRect().width; }); // not MathJax's hidden copy
+    if (!terms.length) { hideExtras(eq); return; }
     var rects = function () { return terms.map(function (t) { return t.getBoundingClientRect(); }); };
     var r = rects(), M = mj.getBoundingClientRect();
     var tl = Math.min.apply(null, r.map(function (x) { return x.left; })), tr = Math.max.apply(null, r.map(function (x) { return x.right; }));
@@ -84,11 +88,28 @@
       if (seen.length) r = seen;
       tl = Math.min.apply(null, r.map(function (x) { return x.left; })); tr = Math.max.apply(null, r.map(function (x) { return x.right; }));
     }
+    // One brace per group of neighbouring terms, all just below the whole equation.
     var box = eq.getBoundingClientRect(), lo = Math.max(M.left, box.left + 2) - box.left, hi = Math.min(M.right, box.right - 2) - box.left;
-    var left = Math.max(tl - box.left, lo), right = Math.min(tr - box.left, hi);
-    if (right - left < 6) { brace.style.opacity = 0; return; }
-    var bottom = Math.max.apply(null, r.map(function (x) { return x.bottom; })) - box.top;
-    brace.style.left = left + "px"; brace.style.width = (right - left) + "px"; brace.style.top = (bottom + 6) + "px";
+    var svg = mj.querySelector("svg"), under = Math.max(svg ? svg.getBoundingClientRect().bottom : 0, Math.max.apply(null, r.map(function (x) { return x.bottom; }))) - box.top;
+    var groups = [];
+    r.slice().sort(function (a, b) { return a.left - b.left; }).forEach(function (x) {
+      var g = groups[groups.length - 1], L = x.left - box.left, R = x.right - box.left;
+      if (g && L - g[1] < 20) g[1] = Math.max(g[1], R); else groups.push([L, R]);
+    });
+    groups = groups.map(function (g) { // at least 18px wide, so a single letter still gets a readable brace
+      var c = (g[0] + g[1]) / 2, w = Math.max(g[1] - g[0], 18);
+      return [Math.max(c - w / 2, lo), Math.min(c + w / 2, hi)];
+    }).filter(function (g) { return g[1] - g[0] >= 6; });
+    if (!groups.length) { brace.style.opacity = 0; hideExtras(eq); return; }
+    var left = groups[0][0], right = groups[0][1];
+    brace.style.left = left + "px"; brace.style.width = (right - left) + "px"; brace.style.top = (under + 6) + "px";
+    var extras = eq.querySelectorAll(".brace-extra");
+    groups.slice(1).forEach(function (g, k) {
+      var x = extras[k];
+      if (!x) { x = document.createElement("div"); x.className = "brace brace-extra"; x.setAttribute("aria-hidden", "true"); eq.appendChild(x); }
+      x.style.cssText = "left:" + g[0] + "px;width:" + (g[1] - g[0]) + "px;top:" + (under + 6) + "px;opacity:1";
+    });
+    for (var k = groups.length - 1; k < extras.length; k++) extras[k].style.opacity = 0;
     var label = brace.querySelector("span"), width = eq.clientWidth;
     if (label) {
       label.style.marginLeft = "0px"; label.style.whiteSpace = ""; label.style.width = "";
@@ -104,7 +125,7 @@
     new MutationObserver(function (changes) {
       changes.forEach(function (change) {
         var brace = change.target;
-        if (!brace.classList.contains("brace") || brace.style.cssText === brace.dataset.placed) return;
+        if (!brace.classList.contains("brace") || brace.classList.contains("brace-extra") || brace.style.cssText === brace.dataset.placed) return;
         placeBrace(brace.parentNode);
       });
     }).observe(reader, { subtree: true, attributes: true, attributeFilter: ["style"] });
