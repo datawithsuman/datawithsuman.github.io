@@ -218,9 +218,9 @@ def home():
     first = LESSONS["fundamentals/vectors-and-cosine-similarity"]
     pills = "".join(f'<span class="tag">{p}</span>' for p in ["Intuition", "Play", "Maths", "Say it"])
     starts = [
-        ("Interview in 2 weeks", "Interview sprint", "Go straight to the interview rounds, then fill the gaps they show.", "tracks/ai-engineering/llm-inference-practice/", " dark"),
+        ("Interview in 2 weeks", "Interview sprint", "Go straight to timed mock interviews for your role, then fill the gaps they show.", "mock/", " dark"),
         ("Starting from zero", "Fundamentals path", "Begin with the maths, then regression, and build up to neural nets one idea at a time.", "tracks/fundamentals/", ""),
-        ("I build production systems", "System design path", "Start with how real AI systems are designed, from requirements to rollout.", "tracks/system-design/", ""),
+        ("I build production systems", "System design path", f"{sum(1 for l in ORDERED if l['track']['id'] == 'system-design' and l['type'] == 'design')} real-world AI and ML system designs, from requirements to rollout.", "tracks/system-design/", ""),
     ]
     start_html = "".join(f'<a class="panel start{d}" href="{u}"><span class="eyebrow">{e}</span><h3>{t}</h3><p>{p}</p></a>' for e, t, p, u, d in starts)
     tracks = ""
