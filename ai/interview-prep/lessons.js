@@ -273,6 +273,7 @@ window.LESSONS = {
           {slug: "serving-agents-and-reasoning-models",title: "Serving Agents and Reasoning Models",sub: "Agents make dozens of calls per task, and reasoning models write thousands of hidden tokens. What does that do to serving?",level: "Advanced",mins: 18,group: "lessons"},
           {slug: "sizing-and-cost",title: "Sizing and Cost: Cost per Million Tokens",sub: "What does a million tokens cost to self-host, and when is an API cheaper?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "llm-inference-practice",title: "LLM Inference Practice",sub: "7 questions: KV maths, speculative speedup, a caching incident, fleet sizing.",level: "Intermediate",mins: 35,group: "scenarios"},
+          {slug: "llm-serving-incidents",title: "LLM Serving Incidents",sub: "9 incidents: out of memory, slow first tokens, cache misses, a bad quantization, noisy neighbours, MoE hot spots, reasoning costs.",level: "Advanced",mins: 40,group: "scenarios"},
         ] },
       { id: "prompt-engineering", dir: "system-design/prompt-engineering", title: "Prompt Engineering", desc: "Production prompt patterns, reliable structured output, and when prompting is (and isn't) enough.",
         groups: [
@@ -372,6 +373,8 @@ window.LESSONS = {
           {slug: "cost-and-latency",title: "Cost and Latency: Routing, Caching and Batching",sub: "How do you cut an LLM bill by 80% without losing quality?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "llm-api-reliability",title: "LLM API Reliability: Rate Limits, Retries and Fallbacks",sub: "Your provider starts returning overload errors at peak time, and your retries make it worse. How do you design calls to an LLM API so they fail gracefully?",level: "Intermediate",mins: 20,group: "lessons"},
           {slug: "genai-scenarios-set-1",title: "GenAI App Scenarios: Set 1",sub: "9 incidents: stale citations, broken JSON, a bad fine-tune, a cost spike, injection, routing, a retry storm, a retired model.",level: "Intermediate",mins: 35,group: "scenarios"},
+          {slug: "fine-tuning-incidents",title: "Fine-Tuning Incidents",sub: "9 incidents: wrong chat template, echoing users, forgetting, leaked evals, LoRA that does nothing, flattering DPO, memorised personal data.",level: "Advanced",mins: 40,group: "scenarios"},
+          {slug: "safety-and-guardrail-incidents",title: "Safety and Guardrail Incidents",sub: "9 incidents: leaked prompts, over-refusal, indirect injection, data exfiltration, role-play jailbreaks, slow guardrails, other languages, sensitive logs.",level: "Advanced",mins: 40,group: "scenarios"},
         ] },
       { id: "ml-system-design", dir: "system-design/ml-system-design", title: "AI/ML System Design", desc: "End-to-end AI/ML system designs in interview format. New designs are added over time.",
         groups: [

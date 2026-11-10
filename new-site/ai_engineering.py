@@ -31,6 +31,7 @@ PARTS = [
         "serving-agents-and-reasoning-models": {"prereqs": [_a("prefix-caching"), _a("kv-cache-compression")]},
         "sizing-and-cost": {"prereqs": [_a("scaling-inference")]},
         "llm-inference-practice": {"type": "interview", "prereqs": [_a("sizing-and-cost")]},
+        "llm-serving-incidents": {"type": "interview", "prereqs": [_a("serving-metrics-and-slos"), _a("prefix-caching")]},
     })),
     ("Prompt engineering", "system-design/prompt-engineering", _part("Structuring prompts, getting reliable output and choosing the right tool.", {
         "prompt-engineering-patterns": {"prereqs": [_f("in-context-learning-and-cot")]},
@@ -105,6 +106,8 @@ PARTS = [
         "cost-and-latency": {"prereqs": [_a("llmops"), _a("prefix-caching")]},
         "llm-api-reliability": {"prereqs": [_a("cost-and-latency")]},
         "genai-scenarios-set-1": {"type": "interview", "prereqs": [_a("cost-and-latency")]},
+        "fine-tuning-incidents": {"type": "interview", "prereqs": [_f("supervised-fine-tuning"), _f("lora-and-qlora")]},
+        "safety-and-guardrail-incidents": {"type": "interview", "prereqs": [_a("guardrails-and-prompt-injection"), _a("agent-safety")]},
     })),
 ]
 for _p in PARTS:
