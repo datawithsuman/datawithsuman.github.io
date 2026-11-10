@@ -52,19 +52,72 @@
   // Wide tables and code in moved lessons scroll sideways, so they need keyboard focus.
   document.querySelectorAll(".lx pre, .lx .tw, .lx .scroll, .lx .tablewrap").forEach(function (el) { el.tabIndex = 0; });
 
-  // Keep each equation label inside its box when a term sits near the edge.
+  // Equation marks. Each lesson's reader draws a brace under the terms it is reading.
+  // Here a wide equation is shrunk to fit (or scrolls when it would get too small),
+  // and the brace and its label are kept under the terms and inside the box.
+  var MIN_SCALE = 0.6;
+  function fitEq(eq) {
+    var mj = eq.querySelector("mjx-container"), svg = mj && mj.querySelector("svg");
+    if (!svg) return;
+    var cs = getComputedStyle(eq), avail = eq.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (avail <= 0) return false;
+    svg.style.maxWidth = "none"; // a capped width clips the equation instead of scaling it
+    mj.style.fontSize = "";
+    var natural = svg.getBoundingClientRect().width;
+    if (natural > avail) mj.style.fontSize = Math.max(avail / natural, MIN_SCALE) * 100 + "%";
+    return true;
+  }
+  function placeBrace(eq) {
+    var brace = eq.querySelector(".brace"), mj = eq.querySelector("mjx-container");
+    if (!eq.dataset.fitted && fitEq(eq)) eq.dataset.fitted = "1";
+    if (!brace || !mj || +brace.style.opacity === 0) return;
+    var terms = Array.prototype.filter.call(eq.querySelectorAll(".term.on"), function (t) { return t.getBoundingClientRect().width; });
+    if (!terms.length) return;
+    var rects = function () { return terms.map(function (t) { return t.getBoundingClientRect(); }); };
+    var r = rects(), M = mj.getBoundingClientRect();
+    var tl = Math.min.apply(null, r.map(function (x) { return x.left; })), tr = Math.max.apply(null, r.map(function (x) { return x.right; }));
+    if (mj.scrollWidth > mj.clientWidth + 1 && (tl < M.left || tr > M.right)) { // bring the terms into view
+      // All of them if they fit, else the first one, marking only what is on screen.
+      mj.scrollLeft += tr - tl <= M.width ? (tl + tr) / 2 - (M.left + M.right) / 2 : tl - M.left - 8;
+      r = rects();
+      var seen = r.filter(function (x) { return x.left >= M.left - 1 && x.right <= M.right + 1; });
+      if (seen.length) r = seen;
+      tl = Math.min.apply(null, r.map(function (x) { return x.left; })); tr = Math.max.apply(null, r.map(function (x) { return x.right; }));
+    }
+    var box = eq.getBoundingClientRect(), lo = Math.max(M.left, box.left + 2) - box.left, hi = Math.min(M.right, box.right - 2) - box.left;
+    var left = Math.max(tl - box.left, lo), right = Math.min(tr - box.left, hi);
+    if (right - left < 6) { brace.style.opacity = 0; return; }
+    var bottom = Math.max.apply(null, r.map(function (x) { return x.bottom; })) - box.top;
+    brace.style.left = left + "px"; brace.style.width = (right - left) + "px"; brace.style.top = (bottom + 6) + "px";
+    var label = brace.querySelector("span"), width = eq.clientWidth;
+    if (label) {
+      label.style.marginLeft = "0px"; label.style.whiteSpace = ""; label.style.width = "";
+      var center = (left + right) / 2, half = label.offsetWidth / 2, nudge = 0;
+      if (half * 2 > width - 8) { label.style.whiteSpace = "normal"; label.style.width = (width - 8) + "px"; label.style.textAlign = "center"; half = label.offsetWidth / 2; }
+      if (center - half < 4) nudge = 4 - (center - half);
+      else if (center + half > width - 4) nudge = width - 4 - (center + half);
+      label.style.marginLeft = nudge + "px";
+    }
+    brace.dataset.placed = brace.style.cssText;
+  }
   document.querySelectorAll(".reader").forEach(function (reader) {
     new MutationObserver(function (changes) {
       changes.forEach(function (change) {
         var brace = change.target;
-        if (!brace.classList.contains("brace")) return;
-        var label = brace.querySelector("span"), width = brace.parentNode.clientWidth;
-        var center = parseFloat(brace.style.left) + parseFloat(brace.style.width) / 2, half = label.offsetWidth / 2, nudge = 0;
-        if (center - half < 4) nudge = 4 - (center - half);
-        else if (center + half > width - 4) nudge = width - 4 - (center + half);
-        label.style.marginLeft = nudge + "px";
+        if (!brace.classList.contains("brace") || brace.style.cssText === brace.dataset.placed) return;
+        placeBrace(brace.parentNode);
       });
     }).observe(reader, { subtree: true, attributes: true, attributeFilter: ["style"] });
+    reader.addEventListener("scroll", function (e) {
+      if (e.target.matches && e.target.matches("mjx-container")) placeBrace(e.target.closest(".eq"));
+    }, true);
+  });
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      document.querySelectorAll(".reader .eq").forEach(function (eq) { delete eq.dataset.fitted; placeBrace(eq); });
+    }, 150);
   });
 
   // Equation readers measure their labels only when a step changes, so a hidden one needs a fresh look once shown.
