@@ -65,6 +65,10 @@ def track_lessons(t):
     return [l for l in ORDERED if l["track"] is t]
 
 
+import roadmap  # noqa: E402  (needs the lessons above)
+RM = roadmap.build_data(ORDERED, TYPE_LABEL)
+
+
 BASE = "https://aimlrounds.com/"
 LOGO = '<svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg>'
 SEARCH_ICON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>'
@@ -114,9 +118,9 @@ def preview_tags(title, desc, path):
 
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
-    if page in ("home", "jobs"):
+    if page in ("home", "jobs", "roadmap"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
-               f'<a href="{root}#roadmap">Roadmap</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
+               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
@@ -145,7 +149,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
-{"" if page in ("home", "jobs") else f'<a class="head-link" href="{root}jobs/">Jobs</a>'}
+{"" if page in ("home", "jobs", "roadmap") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -206,6 +210,10 @@ def home():
     path = [("Maths for ML", "fundamentals/vectors-and-cosine-similarity"), ("Regression", "fundamentals/linear-regression"), ("Neural nets", "fundamentals/perceptron-to-mlp"),
             ("Attention", "fundamentals/self-attention"), ("Embeddings and RAG", "fundamentals/embeddings"),
             ("Serving LLMs", "ai-engineering/prefill-vs-decode"), ("Agent design", "system-design/design-refund-agent")]
+    role_cards = "".join(
+        f'<a class="panel role-card" href="roadmap/#{r["id"]}" data-role-card="{r["id"]}"><span class="eyebrow">Roadmap</span><h3>{r["name"]}</h3><p>{r["blurb"]}</p>'
+        f'<span class="role-meter"><i></i></span><span class="note role-note">{sum(len(RM["topics"][t]["lessons"]) for row in r["rows"] for t in row)} lessons</span></a>'
+        for r in RM["roles"])
     road = "".join(f'<li><a class="chip chip-road t-{LESSONS[k]["track"]["id"]}" href="{LESSONS[k]["url"]}">{n}</a></li>' for n, k in path)
     html = head_html("AIML Rounds: learn AI until you can explain it",
                      "Short, visual lessons on machine learning, LLMs and system design. Concept lessons end with you saying the answer out loud. Paper lessons end with what changed.", root, path="")
@@ -233,12 +241,12 @@ def home():
 <section class="page section" id="how"><h2>Every lesson starts and ends the same way.</h2>
 <p class="section-lead">The labels change with the track, and a lesson only shows what it really has. Each tab shows one part, so open only what you need. Paper lessons have their own path: gist, method, results and why it matters.</p>
 <ol class="grid-tiles">{tile_html}</ol></section>
-<section class="page section" id="roadmap"><div class="panel road-card"><h2>Not sure what's next? Follow the path.</h2>
-<ol class="road">{road}</ol>
-<p class="section-lead">Each step lists what you need before it. Nothing is locked, but the order is the one that makes the next idea easy.</p></div></section>
+<section class="page section" id="roadmap"><h2>Pick a role. Follow its roadmap.</h2>
+<p class="section-lead">Each role has its own map of topics, in the order that makes the next one easy. Your progress is saved in this browser.</p>
+<div class="card-grid role-cards">{role_cards}</div></section>
 </main>
 """
-    write("index.html", html + foot_html(root))
+    write("index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js"></script>'))
 
 
 def track_page(t, idx):
@@ -782,6 +790,7 @@ def search_index():
              "module": l["module"]["name"], "type": TYPE_LABEL[l["type"]], "url": l["url"], "text": f'{l["lead"]} {l.get("q", "")}'} for l in ORDERED]
     roadmaps_page()
     about_page()
+    roadmap_page()
     jobs_page()
     privacy_page()
     site_files()
@@ -800,6 +809,26 @@ def roadmaps_page():
 </section></main>
 """
     write("roadmaps/index.html", html + foot_html(root))
+
+
+def roadmap_page():
+    """Role roadmaps: a topic graph per role, a side panel per topic. assets/roadmap.js draws it from roadmap-data.js."""
+    root = "../"
+    desc = "A map of topics for each AI role, in the order that makes the next one easy. Click a topic to see its lessons."
+    html = head_html("Roadmaps by role · AIML Rounds", desc, root, page="roadmap", path="roadmap/")
+    tabs = "".join(f'<button type="button" role="tab" id="tab-{r["id"]}" aria-controls="rmGraph" data-role="{r["id"]}">{r["name"]}</button>' for r in RM["roles"])
+    fallback = "".join(f'<section><h2>{r["name"]}</h2><ol>' + "".join(f'<li>{esc(RM["topics"][t]["name"])}</li>' for row in r["rows"] for t in row) + "</ol></section>" for r in RM["roles"])
+    html += f"""<main id="main"><section class="page-wide rm-page"><p class="eyebrow">ROADMAP</p><h1 class="h1-track">Roadmaps by role</h1><p class="lead">{desc}</p>
+<div class="rm-tabs" role="tablist" aria-label="Role">{tabs}</div>
+<div class="rm-layout">
+<div class="panel rm-graph" id="rmGraph" role="tabpanel"><noscript>{fallback}</noscript></div>
+<aside class="panel rm-summary" id="rmSummary" aria-live="polite"></aside>
+</div>
+</section></main>
+<div class="rm-drawer-back" id="rmBack" hidden></div>
+<aside class="rm-drawer" id="rmDrawer" role="dialog" aria-modal="true" aria-labelledby="rmDrawerTitle" hidden></aside>
+"""
+    write("roadmap/index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js"></script><script src="{root}assets/roadmap.js"></script>'))
 
 
 def jobs_page():
@@ -877,7 +906,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "jobs/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "roadmap/", "jobs/", "roadmaps/", "privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
@@ -901,6 +930,7 @@ def write(rel, text):
 if __name__ == "__main__":
     shutil.rmtree(DIST, ignore_errors=True)
     shutil.copytree(HERE / "assets", DIST / "assets")
+    write("assets/roadmap-data.js", "window.ROADMAP=" + json.dumps(RM, ensure_ascii=False, separators=(",", ":")) + ";\n")
     home()
     for idx, t in enumerate(TRACKS):
         track_page(t, idx)

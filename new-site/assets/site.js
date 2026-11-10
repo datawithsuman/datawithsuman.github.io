@@ -446,4 +446,17 @@
       if (meta) meta.textContent = "The job list couldn't load. Try again in a minute.";
     });
   }
+
+  // Home page role cards: how much of each role's core path is done.
+  if (window.ROADMAP) {
+    document.querySelectorAll("[data-role-card]").forEach(function (card) {
+      var R = window.ROADMAP, role = R.roles.filter(function (r) { return r.id === card.dataset.roleCard; })[0];
+      if (!role) return;
+      var keys = [].concat.apply([], role.rows).filter(function (t) { return role.useful.indexOf(t) < 0; })
+        .reduce(function (a, t) { return a.concat(R.topics[t].lessons); }, []);
+      var n = keys.filter(function (k) { return progress[k] === "done"; }).length;
+      card.querySelector(".role-meter i").style.width = (100 * n / keys.length) + "%";
+      card.querySelector(".role-note").textContent = n ? n + " of " + keys.length + " core lessons done" : keys.length + " core lessons";
+    });
+  }
 })();
