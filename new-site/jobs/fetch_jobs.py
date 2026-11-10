@@ -17,17 +17,33 @@ NOW = dt.datetime.now(dt.timezone.utc)
 UA = {"User-Agent": "aimlrounds-jobs/1.0 (+https://aimlrounds.com/jobs/)", "Accept": "application/json"}
 
 INDIA = re.compile(r"\bindia\b|bengaluru|bangalore|hyderabad|pune|mumbai|gurgaon|gurugram|noida|new delhi|\bdelhi\b|chennai|kolkata|ahmedabad|jaipur|kochi|thiruvananthapuram|trivandrum|coimbatore|indore|chandigarh|vadodara|mysore|mysuru", re.I)
-# A title needs an AI/ML subject and a technical role, or one of the scientist titles on its own.
-SUBJECT = re.compile(r"machine[- ]learning|\bML\b|\bMLE\b|\bAI\b|\bA\.I\.|artificial intelligence|\bLLMs?\b|gen ?AI|generative|deep learning|computer vision|\bCV\b|\bNLP\b|natural language|speech|\bASR\b|\bTTS\b|recommend|recsys|ranking|personali[sz]ation|\bMLOps\b|LLMOps|perception|foundation model|inference|agentic|\bRAG\b", re.I)
-ROLE = re.compile(r"engineer|engineering|scientist|researcher|research|architect|developer|\bSDE\b|\bMLE\b|\bMLOps\b", re.I)
-SCIENTIST = re.compile(r"data scien|applied scien|research scien|machine learning scien|\bML scien", re.I)
-EXCLUDE = re.compile(r"\bintern(ship)?\b|apprentice|trainee|new grad|graduate|fresher|campus|analyst|\bBI\b|business intelligence|sales|pre-?sales|marketing|account (manager|executive)|customer success|success manager|product manager|program manager|project manager|product design|designer|recruit|talent|business development|counsel|legal|solutions? (engineer|architect|consultant)|support engineer|technical writer|\bQA\b|test engineer|annotat|labell?ing|content|tutor|trainer|writer|expert\b.*\b(freelance|contract)|freelance", re.I)
+# A title must name one of the agreed role types. "AI" added to a normal software title does not count.
+ROLE_NOUN = r"(?:engineers?|developers?|architects?|scientists?|researchers?|specialists?|leads?)"
+FAMILIES = {
+    # AI, GenAI and LLM engineers, applied AI engineers, AI architects: the AI words sit right before the role.
+    "AI Engineering": re.compile(r"\b(?:gen ?ai|generative ai|applied ai|agentic ai|conversational ai|ai/ml|ml/ai|ai agents?|ai|llms?)\b(?:[\s/&,-]+[\w.]+){0,3}?[\s/,-]+" + ROLE_NOUN + r"\b", re.I),
+    # ML engineers, MLOps, ML platform and infrastructure ("AI/ML" in a list of skills does not count).
+    "ML Engineering": re.compile(r"machine[- ]learning|deep learning|(?<!AI/)\bML\b|\bMLE\b|\bMLOps\b|\bLLMOps\b|model (?:serving|inference|training|optimi[sz]ation)", re.I),
+    "Data Science": re.compile(r"data scien", re.I),
+    "Research": re.compile(r"research scien|applied scien|research engineer|(?:ai|ml|machine learning) research", re.I),
+    "Specialist ML": re.compile(r"computer vision|\bNLP\b|natural language|speech|\bASR\b|recommend|recsys|personali[sz]ation|perception", re.I),
+}
+NEEDS_ROLE = {"ML Engineering", "Specialist ML"}  # these subjects also need an engineer/scientist-type word in the title
+ROLE = re.compile(r"engineer|scientist|researcher|architect|developer|\bSDE\b|\bMLE\b|\bMLOps\b|\bLLMOps\b", re.I)
+EXCLUDE = re.compile(r"\bintern(ship)?\b|apprentice|trainee|new grad|graduate|fresher|campus|analyst|\bBI\b|business intelligence|sales|pre-?sales|marketing|account (manager|executive)|customer success|success (manager|architect)|product manager|program manager|project manager|product design|designer|recruit|talent|business development|counsel|legal|solutions? (engineer|architect|consultant)|support engineer|customer engineer|technical writer|\bQA\b|test engineer|annotat|labell?ing|content|tutor|trainer|writer|freelance|consultant|automation|procurement|operational excellence", re.I)
+
+
+def family(title):
+    if EXCLUDE.search(title):
+        return None
+    for name, pat in FAMILIES.items():
+        if pat.search(title) and (name not in NEEDS_ROLE or ROLE.search(title)):
+            return name
+    return None
 
 
 def is_ai_ml(title):
-    if EXCLUDE.search(title):
-        return False
-    return bool(SCIENTIST.search(title)) or bool(SUBJECT.search(title) and ROLE.search(title))
+    return family(title) is not None
 
 
 def get(url, data=None, tries=3):
