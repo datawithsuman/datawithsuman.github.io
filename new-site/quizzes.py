@@ -1221,5 +1221,20 @@ QUIZZES = {
     ],
 }
 
+# Rewritten options (10 Nov 2026): plausible wrong answers of similar length, so the right one
+# isn't the longest. Lines are "topic+index|A||B||C||D", with the right answer in its original slot.
+import glob as _glob, os as _os, re as _re
+for _f in sorted(_glob.glob(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "quiz_options_*.txt"))):
+    for _line in open(_f, encoding="utf8"):
+        if not _line.strip():
+            continue
+        _key, _opts = _line.rstrip("\n").split("|", 1)
+        _t, _i = _re.match(r"([a-z]+)(\d+)$", _key).groups()
+        _opts = _opts.split("||")
+        if len(_opts) != 4:
+            raise SystemExit(f"{_f}: {_key} needs 4 options")
+        _q = QUIZZES[_t][int(_i)]
+        QUIZZES[_t][int(_i)] = (_q[0], _opts, _q[2], _q[3], _q[4])
+
 # Topics whose quiz pages exist. Order here is the order they were written in.
 READY = [t for t in QUIZZES if QUIZZES[t]]
