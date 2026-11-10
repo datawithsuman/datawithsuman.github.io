@@ -201,7 +201,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}mock/">Mock interviews</a><a href="{root}jobs/">Jobs</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
