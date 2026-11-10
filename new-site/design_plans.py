@@ -116,6 +116,27 @@ FEED_PICTURE = _flow("Many sources pull thousands of candidates. A light model k
                      "Negative actions are subtracted, so clickbait loses.",
                      "Final step: integrity and diversity rules")
 
+CTR_PICTURE = _flow("Cheap models narrow the ads. Boosted trees turn features into leaf indices. A logistic regression, updated online, predicts the click. Downsampled training is recalibrated.",
+                    [("Narrow", "Cascade"), ("Trees", "Leaf features"), ("Predict", "Online LR"), ("Calibrate", "Fix sampling")],
+                    "The auction needs the probability itself to be right.",
+                    "Fresh data and historical features matter most")
+AIRBNB_PICTURE = _flow("Logs give booked and not-booked listings per search. A network trains on those pairs, weighted by NDCG change, over normalised features. Changes are tested offline, then on bookings.",
+                       [("Logs", "Searches, bookings"), ("Pairs", "Booked vs not"), ("Network", "Normalised features"), ("Test", "NDCG, then bookings")],
+                       "More data and the right loss beat clever architecture.",
+                       "Some ideas fail: few bookings per listing")
+ETA_PICTURE = _flow("The routing engine sums segment times on the best path. A fast model predicts its error from embedded, bucketised and hashed features, trained with a loss that punishes lateness.",
+                    [("Request", "From, to, type"), ("Routing", "Path, traffic"), ("Correct", "Learn the error"), ("ETA", "Asymmetric loss")],
+                    "Linear attention keeps it within milliseconds.",
+                    "One model for every product and city")
+SPAM_PICTURE = _flow("Every sign-up is scored: allow, challenge or block. Clusters of similar new accounts are scored together. Behaviour models catch the rest, and investigators feed in new signals.",
+                     [("Sign-up", "Score each one"), ("Challenge", "Medium risk"), ("Clusters", "Bulk fakes"), ("Behaviour", "Slow fakes")],
+                     "Each layer catches what the last one missed.",
+                     "Real-time counters per user and IP feed every layer")
+NOTIF_PICTURE = _flow("For each reminder, eligible templates are scored, recent ones are penalised, and a softmax picks one. Every choice is logged; a daily job rescores templates.",
+                      [("Eligible", "Rules per user"), ("Score", "Used vs eligible"), ("Penalty", "Recently seen"), ("Pick", "Softmax")],
+                      "Fresh messages work better than the best one repeated.",
+                      "A small random holdout keeps the bandit honest")
+
 DESIGN_PLANS = {
     "system-design/design-store-assistant": _plan(
         "An e-commerce platform wants an assistant for its merchants. It should do things in the store, like finding customers, writing product descriptions and creating discounts. It starts with a handful of tools, and teams keep adding more. Say 100,000 conversations a day. The interviewer asks:",
@@ -508,4 +529,62 @@ DESIGN_PLANS.update({
         tabs=_TABS,
         trap_title="\"Rank by predicted engagement and you're done\"",
         trap_html="<p>It sounds right, since engagement is what you want. But the most clicked posts are often regretted, and one engagement number hides likes, shares and \"see less\". Predict each action, subtract the negative ones in a value model, and watch negative feedback as a guardrail.</p>"),
+})
+
+DESIGN_PLANS.update({
+    "system-design/design-ad-click-prediction": _plan(
+        "A social network shows ads chosen by targeting, not search queries, to hundreds of millions of people. For each candidate ad, the system must predict the chance of a click; that prediction, times the bid, runs the auction. The interviewer asks:",
+        "An ads platform must predict, for every ad it might show, the chance that this user clicks. The prediction sets prices in the auction, so it must be accurate and calibrated. Design it.",
+        "Think of a bookmaker setting odds. Getting the order of favourites right isn't enough: if the odds are off, the house loses money on every bet. Fresh form matters more than old reputation, and odds are rechecked every day.",
+        CTR_PICTURE, "Ranking right isn't enough; the probability must be right too.",
+        ("c3", "<b>Try to break it.</b> Switch between the three models. Turn on daily retraining. Then drag the share of non-clicks down to 2.5%.", "<b>Now say why:</b> why must you recalibrate after downsampling non-clicks?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified targeting, scale, latency and the need for calibration.", "You used a cascade, with the precise model last.", "You split features into contextual and historical.", "Boosted trees transform features for a logistic regression.", "The linear layer trains online from an impression\u2013click joiner.", "You measured normalised entropy and calibration, not only AUC.", "You downsampled non-clicks and recalibrated.", "You guarded online training against broken click streams."],
+        tabs=_TABS,
+        trap_title="\"AUC went up, so the model is better\"",
+        trap_html="<p>It sounds right, since AUC measures ranking. But the auction uses the probability itself: a model that predicts twice the real click rate can have the same AUC and still overcharge advertisers. Track calibration and normalised cross-entropy too.</p>"),
+    "system-design/design-search-ranking": _plan(
+        "A travel marketplace ranks thousands of available homes for each guest search. A boosted-tree ranker once gave one of the biggest booking gains in its history, but improvements have stalled. The team wants to move to deep learning. The interviewer asks:",
+        "A travel marketplace ranks thousands of available homes for each search. A boosted-tree ranker has stopped improving. Design the move to deep learning, and say what to expect.",
+        "Think of moving a successful restaurant to a new, bigger kitchen. The first weeks, food comes out no better and sometimes worse. What finally helps isn't fancier equipment, but the right recipe, far more practice and fixing the slow supply line.",
+        AIRBNB_PICTURE, "The objective, the data and the pipeline matter more than the architecture.",
+        ("c3", "<b>Try to break it.</b> Step through all seven ideas, noting which worked.", "<b>Now say why:</b> why did an embedding per listing overfit here, when item embeddings work for videos?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the goal, candidate set, current model and latency.", "You trained on booked versus not-booked pairs from the same search.", "The loss weights pairs by NDCG change, focusing on the top.", "You normalised features and preferred smooth distributions.", "You shipped a simple network first to prove the pipeline.", "You scaled data and watched learning curves.", "You were careful with sparse item embeddings and proxy signals.", "You fixed the training pipeline so GPUs aren't starved."],
+        tabs=_TABS,
+        trap_title="\"Swap the trees for a neural network and it will win\"",
+        trap_html="<p>It sounds right, since deep learning wins elsewhere. But a network fed the same features and data often just matches the trees. Gains came from a ranking objective, careful normalisation, much more data and a faster pipeline, and several popular ideas failed here.</p>"),
+    "system-design/design-eta-prediction": _plan(
+        "A ride-hailing and delivery company shows an arrival time on every request, worldwide, and fares depend on it. Its routing engine computes ETAs from the map and live traffic but makes systematic errors. A large tree ensemble corrects them, and the team wants more accuracy within a few milliseconds. The interviewer asks:",
+        "A ride-hailing and delivery app shows an arrival time on every request, and prices depend on it. Design an ETA system that is accurate, fast enough for every request, and works across products and cities.",
+        "Think of a sat-nav and a local driver. The sat-nav knows the roads and today's traffic; the local driver knows it always takes five extra minutes to get out of that car park. You keep the sat-nav and let the driver correct it, and they'd rather arrive a bit early than late.",
+        ETA_PICTURE, "Keep routing, and learn its mistakes.",
+        ("c3", "<b>Try to break it.</b> Drag the number of features up to 200 and watch both costs. Then raise the embedding size above the number of features. Then raise \u03c9.", "<b>Now say why:</b> when does linear attention stop saving anything?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the uses, scale and a latency budget of milliseconds.", "You kept the routing engine and predicted its error.", "Categorical features are embedded; numbers are bucketised.", "Locations use multi-resolution grids with several hashes.", "Linear attention keeps cost proportional to the number of features.", "Most parameters sit in embeddings; each prediction touches few.", "An asymmetric loss penalises lateness more than earliness.", "You monitored error by city and product, and rolled out by city."],
+        tabs=_TABS,
+        trap_title="\"A bigger model will be more accurate, so use the biggest you can\"",
+        trap_html="<p>It sounds right, but every request needs an answer in milliseconds. Full attention over features grows with the square of their number. The trick is a model that's large in embedding tables but shallow and cheap per prediction, with linear attention.</p>"),
+    "system-design/design-spam-abuse-detection": _plan(
+        "A professional network with hundreds of millions of members sees bulk fake-account attacks, scraping and spam. Its checks run millions of times a second across the product, and must be invisible to real members. The interviewer asks:",
+        "A professional network with hundreds of millions of members is hit by fake accounts, scraping and spam. Design defences that stop bulk abuse early without blocking real members.",
+        "Think of a busy office building. Visitors are screened at the door; anyone suspicious is asked for ID rather than turned away. Security also notices when twenty visitors arrive together with the same story, and guards walking the floors catch the rest.",
+        SPAM_PICTURE, "No single layer has to be perfect.",
+        ("c3", "<b>Try to break it.</b> Raise the block threshold to 0.99. Lower the challenge threshold to 0.2. Then add cluster detection.", "<b>Now say why:</b> why does a later layer let the first layer be gentler with real people?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the abuse types, scale and latency.", "Every sign-up is scored: allow, challenge or block.", "Cluster models catch bulk fakes before they act.", "Activity models catch slow fakes by behaviour.", "Investigators and reports feed new signals back.", "A fast counter store tracks velocities per user and IP.", "Synchronous checks stay around a millisecond, heavy work nearline.", "Each endpoint has a defined failure strategy."],
+        tabs=_TABS,
+        trap_title="\"Block anything suspicious at sign-up\"",
+        trap_html="<p>It sounds safe, but at sign-up you know little, so a strict block turns away many real people. Challenge the uncertain ones instead, and rely on later layers, like cluster and behaviour models, to catch fakes that get through.</p>"),
+    "system-design/design-notification-optimization": _plan(
+        "A language-learning app sends millions of daily practice reminders, each picked from dozens of message templates, some only for certain users. Leadership wants more people practising, without users tuning reminders out. The interviewer asks:",
+        "A learning app sends millions of daily reminders, choosing from dozens of message templates. Design a system that picks the best message for each user each day, without wearing users out with the same one.",
+        "Think of a friend who nudges you to go to the gym. If they say the same line every day, you stop hearing it. A good friend knows which line works best, saves the 'you're on a streak' line for when it's true, and mixes things up.",
+        NOTIF_PICTURE, "The best message, repeated, stops being the best message.",
+        ("c3", "<b>Try to break it.</b> Set \u03b3 to zero. Put it back and shorten the half-life. Then raise \u03c4.", "<b>Now say why:</b> why compare a template with rounds where it was eligible, rather than its plain average?"),
+        ["c2", "c4"], ["c5", "c6"], [], [],
+        ["You clarified the goal, templates, eligibility and volume.", "The reward is a lesson within two hours of the reminder.", "Scores compare used versus eligible, with importance weights.", "Noisy scores are shrunk with a Bayesian prior.", "A fading recency penalty keeps messages fresh.", "A softmax picks, so there's some exploration.", "Every decision is logged with its probabilities.", "A random holdout monitors the bandit, after offline and online tests."],
+        tabs=_TABS,
+        trap_title="\"Send everyone the template with the best average\"",
+        trap_html="<p>It sounds right, but templates limited to engaged users look great because of who gets them, and repeating any message makes users ignore it. Compare each template with rounds where it was eligible but not sent, and penalise recent repeats.</p>"),
 })

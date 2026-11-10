@@ -460,6 +460,14 @@ QUIZZES = {
            ["It's too low", "Approving every payment also scores 99.9%; you need fraud caught and good payments blocked",
             "Accuracy can't be computed for payments", "Fraud models are always 100% accurate"],
            1, "With rare positives, accuracy hides the trade-off; set thresholds from the cost of each mistake and use verification for the uncertain middle.", "design-fraud-detection")),
+        Q(("Why do many ETA systems keep the routing engine and train ML to predict its error?",
+           ["Routing engines are always wrong", "Routing already captures roads and live traffic; learning its error is easier and simpler to update than replacing routing",
+            "ML can't predict times", "It removes the need for traffic data"],
+           1, "The model learns what routing misses, like pickup delays, and an asymmetric loss can penalise lateness more.", "design-eta-prediction")),
+        Q(("Why challenge medium-risk sign-ups instead of blocking them?",
+           ["Challenges are free", "A challenge costs a real person seconds but stops scripts; later layers like cluster detection catch fakes that pass",
+            "Blocking is illegal", "Medium risk means no risk"],
+           1, "A funnel lets each layer be less strict, because the next layer catches what it misses.", "design-spam-abuse-detection")),
     ],
     # ---------- Batch 2: AI Engineering ----------
     "rag": [
@@ -1002,6 +1010,16 @@ QUIZZES = {
            ["It's faster", "Clicks reward clickbait people regret; weighting likes and shares and subtracting 'see less' ranks by what people value",
             "Click probability can't be predicted", "Value models need no data"],
            1, "Multi-task predictions plus tunable weights let the product balance engagement types without retraining.", "design-feed-ranking")),
+        Q(("You train a click model keeping only 2.5% of non-click examples. What must you do before using its predictions in the auction?",
+           ["Nothing", "Recalibrate: q = p / (p + (1 − p) / w), because the model saw far more clicks than reality", "Multiply every prediction by 40", "Retrain on all data"],
+           1, "Downsampling inflates predicted probabilities; the auction needs real click rates, so convert them back.", "design-ad-click-prediction")),
+        Q(("A marketplace adds an embedding per listing to its ranking network. Training NDCG jumps, test NDCG doesn't. Why?",
+           ["The embedding is too small", "Each listing has few bookings, so its embedding memorises noise and overfits", "Embeddings never work", "The test set is wrong"],
+           1, "Item embeddings need many interactions per item, as with videos or words; scarce bookings make them overfit.", "design-search-ranking")),
+        Q(("Why does a notification bandit penalise templates a user saw recently?",
+           ["To save money", "Fresh messages work better; repeating even the best one makes users tune it out, so the penalty fades over days",
+            "Templates expire", "To reduce logging"],
+           1, "A recency penalty with a half-life, plus softmax exploration, keeps messages varied while still favouring strong templates.", "design-notification-optimization")),
     ],
     # ---------- Batch 4: Data Science ----------
     "ab": [
