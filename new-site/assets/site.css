@@ -458,7 +458,9 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .jobs-page { display: grid; gap: 18px; padding-block: clamp(32px, 6vw, 56px); }
 .jobs-tools { display: grid; gap: 8px; max-width: 620px; }
 .jobs-search { width: 100%; height: 48px; padding-inline: 14px; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-control); }
-.jobs-list { overflow: hidden; }
+.jobs-list { height: min(68vh, 640px); overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.jobs-list:focus-visible { outline-offset: 2px; }
+.jobs-list.is-short { height: auto; }
 .jobs-list:empty { display: none; }
 .job + .job { border-top: 1px solid var(--line-soft); }
 .job a { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; padding: 14px 18px; text-decoration: none; }
@@ -467,7 +469,7 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .job-meta { grid-column: 1; font-size: 14px; color: var(--muted); }
 .job-meta b { font-weight: 500; color: var(--ink); }
 .job-apply { grid-column: 2; grid-row: 1 / span 2; font-weight: 600; white-space: nowrap; }
-.jobs-empty { padding: 18px; color: var(--muted); }
+.jobs-empty { padding: 18px; color: var(--muted); list-style: none; }
 .jobs-note { max-width: 620px; }
 @media (max-width: 560px) {
   .job a { grid-template-columns: 1fr; padding: 14px 16px; }

@@ -812,7 +812,7 @@ def jobs_page():
     html = head_html("AI/ML Job postings this week · AIML Rounds", desc, root, page="jobs", path="jobs/")
     html += f"""<main id="main"><section class="page jobs-page"><p class="eyebrow">JOBS</p><h1 class="h1-track">AI/ML Job postings this week</h1><p class="lead">{desc}</p>
 <div class="jobs-tools"><label class="sr" for="jobSearch">Search jobs</label><input id="jobSearch" class="jobs-search" type="search" placeholder="Search by title, company or city" autocomplete="off"><p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
-<ul class="panel jobs-list" id="jobsList"></ul>
+<ul class="panel jobs-list" id="jobsList" tabindex="0" aria-label="Job postings, scroll for more"></ul>
 <noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
 <p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>
 </section></main>

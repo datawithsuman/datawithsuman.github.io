@@ -22,11 +22,11 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 2. AI and analytics services,Tiger Analytics,Automatic,0,workable,tiger-analytics
 2. AI and analytics services,Sigmoid,Automatic,5,greenhouse,sigmoid
 2. AI and analytics services,LatentView,Careers link only,?,darwinbox,latentview
-3. Big tech,Google,Custom work needed,?,custom,
-3. Big tech,Microsoft,Custom work needed,?,custom,
-3. Big tech,Amazon,Custom work needed,?,custom,amazon.jobs
-3. Big tech,Meta,Custom work needed,?,custom,
-3. Big tech,Apple,Custom work needed,?,custom,
+3. Big tech,Google,Automatic,?,google,google
+3. Big tech,Microsoft,Automatic,?,microsoft,microsoft
+3. Big tech,Amazon,Automatic,?,amazon,amazon
+3. Big tech,Meta,Careers link only,?,blocked (rejects automated requests),
+3. Big tech,Apple,Automatic,?,apple,apple
 3. Big tech,NVIDIA,Automatic,?,workday,nvidia/wd5/NVIDIAExternalCareerSite
 3. Big tech,Intel,Automatic,5+,workday,intel/wd1/External
 3. Big tech,Cisco,Automatic,4+,workday,cisco/wd5/Cisco_Careers
@@ -60,14 +60,14 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 "6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy
 "6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal
 "6. E-commerce, food and retail",Zepto,Careers link only,?,own site,
-"6. E-commerce, food and retail",Walmart Global Tech,Custom work needed,?,custom,
+"6. E-commerce, food and retail",Walmart Global Tech,Automatic,1+,workday,walmart/wd504/WalmartExternal
 "6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers
 "7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance
 "7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi
 "7. Consumer apps, media and mobility",Pocket FM,Automatic,0,ashby,pocket
 "7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy
 "7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna
-"7. Consumer apps, media and mobility",Uber,Custom work needed,?,custom,
+"7. Consumer apps, media and mobility",Uber,Careers link only,?,blocked (Cloudflare bot check),
 "7. Consumer apps, media and mobility",Spinny,Careers link only,?,darwinbox,spinzone
 "7. Consumer apps, media and mobility",CarDekho,Careers link only,?,darwinbox,cardekho
 "7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search

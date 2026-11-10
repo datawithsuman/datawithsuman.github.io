@@ -7,7 +7,7 @@ daily GitHub Action also writes it straight into docs/jobs/.
 
 Run: python3 new-site/jobs/fetch_jobs.py
 """
-import csv, datetime as dt, json, re, sys, time, urllib.request
+import csv, datetime as dt, json, re, sys, time, urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -206,8 +206,121 @@ def oracle(company, board):
     return out
 
 
+# Big tech: their own careers sites. Each has a search, so ask for the AI/ML role words and
+# filter the answers the same way as everyone else. Requests are spaced out to be polite.
+QUERIES = ["machine learning", "data scientist", "applied scientist", "research scientist", "AI engineer",
+           "LLM", "generative AI", "deep learning", "computer vision", "MLOps", "NLP", "speech", "recommendation"]
+
+
+def get_text(url):
+    for i in range(4):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA["User-Agent"]}), timeout=30) as r:
+                return r.read().decode("utf8", "ignore")
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or i == 3:
+                raise
+            time.sleep(15 * (i + 1))
+
+
+def slow_json(url):
+    for i in range(4):
+        try:
+            return get(url, tries=1)
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or i == 3:
+                raise
+            time.sleep(15 * (i + 1))
+
+
+def amazon(company, board):
+    out = []
+    for q in QUERIES:
+        d = slow_json("https://www.amazon.jobs/en/search.json?" + urllib.parse.urlencode(
+            {"base_query": q, "country": "IND", "result_limit": 100, "sort": "recent"}))
+        for j in d.get("jobs", []):
+            posted = dt.datetime.strptime(" ".join(j["posted_date"].split()), "%B %d, %Y").replace(tzinfo=dt.timezone.utc)
+            out.append(job(company, j["title"], j.get("normalized_location") or j.get("location") or "India", posted, "https://www.amazon.jobs" + j["job_path"]))
+        time.sleep(1)
+    return out
+
+
+def microsoft(company, board):
+    out = []
+    for q in QUERIES:
+        for start in (0, 10, 20):
+            d = slow_json("https://apply.careers.microsoft.com/api/pcsx/search?" + urllib.parse.urlencode(
+                {"domain": "microsoft.com", "query": q, "location": "India", "start": start, "sort_by": "timestamp"}))
+            posts = d["data"]["positions"]
+            for j in posts:
+                posted = dt.datetime.fromtimestamp(j["postedTs"], dt.timezone.utc)
+                out.append(job(company, j["name"], " / ".join(j.get("locations") or []), posted, "https://apply.careers.microsoft.com" + j["positionUrl"]))
+            time.sleep(3)
+            if len(posts) < 10 or (posts and (NOW - dt.datetime.fromtimestamp(posts[-1]["postedTs"], dt.timezone.utc)).days > DAYS):
+                break
+    return out
+
+
+def google(company, board):
+    out = []
+    def strings(o):
+        if isinstance(o, str):
+            yield o
+        elif isinstance(o, list):
+            for x in o:
+                yield from strings(x)
+    for q in QUERIES:
+        for page in (1, 2):
+            h = get_text("https://www.google.com/about/careers/applications/jobs/results?" + urllib.parse.urlencode(
+                {"q": q, "location": "India", "sort_by": "date", "page": page}))
+            m = re.search(r"AF_initDataCallback\(\{key: 'ds:1', hash: '\d+', data:(.*?), sideChannel", h, re.S)
+            rows = (json.loads(m.group(1))[0] or []) if m else []
+            for j in rows:
+                ts = [x[0] for x in j if isinstance(x, list) and len(x) == 2 and isinstance(x[0], int) and x[0] > 1.6e9]
+                locs = [x for x in strings(j[3:]) if INDIA.search(x) and len(x) < 80]
+                if ts and locs:
+                    out.append(job(company, j[1], " / ".join(dict.fromkeys(locs)), dt.datetime.fromtimestamp(ts[0], dt.timezone.utc),
+                                   f"https://www.google.com/about/careers/applications/jobs/results/{j[0]}"))
+            time.sleep(2)
+            if len(rows) < 20 or (rows and ts and (NOW - dt.datetime.fromtimestamp(ts[0], dt.timezone.utc)).days > DAYS):
+                break
+    return out
+
+
+def apple(company, board):
+    """Apple's search ignores keywords from scripts, so read every India posting (about 100) and filter here."""
+    out = []
+    for page in range(1, 15):
+        h = get_text(f"https://jobs.apple.com/en-in/search?sort=newest&location=india-INDC&page={page}")
+        m = re.search(r'window.__staticRouterHydrationData = JSON.parse\("(.*?)"\);', h, re.S)
+        if not m:
+            break
+        data = json.loads(json.loads('"' + m.group(1) + '"'))
+        def find(o):
+            if isinstance(o, dict):
+                if "searchResults" in o:
+                    return o["searchResults"]
+                o = list(o.values())
+            if isinstance(o, list):
+                for v in o:
+                    r = find(v)
+                    if r is not None:
+                        return r
+        rows = find(data) or []
+        for j in rows:
+            posted = dt.datetime.strptime(j["postingDate"].replace("Sept", "Sep"), "%d %b %Y").replace(tzinfo=dt.timezone.utc)
+            locs = " / ".join(l.get("name", "") for l in j.get("locations", [])) or "India"
+            out.append(job(company, j["postingTitle"], locs if INDIA.search(locs) else locs + ", India", posted,
+                           f"https://jobs.apple.com/en-in/details/{j['positionId']}/{j.get('transformedPostingTitle', '')}"))
+        time.sleep(2)
+        if len(rows) < 20:
+            break
+    return out
+
+
 SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecruiters": smartrecruiters,
-           "workable": workable, "workday": workday, "oracle": oracle}
+           "workable": workable, "workday": workday, "oracle": oracle,
+           "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple}
 
 
 def fetch(row):

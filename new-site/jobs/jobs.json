@@ -1,14 +1,21 @@
 {
  "updated": "2026-11-10",
  "days": 7,
- "count": 17,
+ "count": 30,
  "jobs": [
   {
-   "title": "Senior Lead Software Engineer - AI/ML Deep Learning & GPU ML Serving",
-   "company": "JPMorgan Chase",
-   "location": "Hyderabad",
+   "title": "Principal Applied Sciences Manager",
+   "company": "Microsoft",
+   "location": "Bengaluru, Hyderabad",
    "posted": "2026-11-09",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210807225"
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557043397"
+  },
+  {
+   "title": "Data Science IC4",
+   "company": "Microsoft",
+   "location": "Bengaluru",
+   "posted": "2026-11-09",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393556980192"
   },
   {
    "title": "Staff Data Scientist",
@@ -39,6 +46,13 @@
    "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Senior-AI-Infrastructure-Engineer---DGX-Cloud_JR2029048-1"
   },
   {
+   "title": "AI/ML Hardware Architect, Cloud, Silicon",
+   "company": "Google",
+   "location": "Bengaluru",
+   "posted": "2026-11-06",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/72068396203549382"
+  },
+  {
    "title": "AI Operations Engineer",
    "company": "Cisco",
    "location": "Bengaluru",
@@ -46,11 +60,53 @@
    "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Bangalore-India/AI-Operations-Engineer_2030493-1"
   },
   {
+   "title": "Research Scientist II, Grocery ECO",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-06",
+   "url": "https://www.amazon.jobs/en/jobs/10598475/research-scientist-ii-grocery-eco"
+  },
+  {
+   "title": "Data Engineer II, Alexa AI - ML Engineering",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-06",
+   "url": "https://www.amazon.jobs/en/jobs/10598396/data-engineer-ii-alexa-ai-ml-engineering"
+  },
+  {
+   "title": "PRINCIPAL, DATA SCIENTIST",
+   "company": "Walmart Global Tech",
+   "location": "Bengaluru",
+   "posted": "2026-11-05",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/PRINCIPAL--DATA-SCIENTIST_R-2664363"
+  },
+  {
    "title": "AI Platform and Agentic Engineer",
    "company": "Intel",
    "location": "Bengaluru",
    "posted": "2026-11-05",
    "url": "https://intel.wd1.myworkdayjobs.com/External/job/India-Bangalore/AI-Platform-and-Agentic-Engineer_JR0287292"
+  },
+  {
+   "title": "Senior Machine Learning Engineer - Apple Store Online",
+   "company": "Apple",
+   "location": "Bengaluru",
+   "posted": "2026-11-05",
+   "url": "https://jobs.apple.com/en-in/details/200692905/senior-machine-learning-engineer-apple-store-online"
+  },
+  {
+   "title": "Software Dev Engineer II, Alexa AI - Personalization and Delivery Experiences",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-05",
+   "url": "https://www.amazon.jobs/en/jobs/10598131/software-dev-engineer-ii-alexa-ai-personalization-and-delivery-experiences"
+  },
+  {
+   "title": "Data Scientist, Traffic Quality",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-05",
+   "url": "https://www.amazon.jobs/en/jobs/10595957/data-scientist-traffic-quality"
   },
   {
    "title": "Sr Data Scientist-Pricing & Clearance",
@@ -88,6 +144,13 @@
    "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Mumbai/Gen-AI-Engineer_SR-45659-1"
   },
   {
+   "title": "Infra & AI Architect",
+   "company": "Microsoft",
+   "location": "Bengaluru, Mumbai, Noida",
+   "posted": "2026-11-03",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393556950684"
+  },
+  {
    "title": "Data Scientist Lead - Agentic Solutions",
    "company": "JPMorgan Chase",
    "location": "Bengaluru",
@@ -116,11 +179,39 @@
    "url": "https://job-boards.greenhouse.io/anthropic/jobs/5461252008"
   },
   {
+   "title": "Applied Scientist, EU INTech PGX",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-03",
+   "url": "https://www.amazon.jobs/en/jobs/10595199/applied-scientist-eu-intech-pgx"
+  },
+  {
+   "title": "Applied Scientist I, International Seller Services",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-03",
+   "url": "https://www.amazon.jobs/en/jobs/10595857/applied-scientist-i-international-seller-services"
+  },
+  {
    "title": "Principal Machine Learning Engineer",
    "company": "Zscaler",
    "location": "Bengaluru",
    "posted": "2026-11-02",
    "url": "https://job-boards.greenhouse.io/zscaler/jobs/5267225007"
+  },
+  {
+   "title": "Applied Scientist II - Machine Learning",
+   "company": "Microsoft",
+   "location": "Hyderabad",
+   "posted": "2026-11-02",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557045191"
+  },
+  {
+   "title": "Generative AI Forward Deployed Engineer, Google Cloud",
+   "company": "Google",
+   "location": "Bengaluru, Pune, Mumbai",
+   "posted": "2026-11-02",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/127457591532888774"
   }
  ]
 }

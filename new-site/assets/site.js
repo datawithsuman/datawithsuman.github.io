@@ -435,6 +435,8 @@
           return '<li class="job"><a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + '</span>' +
             '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
         }).join("") : '<li class="jobs-empty">No jobs match that search.</li>';
+        jobList.classList.toggle("is-short", shown.length < 6);
+        jobList.scrollTop = 0;
         meta.textContent = (q ? shown.length + " of " + data.count + " jobs" : data.count + " jobs") + " · Updated " + updated;
       }
       search.addEventListener("input", draw);
