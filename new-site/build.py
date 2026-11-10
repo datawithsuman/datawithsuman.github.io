@@ -150,8 +150,8 @@ def preview_tags(title, desc, path):
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
     if page in ("home", "jobs", "roadmap", "quiz", "mock"):
-        nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a><a href="{root}#how">How lessons work</a>'
-               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a><a href="{root}about/">About</a></nav>')
+        nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a>'
+               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
