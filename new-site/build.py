@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Builds the static site into dist/. Run: python3 build.py"""
 import json
+import random
 import re
 import shutil
 from html import escape as esc
@@ -297,6 +298,12 @@ def quiz_page(tid):
         key = next(k for k in t["lessons"] if k.endswith("/" + slug))
         les = LESSONS[key]
         letters = "ABCD"
+        # Shuffle options with a seed from the question, so the right answer isn't always in the same slot
+        # and the order stays the same between builds.
+        order = list(range(len(opts)))
+        random.Random(hashlib.md5(q.encode()).hexdigest()).shuffle(order)
+        ans = order.index(ans)
+        opts = [opts[k] for k in order]
         options = "".join(f'<li><b>{letters[j]}.</b> {esc(o)}</li>' for j, o in enumerate(opts))
         items += (f'<li class="panel quiz-q" id="q{i}"><p class="quiz-num">Question {i} of {len(qs)}</p><h2>{esc(q)}</h2><ol class="quiz-opts">{options}</ol>'
                   f'<details class="quiz-ans"><summary>View answer</summary><p class="quiz-right">✓ {letters[ans]}. {esc(opts[ans])}</p><p>{esc(why)}</p>'
