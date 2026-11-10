@@ -531,7 +531,7 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 /* Topic side panel */
 .rm-drawer-back { position: fixed; inset: 0; background: rgba(17, 20, 27, .35); z-index: 20; }
 .rm-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 21; width: min(620px, 100%); overflow-y: auto; overscroll-behavior: contain;
-  display: grid; align-content: start; gap: 14px; padding: 24px clamp(16px, 3vw, 28px) 40px; background: var(--surface); border-left: 1px solid var(--line); box-shadow: -12px 0 32px rgba(17, 20, 27, .12); }
+  display: grid; align-content: start; grid-auto-rows: max-content; gap: 14px; padding: 24px clamp(16px, 3vw, 28px) 40px; background: var(--surface); border-left: 1px solid var(--line); box-shadow: -12px 0 32px rgba(17, 20, 27, .12); }
 body.rm-open { overflow: hidden; }
 .rm-drawer-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
 .rm-drawer h2 { font-size: 26px; margin-block: 2px 4px; }
