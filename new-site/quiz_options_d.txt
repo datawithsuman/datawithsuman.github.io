@@ -1,0 +1,94 @@
+calc0|f′(x) + g′(x)||f′(g(x)) · g′(x)||f′(x) · g′(x)||f(g′(x)) · g(x)
+calc1|It's more accurate than forward mode for every model||One backward pass gives the gradient for all parameters||Forward mode can't handle matrix operations at all||It needs no memory for intermediate results
+calc2|It doesn't: curvature only affects the final accuracy||In sharply curved directions, big steps overshoot and diverge||High curvature slows the GPU down during training||High curvature means a flat loss, so steps do nothing
+calc3|Random noise that helps escape local minima||A running average of gradients that damps zig-zags||A second, separate learning rate per layer||Exact second derivatives of the loss
+calc4|It uses the full Hessian to choose step directions||It adapts each parameter's step using running averages||It skips the backward pass for most parameters||It uses one fixed step size for every parameter
+calc5|It converges too slowly once it nears the minimum||Its Hessian has n² entries, too big to store and invert||It only works when the loss function is convex||It can't use gradients, only the loss values themselves
+calc6|It has many local minima to choose between||Any local minimum is global, so the start doesn't matter||It can't be minimised with gradient descent||It's always a straight line in every direction
+calc7|The answer is random, so PCA picks one at random||The direction is a covariance eigenvector; λ is its eigenvalue||PCA needs labels to choose between directions||The constraint can be ignored without changing the answer
+calc8|Skip it and use the value at zero instead||Estimate it by sampling: average over random draws||Use only the single most likely value (the mode)||Set it to zero, since most such integrals cancel out
+feat0|None: target encoding is always safe to use||Leakage from each row's own label; compute it out-of-fold||Too many columns, one for each of the 400 pincodes||It only works for tree models, not linear ones
+feat1|Drop every row that has a missing value||Impute it and add a 'was missing' indicator||Fill it with zero and add nothing else||Remove the feature from the model entirely
+feat2|k-nearest neighbours||Decision trees and tree ensembles||Logistic regression with L2 regularisation||Neural networks
+feat3|Use all of the customer's orders, past and future||Use only data available before the prediction time||Use the test set's averages so it matches evaluation||It can't leak, because it's only an average
+feat4|Once on the whole dataset, before cross-validation||Inside each training fold, as part of the pipeline||Only on the test set, after training||After choosing the final model
+train0|To make every initial weight positive and equal||To keep activation variance steady through ReLU layers||To speed up the GPU's matrix multiplications||To avoid needing dropout later on in training
+train1|They add parameters, so the network can fit more||They give gradients a direct identity path backwards||They remove non-linearities from deep layers||They lower the learning rate for early layers
+train2|BatchNorm is newer and less tested than LayerNorm||Batch statistics are unreliable for sequences, small batches||LayerNorm has no learnable parameters to train||BatchNorm can't run efficiently on modern GPUs at all
+train3|To save electricity at the very start of the run||Early Adam statistics are unreliable, so big steps blow up||To make the loss rise first, so it falls faster later||Warm-up isn't actually used in LLM training runs
+train4|Keep it the same, since batch size doesn't affect it||Raise it roughly in proportion (linear scaling), with warm-up||Divide it by 8, so each update stays the same size||Set it to zero for the first thousand steps only
+train5|It makes the network bigger at test time||Dropping units stops co-adaptation, like an ensemble||It speeds up inference by skipping some units||It removes the need for so much training data
+train6|They are exactly the same thing with different names||In Adam, L2 goes through adaptive scaling; AdamW decays directly||AdamW doesn't apply any weight decay||L2 regularisation only works with SGD
+train7|It shuffles the labels between classes||It trains on blends of two examples and their labels||It mixes the training and test sets together||It averages the weights of several models
+train8|It removes the labels from noisy examples||Targets become slightly soft, like 0.9 instead of 1||It adds extra classes for uncertain examples||It averages predictions across several epochs
+train9|You need much more data before it can fit||There's likely a bug: labels, loss, frozen weights or LR||The model is too big to fit so few examples||Training is working as expected for small batches
+cnn0|It's always more accurate on every kind of data, not just images||It shares local weights across positions, so far fewer parameters||It ignores neighbouring pixels to avoid picking up noise||It only works on grayscale images with one channel
+cnn1|32×32||16×16||15×15||30×30
+cnn2|Overfitting the training data with too many layers||Harder optimisation: signals faded through many layers||Too little training data for such deep models||GPUs ran out of memory for deeper models
+cnn3|Skip connections around each block of layers||Stacking small 3×3 convolutions for a big receptive field||Attention layers between the convolution blocks||Depthwise separable convolutions to save compute
+cnn4|Train a CNN from scratch on the few images||Start pretrained, freeze most layers, fine-tune the head||Use a random forest on the raw pixels||Collect no more data and use data augmentation only
+cnn5|It reads the image pixel by pixel with an RNN||It splits it into patches and runs a Transformer on them||It converts the image into a text caption first||It uses only convolutions, with no attention layers
+cnn6|Accuracy of the predicted class for each box||mAP, counting boxes right above an IoU threshold||RMSE between predicted and true box sizes||The number of boxes it finds in each image
+cnn7|AlexNet, the first deep ImageNet winner||U-Net, with skip connections for fine detail||A plain multi-layer perceptron on pixels||Word2Vec, trained on image captions
+cnn8|It can't: classifiers simply ignore tiny changes||Tiny shifts towards higher loss add up across pixels||It changes the image size that the model sees||It removes colour information from the image
+seq0|It has no memory of earlier steps at all||Gradients shrink as they pass back through each step||It reads every sentence backwards by default||Its vocabulary is too small for long passages
+seq1|It has many more parameters than a plain RNN||Gates add to a cell state, so memory fades less||It never forgets anything it has ever seen||It uses attention over all the earlier steps
+seq2|Slow tokenisation of long input sentences||A single fixed vector for the whole source sentence||Translating between too many languages at once||Sentences that were too short to translate well
+mlops0|The model is too big for the serving hardware||Features computed differently in training and production||Users changed their behaviour overnight||The serving GPUs are slower than training ones
+mlops1|When each request needs fresh, live context||When predictions can be computed ahead of time||Never: batch predictions are always stale||Only for image models
+mlops2|Running the new model on no live traffic at all||Sending a small share of traffic to the new model first||Deleting the old model once the new one is trained||Testing the new model offline only
+mlops3|Training models faster by using more GPUs||Tracking model versions with data and code||Labelling new training data automatically||Picking the best hyperparameters for you
+mlops4|Nothing useful until the labels arrive||Drift in input features and predictions||Only the loss on the original training set||The size of the model file on disk
+mlops5|You can't, until the labels arrive||Use its calibrated confidence scores to estimate it||Assume accuracy is unchanged since training||Ask a sample of users whether it's right
+mlops6|Nothing; automatic retrains are always improvements||A gate comparing it with the current model first||Retraining more often so bad models don't last long||Using a bigger model architecture for every retrain
+mlops7|The model is too small to learn more items||It only learns from what it showed: a feedback loop||Users dislike variety in recommendations||Clicks are random, so it can't learn
+ab0|To save money on running the experiment||So the change is the only systematic difference||To make each group smaller and faster||Randomisation isn't needed if groups are large
+ab1|The main metric you're trying to improve||A metric that mustn't get worse, like latency||The number of users enrolled in the test||A metric you only look at after launch
+ab2|It halves||It doubles||It roughly quadruples||It stays the same
+ab3|Nothing: significance means you should ship it now||Whether the effect is big enough to matter, plus guardrails||Only that the p-value is also below 0.01||Whether the test happened to start on a Monday
+ab4|Nothing: CTR per page view is the standard metric||Views from one user correlate, so variance is understated||CTR can't be computed when users differ||The groups become unbalanced in size
+ab5|By peeking early and stopping sooner||By using pre-experiment behaviour to cut variance||By dropping the least active users||By lowering the significance level to 10%
+ab6|Drop the test and pick a different main metric||Cap extreme values or transform, then bootstrap||Only count users who spend small amounts||Use only the treatment group's median revenue
+ab7|It can't be made valid in any way||Use a sequential test built for repeated looks||Check only once a day, at the same time||Use a lower p-value threshold just once
+ab8|Yes, definitely: p < 0.05 means a real effect||Not necessarily: about one false positive is expected||Only if the significant metric is revenue||Yes, as long as the p-value is 0.049
+ab9|No: a 1% difference is well within normal noise||Yes: a sample ratio mismatch, likely a bug||Only if revenue also differs between the groups||Only for small tests with under 10,000 users
+ab10|It always lasts once users have seen it||Novelty: interest at first can fade over time||Week one data is always wrong||Engagement can't really change that fast
+ab11|The test was too short to see the real effect||Interference: treated riders took control riders' drivers||Riders gave false answers during the test||The launch had a bug that the test didn't have
+ab12|Never: bandits are always better||When you need a clean, unbiased effect estimate||When you want the most clicks during the test||When there are many variants to compare
+ab13|No: a flat test means it helps nobody at all||Yes: uplift modelling finds who it changes||Only if you rerun exactly the same test again||Only for brand-new users who never bought before
+sdexp0|How good the demo conversations looked to the team||A real outcome like learning, with guardrails||The average length of the tutor's responses||The number of tokens used for each answer
+sdexp1|Ship them anyway, since AI models will improve||Find out why using segments and examples, then retest||Abandon AI-written subject lines for good||Run the same test again until the AI version wins
+sdexp2|Randomise individual users as usual||Randomise clusters of connected users together||Ask users whether they noticed a change||Use only offline data from before the change
+sdexp3|It's a legal requirement for experiments||So results can't be reinterpreted after the fact||To make the test finish sooner||It doesn't matter when it's written
+sdexp4|Manual spreadsheets for tracking each test's results||Hash assignment, SRM checks, shared metrics, overlaps||Running only one test at a time across the company||A single dashboard showing total revenue every day
+clf0|The first line the algorithm finds||The one with the widest margin to each class||The one that passes through the origin||A random line among the ones that work
+clf1|Train faster on data that's already linearly separable||Draw non-linear boundaries without building the space||Remove the margin so more points can fit inside it||Handle missing values in the features automatically
+clf2|With small datasets of only a few hundred rows||With many or unscaled features; slow to predict||When the classes are evenly balanced in the data||Never: it works equally well on any kind of data
+clf3|The assumption isn't actually wrong for text||Classifying only needs the right class to score highest||It uses deep learning under the hood||It ignores the data and uses priors only
+clf4|There's no real difference between them||LDA: one shared covariance; QDA: one per class||QDA is unsupervised; LDA is supervised||LDA is built from decision trees
+unsup0|The number of clusters that it ends up using||The squared distance from points to their centres||The distance between the cluster centres||The classification error against true labels
+unsup1|Always use 3 clusters, the usual default||Elbow, silhouette, and whether clusters make sense||Use the number of features in the data||It doesn't matter: k-means picks k by itself
+unsup2|Much faster training on large data||A tree of nested groups you can cut at any level||Probabilities of belonging to each cluster||Labels for each cluster automatically
+unsup3|k-means||DBSCAN||PCA||Linear regression
+unsup4|Fewer clusters than k-means for the same data||Soft memberships and clusters with their own shapes||Much faster results on large datasets||Labels for brand-new classes
+unsup5|PCA only works on integer-valued features||Otherwise large-unit features dominate variance||Scaling removes all the outliers in the data||It isn't needed: PCA handles any feature scale
+unsup6|Which points are close neighbours||The sizes of clusters and the gaps between them||That there are some groups in the data||The colours you used for each label
+unsup7|It can't: anomaly detection needs labels||Odd points are isolated in fewer random splits||It clusters transactions by colour||It borrows labels from similar companies
+ts0|Nothing: complex models always beat simple ones||A baseline like 'same as last week', on time splits||A random forecast, to measure how noisy the data is||The model's own error on its training data
+ts1|It never changes; by deleting the trend data||Its mean and variance stay stable; differencing||It has no noise; by smoothing the series||It's always seasonal; by averaging each season
+info0|The mean of the distribution||The average surprise, or bits needed per outcome||The largest probability in the distribution||The variance of the distribution
+info1|It's always zero for a well-trained model||Minimising it maximises the true labels' likelihood||It ignores the wrong classes completely||It's faster to compute than plain accuracy
+info2|It's symmetric: KL(P‖Q) equals KL(Q‖P)||It's zero only when they match, and isn't symmetric||It can be negative when Q is wider than P||It's a true distance metric in the usual sense
+info3|It got 20% of the next tokens exactly right||It's as unsure as picking among 20 equal tokens||It used 20 layers to make each prediction||It saw 20 tokens of context for each guess
+info4|Nothing: they are unrelated ideas||Entropy is the lower limit on bits per symbol||Compression increases the entropy of data||Only images can be compressed using entropy
+info5|Never: correlation catches every relationship||For non-linear links, like y = x² around zero||Only for linear relationships||When both variables are constant
+info6|KL divergence||Wasserstein distance||Jensen–Shannon divergence||Cosine similarity
+info7|1.6 bits||0.4 bits||0.6 bits||It can't be computed
+genm0|A random ID number for each item||A vector where similar items end up close together||The number of letters in each item's name||A single category label for each item
+genm1|It has more layers than a plain autoencoder||A smooth latent space tied to a prior, for sampling||It uses class labels to guide the decoder||It skips the decoder when generating new data
+genm2|They have no loss function to optimise||Two competing networks can oscillate or collapse||They need labelled data for every image||They can't be trained on GPUs
+genm3|It copies and blends training images||From pure noise, it removes a little noise each step||It draws the image pixel by pixel, left to right||It uses a GAN discriminator to pick images
+genm4|From manual labels for every image||Matching image–caption pairs scored above mismatches||By predicting the pixels of each image||By translating captions into other languages
+genm5|Examples with wrong labels in the dataset||Other examples in the batch that don't match||Images with negative pixel values||Training runs that failed to converge
+genm6|GANs||Diffusion models||Plain autoencoders||Linear regression
+genm7|About 0.5||About 0.33||About 0.25||Exactly 1.0
