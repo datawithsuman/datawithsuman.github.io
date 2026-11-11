@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DeepSeek-R1, Explained · @datawithsuman</title>
+<meta name="description" content="DeepSeek-R1, explained: why reasoning was learned with RL instead of copied, GRPO read symbol by symbol, rule-based rewards, R1-Zero's emergent reasoning, the four-stage R1 pipeline, cost, results, distillation, failures and critiques, with labs and an interview section.">
+<meta property="og:title" content="DeepSeek-R1, Explained">
+<meta property="og:description" content="DeepSeek-R1, explained: why reasoning was learned with RL instead of copied, GRPO read symbol by symbol, rule-based rewards, R1-Zero's emergent reasoning, the four-stage R1 pipeline, cost, results, distillation, failures and critiques, with labs and an interview section.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- page: Harness Engineering ---- */
+.tablewrap{overflow-x:auto;margin:12px 0}
+table.data td,table.data th{text-align:center;font-variant-numeric:tabular-nums}
+table.data td.y{color:var(--ok);font-weight:600} table.data td.n{color:var(--bad);font-weight:600}
+table.data tr.flag td{background:rgba(167,139,250,.08)}
+.stage svg text.cap{fill:var(--dim);font-size:13px}
+.stage svg text.lbl{fill:var(--faint);font-size:12px}
+.stage svg text.sm{fill:var(--dim);font-size:12px}
+.stage svg text.big{fill:var(--ink);font-size:15px;font-weight:600}
+.stage svg text.yr{fill:var(--dim);font:500 13px var(--mono)}
+.stage svg text.nm{fill:var(--ink);font-size:14px;font-weight:600}
+.stage svg text.stTxt,.stage svg tspan.stTxt{fill:var(--st);font-weight:600}
+.stage svg text.okTxt,.stage svg tspan.okTxt{fill:var(--ok);font-weight:600}
+.stage svg text.badTxt,.stage svg tspan.badTxt{fill:var(--bad);font-weight:600}
+.stage svg text.aTxt{fill:var(--a)}
+.stage svg .edge{stroke:#56607a;stroke-width:1.6;fill:none}
+.stage svg .axis{stroke:var(--line);stroke-width:2;fill:none}
+.stage svg .nodeB{fill:#2a2214;stroke:var(--b);stroke-width:1.6}
+.stage svg .nodeA{fill:#0f2e2c;stroke:var(--a);stroke-width:1.6}
+.stage svg .nodeInfo,.stage svg .noteInfo{fill:#132440;stroke:var(--info);stroke-width:1.4}
+.stage svg .leafY{fill:#123322;stroke:var(--ok);stroke-width:1.4}
+.stage svg .leafN{fill:#3a1a1d;stroke:var(--bad);stroke-width:1.4}
+.stage svg .noteSt{fill:#221a3c;stroke:var(--st);stroke-width:1.4}
+.stage svg .noteBad{fill:#2c171b;stroke:var(--bad);stroke-width:1.4}
+.stage svg .feat{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .featOn{fill:rgba(167,139,250,.18);stroke:var(--st);stroke-width:2}
+.stage svg .dotA{fill:var(--a)} .stage svg .dotB{fill:var(--b)} .stage svg .dotSt{fill:var(--st)} .stage svg .dotBad{fill:var(--bad)}
+.stage svg .chipY{fill:#123322;stroke:var(--ok)} .stage svg .chipN{fill:#3a1a1d;stroke:var(--bad)}
+.stage svg .chipOut{fill:none;stroke:var(--bad);stroke-dasharray:4 3;stroke-width:2}
+.stage svg .ring{fill:none;stroke:var(--st);stroke-width:2.4}
+.stage svg .tbox{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .tboxOn{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cell{fill:var(--bg2);stroke:var(--line)} .stage svg .cellSt{fill:#221a3c;stroke:var(--st)}
+.tablewrap{overflow-x:auto;margin:12px 0}
+.stage svg .harnessBox{fill:rgba(45,212,191,.05);stroke:var(--a);stroke-width:1.8;stroke-dasharray:6 4}
+.stage svg .hub{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cut{stroke:var(--st);stroke-width:2.4;stroke-dasharray:5 4}
+.stage svg text.chipT{fill:var(--a);font:600 13px var(--mono);text-anchor:middle}
+.stage svg text.mono,.stage svg tspan.mono{font-family:var(--mono)}
+.card.task{border-color:rgba(245,165,36,.5)} .taskq{font-size:20px;font-weight:600;margin:6px 0 8px;color:var(--b)}
+pre.code{overflow-x:auto;background:#0a0f19;border:1px solid var(--line);border-radius:12px;padding:14px 0;font:13px/1.65 var(--mono);color:#cfd6e4;margin:18px 0 10px}
+pre.code .cl{display:block;padding:0 16px;white-space:pre;transition:background .3s}
+pre.code .cm{color:var(--faint)}
+[data-scene].js pre.code .cl.glow{filter:none;background:rgba(45,212,191,.13);box-shadow:inset 3px 0 var(--a);color:var(--ink)}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px} .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid4 .card,.grid2 .card{margin:0} .card.mini p{margin:0;font-size:15px;color:var(--dim)}
+.vsrow{display:grid;grid-template-columns:1fr 1fr;gap:12px} .vsrow>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--dim)}
+.vsrow b{display:block;font-size:18px;color:var(--ink);margin-top:4px}
+.sel{font:500 14px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1;min-width:0}
+.verdictTag{font:600 12px var(--mono);border-radius:6px;padding:2px 8px;border:1px solid;white-space:nowrap}
+.vt-ok{color:var(--ok);border-color:rgba(74,222,128,.5)} .vt-st{color:var(--st);border-color:rgba(167,139,250,.5)} .vt-bad{color:var(--bad);border-color:rgba(248,113,113,.5)} .vt-dim{color:var(--dim);border-color:var(--line)} .vt-b{color:var(--b);border-color:rgba(245,165,36,.5)}
+.layers{display:grid;gap:8px;margin:4px 0}
+.layer{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.layer .ln{font-weight:600} .layer.skip{opacity:.4}
+.layer.hit{border-color:var(--a);background:rgba(45,212,191,.06)}
+.evid .bar{grid-template-columns:minmax(130px,34%) 1fr 60px}
+.bars.signed .track{position:relative;background:var(--bg2)} .bars.signed .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.bars.signed .fill{position:absolute;top:0;height:100%}
+ul.cav li,.srcs li{margin-bottom:8px} ol.recs li{margin-bottom:6px;font-size:15px}
+dl.terms{display:grid;grid-template-columns:minmax(140px,30%) 1fr;gap:8px 16px;margin:0}
+dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
+.verdict{border:1px solid rgba(45,212,191,.45);border-radius:var(--r);background:var(--card);padding:18px 20px}
+@media(max-width:560px){.grid4,.grid2,.vsrow{grid-template-columns:1fr} dl.terms{grid-template-columns:1fr} .layer{grid-template-columns:1fr;gap:2px}}
+.sbars{display:grid;gap:9px;margin:10px 0}
+.sbars .track{position:relative;height:14px;background:var(--bg2);border-radius:7px} .sbars .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.sbars .fill{position:absolute;top:0;height:100%;border-radius:7px}
+span.mono{font-family:var(--mono)}
+pre.code,code{font-variant-ligatures:none}
+.lab label:has(select){flex-wrap:wrap} .lab label .sel{flex:1 1 220px}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+.lab .chk{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:15px}
+#lrPlot{width:100%;height:auto;margin:10px 0}
+@media (max-width:700px){.eq mjx-container svg{max-width:100%;height:auto}}
+.dots16{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.dots16 .dot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:46px;height:46px;border-radius:10px;font-weight:600;border:1px solid var(--line)}
+.dots16 .dot small{font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:500}
+.dots16 .dot.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.dots16 .dot.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Papers Explained</a><a class="h" href="../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Deep explainer · Paper · Reasoning</div>
+  <h1>DeepSeek-R1: teaching an LLM to reason with reinforcement learning</h1>
+  <div class="meta">DeepSeek-AI · arXiv <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">2501.12948</a> (January 2025; v2, January 2026) · also published in <a href="https://www.nature.com/articles/s41586-025-09422-z" target="_blank" rel="noopener">Nature</a> (2025) · 9 sources, checked 11 Nov 2026</div>
+  <div class="tldr"><b>In one breath:</b> before R1, models learned to reason mostly by copying reasoning that people wrote out step by step, which is expensive and caps the model at human examples. DeepSeek skipped that step. They took their base model, gave it hard maths, code and logic problems with answers a program can check, and trained it with <b>reinforcement learning</b>: right answers get rewarded, wrong ones don't, and nothing tells it <i>how</i> to think. The result, <b>R1-Zero</b>, taught itself to think longer, check its work and backtrack, and went from 15.6% to 77.9% on the AIME 2024 maths exam. A four-stage pipeline then made it readable and helpful (<b>R1</b>, on par with OpenAI's o1 on maths), and its outputs were used to train small models that beat GPT-4o at maths. The RL algorithm, <b>GRPO</b>, drops PPO's value model and compares answers within a group instead.</div>
+  <div class="legend"><span><i style="background:var(--a)"></i>the policy and R1</span><span><i style="background:var(--b)"></i>earlier methods and baselines</span><span><i style="background:var(--st)"></i>rewards and data</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<section class="ch" id="example" data-toc="0 · The running example">
+  <div class="chap">0 · The running example</div>
+  <h2>One maths question, answered sixteen times</h2>
+  <div class="card task"><span class="mono small">from the paper's own example</span><p class="taskq">"If a &gt; 1, then the sum of the real solutions of √(a − √(a + x)) = x is equal to …"</p><p class="small">During training the model sees a question like this and writes <b>16 different attempts</b>. A program checks each final answer against the known one. Nobody grades the reasoning, only the answer. Partway through training, one attempt stops mid-solution and writes: <i>"Wait, wait. Wait. That's an aha moment I can flag here. Let's reevaluate this step-by-step"</i> <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Table 2</a></span>. Nobody taught it to say that. We'll follow this question through the training loop.</p></div>
+</section>
+
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <span class="pill bad">Reasoning was copied, not learned</span>
+  <h2>Good reasoning needed people to write it out first</h2>
+  <p>By 2024, two things made models reason better. <b>Chain-of-thought prompting</b> asked the model to "think step by step". <b>Training on reasoning traces</b> fine-tuned it on worked solutions, written or checked by people. The paper names the cost of the second: dependence on human-written traces "hinders scalability and introduces cognitive biases", and copying human reasoning means performance is "inherently capped by the human-provided exemplars" <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§1</a></span>.</p>
+  <div class="grid2">
+    <div class="card bad"><h4>Expensive to scale</h4><p>Every training example needs a correct, readable, step-by-step solution. Hard competition problems need experts to write them.</p></div>
+    <div class="card bad"><h4>Capped by the examples</h4><p>Human solutions often skip the checking and backtracking that actually find the answer. A model that imitates them learns the polished write-up, not the search.</p></div>
+  </div>
+  <p>OpenAI's o1 (September 2024) had shown that a model which "thinks" for longer at test time does much better on maths and code, but OpenAI didn't publish how it was trained. The open question was whether this could be done in the open, and without a mountain of human-written reasoning.</p>
+</section>
+
+<section class="ch" id="c2" data-toc="2 · How it was done before">
+  <div class="chap">2 · How it was done before</div>
+  <span class="pill b">Four approaches</span>
+  <h2>Prompting, imitation, step graders and search</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Approach</th><th>How it improves reasoning</th><th>The catch</th></tr></thead>
+    <tbody>
+      <tr><td><b>Chain-of-thought prompting</b> (Wei et al. 2022)</td><td>Ask for intermediate steps at inference</td><td>No training: limited by what the model already does</td></tr>
+      <tr><td><b>SFT on reasoning traces</b></td><td>Fine-tune on worked solutions</td><td>Costly human data; imitates the write-up, not the search</td></tr>
+      <tr><td><b>Process reward models</b> (Lightman et al. 2023)</td><td>A model grades each step, not just the answer</td><td>Hard to define a "step", hard to label, and easy to game</td></tr>
+      <tr><td><b>Tree search</b> (MCTS, as in AlphaGo)</td><td>Explore many partial solutions guided by a value model</td><td>The space of token sequences is enormous, and the value model is hard to train</td></tr>
+    </tbody>
+  </table></div>
+  <p>Standard post-training ran <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/supervised-fine-tuning/">SFT</a> first, then RL with a learned reward model (<a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/rlhf-and-reward-models/">RLHF</a>). R1's bet was to drop the SFT step for reasoning, and to drop learned rewards too: only rewards a program can check <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. A.2</a></span>.</p>
+</section>
+
+<section class="ch" id="c3" data-toc="3 · The core idea: R1-Zero">
+  <div class="chap">3 · The core idea</div>
+  <span class="pill a">Pure RL from the base model</span>
+  <h2>R1-Zero: reward right answers, don't teach the reasoning</h2>
+  <p>DeepSeek started from <b>DeepSeek-V3-Base</b>, a pretrained 671-billion-parameter mixture-of-experts model with 37 billion parameters active per token, which had never been fine-tuned to chat. They skipped SFT entirely, on the hypothesis that "human-defined reasoning patterns may limit model exploration" <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§1</a></span>. The only structure imposed is a prompt template:</p>
+  <div class="card"><p class="mono small">A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within &lt;think&gt;...&lt;/think&gt; and &lt;answer&gt;...&lt;/answer&gt; tags … User: <i>prompt</i>. Assistant:</p><p class="small">Table 1 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.3</a></span>. The authors kept it this bare on purpose, "avoiding any content-specific biases", so they could watch what the model learns by itself.</p></div>
+  <p>The training loop, for our running example:</p>
+  <ol>
+    <li>Sample <b>16 answers</b> to the question from the current model, at temperature 1.</li>
+    <li>Score each with rules: is the final answer right, and is the thinking inside the tags?</li>
+    <li>Compare each answer's reward with the group's average: better-than-average answers become more likely, worse ones less likely.</li>
+    <li>Repeat, for 10,400 steps of 32 questions each.</li>
+  </ol>
+  <div class="card ok"><h4>What made this possible</h4><p>The paper's conclusion names three ingredients: "hard reasoning questions, a reliable verifier, and sufficient computational resources" <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§6</a></span>. And a large enough base model: small ones failed (chapter 11).</p></div>
+</section>
+
+<section class="ch" id="c4" data-toc="4 · GRPO: the RL algorithm">
+  <div class="chap">4 · GRPO</div>
+  <span class="pill a">Group Relative Policy Optimization</span>
+  <h2>Judge each answer against its siblings, not against a critic</h2>
+  <p>GRPO comes from DeepSeek's earlier DeepSeekMath paper. It's <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/policy-gradients-for-llms/">PPO</a> with one big change: instead of training a separate value model to estimate how good an answer is likely to be, it samples a <b>group</b> of answers to the same question and uses the group's own rewards as the baseline <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.1</a></span>.</p>
+  <h3>Step 1: the advantage</h3>
+  <div class="reader" data-reader='[
+    {"t":"r","c":"st","label":"this answer’s reward","say":"r_i: the reward for answer i, here 1 if the final answer is right and 0 if not (plus the format reward)."},
+    {"t":"m","c":"b","label":"the group’s average","say":"The mean reward of all G answers to the same question. This replaces PPO’s value model as the baseline."},
+    {"t":"s","c":"info","label":"the group’s spread","say":"Dividing by the standard deviation puts every question on the same scale, whether it’s easy or hard."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="A_i = \frac{\class{term t-r}{r_i} - \class{term t-m}{\text{mean}(\{r_1,\dots,r_G\})}}{\class{term t-s}{\text{std}(\{r_1,\dots,r_G\})}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 3 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.1</a></span> · hover a term.</p>
+  </div>
+  <h3>Step 2: the objective</h3>
+  <div class="reader" data-reader='[
+    {"t":"g","c":"b","label":"average over the group","say":"Average the update over all G answers to the question (G = 16 in R1)."},
+    {"t":"p","c":"a","label":"how much more likely","say":"ρ_i = π_θ(o_i|q) / π_θold(o_i|q): the answer’s probability under the new model divided by the old one. Above 1 means the update made it more likely."},
+    {"t":"a","c":"st","label":"push up or down","say":"Multiply by the advantage: good answers (A > 0) get more likely, bad ones (A < 0) less likely."},
+    {"t":"c","c":"bad","label":"don’t move too far","say":"Clip ρ_i to the range 1 ± ε and take the smaller value, so one batch can’t change the model too much. This is PPO’s clipping."},
+    {"t":"k","c":"info","label":"stay near the reference","say":"Subtract β times the KL divergence between the model and a reference model, D_KL(π_θ ‖ π_ref), with β = 0.001 in R1, so the model doesn’t drift into nonsense."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\mathcal{J}(\theta) = \class{term t-g}{\frac{1}{G}\sum_{i=1}^{G}}\Big(\min\big(\class{term t-p}{\rho_i}\class{term t-a}{A_i},\ \class{term t-c}{\text{clip}(\rho_i,1\pm\varepsilon)}\class{term t-a}{A_i}\big) - \class{term t-k}{\beta\,\mathbb{D}_{KL}}\Big)"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 1, simplified by dropping the expectation over questions <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.1</a></span> · hover a term.</p>
+  </div>
+  <h3>Try it: what one question teaches</h3>
+  <div class="card lab" id="grpoLab">
+    <label for="gG">Answers per question, G <input type="range" id="gG" min="2" max="16" step="1" value="16"><output></output></label>
+    <label for="gK">How many were right <input type="range" id="gK" min="0" max="16" step="1" value="4"><output></output></label>
+    <div class="dots16" id="gDots"></div>
+    <div class="vsrow"><div>Advantage of each right answer: <b class="mono" id="gAp">—</b></div><div>Advantage of each wrong answer: <b class="mono" id="gAn">—</b></div></div>
+    <p class="mono small" id="gMsg">—</p>
+    <p class="small">Rewards are 1 for right and 0 for wrong; the standard deviation is the population one. When every answer gets the same reward, the formula divides 0 by 0, and implementations add a tiny constant, so every advantage is 0.</p>
+  </div>
+  <p>Two things to notice. A rare success on a hard question gets a big push: 4 right out of 16 gives each right answer +1.73 and each wrong one −0.58. And if the model gets all 16 right, or all 16 wrong, every advantage is 0, so the question <b>teaches nothing</b>. The questions that help most are the ones the model sometimes solves.</p>
+  <h3>Why not PPO?</h3>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th></th><th>PPO (as in RLHF)</th><th>GRPO</th></tr></thead>
+    <tbody>
+      <tr><td>Baseline for the advantage</td><td>A learned value model, usually as big as the policy</td><td>The group's mean reward: no extra model</td></tr>
+      <tr><td>Memory and compute</td><td>Two large models to train</td><td>One, plus G samples per question</td></tr>
+      <tr><td>KL to the reference</td><td>A per-token penalty added to the reward, which also penalises long answers</td><td>Added directly to the loss, so length isn't penalised</td></tr>
+      <tr><td>Tuning</td><td>Sensitive to the GAE λ: at the default 0.95 it did much worse; at λ = 1.0 it nearly matched GRPO</td><td>Fewer knobs</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Supplementary A.3 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Fig. 3–4</a></span>. The value model also struggles with long reasoning: predicting the final reward from half a solution is hard when the model may later revise what it wrote.</p>
+</section>
+
+<section class="ch" id="c5" data-toc="5 · The rewards">
+  <div class="chap">5 · The rewards</div>
+  <span class="pill st">Checked by rules, not by a model</span>
+  <h2>Two simple rewards, and no reward model</h2>
+  <div class="grid2">
+    <div class="card"><h4>Accuracy reward</h4><p>Maths answers must be in a set format (for example in a box) and are matched with the reference. Code is compiled and run against test cases. Right is 1, wrong is 0 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.2</a></span>.</p></div>
+    <div class="card"><h4>Format reward</h4><p>The thinking must sit inside &lt;think&gt; and &lt;/think&gt;. The two rewards are added with equal weight.</p></div>
+  </div>
+  <p>The authors deliberately avoided neural reward models, whether they grade the final answer or each step, for reasoning tasks. Their reason: neural reward models "are susceptible to reward hacking during large-scale reinforcement learning", and retraining them adds cost and complexity <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.2</a></span>. A rule can't be flattered.</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>RL data (reasoning)</th><th>Size</th><th>How it's checked</th></tr></thead>
+    <tbody>
+      <tr><td>Maths: exam and competition problems (no proofs)</td><td class="num">26k</td><td>Final answer matches the reference</td></tr>
+      <tr><td>Code: competition problems, plus real GitHub bug fixes</td><td class="num">17k + 8k</td><td>Hidden test cases, unit tests</td></tr>
+      <tr><td>STEM: multiple-choice physics, chemistry, biology</td><td class="num">22k</td><td>Correct option</td></tr>
+      <tr><td>Logic: puzzles and code-to-reasoning problems</td><td class="num">15k</td><td>Automatic checking</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Supplementary B.3.1 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Table 4</a></span>. Proofs were left out because a program can't easily check them.</p>
+</section>
+
+<section class="ch" id="c6" data-toc="6 · What emerged">
+  <div class="chap">6 · What emerged</div>
+  <span class="pill ok">Longer thinking, learned on its own</span>
+  <h2>From 15.6% to 77.9% on AIME, and it started saying "wait"</h2>
+  <div class="card evid"><h4>R1-Zero on AIME 2024 during training (Figure 1)</h4><div class="bars" id="zeroBars" data-max="100"></div></div>
+  <ul>
+    <li><b>Accuracy:</b> average single-try accuracy (pass@1) on AIME 2024 rose from 15.6% to 77.9%. Taking a majority vote over 16 samples (cons@16) gave 86.7%, above the average human competitor <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§2.3</a></span>.</li>
+    <li><b>Longer answers:</b> the average response grew steadily through training to many thousands of tokens. Nothing in the reward asked for length; longer thinking simply got more answers right.</li>
+    <li><b>New behaviours:</b> reflection, checking its own work, and trying other approaches, with a sudden jump in the word "wait": the "aha moment" from our running example.</li>
+  </ul>
+  <p class="small">A version note: the January 2025 v1 of the paper reported 71.0% pass@1 and 86.7% with 64 votes. The v2 and Nature version report 77.9% pass@1 after a longer run (the output limit went from 32,768 to 65,536 tokens at step 8,200, and both accuracy and length jumped). Interviewers may quote either.</p>
+  <h3>Try it: why voting beats a single try</h3>
+  <div class="card lab" id="voteLab">
+    <label for="vP">Chance one sample is right <input type="range" id="vP" min="5" max="95" step="1" value="60"><output></output></label>
+    <label for="vK">Samples to vote over <input type="range" id="vK" min="0" max="5" step="1" value="3"><output></output></label>
+    <div class="vsrow"><div>Single try: <b class="mono" id="vOne">—</b></div><div>Vote, worst case: <b class="mono" id="vWorst">—</b></div><div>Vote, best case: <b class="mono" id="vBest">—</b></div></div>
+    <p class="mono small" id="vMsg">—</p>
+    <p class="small">Illustrative, assuming samples are independent. Worst case: every wrong sample gives the <i>same</i> wrong answer, so the right one needs more than half the votes. Best case: every wrong answer is different, so the right one wins with just 2 votes. Real questions fall in between, and each question has its own chance.</p>
+  </div>
+  <p>Voting helps most when the model is right more often than any single wrong answer. If the model usually converges on the same wrong answer, more votes make it <i>more</i> confidently wrong. That's why cons@16 (86.7%) is well above pass@1 but not near 100%.</p>
+</section>
+
+<section class="ch" id="c7" data-toc="7 · From R1-Zero to R1">
+  <div class="chap">7 · From R1-Zero to R1</div>
+  <span class="pill a">A four-stage pipeline</span>
+  <h2>Making the reasoning readable and the model helpful</h2>
+  <p>R1-Zero reasoned well but was hard to use: poor readability, and <b>language mixing</b>, switching between English and Chinese inside one chain of thought, because the base model was trained mostly on both. Its RL also covered only reasoning tasks, so it was weak at writing and open questions <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§3</a></span>. R1 fixes this with four stages, each starting from the last one's model:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Stage</th><th>What happens</th><th>Model after</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · Cold-start SFT</b></td><td>Fine-tune V3-Base on <b>thousands</b> of long chain-of-thought examples in a clear, first-person, conversational style. People rewrote some of R1-Zero's traces, then an LLM rewrote more in that style</td><td>Dev1</td></tr>
+      <tr><td><b>2 · Reasoning RL</b></td><td>GRPO with the rule-based rewards, plus a <b>language consistency reward</b>: the share of words in the target language</td><td>Dev2</td></tr>
+      <tr><td><b>3 · Rejection sampling + SFT</b></td><td>Sample many answers from the RL model, keep only correct, clean ones: <b>~600k</b> reasoning samples. Add <b>~200k</b> non-reasoning samples (writing, factual QA, translation, software engineering). Fine-tune <b>V3-Base again</b> on these 800k</td><td>Dev3</td></tr>
+      <tr><td><b>4 · RL for everything</b></td><td>Rule rewards for reasoning; reward models for helpfulness and safety on general prompts; 1,700 steps at temperature 0.7, with preference rewards only in the last 400</td><td>R1</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Figure 2 and Supplementary B.3 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§3, Supp. B.3</a></span>.</p>
+  <h3>The final reward</h3>
+  <div class="reader" data-reader='[
+    {"t":"x","c":"st","label":"reasoning prompts","say":"Rule-based: accuracy plus format, exactly as in R1-Zero."},
+    {"t":"y","c":"a","label":"general prompts","say":"A reward model: a helpfulness model trained on 66,000 preference pairs (judging only the final summary), or a safety model trained on 106,000 labelled responses (judging everything, thinking included), plus the format reward."},
+    {"t":"z","c":"info","label":"language consistency","say":"The fraction of words in the chain of thought that are in the target language."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="Reward = \class{term t-x}{Reward_{reasoning}} + \class{term t-y}{Reward_{general}} + \class{term t-z}{\frac{Num(Words_{target})}{Num(Words)}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equations 7–10 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§3.1–3.2</a></span> · hover a term.</p>
+  </div>
+  <h3>Try it: what each stage bought</h3>
+  <div class="card lab" id="stageLab">
+    <label for="sB">Benchmark <select id="sB"></select></label>
+    <div class="bars" id="stageBars" data-max="100"></div>
+    <p class="mono small" id="sNote">—</p>
+    <p class="small">Table 3 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§4</a></span>. Codeforces is shown as a percentile.</p>
+  </div>
+  <p>The table shows a trade-off. The small cold-start set made the model readable but cost reasoning (AIME fell from 77.9 to 59.0), and reasoning RL won it back. The general data and the final RL barely moved maths, but lifted instruction following and helpfulness sharply (AlpacaEval 2.0 from 62.1 to 87.6).</p>
+  <div class="card bad"><h4>Why preference rewards only ran for 400 steps</h4><p>With the helpfulness reward model, longer training led to reward hacking: the reward kept rising while Codeforces accuracy fell <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. B.5, Fig. 6</a></span>. The language consistency reward also cost a little benchmark accuracy, and they kept it anyway because people found the output easier to read <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. B.6</a></span>.</p></div>
+</section>
+
+<section class="ch" id="c8" data-toc="8 · Training details and cost">
+  <div class="chap">8 · Training details and cost</div>
+  <span class="pill info">About $294,000 of RL</span>
+  <h2>512 GPUs, about 12 days in total</h2>
+  <div class="tablewrap"><table class="t">
+    <tbody>
+      <tr><td>Per step (R1-Zero)</td><td>32 questions × 16 answers = a batch of 512; one pass over the 8,192 sampled outputs, in 16 mini-batches</td></tr>
+      <tr><td>Learning rate, KL β, temperature</td><td>3 × 10<sup>−6</sup>, 0.001, 1.0</td></tr>
+      <tr><td>Maximum answer length</td><td>32,768 tokens, raised to 65,536 at step 8,200</td></tr>
+      <tr><td>Length of the run</td><td>10,400 steps, about 1.6 passes over the data</td></tr>
+      <tr><td>Reference model</td><td>Replaced with the latest policy every 400 steps, so the KL term doesn't hold the model back over a long run</td></tr>
+      <tr><td>Clip ratio ε (R1, stage 2)</td><td>Reported as 10, far looser than PPO's usual 0.2; the paper says lower values cut off the gradient for too many tokens, while higher values made training unstable</td></tr>
+      <tr><td>Hardware</td><td>64 × 8 = 512 NVIDIA H800 GPUs</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">§2.1, §3.2 and Supplementary B.4 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Table 7</a></span>.</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Part</th><th>H800 GPU-hours</th><th>At $2 per GPU-hour</th></tr></thead>
+    <tbody>
+      <tr><td>R1-Zero (512 GPUs × ~198 hours)</td><td class="num">101K</td><td class="num">$202K</td></tr>
+      <tr><td>Creating the SFT data</td><td class="num">5K</td><td class="num">$10K</td></tr>
+      <tr><td>R1 (512 GPUs × ~80 hours)</td><td class="num">41K</td><td class="num">$82K</td></tr>
+      <tr><td><b>Total</b></td><td class="num"><b>147K</b></td><td class="num"><b>$294K</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="card"><h4>Put the number in context</h4><p>This is the cost of the RL work only. The base model, DeepSeek-V3, took about 2.788 million H800 GPU-hours to train, about $5.6 million at the same rate <span class="src"><a href="https://arxiv.org/abs/2412.19437" target="_blank" rel="noopener">V3 report</a></span>, which itself excludes research and failed runs. So R1's reasoning training added roughly 5% on top. It's cheap relative to pretraining, not cheap in absolute terms. The paper also calls R1's run "about 4 days, or roughly 80 hours", which don't quite match; the GPU-hours fit 80 hours.</p></div>
+  <p>The RL system runs in four modules: rollout on vLLM workers (with the MoE experts spread across nodes and the model's multi-token prediction used to speed up decoding), a forward pass for reward and reference models, rule-based rewards such as code execution run asynchronously, and training. Each module's models are moved out of GPU memory when it finishes <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. B.1</a></span>.</p>
+</section>
+
+<section class="ch" id="c9" data-toc="9 · Results">
+  <div class="chap">9 · Evidence</div>
+  <span class="pill ok">On par with o1 on maths</span>
+  <h2>An open model at the frontier of reasoning</h2>
+  <div class="card evid"><h4>AIME 2024, pass@1 (Table 8)</h4><div class="bars" id="aimeBars" data-max="100"></div></div>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Benchmark</th><th>GPT-4o</th><th>Claude 3.5 Sonnet</th><th>DeepSeek-V3</th><th>o1-mini</th><th>o1 (Dec 2024)</th><th>R1</th></tr></thead>
+    <tbody>
+      <tr><td>AIME 2024</td><td class="num">9.3</td><td class="num">16.0</td><td class="num">39.2</td><td class="num">63.6</td><td class="num">79.2</td><td class="num"><b>79.8</b></td></tr>
+      <tr><td>MATH-500</td><td class="num">74.6</td><td class="num">78.3</td><td class="num">90.2</td><td class="num">90.0</td><td class="num">96.4</td><td class="num"><b>97.3</b></td></tr>
+      <tr><td>Codeforces percentile</td><td class="num">23.6</td><td class="num">20.3</td><td class="num">58.7</td><td class="num">93.4</td><td class="num"><b>96.6</b></td><td class="num">96.3</td></tr>
+      <tr><td>GPQA Diamond</td><td class="num">49.9</td><td class="num">65.0</td><td class="num">59.1</td><td class="num">60.0</td><td class="num"><b>75.7</b></td><td class="num">71.5</td></tr>
+      <tr><td>SWE-bench Verified</td><td class="num">38.8</td><td class="num">50.8</td><td class="num">42.0</td><td class="num">41.6</td><td class="num">48.9</td><td class="num">49.2</td></tr>
+      <tr><td>SimpleQA (facts)</td><td class="num">38.2</td><td class="num">28.4</td><td class="num">24.9</td><td class="num">7.0</td><td class="num"><b>47.0</b></td><td class="num">30.1</td></tr>
+      <tr><td>AlpacaEval 2.0 (LC win rate)</td><td class="num">51.1</td><td class="num">52.0</td><td class="num">70.0</td><td class="num">57.8</td><td class="num">–</td><td class="num"><b>87.6</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 8 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. D.2</a></span>. Model versions: GPT-4o-0513, Claude-3.5-Sonnet-1022, o1-1217.</p>
+  <ul>
+    <li><b>Maths and code:</b> level with o1 on AIME, MATH-500 and Codeforces, far ahead of non-reasoning models including its own base, V3.</li>
+    <li><b>Knowledge:</b> better than V3 on STEM-heavy knowledge tests, but behind o1 on GPQA Diamond and well behind on SimpleQA factual recall.</li>
+    <li><b>Software engineering:</b> only a small gain over V3, because running test suites made RL too slow to apply at scale (chapter 12).</li>
+  </ul>
+</section>
+
+<section class="ch" id="c10" data-toc="10 · Distillation">
+  <div class="chap">10 · Distillation</div>
+  <span class="pill ok">Small models, big reasoning</span>
+  <h2>A 1.5B model that beats GPT-4o at competition maths</h2>
+  <p>DeepSeek fine-tuned open Qwen2.5 and Llama models on the same <b>800,000</b> samples generated by R1, with SFT only, no RL <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. F</a></span>. This is <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/distillation/">distillation</a> through the teacher's outputs.</p>
+  <div class="card evid"><h4>AIME 2024, pass@1 (Table 15)</h4><div class="bars" id="distBars" data-max="100"></div></div>
+  <h3>Distil, or run RL on the small model?</h3>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>32B model</th><th>AIME 2024</th><th>MATH-500</th><th>GPQA Diamond</th><th>LiveCodeBench</th></tr></thead>
+    <tbody>
+      <tr><td>Qwen2.5-32B + large-scale RL (10k+ steps)</td><td class="num">47.0</td><td class="num">91.6</td><td class="num">55.0</td><td class="num">40.2</td></tr>
+      <tr><td>Distilled from R1 (SFT only)</td><td class="num"><b>72.6</b></td><td class="num"><b>94.3</b></td><td class="num"><b>62.1</b></td><td class="num"><b>57.2</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 16 <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. F.1</a></span>.</p>
+  <p>The paper's two conclusions: distilling a strong model into a small one works far better than running the same RL on the small model, and it's much cheaper. But "advancing beyond the boundaries of human intelligence may still require more powerful base models and larger-scale reinforcement learning". Distillation copies reasoning; RL on a big model discovers it.</p>
+</section>
+
+<section class="ch" id="c11" data-toc="11 · What didn't work">
+  <div class="chap">11 · What didn't work</div>
+  <span class="pill bad">Failures the paper reports</span>
+  <h2>Small base models, step graders and tree search</h2>
+  <div class="grid2">
+    <div class="card bad"><h4>Small base models</h4><p>RL on a 7B dense and a 16B MoE model failed to improve AIME: as answers got longer, they started repeating themselves. It worked once they moved to 32B dense, 230B MoE and 671B MoE models <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. G.1</a></span>.</p></div>
+    <div class="card bad"><h4>Process reward models</h4><p>Grading each step sounds better than grading the answer, but a "step" is hard to define, step labels are hard to get right, and a model-based grader invites reward hacking. Useful for re-ranking answers, not worth the cost in large-scale RL <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. G.2</a></span>.</p></div>
+    <div class="card bad"><h4>Monte Carlo tree search</h4><p>Unlike chess, the space of token sequences is enormous, limiting the search caused local optima, and the value model guiding it was hard to train. It helped at inference with a fixed value model, but not as a way to keep improving the model.</p></div>
+    <div class="card bad"><h4>Learned reward models, for too long</h4><p>The helpfulness reward model was hacked within a few hundred steps (chapter 7). For tasks without a reliable checker, the paper uses human-written SFT data and only short RL.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="c12" data-toc="12 · Limits and critique">
+  <div class="chap">12 · Takeaways and caveats</div>
+  <span class="pill bad">Where it falls short</span>
+  <h2>What the paper didn't solve, and what others questioned</h2>
+  <h3>Limits the authors list</h3>
+  <ul>
+    <li><b>Only verifiable tasks.</b> Pure RL needs a reliable reward. For writing and other open-ended tasks, there's no checker, and learned rewards get hacked <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">§6</a></span>.</li>
+    <li><b>No tools, weak structured output.</b> R1 can't call a search engine or calculator while reasoning.</li>
+    <li><b>Overthinking.</b> It spends fewer tokens on easy questions than hard ones, but still overthinks simple questions.</li>
+    <li><b>Language mixing.</b> Optimised for Chinese and English; it may reason in English for other languages.</li>
+    <li><b>Prompt sensitivity.</b> Few-shot examples consistently hurt it; describe the problem directly, zero-shot.</li>
+    <li><b>Software engineering.</b> Slow test runs kept RL from scaling there.</li>
+  </ul>
+  <h3>Critiques from later work</h3>
+  <ul>
+    <li><b>The "aha moment" may not be new.</b> Liu et al. found that some base models, including DeepSeek-V3-Base, already show self-reflection before any RL, so RL may amplify a behaviour rather than create it <span class="src"><a href="https://arxiv.org/abs/2503.20783" target="_blank" rel="noopener">arXiv 2503.20783</a></span>.</li>
+    <li><b>GRPO has biases.</b> The same paper argues that GRPO's normalisation (by answer length in the original DeepSeekMath form, and by the group's standard deviation) can make wrong answers grow longer and over-weight very easy or very hard questions. Their fix, Dr. GRPO, removes both.</li>
+    <li><b>Benchmarks.</b> AIME 2024 problems are public, so contamination is a fair question for any model. The paper checks this on AIME 2025, released after training: R1 solved 75% (pass@1) against o1's 80%, close to its AIME 2024 level <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. E.2</a></span>.</li>
+    <li><b>Anthropomorphism.</b> The paper itself warns that the vivid first-person style is "DeepSeek-engineered" through the cold-start data, not a sign of human-like thought <span class="src"><a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">Supp. B.3.2</a></span>.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c13" data-toc="13 · What came after">
+  <div class="chap">13 · What it changed</div>
+  <span class="pill ok">RL on checkable rewards became standard</span>
+  <h2>The open recipe for reasoning models</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>When</th><th>What happened</th><th>Link to R1</th></tr></thead>
+    <tbody>
+      <tr><td>Jan 2025</td><td>Weights released openly, with six distilled models from 1.5B to 70B</td><td>Anyone could study and fine-tune a reasoning model</td></tr>
+      <tr><td>Early 2025</td><td>Open reproductions and fixes, such as DAPO (looser upper clip, dropping groups where every answer scores the same, token-level loss) and Dr. GRPO</td><td>Refinements of GRPO itself</td></tr>
+      <tr><td>2025</td><td>"RL with verifiable rewards" became a standard post-training stage for maths and code</td><td>The R1-Zero recipe</td></tr>
+      <tr><td>Sept 2025</td><td>Published in Nature, with the supplementary detail (training cost, data, safety) used on this page</td><td>The v2 paper</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">DAPO <span class="src"><a href="https://arxiv.org/abs/2503.14476" target="_blank" rel="noopener">arXiv 2503.14476</a></span>. Note how DAPO's "dynamic sampling" fixes exactly what the GRPO lab shows: groups where every answer scores the same give no gradient.</p>
+  <p>Related lessons: <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/reasoning-models-grpo/">reasoning models and GRPO</a>, <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/mixture-of-experts/">mixture of experts</a> (R1's architecture), <a href="https://datawithsuman.github.io/ai/interview-prep/system-design/llm-inference/serving-agents-and-reasoning-models/">serving reasoning models</a> and <a href="https://datawithsuman.github.io/ai/interview-prep/system-design/prompt-engineering/prompting-reasoning-models/">prompting reasoning models</a>.</p>
+</section>
+
+<section class="ch" id="c14" data-toc="14 · Key terms">
+  <div class="chap">14 · Key terms</div>
+  <h2>Words to know</h2>
+  <dl class="terms">
+    <dt>Reinforcement learning with verifiable rewards</dt><dd>RL where a program checks the answer (maths match, code tests), instead of a learned reward model.</dd>
+    <dt>GRPO</dt><dd>Group Relative Policy Optimization: PPO-style updates where each answer's advantage is its reward relative to a group of answers to the same question. No value model.</dd>
+    <dt>Advantage</dt><dd>How much better an answer did than expected. In GRPO, (reward − group mean) ÷ group standard deviation.</dd>
+    <dt>Value model (critic)</dt><dd>In PPO, a second network that predicts the expected reward, used as the baseline. GRPO drops it.</dd>
+    <dt>KL penalty</dt><dd>A term that keeps the trained model close to a reference model, so it doesn't drift into degenerate text.</dd>
+    <dt>Cold start</dt><dd>A small SFT set used before RL so the model starts in a readable style.</dd>
+    <dt>Rejection sampling</dt><dd>Generate many answers and keep only the ones that pass a check, then train on them.</dd>
+    <dt>pass@1 and cons@k</dt><dd>pass@1: average accuracy of single samples. cons@k: accuracy of the majority answer over k samples.</dd>
+    <dt>Reward hacking</dt><dd>The model finds ways to score highly that don't reflect real quality.</dd>
+    <dt>Distillation</dt><dd>Training a smaller model on a larger model's outputs.</dd>
+  </dl>
+</section>
+
+<section class="ch" id="c15" data-toc="15 · Verdict">
+  <div class="chap">15 · Verdict</div>
+  <h2>Read it</h2>
+  <p><b>Read</b> §2 (GRPO, rewards and R1-Zero) and §3 (the pipeline), plus Figure 1 and Table 3. They answer most interview questions about reasoning models. <b>Read</b> Supplementary A.3 (GRPO vs PPO) and G (key findings and failures): they're short and full of practical lessons. <b>Skim</b> the benchmark and safety appendices unless you need them.</p>
+  <p>Read the January 2026 v2 or the Nature version rather than v1: it adds the training cost, data recipe and reward-hacking evidence.</p>
+</section>
+
+<section class="ch" id="iv" data-toc="16 · Say it in an interview">
+  <div class="chap">16 · Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">"DeepSeek-R1 showed you can teach an LLM to reason with reinforcement learning, without human-written reasoning. They took DeepSeek-V3-Base, skipped SFT, and trained it with GRPO on maths, code and logic problems where a program checks the final answer. GRPO samples 16 answers per question and scores each against the group's average, so there's no value model. That model, R1-Zero, learned to think longer and check itself, going from about 16% to 78% on AIME 2024. To make it readable and helpful, R1 adds a small cold-start SFT, reasoning RL with a language-consistency reward, 800k rejection-sampled SFT examples, and a final RL stage with reward models. It matched o1 on maths, and distilling it into small models worked better than running RL on them."</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Problem: reasoning came from imitating human traces, which is costly and capped. Idea: reward only checkable answers and let the model find its own reasoning. Walk the running example: 16 answers to one maths question, 4 right; right answers get advantage +1.73, wrong ones −0.58, and the update makes the right ones more likely. Explain why GRPO (no critic, a group baseline, the KL in the loss) and why rules rather than a reward model (reward hacking). Then the emergent behaviour (longer thinking, "wait"), the R1-Zero problems (readability, language mixing), the four stages, and the results: on par with o1-1217 on AIME and Codeforces, about $294k of RL on top of a ~$5.6M base model, and distilled 1.5B to 70B models.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>How is GRPO different from PPO?</summary><p>PPO needs a value model, usually as large as the policy, to estimate a baseline for each token. GRPO samples a group of answers per question and uses (reward − group mean) / group std as the advantage, so there's no critic to train. It also adds the KL term directly to the loss rather than as a per-token reward penalty.</p></details>
+  <details class="qa"><summary>Why didn't they use a reward model for reasoning?</summary><p>Neural reward models get hacked during long RL runs, and retraining them is costly. Rule-based checks, like answer matching and test cases, can't be flattered. They did use reward models for general helpfulness and safety, but only for the last 400 steps, because longer training led to reward hacking.</p></details>
+  <details class="qa"><summary>What happens if all 16 answers are right, or all wrong?</summary><p>Every advantage is 0, so the question contributes no learning signal. The most useful questions are those the model sometimes solves. Later work such as DAPO filters out these all-same groups.</p></details>
+  <details class="qa"><summary>Why did they need R1 if R1-Zero already reasoned well?</summary><p>R1-Zero's reasoning was hard to read, mixed English and Chinese, and was weak outside reasoning tasks. The cold-start data and language reward fixed readability, and the extra SFT and RL stages added writing, factual QA, helpfulness and safety.</p></details>
+  <details class="qa"><summary>Is the "aha moment" real?</summary><p>The jump in reflective words like "wait" is real in R1-Zero's training. But later work found base models already show some self-reflection before RL, so RL likely strengthened an existing behaviour. The paper itself warns not to read the style as human-like thinking.</p></details>
+  <details class="qa"><summary>Distillation or RL for a small model?</summary><p>Distillation. A 32B model distilled from R1 scored 72.6% on AIME 2024; the same base trained with large-scale RL reached 47.0%. RL on a big model discovers reasoning; distillation copies it cheaply.</p></details>
+  <details class="qa"><summary>How much did R1 cost?</summary><p>About 147,000 H800 GPU-hours for the RL work, $294,000 at $2 per hour. That excludes the base model, DeepSeek-V3, which took about 2.8 million GPU-hours (~$5.6M) to pretrain.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"R1 was trained with no SFT at all." That's R1-Zero. R1 has two SFT stages.</li>
+    <li>"R1 cost $294,000 to build." That's the RL on top of a base model that cost millions more.</li>
+    <li>"GRPO uses a reward model and a value model." It needs no value model, and R1 used rule-based rewards for reasoning.</li>
+    <li>"RL alone works on any model size." Their 7B and 16B attempts failed; small models do better by distillation.</li>
+  </ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>Everything on this page comes from these</h2>
+  <ol class="srcs">
+    <li>DeepSeek-AI (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">arXiv 2501.12948</a> (read in full, v2 of January 2026, including the supplementary material)</li>
+    <li>DeepSeek-AI (2025). DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. <a href="https://www.nature.com/articles/s41586-025-09422-z" target="_blank" rel="noopener">Nature</a></li>
+    <li>Shao et al. (2024). DeepSeekMath, where GRPO was introduced. <a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener">arXiv 2402.03300</a></li>
+    <li>DeepSeek-AI (2024). DeepSeek-V3 Technical Report. <a href="https://arxiv.org/abs/2412.19437" target="_blank" rel="noopener">arXiv 2412.19437</a></li>
+    <li>Schulman et al. (2017). Proximal Policy Optimization Algorithms. <a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener">arXiv 1707.06347</a></li>
+    <li>Lightman et al. (2023). Let's Verify Step by Step. <a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">arXiv 2305.20050</a></li>
+    <li>Wang et al. (2022). Self-Consistency Improves Chain of Thought Reasoning. <a href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener">arXiv 2203.11171</a></li>
+    <li>Liu et al. (2025). Understanding R1-Zero-Like Training: A Critical Perspective. <a href="https://arxiv.org/abs/2503.20783" target="_blank" rel="noopener">arXiv 2503.20783</a></li>
+    <li>Yu et al. (2025). DAPO: An Open-Source LLM Reinforcement Learning System at Scale. <a href="https://arxiv.org/abs/2503.14476" target="_blank" rel="noopener">arXiv 2503.14476</a></li>
+  </ol>
+  <p class="small">The voting lab is illustrative. All other numbers come from the papers above. @datawithsuman</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- page content generated before the engine runs ----------
+(() => {
+  const bar = (label, v, color, shown) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="--v:${v};background:${color}"></div></div><span class="v mono">${shown || v}</span></div>`;
+  // Figure 1 / §2.3: R1-Zero on AIME 2024
+  document.getElementById('zeroBars').innerHTML = [['Before RL (pass@1)', 15.6, 'var(--b)'], ['After RL (pass@1)', 77.9, 'var(--a)'], ['After RL, vote of 16 (cons@16)', 86.7, 'var(--ok)']].map(r => bar(...r)).join('');
+  // Table 8: AIME 2024 pass@1
+  document.getElementById('aimeBars').innerHTML = [['GPT-4o', 9.3, 'var(--b)'], ['Claude 3.5 Sonnet', 16.0, 'var(--b)'], ['DeepSeek-V3 (base of R1)', 39.2, 'var(--b)'], ['o1-mini', 63.6, 'var(--b)'], ['o1 (Dec 2024)', 79.2, 'var(--b)'], ['DeepSeek-R1', 79.8, 'var(--ok)']].map(r => bar(...r)).join('');
+  // Table 15: distilled models, AIME 2024 pass@1
+  document.getElementById('distBars').innerHTML = [['GPT-4o', 9.3, 'var(--b)'], ['Claude 3.5 Sonnet', 16.0, 'var(--b)'], ['R1-Distill-Qwen-1.5B', 28.9, 'var(--a)'], ['R1-Distill-Llama-8B', 50.4, 'var(--a)'], ['R1-Distill-Qwen-7B', 55.5, 'var(--a)'], ['R1-Distill-Qwen-14B', 69.7, 'var(--a)'], ['R1-Distill-Llama-70B', 70.0, 'var(--a)'], ['R1-Distill-Qwen-32B', 72.6, 'var(--ok)']].map(r => bar(...r)).join('');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const sg = (x) => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
+
+  // GRPO advantages for one question: rewards 1 (right) or 0 (wrong), population std (equation 3)
+  const gG = $('#gG'), gK = $('#gK');
+  const drawG = () => {
+    const G = +gG.value; gK.max = G; if (+gK.value > G) gK.value = G; const k = +gK.value;
+    gG.nextElementSibling.textContent = G; gK.nextElementSibling.textContent = k;
+    const p = k / G, sd = Math.sqrt(p * (1 - p));
+    const ap = sd ? (1 - p) / sd : 0, an = sd ? -p / sd : 0;
+    $('#gDots').innerHTML = Array.from({ length: G }, (_, i) => i < k
+      ? `<span class="dot ok" title="right: ${sg(ap)}">✓<small>${sg(ap)}</small></span>`
+      : `<span class="dot bad" title="wrong: ${sg(an)}">✗<small>${sg(an)}</small></span>`).join('');
+    $('#gAp').textContent = k ? sg(ap) : 'no right answers';
+    $('#gAn').textContent = k < G ? sg(an) : 'no wrong answers';
+    $('#gMsg').textContent = !sd ? 'Every answer scored the same, so every advantage is 0: this question teaches the model nothing.'
+      : p < 0.5 ? `A rare success: each right answer gets a big push (${sg(ap)}), each wrong one a small one (${sg(an)}).`
+      : p > 0.5 ? `Mostly right already: the few wrong answers get pushed down hard (${sg(an)}), the right ones only a little (${sg(ap)}).`
+      : 'Half right: right and wrong answers move by the same amount, in opposite directions.';
+  };
+  [gG, gK].forEach(e => e.addEventListener('input', drawG)); drawG();
+
+  // majority voting over k independent samples (illustrative)
+  const KS = [1, 4, 8, 16, 32, 64], vP = $('#vP'), vK = $('#vK');
+  const lc = (n, r) => { let s = 0; for (let i = 0; i < r; i++) s += Math.log(n - i) - Math.log(i + 1); return s; };
+  const pmf = (n, x, p) => Math.exp(lc(n, x) + x * Math.log(p) + (n - x) * Math.log(1 - p));
+  const atLeast = (n, m, p) => { let s = 0; for (let x = Math.max(0, m); x <= n; x++) s += pmf(n, x, p); return Math.min(1, s); };
+  const pct = (x) => (100 * x).toFixed(1) + '%';
+  const drawV = () => {
+    const p = +vP.value / 100, k = KS[+vK.value]; vP.nextElementSibling.textContent = pct(p); vK.nextElementSibling.textContent = k;
+    const worst = k === 1 ? p : atLeast(k, Math.floor(k / 2) + 1, p), best = k === 1 ? p : atLeast(k, 2, p);
+    $('#vOne').textContent = pct(p); $('#vWorst').textContent = pct(worst); $('#vBest').textContent = pct(best);
+    $('#vMsg').textContent = k === 1 ? 'One sample: no vote, so the score is just the chance of being right.'
+      : p > 0.5 ? `Right more often than not, so voting helps even in the worst case (${pct(p)} → ${pct(worst)}).`
+      : p < 0.5 ? `Right less than half the time: if the wrong answers agree, voting makes it worse (${pct(p)} → ${pct(worst)}); if they scatter, it helps (${pct(best)}).`
+      : 'Exactly half: in the worst case ties count as losses, so voting doesn’t help.';
+  };
+  [vP, vK].forEach(e => e.addEventListener('input', drawV)); drawV();
+
+  // Table 3: each stage of the R1 pipeline
+  const ST = ['R1-Zero', 'Dev1 (cold start)', 'Dev2 (reasoning RL)', 'Dev3 (800k SFT)', 'R1 (final RL)'];
+  const B = {
+    'AIME 2024 (pass@1)': [[77.9, 59.0, 74.0, 78.1, 79.8], 'Cold-start SFT cost reasoning; reasoning RL won it back.'],
+    'Codeforces (percentile)': [[80.4, 84.5, 90.5, 92.1, 96.3], 'Code kept improving at every stage.'],
+    'GPQA Diamond (pass@1)': [[75.8, 66.1, 70.7, 71.2, 71.5], 'R1-Zero stayed best here: the readable pipeline never fully recovered it.'],
+    'IF-Eval (prompt strict)': [[46.6, 71.7, 72.0, 78.1, 83.3], 'Instruction following came from SFT data and the final RL, not from reasoning RL.'],
+    'AlpacaEval 2.0 (LC win rate)': [[24.7, 50.1, 55.8, 62.1, 87.6], 'The final RL with preference rewards gave the biggest jump in helpfulness.'],
+    'ArenaHard': [[53.6, 77.0, 73.2, 75.6, 92.3], 'Another helpfulness benchmark: most of the gain came from the final RL.'],
+    'Aider-Polyglot (accuracy)': [[12.2, 6.7, 25.6, 44.8, 53.3], 'Software engineering data in the 800k SFT set made the difference.'],
+  };
+  const sB = $('#sB'); sB.innerHTML = Object.keys(B).map(k => `<option>${k}</option>`).join('');
+  const drawS = () => { const [v, note] = B[sB.value], best = Math.max(...v);
+    $('#stageBars').innerHTML = ST.map((s, i) => `<div class="bar"><span>${s}</span><div class="track"><div class="fill" style="width:${v[i]}%;background:var(--${v[i] === best ? 'ok' : i === 0 ? 'b' : 'a'})"></div></div><span class="v mono">${v[i].toFixed(1)}</span></div>`).join('');
+    $('#sNote').textContent = note; };
+  sB.addEventListener('change', drawS); drawS();
+})();
+</script>
+</body>
+</html>

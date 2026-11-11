@@ -37,7 +37,7 @@ TRACKS = [
     {
         "id": "papers", "n": "04", "name": "Papers", "status": "Any time",
         "desc": "Important papers taught step by step: the gist, the method, the results and why they matter.",
-        "topics": ["Attention Is All You Need", "Harness Engineering", "Context Language Models"],
+        "topics": ["Attention Is All You Need", "DeepSeek-R1", "Harness Engineering", "Context Language Models"],
         "know": ["fundamentals/self-attention"],
         "modules": [
             {"name": "Models", "desc": "The architecture behind modern LLMs.", "lessons": [
@@ -45,6 +45,12 @@ TRACKS = [
                  "lead": "What happens if you remove recurrence and keep only attention?",
                  "prereqs": ["fundamentals/self-attention"],
                  "related": ["fundamentals/multi-head-attention"]},
+            ]},
+            {"name": "Training and reasoning", "desc": "How models are trained to reason.", "lessons": [
+                {"slug": "deepseek-r1", "title": "DeepSeek-R1", "type": "paper", "minutes": 30, "imported": True,
+                 "lead": "Can a model learn to reason without copying human reasoning?",
+                 "prereqs": ["fundamentals/policy-gradients-for-llms"],
+                 "related": ["fundamentals/reasoning-models-grpo"]},
             ]},
             {"name": "Agents and memory", "desc": "How AI agents are built, and how they manage context.", "lessons": [
                 {"slug": "harness-engineering", "title": "Harness Engineering", "type": "paper", "minutes": 25, "imported": True,

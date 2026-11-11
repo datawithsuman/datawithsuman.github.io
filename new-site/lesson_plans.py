@@ -158,7 +158,36 @@ AIAYN_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="Top row: a 
   <path d="M40 157Q85 134 130 157M40 157Q130 120 220 157M40 157Q175 108 310 157M40 157Q220 100 400 157M130 157Q175 134 220 157M220 157Q265 134 310 157M310 157Q355 134 400 157" stroke="var(--c)" stroke-width="1.5" fill="none"/>
 </svg>"""
 
+R1_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="One question, sixteen sampled answers, each checked right or wrong, then right answers are made more likely and wrong ones less likely.">
+  <g font-size="14" fill="var(--ink)"><text x="4" y="16" font-weight="600">1 question</text><text x="130" y="16" font-weight="600">16 answers, checked</text><text x="350" y="16" font-weight="600">Update</text></g>
+  <rect x="4" y="70" width="96" height="50" rx="10" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="52" y="100" font-size="13" text-anchor="middle" fill="var(--ink)">maths problem</text>
+  <path d="M100 95L130 95" stroke="var(--muted)" stroke-width="2"/>
+  <g font-size="13" text-anchor="middle"><rect x="134" y="30" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="154" y="51" fill="var(--ink)">✓</text><rect x="182" y="30" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="202" y="51" fill="var(--ink)">✓</text><rect x="230" y="30" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="250" y="51" fill="var(--ink)">✓</text><rect x="278" y="30" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="298" y="51" fill="var(--ink)">✓</text><rect x="134" y="70" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="154" y="91" fill="var(--ink)">✗</text><rect x="182" y="70" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="202" y="91" fill="var(--ink)">✗</text><rect x="230" y="70" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="250" y="91" fill="var(--ink)">✗</text><rect x="278" y="70" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="298" y="91" fill="var(--ink)">✗</text><rect x="134" y="110" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="154" y="131" fill="var(--ink)">✗</text><rect x="182" y="110" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="202" y="131" fill="var(--ink)">✗</text><rect x="230" y="110" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="250" y="131" fill="var(--ink)">✗</text><rect x="278" y="110" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="298" y="131" fill="var(--ink)">✗</text><rect x="134" y="150" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="154" y="171" fill="var(--ink)">✗</text><rect x="182" y="150" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="202" y="171" fill="var(--ink)">✗</text><rect x="230" y="150" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="250" y="171" fill="var(--ink)">✗</text><rect x="278" y="150" width="40" height="32" rx="7" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="298" y="171" fill="var(--ink)">✗</text></g>
+  <path d="M326 95L346 95" stroke="var(--muted)" stroke-width="2"/>
+  <g font-size="13" fill="var(--ink)"><text x="350" y="80">✓ more likely</text><text x="350" y="104">✗ less likely</text><text x="350" y="128" fill="var(--muted)">vs group average</text></g>
+</svg>"""
+
 PAPER_PLANS = {
+    "papers/deepseek-r1": {
+        "analogy": "Think of learning chess. One way is to copy grandmasters' games move by move. The other is to play thousands of games and only be told who won. R1-Zero did the second: it was told only whether its final answer was right, and it worked out for itself that thinking longer and checking its work wins more often.",
+        "picture": R1_PICTURE,
+        "caption": "Illustrative. GRPO samples a group of answers, checks each, and scores every answer against the group's average.",
+        "problem": ["example", "c1"],
+        "play": {"lab": "grpoLab", "chapter": "c4",
+                 "try": "<b>Try it.</b> The model wrote 16 answers to one maths question. Change how many were right and watch each answer's advantage.",
+                 "why": "<b>Notice:</b> when all 16 answers are right, or all wrong, every advantage is 0 and the question teaches nothing. GRPO learns most from questions the model only sometimes solves."},
+        "how": ["c2", "c3", "c4", "c5", "c7", "c8"],
+        "found": ["c6", "c9", "c10", "c11"],
+        "limits": ["c12"],
+        "changed_chapters": ["c13"],
+        "verdict": ["c15"],
+        "reference": ["c14", "src"],
+        "hidden": ["iv"],
+        "changed_html": """<p>R1 was the first openly released model to match OpenAI's o1 on maths and code, with its weights, its method and six distilled small models. Reinforcement learning on rewards a program can check became a standard post-training stage, and GRPO, with fixes such as DAPO and Dr. GRPO, became the default algorithm for it.</p>
+<p><b>What to remember.</b> Reward only checkable answers, compare each answer with its group instead of a critic, and a large base model learns to reason on its own. Then add a little SFT for readability, and distil the result into small models.</p>""",
+        "strip": [r'<h3>Try it: what one question teaches</h3>\s*'],
+        "edits": [],
+    },
     "papers/harness-engineering": {
         "analogy": "Think of an engine on a workbench. It has all the power, but it goes nowhere until you build a car around it, with steering, brakes and a fuel gauge. The model is the engine. The harness is everything else, and this paper opens up eleven real cars to see how they are built.",
         "picture": HARNESS_PICTURE,

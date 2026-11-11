@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=a5044846">
+<link rel="stylesheet" href="../../../assets/site.css?v=76dc2842">
 <link rel="stylesheet" href="../../../assets/lx-70221ae6.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -35,7 +35,7 @@
 </div></header>
 <main id="main" class="page-wide lesson-grid" data-lesson="papers/attention-is-all-you-need">
 <aside class="contents" aria-label="Papers contents">
-  <details class="contents-box" open><summary>Papers contents</summary><details class="mod" open><summary>Models</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/papers/attention-is-all-you-need/"><span class="dot" data-key="papers/attention-is-all-you-need" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Attention Is All You Need</span></a></li></ol></details><details class="mod"><summary>Agents and memory</summary><ol><li><a href="../../../tracks/papers/harness-engineering/"><span class="dot" data-key="papers/harness-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Harness Engineering</span></a></li><li><a href="../../../tracks/papers/context-language-models/"><span class="dot" data-key="papers/context-language-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Context Language Models</span></a></li></ol></details></details>
+  <details class="contents-box" open><summary>Papers contents</summary><details class="mod" open><summary>Models</summary><ol><li><a class="current" aria-current="page" href="../../../tracks/papers/attention-is-all-you-need/"><span class="dot" data-key="papers/attention-is-all-you-need" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Attention Is All You Need</span></a></li></ol></details><details class="mod"><summary>Training and reasoning</summary><ol><li><a href="../../../tracks/papers/deepseek-r1/"><span class="dot" data-key="papers/deepseek-r1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>DeepSeek-R1</span></a></li></ol></details><details class="mod"><summary>Agents and memory</summary><ol><li><a href="../../../tracks/papers/harness-engineering/"><span class="dot" data-key="papers/harness-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Harness Engineering</span></a></li><li><a href="../../../tracks/papers/context-language-models/"><span class="dot" data-key="papers/context-language-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Context Language Models</span></a></li></ol></details></details>
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-1">Models</a><span aria-hidden="true">/</span><b aria-current="page">Attention Is All You Need</b></nav>
@@ -324,7 +324,7 @@
   <p class="small">The attention scores in the first lab are illustrative. All other numbers come from the paper. @datawithsuman</p>
 </section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
   
-  <nav class="prev-next" aria-label="Previous and next lesson"><p class="first-note">This is the first lesson</p><a class="btn btn-track" rel="next" href="../../../tracks/papers/harness-engineering/"><span class="pn-label">Next</span>Harness Engineering</a></nav>
+  <nav class="prev-next" aria-label="Previous and next lesson"><p class="first-note">This is the first lesson</p><a class="btn btn-track" rel="next" href="../../../tracks/papers/deepseek-r1/"><span class="pn-label">Next</span>DeepSeek-R1</a></nav>
 </article>
 <div class="rail"><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="gist"><a href="#paper">The paper</a></li><li data-panel="gist"><a href="#problem-sec">The problem</a></li><li data-panel="gist"><a href="#idea">The idea</a></li><li data-panel="gist"><a href="#play">Play</a></li><li data-panel="method"><a href="#c2">How it was done before</a></li><li data-panel="method"><a href="#c3">The core idea: scaled dot-product attention</a></li><li data-panel="method"><a href="#c4">Multi-head attention</a></li><li data-panel="method"><a href="#c5">Positional encoding</a></li><li data-panel="method"><a href="#c6">The full architecture</a></li><li data-panel="method"><a href="#c7">Training</a></li><li data-panel="results"><a href="#found">What they found</a></li><li data-panel="results"><a href="#limits">Where it falls short</a></li><li data-panel="why"><a href="#changed">What it changed</a></li><li><a href="#reference">Key terms and sources</a></li></ul></nav><aside class="related" aria-label="Related"><p class="eyebrow">Related</p><ul><li><span class="mono-mini">Lesson</span><a href="../../../tracks/fundamentals/multi-head-attention/">Multi-Head Attention</a></li></ul></aside></div>
 </main>
@@ -462,7 +462,7 @@
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=a5044846"></script>
-<script src="../../../assets/site.js?v=a5044846"></script>
+<script src="../../../assets/search-index.js?v=76dc2842"></script>
+<script src="../../../assets/site.js?v=76dc2842"></script>
 </body>
 </html>

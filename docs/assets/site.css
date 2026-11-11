@@ -610,3 +610,6 @@ body.rm-open { overflow: hidden; }
 .mock-listen li { position: relative; padding-left: 24px; }
 .mock-listen li::before { content: "✓"; position: absolute; left: 4px; color: var(--chip); font-weight: 700; }
 @media (max-width: 720px) { .mock-timer { position: static; } }
+
+/* long equations: scale down to fit phone screens instead of being clipped */
+@media (max-width:700px){.eq mjx-container svg{max-width:100%!important;height:auto!important}}

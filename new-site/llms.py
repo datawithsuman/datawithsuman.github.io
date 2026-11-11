@@ -27,7 +27,7 @@ LESSONS = {
     "policy-gradients-for-llms": {"prereqs": ["supervised-fine-tuning"]},
     "rlhf-and-reward-models": {"prereqs": ["policy-gradients-for-llms"]},
     "dpo": {"prereqs": ["rlhf-and-reward-models"]},
-    "reasoning-models-grpo": {"prereqs": ["rlhf-and-reward-models"]},
+    "reasoning-models-grpo": {"prereqs": ["rlhf-and-reward-models"], "related": ["papers/deepseek-r1"]},
     "distillation": {"prereqs": ["supervised-fine-tuning"]},
     "lora-and-qlora": {"prereqs": ["supervised-fine-tuning"]},
     "safety-training-and-jailbreaks": {"prereqs": ["supervised-fine-tuning", "rlhf-and-reward-models"]},
