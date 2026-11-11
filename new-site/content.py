@@ -72,6 +72,13 @@ TRACKS = [
                  "lead": "What if an AI agent could edit its own memory?",
                  "prereqs": ["papers/harness-engineering"], "related": ["papers/harness-engineering"]},
             ]},
+            {"name": "Prompting and reasoning", "desc": "Getting better answers by how you prompt, and models that think before answering.", "lessons": []},
+            {"name": "Fine-tuning and alignment", "desc": "Adapting models to your task and to people's preferences.", "lessons": []},
+            {"name": "Inference and serving", "desc": "Making models fast and cheap in production.", "lessons": []},
+            {"name": "Evaluation", "desc": "Measuring whether a model or system actually works.", "lessons": []},
+            {"name": "Safety and security", "desc": "Protecting real products from misuse, jailbreaks and prompt injection.", "lessons": []},
+            {"name": "AI interpretability", "desc": "Understanding what happens inside a model.", "lessons": []},
+            {"name": "Multimodal", "desc": "Models that work with images, video and text together.", "lessons": []},
         ],
     },
 ]

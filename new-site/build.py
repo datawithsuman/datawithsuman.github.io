@@ -338,6 +338,10 @@ def track_page(t, idx):
             for l in m["lessons"])
         heading = "h3" if m.get("part") else "h2"
         count = len(m["lessons"])
+        if not count:  # planned section with no lessons yet
+            mods += (f'<div class="panel module soon" id="module-{mi}"><div class="module-head"><span class="module-text"><span class="eyebrow">Module {mi}</span>'
+                     f'<{heading}>{m["name"]}</{heading}><span class="module-desc">{m["desc"]}</span></span><span class="chip soon-chip">Coming soon</span></div></div>')
+            continue
         mods += (f'<details class="panel module" id="module-{mi}"{" open" if mi == 1 else ""}><summary><span class="module-text"><span class="eyebrow">Module {mi} · {count} lesson{"" if count == 1 else "s"}</span>'
                  + ("" if m.get("hide_name") else f'<{heading}>{m["name"]}</{heading}>') + f'<span class="module-desc">{m["desc"]}</span></span></summary>'
                  f'<ol class="rows">{rows}</ol></details>')
@@ -406,6 +410,8 @@ def contents_html(l, root):
     t = l["track"]
     out, part = "", None
     for m in t["modules"]:
+        if not m["lessons"]:
+            continue
         if m.get("part") and m["part"] != part:
             part = m["part"]
             out += f'<p class="contents-part">{part}</p>'
