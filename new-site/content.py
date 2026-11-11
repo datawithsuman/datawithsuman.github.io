@@ -62,10 +62,12 @@ TRACKS = [
                  "prereqs": ["fundamentals/supervised-fine-tuning"],
                  "related": ["fundamentals/lora-and-qlora"]},
             ]},
-            {"name": "Recent research", "desc": "Newer papers on how AI agents are built and how they manage context.", "lessons": [
+            {"name": "Agents and tool use", "desc": "Models that plan, call tools and take actions.", "lessons": [
                 {"slug": "harness-engineering", "title": "Harness Engineering", "type": "paper", "minutes": 25, "imported": True,
                  "lead": "What is actually inside a coding agent?",
                  "prereqs": ["ai-engineering/what-is-an-agent"], "related": ["papers/context-language-models"]},
+            ]},
+            {"name": "Context engineering and RAG", "desc": "Getting the right information into the model's context.", "lessons": [
                 {"slug": "context-language-models", "title": "Context Language Models", "type": "paper", "minutes": 8, "imported": True,
                  "lead": "What if an AI agent could edit its own memory?",
                  "prereqs": ["papers/harness-engineering"], "related": ["papers/harness-engineering"]},
