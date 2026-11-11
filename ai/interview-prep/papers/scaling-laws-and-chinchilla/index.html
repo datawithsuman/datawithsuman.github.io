@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scaling Laws and Chinchilla, Explained · @datawithsuman</title>
+<meta name="description" content="Scaling Laws (Kaplan 2020) and Chinchilla (Hoffmann 2022), explained: C ≈ 6ND, power laws, Kaplan's compute split, Chinchilla's three methods and loss formula, 20 tokens per parameter, Chinchilla vs Gopher, why they disagreed, and what came after, with labs and an interview section.">
+<meta property="og:title" content="Scaling Laws and Chinchilla, Explained">
+<meta property="og:description" content="Scaling Laws (Kaplan 2020) and Chinchilla (Hoffmann 2022), explained: C ≈ 6ND, power laws, Kaplan's compute split, Chinchilla's three methods and loss formula, 20 tokens per parameter, Chinchilla vs Gopher, why they disagreed, and what came after, with labs and an interview section.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- page: Harness Engineering ---- */
+.tablewrap{overflow-x:auto;margin:12px 0}
+table.data td,table.data th{text-align:center;font-variant-numeric:tabular-nums}
+table.data td.y{color:var(--ok);font-weight:600} table.data td.n{color:var(--bad);font-weight:600}
+table.data tr.flag td{background:rgba(167,139,250,.08)}
+.stage svg text.cap{fill:var(--dim);font-size:13px}
+.stage svg text.lbl{fill:var(--faint);font-size:12px}
+.stage svg text.sm{fill:var(--dim);font-size:12px}
+.stage svg text.big{fill:var(--ink);font-size:15px;font-weight:600}
+.stage svg text.yr{fill:var(--dim);font:500 13px var(--mono)}
+.stage svg text.nm{fill:var(--ink);font-size:14px;font-weight:600}
+.stage svg text.stTxt,.stage svg tspan.stTxt{fill:var(--st);font-weight:600}
+.stage svg text.okTxt,.stage svg tspan.okTxt{fill:var(--ok);font-weight:600}
+.stage svg text.badTxt,.stage svg tspan.badTxt{fill:var(--bad);font-weight:600}
+.stage svg text.aTxt{fill:var(--a)}
+.stage svg .edge{stroke:#56607a;stroke-width:1.6;fill:none}
+.stage svg .axis{stroke:var(--line);stroke-width:2;fill:none}
+.stage svg .nodeB{fill:#2a2214;stroke:var(--b);stroke-width:1.6}
+.stage svg .nodeA{fill:#0f2e2c;stroke:var(--a);stroke-width:1.6}
+.stage svg .nodeInfo,.stage svg .noteInfo{fill:#132440;stroke:var(--info);stroke-width:1.4}
+.stage svg .leafY{fill:#123322;stroke:var(--ok);stroke-width:1.4}
+.stage svg .leafN{fill:#3a1a1d;stroke:var(--bad);stroke-width:1.4}
+.stage svg .noteSt{fill:#221a3c;stroke:var(--st);stroke-width:1.4}
+.stage svg .noteBad{fill:#2c171b;stroke:var(--bad);stroke-width:1.4}
+.stage svg .feat{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .featOn{fill:rgba(167,139,250,.18);stroke:var(--st);stroke-width:2}
+.stage svg .dotA{fill:var(--a)} .stage svg .dotB{fill:var(--b)} .stage svg .dotSt{fill:var(--st)} .stage svg .dotBad{fill:var(--bad)}
+.stage svg .chipY{fill:#123322;stroke:var(--ok)} .stage svg .chipN{fill:#3a1a1d;stroke:var(--bad)}
+.stage svg .chipOut{fill:none;stroke:var(--bad);stroke-dasharray:4 3;stroke-width:2}
+.stage svg .ring{fill:none;stroke:var(--st);stroke-width:2.4}
+.stage svg .tbox{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .tboxOn{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cell{fill:var(--bg2);stroke:var(--line)} .stage svg .cellSt{fill:#221a3c;stroke:var(--st)}
+.tablewrap{overflow-x:auto;margin:12px 0}
+.stage svg .harnessBox{fill:rgba(45,212,191,.05);stroke:var(--a);stroke-width:1.8;stroke-dasharray:6 4}
+.stage svg .hub{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cut{stroke:var(--st);stroke-width:2.4;stroke-dasharray:5 4}
+.stage svg text.chipT{fill:var(--a);font:600 13px var(--mono);text-anchor:middle}
+.stage svg text.mono,.stage svg tspan.mono{font-family:var(--mono)}
+.card.task{border-color:rgba(245,165,36,.5)} .taskq{font-size:20px;font-weight:600;margin:6px 0 8px;color:var(--b)}
+pre.code{overflow-x:auto;background:#0a0f19;border:1px solid var(--line);border-radius:12px;padding:14px 0;font:13px/1.65 var(--mono);color:#cfd6e4;margin:18px 0 10px}
+pre.code .cl{display:block;padding:0 16px;white-space:pre;transition:background .3s}
+pre.code .cm{color:var(--faint)}
+[data-scene].js pre.code .cl.glow{filter:none;background:rgba(45,212,191,.13);box-shadow:inset 3px 0 var(--a);color:var(--ink)}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px} .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid4 .card,.grid2 .card{margin:0} .card.mini p{margin:0;font-size:15px;color:var(--dim)}
+.vsrow{display:grid;grid-template-columns:1fr 1fr;gap:12px} .vsrow>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--dim)}
+.vsrow b{display:block;font-size:18px;color:var(--ink);margin-top:4px}
+.sel{font:500 14px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1;min-width:0}
+.verdictTag{font:600 12px var(--mono);border-radius:6px;padding:2px 8px;border:1px solid;white-space:nowrap}
+.vt-ok{color:var(--ok);border-color:rgba(74,222,128,.5)} .vt-st{color:var(--st);border-color:rgba(167,139,250,.5)} .vt-bad{color:var(--bad);border-color:rgba(248,113,113,.5)} .vt-dim{color:var(--dim);border-color:var(--line)} .vt-b{color:var(--b);border-color:rgba(245,165,36,.5)}
+.layers{display:grid;gap:8px;margin:4px 0}
+.layer{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.layer .ln{font-weight:600} .layer.skip{opacity:.4}
+.layer.hit{border-color:var(--a);background:rgba(45,212,191,.06)}
+.evid .bar{grid-template-columns:minmax(130px,34%) 1fr 60px}
+.bars.signed .track{position:relative;background:var(--bg2)} .bars.signed .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.bars.signed .fill{position:absolute;top:0;height:100%}
+ul.cav li,.srcs li{margin-bottom:8px} ol.recs li{margin-bottom:6px;font-size:15px}
+dl.terms{display:grid;grid-template-columns:minmax(140px,30%) 1fr;gap:8px 16px;margin:0}
+dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
+.verdict{border:1px solid rgba(45,212,191,.45);border-radius:var(--r);background:var(--card);padding:18px 20px}
+@media(max-width:560px){.grid4,.grid2,.vsrow{grid-template-columns:1fr} dl.terms{grid-template-columns:1fr} .layer{grid-template-columns:1fr;gap:2px}}
+.sbars{display:grid;gap:9px;margin:10px 0}
+.sbars .track{position:relative;height:14px;background:var(--bg2);border-radius:7px} .sbars .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.sbars .fill{position:absolute;top:0;height:100%;border-radius:7px}
+span.mono{font-family:var(--mono)}
+pre.code,code{font-variant-ligatures:none}
+.lab label:has(select){flex-wrap:wrap} .lab label .sel{flex:1 1 220px}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+.lab .chk{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:15px}
+#lrPlot{width:100%;height:auto;margin:10px 0}
+@media (max-width:700px){.eq mjx-container svg{max-width:100%;height:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Papers Explained</a><a class="h" href="../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Deep explainer · Paper · Foundations</div>
+  <h1>Scaling Laws and Chinchilla: how big should a model be, and how much should it read?</h1>
+  <div class="meta">Kaplan et al., OpenAI, 2020 · arXiv <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">2001.08361</a> &nbsp;+&nbsp; Hoffmann et al., DeepMind, 2022 (NeurIPS 2022) · arXiv <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">2203.15556</a> · 10 sources, checked 11 Nov 2026</div>
+  <div class="tldr"><b>In one breath:</b> in 2020, OpenAI showed that a language model's loss falls as a smooth, predictable <b>power law</b> as you add parameters, data or compute, so you can forecast a big model from small ones. Their advice for a fixed compute budget: spend most of it on a <b>bigger model</b> and only a little on more data. The field listened: GPT-3 (175B) and Gopher (280B) were trained on only about 300 billion tokens. In 2022, DeepMind redid the experiment with 400+ models and found the opposite balance: model size and data should grow <b>equally</b>, about <b>20 training tokens per parameter</b>. To prove it, they trained <b>Chinchilla</b>, 70B parameters on 1.4 trillion tokens, with the same compute as the 280B Gopher. It beat Gopher on almost every task and costs a quarter as much to run.</div>
+  <div class="legend"><span><i style="background:var(--a)"></i>Chinchilla and model size</span><span><i style="background:var(--b)"></i>Kaplan and earlier models</span><span><i style="background:var(--st)"></i>data and tokens</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<section class="ch" id="example" data-toc="0 · The running example">
+  <div class="chap">0 · The running example</div>
+  <h2>One compute budget, two ways to spend it</h2>
+  <div class="card task"><span class="mono small">from the Chinchilla paper</span><p class="taskq">You have the compute DeepMind used for Gopher: about 5.8 × 10<sup>23</sup> floating-point operations. Do you train a <b>280B</b> model on 300 billion tokens, or a <b>70B</b> model on 1.4 trillion tokens?</p><p class="small">Both cost almost the same to train. Gopher took the first option, as everyone did in 2021. Chinchilla took the second <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§4</a></span>. We'll follow this choice through both papers, and you'll be able to try every option in between.</p></div>
+</section>
+
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <span class="pill bad">One expensive shot</span>
+  <h2>You only get to train the big model once</h2>
+  <p>A large training run is planned around a fixed budget: so many accelerators for so many weeks. The Chinchilla paper puts it plainly: "it is typically only feasible to train these large models once", so the model size and the amount of data have to be right before you start <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§1</a></span>.</p>
+  <div class="grid2">
+    <div class="card bad"><h4>Too big, too little data</h4><p>A huge model that reads too little is under-trained: it could have learned much more. It's also expensive to serve, forever.</p></div>
+    <div class="card bad"><h4>Too small, too much data</h4><p>A small model run for a very long time stops improving: its size caps how good it can get, and extra tokens are wasted.</p></div>
+  </div>
+  <p>Somewhere between the two is a best split. Scaling laws are how you find it from small, cheap experiments instead of guessing at full scale.</p>
+</section>
+
+<section class="ch" id="c2" data-toc="2 · The compute rule">
+  <div class="chap">2 · The compute rule</div>
+  <span class="pill info">C ≈ 6ND</span>
+  <h2>Training compute is roughly six times parameters times tokens</h2>
+  <div class="reader" data-reader='[
+    {"t":"c","c":"info","label":"training compute","say":"C: the total floating-point operations (FLOPs) to train the model."},
+    {"t":"s","c":"b","label":"six operations","say":"About 2 per parameter per token for the forward pass and 4 for the backward pass."},
+    {"t":"n","c":"a","label":"model size","say":"N: the number of parameters."},
+    {"t":"d","c":"st","label":"data","say":"D: the number of training tokens."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-c}{C} \approx \class{term t-s}{6}\,\class{term t-n}{N}\,\class{term t-d}{D}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Kaplan §1.3, §2.1 <span class="src"><a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">p. 6–7</a></span> · hover a term.</p>
+  </div>
+  <p>This one line is why the question is a trade-off. With C fixed, N × D is fixed: double the model and you can only afford half the tokens. For our example, 280B × 300B and 70B × 1.4T both come to about 6 × 10<sup>23</sup> FLOPs.</p>
+</section>
+
+<section class="ch" id="c3" data-toc="3 · Kaplan: smooth power laws">
+  <div class="chap">3 · Kaplan et al. (2020)</div>
+  <span class="pill b">Loss is predictable</span>
+  <h2>Loss falls as a power law in size, data and compute</h2>
+  <p>OpenAI trained decoder-only Transformers from 768 to 1.5 billion parameters (not counting embeddings) on WebText2, about 23 billion tokens, and measured the test loss <span class="src"><a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">§2–3</a></span>. When only one factor limits the model, the loss follows a straight line on a log-log plot:</p>
+  <div class="reader" data-reader='[
+    {"t":"l","c":"info","label":"test loss","say":"L: cross-entropy loss in nats per token. Lower is better."},
+    {"t":"k","c":"b","label":"a fitted constant","say":"N_c ≈ 8.8 × 10^13. Its exact value depends on the tokenizer, so it has no deep meaning."},
+    {"t":"n","c":"a","label":"model size","say":"N: non-embedding parameters, for a model trained to convergence on plenty of data."},
+    {"t":"e","c":"st","label":"the exponent","say":"α_N ≈ 0.076. Doubling N multiplies the loss by 2^−0.076 ≈ 0.95: about 5% lower."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-l}{L(N)} = \left(\frac{\class{term t-k}{N_c}}{\class{term t-n}{N}}\right)^{\class{term t-e}{\alpha_N}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 1.1 <span class="src"><a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">§1.2</a></span>. Data and compute have the same form, with α<sub>D</sub> ≈ 0.095 and α<sub>C</sub> ≈ 0.050 · hover a term.</p>
+  </div>
+  <h3>What else they found</h3>
+  <ul>
+    <li><b>Shape barely matters.</b> Depth versus width, number of heads: performance depends "very weakly" on these, and strongly on scale.</li>
+    <li><b>The trends held over many orders of magnitude</b> with no sign of bending at the top end.</li>
+    <li><b>Bigger models learn faster per token.</b> They reach the same loss with fewer steps and less data.</li>
+    <li><b>So train big and stop early.</b> For a fixed budget, the best result came from "training very large models and stopping significantly short of convergence".</li>
+  </ul>
+  <h3>Their recipe for spending more compute</h3>
+  <p>Kaplan fitted N<sub>opt</sub> ∝ C<sup>0.73</sup> and D<sub>opt</sub> ∝ C<sup>0.27</sup>. For every 10× more compute, make the model about <b>5.4× bigger</b> and give it only about <b>1.9× more data</b>. Most of the extra compute goes into parameters <span class="src"><a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">§6, Fig. 14</a></span>.</p>
+</section>
+
+<section class="ch" id="c4" data-toc="4 · What the field did next">
+  <div class="chap">4 · What the field did next</div>
+  <span class="pill b">Bigger models, same data</span>
+  <h2>Every big model read about 300 billion tokens</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Model</th><th>Parameters</th><th>Training tokens</th><th>Tokens per parameter</th></tr></thead>
+    <tbody>
+      <tr><td>LaMDA</td><td class="num">137B</td><td class="num">168B</td><td class="num">1.2</td></tr>
+      <tr><td>GPT-3</td><td class="num">175B</td><td class="num">300B</td><td class="num">1.7</td></tr>
+      <tr><td>Jurassic-1</td><td class="num">178B</td><td class="num">300B</td><td class="num">1.7</td></tr>
+      <tr><td>Gopher</td><td class="num">280B</td><td class="num">300B</td><td class="num">1.1</td></tr>
+      <tr><td>MT-NLG</td><td class="num">530B</td><td class="num">270B</td><td class="num">0.5</td></tr>
+      <tr><td><b>Chinchilla</b></td><td class="num"><b>70B</b></td><td class="num"><b>1,400B</b></td><td class="num"><b>20</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Chinchilla Table 1 <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§1</a></span>; tokens per parameter computed from it.</p>
+  <p>Following Kaplan and the GPT-3 setup, labs raced to more parameters while keeping data around 300 billion tokens. The largest dense model, MT-NLG, reached 530B parameters, over 3× GPT-3, in two years <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§5</a></span>.</p>
+</section>
+
+<section class="ch" id="c5" data-toc="5 · Chinchilla: asking again">
+  <div class="chap">5 · Hoffmann et al. (2022)</div>
+  <span class="pill a">Three methods, one answer</span>
+  <h2>400 models later, a different split</h2>
+  <p>DeepMind asked the same question: for a fixed budget C, which N and D give the lowest loss? They trained over 400 models from 70 million to over 16 billion parameters on 5 to 500 billion tokens, and estimated the answer three independent ways <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§3</a></span>:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Approach</th><th>How</th><th>N<sub>opt</sub> ∝ C<sup>a</sup></th><th>D<sub>opt</sub> ∝ C<sup>b</sup></th></tr></thead>
+    <tbody>
+      <tr><td>1 · Training curves</td><td>Train each model size for 4 lengths; at every compute level, take the run with the lowest loss</td><td class="num">0.50</td><td class="num">0.50</td></tr>
+      <tr><td>2 · IsoFLOP profiles</td><td>At 9 fixed budgets, vary model size and find the bottom of each U-shaped loss curve</td><td class="num">0.49</td><td class="num">0.51</td></tr>
+      <tr><td>3 · Fitted loss formula</td><td>Fit L(N, D) to all runs, then minimise it under C = 6ND</td><td class="num">0.46</td><td class="num">0.54</td></tr>
+      <tr><td><i>Kaplan et al. 2020</i></td><td></td><td class="num">0.73</td><td class="num">0.27</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 2 <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§3.4</a></span>.</p>
+  <p>All three agree: a ≈ b ≈ 0.5. <b>Every time you double the model, double the data.</b> They also found the same result on two other datasets, C4 and GitHub code.</p>
+  <h3>Why Kaplan got a different answer, according to DeepMind</h3>
+  <p>Kaplan used one learning-rate schedule length for every run. Losses read off partway through a long schedule are worse than a run whose schedule matches its length, which made short training look worse than it is, and pushed the advice towards bigger models. Most of Kaplan's runs were also small, many under 100M parameters <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§2</a></span>. Later work found other causes too (chapter 10).</p>
+</section>
+
+<section class="ch" id="c6" data-toc="6 · The loss formula">
+  <div class="chap">6 · The loss formula</div>
+  <span class="pill a">Approach 3</span>
+  <h2>Loss = the text's own entropy + a size penalty + a data penalty</h2>
+  <div class="reader" data-reader='[
+    {"t":"e","c":"info","label":"the floor","say":"E ≈ 1.69: the loss of a perfect model, roughly the entropy of natural text. No model can go below it."},
+    {"t":"n","c":"a","label":"too few parameters","say":"A / N^α, with A ≈ 406.4 and α ≈ 0.34: how much a model of size N falls short of perfect, even with unlimited training."},
+    {"t":"d","c":"st","label":"too little data","say":"B / D^β, with B ≈ 410.7 and β ≈ 0.28: the extra loss from seeing only D tokens."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\hat{L}(N, D) = \class{term t-e}{E} + \class{term t-n}{\frac{A}{N^{\alpha}}} + \class{term t-d}{\frac{B}{D^{\beta}}}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equations 2 and 10 <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§3.3, App. D.2</a></span> · hover a term.</p>
+  </div>
+  <p>With C fixed, making N bigger shrinks the size penalty but forces D smaller, which grows the data penalty. The best model balances the two. Because α and β are close, the balance point moves with N and D growing at nearly the same rate.</p>
+  <h3>Try it: spend one budget</h3>
+  <div class="card lab" id="isoLab">
+    <label for="iC">Compute budget <select id="iC"></select></label>
+    <label for="iN">Model size <input type="range" id="iN" min="0" max="100" step="1" value="50"><output></output></label>
+    <svg id="isoPlot" viewBox="0 0 600 200" role="img" aria-label="Predicted loss against model size for a fixed compute budget"></svg>
+    <div class="vsrow"><div>Tokens it can afford: <b class="mono" id="iD">—</b></div><div>Tokens per parameter: <b class="mono" id="iR">—</b></div><div>Predicted loss: <b class="mono" id="iL">—</b></div></div>
+    <p class="mono small" id="iMsg">—</p>
+    <p class="small">Computed from the fitted formula with the paper's published constants and D = C ÷ 6N. The loss differences look small, but on this scale they are large: Chinchilla's whole advantage over Gopher is about 0.05. With these rounded constants the formula's minimum sits well above 20 tokens per parameter (about 90 at Gopher's budget, a 32B model; the paper quotes about 40B from its unrounded fit). That's why approach 3 recommends smaller models than approaches 1 and 2, and why the "20 tokens per parameter" rule comes from approach 1. A later replication found this fit unreliable (chapter 10).</p>
+  </div>
+</section>
+
+<section class="ch" id="c7" data-toc="7 · The 20 tokens rule">
+  <div class="chap">7 · The answer</div>
+  <span class="pill ok">About 20 tokens per parameter</span>
+  <h2>A compute-optimal model reads about 20 tokens per parameter</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Parameters</th><th>Compute-optimal tokens</th><th>Training FLOPs</th></tr></thead>
+    <tbody>
+      <tr><td class="num">400M</td><td class="num">8.0B</td><td class="num">1.92 × 10<sup>19</sup></td></tr>
+      <tr><td class="num">1B</td><td class="num">20.2B</td><td class="num">1.21 × 10<sup>20</sup></td></tr>
+      <tr><td class="num">10B</td><td class="num">205.1B</td><td class="num">1.23 × 10<sup>22</sup></td></tr>
+      <tr><td class="num">67B</td><td class="num">1.5T</td><td class="num">5.76 × 10<sup>23</sup> (Gopher's budget)</td></tr>
+      <tr><td class="num">175B</td><td class="num">3.7T</td><td class="num">3.85 × 10<sup>24</sup></td></tr>
+      <tr><td class="num">280B</td><td class="num">5.9T</td><td class="num">9.90 × 10<sup>24</sup></td></tr>
+      <tr><td class="num">1T</td><td class="num">21.2T</td><td class="num">1.27 × 10<sup>26</sup></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 3, from approach 1 <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§3.4</a></span>.</p>
+  <p>Divide the two columns and you get about 20 tokens per parameter at every size: the rule of thumb everyone quotes. By this table, GPT-3 should have read 3.7 trillion tokens, not 300 billion, and a 1-trillion-parameter model isn't worth training unless you have about 250× Gopher's compute.</p>
+  <h3>Try it: 10× more compute, two recipes</h3>
+  <div class="card lab" id="allocLab">
+    <label for="aM">More compute than today <input type="range" id="aM" min="0" max="30" step="1" value="10"><output></output></label>
+    <div class="bars" id="allocBars" data-max="100"></div>
+    <p class="small">Kaplan: N × m<sup>0.73</sup>, D × m<sup>0.27</sup>. Chinchilla: N × m<sup>0.5</sup>, D × m<sup>0.5</sup>. Bars are on a log scale, so equal lengths mean equal growth factors.</p>
+  </div>
+</section>
+
+<section class="ch" id="c8" data-toc="8 · Chinchilla vs Gopher">
+  <div class="chap">8 · Evidence</div>
+  <span class="pill ok">Smaller, and better</span>
+  <h2>A 70B model beat a 280B model with the same compute</h2>
+  <p>The analysis put the best size for Gopher's budget between 40B and 70B. DeepMind trained the larger end, <b>Chinchilla: 70B parameters on 1.4 trillion tokens</b>, with the same architecture family and data source (MassiveText) as Gopher. The main changes were AdamW instead of Adam and a slightly different tokenizer <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§4.1</a></span>.</p>
+  <div class="card evid"><h4>MMLU, 5-shot accuracy (Table 6)</h4><div class="bars" id="mmluBars" data-max="100"></div></div>
+  <ul>
+    <li><b>MMLU:</b> 67.6% against Gopher's 60.0% and GPT-3's 43.9%. It even beat expert forecasts for June 2023 (63.4%). The abstract says 67.5%; Table 6 says 67.6%.</li>
+    <li><b>BIG-bench:</b> 65.1% average against 54.4%; worse than Gopher on only 4 of 62 tasks.</li>
+    <li><b>Reading:</b> 77.4% on LAMBADA against 74.5%, and more than 10 points better on RACE.</li>
+    <li><b>Cheaper to use:</b> 4× smaller, so 4× less memory and roughly 4× less compute per generated token, for the model's whole life.</li>
+  </ul>
+  <div class="card ok"><h4>Why the last point matters</h4><p>Training happens once; inference happens billions of times. A model trained compute-optimally is not just better for the same training cost, it's also far cheaper to deploy. That observation later pushed labs even further towards smaller models trained on more data (chapter 11).</p></div>
+</section>
+
+<section class="ch" id="c9" data-toc="9 · Under the hood">
+  <div class="chap">9 · Under the hood</div>
+  <span class="pill info">Training details</span>
+  <h2>What else the two papers measured</h2>
+  <div class="tablewrap"><table class="t">
+    <tbody>
+      <tr><td>Kaplan: data</td><td>WebText2, about 23B tokens, byte-pair encoding with 50,257 tokens, context 1,024</td></tr>
+      <tr><td>Kaplan: critical batch size</td><td>Grows as loss falls: roughly 1–2 million tokens for their largest models</td></tr>
+      <tr><td>Kaplan: forgiving sizes</td><td>Models between 0.6× and 2.2× the optimal size need only about 20% more compute for the same loss</td></tr>
+      <tr><td>Kaplan: overfitting</td><td>The penalty depends on N<sup>0.74</sup>/D: 8× the model needs about 5× the data to avoid it</td></tr>
+      <tr><td>Chinchilla: architecture</td><td>80 layers, d<sub>model</sub> 8,192, 64 heads; batch 1.5M rising to 3M tokens; bfloat16 with a float32 copy of the weights</td></tr>
+      <tr><td>Chinchilla: hardware</td><td>TPUv3 and TPUv4, with JAX and Haiku</td></tr>
+      <tr><td>Chinchilla: schedule lesson</td><td>Set the cosine learning-rate schedule to the planned number of tokens; overshooting it by more than about 25% hurts</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Kaplan §1–5, Chinchilla §2, §4.1 and App. B <span class="src"><a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">Kaplan</a> · <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Chinchilla</a></span>.</p>
+</section>
+
+<section class="ch" id="c10" data-toc="10 · Why they disagreed">
+  <div class="chap">10 · Why they disagreed</div>
+  <span class="pill b">Later explanations</span>
+  <h2>Two later papers traced the gap</h2>
+  <div class="grid2">
+    <div class="card"><h4>Counting and scale</h4><p>Pearce and Song showed much of the gap comes from Kaplan counting only non-embedding parameters, combined with working at small scale. Simulating Chinchilla's study under those conditions reproduces exponents close to Kaplan's <span class="src"><a href="https://arxiv.org/abs/2406.12907" target="_blank" rel="noopener">arXiv 2406.12907</a></span>.</p></div>
+    <div class="card"><h4>Three training details</h4><p>Porian et al. reproduced Kaplan's law and found three causes: ignoring the cost of the last layer, the warm-up length, and optimiser settings not tuned per scale. Fixing them gave "excellent agreement" with Chinchilla. They also found careful learning-rate decay was <i>not</i> essential, against DeepMind's own explanation <span class="src"><a href="https://arxiv.org/abs/2406.19146" target="_blank" rel="noopener">arXiv 2406.19146</a></span>.</p></div>
+  </div>
+  <div class="card bad"><h4>A problem with approach 3</h4><p>Besiroglu et al. rebuilt the data from the paper's plots and found the published fit of the loss formula didn't match the data, and that its confidence intervals were implausibly narrow. Refitting gave results consistent with approaches 1 and 2, so the headline answer stands, but the exact constants in chapter 6 shouldn't be trusted to many digits <span class="src"><a href="https://arxiv.org/abs/2404.10102" target="_blank" rel="noopener">arXiv 2404.10102</a></span>.</p></div>
+</section>
+
+<section class="ch" id="c11" data-toc="11 · Limits and what came after">
+  <div class="chap">11 · Limits and what came after</div>
+  <span class="pill bad">Compute-optimal isn't the whole story</span>
+  <h2>The answer to a narrow question</h2>
+  <h3>Limits the authors list</h3>
+  <ul>
+    <li><b>Only two large runs.</b> Chinchilla and Gopher are the only big-scale test, with nothing in between.</li>
+    <li><b>The power law is assumed.</b> They saw some bending at high compute, so they "may still be overestimating the optimal size of large models".</li>
+    <li><b>Under one epoch.</b> Every run saw each token at most once; repeating data wasn't studied.</li>
+    <li><b>Quality is assumed.</b> More tokens help only if they're good tokens, and web-scale data brings toxicity and privacy problems <span class="src"><a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">§5</a></span>.</li>
+  </ul>
+  <h3>What came after</h3>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Idea</th><th>What it says</th></tr></thead>
+    <tbody>
+      <tr><td><b>Count inference too</b> (Sardana et al. 2023)</td><td>If a model will serve about a billion requests, train it smaller and longer than Chinchilla-optimal. Quality kept improving up to 10,000 tokens per parameter <span class="src"><a href="https://arxiv.org/abs/2401.00448" target="_blank" rel="noopener">arXiv 2401.00448</a></span>.</td></tr>
+      <tr><td><b>Running out of data</b> (Muennighoff et al. 2023)</td><td>Up to about 4 passes over repeated data is nearly as good as fresh data; beyond that, returns fall towards zero <span class="src"><a href="https://arxiv.org/abs/2305.16264" target="_blank" rel="noopener">arXiv 2305.16264</a></span>.</td></tr>
+      <tr><td><b>Over-trained open models</b></td><td>Meta's Llama 3 8B read about 15 trillion tokens, nearly 1,900 per parameter, about 90× the Chinchilla ratio, because a small model that's cheap to serve was the goal <span class="src"><a href="https://arxiv.org/abs/2407.21783" target="_blank" rel="noopener">Llama 3</a></span>.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card evid"><h4>Tokens per parameter, from 2020 to 2024</h4><div class="bars" id="tppBars" data-max="4"></div><p class="small">Log scale: each step is 10×. GPT-3, Gopher and Chinchilla from Chinchilla Table 1; Llama 3 8B from the Llama 3 report.</p></div>
+  <p>Chinchilla answered "what's the best model for this training budget?" Today's labs usually ask "what's the best model for this training <i>and serving</i> budget?", and that answer is smaller still. Both start from the same scaling-law method.</p>
+</section>
+
+<section class="ch" id="c12" data-toc="12 · Key terms">
+  <div class="chap">12 · Key terms</div>
+  <h2>Words to know</h2>
+  <dl class="terms">
+    <dt>Scaling law</dt><dd>A fitted formula, usually a power law, for how loss changes with model size, data or compute.</dd>
+    <dt>Power law</dt><dd>y ∝ x<sup>−α</sup>: a straight line on a log-log plot. Each doubling of x multiplies y by the same factor.</dd>
+    <dt>Compute-optimal</dt><dd>The model size and token count that give the lowest loss for a fixed training compute.</dd>
+    <dt>C ≈ 6ND</dt><dd>Training FLOPs ≈ 6 × parameters × tokens (2 for the forward pass, 4 for the backward pass).</dd>
+    <dt>IsoFLOP curve</dt><dd>Loss against model size at one fixed compute budget. Its lowest point is the compute-optimal size.</dd>
+    <dt>Tokens per parameter</dt><dd>Training tokens ÷ parameters. About 20 is Chinchilla-optimal; GPT-3 used 1.7.</dd>
+    <dt>Under-trained</dt><dd>A model that saw too few tokens for its size, so the same compute could have produced a better model.</dd>
+    <dt>Over-training</dt><dd>Deliberately training past compute-optimal to get a smaller model that's cheaper to serve.</dd>
+  </dl>
+</section>
+
+<section class="ch" id="c13" data-toc="13 · Verdict">
+  <div class="chap">13 · Verdict</div>
+  <h2>Read Chinchilla, skim Kaplan</h2>
+  <p><b>Read</b> Chinchilla §1, §3 and §4, with Figures 1–3 and Tables 1–3: they're short, clear, and the source of the "20 tokens per parameter" rule. <b>Skim</b> Kaplan's §1 summary and Figures 1–4 for the idea of predictable power laws; its compute-allocation advice is outdated. <b>Skip</b> the long benchmark appendices unless you need a specific number.</p>
+  <p>Then read one of the later reconciliation papers, since "why did Kaplan and Chinchilla disagree?" is a common follow-up question.</p>
+</section>
+
+<section class="ch" id="iv" data-toc="14 · Say it in an interview">
+  <div class="chap">14 · Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">"Scaling laws say a language model's loss falls as a smooth power law in parameters, data and compute, so you can predict a big model from small runs. Training compute is about 6 × parameters × tokens, so with a fixed budget, a bigger model means fewer tokens. Kaplan at OpenAI in 2020 said spend most extra compute on model size, which is why GPT-3 was 175B on only 300B tokens. Chinchilla at DeepMind in 2022 trained 400+ models and found size and data should grow equally, about 20 tokens per parameter. Their 70B model on 1.4 trillion tokens beat the 280B Gopher with the same compute, and is 4× cheaper to serve. Today labs often train even smaller models on far more data because inference cost matters too."</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Start from C ≈ 6ND and the fixed budget. Explain the power law (doubling parameters cuts loss by about 5% in Kaplan's fit) and why it lets you extrapolate. Give Kaplan's split (N ∝ C<sup>0.73</sup>) and how the field followed it. Then Chinchilla's three methods, the isoFLOP valley, and the loss formula E + A/N<sup>α</sup> + B/D<sup>β</sup>: a floor, a size penalty and a data penalty. Land on 20 tokens per parameter, Chinchilla vs Gopher (67.6% vs 60.0% MMLU), and the inference argument for training beyond it.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Where does 6ND come from?</summary><p>Each parameter does about one multiply and one add per token in the forward pass (2 FLOPs), and the backward pass costs about twice the forward pass (4 FLOPs). So about 6 FLOPs per parameter per token.</p></details>
+  <details class="qa"><summary>Why did Kaplan and Chinchilla disagree?</summary><p>Chinchilla blamed Kaplan's fixed learning-rate schedule and small models. Later work found Kaplan counted only non-embedding parameters at small scale, and that last-layer compute, warm-up and untuned optimiser settings also biased the result. Corrected, Kaplan's setup reproduces Chinchilla's roughly equal scaling.</p></details>
+  <details class="qa"><summary>Should you always train at 20 tokens per parameter?</summary><p>Only if training compute is all you care about. If the model will serve lots of traffic, a smaller model trained on many more tokens gives the same quality more cheaply overall. That's why Llama 3 8B read about 15T tokens, nearly 1,900 per parameter.</p></details>
+  <details class="qa"><summary>What does the Chinchilla loss formula mean?</summary><p>L = E + A/N<sup>α</sup> + B/D<sup>β</sup>. E is the irreducible entropy of text, A/N<sup>α</sup> is the penalty for a finite model, and B/D<sup>β</sup> is the penalty for finite data. With C fixed, you trade the last two against each other.</p></details>
+  <details class="qa"><summary>What happens when you run out of data?</summary><p>Repeating data for up to about 4 epochs is nearly as good as fresh data; beyond that the value of more compute falls towards zero. Data quality, deduplication and new sources such as code and synthetic data become the limit.</p></details>
+  <details class="qa"><summary>How would you use scaling laws on a real project?</summary><p>Train a ladder of small models at a few compute budgets, fit loss against size and tokens, check the fit predicts a held-out larger run, then pick the size and token count for your real budget, adjusted for expected inference load.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"Bigger models are always better." For a fixed budget, an over-sized model is worse.</li>
+    <li>"Chinchilla showed models should be smaller." It showed they should be smaller <i>for the same compute</i>, and trained on more data.</li>
+    <li>"20 tokens per parameter is optimal." It's compute-optimal for training only; deployment changes the answer.</li>
+    <li>"Kaplan was simply wrong." The power-law idea was right and still used; the compute split was off.</li>
+  </ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>Everything on this page comes from these</h2>
+  <ol class="srcs">
+    <li>Kaplan et al. (2020). Scaling Laws for Neural Language Models. <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">arXiv 2001.08361</a> (main text read in full)</li>
+    <li>Hoffmann et al. (2022). Training Compute-Optimal Large Language Models (Chinchilla). <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">arXiv 2203.15556</a> (read in full, including appendix D)</li>
+    <li>Brown et al. (2020). Language Models are Few-Shot Learners (GPT-3). <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">arXiv 2005.14165</a></li>
+    <li>Rae et al. (2021). Scaling Language Models: Methods, Analysis &amp; Insights from Training Gopher. <a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener">arXiv 2112.11446</a></li>
+    <li>Besiroglu et al. (2024). Chinchilla Scaling: A replication attempt. <a href="https://arxiv.org/abs/2404.10102" target="_blank" rel="noopener">arXiv 2404.10102</a></li>
+    <li>Pearce and Song (2024). Reconciling Kaplan and Chinchilla Scaling Laws. <a href="https://arxiv.org/abs/2406.12907" target="_blank" rel="noopener">arXiv 2406.12907</a></li>
+    <li>Porian et al. (2024). Resolving Discrepancies in Compute-Optimal Scaling of Language Models. <a href="https://arxiv.org/abs/2406.19146" target="_blank" rel="noopener">arXiv 2406.19146</a></li>
+    <li>Sardana et al. (2023). Beyond Chinchilla-Optimal: Accounting for Inference in Language Model Scaling Laws. <a href="https://arxiv.org/abs/2401.00448" target="_blank" rel="noopener">arXiv 2401.00448</a></li>
+    <li>Muennighoff et al. (2023). Scaling Data-Constrained Language Models. <a href="https://arxiv.org/abs/2305.16264" target="_blank" rel="noopener">arXiv 2305.16264</a></li>
+    <li>Llama Team, Meta (2024). The Llama 3 Herd of Models. <a href="https://arxiv.org/abs/2407.21783" target="_blank" rel="noopener">arXiv 2407.21783</a></li>
+  </ol>
+  <p class="small">The labs compute from the papers' published formulas. @datawithsuman</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- page content generated before the engine runs ----------
+(() => {
+  const bar = (label, v, color, shown) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="--v:${v};background:${color}"></div></div><span class="v mono">${shown || v}</span></div>`;
+  // Chinchilla Table 6: MMLU 5-shot
+  document.getElementById('mmluBars').innerHTML = [['Random', 25.0, 'var(--b)'], ['Average human rater', 34.5, 'var(--b)'], ['GPT-3 (175B)', 43.9, 'var(--b)'], ['Gopher (280B)', 60.0, 'var(--b)'], ['Chinchilla (70B)', 67.6, 'var(--ok)'], ['Human expert', 89.8, 'var(--st)']].map(r => bar(...r, r[1].toFixed(1) + '%')).join('');
+  // tokens per parameter, log10 scale (bar length = log10 of the ratio + 1)
+  const t = [['MT-NLG (530B)', 270 / 530], ['Gopher (280B)', 300 / 280], ['GPT-3 (175B)', 300 / 175], ['Chinchilla (70B)', 1400 / 70], ['Llama 3 8B (2024)', 15000 / 8]];
+  document.getElementById('tppBars').innerHTML = t.map(([n, r], i) => bar(n, Math.log10(r) + 1, i === 3 ? 'var(--ok)' : i === 4 ? 'var(--a)' : 'var(--b)', r < 10 ? r.toFixed(1) : Math.round(r).toLocaleString('en-GB'))).join('');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const big = (x) => x >= 1e12 ? (x / 1e12).toFixed(x >= 1e13 ? 0 : 1) + 'T' : x >= 1e9 ? (x / 1e9).toFixed(x >= 1e10 ? 0 : 1) + 'B' : x >= 1e6 ? (x / 1e6).toFixed(0) + 'M' : String(Math.round(x));
+
+  // IsoFLOP lab: Chinchilla's fitted loss (equation 10) with D = C / 6N
+  const E = 1.69, A = 406.4, B = 410.7, al = 0.34, be = 0.28, L = (N, D) => E + A / Math.pow(N, al) + B / Math.pow(D, be);
+  const BUD = [['10²¹ FLOPs (a small lab run)', 1e21], ['10²² FLOPs', 1e22], ['5.76 × 10²³ FLOPs (Gopher and Chinchilla)', 5.76e23], ['10²⁵ FLOPs', 1e25]];
+  const iC = $('#iC'), iN = $('#iN'), plot = $('#isoPlot');
+  iC.innerHTML = BUD.map((b, i) => `<option value="${i}"${i === 2 ? ' selected' : ''}>${b[0]}</option>`).join('');
+  const lo = 8, hi = 12.5, toN = (v) => Math.pow(10, lo + (hi - lo) * v / 100);   // model size from 100M to ~3T, log scale
+  const drawI = () => {
+    const C = BUD[+iC.value][1], N = toN(+iN.value), D = C / (6 * N), l = L(N, D);
+    iN.nextElementSibling.textContent = big(N);
+    let pts = [], ys = [];
+    for (let v = 0; v <= 100; v += 1) { const n = toN(v), d = C / (6 * n); if (d < 1e8) continue; pts.push([v, L(n, d)]); }
+    ys = pts.map(p => p[1]); const ymin = Math.min(...ys), ymax = Math.min(Math.max(...ys), ymin + 0.6);
+    const X = (v) => 30 + 560 * v / 100, Y = (y) => 180 - 160 * (Math.min(y, ymax) - ymin) / (ymax - ymin || 1);
+    const best = pts.reduce((a, b) => (b[1] < a[1] ? b : a));
+    const mark = (n, label, col) => { const v = 100 * (Math.log10(n) - lo) / (hi - lo); if (v < 0 || v > 100) return ''; const d = C / (6 * n); return `<line x1="${X(v)}" y1="20" x2="${X(v)}" y2="180" stroke="${col}" stroke-dasharray="4 4"/><text x="${X(v) + 4}" y="${label === 'Chinchilla' ? 34 : 50}" fill="${col}" font-size="12">${label}</text>`; };
+    plot.innerHTML = `<line x1="30" y1="180" x2="590" y2="180" stroke="var(--line)"/>`
+      + `<path d="${pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join('')}" fill="none" stroke="var(--a)" stroke-width="2.5"/>`
+      + (+iC.value === 2 ? mark(70e9, 'Chinchilla', 'var(--ok)') + mark(280e9, 'Gopher', 'var(--bad)') : '')
+      + `<circle cx="${X(best[0])}" cy="${Y(best[1])}" r="4" fill="var(--info)"/>`
+      + `<circle cx="${X(+iN.value)}" cy="${Y(l)}" r="7" fill="var(--b)"/>`
+      + `<text x="30" y="196" fill="var(--dim)" font-size="12">100M params</text><text x="590" y="196" fill="var(--dim)" font-size="12" text-anchor="end">3T params</text><text x="34" y="16" fill="var(--dim)" font-size="12">lower loss is better ↓</text>`;
+    $('#iD').textContent = big(D); $('#iR').textContent = (D / N).toFixed(D / N < 10 ? 1 : 0); $('#iL').textContent = l.toFixed(3);
+    const r = D / N;
+    $('#iMsg').textContent = D < 1e9 ? 'Far too big: the budget only buys a sliver of data.'
+      : r < 5 ? `Over-sized, like GPT-3 and Gopher: only ${r.toFixed(1)} tokens per parameter. A smaller model would reach a lower loss for the same compute.`
+      : r > 300 ? `Under-sized: ${Math.round(r)} tokens per parameter. The model is too small to use all this data well.`
+      : `In the efficient zone (${Math.round(r)} tokens per parameter). The blue dot marks this formula's exact minimum.`;
+  };
+  [iC, iN].forEach(e => e.addEventListener('input', drawI)); iN.value = 100 * (Math.log10(280e9) - lo) / (hi - lo); drawI();
+
+  // allocation lab: how Kaplan and Chinchilla split m× more compute
+  const aM = $('#aM'), MS = (v) => Math.pow(10, 3 * v / 30);   // 1× to 1000×
+  const drawA = () => { const m = MS(+aM.value); aM.nextElementSibling.textContent = (m < 10 ? m.toFixed(1) : Math.round(m)) + '×';
+    const rows = [['Kaplan: model size', Math.pow(m, 0.73), 'var(--b)'], ['Kaplan: training tokens', Math.pow(m, 0.27), 'var(--b)'], ['Chinchilla: model size', Math.pow(m, 0.5), 'var(--a)'], ['Chinchilla: training tokens', Math.pow(m, 0.5), 'var(--st)']];
+    $('#allocBars').innerHTML = rows.map(([n, f, c]) => `<div class="bar"><span>${n}</span><div class="track"><div class="fill" style="width:${Math.max(1.5, 100 * Math.log10(f) / 3 * 1.35)}%;background:${c}"></div></div><span class="v mono">×${f < 10 ? f.toFixed(1) : Math.round(f)}</span></div>`).join(''); };
+  aM.addEventListener('input', drawA); drawA();
+})();
+</script>
+</body>
+</html>

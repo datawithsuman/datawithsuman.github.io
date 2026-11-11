@@ -167,7 +167,35 @@ R1_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="One question, 
   <g font-size="13" fill="var(--ink)"><text x="350" y="80">✓ more likely</text><text x="350" y="104">✗ less likely</text><text x="350" y="128" fill="var(--muted)">vs group average</text></g>
 </svg>"""
 
+SL_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="Two rectangles with the same area: a tall, narrow one for Gopher (big model, little data) and a short, wide one for Chinchilla (smaller model, much more data).">
+  <g font-size="14" fill="var(--ink)"><text x="4" y="16" font-weight="600">Same compute = same area</text></g>
+  <rect x="20" y="30" width="44" height="150" rx="6" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/>
+  <text x="76" y="60" font-size="13" fill="var(--ink)">Gopher</text><text x="76" y="78" font-size="12" fill="var(--muted)">280B params</text><text x="76" y="94" font-size="12" fill="var(--muted)">300B tokens</text>
+  <rect x="190" y="142" width="280" height="38" rx="6" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/>
+  <text x="190" y="114" font-size="13" fill="var(--ink)">Chinchilla: 70B params, 1.4T tokens</text><text x="190" y="132" font-size="12" fill="var(--muted)">wins on almost every task</text>
+  <text x="4" y="186" font-size="11" fill="var(--muted)">↑ model size</text><text x="400" y="132" font-size="11" fill="var(--muted)">tokens →</text>
+</svg>"""
+
 PAPER_PLANS = {
+    "papers/scaling-laws-and-chinchilla": {
+        "analogy": "Think of a fixed budget for a student: you can pay for a bigger brain or more books, but not both. Kaplan said buy mostly brain. Chinchilla showed you should split it evenly: every time the brain doubles, double the books too.",
+        "picture": SL_PICTURE,
+        "caption": "Illustrative. Training compute is about 6 × parameters × tokens, so a fixed budget is a fixed area: tall and narrow, or short and wide.",
+        "problem": ["example", "c1"],
+        "play": {"lab": "isoLab", "chapter": "c6",
+                 "try": "<b>Try it.</b> You have Gopher's compute budget. Drag the model size and see how many tokens you can afford and what loss Chinchilla's formula predicts.",
+                 "why": "<b>Notice:</b> the loss curve is a valley. Gopher's 280B model sits up the right-hand slope with barely one token per parameter; a smaller model trained on more data reaches lower loss for the same compute."},
+        "how": ["c2", "c3", "c4", "c5", "c6", "c7"],
+        "found": ["c8", "c9", "c10"],
+        "limits": ["c11"],
+        "verdict": ["c13"],
+        "reference": ["c12", "src"],
+        "hidden": ["iv"],
+        "changed_html": """<p>Chinchilla changed how every lab sizes a model: about 20 training tokens per parameter became the default for compute-optimal training, and data, not just parameters, became the thing to scale. Later models went further, training small models on far more tokens because they are cheaper to serve.</p>
+<p><b>What to remember.</b> Loss falls as a predictable power law, training compute is about 6ND, and for a fixed budget you should grow model size and data together. Count inference cost too, and the best model gets smaller still.</p>""",
+        "strip": [r'<h3>Try it: spend one budget</h3>\s*'],
+        "edits": [],
+    },
     "papers/deepseek-r1": {
         "analogy": "Think of learning chess. One way is to copy grandmasters' games move by move. The other is to play thousands of games and only be told who won. R1-Zero did the second: it was told only whether its final answer was right, and it worked out for itself that thinking longer and checking its work wins more often.",
         "picture": R1_PICTURE,
