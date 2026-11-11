@@ -15,7 +15,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 1. AI labs and AI-first startups,Yellow AI,Careers link only,?,own site,
 1. AI labs and AI-first startups,Uniphore,Careers link only,?,own site,
 1. AI labs and AI-first startups,Gupshup,Careers link only,?,own site,
-1. AI labs and AI-first startups,Qure AI,Careers link only,?,own site,
 1. AI labs and AI-first startups,Wadhwani AI,Careers link only,?,zoho recruit,wadhwaniai
 1. AI labs and AI-first startups,Mad Street Den,Careers link only,?,darwinbox,msd
 2. AI and analytics services,Fractal Analytics,Automatic,1+,workday,fractal/wd1/Careers
@@ -25,7 +24,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 3. Big tech,Google,Automatic,?,google,google
 3. Big tech,Microsoft,Automatic,?,microsoft,microsoft
 3. Big tech,Amazon,Automatic,?,amazon,amazon
-3. Big tech,Meta,Careers link only,?,blocked (rejects automated requests),
 3. Big tech,Apple,Automatic,?,apple,apple
 3. Big tech,NVIDIA,Automatic,?,workday,nvidia/wd5/NVIDIAExternalCareerSite
 3. Big tech,Intel,Automatic,5+,workday,intel/wd1/External
@@ -59,14 +57,12 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 "6. E-commerce, food and retail",Myntra,Careers link only,?,own site,
 "6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy
 "6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal
-"6. E-commerce, food and retail",Zepto,Careers link only,?,own site,
 "6. E-commerce, food and retail",Walmart Global Tech,Automatic,1+,workday,walmart/wd504/WalmartExternal
 "6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers
 "7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance
 "7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi
 "7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy
 "7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna
-"7. Consumer apps, media and mobility",Uber,Careers link only,?,blocked (Cloudflare bot check),
 "7. Consumer apps, media and mobility",Spinny,Careers link only,?,darwinbox,spinzone
 "7. Consumer apps, media and mobility",CarDekho,Careers link only,?,darwinbox,cardekho
 "7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search
@@ -82,7 +78,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 8. Fintech and payments,Jupiter,Careers link only,?,keka,jupiter
 8. Fintech and payments,Stripe,Automatic,1,greenhouse,stripe
 8. Fintech and payments,PayPal,Automatic,?,workday,paypal/wd1/jobs
-8. Fintech and payments,Coinbase,Automatic,2,greenhouse,coinbase
 8. Fintech and payments,Mastercard,Automatic,7+,workday,mastercard/wd1/CorporateCareers
 9. Banking and trading,JPMorgan Chase,Automatic,?,oracle,jpmc/CX_1001
 9. Banking and trading,Goldman Sachs,Custom work needed,?,graphql,higher.gs.com
