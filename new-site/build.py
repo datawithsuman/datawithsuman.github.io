@@ -961,23 +961,6 @@ def mock_pages():
             write(f'mock/{m["id"]}/{r["id"]}/index.html', html + foot_html(root))
 
 
-def more_companies_html():
-    """Companies whose careers sites we can't read automatically: listed as links, grouped by domain."""
-    import csv as _csv
-    groups = {}
-    for r in _csv.DictReader(open(HERE / "jobs/companies.csv")):
-        if r["how_we_get_jobs"] != "Automatic" and r.get("careers_url"):
-            groups.setdefault(r["domain"].split(". ", 1)[-1], []).append(r)
-    if not groups:
-        return ""
-    n = sum(len(v) for v in groups.values())
-    out = [f'<section class="more-cos" aria-labelledby="moreCos"><h2 id="moreCos" class="part-title">More companies hiring</h2>'
-           f'<p class="note">{n} more companies hire for AI and ML roles in India, but their careers sites can\'t be read automatically, so their jobs aren\'t in the list above. Open their careers pages to see what\'s open.</p>']
-    for dom, rs in groups.items():
-        links = "".join(f'<li><a href="{esc(r["careers_url"])}" target="_blank" rel="noopener">{esc(r["company"])}</a></li>' for r in sorted(rs, key=lambda r: r["company"].lower()))
-        out.append(f'<details class="panel more-group"><summary>{esc(dom)} <span class="more-n">· {len(rs)}</span></summary><ul class="more-list">{links}</ul></details>')
-    return "".join(out) + "</section>"
-
 
 def jobs_page():
     """AI/ML job postings in India from the last 7 days. jobs/fetch_jobs.py writes jobs.json; site.js draws the list."""
@@ -992,7 +975,6 @@ def jobs_page():
 <ul class="panel jobs-list" id="jobsList" tabindex="0" aria-label="Job postings, scroll for more"></ul>
 <noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
 <p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>
-{more_companies_html()}
 </section></main>
 """
     write("jobs/index.html", html + foot_html(root))
