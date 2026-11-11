@@ -185,9 +185,10 @@ def workday(company, board):
 
 def oracle(company, board):
     host, site = board.split("/")
+    host = host if "." in host else f"{host}.fa.oraclecloud.com"  # some tenants live on a regional host such as x.fa.em2.oraclecloud.com
     out, offset = [], 0
     while offset < 2000:
-        d = get(f"https://{host}.fa.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList"
+        d = get(f"https://{host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList"
                 f"&finder=findReqs;siteNumber={site},limit=200,offset={offset},sortBy=POSTING_DATES_DESC")
         reqs = d["items"][0]["requisitionList"]
         if not reqs:
@@ -199,7 +200,7 @@ def oracle(company, board):
             oldest = posted
             loc = ", ".join(x for x in [j.get("PrimaryLocation"), j.get("PrimaryLocationCountry")] if x)
             out.append(job(company, j["Title"], j.get("PrimaryLocation") or loc, posted,
-                           f"https://{host}.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/{site}/job/{j['Id']}"))
+                           f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{j['Id']}"))
         if oldest and (NOW - oldest).days > DAYS:
             break
         offset += 200
