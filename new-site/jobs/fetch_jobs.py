@@ -7,7 +7,7 @@ daily GitHub Action also writes it straight into docs/jobs/.
 
 Run: python3 new-site/jobs/fetch_jobs.py
 """
-import csv, datetime as dt, json, re, sys, time, urllib.error, urllib.parse, urllib.request
+import csv, datetime as dt, html, json, re, sys, time, urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -319,9 +319,74 @@ def apple(company, board):
     return out
 
 
+
+def eightfold(company, board):
+    """Eightfold career sites (board = host/domain). Searches the AI/ML words, India only."""
+    host, domain = board.split("/")
+    out, seen = [], set()
+    for q in QUERIES:
+        for start in range(0, 100, 10):
+            d = slow_json(f"https://{host}/api/pcsx/search?" + urllib.parse.urlencode({"domain": domain, "query": q, "location": "India", "start": start}))
+            pos = (d.get("data") or {}).get("positions") or []
+            for j in pos:
+                if j["id"] in seen:
+                    continue
+                seen.add(j["id"])
+                ts = j.get("postedTs") or j.get("creationTs")
+                out.append(job(company, j["name"], " / ".join(j.get("locations") or []) or "India",
+                               dt.datetime.fromtimestamp(ts, dt.timezone.utc) if ts else None, f"https://{host}/careers/job/{j['id']}"))
+            if len(pos) < 10:
+                break
+    return out
+
+
+def jibe(company, board):
+    """Jibe (iCIMS) career sites such as jobs.zs.com, newest first, India only."""
+    out = []
+    for page in range(1, 11):
+        d = get(f"https://{board}/api/jobs?" + urllib.parse.urlencode({"page": page, "limit": 100, "location": "India", "sortBy": "posted_date", "descending": "true", "internal": "false"}))
+        rows = d.get("jobs") or []
+        for r in rows:
+            j = r["data"]
+            out.append(job(company, j["title"], j.get("full_location") or j.get("city") or "India", iso(j.get("posted_date")), f"https://{board}/jobs/{j['slug']}"))
+        if len(rows) < 100 or (out[-1]["posted"] and (NOW - out[-1]["posted"]).days > DAYS):
+            break
+    return out
+
+
+def successfactors(company, board):
+    """SuccessFactors career sites (board = host/path, e.g. careers.ey.com/ey). The search list has no dates,
+    so it searches the AI/ML words in India and reads the date from each matching job's page."""
+    base = "https://" + board.rstrip("/")
+    host = "https://" + board.split("/")[0]
+    out, seen = [], set()
+    for q in QUERIES:
+        for start in range(0, 100, 25):
+            h = get_text(f"{base}/search/?" + urllib.parse.urlencode({"q": q, "locationsearch": "India", "startrow": start, "sortColumn": "referencedate", "sortDirection": "desc"}))
+            rows = re.findall(r'<tr class="data-row">(.*?)</tr>', h, re.S)
+            for r in rows:
+                m = re.search(r'href="([^"]+)" class="jobTitle-link">([^<]+)<', r)
+                loc = re.search(r'class="jobLocation">\s*([^<]+?)\s*<', r)
+                if not m or m.group(1) in seen:
+                    continue
+                seen.add(m.group(1))
+                title, loc = html.unescape(m.group(2).strip()), (loc.group(1) if loc else "India")
+                loc = loc if INDIA.search(loc) else loc + ", India"
+                posted = None
+                if is_ai_ml(title):
+                    p = re.search(r'itemprop="datePosted" content="([^"]+)"', get_text(host + m.group(1)))
+                    if p:
+                        posted = dt.datetime.strptime(p.group(1).replace(" UTC", ""), "%a %b %d %H:%M:%S %Y").replace(tzinfo=dt.timezone.utc)
+                out.append(job(company, title, loc, posted, host + html.unescape(m.group(1))))
+            if len(rows) < 25:
+                break
+    return out
+
+
 SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecruiters": smartrecruiters,
            "workable": workable, "workday": workday, "oracle": oracle,
-           "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple}
+           "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple,
+           "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors}
 
 
 def fetch(row):

@@ -1,174 +1,174 @@
-domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
-1. AI labs and AI-first startups,OpenAI,Automatic,3,ashby,openai
-1. AI labs and AI-first startups,Anthropic,Automatic,4,greenhouse,anthropic
-1. AI labs and AI-first startups,Sarvam AI,Automatic,6,ashby,sarvam
-1. AI labs and AI-first startups,Ola / Krutrim,Careers link only,?,turbohire,olacareers
-1. AI labs and AI-first startups,Ema,Automatic,3,ashby,ema
-1. AI labs and AI-first startups,Composio,Automatic,1,ashby,composio
-1. AI labs and AI-first startups,Bolna,Automatic,1,ashby,bolna
-1. AI labs and AI-first startups,Giga ML,Automatic,0,ashby,gigaml
-1. AI labs and AI-first startups,Smallest AI,Automatic,0,ashby,smallest
-1. AI labs and AI-first startups,Observe AI,Automatic,1,greenhouse,observeai
-1. AI labs and AI-first startups,Glean,Automatic,4,greenhouse,gleanwork
-1. AI labs and AI-first startups,Turing,Automatic,3,greenhouse,turing
-1. AI labs and AI-first startups,Haptik,Careers link only,?,freshteam,haptik
-1. AI labs and AI-first startups,Yellow AI,Careers link only,?,own site,
-1. AI labs and AI-first startups,Uniphore,Careers link only,?,own site,
-1. AI labs and AI-first startups,Gupshup,Careers link only,?,own site,
-1. AI labs and AI-first startups,Wadhwani AI,Careers link only,?,zoho recruit,wadhwaniai
-1. AI labs and AI-first startups,Mad Street Den,Careers link only,?,darwinbox,msd
-1. AI labs and AI-first startups,Neysa,Careers link only,?,own site,
-1. AI labs and AI-first startups,Emergent,Careers link only,?,own site,
-1. AI labs and AI-first startups,Gnani.ai,Careers link only,?,own site,
-1. AI labs and AI-first startups,Soket AI,Careers link only,?,own site,
-1. AI labs and AI-first startups,Kore.ai,Careers link only,?,own site,
-1. AI labs and AI-first startups,CoRover,Careers link only,?,own site,
-1. AI labs and AI-first startups,Cohere,Automatic,0,ashby,cohere
-1. AI labs and AI-first startups,Mistral AI,Automatic,0,ashby,mistral.ai
-1. AI labs and AI-first startups,Perplexity,Automatic,0,ashby,perplexity
-1. AI labs and AI-first startups,Scale AI,Automatic,0,greenhouse,scaleai
-1. AI labs and AI-first startups,Hugging Face,Automatic,0,workable,huggingface
-1. AI labs and AI-first startups,Lossfunk,Careers link only,?,own site,
-2. AI and analytics services,Fractal Analytics,Automatic,1+,workday,fractal/wd1/Careers
-2. AI and analytics services,Tiger Analytics,Automatic,0,workable,tiger-analytics
-2. AI and analytics services,Sigmoid,Automatic,5,greenhouse,sigmoid
-2. AI and analytics services,LatentView,Careers link only,?,darwinbox,latentview
-2. AI and analytics services,Mu Sigma,Careers link only,?,own site,
-2. AI and analytics services,Tredence,Careers link only,?,own site,
-2. AI and analytics services,Quantiphi,Automatic,8,workday,quantiphi/wd1/Careers_at_Quantiphi
-2. AI and analytics services,MathCo (TheMathCompany),Careers link only,?,own site,
-2. AI and analytics services,ZS Associates,Careers link only,?,own site,
-2. AI and analytics services,EXL,Automatic,8,oracle,fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/CX_2
-3. Big tech,Google,Automatic,?,google,google
-3. Big tech,Microsoft,Automatic,?,microsoft,microsoft
-3. Big tech,Amazon,Automatic,?,amazon,amazon
-3. Big tech,Apple,Automatic,?,apple,apple
-3. Big tech,NVIDIA,Automatic,?,workday,nvidia/wd5/NVIDIAExternalCareerSite
-3. Big tech,Intel,Automatic,5+,workday,intel/wd1/External
-3. Big tech,Cisco,Automatic,4+,workday,cisco/wd5/Cisco_Careers
-3. Big tech,HP,Automatic,2+,workday,hp/wd5/ExternalCareerSite
-3. Big tech,Samsung R&D India,Automatic,1+,workday,sec/wd3/Samsung_Careers
-3. Big tech,Atlassian,Custom work needed,?,custom,
-"4. Data, cloud and security",Databricks,Automatic,11,greenhouse,databricks
-"4. Data, cloud and security",Snowflake,Automatic,1,ashby,snowflake
-"4. Data, cloud and security",MongoDB,Automatic,4,greenhouse,mongodb
-"4. Data, cloud and security",Elastic,Automatic,1,greenhouse,elastic
-"4. Data, cloud and security",Atlan,Automatic,1,ashby,atlan
-"4. Data, cloud and security",Hevo Data,Automatic,1,lever,hevodata
-"4. Data, cloud and security",Druva,Automatic,0,greenhouse,druva
-"4. Data, cloud and security",Cohesity,Automatic,?,workday,cohesity/wd5/Cohesity_Careers
-"4. Data, cloud and security",Zscaler,Automatic,2,greenhouse,zscaler
-"4. Data, cloud and security",Okta,Automatic,0,greenhouse,okta
-"4. Data, cloud and security",Harness,Automatic,0,greenhouse,harnessinc
-"4. Data, cloud and security",BrowserStack,Automatic,0,workday,browserstack/wd3/External
-"4. Data, cloud and security",Twilio,Automatic,1,greenhouse,twilio
-5. Enterprise software (SaaS),Salesforce,Automatic,1+,workday,salesforce/wd12/External_Career_Site
-5. Enterprise software (SaaS),ServiceNow,Automatic,10,smartrecruiters,servicenow
-5. Enterprise software (SaaS),Adobe,Automatic,3+,workday,adobe/wd5/external_experienced
-5. Enterprise software (SaaS),Freshworks,Automatic,3,smartrecruiters,Freshworks
-5. Enterprise software (SaaS),Sprinklr,Automatic,0,workday,sprinklr/wd1/careers
-5. Enterprise software (SaaS),Mindtickle,Automatic,1,lever,mindtickle
-5. Enterprise software (SaaS),HighRadius,Automatic,0,greenhouse,highradius
-"6. E-commerce, food and retail",Flipkart,Careers link only,?,own site,
-"6. E-commerce, food and retail",Meesho,Automatic,6,lever,meesho
-"6. E-commerce, food and retail",Myntra,Careers link only,?,own site,
-"6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy
-"6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal
-"6. E-commerce, food and retail",Walmart Global Tech,Automatic,1+,workday,walmart/wd504/WalmartExternal
-"6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers
-"6. E-commerce, food and retail",Nykaa,Careers link only,?,own site,
-"6. E-commerce, food and retail",Lowe's India,Careers link only,?,own site,
-"6. E-commerce, food and retail",Tesco Bengaluru,Careers link only,?,own site,
-"6. E-commerce, food and retail",BigBasket,Careers link only,?,own site,
-"6. E-commerce, food and retail",Lenskart,Careers link only,?,own site,
-"6. E-commerce, food and retail",Urban Company,Careers link only,?,own site,
-"6. E-commerce, food and retail",Delhivery,Careers link only,?,own site,
-"6. E-commerce, food and retail","Reliance Retail (JioMart, Ajio)",Careers link only,?,own site,
-"6. E-commerce, food and retail",Purplle,Careers link only,?,own site,
-"6. E-commerce, food and retail",eBay,Automatic,12,workday,ebay/wd5/apply
-"7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance
-"7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi
-"7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy
-"7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna
-"7. Consumer apps, media and mobility",Spinny,Careers link only,?,darwinbox,spinzone
-"7. Consumer apps, media and mobility",CarDekho,Careers link only,?,darwinbox,cardekho
-"7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search
-"7. Consumer apps, media and mobility",Sabre,Automatic,2+,workday,sabre/wd1/SabreJobs
-8. Fintech and payments,PhonePe,Careers link only,?,own site,
-8. Fintech and payments,Paytm,Automatic,2,lever,paytm
-8. Fintech and payments,Razorpay,Automatic,1,greenhouse,razorpaysoftwareprivatelimited
-8. Fintech and payments,CRED,Automatic,0,lever,cred
-8. Fintech and payments,Groww,Automatic,0,greenhouse,groww
-8. Fintech and payments,Slice,Automatic,0,greenhouse,slice
-8. Fintech and payments,Navi,Automatic,0,ashby,navi
-8. Fintech and payments,Zeta,Automatic,1,lever,zeta
-8. Fintech and payments,Jupiter,Careers link only,?,keka,jupiter
-8. Fintech and payments,Stripe,Automatic,1,greenhouse,stripe
-8. Fintech and payments,PayPal,Automatic,?,workday,paypal/wd1/jobs
-8. Fintech and payments,Mastercard,Automatic,7+,workday,mastercard/wd1/CorporateCareers
-8. Fintech and payments,Juspay,Careers link only,?,own site,
-8. Fintech and payments,Cashfree Payments,Careers link only,?,own site,
-8. Fintech and payments,PayU,Careers link only,?,own site,
-8. Fintech and payments,Pine Labs,Careers link only,?,own site,
-8. Fintech and payments,Zerodha,Careers link only,?,own site,
-8. Fintech and payments,Upstox,Careers link only,?,own site,
-8. Fintech and payments,Visa,Automatic,3,workday,visa/wd5/Visa
-8. Fintech and payments,Policybazaar,Careers link only,?,own site,
-8. Fintech and payments,Perfios,Careers link only,?,own site,
-9. Banking and trading,JPMorgan Chase,Automatic,?,oracle,jpmc/CX_1001
-9. Banking and trading,Goldman Sachs,Custom work needed,?,graphql,higher.gs.com
-9. Banking and trading,American Express,Careers link only,?,eightfold,aexp
-9. Banking and trading,Graviton Research,Automatic,1,greenhouse,gravitonresearchcapital
-9. Banking and trading,Tower Research,Automatic,0,greenhouse,towerresearchcapital
-9. Banking and trading,Morgan Stanley,Careers link only,?,own site,
-9. Banking and trading,Citi,Automatic,22,workday,citi/wd5/2
-9. Banking and trading,HSBC,Careers link only,?,own site,
-9. Banking and trading,Barclays,Automatic,8,workday,barclays/wd3/External_Career_Site_Barclays
-9. Banking and trading,Deutsche Bank,Automatic,3,workday,db/wd3/DBWebsite
-9. Banking and trading,Bank of America,Careers link only,?,own site,
-9. Banking and trading,Standard Chartered,Careers link only,?,own site,
-9. Banking and trading,Nomura,Careers link only,?,own site,
-10. Healthcare and life sciences,Innovaccer,Careers link only,?,own site,
-10. Healthcare and life sciences,Optum (UnitedHealth Group),Careers link only,?,own site,
-10. Healthcare and life sciences,GE HealthCare,Automatic,4,workday,gehc/wd5/GEHC_ExternalSite
-10. Healthcare and life sciences,Philips,Automatic,4,workday,philips/wd3/jobs-and-careers
-10. Healthcare and life sciences,Siemens Healthineers,Careers link only,?,own site,
-10. Healthcare and life sciences,Novartis,Automatic,4,workday,novartis/wd3/Novartis_Careers
-10. Healthcare and life sciences,IQVIA,Automatic,0,workday,iqvia/wd1/IQVIA
-10. Healthcare and life sciences,Elevance Health,Careers link only,?,own site,
-10. Healthcare and life sciences,Practo,Careers link only,?,own site,
-10. Healthcare and life sciences,PharmEasy,Careers link only,?,own site,
-10. Healthcare and life sciences,Tata 1mg,Careers link only,?,own site,
-10. Healthcare and life sciences,HealthifyMe,Careers link only,?,own site,
-10. Healthcare and life sciences,Niramai,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Bosch,Automatic,15,smartrecruiters,BoschGroup
-"11. Manufacturing, auto and industrial",Siemens,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Honeywell,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",ABB,Automatic,1,workday,abb/wd3/external_career_page
-"11. Manufacturing, auto and industrial",Schneider Electric,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",GE Aerospace,Automatic,0,workday,geaerospace/wd5/GE_ExternalSite
-"11. Manufacturing, auto and industrial",GE Vernova,Automatic,28,workday,gevernova/wd5/Vernova_ExternalSite
-"11. Manufacturing, auto and industrial",John Deere,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Mercedes-Benz R&D India,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Continental,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Tata Motors,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Mahindra,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Rolls-Royce,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Airbus,Automatic,5,workday,ag/wd3/Airbus
-"11. Manufacturing, auto and industrial",Tata Steel,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",JSW Steel,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Reliance Industries,Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Larsen & Toubro (L&T),Careers link only,?,own site,
-"11. Manufacturing, auto and industrial",Adani Group,Careers link only,?,own site,
-12. Consulting (Big 4),Deloitte,Careers link only,?,own site,
-12. Consulting (Big 4),EY,Careers link only,?,own site,
-12. Consulting (Big 4),PwC,Automatic,4,workday,pwc/wd3/Global_Experienced_Careers
-12. Consulting (Big 4),KPMG,Automatic,2,oracle,ejgk.fa.em2.oraclecloud.com/CX_3
-13. Telecom,Jio,Careers link only,?,own site,
-13. Telecom,Airtel,Careers link only,?,own site,
-13. Telecom,Vi (Vodafone Idea),Careers link only,?,own site,
-14. Gaming,Dream Sports (Dream11),Careers link only,?,own site,
-14. Gaming,Games24x7,Careers link only,?,own site,
-15. Edtech,upGrad,Careers link only,?,own site,
-15. Edtech,Scaler,Careers link only,?,own site,
-16. Energy,Shell,Automatic,2,workday,shell/wd3/ShellCareers
+domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
+1. AI labs and AI-first startups,OpenAI,Automatic,3,ashby,openai,https://jobs.ashbyhq.com/openai
+1. AI labs and AI-first startups,Anthropic,Automatic,4,greenhouse,anthropic,https://job-boards.greenhouse.io/anthropic
+1. AI labs and AI-first startups,Sarvam AI,Automatic,6,ashby,sarvam,https://jobs.ashbyhq.com/sarvam
+1. AI labs and AI-first startups,Ola / Krutrim,Careers link only,?,turbohire,olacareers,https://olacareers.turbohire.co/
+1. AI labs and AI-first startups,Ema,Automatic,3,ashby,ema,https://jobs.ashbyhq.com/ema
+1. AI labs and AI-first startups,Composio,Automatic,1,ashby,composio,https://jobs.ashbyhq.com/composio
+1. AI labs and AI-first startups,Bolna,Automatic,1,ashby,bolna,https://jobs.ashbyhq.com/bolna
+1. AI labs and AI-first startups,Giga ML,Automatic,0,ashby,gigaml,https://jobs.ashbyhq.com/gigaml
+1. AI labs and AI-first startups,Smallest AI,Automatic,0,ashby,smallest,https://jobs.ashbyhq.com/smallest
+1. AI labs and AI-first startups,Observe AI,Automatic,1,greenhouse,observeai,https://job-boards.greenhouse.io/observeai
+1. AI labs and AI-first startups,Glean,Automatic,4,greenhouse,gleanwork,https://job-boards.greenhouse.io/gleanwork
+1. AI labs and AI-first startups,Turing,Automatic,3,greenhouse,turing,https://job-boards.greenhouse.io/turing
+1. AI labs and AI-first startups,Haptik,Careers link only,?,freshteam,haptik,https://haptik.freshteam.com/jobs
+1. AI labs and AI-first startups,Yellow AI,Careers link only,?,own site,,https://yellow.ai/career/
+1. AI labs and AI-first startups,Uniphore,Careers link only,?,own site,,https://www.uniphore.com/careers/
+1. AI labs and AI-first startups,Gupshup,Careers link only,?,own site,,https://www.gupshup.io/careers
+1. AI labs and AI-first startups,Wadhwani AI,Careers link only,?,zoho recruit,wadhwaniai,https://www.wadhwaniai.org/careers/
+1. AI labs and AI-first startups,Mad Street Den,Careers link only,?,darwinbox,msd,https://www.madstreetden.com/careers/
+1. AI labs and AI-first startups,Neysa,Careers link only,?,own site,,https://careers.kula.ai/neysa
+1. AI labs and AI-first startups,Emergent,Careers link only,?,own site,,https://emergent.sh/careers
+1. AI labs and AI-first startups,Gnani.ai,Careers link only,?,own site,,https://careers.gnani.ai/
+1. AI labs and AI-first startups,Soket AI,Careers link only,?,own site,,https://soket.ai/careers/jobs
+1. AI labs and AI-first startups,Kore.ai,Careers link only,?,own site,,https://kore.ai/careers
+1. AI labs and AI-first startups,CoRover,Careers link only,?,own site,,https://corover.ai/company/careers
+1. AI labs and AI-first startups,Cohere,Automatic,0,ashby,cohere,https://jobs.ashbyhq.com/cohere
+1. AI labs and AI-first startups,Mistral AI,Automatic,0,ashby,mistral.ai,https://mistral.ai/careers
+1. AI labs and AI-first startups,Perplexity,Automatic,0,ashby,perplexity,https://jobs.ashbyhq.com/perplexity
+1. AI labs and AI-first startups,Scale AI,Automatic,0,greenhouse,scaleai,https://job-boards.greenhouse.io/scaleai
+1. AI labs and AI-first startups,Hugging Face,Automatic,0,workable,huggingface,https://apply.workable.com/huggingface/
+1. AI labs and AI-first startups,Lossfunk,Careers link only,?,own site,,https://lossfunk.com/careers
+2. AI and analytics services,Fractal Analytics,Automatic,1+,workday,fractal/wd1/Careers,https://fractal.wd1.myworkdayjobs.com/Careers
+2. AI and analytics services,Tiger Analytics,Automatic,0,workable,tiger-analytics,https://apply.workable.com/tiger-analytics/
+2. AI and analytics services,Sigmoid,Automatic,5,greenhouse,sigmoid,https://job-boards.greenhouse.io/sigmoid
+2. AI and analytics services,LatentView,Careers link only,?,darwinbox,latentview,https://latentview.darwinbox.in/ms/candidate/careers
+2. AI and analytics services,Mu Sigma,Careers link only,?,own site,,https://www.mu-sigma.com/career
+2. AI and analytics services,Tredence,Careers link only,?,own site,,https://www.tredence.com/company-careers
+2. AI and analytics services,Quantiphi,Automatic,8,workday,quantiphi/wd1/Careers_at_Quantiphi,https://quantiphi.com/careers
+2. AI and analytics services,MathCo (TheMathCompany),Careers link only,?,own site,,https://mathco.com/careers
+2. AI and analytics services,ZS Associates,Automatic,?,jibe,jobs.zs.com,https://jobs.zs.com/jobs
+2. AI and analytics services,EXL,Automatic,8,oracle,fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/CX_2,https://www.exlservice.com/careers
+3. Big tech,Google,Automatic,?,google,google,https://www.google.com/about/careers/applications/jobs/results
+3. Big tech,Microsoft,Automatic,?,microsoft,microsoft,https://jobs.careers.microsoft.com/global/en/search
+3. Big tech,Amazon,Automatic,?,amazon,amazon,https://www.amazon.jobs/en/
+3. Big tech,Apple,Automatic,?,apple,apple,https://jobs.apple.com/en-in/search
+3. Big tech,NVIDIA,Automatic,?,workday,nvidia/wd5/NVIDIAExternalCareerSite,https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite
+3. Big tech,Intel,Automatic,5+,workday,intel/wd1/External,https://intel.wd1.myworkdayjobs.com/External
+3. Big tech,Cisco,Automatic,4+,workday,cisco/wd5/Cisco_Careers,https://cisco.wd5.myworkdayjobs.com/Cisco_Careers
+3. Big tech,HP,Automatic,2+,workday,hp/wd5/ExternalCareerSite,https://hp.wd5.myworkdayjobs.com/ExternalCareerSite
+3. Big tech,Samsung R&D India,Automatic,1+,workday,sec/wd3/Samsung_Careers,https://sec.wd3.myworkdayjobs.com/Samsung_Careers
+3. Big tech,Atlassian,Custom work needed,?,custom,,https://www.atlassian.com/company/careers/all-jobs
+"4. Data, cloud and security",Databricks,Automatic,11,greenhouse,databricks,https://job-boards.greenhouse.io/databricks
+"4. Data, cloud and security",Snowflake,Automatic,1,ashby,snowflake,https://jobs.ashbyhq.com/snowflake
+"4. Data, cloud and security",MongoDB,Automatic,4,greenhouse,mongodb,https://job-boards.greenhouse.io/mongodb
+"4. Data, cloud and security",Elastic,Automatic,1,greenhouse,elastic,https://job-boards.greenhouse.io/elastic
+"4. Data, cloud and security",Atlan,Automatic,1,ashby,atlan,https://jobs.ashbyhq.com/atlan
+"4. Data, cloud and security",Hevo Data,Automatic,1,lever,hevodata,https://jobs.lever.co/hevodata
+"4. Data, cloud and security",Druva,Automatic,0,greenhouse,druva,https://job-boards.greenhouse.io/druva
+"4. Data, cloud and security",Cohesity,Automatic,?,workday,cohesity/wd5/Cohesity_Careers,https://cohesity.wd5.myworkdayjobs.com/Cohesity_Careers
+"4. Data, cloud and security",Zscaler,Automatic,2,greenhouse,zscaler,https://job-boards.greenhouse.io/zscaler
+"4. Data, cloud and security",Okta,Automatic,0,greenhouse,okta,https://job-boards.greenhouse.io/okta
+"4. Data, cloud and security",Harness,Automatic,0,greenhouse,harnessinc,https://job-boards.greenhouse.io/harnessinc
+"4. Data, cloud and security",BrowserStack,Automatic,0,workday,browserstack/wd3/External,https://browserstack.wd3.myworkdayjobs.com/External
+"4. Data, cloud and security",Twilio,Automatic,1,greenhouse,twilio,https://job-boards.greenhouse.io/twilio
+5. Enterprise software (SaaS),Salesforce,Automatic,1+,workday,salesforce/wd12/External_Career_Site,https://salesforce.wd12.myworkdayjobs.com/External_Career_Site
+5. Enterprise software (SaaS),ServiceNow,Automatic,10,smartrecruiters,servicenow,https://jobs.smartrecruiters.com/servicenow
+5. Enterprise software (SaaS),Adobe,Automatic,3+,workday,adobe/wd5/external_experienced,https://adobe.wd5.myworkdayjobs.com/external_experienced
+5. Enterprise software (SaaS),Freshworks,Automatic,3,smartrecruiters,Freshworks,https://jobs.smartrecruiters.com/Freshworks
+5. Enterprise software (SaaS),Sprinklr,Automatic,0,workday,sprinklr/wd1/careers,https://sprinklr.wd1.myworkdayjobs.com/careers
+5. Enterprise software (SaaS),Mindtickle,Automatic,1,lever,mindtickle,https://jobs.lever.co/mindtickle
+5. Enterprise software (SaaS),HighRadius,Automatic,0,greenhouse,highradius,https://job-boards.greenhouse.io/highradius
+"6. E-commerce, food and retail",Flipkart,Careers link only,?,own site,,https://www.flipkartcareers.com/
+"6. E-commerce, food and retail",Meesho,Automatic,6,lever,meesho,https://jobs.lever.co/meesho
+"6. E-commerce, food and retail",Myntra,Careers link only,?,own site,,https://careers.myntra.com/
+"6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy,https://jobs.smartrecruiters.com/swiggy
+"6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal,https://www.eternal.com/careers/
+"6. E-commerce, food and retail",Walmart Global Tech,Automatic,1+,workday,walmart/wd504/WalmartExternal,https://walmart.wd504.myworkdayjobs.com/WalmartExternal
+"6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers,https://target.wd5.myworkdayjobs.com/targetcareers
+"6. E-commerce, food and retail",Nykaa,Careers link only,?,own site,,https://careers.nykaa.com/
+"6. E-commerce, food and retail",Lowe's India,Automatic,?,workday,lowes/wd5/LWS_External_CS,https://talent.lowes.com/in/en
+"6. E-commerce, food and retail",Tesco Bengaluru,Careers link only,?,own site,,https://careers.tesco.com/en_GB/careers
+"6. E-commerce, food and retail",BigBasket,Careers link only,?,own site,,https://careers.bigbasket.com/
+"6. E-commerce, food and retail",Lenskart,Careers link only,?,own site,,https://www.lenskart.com/careers-at-lenskart
+"6. E-commerce, food and retail",Urban Company,Careers link only,?,own site,,https://careers.urbancompany.com/
+"6. E-commerce, food and retail",Delhivery,Careers link only,?,own site,,https://www.delhivery.com/careers
+"6. E-commerce, food and retail","Reliance Retail (JioMart, Ajio)",Careers link only,?,own site,,https://careers.ril.com/
+"6. E-commerce, food and retail",Purplle,Careers link only,?,own site,,https://www.purplle.com/careers
+"6. E-commerce, food and retail",eBay,Automatic,12,workday,ebay/wd5/apply,https://careers.ebayinc.com/
+"7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance,https://job-boards.greenhouse.io/glance
+"7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi,https://job-boards.greenhouse.io/inmobi
+"7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy,https://jobs.smartrecruiters.com/unacademy
+"7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna,https://apply.workable.com/apna/
+"7. Consumer apps, media and mobility",Spinny,Careers link only,?,darwinbox,spinzone,https://spinzone.darwinbox.in/ms/candidate/careers
+"7. Consumer apps, media and mobility",CarDekho,Careers link only,?,darwinbox,cardekho,https://cardekho.darwinbox.in/ms/candidate/careers
+"7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search,https://expedia.wd108.myworkdayjobs.com/search
+"7. Consumer apps, media and mobility",Sabre,Automatic,2+,workday,sabre/wd1/SabreJobs,https://sabre.wd1.myworkdayjobs.com/SabreJobs
+8. Fintech and payments,PhonePe,Careers link only,?,own site,,https://www.phonepe.com/careers/
+8. Fintech and payments,Paytm,Automatic,2,lever,paytm,https://jobs.lever.co/paytm
+8. Fintech and payments,Razorpay,Automatic,1,greenhouse,razorpaysoftwareprivatelimited,https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited
+8. Fintech and payments,CRED,Automatic,0,lever,cred,https://jobs.lever.co/cred
+8. Fintech and payments,Groww,Automatic,0,greenhouse,groww,https://job-boards.greenhouse.io/groww
+8. Fintech and payments,Slice,Automatic,0,greenhouse,slice,https://job-boards.greenhouse.io/slice
+8. Fintech and payments,Navi,Automatic,0,ashby,navi,https://jobs.ashbyhq.com/navi
+8. Fintech and payments,Zeta,Automatic,1,lever,zeta,https://jobs.lever.co/zeta
+8. Fintech and payments,Jupiter,Careers link only,?,keka,jupiter,https://jupiter.keka.com/careers
+8. Fintech and payments,Stripe,Automatic,1,greenhouse,stripe,https://job-boards.greenhouse.io/stripe
+8. Fintech and payments,PayPal,Automatic,?,workday,paypal/wd1/jobs,https://paypal.wd1.myworkdayjobs.com/jobs
+8. Fintech and payments,Mastercard,Automatic,7+,workday,mastercard/wd1/CorporateCareers,https://mastercard.wd1.myworkdayjobs.com/CorporateCareers
+8. Fintech and payments,Juspay,Careers link only,?,own site,,https://juspay.io/careers
+8. Fintech and payments,Cashfree Payments,Careers link only,?,own site,,https://www.cashfree.com/careers/
+8. Fintech and payments,PayU,Careers link only,?,own site,,https://corporate.payu.com/careers/
+8. Fintech and payments,Pine Labs,Careers link only,?,own site,,https://www.pinelabs.com/careers
+8. Fintech and payments,Zerodha,Careers link only,?,own site,,https://careers.zerodha.com/
+8. Fintech and payments,Upstox,Careers link only,?,own site,,https://upstox.com/careers/
+8. Fintech and payments,Visa,Automatic,3,workday,visa/wd5/Visa,https://visa.wd5.myworkdayjobs.com/Visa
+8. Fintech and payments,Policybazaar,Careers link only,?,own site,,https://www.policybazaar.com/careers/
+8. Fintech and payments,Perfios,Careers link only,?,own site,,https://perfios.ai/careers/
+9. Banking and trading,JPMorgan Chase,Automatic,?,oracle,jpmc/CX_1001,https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001
+9. Banking and trading,Goldman Sachs,Custom work needed,?,graphql,higher.gs.com,https://higher.gs.com/
+9. Banking and trading,American Express,Careers link only,?,eightfold,aexp,https://careers.americanexpress.com/
+9. Banking and trading,Graviton Research,Automatic,1,greenhouse,gravitonresearchcapital,https://job-boards.greenhouse.io/gravitonresearchcapital
+9. Banking and trading,Tower Research,Automatic,0,greenhouse,towerresearchcapital,https://job-boards.greenhouse.io/towerresearchcapital
+9. Banking and trading,Morgan Stanley,Automatic,?,eightfold,morganstanley.eightfold.ai/morganstanley.com,https://www.morganstanley.com/careers/career-opportunities-search
+9. Banking and trading,Citi,Automatic,22,workday,citi/wd5/2,https://jobs.citi.com/
+9. Banking and trading,HSBC,Careers link only,?,own site,,https://www.hsbc.com/careers
+9. Banking and trading,Barclays,Automatic,8,workday,barclays/wd3/External_Career_Site_Barclays,https://search.jobs.barclays/
+9. Banking and trading,Deutsche Bank,Automatic,3,workday,db/wd3/DBWebsite,https://careers.db.com/
+9. Banking and trading,Bank of America,Careers link only,?,own site,,https://careers.bankofamerica.com/en-us
+9. Banking and trading,Standard Chartered,Careers link only,?,own site,,https://www.sc.com/en/global-careers/
+9. Banking and trading,Nomura,Careers link only,?,own site,,https://www.nomura.com/careers/
+10. Healthcare and life sciences,Innovaccer,Careers link only,?,own site,,https://innovaccer.com/careers
+10. Healthcare and life sciences,Optum (UnitedHealth Group),Careers link only,?,own site,,https://careers.unitedhealthgroup.com/search-jobs
+10. Healthcare and life sciences,GE HealthCare,Automatic,4,workday,gehc/wd5/GEHC_ExternalSite,https://careers.gehealthcare.com/global/en
+10. Healthcare and life sciences,Philips,Automatic,4,workday,philips/wd3/jobs-and-careers,https://www.careers.philips.com/in/en
+10. Healthcare and life sciences,Siemens Healthineers,Automatic,?,workday,onehealthineers/wd3/SHSJB,https://careers.siemens-healthineers.com/global/en
+10. Healthcare and life sciences,Novartis,Automatic,4,workday,novartis/wd3/Novartis_Careers,https://www.novartis.com/careers/career-search
+10. Healthcare and life sciences,IQVIA,Automatic,0,workday,iqvia/wd1/IQVIA,https://jobs.iqvia.com/en
+10. Healthcare and life sciences,Elevance Health,Careers link only,?,own site,,https://careers.elevancehealth.com/
+10. Healthcare and life sciences,Practo,Careers link only,?,own site,,https://practo.app.param.ai/jobs/
+10. Healthcare and life sciences,PharmEasy,Careers link only,?,own site,,https://pharmeasy.in/careers/
+10. Healthcare and life sciences,Tata 1mg,Careers link only,?,own site,,https://www.1mg.com/jobs
+10. Healthcare and life sciences,HealthifyMe,Careers link only,?,own site,,https://www.healthifyme.com/careers/
+10. Healthcare and life sciences,Niramai,Careers link only,?,own site,,https://niramai.com/careers/
+"11. Manufacturing, auto and industrial",Bosch,Automatic,15,smartrecruiters,BoschGroup,https://jobs.bosch.com/en
+"11. Manufacturing, auto and industrial",Siemens,Careers link only,?,own site,,https://www.siemens.com/en-us/company/jobs/
+"11. Manufacturing, auto and industrial",Honeywell,Automatic,?,oracle,ibqbjb.fa.ocs.oraclecloud.com/CX_1,https://careers.honeywell.com/en/sites/Honeywell
+"11. Manufacturing, auto and industrial",ABB,Automatic,1,workday,abb/wd3/external_career_page,https://careers.abb/global/en
+"11. Manufacturing, auto and industrial",Schneider Electric,Careers link only,?,own site,,https://careers.se.com/jobs
+"11. Manufacturing, auto and industrial",GE Aerospace,Automatic,0,workday,geaerospace/wd5/GE_ExternalSite,https://careers.geaerospace.com/global/en
+"11. Manufacturing, auto and industrial",GE Vernova,Automatic,28,workday,gevernova/wd5/Vernova_ExternalSite,https://careers.gevernova.com/
+"11. Manufacturing, auto and industrial",John Deere,Careers link only,?,own site,,https://careers.deere.com/careers
+"11. Manufacturing, auto and industrial",Mercedes-Benz R&D India,Careers link only,?,own site,,https://www.mbrdi.co.in/careers
+"11. Manufacturing, auto and industrial",Continental,Careers link only,?,own site,,https://jobs.continental.com/en/
+"11. Manufacturing, auto and industrial",Tata Motors,Automatic,?,successfactors,careers.tatamotors.com,https://careers.tatamotors.com/
+"11. Manufacturing, auto and industrial",Mahindra,Careers link only,?,own site,,https://www.mahindra.com/career
+"11. Manufacturing, auto and industrial",Rolls-Royce,Careers link only,?,own site,,https://careers.rolls-royce.com/en
+"11. Manufacturing, auto and industrial",Airbus,Automatic,5,workday,ag/wd3/Airbus,https://www.airbus.com/en/careers
+"11. Manufacturing, auto and industrial",Tata Steel,Careers link only,?,own site,,https://www.tatasteel.com/careers/
+"11. Manufacturing, auto and industrial",JSW Steel,Careers link only,?,own site,,https://www.jswsteel.in/careers
+"11. Manufacturing, auto and industrial",Reliance Industries,Careers link only,?,own site,,https://careers.ril.com/
+"11. Manufacturing, auto and industrial",Larsen & Toubro (L&T),Careers link only,?,own site,,https://www.larsentoubro.com/corporate/careers
+"11. Manufacturing, auto and industrial",Adani Group,Careers link only,?,own site,,https://www.adani.com/careers
+12. Consulting (Big 4),Deloitte,Careers link only,?,own site,,https://www.deloitte.com/in/en/careers.html
+12. Consulting (Big 4),EY,Automatic,?,successfactors,careers.ey.com/ey,https://careers.ey.com/ey/search/?locationsearch=India
+12. Consulting (Big 4),PwC,Automatic,4,workday,pwc/wd3/Global_Experienced_Careers,https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers
+12. Consulting (Big 4),KPMG,Automatic,2,oracle,ejgk.fa.em2.oraclecloud.com/CX_3,https://kpmg.com/in/en/careers.html
+13. Telecom,Jio,Careers link only,?,own site,,https://careers.jio.com/
+13. Telecom,Airtel,Careers link only,?,own site,,https://careers.airtel.com/
+13. Telecom,Vi (Vodafone Idea),Careers link only,?,own site,,https://www.myvi.in/careers
+14. Gaming,Dream Sports (Dream11),Careers link only,?,own site,,https://www.dreamsports.group/lifeatdreamsports
+14. Gaming,Games24x7,Careers link only,?,own site,,https://games24x7.darwinbox.in/ms/candidate/careers
+15. Edtech,upGrad,Careers link only,?,own site,,https://www.upgrad.com/careers/
+15. Edtech,Scaler,Careers link only,?,own site,,https://www.scaler.com/careers/
+16. Energy,Shell,Automatic,2,workday,shell/wd3/ShellCareers,https://www.shell.com/careers.html
