@@ -35,7 +35,7 @@ TRACKS = [
         ],
     },
     {
-        "id": "papers", "n": "04", "name": "Papers", "status": "Any time",
+        "id": "papers", "n": "04", "name": "Papers Explained", "status": "Any time",
         "desc": "Important papers taught step by step: the gist, the method, the results and why they matter. New papers added weekly.",
         "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "LoRA", "Harness Engineering", "Context Language Models"],
         "know": ["fundamentals/self-attention"],
