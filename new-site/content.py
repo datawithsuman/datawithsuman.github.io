@@ -37,7 +37,7 @@ TRACKS = [
     {
         "id": "papers", "n": "04", "name": "Papers", "status": "Any time",
         "desc": "Important papers taught step by step: the gist, the method, the results and why they matter.",
-        "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "Harness Engineering", "Context Language Models"],
+        "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "LoRA", "Harness Engineering", "Context Language Models"],
         "know": ["fundamentals/self-attention"],
         "modules": [
             {"name": "Foundational: architecture", "desc": "The architecture behind modern LLMs.", "lessons": [
@@ -61,6 +61,12 @@ TRACKS = [
                  "lead": "Can a model learn to reason without copying human reasoning?",
                  "prereqs": ["papers/instructgpt"],
                  "related": ["fundamentals/reasoning-models-grpo"]},
+            ]},
+            {"name": "Foundational: fine-tuning", "desc": "How to adapt a huge model cheaply.", "lessons": [
+                {"slug": "lora", "title": "LoRA", "type": "paper", "minutes": 25, "imported": True,
+                 "lead": "How do you fine-tune a 175B model by training only a few million numbers?",
+                 "prereqs": ["fundamentals/supervised-fine-tuning"],
+                 "related": ["fundamentals/lora-and-qlora"]},
             ]},
             {"name": "Recent research", "desc": "Newer papers on how AI agents are built and how they manage context.", "lessons": [
                 {"slug": "harness-engineering", "title": "Harness Engineering", "type": "paper", "minutes": 25, "imported": True,

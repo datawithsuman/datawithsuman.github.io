@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LoRA, Explained · @datawithsuman</title>
+<meta name="description" content="LoRA (Low-Rank Adaptation), explained: why full fine-tuning doesn't scale, ΔW = BA read symbol by symbol, which matrices and which rank, memory and storage savings, results on GPT-3, limits and what came after (QLoRA, S-LoRA, DoRA), with labs and an interview section.">
+<meta property="og:title" content="LoRA, Explained">
+<meta property="og:description" content="LoRA (Low-Rank Adaptation), explained: why full fine-tuning doesn't scale, ΔW = BA read symbol by symbol, which matrices and which rank, memory and storage savings, results on GPT-3, limits and what came after (QLoRA, S-LoRA, DoRA), with labs and an interview section.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- page: Harness Engineering ---- */
+.tablewrap{overflow-x:auto;margin:12px 0}
+table.data td,table.data th{text-align:center;font-variant-numeric:tabular-nums}
+table.data td.y{color:var(--ok);font-weight:600} table.data td.n{color:var(--bad);font-weight:600}
+table.data tr.flag td{background:rgba(167,139,250,.08)}
+.stage svg text.cap{fill:var(--dim);font-size:13px}
+.stage svg text.lbl{fill:var(--faint);font-size:12px}
+.stage svg text.sm{fill:var(--dim);font-size:12px}
+.stage svg text.big{fill:var(--ink);font-size:15px;font-weight:600}
+.stage svg text.yr{fill:var(--dim);font:500 13px var(--mono)}
+.stage svg text.nm{fill:var(--ink);font-size:14px;font-weight:600}
+.stage svg text.stTxt,.stage svg tspan.stTxt{fill:var(--st);font-weight:600}
+.stage svg text.okTxt,.stage svg tspan.okTxt{fill:var(--ok);font-weight:600}
+.stage svg text.badTxt,.stage svg tspan.badTxt{fill:var(--bad);font-weight:600}
+.stage svg text.aTxt{fill:var(--a)}
+.stage svg .edge{stroke:#56607a;stroke-width:1.6;fill:none}
+.stage svg .axis{stroke:var(--line);stroke-width:2;fill:none}
+.stage svg .nodeB{fill:#2a2214;stroke:var(--b);stroke-width:1.6}
+.stage svg .nodeA{fill:#0f2e2c;stroke:var(--a);stroke-width:1.6}
+.stage svg .nodeInfo,.stage svg .noteInfo{fill:#132440;stroke:var(--info);stroke-width:1.4}
+.stage svg .leafY{fill:#123322;stroke:var(--ok);stroke-width:1.4}
+.stage svg .leafN{fill:#3a1a1d;stroke:var(--bad);stroke-width:1.4}
+.stage svg .noteSt{fill:#221a3c;stroke:var(--st);stroke-width:1.4}
+.stage svg .noteBad{fill:#2c171b;stroke:var(--bad);stroke-width:1.4}
+.stage svg .feat{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .featOn{fill:rgba(167,139,250,.18);stroke:var(--st);stroke-width:2}
+.stage svg .dotA{fill:var(--a)} .stage svg .dotB{fill:var(--b)} .stage svg .dotSt{fill:var(--st)} .stage svg .dotBad{fill:var(--bad)}
+.stage svg .chipY{fill:#123322;stroke:var(--ok)} .stage svg .chipN{fill:#3a1a1d;stroke:var(--bad)}
+.stage svg .chipOut{fill:none;stroke:var(--bad);stroke-dasharray:4 3;stroke-width:2}
+.stage svg .ring{fill:none;stroke:var(--st);stroke-width:2.4}
+.stage svg .tbox{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .tboxOn{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cell{fill:var(--bg2);stroke:var(--line)} .stage svg .cellSt{fill:#221a3c;stroke:var(--st)}
+.tablewrap{overflow-x:auto;margin:12px 0}
+.stage svg .harnessBox{fill:rgba(45,212,191,.05);stroke:var(--a);stroke-width:1.8;stroke-dasharray:6 4}
+.stage svg .hub{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cut{stroke:var(--st);stroke-width:2.4;stroke-dasharray:5 4}
+.stage svg text.chipT{fill:var(--a);font:600 13px var(--mono);text-anchor:middle}
+.stage svg text.mono,.stage svg tspan.mono{font-family:var(--mono)}
+.card.task{border-color:rgba(245,165,36,.5)} .taskq{font-size:20px;font-weight:600;margin:6px 0 8px;color:var(--b)}
+pre.code{overflow-x:auto;background:#0a0f19;border:1px solid var(--line);border-radius:12px;padding:14px 0;font:13px/1.65 var(--mono);color:#cfd6e4;margin:18px 0 10px}
+pre.code .cl{display:block;padding:0 16px;white-space:pre;transition:background .3s}
+pre.code .cm{color:var(--faint)}
+[data-scene].js pre.code .cl.glow{filter:none;background:rgba(45,212,191,.13);box-shadow:inset 3px 0 var(--a);color:var(--ink)}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px} .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid4 .card,.grid2 .card{margin:0} .card.mini p{margin:0;font-size:15px;color:var(--dim)}
+.vsrow{display:grid;grid-template-columns:1fr 1fr;gap:12px} .vsrow>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--dim)}
+.vsrow b{display:block;font-size:18px;color:var(--ink);margin-top:4px}
+.sel{font:500 14px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1;min-width:0}
+.verdictTag{font:600 12px var(--mono);border-radius:6px;padding:2px 8px;border:1px solid;white-space:nowrap}
+.vt-ok{color:var(--ok);border-color:rgba(74,222,128,.5)} .vt-st{color:var(--st);border-color:rgba(167,139,250,.5)} .vt-bad{color:var(--bad);border-color:rgba(248,113,113,.5)} .vt-dim{color:var(--dim);border-color:var(--line)} .vt-b{color:var(--b);border-color:rgba(245,165,36,.5)}
+.layers{display:grid;gap:8px;margin:4px 0}
+.layer{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.layer .ln{font-weight:600} .layer.skip{opacity:.4}
+.layer.hit{border-color:var(--a);background:rgba(45,212,191,.06)}
+.evid .bar{grid-template-columns:minmax(130px,34%) 1fr 60px}
+.bars.signed .track{position:relative;background:var(--bg2)} .bars.signed .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.bars.signed .fill{position:absolute;top:0;height:100%}
+ul.cav li,.srcs li{margin-bottom:8px} ol.recs li{margin-bottom:6px;font-size:15px}
+dl.terms{display:grid;grid-template-columns:minmax(140px,30%) 1fr;gap:8px 16px;margin:0}
+dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
+.verdict{border:1px solid rgba(45,212,191,.45);border-radius:var(--r);background:var(--card);padding:18px 20px}
+@media(max-width:560px){.grid4,.grid2,.vsrow{grid-template-columns:1fr} dl.terms{grid-template-columns:1fr} .layer{grid-template-columns:1fr;gap:2px}}
+.sbars{display:grid;gap:9px;margin:10px 0}
+.sbars .track{position:relative;height:14px;background:var(--bg2);border-radius:7px} .sbars .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.sbars .fill{position:absolute;top:0;height:100%;border-radius:7px}
+span.mono{font-family:var(--mono)}
+pre.code,code{font-variant-ligatures:none}
+.lab label:has(select){flex-wrap:wrap} .lab label .sel{flex:1 1 220px}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+.lab .chk{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:15px}
+#lrPlot{width:100%;height:auto;margin:10px 0}
+@media (max-width:700px){.eq mjx-container svg{max-width:100%;height:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Papers Explained</a><a class="h" href="../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Deep explainer · Paper · Foundations</div>
+  <h1>LoRA: fine-tuning a giant model by training two tiny matrices</h1>
+  <div class="meta">Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, Chen · Microsoft · ICLR 2022 · arXiv <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">2106.09685</a> · 10 sources, checked 11 Nov 2026</div>
+  <div class="tldr"><b>In one breath:</b> fine-tuning normally updates every weight, so each task needs a full copy of the model: 350 GB for GPT-3. LoRA's bet is that the <i>change</i> a task needs is simple, so it can be written as the product of two thin matrices, <b>ΔW = BA</b>, with a rank r as small as 1 to 8. The original weights stay frozen; only A and B are trained. On GPT-3 175B that cuts trainable parameters about <b>10,000×</b>, training memory about <b>3×</b> (1.2 TB to 350 GB), and each task's checkpoint from 350 GB to <b>35 MB</b>, while matching or beating full fine-tuning. Because BA can be added into W after training, it adds <b>no extra delay</b> when the model runs.</div>
+  <div class="legend"><span><i style="background:var(--a)"></i>LoRA's A and B</span><span><i style="background:var(--b)"></i>frozen weights and earlier methods</span><span><i style="background:var(--st)"></i>rank and data</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<section class="ch" id="example" data-toc="0 · The running example">
+  <div class="chap">0 · The running example</div>
+  <h2>One 175B model, a hundred customers</h2>
+  <div class="card task"><span class="mono small">the paper's own scenario</span><p class="taskq">You run GPT-3 175B and want a version tuned for each of 100 customers: SQL generation for one, chat summaries for another. Full fine-tuning means 100 copies of 350 GB: <b>35 TB</b> of checkpoints.</p><p class="small">With LoRA you keep one 350 GB base model and 100 adapters of about 35 MB each: about <b>354 GB</b> in total <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.2, footnote 4</a></span>. We'll follow one weight matrix of this model, the query projection in layer 48, which is 12,288 × 12,288.</p></div>
+</section>
+
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <span class="pill bad">A full copy per task</span>
+  <h2>Full fine-tuning doesn't scale to giant models</h2>
+  <p>Fine-tuning updates every parameter, so "the new model contains as many parameters as in the original model". That was an "inconvenience" for GPT-2 or RoBERTa and becomes "a critical deployment challenge" for GPT-3's 175 billion parameters <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§1</a></span>.</p>
+  <div class="grid2">
+    <div class="card bad"><h4>Training memory</h4><p>With Adam, every trainable weight also needs its gradient and two optimiser states. For GPT-3 that's about 1.2 TB of GPU memory just to fine-tune.</p></div>
+    <div class="card bad"><h4>Storing and switching</h4><p>Each task produces a full-size model. Serving many tasks means loading and swapping hundreds of gigabytes.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="c2" data-toc="2 · How it was done before">
+  <div class="chap">2 · How it was done before</div>
+  <span class="pill b">Adapters and prompts</span>
+  <h2>Earlier cheap methods cost speed or quality</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Approach</th><th>What's trained</th><th>The catch</th></tr></thead>
+    <tbody>
+      <tr><td><b>Adapters</b> (Houlsby 2019)</td><td>Small extra layers inserted into each block</td><td>The extra layers run in sequence, adding delay: up to 30% at batch size 1 on GPT-2 medium</td></tr>
+      <tr><td><b>Prefix / prompt tuning</b> (Li &amp; Liang 2021)</td><td>Learned "virtual tokens" added to the input</td><td>Hard to optimise, performance changes unpredictably with size, and the prefix uses up sequence length</td></tr>
+      <tr><td><b>BitFit</b></td><td>Only the bias terms</td><td>Very cheap but usually weaker</td></tr>
+      <tr><td><b>Tune the top layers</b></td><td>Only the last few layers</td><td>Still large, and often worse than full fine-tuning</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card evid"><h4>Adapter delay on GPT-2 medium, batch 1, 128 tokens (Table 1)</h4><div class="bars" id="latBars" data-max="30"></div><p class="small">Milliseconds per forward pass. Fine-tuned and LoRA models take the same time, because LoRA's weights are merged in.</p></div>
+</section>
+
+<section class="ch" id="c3" data-toc="3 · The core idea: low-rank updates">
+  <div class="chap">3 · The core idea</div>
+  <span class="pill a">ΔW = BA</span>
+  <h2>The change a task needs is low-rank</h2>
+  <p>Earlier work found that pretrained language models have a low "intrinsic dimension": they can be fine-tuned well even when the update is squeezed into a small random subspace (Aghajanyan et al. 2020). LoRA hypothesises that the weight <b>change</b> during fine-tuning also has a low "intrinsic rank" <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.1</a></span>. So instead of learning a full d × k update, learn it as the product of a d × r matrix and an r × k matrix:</p>
+  <div class="reader" data-reader='[
+    {"t":"w","c":"b","label":"the frozen weights","say":"W₀: the pretrained matrix, here 12,288 × 12,288. It never changes during LoRA training."},
+    {"t":"b","c":"a","label":"the up-projection","say":"B: d × r. Starts at zero, so the model begins exactly as the pretrained one."},
+    {"t":"a","c":"a","label":"the down-projection","say":"A: r × k. Starts as small random numbers. Together, B times A is a d × k matrix of rank at most r."},
+    {"t":"s","c":"info","label":"the scaling","say":"α / r. α is set once to the first r you try and not tuned, so you can change r without retuning the learning rate."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="h = \class{term t-w}{W_0}\,x + \class{term t-s}{\frac{\alpha}{r}}\,\class{term t-b}{B}\,\class{term t-a}{A}\,x"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 3 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.1</a></span> · hover a term.</p>
+  </div>
+  <p>Both paths see the same input x and their outputs are added. Only A and B get gradients. For our 12,288 × 12,288 query matrix with r = 4, that's 2 × 12,288 × 4 = 98,304 trainable numbers instead of about 151 million.</p>
+  <div class="card ok"><h4>No extra delay when serving</h4><p>After training, compute W = W₀ + BA once and serve it like any other model. To switch tasks, subtract BA and add a different B′A′, a quick operation <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.1</a></span>. Adapters can't do this, because they add layers rather than change existing ones.</p></div>
+  <div class="card"><h4>A generalisation of full fine-tuning</h4><p>If you apply LoRA to every matrix and set r to the full rank, you recover roughly what full fine-tuning can express. Adapters, by contrast, converge to a different network as you add parameters, and prefix tuning to one that can't take long inputs.</p></div>
+</section>
+
+<section class="ch" id="c4" data-toc="4 · Where to put it">
+  <div class="chap">4 · Where to put it</div>
+  <span class="pill st">Attention matrices</span>
+  <h2>Spread a small budget across more matrices</h2>
+  <p>The paper applies LoRA only to the attention projections (W<sub>q</sub>, W<sub>k</sub>, W<sub>v</sub>, W<sub>o</sub>) and freezes the feed-forward layers, for simplicity. With a fixed budget of 18M trainable parameters on GPT-3, they compared which matrices to adapt <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§7.1</a></span>:</p>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Adapted</th><th>Rank r</th><th>WikiSQL</th><th>MultiNLI</th></tr></thead>
+    <tbody>
+      <tr><td>W<sub>q</sub> only</td><td class="num">8</td><td class="num">70.4</td><td class="num">91.0</td></tr>
+      <tr><td>W<sub>k</sub> only</td><td class="num">8</td><td class="num">70.0</td><td class="num">90.8</td></tr>
+      <tr><td>W<sub>v</sub> only</td><td class="num">8</td><td class="num">73.0</td><td class="num">91.0</td></tr>
+      <tr><td>W<sub>o</sub> only</td><td class="num">8</td><td class="num">73.2</td><td class="num">91.3</td></tr>
+      <tr><td>W<sub>q</sub>, W<sub>v</sub></td><td class="num">4</td><td class="num"><b>73.7</b></td><td class="num">91.3</td></tr>
+      <tr><td>All four</td><td class="num">2</td><td class="num"><b>73.7</b></td><td class="num"><b>91.7</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 5 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§7.1</a></span>. WikiSQL varies by about ±0.5 between runs, MultiNLI by about ±0.1.</p>
+  <p>Putting the whole budget into W<sub>q</sub> or W<sub>k</sub> was clearly worse. Adapting more matrices at a lower rank beat adapting one at a higher rank: even rank 4 captures enough. Most later practice adapts every linear layer, feed-forward included.</p>
+</section>
+
+<section class="ch" id="c5" data-toc="5 · Counting the parameters">
+  <div class="chap">5 · Counting the parameters</div>
+  <span class="pill info">About 10,000× fewer</span>
+  <h2>How small the trainable part really is</h2>
+  <div class="reader" data-reader='[
+    {"t":"n","c":"info","label":"trainable numbers","say":"|Θ|: everything LoRA trains."},
+    {"t":"two","c":"a","label":"A and B","say":"2: one A and one B for each adapted matrix."},
+    {"t":"l","c":"st","label":"adapted matrices","say":"L̂: how many weight matrices get LoRA, e.g. W_q and W_v in all 96 layers = 192."},
+    {"t":"d","c":"b","label":"the model width","say":"d_model: 12,288 for GPT-3."},
+    {"t":"r","c":"a","label":"the rank","say":"r: often 1 to 16."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-n}{|\Theta|} = \class{term t-two}{2} \times \class{term t-l}{\hat{L}_{LoRA}} \times \class{term t-d}{d_{model}} \times \class{term t-r}{r}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">§5.1 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§5.1</a></span>, for square d × d matrices · hover a term.</p>
+  </div>
+  <h3>Try it: size an adapter</h3>
+  <div class="card lab" id="paramLab">
+    <label for="pM">Model <select id="pM"></select></label>
+    <label for="pR">Rank r <input type="range" id="pR" min="0" max="7" step="1" value="2"><output></output></label>
+    <label for="pW">Matrices per layer <select id="pW"><option value="2">W_q and W_v (the paper's default)</option><option value="4">All four attention matrices</option></select></label>
+    <div class="vsrow"><div>LoRA trains: <b class="mono" id="pT">—</b></div><div>Full fine-tuning trains: <b class="mono" id="pF">—</b></div><div>Fewer by: <b class="mono" id="pX">—</b></div></div>
+    <div class="vsrow"><div>Adapter file at 16 bits: <b class="mono" id="pS">—</b></div><div>Full model file at 16 bits: <b class="mono" id="pB">—</b></div></div>
+    <p class="small">Computed from |Θ| = 2 × (adapted matrices) × d × r. Model sizes and widths: GPT-2 medium (355M, d = 1,024, 24 layers), GPT-2 large (774M, d = 1,280, 36 layers), GPT-3 (175B, d = 12,288, 96 layers).</p>
+  </div>
+  <p>With GPT-3, W<sub>q</sub> and W<sub>v</sub>, and r = 4, LoRA trains about 18.9M numbers, roughly 9,300× fewer than 175B and a 38 MB file, in line with the paper's "roughly 10,000×" and 35 MB.</p>
+</section>
+
+<section class="ch" id="c6" data-toc="6 · What it saves in practice">
+  <div class="chap">6 · What it saves in practice</div>
+  <span class="pill ok">Memory, storage and speed</span>
+  <h2>Cheaper to train, store and switch</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>GPT-3 175B</th><th>Full fine-tuning</th><th>LoRA</th></tr></thead>
+    <tbody>
+      <tr><td>GPU memory to train</td><td class="num">1.2 TB</td><td class="num"><b>350 GB</b></td></tr>
+      <tr><td>Checkpoint per task</td><td class="num">350 GB</td><td class="num"><b>35 MB</b> (r = 4, W<sub>q</sub> and W<sub>v</sub>)</td></tr>
+      <tr><td>Training speed per V100</td><td class="num">32.5 tokens/s</td><td class="num"><b>43.1 tokens/s</b> (about 25% faster)</td></tr>
+      <tr><td>Extra delay when serving</td><td class="num">none</td><td class="num"><b>none</b>, once merged</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">§4.2 and footnote 5 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.2</a></span>.</p>
+  <p>The memory saving comes from the optimiser: Adam keeps two extra numbers per trainable weight, and gradients aren't needed for frozen weights. The frozen model still has to sit in memory, which is why the saving is about 3×, not 10,000×.</p>
+  <h3>Try it: storing many tasks</h3>
+  <div class="card lab" id="storeLab">
+    <label for="sN">Number of tuned versions <input type="range" id="sN" min="0" max="30" step="1" value="20"><output></output></label>
+    <div class="bars" id="storeBars" data-max="7"></div>
+    <p class="small">GPT-3 175B: 350 GB per full copy; 350 GB base + 35 MB per LoRA adapter. Bars use a log scale (each step is 10×).</p>
+  </div>
+</section>
+
+<section class="ch" id="c7" data-toc="7 · Results">
+  <div class="chap">7 · Evidence</div>
+  <span class="pill ok">As good as full fine-tuning</span>
+  <h2>Matching full fine-tuning with 0.003% of the parameters</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>GPT-3 175B</th><th>Trainable params</th><th>WikiSQL</th><th>MultiNLI-m</th><th>SAMSum (R1/R2/RL)</th></tr></thead>
+    <tbody>
+      <tr><td>Full fine-tuning</td><td class="num">175,255.8M</td><td class="num">73.8</td><td class="num">89.5</td><td class="num">52.0 / 28.0 / 44.5</td></tr>
+      <tr><td>BitFit</td><td class="num">14.2M</td><td class="num">71.3</td><td class="num">91.0</td><td class="num">51.3 / 27.4 / 43.5</td></tr>
+      <tr><td>Prefix-embedding</td><td class="num">3.2M</td><td class="num">63.1</td><td class="num">88.6</td><td class="num">48.3 / 24.2 / 40.5</td></tr>
+      <tr><td>Prefix-layer</td><td class="num">20.2M</td><td class="num">70.1</td><td class="num">89.5</td><td class="num">50.8 / 27.3 / 43.5</td></tr>
+      <tr><td>Adapter (H)</td><td class="num">40.1M</td><td class="num">73.2</td><td class="num">91.5</td><td class="num">53.2 / 29.0 / 45.1</td></tr>
+      <tr><td><b>LoRA</b></td><td class="num"><b>4.7M</b></td><td class="num">73.4</td><td class="num"><b>91.7</b></td><td class="num"><b>53.8 / 29.8 / 45.9</b></td></tr>
+      <tr><td><b>LoRA</b></td><td class="num"><b>37.7M</b></td><td class="num"><b>74.0</b></td><td class="num">91.6</td><td class="num">53.4 / 29.2 / 45.1</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 4 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§5.5</a></span>. WikiSQL is text-to-SQL, MultiNLI is inference, SAMSum is dialogue summarisation.</p>
+  <ul>
+    <li><b>GPT-3:</b> LoRA matched or beat full fine-tuning on all three tasks with 4.7M trainable parameters.</li>
+    <li><b>More isn't always better for other methods:</b> prefix tuning got worse with more than 256 prefix tokens (or 32 for prefix-layer), which the authors suspect pushes inputs away from what the model saw in pretraining.</li>
+    <li><b>Smaller models too:</b> on GPT-2 medium, LoRA scored 70.4 BLEU on the E2E NLG task with 0.35M parameters, above full fine-tuning's 68.2. On RoBERTa and DeBERTa (GLUE), it matched or came close to full fine-tuning.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c8" data-toc="8 · How low can the rank go?">
+  <div class="chap">8 · How low can the rank go?</div>
+  <span class="pill st">Rank 1 can be enough</span>
+  <h2>The update really is low-rank</h2>
+  <div class="card evid"><h4>WikiSQL accuracy on GPT-3, adapting W<sub>q</sub> and W<sub>v</sub> (Table 6)</h4><div class="bars" id="rankBars" data-max="80"></div></div>
+  <p>"To our surprise, a rank as small as one suffices" for adapting W<sub>q</sub> and W<sub>v</sub> on these tasks; W<sub>q</sub> alone needed a somewhat larger r <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§7.2</a></span>. Two analyses back this up:</p>
+  <ul>
+    <li><b>Bigger r doesn't find new directions.</b> The top directions learned with r = 8 are also the top ones learned with r = 64; the extra directions at r = 64 look mostly like noise.</li>
+    <li><b>ΔW amplifies what's already there.</b> The update boosts directions that exist in W but weren't emphasised by pretraining, and boosts them a lot: by about 21.5× for r = 4 in layer 48 <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§7.3</a></span>. Fine-tuning seems to turn up useful features the model already had, rather than learn new ones.</li>
+  </ul>
+  <div class="card bad"><h4>The authors' own caveat</h4><p>They "do not expect a small r to work for every task". If the new task were in a different language from pretraining, retraining everything (LoRA with r = d) could clearly win <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§7.2, footnote 6</a></span>.</p></div>
+</section>
+
+<section class="ch" id="c9" data-toc="9 · Limits and critique">
+  <div class="chap">9 · Takeaways and caveats</div>
+  <span class="pill bad">Where it falls short</span>
+  <h2>What the paper didn't solve</h2>
+  <ul>
+    <li><b>Batching different tasks.</b> If you merge BA into W for speed, one forward pass can only serve one task. Keeping adapters separate allows mixing tasks in a batch, at some cost in speed <span class="src"><a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">§4.2</a></span>.</li>
+    <li><b>Heuristic choices.</b> Which matrices to adapt and which rank to use were picked by experiment; the paper lists finding a principled way as future work.</li>
+    <li><b>Narrow tests.</b> The evaluation used classification, text-to-SQL, summarisation and table-to-text tasks, not long instruction tuning or learning new domains.</li>
+    <li><b>Later evidence of a gap.</b> On harder targets, code and maths with up to 20B tokens of continued pretraining, "LoRA substantially underperforms full finetuning", but it also forgets less of the base model's other skills. Full fine-tuning learned updates of 10–100× higher rank than typical LoRA settings <span class="src"><a href="https://arxiv.org/abs/2405.09673" target="_blank" rel="noopener">arXiv 2405.09673</a></span>.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c10" data-toc="10 · What came after">
+  <div class="chap">10 · What it changed</div>
+  <span class="pill ok">The default way to fine-tune</span>
+  <h2>From one paper to the standard fine-tuning method</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Work</th><th>What it added</th></tr></thead>
+    <tbody>
+      <tr><td><b>QLoRA</b> (2023)</td><td>Keep the frozen model in 4-bit and train LoRA adapters on top: fine-tune a 65B model on a single 48 GB GPU while keeping 16-bit fine-tuning quality <span class="src"><a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">arXiv 2305.14314</a></span></td></tr>
+      <tr><td><b>S-LoRA</b> (2023)</td><td>Serve thousands of adapters on one base model, keeping adapters in main memory and batching requests that use different ones <span class="src"><a href="https://arxiv.org/abs/2311.03285" target="_blank" rel="noopener">arXiv 2311.03285</a></span></td></tr>
+      <tr><td><b>DoRA</b> (2024)</td><td>Split each weight into a size and a direction, and apply LoRA to the direction <span class="src"><a href="https://arxiv.org/abs/2402.09353" target="_blank" rel="noopener">arXiv 2402.09353</a></span></td></tr>
+      <tr><td><b>Everywhere else</b></td><td>LoRA became the usual way to customise open models, from chat models to image generators, and adapter-per-customer serving became a standard product pattern</td></tr>
+    </tbody>
+  </table></div>
+  <p>Related lessons: <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/lora-and-qlora/">LoRA and QLoRA</a> and <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/supervised-fine-tuning/">supervised fine-tuning</a>.</p>
+</section>
+
+<section class="ch" id="c11" data-toc="11 · Key terms">
+  <div class="chap">11 · Key terms</div>
+  <h2>Words to know</h2>
+  <dl class="terms">
+    <dt>Parameter-efficient fine-tuning (PEFT)</dt><dd>Adapting a model by training only a small number of new or selected parameters.</dd>
+    <dt>Rank</dt><dd>The number of independent directions a matrix can represent. A d × r times r × k product has rank at most r.</dd>
+    <dt>Low-rank decomposition</dt><dd>Writing a big matrix as the product of two thin ones: ΔW = BA.</dd>
+    <dt>Intrinsic dimension / rank</dt><dd>The idea that the useful change during fine-tuning lives in a small subspace.</dd>
+    <dt>Adapter</dt><dd>A small extra layer inserted into the network; adds delay because it runs in sequence.</dd>
+    <dt>Merging</dt><dd>Adding BA into W₀ after training so the model runs at full speed with no extra layers.</dd>
+    <dt>α / r scaling</dt><dd>A constant that scales the update so the learning rate needn't be retuned when r changes.</dd>
+    <dt>QLoRA</dt><dd>LoRA on top of a 4-bit quantised frozen model, to fit fine-tuning on one GPU.</dd>
+  </dl>
+</section>
+
+<section class="ch" id="c12" data-toc="12 · Verdict">
+  <div class="chap">12 · Verdict</div>
+  <h2>Read it</h2>
+  <p><b>Read</b> §1, §4 (the method, its benefits and limits) and Figure 1: they're short and contain everything interviewers ask about. <b>Read</b> §7.1–7.2 for which matrices and which rank. <b>Skim</b> the GLUE and GPT-2 tables, and §7.3 if you're curious why low rank works.</p>
+</section>
+
+<section class="ch" id="iv" data-toc="13 · Say it in an interview">
+  <div class="chap">13 · Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">"LoRA fine-tunes a large model without touching its weights. It assumes the weight change a task needs is low-rank, so for a frozen matrix W it learns ΔW = BA, where B is d × r and A is r × k with r around 1 to 16. B starts at zero so training starts from the pretrained model, and the update is scaled by α / r. Only A and B are trained, which on GPT-3 cut trainable parameters about 10,000×, training memory about 3× and checkpoints from 350 GB to 35 MB, while matching full fine-tuning. After training you merge BA into W, so there's no extra latency, and you can swap adapters per task."</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Problem: full fine-tuning needs a full model copy per task and Adam's memory for every weight. Earlier fixes either added latency (adapters) or ate sequence length and were hard to tune (prefix tuning). The idea: the update has low intrinsic rank, so ΔW = BA. Walk through one 12,288 × 12,288 matrix: 151M numbers become 98K at r = 4. Explain the zero init of B, α / r, merging, and which matrices (W<sub>q</sub> and W<sub>v</sub> at low rank beat one matrix at high rank). Results: matches or beats full fine-tuning on GPT-3. Limits: one task per merged batch, and later evidence that LoRA learns less on hard new domains but forgets less.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why initialise B to zero?</summary><p>So BA = 0 at the start, and the model begins exactly as the pretrained one. A is random so gradients for B aren't zero; if both were zero, neither would learn.</p></details>
+  <details class="qa"><summary>Why does LoRA save memory but not 10,000× memory?</summary><p>The trainable parameters and their Adam states shrink by about 10,000×, but the frozen model still has to be in GPU memory for the forward and backward passes. On GPT-3 that's 1.2 TB down to 350 GB, about 3×.</p></details>
+  <details class="qa"><summary>How do you choose the rank?</summary><p>Start small (4–16). The paper found r = 1–4 enough for its tasks, and adapting more matrices at low rank beats one matrix at high rank. Use a larger rank, or full fine-tuning, when the task is far from pretraining, such as a new language or domain.</p></details>
+  <details class="qa"><summary>Does LoRA add inference latency?</summary><p>Not if you merge: W = W₀ + BA is the same shape as W₀. If you keep adapters separate to serve many tasks in one batch, there's a small extra cost, which systems like S-LoRA optimise.</p></details>
+  <details class="qa"><summary>LoRA or full fine-tuning?</summary><p>LoRA for most adaptation, many tasks, or limited GPUs, and it forgets less of the base model's skills. Full fine-tuning when you're teaching a lot of new knowledge, like a new domain or continued pretraining, where later work found LoRA learns noticeably less.</p></details>
+  <details class="qa"><summary>What is QLoRA?</summary><p>LoRA with the frozen base model stored in 4-bit, so the biggest memory cost shrinks too. It made fine-tuning a 65B model possible on a single 48 GB GPU.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"LoRA compresses the model." The base model is unchanged; LoRA adds a small update.</li>
+    <li>"LoRA always matches full fine-tuning." It did on the paper's tasks; on hard new domains it can fall short.</li>
+    <li>"LoRA makes inference slower." Merged, it adds nothing.</li>
+    <li>"LoRA cuts training memory 10,000×." That's the trainable parameters; memory fell about 3×.</li>
+  </ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>Everything on this page comes from these</h2>
+  <ol class="srcs">
+    <li>Hu et al. (2021). LoRA: Low-Rank Adaptation of Large Language Models. <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">arXiv 2106.09685</a> (v2, main text read in full)</li>
+    <li>Aghajanyan, Zettlemoyer, Gupta (2020). Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning. <a href="https://arxiv.org/abs/2012.13255" target="_blank" rel="noopener">arXiv 2012.13255</a></li>
+    <li>Houlsby et al. (2019). Parameter-Efficient Transfer Learning for NLP (adapters). <a href="https://arxiv.org/abs/1902.00751" target="_blank" rel="noopener">arXiv 1902.00751</a></li>
+    <li>Li and Liang (2021). Prefix-Tuning. <a href="https://arxiv.org/abs/2101.00190" target="_blank" rel="noopener">arXiv 2101.00190</a></li>
+    <li>Brown et al. (2020). Language Models are Few-Shot Learners (GPT-3). <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">arXiv 2005.14165</a></li>
+    <li>Dettmers et al. (2023). QLoRA: Efficient Finetuning of Quantized LLMs. <a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener">arXiv 2305.14314</a></li>
+    <li>Sheng et al. (2023). S-LoRA: Serving Thousands of Concurrent LoRA Adapters. <a href="https://arxiv.org/abs/2311.03285" target="_blank" rel="noopener">arXiv 2311.03285</a></li>
+    <li>Liu et al. (2024). DoRA: Weight-Decomposed Low-Rank Adaptation. <a href="https://arxiv.org/abs/2402.09353" target="_blank" rel="noopener">arXiv 2402.09353</a></li>
+    <li>Biderman et al. (2024). LoRA Learns Less and Forgets Less. <a href="https://arxiv.org/abs/2405.09673" target="_blank" rel="noopener">arXiv 2405.09673</a></li>
+    <li>Microsoft's LoRA code. <a href="https://github.com/microsoft/LoRA" target="_blank" rel="noopener">github.com/microsoft/LoRA</a></li>
+  </ol>
+  <p class="small">The labs compute from the paper's formulas and figures. @datawithsuman</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- page content generated before the engine runs ----------
+(() => {
+  const bar = (label, v, color, shown) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="--v:${v};background:${color}"></div></div><span class="v mono">${shown || v}</span></div>`;
+  // Table 1: GPT-2 medium forward pass, batch 1, sequence 128 (ms)
+  document.getElementById('latBars').innerHTML = [['Fine-tuned or LoRA', 19.8, 'var(--ok)'], ['Adapter (L)', 23.9, 'var(--b)', '23.9 (+20.7%)'], ['Adapter (H)', 25.8, 'var(--bad)', '25.8 (+30.3%)']].map(r => bar(...r)).join('');
+  // Table 6: WikiSQL accuracy on GPT-3 by rank
+  document.getElementById('rankBars').innerHTML = [['W_q only, r = 1', 68.8, 'var(--b)'], ['W_q, W_v, r = 1', 73.4, 'var(--a)'], ['W_q, W_v, r = 2', 73.3, 'var(--a)'], ['W_q, W_v, r = 4', 73.7, 'var(--a)'], ['W_q, W_v, r = 8', 73.8, 'var(--ok)'], ['W_q, W_v, r = 64', 73.5, 'var(--a)']].map(r => bar(...r)).join('');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const num = (x) => x >= 1e9 ? (x / 1e9).toFixed(1) + 'B' : x >= 1e6 ? (x / 1e6).toFixed(1) + 'M' : x >= 1e3 ? (x / 1e3).toFixed(1) + 'K' : String(Math.round(x));
+  const bytes = (b) => b >= 1e12 ? (b / 1e12).toFixed(1) + ' TB' : b >= 1e9 ? (b / 1e9).toFixed(b >= 1e10 ? 0 : 1) + ' GB' : b >= 1e6 ? (b / 1e6).toFixed(b >= 1e7 ? 0 : 1) + ' MB' : (b / 1e3).toFixed(0) + ' KB';
+
+  // parameter lab: |Θ| = 2 × L̂ × d × r (§5.1)
+  const MODELS = [['GPT-2 medium (355M)', 355e6, 1024, 24], ['GPT-2 large (774M)', 774e6, 1280, 36], ['GPT-3 (175B)', 175e9, 12288, 96]];
+  const RS = [1, 2, 4, 8, 16, 32, 64, 128], pM = $('#pM'), pR = $('#pR'), pW = $('#pW');
+  pM.innerHTML = MODELS.map((m, i) => `<option value="${i}"${i === 2 ? ' selected' : ''}>${m[0]}</option>`).join('');
+  const drawP = () => { const [, P, d, L] = MODELS[+pM.value], r = RS[+pR.value], k = +pW.value, t = 2 * L * k * d * r;
+    pR.nextElementSibling.textContent = r;
+    $('#pT').textContent = num(t); $('#pF').textContent = num(P); $('#pX').textContent = Math.round(P / t).toLocaleString('en-GB') + '×';
+    $('#pS').textContent = bytes(2 * t); $('#pB').textContent = bytes(2 * P); };
+  [pM, pR, pW].forEach(e => e.addEventListener('input', drawP)); drawP();
+
+  // storage lab: n tuned versions of GPT-3, full copies vs one base + n adapters
+  const sN = $('#sN'), NS = (v) => Math.round(Math.pow(10, 3 * v / 30));   // 1 to 1000
+  const drawS = () => { const n = NS(+sN.value); sN.nextElementSibling.textContent = n;
+    const full = n * 350e9, lora = 350e9 + n * 35e6, L = (b) => Math.log10(b / 1e9) + 1;   // GB on a log scale
+    $('#storeBars').innerHTML = [['Full fine-tuning', full, 'var(--bad)'], ['LoRA', lora, 'var(--ok)']].map(([s, b, c]) => `<div class="bar"><span>${s}</span><div class="track"><div class="fill" style="width:${100 * L(b) / 7}%;background:${c}"></div></div><span class="v mono">${bytes(b)}</span></div>`).join(''); };
+  sN.addEventListener('input', drawS); drawS();
+})();
+</script>
+</body>
+</html>

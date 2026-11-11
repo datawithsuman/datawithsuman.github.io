@@ -186,7 +186,37 @@ IG_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="Three steps: p
   <text x="10" y="180" font-size="12" fill="var(--muted)">Result: a 1.3B InstructGPT preferred to the 175B GPT-3</text>
 </svg>"""
 
+LORA_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="A large frozen weight matrix W next to a thin trainable path: a tall narrow matrix B times a short wide matrix A, whose outputs are added.">
+  <g font-size="14" fill="var(--ink)" font-weight="600"><text x="10" y="18">Frozen</text><text x="250" y="18">Trained</text></g>
+  <rect x="10" y="30" width="150" height="150" rx="8" fill="var(--tint)" stroke="var(--muted)" stroke-width="1.5"/><text x="85" y="100" font-size="15" text-anchor="middle" fill="var(--ink)">W₀</text><text x="85" y="122" font-size="12" text-anchor="middle" fill="var(--muted)">d × d, frozen</text>
+  <text x="196" y="110" font-size="22" fill="var(--muted)">+</text>
+  <rect x="250" y="30" width="24" height="150" rx="5" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="262" y="196" font-size="12" text-anchor="middle" fill="var(--ink)">B</text>
+  <text x="288" y="110" font-size="18" fill="var(--muted)">×</text>
+  <rect x="310" y="93" width="150" height="24" rx="5" fill="var(--tint)" stroke="var(--c)" stroke-width="1.5"/><text x="385" y="138" font-size="12" text-anchor="middle" fill="var(--ink)">A (r × d)</text>
+  <text x="310" y="60" font-size="12" fill="var(--muted)">rank r, often 1–16</text>
+</svg>"""
+
 PAPER_PLANS = {
+    "papers/lora": {
+        "analogy": "Think of a huge printed encyclopedia that needs a few corrections for each customer. Reprinting the whole book for every customer is absurd. Instead you keep one copy and give each customer a thin booklet of corrections that you apply on top. LoRA's A and B matrices are that booklet.",
+        "picture": LORA_PICTURE,
+        "caption": "LoRA keeps the pretrained weights frozen and learns the update as two thin matrices, B × A.",
+        "problem": ["example", "c1"],
+        "play": {"lab": "paramLab", "chapter": "c5",
+                 "try": "<b>Try it.</b> Pick a model and a rank, and see how many numbers LoRA trains compared with full fine-tuning, and how big the adapter file is.",
+                 "why": "<b>Notice:</b> on GPT-3 with rank 4, LoRA trains about 19 million numbers instead of 175 billion, and the adapter is a file of tens of megabytes. That's why one base model can serve hundreds of tuned versions."},
+        "how": ["c2", "c3", "c4", "c5", "c6"],
+        "found": ["c7", "c8"],
+        "limits": ["c9"],
+        "changed_chapters": ["c10"],
+        "verdict": ["c12"],
+        "reference": ["c11", "src"],
+        "hidden": ["iv"],
+        "changed_html": """<p>LoRA made fine-tuning cheap enough for anyone with one GPU, and with QLoRA, for models of tens of billions of parameters. It became the default way to customise open models, and serving one base model with many swappable adapters became a standard product pattern.</p>
+<p><b>What to remember.</b> Freeze W, learn ΔW = BA with a small rank, start B at zero, scale by α/r, and merge BA into W for serving. It matches full fine-tuning on most adaptation tasks, but can fall short when teaching a lot of genuinely new knowledge.</p>""",
+        "strip": [r'<h3>Try it: size an adapter</h3>\s*'],
+        "edits": [],
+    },
     "papers/instructgpt": {
         "analogy": "Think of training a new support agent. First they shadow experts and copy their replies. Then a supervisor learns what customers rate highly. Finally the agent practises on new tickets, getting feedback from the supervisor's judgement, but is told not to stray far from what the experts taught.",
         "picture": IG_PICTURE,
