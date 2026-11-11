@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=70b018fe">
+<link rel="stylesheet" href="../../../assets/site.css?v=384f9d54">
 <link rel="stylesheet" href="../../../assets/lx-c36418d5.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -39,7 +39,7 @@
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers Explained</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-2">Agents and tool use</a><span aria-hidden="true">/</span><b aria-current="page">Harness Engineering</b></nav>
-  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/what-is-an-agent/">What Is an Agent? The ReAct Loop</a></div>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/what-is-an-agent/">What Is an Agent? The ReAct Loop</a><button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
   <h1 class="h1-lesson">Harness Engineering</h1>
   <p class="lead">What is actually inside a coding agent?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">Barbaste, Darrigol, Vu, Wiltberger · Inclusive Brains, Wavestone AI Lab · arXiv <a href="https://arxiv.org/abs/2609.00006" target="_blank" rel="noopener">2609.00006</a> · July 2026 · 9 sources, checked 27 Oct 2026</p><div class="paper-tldr">An agent is a model plus a harness, and the harness is everything except the model. The authors read the source code of eleven production coding agents (Claude Code, Codex CLI, Gemini CLI, Mistral Vibe, OpenHands, Aider, Mini-SWE-Agent, Hermes, Pi, OpenCode, OpenClaw) and found that every one of them is built from the same <span class="k">seven subsystems</span>. They also found two things none of them use: <span class="k">agent frameworks</span> and <span class="k">vector RAG over code</span>. <span class="small">After this you can draw a harness from memory, and explain how real agents handle loops, context, tools, safety, sub-agents and extensions.</span></div><div class="legend"><span><i style="background:var(--a)"></i>harness parts</span><span><i style="background:var(--b)"></i>the model</span><span><i style="background:var(--st)"></i>context and memory</span><span><i style="background:var(--ok)"></i>allowed / works</span><span><i style="background:var(--bad)"></i>blocked / failure</span><span><i style="background:var(--info)"></i>numbers</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="example" data-toc="0 · The running example">
@@ -635,7 +635,7 @@
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=70b018fe"></script>
-<script src="../../../assets/site.js?v=70b018fe"></script>
+<script src="../../../assets/search-index.js?v=384f9d54"></script>
+<script src="../../../assets/site.js?v=384f9d54"></script>
 </body>
 </html>

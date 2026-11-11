@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=70b018fe">
+<link rel="stylesheet" href="../../../assets/site.css?v=384f9d54">
 <link rel="stylesheet" href="../../../assets/lx-53874e35.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -39,7 +39,7 @@
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers Explained</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-1">Foundational</a><span aria-hidden="true">/</span><b aria-current="page">InstructGPT</b></nav>
-  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/supervised-fine-tuning/">SFT and Instruction Tuning</a></div>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/supervised-fine-tuning/">SFT and Instruction Tuning</a><button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
   <h1 class="h1-lesson">InstructGPT</h1>
   <p class="lead">How did GPT-3 become an assistant that follows instructions?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin and others · OpenAI · NeurIPS 2022 · arXiv <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">2203.02155</a> · 10 sources, checked 11 Nov 2026</p><div class="paper-tldr">GPT-3 was trained to predict the next word on the internet, not to help you, so it often ignored instructions, made things up or rambled. OpenAI fixed this in three steps. <b>Step 1, SFT:</b> people wrote ideal answers to real prompts, and GPT-3 was fine-tuned on them. <b>Step 2, reward model:</b> people ranked several model answers from best to worst, and a model learned to predict which answer they'd prefer. <b>Step 3, RL:</b> PPO pushed the model towards answers the reward model scores highly, while a KL penalty kept it close to the SFT model. The result, <b>InstructGPT</b>, was preferred to GPT-3 85% of the time, and even the 1.3B version beat the 175B GPT-3, at under 2% of GPT-3's training compute. It's the recipe behind ChatGPT.</div><div class="legend"><span><i style="background:var(--a)"></i>the policy and InstructGPT</span><span><i style="background:var(--b)"></i>GPT-3 and baselines</span><span><i style="background:var(--st)"></i>human data and rewards</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="example" data-toc="0 · The running example">
@@ -381,7 +381,7 @@
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=70b018fe"></script>
-<script src="../../../assets/site.js?v=70b018fe"></script>
+<script src="../../../assets/search-index.js?v=384f9d54"></script>
+<script src="../../../assets/site.js?v=384f9d54"></script>
 </body>
 </html>

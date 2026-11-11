@@ -339,6 +339,25 @@
     }
   }
 
+  // Hide or show the side panels on lesson pages; the reader's choice is remembered.
+  var grid = document.querySelector(".lesson-grid"), ptog = document.getElementById("panelToggle");
+  if (grid && ptog) {
+    var setFocus = function (on) {
+      grid.classList.toggle("focus", on);
+      ptog.setAttribute("aria-pressed", on ? "true" : "false");
+      ptog.querySelector(".panel-label").textContent = on ? "Show side panels" : "Hide side panels";
+    };
+    var saved = null;
+    try { saved = localStorage.getItem("aimlr-focus"); } catch (e) {}
+    setFocus(saved === "1");
+    ptog.hidden = false;
+    ptog.addEventListener("click", function () {
+      var on = !grid.classList.contains("focus");
+      setFocus(on);
+      try { localStorage.setItem("aimlr-focus", on ? "1" : "0"); } catch (e) {}
+    });
+  }
+
   // Phones start with the lesson, not the whole track list.
   var box = document.querySelector(".contents-box");
   if (box && window.matchMedia("(max-width: 820px)").matches) box.open = false;

@@ -619,3 +619,13 @@ body.rm-open { overflow: hidden; }
 .module.soon h2, .module.soon h3 { color: var(--muted); }
 .soon-chip { flex: none; }
 @media (max-width: 640px) { .module.soon .module-head { padding-inline: 16px; } }
+
+/* lesson pages: let readers hide the side panels */
+.panel-toggle { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 12px; font: 500 14px/1.2 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-control); cursor: pointer; }
+.panel-toggle:hover { background: var(--line-soft); }
+.panel-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.panel-icon { width: 16px; height: 12px; border: 1.5px solid currentColor; border-radius: 3px; position: relative; flex: none; }
+.panel-icon::before { content: ""; position: absolute; top: 0; bottom: 0; left: 4px; border-left: 1.5px solid currentColor; }
+.lesson-grid.focus { grid-template-columns: minmax(0, 1fr); max-width: calc(920px + 2 * var(--gutter)); }
+.lesson-grid.focus .contents, .lesson-grid.focus .rail { display: none; }
+.lesson-grid.focus .panel-icon::before { display: none; }

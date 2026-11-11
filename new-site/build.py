@@ -851,7 +851,7 @@ def lesson_page(l):
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/">{t['name']}</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/#module-{l['module_n']}">{l['module']['name']}</a><span aria-hidden="true">/</span><b aria-current="page">{esc(l['title'])}</b></nav>
-  <div class="lesson-meta">{meta}</div>
+  <div class="lesson-meta">{meta}<button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
   <h1 class="h1-lesson">{esc(l['title'])}</h1>
   <p class="lead">{esc(l['lead'])}</p>
   {center}

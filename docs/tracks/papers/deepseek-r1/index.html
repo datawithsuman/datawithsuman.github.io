@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=70b018fe">
+<link rel="stylesheet" href="../../../assets/site.css?v=384f9d54">
 <link rel="stylesheet" href="../../../assets/lx-a7922251.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -39,7 +39,7 @@
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers Explained</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-1">Foundational</a><span aria-hidden="true">/</span><b aria-current="page">DeepSeek-R1</b></nav>
-  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-papers" href="../../../tracks/papers/instructgpt/">InstructGPT</a></div>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-papers" href="../../../tracks/papers/instructgpt/">InstructGPT</a><button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
   <h1 class="h1-lesson">DeepSeek-R1</h1>
   <p class="lead">Can a model learn to reason without copying human reasoning?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">DeepSeek-AI · arXiv <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">2501.12948</a> (January 2025; v2, January 2026) · also published in <a href="https://www.nature.com/articles/s41586-025-09422-z" target="_blank" rel="noopener">Nature</a> (2025) · 9 sources, checked 11 Nov 2026</p><div class="paper-tldr">Before R1, models learned to reason mostly by copying reasoning that people wrote out step by step, which is expensive and caps the model at human examples. DeepSeek skipped that step. They took their base model, gave it hard maths, code and logic problems with answers a program can check, and trained it with <b>reinforcement learning</b>: right answers get rewarded, wrong ones don't, and nothing tells it <i>how</i> to think. The result, <b>R1-Zero</b>, taught itself to think longer, check its work and backtrack, and went from 15.6% to 77.9% on the AIME 2024 maths exam. A four-stage pipeline then made it readable and helpful (<b>R1</b>, on par with OpenAI's o1 on maths), and its outputs were used to train small models that beat GPT-4o at maths. The RL algorithm, <b>GRPO</b>, drops PPO's value model and compares answers within a group instead.</div><div class="legend"><span><i style="background:var(--a)"></i>the policy and R1</span><span><i style="background:var(--b)"></i>earlier methods and baselines</span><span><i style="background:var(--st)"></i>rewards and data</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="example" data-toc="0 · The running example">
@@ -509,7 +509,7 @@
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=70b018fe"></script>
-<script src="../../../assets/site.js?v=70b018fe"></script>
+<script src="../../../assets/search-index.js?v=384f9d54"></script>
+<script src="../../../assets/site.js?v=384f9d54"></script>
 </body>
 </html>

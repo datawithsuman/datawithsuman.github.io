@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=70b018fe">
+<link rel="stylesheet" href="../../../assets/site.css?v=384f9d54">
 <link rel="stylesheet" href="../../../assets/lx-53874e35.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -39,7 +39,7 @@
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers Explained</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-1">Foundational</a><span aria-hidden="true">/</span><b aria-current="page">Scaling Laws and Chinchilla</b></nav>
-  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/next-token-prediction/">The Next-Token Objective</a></div>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">30 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/next-token-prediction/">The Next-Token Objective</a><button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
   <h1 class="h1-lesson">Scaling Laws and Chinchilla</h1>
   <p class="lead">For a fixed compute budget, should you train a bigger model or feed it more data?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">Kaplan et al., OpenAI, 2020 · arXiv <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">2001.08361</a> &nbsp;+&nbsp; Hoffmann et al., DeepMind, 2022 (NeurIPS 2022) · arXiv <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">2203.15556</a> · 10 sources, checked 11 Nov 2026</p><div class="paper-tldr">In 2020, OpenAI showed that a language model's loss falls as a smooth, predictable <b>power law</b> as you add parameters, data or compute, so you can forecast a big model from small ones. Their advice for a fixed compute budget: spend most of it on a <b>bigger model</b> and only a little on more data. The field listened: GPT-3 (175B) and Gopher (280B) were trained on only about 300 billion tokens. In 2022, DeepMind redid the experiment with 400+ models and found the opposite balance: model size and data should grow <b>equally</b>, about <b>20 training tokens per parameter</b>. To prove it, they trained <b>Chinchilla</b>, 70B parameters on 1.4 trillion tokens, with the same compute as the 280B Gopher. It beat Gopher on almost every task and costs a quarter as much to run.</div><div class="legend"><span><i style="background:var(--a)"></i>Chinchilla and model size</span><span><i style="background:var(--b)"></i>Kaplan and earlier models</span><span><i style="background:var(--st)"></i>data and tokens</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="example" data-toc="0 · The running example">
@@ -414,7 +414,7 @@
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=70b018fe"></script>
-<script src="../../../assets/site.js?v=70b018fe"></script>
+<script src="../../../assets/search-index.js?v=384f9d54"></script>
+<script src="../../../assets/site.js?v=384f9d54"></script>
 </body>
 </html>
