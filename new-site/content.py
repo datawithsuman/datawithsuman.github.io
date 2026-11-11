@@ -40,19 +40,15 @@ TRACKS = [
         "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "LoRA", "Harness Engineering", "Context Language Models"],
         "know": ["fundamentals/self-attention"],
         "modules": [
-            {"name": "Foundational: architecture", "desc": "The architecture behind modern LLMs.", "lessons": [
+            {"name": "Foundational", "desc": "The papers behind modern LLMs: the architecture, how to scale it, how to align it and how to fine-tune it.", "lessons": [
                 {"slug": "attention-is-all-you-need", "title": "Attention Is All You Need", "type": "paper", "minutes": 30, "imported": True,
                  "lead": "What happens if you remove recurrence and keep only attention?",
                  "prereqs": ["fundamentals/self-attention"],
                  "related": ["fundamentals/multi-head-attention"]},
-            ]},
-            {"name": "Foundational: scaling", "desc": "How big a model should be, and how much data it needs.", "lessons": [
                 {"slug": "scaling-laws-and-chinchilla", "title": "Scaling Laws and Chinchilla", "type": "paper", "minutes": 30, "imported": True,
                  "lead": "For a fixed compute budget, should you train a bigger model or feed it more data?",
                  "prereqs": ["fundamentals/next-token-prediction"],
                  "related": ["papers/attention-is-all-you-need"]},
-            ]},
-            {"name": "Foundational: training and alignment", "desc": "How base models become helpful assistants and learn to reason.", "lessons": [
                 {"slug": "instructgpt", "title": "InstructGPT", "type": "paper", "minutes": 30, "imported": True,
                  "lead": "How did GPT-3 become an assistant that follows instructions?",
                  "prereqs": ["fundamentals/supervised-fine-tuning"],
@@ -61,8 +57,6 @@ TRACKS = [
                  "lead": "Can a model learn to reason without copying human reasoning?",
                  "prereqs": ["papers/instructgpt"],
                  "related": ["fundamentals/reasoning-models-grpo"]},
-            ]},
-            {"name": "Foundational: fine-tuning", "desc": "How to adapt a huge model cheaply.", "lessons": [
                 {"slug": "lora", "title": "LoRA", "type": "paper", "minutes": 25, "imported": True,
                  "lead": "How do you fine-tune a 175B model by training only a few million numbers?",
                  "prereqs": ["fundamentals/supervised-fine-tuning"],
