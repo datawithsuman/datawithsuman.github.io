@@ -173,6 +173,8 @@ def workday(company, board):
         if not posts:
             break
         for j in posts:
+            if not j.get("title") or not j.get("externalPath"):
+                continue  # Workday sometimes returns a stub row with no title
             age = workday_age(j.get("postedOn"))
             posted = NOW - dt.timedelta(days=age) if age is not None else None
             loc = j.get("locationsText", "")
