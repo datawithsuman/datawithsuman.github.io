@@ -64,7 +64,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id
 "6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers
 "7. Consumer apps, media and mobility",Glance,Automatic,7,greenhouse,glance
 "7. Consumer apps, media and mobility",InMobi,Automatic,5,greenhouse,inmobi
-"7. Consumer apps, media and mobility",Pocket FM,Automatic,0,ashby,pocket
 "7. Consumer apps, media and mobility",Unacademy,Automatic,0,smartrecruiters,unacademy
 "7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna
 "7. Consumer apps, media and mobility",Uber,Careers link only,?,blocked (Cloudflare bot check),
