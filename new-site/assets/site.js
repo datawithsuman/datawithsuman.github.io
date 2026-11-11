@@ -339,22 +339,46 @@
     }
   }
 
-  // Hide or show the side panels on lesson pages; the reader's choice is remembered.
-  var grid = document.querySelector(".lesson-grid"), ptog = document.getElementById("panelToggle");
-  if (grid && ptog) {
-    var setFocus = function (on) {
-      grid.classList.toggle("focus", on);
-      ptog.setAttribute("aria-pressed", on ? "true" : "false");
-      ptog.querySelector(".panel-label").textContent = on ? "Show side panels" : "Hide side panels";
+  // Side panels on lesson pages: one click on the edge arrow collapses a panel; drag its edge to resize, or drag it closed.
+  var grid = document.querySelector(".lesson-grid");
+  if (grid && grid.querySelector(".side-handle")) {
+    var LIM = { left: [180, 420, 250], right: [160, 360, 200] };
+    var store = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+    var side = function (name) { return document.getElementById(name === "left" ? "sideLeft" : "sideRight"); };
+    var setCollapsed = function (name, on, save) {
+      grid.classList.toggle(name === "left" ? "l-collapsed" : "r-collapsed", on);
+      var h = side(name).querySelector(".side-handle"), what = name === "left" ? "contents" : "side panel";
+      h.setAttribute("aria-expanded", on ? "false" : "true");
+      h.setAttribute("aria-label", (on ? "Expand " : "Collapse ") + what); h.title = (on ? "Expand " : "Collapse ") + what;
+      if (save) store("aimlr-" + name + "-collapsed", on ? "1" : "0");
     };
-    var saved = null;
-    try { saved = localStorage.getItem("aimlr-focus"); } catch (e) {}
-    setFocus(saved === "1");
-    ptog.hidden = false;
-    ptog.addEventListener("click", function () {
-      var on = !grid.classList.contains("focus");
-      setFocus(on);
-      try { localStorage.setItem("aimlr-focus", on ? "1" : "0"); } catch (e) {}
+    var setWidth = function (name, w, save) {
+      w = Math.max(LIM[name][0], Math.min(LIM[name][1], Math.round(w)));
+      grid.style.setProperty(name === "left" ? "--lw-user" : "--rw-user", w + "px");
+      if (save) store("aimlr-" + name + "-width", String(w));
+    };
+    ["left", "right"].forEach(function (name) {
+      var el = side(name); if (!el) return;
+      var h = el.querySelector(".side-handle"), rz = el.querySelector(".side-resizer");
+      var w = parseInt(store("aimlr-" + name + "-width"), 10); if (w) setWidth(name, w, false);
+      setCollapsed(name, store("aimlr-" + name + "-collapsed") === "1", false);
+      h.hidden = false; rz.hidden = false;
+      h.addEventListener("click", function () { setCollapsed(name, !grid.classList.contains(name === "left" ? "l-collapsed" : "r-collapsed"), true); });
+      rz.addEventListener("pointerdown", function (e) {
+        e.preventDefault(); rz.setPointerCapture(e.pointerId); grid.classList.add("resizing");
+        var move = function (ev) {
+          var r = el.getBoundingClientRect(), nw = name === "left" ? ev.clientX - r.left : r.right - ev.clientX;
+          if (nw < 120) { setCollapsed(name, true, true); return; }
+          setCollapsed(name, false, true); setWidth(name, nw, true);
+        };
+        var up = function () { grid.classList.remove("resizing"); rz.removeEventListener("pointermove", move); rz.removeEventListener("pointerup", up); rz.removeEventListener("pointercancel", up); };
+        rz.addEventListener("pointermove", move); rz.addEventListener("pointerup", up); rz.addEventListener("pointercancel", up);
+      });
+      rz.addEventListener("keydown", function (e) {
+        var cur = el.getBoundingClientRect().width, step = (name === "left" ? 1 : -1) * 20;
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); setCollapsed(name, false, true); setWidth(name, cur + (e.key === "ArrowRight" ? step : -step), true); }
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); h.click(); }
+      });
     });
   }
 

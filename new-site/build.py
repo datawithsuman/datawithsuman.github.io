@@ -846,19 +846,21 @@ def lesson_page(l):
     attrs = f'data-lesson="{l["key"]}"' if body or l.get("imported") or l["key"] in PLANS or l["key"] in PAPER_PLANS else ""
     html = head_html(f'{l["title"]} · {t["name"]} · AIML Rounds', l["lead"], root, t, "lesson", extra_head, path=l["url"])
     html += f"""<main id="main" class="page-wide lesson-grid" {attrs}>
-<aside class="contents" aria-label="{t['name']} contents">
+<aside class="contents" id="sideLeft" aria-label="{t['name']} contents">
+  <button type="button" class="side-handle" data-side="left" aria-controls="sideLeft" aria-expanded="true" aria-label="Collapse contents" title="Collapse contents" hidden></button>
+  <div class="side-resizer" data-side="left" role="separator" aria-orientation="vertical" aria-label="Drag to resize contents" tabindex="0" hidden></div>
   <details class="contents-box" open><summary>{t['name']} contents</summary>{contents_html(l, root)}</details>
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/">{t['name']}</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/#module-{l['module_n']}">{l['module']['name']}</a><span aria-hidden="true">/</span><b aria-current="page">{esc(l['title'])}</b></nav>
-  <div class="lesson-meta">{meta}<button type="button" class="panel-toggle" id="panelToggle" aria-pressed="false" aria-controls="main" hidden><span aria-hidden="true" class="panel-icon"></span><span class="panel-label">Hide side panels</span></button></div>
+  <div class="lesson-meta">{meta}</div>
   <h1 class="h1-lesson">{esc(l['title'])}</h1>
   <p class="lead">{esc(l['lead'])}</p>
   {center}
   {quiz_cta(l, root)}
   <nav class="prev-next" aria-label="Previous and next lesson">{prev_html}{next_html}</nav>
 </article>
-<div class="rail">{toc_html}{related}</div>
+<div class="rail" id="sideRight"><button type="button" class="side-handle" data-side="right" aria-controls="sideRight" aria-expanded="true" aria-label="Collapse side panel" title="Collapse side panel" hidden></button><div class="side-resizer" data-side="right" role="separator" aria-orientation="vertical" aria-label="Drag to resize side panel" tabindex="0" hidden></div>{toc_html}{related}</div>
 </main>
 """
     write(f'{l["url"]}index.html', html + foot_html(root, "page-wide", scripts))
