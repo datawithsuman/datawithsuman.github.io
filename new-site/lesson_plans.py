@@ -176,7 +176,37 @@ SL_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="Two rectangles
   <text x="4" y="186" font-size="11" fill="var(--muted)">↑ model size</text><text x="400" y="132" font-size="11" fill="var(--muted)">tokens →</text>
 </svg>"""
 
+IG_PICTURE = """<svg viewBox="0 0 480 190" role="img" aria-label="Three steps: people write example answers for supervised fine-tuning, people rank answers to train a reward model, then reinforcement learning optimises the model against the reward model.">
+  <g font-size="14" fill="var(--ink)" font-weight="600"><text x="10" y="18">1 · Show</text><text x="170" y="18">2 · Rank</text><text x="330" y="18">3 · Optimise</text></g>
+  <g fill="var(--tint)" stroke-width="1.5"><rect x="10" y="34" width="130" height="120" rx="10" stroke="var(--muted)"/><rect x="170" y="34" width="130" height="120" rx="10" stroke="var(--muted)"/><rect x="330" y="34" width="140" height="120" rx="10" stroke="var(--c)"/></g>
+  <g font-size="12" fill="var(--ink)"><text x="22" y="62">people write</text><text x="22" y="80">good answers</text><text x="22" y="112" fill="var(--muted)">fine-tune GPT-3</text><text x="22" y="130" fill="var(--muted)">(SFT)</text>
+  <text x="182" y="62">people rank</text><text x="182" y="80">A &gt; C &gt; B &gt; D</text><text x="182" y="112" fill="var(--muted)">train a reward</text><text x="182" y="130" fill="var(--muted)">model</text>
+  <text x="342" y="62">PPO: maximise</text><text x="342" y="80">reward − KL</text><text x="342" y="112" fill="var(--muted)">stay close to</text><text x="342" y="130" fill="var(--muted)">the SFT model</text></g>
+  <path d="M140 94h30M300 94h30" stroke="var(--muted)" stroke-width="2"/>
+  <text x="10" y="180" font-size="12" fill="var(--muted)">Result: a 1.3B InstructGPT preferred to the 175B GPT-3</text>
+</svg>"""
+
 PAPER_PLANS = {
+    "papers/instructgpt": {
+        "analogy": "Think of training a new support agent. First they shadow experts and copy their replies. Then a supervisor learns what customers rate highly. Finally the agent practises on new tickets, getting feedback from the supervisor's judgement, but is told not to stray far from what the experts taught.",
+        "picture": IG_PICTURE,
+        "caption": "The three steps of RLHF as InstructGPT ran them. Steps 2 and 3 can repeat with fresh rankings.",
+        "problem": ["example", "c1"],
+        "play": {"lab": "klLab", "chapter": "c5",
+                 "try": "<b>Try it.</b> RL pushes the model to score well with the reward model, while a KL penalty pulls it back towards the SFT model. Slide the penalty down to zero and watch what happens to true quality.",
+                 "why": "<b>Notice:</b> the reward model's score keeps climbing as the policy drifts, but true quality peaks and then falls. That gap is reward hacking, and the KL penalty is what stops the policy from chasing it."},
+        "how": ["c2", "c3", "c4", "c5", "c6"],
+        "found": ["c7", "c8", "c9"],
+        "limits": ["c10"],
+        "changed_chapters": ["c11"],
+        "verdict": ["c13"],
+        "reference": ["c12", "src"],
+        "hidden": ["iv"],
+        "changed_html": """<p>InstructGPT showed that a small amount of human feedback changes behaviour more than a 100× bigger model, for a fraction of the compute. ChatGPT followed eight months later, built the same way, and SFT then preference optimisation became the standard way to turn a base model into an assistant.</p>
+<p><b>What to remember.</b> Fine-tune on demonstrations, train a reward model on rankings with a Bradley–Terry loss, then optimise it with PPO while a KL penalty keeps the model close to SFT. Later methods such as DPO and rule-based rewards simplify or replace parts of this pipeline, but keep its shape.</p>""",
+        "strip": [r'<h3>Try it: why the KL penalty is there</h3>\s*'],
+        "edits": [],
+    },
     "papers/scaling-laws-and-chinchilla": {
         "analogy": "Think of a fixed budget for a student: you can pay for a bigger brain or more books, but not both. Kaplan said buy mostly brain. Chinchilla showed you should split it evenly: every time the brain doubles, double the books too.",
         "picture": SL_PICTURE,

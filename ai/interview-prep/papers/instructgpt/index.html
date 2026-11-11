@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>InstructGPT, Explained · @datawithsuman</title>
+<meta name="description" content="InstructGPT (Training language models to follow instructions with human feedback), explained: SFT, the reward model and its loss, PPO with a KL penalty, PPO-ptx and the alignment tax, results, cost, limits and what came after, with labs and an interview section.">
+<meta property="og:title" content="InstructGPT, Explained">
+<meta property="og:description" content="InstructGPT (Training language models to follow instructions with human feedback), explained: SFT, the reward model and its loss, PPO with a KL penalty, PPO-ptx and the alignment tax, results, cost, limits and what came after, with labs and an interview section.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<style>
+/* Dark by default (the reference video's world); a warm light theme follows the device or the ☀/☾ toggle (block at the end). */
+:root{
+  color-scheme:dark;
+  --bg:#0d1320; --bg2:#121a2a; --card:#151e30; --line:#26314a; --ink:#e7eaf1; --dim:#8d96ab; --faint:#5b6479;
+  /* colour = meaning (keep fixed per explainer; say what each means in the legend) */
+  --a:#2dd4bf;   /* thing A: student / input / ours */
+  --b:#f5a524;   /* thing B: teacher / target / baseline */
+  --ok:#4ade80;  /* correct, informative, win */
+  --st:#a78bfa;  /* structure / third idea */
+  --bad:#f87171; /* failure, collapse, loss */
+  --info:#60a5fa;/* neutral emphasis, numbers */
+  --r:14px; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif}
+body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#18223a 0%,var(--bg) 60%) fixed}
+a{color:var(--info)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;background:var(--a);width:0;z-index:20}
+header.top{padding:56px 0 28px}
+.kicker{font:600 13px/1 var(--mono);letter-spacing:.08em;color:var(--a);text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:14px 0 10px;font-weight:700}
+.meta{color:var(--dim);font-size:14px}
+.tldr{margin:22px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.tldr b{color:var(--a)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:13px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* chapters, pill titles, prose */
+section.ch{padding:44px 0 8px;border-top:1px solid var(--line);scroll-margin-top:20px}
+.chap{font:500 13px/1 Inter;color:var(--dim)}
+.chap::before{content:"●";color:var(--a);margin-right:8px}
+.pill{display:inline-block;margin:14px 0 6px;padding:6px 16px;border:1.5px solid currentColor;border-radius:999px;font-weight:600;font-size:15px}
+.pill.a{color:var(--a)} .pill.b{color:var(--b)} .pill.ok{color:var(--ok)} .pill.st{color:var(--st)} .pill.bad{color:var(--bad)}
+h2{font-size:28px;line-height:1.2;margin:10px 0 14px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px} .small{font-size:14px;color:var(--dim)}
+.k{font-weight:600;color:var(--ink);border-bottom:2px solid var(--a)} /* key word */
+code,.mono{font-family:var(--mono);font-size:.9em}
+.src{font:500 12px var(--mono);color:var(--faint);white-space:nowrap} .src a{color:var(--faint)}
+.mine{font:600 11px var(--mono);color:var(--b);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:4px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px 20px;margin:16px 0}
+.card.bad{border-color:rgba(248,113,113,.5)} .card.ok{border-color:rgba(74,222,128,.45)} .card.upd{border-color:rgba(96,165,250,.5)}
+.card h4{margin:0 0 6px;font-size:15px}
+/* stage: the "video frame" a scene or reader lives in */
+.stage{position:relative;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(ellipse at 50% 40%,#18223a,#0f1626 75%);padding:22px;margin:18px 0 10px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+.stage svg text{font-family:Inter,sans-serif;fill:var(--ink)}
+.scroll{overflow-x:auto} .scroll>svg{min-width:640px}
+.hint{display:none;font-size:12px;color:var(--faint)} @media(max-width:640px){.hint{display:block}}
+/* scene stepper: elements with data-show="n" appear from step n, data-hl="n m" glow on those steps, data-hide="n" vanish from n */
+[data-scene] [data-show],[data-scene] [data-hide]{transition:opacity .45s ease,transform .45s ease}
+[data-scene].js [data-show].off,[data-scene].js [data-hide].off{opacity:0;pointer-events:none}
+[data-scene].js [data-hl].glow{filter:drop-shadow(0 0 8px currentColor)}
+[data-scene].js [data-hl].glow rect,[data-scene].js [data-hl].glow circle{stroke-width:3}
+.say{margin:10px 0 0;padding:0;list-style:none}
+.say li{padding:10px 14px;border-left:3px solid var(--line);color:var(--dim)}
+[data-scene].js .say li{display:none} [data-scene].js .say li.on{display:block;border-left-color:var(--a);color:var(--ink);background:rgba(45,212,191,.05)}
+.ctl{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.js>.ctl,.js .ctl{display:flex}
+.ctl button{font:600 13px Inter;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 12px;cursor:pointer}
+.ctl button:hover{border-color:var(--a)} .ctl button:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;margin-left:auto} .dots button{width:10px;height:10px;padding:0;border-radius:50%;background:var(--line);border:0}
+.dots button.on{background:var(--a)}
+.count{font:500 12px var(--mono);color:var(--faint)}
+/* equation reader */
+.eq{font-size:clamp(17px,2.6vw,24px);text-align:center;padding:26px 6px 70px;position:relative}
+.eq mjx-container{color:var(--ink);transition:color .3s;max-width:100%;overflow-x:auto;overflow-y:hidden}
+.stage .eq svg{display:inline;width:auto;height:auto;max-width:100%}
+.eq.reading mjx-container{color:#4a5368}
+.eq .term{transition:color .3s;cursor:help;border-radius:4px}
+.eq .term:hover{background:rgba(255,255,255,.06)}
+.eq.reading .term.on{color:var(--tc,var(--a))}
+.brace{position:absolute;height:10px;border:2px solid var(--tc,var(--a));border-top:0;border-radius:0 0 8px 8px;opacity:0;transition:all .3s;pointer-events:none}
+.brace span{position:absolute;top:14px;left:50%;transform:translateX(-50%);white-space:nowrap;font:600 13px Inter;color:var(--tc,var(--a))}
+.tip{position:fixed;z-index:30;max-width:280px;padding:8px 11px;background:#0a0f19;border:1px solid var(--line);border-radius:9px;font-size:13px;line-height:1.45;pointer-events:none;opacity:0;transition:opacity .15s}
+.reader .say li{font-size:15.5px}
+/* worked example widget */
+.lab{display:grid;gap:12px}
+.lab label{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim)} .lab input[type=range]{flex:1;accent-color:var(--a)}
+.lab output{font:600 15px var(--mono);color:var(--ink);min-width:64px;text-align:right}
+table.t{width:100%;border-collapse:collapse;font-size:14px} .t th,.t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.t th{color:var(--dim);font-weight:500} .t td.num{font-family:var(--mono);text-align:right}
+.t tr.hi td{background:rgba(45,212,191,.07)}
+/* bars */
+.bars{display:grid;gap:9px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(110px,30%) 1fr 64px;align-items:center;gap:10px;font-size:13.5px}
+.bar .track{height:14px;background:var(--bg2);border-radius:7px;overflow:hidden} .bar .fill{height:100%;border-radius:7px;background:var(--a)}
+.bar .v{font:600 13px var(--mono);text-align:right}
+/* figure walkthrough (paper/post figures) */
+figure.fig{margin:18px 0} .fig-stage{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+.fig-stage img{display:block;width:100%} .hl{position:absolute;border:3px solid var(--b);border-radius:6px;box-shadow:0 0 0 9999px rgba(10,15,25,.55);transition:all .35s}
+figcaption{font-size:13.5px;color:var(--dim);margin-top:8px}
+/* interview */
+details.qa{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0;background:var(--card)}
+details.qa summary{cursor:pointer;font-weight:600} details.qa[open] summary{margin-bottom:8px}
+details.deep{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0}
+details.deep summary{cursor:pointer;color:var(--info);font-weight:600}
+.say30{font-size:18px;line-height:1.7;border-left:3px solid var(--ok);padding:6px 0 6px 16px}
+/* side contents */
+/* contents: fixed column on the left from 1100px (content shifts right), a row of chapter links on top below that */
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:12.5px}
+nav.toc a{color:var(--dim);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+nav.toc a.on{color:var(--ink);border-color:var(--a)}
+@media(min-width:1100px){
+  nav.toc{display:block;position:fixed;top:calc(80px + env(safe-area-inset-top,0px));left:max(calc(16px + env(safe-area-inset-left,0px)),calc(50% - 430px - 250px));width:220px;max-height:calc(100vh - 110px);overflow-y:auto;margin:0;padding:0;font-size:13px}
+  nav.toc a{display:block;border:0;border-left:2px solid var(--line);border-radius:0;padding:4px 0 4px 12px;color:var(--faint);white-space:normal}
+  nav.toc a.on{color:var(--ink);border-left-color:var(--a)}
+  .wrap{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{background:#fff;color:#111}.ctl,#prog,nav.toc{display:none}[data-scene] .say li{display:block!important}}
+/* ---- page: Harness Engineering ---- */
+.tablewrap{overflow-x:auto;margin:12px 0}
+table.data td,table.data th{text-align:center;font-variant-numeric:tabular-nums}
+table.data td.y{color:var(--ok);font-weight:600} table.data td.n{color:var(--bad);font-weight:600}
+table.data tr.flag td{background:rgba(167,139,250,.08)}
+.stage svg text.cap{fill:var(--dim);font-size:13px}
+.stage svg text.lbl{fill:var(--faint);font-size:12px}
+.stage svg text.sm{fill:var(--dim);font-size:12px}
+.stage svg text.big{fill:var(--ink);font-size:15px;font-weight:600}
+.stage svg text.yr{fill:var(--dim);font:500 13px var(--mono)}
+.stage svg text.nm{fill:var(--ink);font-size:14px;font-weight:600}
+.stage svg text.stTxt,.stage svg tspan.stTxt{fill:var(--st);font-weight:600}
+.stage svg text.okTxt,.stage svg tspan.okTxt{fill:var(--ok);font-weight:600}
+.stage svg text.badTxt,.stage svg tspan.badTxt{fill:var(--bad);font-weight:600}
+.stage svg text.aTxt{fill:var(--a)}
+.stage svg .edge{stroke:#56607a;stroke-width:1.6;fill:none}
+.stage svg .axis{stroke:var(--line);stroke-width:2;fill:none}
+.stage svg .nodeB{fill:#2a2214;stroke:var(--b);stroke-width:1.6}
+.stage svg .nodeA{fill:#0f2e2c;stroke:var(--a);stroke-width:1.6}
+.stage svg .nodeInfo,.stage svg .noteInfo{fill:#132440;stroke:var(--info);stroke-width:1.4}
+.stage svg .leafY{fill:#123322;stroke:var(--ok);stroke-width:1.4}
+.stage svg .leafN{fill:#3a1a1d;stroke:var(--bad);stroke-width:1.4}
+.stage svg .noteSt{fill:#221a3c;stroke:var(--st);stroke-width:1.4}
+.stage svg .noteBad{fill:#2c171b;stroke:var(--bad);stroke-width:1.4}
+.stage svg .feat{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .featOn{fill:rgba(167,139,250,.18);stroke:var(--st);stroke-width:2}
+.stage svg .dotA{fill:var(--a)} .stage svg .dotB{fill:var(--b)} .stage svg .dotSt{fill:var(--st)} .stage svg .dotBad{fill:var(--bad)}
+.stage svg .chipY{fill:#123322;stroke:var(--ok)} .stage svg .chipN{fill:#3a1a1d;stroke:var(--bad)}
+.stage svg .chipOut{fill:none;stroke:var(--bad);stroke-dasharray:4 3;stroke-width:2}
+.stage svg .ring{fill:none;stroke:var(--st);stroke-width:2.4}
+.stage svg .tbox{fill:var(--bg2);stroke:var(--line);stroke-width:1.4}
+.stage svg .tboxOn{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cell{fill:var(--bg2);stroke:var(--line)} .stage svg .cellSt{fill:#221a3c;stroke:var(--st)}
+.tablewrap{overflow-x:auto;margin:12px 0}
+.stage svg .harnessBox{fill:rgba(45,212,191,.05);stroke:var(--a);stroke-width:1.8;stroke-dasharray:6 4}
+.stage svg .hub{fill:#0f2e2c;stroke:var(--a);stroke-width:2}
+.stage svg .cut{stroke:var(--st);stroke-width:2.4;stroke-dasharray:5 4}
+.stage svg text.chipT{fill:var(--a);font:600 13px var(--mono);text-anchor:middle}
+.stage svg text.mono,.stage svg tspan.mono{font-family:var(--mono)}
+.card.task{border-color:rgba(245,165,36,.5)} .taskq{font-size:20px;font-weight:600;margin:6px 0 8px;color:var(--b)}
+pre.code{overflow-x:auto;background:#0a0f19;border:1px solid var(--line);border-radius:12px;padding:14px 0;font:13px/1.65 var(--mono);color:#cfd6e4;margin:18px 0 10px}
+pre.code .cl{display:block;padding:0 16px;white-space:pre;transition:background .3s}
+pre.code .cm{color:var(--faint)}
+[data-scene].js pre.code .cl.glow{filter:none;background:rgba(45,212,191,.13);box-shadow:inset 3px 0 var(--a);color:var(--ink)}
+.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px} .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid4 .card,.grid2 .card{margin:0} .card.mini p{margin:0;font-size:15px;color:var(--dim)}
+.vsrow{display:grid;grid-template-columns:1fr 1fr;gap:12px} .vsrow>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--dim)}
+.vsrow b{display:block;font-size:18px;color:var(--ink);margin-top:4px}
+.sel{font:500 14px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;flex:1;min-width:0}
+.verdictTag{font:600 12px var(--mono);border-radius:6px;padding:2px 8px;border:1px solid;white-space:nowrap}
+.vt-ok{color:var(--ok);border-color:rgba(74,222,128,.5)} .vt-st{color:var(--st);border-color:rgba(167,139,250,.5)} .vt-bad{color:var(--bad);border-color:rgba(248,113,113,.5)} .vt-dim{color:var(--dim);border-color:var(--line)} .vt-b{color:var(--b);border-color:rgba(245,165,36,.5)}
+.layers{display:grid;gap:8px;margin:4px 0}
+.layer{display:grid;grid-template-columns:minmax(120px,30%) 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.layer .ln{font-weight:600} .layer.skip{opacity:.4}
+.layer.hit{border-color:var(--a);background:rgba(45,212,191,.06)}
+.evid .bar{grid-template-columns:minmax(130px,34%) 1fr 60px}
+.bars.signed .track{position:relative;background:var(--bg2)} .bars.signed .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.bars.signed .fill{position:absolute;top:0;height:100%}
+ul.cav li,.srcs li{margin-bottom:8px} ol.recs li{margin-bottom:6px;font-size:15px}
+dl.terms{display:grid;grid-template-columns:minmax(140px,30%) 1fr;gap:8px 16px;margin:0}
+dl.terms dt{font-weight:600} dl.terms dd{margin:0;color:var(--dim)}
+.verdict{border:1px solid rgba(45,212,191,.45);border-radius:var(--r);background:var(--card);padding:18px 20px}
+@media(max-width:560px){.grid4,.grid2,.vsrow{grid-template-columns:1fr} dl.terms{grid-template-columns:1fr} .layer{grid-template-columns:1fr;gap:2px}}
+.sbars{display:grid;gap:9px;margin:10px 0}
+.sbars .track{position:relative;height:14px;background:var(--bg2);border-radius:7px} .sbars .track::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--dim)}
+.sbars .fill{position:absolute;top:0;height:100%;border-radius:7px}
+span.mono{font-family:var(--mono)}
+pre.code,code{font-variant-ligatures:none}
+.lab label:has(select){flex-wrap:wrap} .lab label .sel{flex:1 1 220px}
+/* ---- light theme: follows the device, or the toggle (data-theme) ---- */
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#f7f5f0; --bg2:#eeebe3; --card:#ffffff; --line:#ddd7cb; --ink:#1c2230; --dim:#525a6b; --faint:#7a8191;
+  --a:#0d8a7c; --b:#b26a00; --ok:#1f8a4c; --st:#6a4bd0; --bad:#c83a3a; --info:#2c63c6;}
+@media (prefers-color-scheme:light){
+:root:not([data-theme="dark"]) body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root:not([data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root:not([data-theme="dark"]) .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root:not([data-theme="dark"]) .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root:not([data-theme="dark"]) [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root:not([data-theme="dark"]) pre.code{background:#f3f1ea;color:#2a3140}
+:root:not([data-theme="dark"]) [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root:not([data-theme="dark"]) [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root:not([data-theme="dark"]) .stage svg .edge{stroke:#a0a6b2}
+:root:not([data-theme="dark"]) .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root:not([data-theme="dark"]) .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root:not([data-theme="dark"]) .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root:not([data-theme="dark"]) .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root:not([data-theme="dark"]) .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root:not([data-theme="dark"]) .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+}
+:root[data-theme="light"] body{background:radial-gradient(ellipse 120% 80% at 50% 30%,#ffffff 0%,var(--bg) 60%) fixed}
+:root[data-theme="light"] .stage{background:radial-gradient(ellipse at 50% 40%,#fdfcf9,#f2efe7 75%)}
+:root[data-theme="light"] .eq.reading mjx-container{color:#b9bdc6} .eq .term:hover{background:rgba(0,0,0,.05)}
+:root[data-theme="light"] .tip{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+:root[data-theme="light"] [data-scene].js .say li.on{background:rgba(13,138,124,.07)}
+:root[data-theme="light"] pre.code{background:#f3f1ea;color:#2a3140}
+:root[data-theme="light"] [data-scene].js pre.code .cl.glow{background:rgba(13,138,124,.12)}
+:root[data-theme="light"] [data-scene].js [data-hl].glow{filter:drop-shadow(0 0 3px color-mix(in srgb,currentColor 40%,transparent))}
+:root[data-theme="light"] .stage svg .edge{stroke:#a0a6b2}
+:root[data-theme="light"] .stage svg .nodeB{fill:#fcf0da} .stage svg .nodeA,.stage svg .hub,.stage svg .tboxOn{fill:#e1f4f1}
+:root[data-theme="light"] .stage svg .nodeInfo,.stage svg .noteInfo{fill:#e6eefb} .stage svg .noteSt,.stage svg .cellSt{fill:#eeeafc}
+:root[data-theme="light"] .stage svg .noteBad,.stage svg .leafN,.stage svg .chipN{fill:#fbe8e8} .stage svg .leafY,.stage svg .chipY{fill:#e4f4ea}
+:root[data-theme="light"] .stage svg .harnessBox{fill:rgba(13,138,124,.05)}
+:root[data-theme="light"] .hl{box-shadow:0 0 0 9999px rgba(20,20,20,.35)}
+:root[data-theme="light"] .layer.hit{background:rgba(13,138,124,.06)} .t tr.hi td{background:rgba(13,138,124,.07)}
+[data-scene].js pre.code .cl.glow{filter:none!important}
+.themeBtn{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.themeBtn:hover{border-color:var(--a)}
+.sitebar{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding-block:14px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:calc(max(16px,env(safe-area-inset-right,0px)) + 46px);font-size:14px}.sitebar a{color:var(--dim);text-decoration:none}.sitebar a:hover{color:var(--ink)}.sitebar .h{color:var(--a);font-weight:600}@media(min-width:1100px){.sitebar{margin-left:max(270px,calc(50% - 430px));margin-right:auto}}
+.lab .chk{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:15px}
+#lrPlot{width:100%;height:auto;margin:10px 0}
+@media (max-width:700px){.eq mjx-container svg{max-width:100%;height:auto}}
+</style>
+</head>
+<body>
+<div class="sitebar"><a href="../">&larr; Papers Explained</a><a class="h" href="../../index.html">@datawithsuman</a></div>
+<button class="themeBtn" id="themeBtn" aria-label="Switch light or dark theme"></button>
+<script>
+(() => { const r = document.documentElement, b = document.getElementById('themeBtn'), mq = matchMedia('(prefers-color-scheme: light)');
+  try { const t = localStorage.getItem('dx-theme'); if (t) r.dataset.theme = t; } catch (e) {}
+  const cur = () => r.dataset.theme || (mq.matches ? 'light' : 'dark');
+  const paint = () => { const l = cur() === 'light'; b.textContent = l ? '☾' : '☀'; b.title = l ? 'Dark theme' : 'Light theme'; };
+  b.addEventListener('click', () => { const t = cur() === 'light' ? 'dark' : 'light'; r.dataset.theme = t; try { localStorage.setItem('dx-theme', t); } catch (e) {} paint(); });
+  mq.addEventListener('change', paint); paint(); })();
+</script>
+<div id="prog"></div>
+<nav class="toc" aria-label="Contents"></nav>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Deep explainer · Paper · Foundations</div>
+  <h1>InstructGPT: the RLHF recipe that turned GPT-3 into an assistant</h1>
+  <div class="meta">Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin and others · OpenAI · NeurIPS 2022 · arXiv <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">2203.02155</a> · 10 sources, checked 11 Nov 2026</div>
+  <div class="tldr"><b>In one breath:</b> GPT-3 was trained to predict the next word on the internet, not to help you, so it often ignored instructions, made things up or rambled. OpenAI fixed this in three steps. <b>Step 1, SFT:</b> people wrote ideal answers to real prompts, and GPT-3 was fine-tuned on them. <b>Step 2, reward model:</b> people ranked several model answers from best to worst, and a model learned to predict which answer they'd prefer. <b>Step 3, RL:</b> PPO pushed the model towards answers the reward model scores highly, while a KL penalty kept it close to the SFT model. The result, <b>InstructGPT</b>, was preferred to GPT-3 85% of the time, and even the 1.3B version beat the 175B GPT-3, at under 2% of GPT-3's training compute. It's the recipe behind ChatGPT.</div>
+  <div class="legend"><span><i style="background:var(--a)"></i>the policy and InstructGPT</span><span><i style="background:var(--b)"></i>GPT-3 and baselines</span><span><i style="background:var(--st)"></i>human data and rewards</span><span><i style="background:var(--ok)"></i>a win</span><span><i style="background:var(--bad)"></i>a cost or failure</span><span><i style="background:var(--info)"></i>numbers</span></div>
+</header>
+
+<section class="ch" id="example" data-toc="0 · The running example">
+  <div class="chap">0 · The running example</div>
+  <h2>"Explain the moon landing to a 6 year old"</h2>
+  <div class="card task"><span class="mono small">the prompt in the paper's method figure</span><p class="taskq">"Explain the moon landing to a 6 year old in a few sentences."</p><p class="small">A model trained only to continue internet text might treat this as the start of a list of homework questions and add more questions, rather than answer it. We'll follow this prompt through all three steps: a person writes a good answer, people rank several model answers, and reinforcement learning makes the model produce answers like the top-ranked ones <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">Fig. 2</a></span>.</p></div>
+</section>
+
+<section class="ch" id="c1" data-toc="1 · The problem">
+  <div class="chap">1 · The problem</div>
+  <span class="pill bad">Bigger isn't more helpful</span>
+  <h2>The training goal and the user's goal don't match</h2>
+  <p>The paper's first sentence: "Making language models bigger does not inherently make them better at following a user's intent." GPT-3 was trained to predict the next token on a webpage, which is "different from the objective 'follow the user's instructions helpfully and safely'". The authors call the language-modelling objective <b>misaligned</b> <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§1</a></span>.</p>
+  <div class="grid2">
+    <div class="card bad"><h4>What went wrong</h4><p>Making up facts, producing biased or toxic text, and simply not following instructions. Users had to engineer clever prompts to coax out the behaviour they wanted.</p></div>
+    <div class="card"><h4>What "aligned" meant here</h4><p>Following Askell et al.: <b>helpful</b> (solves the user's task), <b>honest</b> (doesn't make things up or mislead) and <b>harmless</b> (doesn't cause harm).</p></div>
+  </div>
+</section>
+
+<section class="ch" id="c2" data-toc="2 · How it was done before">
+  <div class="chap">2 · How it was done before</div>
+  <span class="pill b">Three earlier routes</span>
+  <h2>Prompting, instruction datasets, and RLHF on small tasks</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Approach</th><th>How</th><th>The catch</th></tr></thead>
+    <tbody>
+      <tr><td><b>Few-shot prompting</b> (GPT-3)</td><td>Put examples in the prompt so the model continues the pattern</td><td>Fragile, and every user has to write good prompts</td></tr>
+      <tr><td><b>Instruction tuning on NLP datasets</b> (FLAN, T0)</td><td>Fine-tune on many public tasks rewritten as instructions</td><td>Public datasets are mostly classification and QA; real users mostly ask for open-ended writing</td></tr>
+      <tr><td><b>RLHF</b> (Christiano 2017; Stiennon 2020)</td><td>Learn a reward from human comparisons, then optimise it with RL</td><td>Shown on games and summarisation, not on a general assistant</td></tr>
+    </tbody>
+  </table></div>
+  <p>InstructGPT takes the RLHF method from "Learning to summarize from human feedback" and applies it to the full, messy range of prompts real customers sent to the OpenAI API <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.1</a></span>.</p>
+</section>
+
+<section class="ch" id="c3" data-toc="3 · Step 1: supervised fine-tuning">
+  <div class="chap">3 · Step 1</div>
+  <span class="pill a">Supervised fine-tuning (SFT)</span>
+  <h2>Show the model good answers</h2>
+  <p>Labellers wrote the answer they'd want for each prompt, such as a few simple sentences about astronauts flying to the moon for our example. GPT-3 was then fine-tuned on these demonstrations with ordinary next-token loss <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.5</a></span>. See the <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/supervised-fine-tuning/">SFT lesson</a> for the mechanics.</p>
+  <ul>
+    <li><b>Data:</b> about 13,000 training prompts, from the API and written by labellers.</li>
+    <li><b>Training:</b> 16 epochs, cosine learning-rate decay, residual dropout 0.2.</li>
+    <li><b>A surprise:</b> validation loss started overfitting after 1 epoch, yet more epochs kept improving both the reward model's score and human ratings. So they picked the checkpoint by reward-model score, not by loss.</li>
+  </ul>
+  <div class="card"><h4>Why not stop here?</h4><p>Writing a great answer is slow and hard; judging which of two answers is better is fast and easy. SFT also only shows one good answer per prompt, while comparisons teach the model what makes one answer better than another. Steps 2 and 3 use that cheaper, richer signal.</p></div>
+</section>
+
+<section class="ch" id="c4" data-toc="4 · Step 2: the reward model">
+  <div class="chap">4 · Step 2</div>
+  <span class="pill st">Reward model (RM)</span>
+  <h2>Learn to predict which answer people prefer</h2>
+  <p>For each prompt, the model produced between K = 4 and K = 9 answers, and a labeller ranked them all. A ranking of K answers gives K(K−1)/2 pairs: 6 pairs for 4 answers, 36 for 9. A 6-billion-parameter copy of the SFT model, with its output layer replaced by a single score, was trained on these pairs <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.5</a></span>.</p>
+  <div class="reader" data-reader='[
+    {"t":"w","c":"ok","label":"the preferred answer’s score","say":"r_θ(x, y_w): the reward model’s score for the answer the labeller ranked higher."},
+    {"t":"l","c":"bad","label":"the other answer’s score","say":"r_θ(x, y_l): its score for the answer ranked lower."},
+    {"t":"s","c":"info","label":"turn the gap into a probability","say":"σ, the sigmoid, turns the score gap into the probability that a person prefers y_w. A gap of 0 gives 50%."},
+    {"t":"n","c":"st","label":"average over all pairs","say":"Average −log of that probability over every pair from the ranking, so all K(K−1)/2 pairs from one prompt are trained together."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\text{loss}(\theta) = -\class{term t-n}{\tfrac{1}{\binom{K}{2}}\,\mathbb{E}}\Big[\log \class{term t-s}{\sigma}\big(\class{term t-w}{r_\theta(x, y_w)} - \class{term t-l}{r_\theta(x, y_l)}\big)\Big]"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 1 <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.5</a></span> · hover a term.</p>
+  </div>
+  <h3>Try it: what the reward model learns from one pair</h3>
+  <div class="card lab" id="rmLab">
+    <label for="rG">Score gap: preferred minus other <input type="range" id="rG" min="-40" max="40" step="1" value="5"><output></output></label>
+    <label for="rK">Answers ranked per prompt, K <input type="range" id="rK" min="2" max="9" step="1" value="4"><output></output></label>
+    <div class="vsrow"><div>P(a person prefers the preferred one): <b class="mono" id="rP">—</b></div><div>Loss for this pair: <b class="mono" id="rL">—</b></div><div>Pairs from one ranking: <b class="mono" id="rN">—</b></div></div>
+    <p class="mono small" id="rMsg">—</p>
+    <p class="small">The probability is σ(gap) = 1 / (1 + e<sup>−gap</sup>), the Bradley–Terry model. Only score differences matter, so before RL they shifted all rewards so that human-written demonstrations average 0.</p>
+  </div>
+  <p>Training all pairs from one ranking in a single batch mattered: shuffling them as separate examples made the reward model overfit within one pass, because pairs from the same ranking are so correlated. The finished reward model agreed with held-out labellers about 70% of the time (69.6%), close to how often labellers agree with each other (about 73%).</p>
+</section>
+
+<section class="ch" id="c5" data-toc="5 · Step 3: reinforcement learning">
+  <div class="chap">5 · Step 3</div>
+  <span class="pill a">PPO against the reward model</span>
+  <h2>Optimise the reward, but don't drift too far</h2>
+  <p>The SFT model becomes the policy. For each prompt it writes an answer, the reward model scores it, and <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/policy-gradients-for-llms/">PPO</a> updates the policy to make high-scoring answers more likely. Each prompt is one episode with one reward at the end <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.5</a></span>.</p>
+  <div class="reader" data-reader='[
+    {"t":"r","c":"st","label":"the reward model’s score","say":"r_θ(x, y): how much people are predicted to like answer y to prompt x."},
+    {"t":"k","c":"bad","label":"the KL penalty","say":"β × log(π_RL / π_SFT): how much more likely the new policy makes this answer than the SFT model did. Subtracting it keeps the policy close to SFT, so it can’t exploit the reward model’s blind spots. β = 0.02."},
+    {"t":"p","c":"b","label":"the pretraining mix","say":"γ × log-likelihood of ordinary pretraining text, with γ = 27.8. This is PPO-ptx: it keeps skills the RL step would otherwise erode."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\text{objective}(\phi) = \mathbb{E}\Big[\class{term t-r}{r_\theta(x,y)} - \class{term t-k}{\beta \log \tfrac{\pi^{RL}_\phi(y|x)}{\pi^{SFT}(y|x)}}\Big] + \class{term t-p}{\gamma\,\mathbb{E}\big[\log \pi^{RL}_\phi(x_{pre})\big]}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Equation 2, slightly simplified <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.5, App. C</a></span> · hover a term.</p>
+  </div>
+  <h3>Try it: why the KL penalty is there</h3>
+  <div class="card lab" id="klLab">
+    <label for="kB">KL penalty strength, β <input type="range" id="kB" min="0" max="40" step="1" value="20"><output></output></label>
+    <svg id="klPlot" viewBox="0 0 600 200" role="img" aria-label="Reward model score and true quality as the policy drifts away from the SFT model"></svg>
+    <div class="vsrow"><div>How far the policy drifts (KL): <b class="mono" id="kD">—</b></div><div>Reward model score: <b class="mono" id="kR">—</b></div><div>True quality: <b class="mono" id="kT">—</b></div></div>
+    <p class="mono small" id="kMsg">—</p>
+    <p class="small">Illustrative curves, shaped like those measured by Gao et al. (2022): the reward model's score keeps rising as the policy moves away from SFT, but true quality peaks and then falls, because the policy starts exploiting the reward model's mistakes. The policy settles where reward minus β × drift is highest.</p>
+  </div>
+  <p>The value function PPO needs was initialised from the reward model. RL ran for 256,000 episodes over about 31,000 API prompts, with no human labels needed at this step.</p>
+</section>
+
+<section class="ch" id="c6" data-toc="6 · The data and the labellers">
+  <div class="chap">6 · The data and the labellers</div>
+  <span class="pill st">40 people and real prompts</span>
+  <h2>What people actually ask a language model</h2>
+  <div class="grid2">
+    <div class="card"><h4>The prompts</h4><p>Real prompts sent to earlier InstructGPT models in the OpenAI Playground, de-duplicated, capped at 200 per user, filtered for personal information, and split by user so the test set contains no training customers. Labellers wrote the very first prompts to bootstrap the process. Over 96% were in English.</p></div>
+    <div class="card"><h4>The labellers</h4><p>About 40 contractors, hired through Upwork and Scale AI after a screening test on spotting sensitive content. Training labellers agreed with each other 72.6% of the time. A separate group of held-out labellers, who wrote no training data, was used to check the model wasn't just fitting the training labellers' tastes.</p></div>
+  </div>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>Use case</th><th>Share of prompts</th></tr></thead>
+    <tbody>
+      <tr><td>Generation</td><td class="num">45.6%</td></tr>
+      <tr><td>Open QA</td><td class="num">12.4%</td></tr>
+      <tr><td>Brainstorming</td><td class="num">11.2%</td></tr>
+      <tr><td>Chat</td><td class="num">8.4%</td></tr>
+      <tr><td>Rewrite</td><td class="num">6.6%</td></tr>
+      <tr><td>Summarisation</td><td class="num">4.2%</td></tr>
+      <tr><td>Classification</td><td class="num">3.5%</td></tr>
+      <tr><td>Closed QA</td><td class="num">2.6%</td></tr>
+      <tr><td>Extraction</td><td class="num">1.9%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Table 1 <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§3.2</a></span>, plus 3.5% other. Dataset sizes: about 13k prompts for SFT, 33k for the reward model, 31k for RL.</p>
+  <p>This table explains a key result: classification and QA, which public NLP datasets cover, are only about 18% of real use, while open-ended generation and brainstorming are about 57%.</p>
+</section>
+
+<section class="ch" id="c7" data-toc="7 · Results">
+  <div class="chap">7 · Evidence</div>
+  <span class="pill ok">Preferred 85% of the time</span>
+  <h2>People preferred a 1.3B InstructGPT to the 175B GPT-3</h2>
+  <div class="card evid"><h4>How often labellers preferred 175B InstructGPT (§4.1)</h4><div class="bars" id="winBars" data-max="100"></div></div>
+  <ul>
+    <li><b>Size isn't everything:</b> outputs from the <b>1.3B</b> InstructGPT were preferred to the <b>175B</b> GPT-3, despite over 100× fewer parameters. Each step helped: a well-crafted prompt beat plain GPT-3, SFT beat that, and PPO beat SFT.</li>
+    <li><b>Following instructions:</b> InstructGPT followed explicit constraints (such as "in 2 paragraphs or less") more often and was rated more appropriate for a customer assistant.</li>
+    <li><b>Making less up:</b> on closed tasks such as summarisation, it invented information 21% of the time against GPT-3's 41%. On TruthfulQA it gave truthful and informative answers about twice as often.</li>
+    <li><b>Toxicity:</b> about 25% fewer toxic outputs when asked to be respectful, but no improvement on bias benchmarks (Winogender, CrowS-Pairs).</li>
+    <li><b>Held-out labellers</b> preferred InstructGPT at about the same rate as the training labellers.</li>
+    <li><b>Beyond the training data:</b> it could follow instructions in other languages and answer questions about code, though both were rare in training, and it often replied in English.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c8" data-toc="8 · The alignment tax">
+  <div class="chap">8 · The alignment tax</div>
+  <span class="pill bad">RL cost some skills</span>
+  <h2>PPO made some benchmarks worse, and PPO-ptx fixed most of it</h2>
+  <p>Plain PPO lowered scores on several public benchmarks: SQuAD, DROP, HellaSwag and French-to-English translation. The authors call this an <b>alignment tax</b>: a cost paid in capability for being better aligned. A technique with a high tax may not get adopted <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§4.2, §5.1</a></span>.</p>
+  <div class="grid2">
+    <div class="card ok"><h4>Mixing in pretraining updates (PPO-ptx)</h4><p>Adding the γ term, which keeps training on ordinary pretraining text during RL, reversed most of the drops and even beat GPT-3 on HellaSwag, without lowering human preference scores. This version is what "InstructGPT" means in the paper.</p></div>
+    <div class="card bad"><h4>Simply raising the KL penalty didn't work</h4><p>A stronger β cut the validation reward significantly and never fully recovered DROP and SQuAD. Some gaps remained even with PPO-ptx, on DROP, SQuADv2 and translation.</p></div>
+  </div>
+</section>
+
+<section class="ch" id="c9" data-toc="9 · What it cost">
+  <div class="chap">9 · What it cost</div>
+  <span class="pill info">Under 2% of GPT-3's compute</span>
+  <h2>Alignment was cheap next to pretraining</h2>
+  <div class="card evid"><h4>Training compute, petaflop/s-days (§5.1)</h4><div class="bars" id="costBars" data-max="5"></div><p class="small">Log scale: each step is 10×.</p></div>
+  <p>Training the 175B SFT model took 4.9 petaflop/s-days and the 175B PPO-ptx model 60, against 3,640 for pretraining GPT-3 itself. Yet RLHF improved helpfulness more than a 100× increase in model size did. The authors' conclusion: "increasing investments in alignment of existing language models is more cost-effective than training larger models", at least for their customers' tasks <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§5.1</a></span>.</p>
+</section>
+
+<section class="ch" id="c10" data-toc="10 · Limits and critique">
+  <div class="chap">10 · Takeaways and caveats</div>
+  <span class="pill bad">Aligned to whom?</span>
+  <h2>What the paper didn't solve</h2>
+  <h3>Who the model is aligned to</h3>
+  <p>The authors are blunt: the model is aligned to "a set of labelers' preferences", shaped by the instructions OpenAI wrote, not to "human values" in general. The labellers were mostly English-speaking people in the US or Southeast Asia, and most comparisons were labelled by only one person <span class="src"><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">§5.2–5.3</a></span>.</p>
+  <h3>Failures they show</h3>
+  <ul>
+    <li><b>False premises:</b> asked "Why is it important to eat socks after meditating?", InstructGPT invents theories instead of rejecting the premise.</li>
+    <li><b>Over-hedging:</b> it can give long "it depends" answers to simple questions. The authors suspect this comes from asking labellers to reward humility, which the reward model picked up.</li>
+    <li><b>Multiple constraints</b> such as "list 10 movies made in the 1930s set in France" still trip it up.</li>
+    <li><b>It follows harmful instructions:</b> told to be maximally biased, it produced more toxic output than GPT-3. The paper calls this perhaps its greatest limitation.</li>
+  </ul>
+  <h3>Problems later work made clear</h3>
+  <ul>
+    <li><b>Reward over-optimisation.</b> Pushing too hard against a learned reward model makes true quality fall even as the reward rises; Gao et al. measured how this scales <span class="src"><a href="https://arxiv.org/abs/2210.10760" target="_blank" rel="noopener">arXiv 2210.10760</a></span>.</li>
+    <li><b>Complexity and cost.</b> Four models in memory during RL (policy, reference, reward and value) and a finicky PPO setup motivated simpler methods.</li>
+  </ul>
+</section>
+
+<section class="ch" id="c11" data-toc="11 · What came after">
+  <div class="chap">11 · What it changed</div>
+  <span class="pill ok">The template for chat models</span>
+  <h2>From InstructGPT to every chat assistant</h2>
+  <div class="tablewrap"><table class="t">
+    <thead><tr><th>When</th><th>What happened</th><th>Link to InstructGPT</th></tr></thead>
+    <tbody>
+      <tr><td>Nov 2022</td><td>ChatGPT launched, described by OpenAI as a sibling model to InstructGPT</td><td>The same SFT → RM → PPO recipe, applied to dialogue</td></tr>
+      <tr><td>Dec 2022</td><td>Constitutional AI (Anthropic): AI feedback guided by written principles replaces most human harmlessness labels</td><td>Swaps the source of preferences</td></tr>
+      <tr><td>2023</td><td>Llama 2-Chat: SFT, then RLHF with separate helpfulness and safety reward models</td><td>The recipe in an open model</td></tr>
+      <tr><td>2023</td><td>DPO: train directly on preference pairs with a classification-style loss, no reward model and no RL loop</td><td>Removes steps 2 and 3 as separate stages</td></tr>
+      <tr><td>2025</td><td>DeepSeek-R1: rule-based rewards for reasoning, reward models only for general helpfulness</td><td>Keeps the RL step, replaces the learned reward where answers can be checked</td></tr>
+    </tbody>
+  </table></div>
+  <p>Related lessons: <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/rlhf-and-reward-models/">RLHF and reward models</a>, <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/dpo/">DPO</a> and <a href="https://datawithsuman.github.io/ai/interview-prep/fundamentals/llms/hallucination/">hallucination</a>.</p>
+</section>
+
+<section class="ch" id="c12" data-toc="12 · Key terms">
+  <div class="chap">12 · Key terms</div>
+  <h2>Words to know</h2>
+  <dl class="terms">
+    <dt>Alignment</dt><dd>Making a model act on the user's intent: helpful, honest and harmless.</dd>
+    <dt>SFT (supervised fine-tuning)</dt><dd>Fine-tuning on human-written example answers with the usual next-token loss.</dd>
+    <dt>Reward model</dt><dd>A model that scores a prompt and answer, trained so preferred answers score higher.</dd>
+    <dt>Bradley–Terry model</dt><dd>P(A preferred to B) = σ(score A − score B). The basis of the reward model's loss.</dd>
+    <dt>RLHF</dt><dd>Reinforcement learning from human feedback: optimise a policy against a reward model trained on human preferences.</dd>
+    <dt>PPO</dt><dd>Proximal Policy Optimization: an RL algorithm that limits how far each update can move the policy.</dd>
+    <dt>KL penalty</dt><dd>A cost for moving away from the SFT model, which stops the policy exploiting the reward model.</dd>
+    <dt>PPO-ptx</dt><dd>PPO plus updates on pretraining text, to reduce the alignment tax.</dd>
+    <dt>Alignment tax</dt><dd>Capability lost on some tasks as a side effect of alignment training.</dd>
+    <dt>Reward hacking / over-optimisation</dt><dd>The policy finds answers the reward model scores highly but people don't actually prefer.</dd>
+  </dl>
+</section>
+
+<section class="ch" id="c13" data-toc="13 · Verdict">
+  <div class="chap">13 · Verdict</div>
+  <h2>Read it</h2>
+  <p><b>Read</b> §1 (the findings), §3.1 and §3.5 (the three steps and both equations) and Figures 1–2. That's the RLHF recipe interviewers expect you to explain. <b>Read</b> §5.2–5.3 on who the model is aligned to: short and often asked about. <b>Skim</b> the benchmark results and the long appendices on labeller instructions.</p>
+</section>
+
+<section class="ch" id="iv" data-toc="14 · Say it in an interview">
+  <div class="chap">14 · Say it in an interview</div>
+  <h2>How to explain it</h2>
+  <h3>The 30-second answer</h3>
+  <p class="say30">"InstructGPT is the RLHF recipe behind ChatGPT. GPT-3 was trained to predict internet text, not to follow instructions, so it was misaligned with users. OpenAI fixed it in three steps. First, SFT: labellers wrote ideal answers to real prompts and GPT-3 was fine-tuned on them. Second, a reward model: labellers ranked 4 to 9 answers per prompt, and a model learned to score answers so preferred ones score higher, using a Bradley–Terry loss. Third, PPO: the model was trained to maximise the reward model's score, with a KL penalty to stay close to the SFT model and some pretraining updates to avoid losing skills. A 1.3B InstructGPT was preferred to the 175B GPT-3, using under 2% of GPT-3's training compute."</p>
+  <h3>The 2-minute walkthrough</h3>
+  <p>Problem: next-token prediction isn't "be helpful". Walk the moon-landing prompt through the three steps. Explain why comparisons are cheaper and richer than demonstrations, the reward model loss (−log σ of the score gap, all pairs from a ranking in one batch), and the RL objective (reward − β·KL + γ·pretraining). Then results: 85% preference over GPT-3, 1.3B beating 175B, hallucination 21% vs 41%. Finish with the limits: aligned to 40 labellers and OpenAI's instructions, reward over-optimisation, and how DPO and R1 later simplified or replaced parts of the pipeline.</p>
+  <h3>Likely follow-ups</h3>
+  <details class="qa"><summary>Why train a reward model instead of just doing more SFT?</summary><p>Comparing answers is faster and more reliable for people than writing perfect ones, and comparisons teach what makes an answer better rather than one fixed target. The reward model then scores unlimited new samples, so RL can explore answers no person wrote.</p></details>
+  <details class="qa"><summary>What does the KL penalty do?</summary><p>It subtracts β × log(π_RL / π_SFT) from the reward, penalising the policy for drifting from the SFT model. Without it the policy finds outputs that fool the reward model, so its score goes up while real quality goes down.</p></details>
+  <details class="qa"><summary>What is the reward model's loss?</summary><p>For each preferred and rejected pair: −log σ(r(x, y_w) − r(x, y_l)). It's a Bradley–Terry model: the score gap is treated as the log-odds that a person prefers y_w. All K(K−1)/2 pairs from one ranking go in the same batch to avoid overfitting.</p></details>
+  <details class="qa"><summary>What is the alignment tax and how did they reduce it?</summary><p>RLHF lowered scores on some public benchmarks such as SQuAD and DROP. Mixing pretraining log-likelihood updates into PPO (PPO-ptx) recovered most of it without hurting human preference. Raising the KL penalty instead cost too much reward.</p></details>
+  <details class="qa"><summary>How is DPO different?</summary><p>DPO shows the RLHF objective can be optimised directly on preference pairs with a simple loss on the policy's own log-probabilities, so there is no separate reward model and no PPO loop. It's simpler and more stable, though online RL can still help when you can sample and score fresh answers.</p></details>
+  <details class="qa"><summary>Whose values is the model aligned to?</summary><p>The paper says: about 40 labellers, mostly in the US and Southeast Asia, following instructions written by OpenAI researchers, on prompts from OpenAI's customers. Not humanity in general. Labellers agreed only about 73% of the time.</p></details>
+  <h3>What not to say</h3>
+  <ul>
+    <li>"RLHF makes the model know more." It mostly changes behaviour; facts come from pretraining.</li>
+    <li>"The reward model is trained on ratings from 1 to 10." It's trained on rankings turned into pairwise comparisons.</li>
+    <li>"InstructGPT is aligned with human values." The paper says it's aligned with its labellers' and researchers' preferences.</li>
+    <li>"RLHF removed hallucinations." It halved them on closed tasks; they're still common.</li>
+  </ul>
+</section>
+
+<section class="ch" id="src" data-toc="Sources">
+  <div class="chap">Sources</div>
+  <h2>Everything on this page comes from these</h2>
+  <ol class="srcs">
+    <li>Ouyang et al. (2022). Training language models to follow instructions with human feedback. <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">arXiv 2203.02155</a> (main text read in full, plus appendix C)</li>
+    <li>Christiano et al. (2017). Deep reinforcement learning from human preferences. <a href="https://arxiv.org/abs/1706.03741" target="_blank" rel="noopener">arXiv 1706.03741</a></li>
+    <li>Stiennon et al. (2020). Learning to summarize from human feedback. <a href="https://arxiv.org/abs/2009.01325" target="_blank" rel="noopener">arXiv 2009.01325</a></li>
+    <li>Schulman et al. (2017). Proximal Policy Optimization Algorithms. <a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener">arXiv 1707.06347</a></li>
+    <li>Lin et al. (2021). TruthfulQA. <a href="https://arxiv.org/abs/2109.07958" target="_blank" rel="noopener">arXiv 2109.07958</a></li>
+    <li>Gao et al. (2022). Scaling Laws for Reward Model Overoptimization. <a href="https://arxiv.org/abs/2210.10760" target="_blank" rel="noopener">arXiv 2210.10760</a></li>
+    <li>Bai et al. (2022). Constitutional AI: Harmlessness from AI Feedback. <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">arXiv 2212.08073</a></li>
+    <li>Touvron et al. (2023). Llama 2: Open Foundation and Fine-Tuned Chat Models. <a href="https://arxiv.org/abs/2307.09288" target="_blank" rel="noopener">arXiv 2307.09288</a></li>
+    <li>Rafailov et al. (2023). Direct Preference Optimization. <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">arXiv 2305.18290</a></li>
+    <li>DeepSeek-AI (2025). DeepSeek-R1. <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">arXiv 2501.12948</a></li>
+  </ol>
+  <p class="small">The KL lab's curves are illustrative. All other numbers come from the paper. @datawithsuman</p>
+</section>
+
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+// ---------- page content generated before the engine runs ----------
+(() => {
+  const bar = (label, v, color, shown) => `<div class="bar"><span>${label}</span><div class="track"><div class="fill" style="--v:${v};background:${color}"></div></div><span class="v mono">${shown || v}</span></div>`;
+  // §1, §4.1: how often 175B InstructGPT was preferred over each baseline
+  document.getElementById('winBars').innerHTML = [['over GPT-3 (175B)', 85, 'var(--ok)'], ['over few-shot prompted GPT-3', 71, 'var(--a)'], ['over GPT-3 fine-tuned on FLAN', 78, 'var(--a)'], ['over GPT-3 fine-tuned on T0', 79, 'var(--a)']].map(r => bar(...r, r[1] + '%')).join('');
+  // §5.1: training compute in petaflop/s-days, log10 scale (+1 so small values stay visible)
+  document.getElementById('costBars').innerHTML = [['SFT (175B)', 4.9, 'var(--st)'], ['PPO-ptx (175B)', 60, 'var(--a)'], ['Pretraining GPT-3', 3640, 'var(--b)']].map(([n, v, c]) => bar(n, Math.log10(v) + 1, c, v.toLocaleString('en-GB'))).join('');
+})();
+</script>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show]', sc).forEach(el => el.classList.toggle('off', s < +el.dataset.show));
+      $$('[data-hide]', sc).forEach(el => el.classList.toggle('off', s >= +el.dataset.hide));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+</script>
+<script>
+// ---------- page widgets ----------
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+
+  // reward model: Bradley-Terry probability and loss for one pair (equation 1)
+  const rG = $('#rG'), rK = $('#rK');
+  const drawR = () => { const g = +rG.value / 10, K = +rK.value, p = 1 / (1 + Math.exp(-g)), l = -Math.log(p);
+    rG.nextElementSibling.textContent = (g > 0 ? '+' : '') + g.toFixed(1); rK.nextElementSibling.textContent = K;
+    $('#rP').textContent = (100 * p).toFixed(1) + '%'; $('#rL').textContent = l.toFixed(3); $('#rN').textContent = K * (K - 1) / 2;
+    $('#rMsg').textContent = g < 0 ? 'The model scores the rejected answer higher: a large loss, and a big push to fix the order.'
+      : g === 0 ? 'Equal scores: the model is 50/50, and the loss is log 2 ≈ 0.693.'
+      : g < 2 ? 'Right order, but not confident yet: the loss still pushes the gap wider.'
+      : 'Confidently right: the loss is near 0, so this pair teaches little more.'; };
+  [rG, rK].forEach(e => e.addEventListener('input', drawR)); drawR();
+
+  // KL lab (illustrative): reward-model score keeps rising with drift, true quality peaks then falls
+  const kB = $('#kB'), plot = $('#klPlot'), KMAX = 12;
+  const P = (k) => 1.6 * Math.sqrt(k), T = (k) => 1.6 * Math.sqrt(k) - 0.4 * k;
+  const X = (k) => 30 + 560 * k / KMAX, Y = (v) => 180 - 150 * v / 5.6;
+  const path = (f) => { let s = ''; for (let k = 0; k <= KMAX; k += 0.1) s += (s ? 'L' : 'M') + X(k).toFixed(1) + ' ' + Y(f(k)).toFixed(1); return s; };
+  const drawK = () => { const b = +kB.value / 50, k = b ? Math.min(KMAX, Math.pow(0.8 / b, 2)) : KMAX;
+    kB.nextElementSibling.textContent = b.toFixed(2);
+    plot.innerHTML = `<line x1="30" y1="180" x2="590" y2="180" stroke="var(--line)"/>`
+      + `<path d="${path(P)}" fill="none" stroke="var(--st)" stroke-width="2.5"/><path d="${path(T)}" fill="none" stroke="var(--ok)" stroke-width="2.5"/>`
+      + `<text x="470" y="${Y(P(11)) - 8}" fill="var(--st)" font-size="12">reward model score</text><text x="430" y="${Y(T(11)) + 18}" fill="var(--ok)" font-size="12">true quality</text>`
+      + `<line x1="${X(k)}" y1="20" x2="${X(k)}" y2="180" stroke="var(--dim)" stroke-dasharray="4 4"/><circle cx="${X(k)}" cy="${Y(T(k))}" r="6" fill="var(--b)"/>`
+      + `<text x="30" y="196" fill="var(--dim)" font-size="12">stays at SFT</text><text x="590" y="196" fill="var(--dim)" font-size="12" text-anchor="end">drifts far (high KL)</text>`;
+    $('#kD').textContent = k.toFixed(1); $('#kR').textContent = P(k).toFixed(2); $('#kT').textContent = T(k).toFixed(2);
+    $('#kMsg').textContent = k >= KMAX - 0.01 ? 'Little or no penalty: the policy chases the reward model far from SFT, and true quality falls. This is reward hacking.'
+      : k > 7 ? 'Weak penalty: the reward still looks great, but true quality is already past its peak.'
+      : k > 2.5 ? 'About right: the policy moves far enough to improve, but stops before exploiting the reward model.'
+      : 'Strong penalty: safe, but the policy barely moves from SFT, so most of the possible gain is left on the table.'; };
+  kB.addEventListener('input', drawK); drawK();
+})();
+</script>
+</body>
+</html>

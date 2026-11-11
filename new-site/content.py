@@ -37,7 +37,7 @@ TRACKS = [
     {
         "id": "papers", "n": "04", "name": "Papers", "status": "Any time",
         "desc": "Important papers taught step by step: the gist, the method, the results and why they matter.",
-        "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "DeepSeek-R1", "Harness Engineering", "Context Language Models"],
+        "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "Harness Engineering", "Context Language Models"],
         "know": ["fundamentals/self-attention"],
         "modules": [
             {"name": "Foundational: architecture", "desc": "The architecture behind modern LLMs.", "lessons": [
@@ -53,9 +53,13 @@ TRACKS = [
                  "related": ["papers/attention-is-all-you-need"]},
             ]},
             {"name": "Foundational: training and alignment", "desc": "How base models become helpful assistants and learn to reason.", "lessons": [
+                {"slug": "instructgpt", "title": "InstructGPT", "type": "paper", "minutes": 30, "imported": True,
+                 "lead": "How did GPT-3 become an assistant that follows instructions?",
+                 "prereqs": ["fundamentals/supervised-fine-tuning"],
+                 "related": ["fundamentals/rlhf-and-reward-models"]},
                 {"slug": "deepseek-r1", "title": "DeepSeek-R1", "type": "paper", "minutes": 30, "imported": True,
                  "lead": "Can a model learn to reason without copying human reasoning?",
-                 "prereqs": ["fundamentals/policy-gradients-for-llms"],
+                 "prereqs": ["papers/instructgpt"],
                  "related": ["fundamentals/reasoning-models-grpo"]},
             ]},
             {"name": "Recent research", "desc": "Newer papers on how AI agents are built and how they manage context.", "lessons": [
