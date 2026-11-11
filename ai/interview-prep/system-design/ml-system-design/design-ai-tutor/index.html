@@ -303,7 +303,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <tr><td>Turns a week</td><td>2 million threads × 6 turns</td><td><b>12 million</b></td></tr>
     <tr><td>Peak turns per second</td><td>12 million ÷ 5 school days ÷ 6 hours ÷ 3,600 × 2</td><td><b>about 220</b></td></tr>
     <tr><td>LLM calls per turn</td><td>tutor + maths check (about half the time) + moderation</td><td><b>about 2.5</b></td></tr>
-    <tr><td>Threads needed per A/B test</td><td>to detect a 2–3% change in a rate around 60%</td><td><b>hundreds of thousands</b></td></tr>
+    <tr><td>Threads per group to detect a 2–3% relative change in a rate around 60%</td><td>16 × 0.6 × 0.4 ÷ (0.012 to 0.018)²; more if one student's threads are correlated</td><td><b>about 12,000–27,000</b></td></tr>
   </table></div>
   <p>Learning effects are small, so tests need large samples; at this volume, a test can still finish in days.</p>
 </section>
