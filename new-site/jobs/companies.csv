@@ -2,7 +2,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 1. AI labs and AI-first startups,OpenAI,Automatic,3,ashby,openai,https://jobs.ashbyhq.com/openai
 1. AI labs and AI-first startups,Anthropic,Automatic,4,greenhouse,anthropic,https://job-boards.greenhouse.io/anthropic
 1. AI labs and AI-first startups,Sarvam AI,Automatic,6,ashby,sarvam,https://jobs.ashbyhq.com/sarvam
-1. AI labs and AI-first startups,Ola / Krutrim,Careers link only,?,turbohire,olacareers,https://olacareers.turbohire.co/
 1. AI labs and AI-first startups,Ema,Automatic,3,ashby,ema,https://jobs.ashbyhq.com/ema
 1. AI labs and AI-first startups,Composio,Automatic,1,ashby,composio,https://jobs.ashbyhq.com/composio
 1. AI labs and AI-first startups,Bolna,Automatic,1,ashby,bolna,https://jobs.ashbyhq.com/bolna
@@ -67,7 +66,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 5. Enterprise software (SaaS),Sprinklr,Automatic,0,workday,sprinklr/wd1/careers,https://sprinklr.wd1.myworkdayjobs.com/careers
 5. Enterprise software (SaaS),Mindtickle,Automatic,1,lever,mindtickle,https://jobs.lever.co/mindtickle
 5. Enterprise software (SaaS),HighRadius,Automatic,0,greenhouse,highradius,https://job-boards.greenhouse.io/highradius
-"6. E-commerce, food and retail",Flipkart,Careers link only,?,own site,,https://www.flipkartcareers.com/
 "6. E-commerce, food and retail",Meesho,Automatic,6,lever,meesho,https://jobs.lever.co/meesho
 "6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy,https://jobs.smartrecruiters.com/swiggy
 "6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal,https://www.eternal.com/careers/
