@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-12",
  "days": 7,
- "count": 71,
+ "count": 78,
  "jobs": [
   {
    "title": "Staff, Data Scientist – AI Agent Platform",
@@ -74,11 +74,46 @@
    "url": "https://careers.ey.com/ey/job/Bengaluru-DE-RCE-Agentic-AI-Python-Developer-KA-560016/1436926733/"
   },
   {
+   "title": "Data Scientist - Statistical Modeling and SQL",
+   "company": "Citi",
+   "location": "Gurugram",
+   "posted": "2026-11-12",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Gurugram-Haryana-India/Data-Scientist---Statistical-Modeling-and-SQL_261006700"
+  },
+  {
    "title": "Senior Gen AI Engineer - Vice President",
    "company": "Citi",
    "location": "2 locations in India",
    "posted": "2026-11-12",
    "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Gen-AI-Engineer---Vice-President_26991817"
+  },
+  {
+   "title": "Machine Learning Engineer",
+   "company": "Cisco",
+   "location": "Hyderabad",
+   "posted": "2026-11-12",
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineer_2030936"
+  },
+  {
+   "title": "UI Expert & AI-Assisted Developer",
+   "company": "Bosch",
+   "location": "Coimbatore",
+   "posted": "2026-11-12",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161220619"
+  },
+  {
+   "title": "AI/ML Data Scientist",
+   "company": "Barclays",
+   "location": "Gurugram",
+   "posted": "2026-11-12",
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Gurugram-DLF-Downtown/AI-ML-Data-Scientist_JR-0000136329-1"
+  },
+  {
+   "title": "Data Scientist II, AWS - Quick",
+   "company": "Amazon",
+   "location": "Chennai",
+   "posted": "2026-11-12",
+   "url": "https://www.amazon.jobs/en/jobs/10602065/data-scientist-ii-aws-quick"
   },
   {
    "title": "Senior AI Platform Engineer",
@@ -289,6 +324,20 @@
    "location": "Hyderabad",
    "posted": "2026-11-09",
    "url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-data-scientist/34088/103090916304"
+  },
+  {
+   "title": "Principal Applied Sciences Manager",
+   "company": "Microsoft",
+   "location": "Bengaluru, Hyderabad",
+   "posted": "2026-11-09",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557043397"
+  },
+  {
+   "title": "Data Science IC4",
+   "company": "Microsoft",
+   "location": "Bengaluru",
+   "posted": "2026-11-09",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393556980192"
   },
   {
    "title": "Associate AI/ML Engineer",
