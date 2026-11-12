@@ -25,11 +25,20 @@
     paintDots();
   }
 
+
+  // Days studied, for the streak on My progress.
+  function today() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function markDay() {
+    var days = read("dws.days", []) || [], t = today();
+    if (days[days.length - 1] !== t) { days.push(t); write("dws.days", days.slice(-400)); }
+  }
+
   var main = document.querySelector("[data-lesson]");
   if (main) {
     var key = main.dataset.lesson;
     setState(key, "in-progress");
     write("dws.last." + key.split("/")[0], key);
+    markDay();
 
     var mark = document.getElementById("markDone");
     function showDone() { if (mark) { mark.textContent = "Marked done"; mark.disabled = true; } }
@@ -518,4 +527,173 @@
       t = setInterval(function () { left--; show(); }, 1000);
     });
   });
+
+  // Quizzes and mock rounds: remember which answers were opened.
+  document.querySelectorAll("[data-practice]").forEach(function (list) {
+    var pkey = list.dataset.practice;
+    list.querySelectorAll(".quiz-ans").forEach(function (d, i) {
+      d.addEventListener("toggle", function () {
+        if (!d.open) return;
+        var all = read("dws.practice", {}) || {}, got = all[pkey] || [];
+        if (got.indexOf(i) < 0) { got.push(i); all[pkey] = got; write("dws.practice", all); markDay(); }
+      });
+    });
+  });
+
+  // My progress page
+  var pp = document.getElementById("progressPage");
+  if (pp && window.PROGRESS_DATA) (function () {
+    var D = window.PROGRESS_DATA, R = window.ROADMAP, root = document.body.dataset.root || "../";
+    var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+    function row(label, href, n, total, cls) {
+      var r = el("div", "p-row" + (cls ? " " + cls : "")), a = el(href ? "a" : "span", "p-name", label);
+      if (href) a.href = href;
+      var bar = el("div", "progress"), i = el("i"); bar.appendChild(i); i.style.width = (total ? 100 * n / total : 0) + "%";
+      bar.setAttribute("role", "img"); bar.setAttribute("aria-label", n + " of " + total);
+      r.appendChild(a); r.appendChild(bar); r.appendChild(el("span", "p-count mono-num", n + " / " + total));
+      return r;
+    }
+    function render() {
+      progress = read(PROGRESS, {}) || {};
+      var practice = read("dws.practice", {}) || {}, days = read("dws.days", []) || [];
+      var keys = Object.keys(progress), done = keys.filter(function (k) { return progress[k] === "done"; }).length;
+      document.getElementById("pDone").textContent = done;
+      document.getElementById("pStarted").textContent = keys.length - done;
+      document.getElementById("pDays").textContent = days.length;
+      var streak = 0, d = new Date(), set = {};
+      days.forEach(function (x) { set[x] = 1; });
+      var fmt = function (x) { return x.getFullYear() + "-" + ("0" + (x.getMonth() + 1)).slice(-2) + "-" + ("0" + x.getDate()).slice(-2); };
+      if (!set[fmt(d)]) d.setDate(d.getDate() - 1);
+      while (set[fmt(d)]) { streak++; d.setDate(d.getDate() - 1); }
+      document.getElementById("pStreak").textContent = streak;
+      document.getElementById("pEmpty").hidden = keys.length > 0 || Object.keys(practice).length > 0;
+
+      var recent = document.getElementById("pRecentList"); recent.innerHTML = "";
+      D.tracks.forEach(function (t) {
+        var last = read("dws.last." + t.id, null), l = t.lessons.filter(function (x) { return x[0] === last; })[0];
+        if (!l) return;
+        var li = el("li"), a = el("a", null, l[1]); a.href = root + l[2];
+        li.appendChild(el("span", "chip t-" + t.id + " type-track", t.name)); li.appendChild(a);
+        li.appendChild(el("span", "note", progress[l[0]] === "done" ? "Done" : "In progress"));
+        recent.appendChild(li);
+      });
+      document.getElementById("pRecent").hidden = !recent.children.length;
+
+      var isDone = function (k) { return progress[k] === "done"; };
+      var mark = function (n, total, started) { return n === total ? "✓" : (n || started) ? "◐" : "○"; };
+      // One expandable row: a bar on the summary line, then groups (topics or modules) with lessons left.
+      function group(label, href, groups, cls) {
+        var all = [], det = el("details", "p-group" + (cls ? " " + cls : ""));
+        groups.forEach(function (g) { all = all.concat(g.lessons); });
+        var n = all.filter(function (l) { return isDone(l[0]); }).length;
+        var sum = el("summary"), r = row(label, null, n, all.length); sum.appendChild(r); det.appendChild(sum);
+        var body = el("ul", "p-topics");
+        groups.forEach(function (g) {
+          var gd = g.lessons.filter(function (l) { return isDone(l[0]); }).length;
+          var started = g.lessons.some(function (l) { return progress[l[0]]; });
+          var li = el("li", "p-topic"), head = el("div", "p-topic-head");
+          var m = el("span", "p-mark" + (gd === g.lessons.length ? " is-done" : (gd || started) ? " is-part" : ""), mark(gd, g.lessons.length, started));
+          m.setAttribute("aria-hidden", "true");
+          head.appendChild(m); head.appendChild(el("span", "p-topic-name", g.name));
+          head.appendChild(el("span", "p-count mono-num", gd + " / " + g.lessons.length));
+          li.appendChild(head);
+          var left = g.lessons.filter(function (l) { return !isDone(l[0]); });
+          if (left.length && left.length < g.lessons.length + 1) {
+            var ul = el("ul", "p-left");
+            left.slice(0, 4).forEach(function (l) {
+              var x = el("li"), a = el("a", null, l[1]); a.href = root + l[2]; x.appendChild(a);
+              if (progress[l[0]]) x.appendChild(el("span", "note", " · in progress"));
+              ul.appendChild(x);
+            });
+            if (left.length > 4) ul.appendChild(el("li", "note", "+ " + (left.length - 4) + " more"));
+            li.appendChild(ul);
+          }
+          body.appendChild(li);
+        });
+        var foot = el("p", "note"), go = el("a", null, "Open the " + (cls ? "track" : "roadmap")); go.href = href; foot.appendChild(go);
+        det.appendChild(body); det.appendChild(foot);
+        return det;
+      }
+      var lessonInfo = function (k) { var x = R && R.lessons[k]; return x ? [k, x[0], x[1]] : null; };
+      function roleGroups(r) {
+        var gs = [];
+        r.rows.forEach(function (rw) { rw.forEach(function (tid) {
+          gs.push({ name: R.topics[tid].name, lessons: R.topics[tid].lessons.map(lessonInfo).filter(Boolean) });
+        }); });
+        return gs;
+      }
+      var roles = document.getElementById("pRoles"); roles.innerHTML = "";
+      if (R) R.roles.forEach(function (r) { roles.appendChild(group(r.name, root + "roadmap/#" + r.id, roleGroups(r))); });
+      var tracks = document.getElementById("pTracks"); tracks.innerHTML = "";
+      D.tracks.forEach(function (t) {
+        var mods = [], by = {};
+        t.lessons.forEach(function (l) { if (!by[l[3]]) { by[l[3]] = { name: l[3], lessons: [] }; mods.push(by[l[3]]); } by[l[3]].lessons.push(l); });
+        tracks.appendChild(group(t.name, root + "tracks/" + t.id + "/", mods, "t-" + t.id));
+      });
+
+      // Next lesson: the first unfinished lesson on the chosen roadmap, in roadmap order.
+      if (R) {
+        var pick = document.getElementById("pRole"), roleId = read("dws.role", R.roles[0].id);
+        if (!pick.options.length) {
+          R.roles.forEach(function (r) { var o = el("option", null, r.name); o.value = r.id; pick.appendChild(o); });
+          pick.addEventListener("change", function () { write("dws.role", pick.value); render(); });
+        }
+        var role = R.roles.filter(function (r) { return r.id === roleId; })[0] || R.roles[0];
+        pick.value = role.id;
+        var next = null, where = "", gs = roleGroups(role);
+        for (var gi = 0; gi < gs.length && !next; gi++) {
+          var cand = gs[gi].lessons.filter(function (l) { return progress[l[0]] === "in-progress"; })[0] || gs[gi].lessons.filter(function (l) { return !isDone(l[0]); })[0];
+          if (cand) { next = cand; where = gs[gi].name; }
+        }
+        document.getElementById("pNext").hidden = false;
+        if (next) {
+          document.getElementById("pNextTitle").textContent = next[1];
+          document.getElementById("pNextWhere").textContent = role.name + " roadmap · " + where;
+          var go = document.getElementById("pNextGo"); go.hidden = false; go.href = root + next[2];
+          go.textContent = progress[next[0]] ? "Continue lesson" : "Start lesson";
+        } else {
+          document.getElementById("pNextTitle").textContent = "You've finished the " + role.name + " roadmap.";
+          document.getElementById("pNextWhere").textContent = "Try a mock interview to test it.";
+          document.getElementById("pNextGo").hidden = true;
+        }
+      }
+      var pr = document.getElementById("pPractice"); pr.innerHTML = "";
+      var started = D.practice.filter(function (x) { return practice[x[0]]; });
+      started.forEach(function (x) { pr.appendChild(row(x[1], root + x[0], Math.min(practice[x[0]].length, x[2]), x[2])); });
+      if (!started.length) { var p = el("p", "note"); p.innerHTML = 'None yet. Try a <a href="' + root + 'mock/">mock interview</a> or a quiz from the <a href="' + root + 'roadmap/">roadmap</a>.'; pr.appendChild(p); }
+    }
+    render();
+
+    var msg = document.getElementById("pMsg");
+    function allKeys() { var out = {}; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf("dws.") === 0) out[k] = localStorage.getItem(k); } } catch (e) {} return out; }
+    document.getElementById("pExport").addEventListener("click", function () {
+      var blob = new Blob([JSON.stringify({ site: "aimlrounds.com", saved: new Date().toISOString(), data: allKeys() }, null, 1)], { type: "application/json" });
+      var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "aimlrounds-progress.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      msg.textContent = "Downloaded. Load this file on your other device.";
+    });
+    document.getElementById("pImport").addEventListener("change", function (e) {
+      var f = e.target.files[0]; if (!f) return;
+      var fr = new FileReader();
+      fr.onload = function () {
+        try {
+          var j = JSON.parse(fr.result), data = j && j.data;
+          if (!data || typeof data !== "object") throw 0;
+          var mine = read(PROGRESS, {}) || {}, theirs = JSON.parse(data[PROGRESS] || "{}");
+          Object.keys(theirs).forEach(function (k) { if (mine[k] !== "done") mine[k] = theirs[k]; });
+          Object.keys(data).forEach(function (k) { if (k.indexOf("dws.") === 0 && k !== PROGRESS) localStorage.setItem(k, data[k]); });
+          write(PROGRESS, mine);
+          msg.textContent = "Progress loaded and merged with this browser.";
+          render();
+        } catch (err) { msg.textContent = "That file isn't a progress file from this site."; }
+      };
+      fr.readAsText(f); e.target.value = "";
+    });
+    var reset = document.getElementById("pReset"), armed = false;
+    reset.addEventListener("click", function () {
+      if (!armed) { armed = true; reset.textContent = "Click again to clear everything"; msg.textContent = "This can't be undone. Download a backup first if you want one."; return; }
+      Object.keys(allKeys()).forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+      armed = false; reset.textContent = "Clear all progress"; msg.textContent = "All progress cleared."; render();
+    });
+  })();
 })();

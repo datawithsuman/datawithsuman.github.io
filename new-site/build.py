@@ -170,6 +170,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 {preview_tags(title, desc, path)}
 <script>document.documentElement.classList.add('has-js')</script>
 <link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="AIML Rounds: what's new" href="{root}feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
@@ -204,7 +205,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}new/">What's new</a><a href="{root}progress/">My progress</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -263,8 +264,9 @@ def home():
 <p class="section-lead">The colour follows you into every lesson, so you always know which track you are in.</p>
 <div class="card-grid">{tracks}</div></section>
 <section class="page section" id="roadmap"><h2>Pick a role. Follow its roadmap.</h2>
-<p class="section-lead">Each role has its own map of topics, in the order that makes the next one easy. Your progress is saved in this browser.</p>
+<p class="section-lead">Each role has its own map of topics, in the order that makes the next one easy. Your progress is saved in this browser. <a href="progress/">See all your progress</a>.</p>
 <div class="card-grid role-cards">{role_cards}</div></section>
+<div class="page section">{notify_html(root)}</div>
 </main>
 """
     write("index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script>'))
@@ -315,7 +317,7 @@ def quiz_page(tid):
     html += f"""<main id="main"><section class="page quiz-page t-{t['track']}"><nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}roadmap/">Roadmap</a><span aria-hidden="true">/</span><b aria-current="page">{esc(name)} quiz</b></nav>
 <p class="eyebrow">QUIZ</p><h1 class="h1-track">{esc(name)}</h1><p class="lead">{esc(desc)}</p>
 <p class="note">On the roadmap for: {", ".join(roles)}.</p>
-<ol class="quiz-list">{items}</ol>
+<ol class="quiz-list" data-practice="quiz/{QUIZ_SLUG[tid]}/">{items}</ol>
 <div class="btn-row"><a class="btn btn-secondary" href="{root}roadmap/">Back to the roadmap</a></div>
 </section></main>
 """
@@ -879,6 +881,10 @@ def search_index():
     mock_pages()
     jobs_page()
     privacy_page()
+    items = updates()
+    new_page(items)
+    feed_xml(items)
+    progress_page()
     site_files()
     write("assets/search-index.js", "window.SEARCH_INDEX=" + json.dumps(rows, ensure_ascii=False) + ";\n")
 
@@ -956,7 +962,7 @@ def mock_pages():
             html += f"""<main id="main"><section class="page quiz-page mock-page"><nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}mock/">Mock interviews</a><span aria-hidden="true">/</span><a href="../">{m['name']}</a><span aria-hidden="true">/</span><b aria-current="page">{r['name']}</b></nav>
 <p class="eyebrow">{m['name'].upper()} · ROUND {i} OF {len(m['rounds'])}</p><h1 class="h1-track">{r['name']}</h1><p class="lead">{esc(r['intro'])}</p>
 <div class="panel mock-timer" data-minutes="{r['minutes']}"><span>{len(r['questions'])} questions · suggested time <b>{r['minutes']} min</b></span><span class="mock-clock" aria-live="off" hidden></span><button type="button" class="btn btn-secondary" data-timer>Start timer</button></div>
-<ol class="quiz-list">{qs}</ol>
+<ol class="quiz-list" data-practice="mock/{m['id']}/{r['id']}/">{qs}</ol>
 <div class="btn-row">{nxt_html}<a class="btn btn-secondary" href="../">All {m['name']} rounds</a></div>
 </section></main>
 """
@@ -993,7 +999,8 @@ def about_page():
         ("How much maths do I need?", f'Less than you might expect. <a href="{root}tracks/fundamentals/">Fundamentals</a> teaches the maths as it\'s used in ML, and each lesson lists what to read first. Nothing is locked, so you can skip what you know.'),
         ("Will I learn to code models here?", "Lessons focus on how ideas work and how to explain them, so they have very little code. They pair well with a hands-on course or your own projects."),
         ("Are the numbers from real companies?", "Where a lesson uses a real system, it links to its sources. Numbers in labs and estimates are examples for practice, unless the lesson says otherwise."),
-        ("Does it save my progress?", f'Yes, in your own browser. It isn\'t sent anywhere, so it won\'t follow you to another device. See the <a href="{root}privacy/">privacy note</a>.'),
+        ("Does it save my progress?", f'Yes, in your own browser. It isn\'t sent anywhere. To move it to another device, download it from <a href="{root}progress/">My progress</a> and load it there. See the <a href="{root}privacy/">privacy note</a>.'),
+        ("How do I hear about new lessons?", f'See <a href="{root}new/">What\'s new</a>, or follow the <a href="{root}feed.xml">RSS feed</a>.'),
         ("I found a mistake. What should I do?", f'Please <a href="mailto:{EMAIL}">email me</a> with the lesson\'s name. Fixes go in as soon as they can.'),
     ]
     items = "".join(f'<details class="faq-item"><summary>{q}</summary><p>{a}</p></details>' for q, a in faq)
@@ -1016,16 +1023,151 @@ def about_page():
 def privacy_page():
     """Plain facts about what the site stores. Update this if tracking changes or a sign-up is added."""
     root = "../"
+    SIGNUP_NOTE = (f"If you sign up for update emails, your address is kept by <b>{NOTIFY_FORM['provider']}</b>, used only for those emails, and every email has an unsubscribe link." if NOTIFY_FORM["action"] else "There is no email list. Updates are shared through an RSS feed, which collects nothing.")
     desc = "What this site stores, and which outside services your browser connects to."
     html = head_html("Privacy · AIML Rounds", desc, root, path="privacy/")
     html += f"""<main id="main"><div class="page about">
 <section class="hero-roadmaps"><p class="eyebrow">PRIVACY</p><h1 class="h1-home">Privacy, in plain words.</h1><p class="lead">{desc}</p></section>
-<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts, sign-ups or ads.</li><li>We count visits with <b>Cloudflare Web Analytics</b>: anonymous page views, which pages are popular and which sites send visitors. It sets no cookies and doesn't track you across other sites.</li><li>Your lesson progress and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
+<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts or ads. {SIGNUP_NOTE}</li><li>We count visits with <b>Cloudflare Web Analytics</b>: anonymous page views, which pages are popular and which sites send visitors. It sets no cookies and doesn't track you across other sites.</li><li>Your lesson progress, the days you studied, the quiz and mock answers you've opened, and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
 <section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Cloudflare Web Analytics</b> counts page visits, as described above.</li><li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
 <section class="panel block"><h2>Questions</h2><p>Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></section>
 </div></main>
 """
     write("privacy/index.html", html + foot_html(root))
+
+
+# ---------- What's new + notifications ----------
+# Email updates: create a free list (Kit or Buttondown), then paste its form address here.
+# Until it is set, the sign-up box shows the RSS feed instead of an email field.
+NOTIFY_FORM = {"action": "", "email_field": "email", "provider": ""}
+UPDATES_FILE = HERE / "updates.json"
+
+
+def page_catalog():
+    """Every page a learner would want to hear about, as url -> (title, kind, section)."""
+    pages = {l["url"]: (l["title"], TYPE_LABEL[l["type"]], l["track"]["name"]) for l in ORDERED}
+    for tid in quizzes.READY:
+        pages[f"quiz/{QUIZ_SLUG[tid]}/"] = (f'{RM["topics"][tid]["name"]} quiz', "Quiz", "Practice")
+    for m in mocks.MOCKS:
+        for r in m["rounds"]:
+            pages[f'mock/{m["id"]}/{r["id"]}/'] = (f'{r["name"]} ({m["name"]} mock)', "Mock", "Practice")
+    return pages
+
+
+def updates():
+    """Gives each page the date it first appeared. The first run marks today's pages as the baseline,
+    so only pages added later show up as new. Hand-written notes go in "notes"."""
+    from datetime import date
+    data = json.loads(UPDATES_FILE.read_text()) if UPDATES_FILE.exists() else {}
+    seen, notes = data.get("seen"), data.get("notes", [])
+    pages, today = page_catalog(), date.today().isoformat()
+    if seen is None:
+        seen = {u: "baseline" for u in pages}
+    for u in pages:
+        seen.setdefault(u, today)
+    UPDATES_FILE.write_text(json.dumps({"notes": notes, "seen": dict(sorted(seen.items()))}, indent=1, ensure_ascii=False) + "\n")
+    items = [{"date": d, "title": pages[u][0], "kind": pages[u][1], "section": pages[u][2], "url": u, "text": ""}
+             for u, d in seen.items() if d != "baseline" and u in pages]
+    items += [{"date": n["date"], "title": n["title"], "kind": n.get("kind", "Update"), "section": n.get("section", ""),
+               "url": n.get("url", ""), "text": n.get("text", "")} for n in notes]
+    return sorted(items, key=lambda x: (x["date"], x["title"]), reverse=True)
+
+
+def notify_html(root, heading="Get notified when something new is added", on_new=False):
+    lead = "New lessons, system designs, papers and mock rounds." + (" One short email when there's something new, nothing else." if NOTIFY_FORM["action"] else "")
+    rss = f'<a href="{root}feed.xml">RSS feed</a>'
+    if NOTIFY_FORM["action"]:
+        body = (f'<form class="notify-form" action="{NOTIFY_FORM["action"]}" method="post" target="_blank">'
+                f'<label class="sr" for="notifyEmail">Email address</label><input id="notifyEmail" type="email" name="{NOTIFY_FORM["email_field"]}" placeholder="you@example.com" autocomplete="email" required>'
+                f'<button type="submit" class="btn btn-primary">Notify me</button></form>'
+                f'<p class="note">Unsubscribe from any email in one click. Your email is kept by {NOTIFY_FORM["provider"]} and used only for these updates. Prefer a reader? Use the {rss}.</p>')
+    else:
+        see = "" if on_new else f'<a class="btn btn-primary" href="{root}new/">See what\'s new</a>'
+        body = (f'<div class="btn-row">{see}<a class="btn btn-secondary" href="{root}feed.xml">Follow the RSS feed</a></div>'
+                f'<p class="note">Email updates are coming soon. Until then, paste the RSS feed into any reader (Feedly, Inoreader) to hear about new pages.</p>')
+    return f'<section class="panel block notify" id="notify"><p class="eyebrow">UPDATES</p><h2>{heading}</h2><p>{lead}</p>{body}</section>'
+
+
+def new_page(items):
+    root = "../"
+    desc = "New lessons, designs, papers and practice rounds, newest first."
+    groups, out = {}, ""
+    for it in items:
+        groups.setdefault(it["date"], []).append(it)
+    from datetime import date
+    for d, its in groups.items():
+        label = date.fromisoformat(d).strftime("%-d %B %Y")
+        rows = "".join(
+            f'<li><span class="chip">{esc(it["kind"])}</span><span class="new-text">'
+            + (f'<a href="{root}{it["url"]}">{esc(it["title"])}</a>' if it["url"] else f'<b>{esc(it["title"])}</b>')
+            + (f' <span class="note">· {esc(it["section"])}</span>' if it["section"] else "")
+            + (f'<span class="note new-desc">{esc(it["text"])}</span>' if it["text"] else "") + '</span></li>' for it in its)
+        out += f'<section class="panel block new-day"><h2>{label}</h2><ul class="new-list">{rows}</ul></section>'
+    if not out:
+        out = f'<section class="panel block"><h2>Nothing new yet</h2><p>New pages appear here as they are added. The site already has {len(ORDERED)} lessons: start with the <a href="{root}#tracks">tracks</a> or the <a href="{root}roadmap/">roadmap</a>.</p></section>'
+    html = head_html("What's new · AIML Rounds", desc, root, path="new/")
+    html += f"""<main id="main"><div class="page about">
+<section class="hero-roadmaps"><p class="eyebrow">WHAT'S NEW</p><h1 class="h1-home">What's new</h1><p class="lead">{desc}</p></section>
+{notify_html(root, "Hear about the next one", on_new=True)}
+{out}
+</div></main>
+"""
+    write("new/index.html", html + foot_html(root))
+
+
+def feed_xml(items):
+    from datetime import date, datetime, timezone
+    from email.utils import format_datetime
+    def when(d):
+        return format_datetime(datetime.combine(date.fromisoformat(d), datetime.min.time(), timezone.utc))
+    rows = ""
+    for it in items[:50]:
+        link = BASE + (it["url"] or "new/")
+        text = it["text"] or f'New {it["kind"].lower()} in {it["section"]}.' if it["section"] else it["text"]
+        rows += (f'<item><title>{esc(it["title"])}</title><link>{link}</link><guid isPermaLink="false">{esc(it["date"] + ":" + (it["url"] or it["title"]))}</guid>'
+                 f'<pubDate>{when(it["date"])}</pubDate><category>{esc(it["kind"])}</category><description>{esc(text or "")}</description></item>')
+    built = format_datetime(datetime.now(timezone.utc))
+    write("feed.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
+          f'<title>AIML Rounds: what\'s new</title><link>{BASE}new/</link><description>New AI and ML lessons, system designs, papers and practice rounds.</description>'
+          f'<language>en</language><lastBuildDate>{built}</lastBuildDate><atom:link href="{BASE}feed.xml" rel="self" type="application/rss+xml"/>{rows}</channel></rss>\n')
+
+
+# ---------- My progress ----------
+def progress_page():
+    """Everything the learner has done, read from this browser's storage by site.js. Nothing is sent anywhere."""
+    root = "../"
+    desc = "Your lessons, roadmaps and practice in one place. Saved only in this browser."
+    data = {
+        "tracks": [{"id": t["id"], "name": t["name"], "lessons": [[l["key"], l["title"], l["url"], l["module"]["name"]] for l in ORDERED if l["track"]["id"] == t["id"]]} for t in TRACKS],
+        "practice": [[f"quiz/{QUIZ_SLUG[tid]}/", f'{RM["topics"][tid]["name"]} quiz', len(quizzes.QUIZZES[tid])] for tid in quizzes.READY]
+                    + [[f'mock/{m["id"]}/{r["id"]}/', f'{m["name"]}: {r["name"]}', len(r["questions"])] for m in mocks.MOCKS for r in m["rounds"]],
+    }
+    html = head_html("My progress · AIML Rounds", desc, root, path="progress/")
+    html += f"""<main id="main"><div class="page about progress-page" id="progressPage">
+<section class="hero-roadmaps"><p class="eyebrow">MY PROGRESS</p><h1 class="h1-home">My progress</h1><p class="lead">{desc}</p></section>
+<section class="stat-row" aria-label="Summary">
+  <div class="panel stat"><span class="stat-num" id="pDone">0</span><span class="note">lessons done</span></div>
+  <div class="panel stat"><span class="stat-num" id="pStarted">0</span><span class="note">in progress</span></div>
+  <div class="panel stat"><span class="stat-num" id="pStreak">0</span><span class="note">day streak</span></div>
+  <div class="panel stat"><span class="stat-num" id="pDays">0</span><span class="note">days studied</span></div>
+</section>
+<section class="panel block" id="pEmpty" hidden><h2>Nothing yet</h2><p>Open any lesson and it shows up here. Not sure where to begin? Pick a <a href="{root}roadmap/">roadmap</a> for your role.</p></section>
+<section class="panel block p-next" id="pNext" hidden><p class="eyebrow">YOUR NEXT LESSON</p><div class="p-next-row"><div><h2 id="pNextTitle"></h2><p class="note" id="pNextWhere"></p></div><a class="btn btn-primary" id="pNextGo" href="#">Start lesson</a></div>
+<label class="p-role-pick note">Roadmap: <select id="pRole"></select></label></section>
+<section class="panel block" id="pRecent" hidden><h2>Pick up where you left off</h2><ul class="p-list" id="pRecentList"></ul></section>
+<section class="panel block"><h2>Roadmaps</h2><p class="note">Open a roadmap to see each topic and the lessons left.</p><div class="p-rows" id="pRoles"></div></section>
+<section class="panel block"><h2>Tracks</h2><p class="note">Open a track to see each module.</p><div class="p-rows" id="pTracks"></div></section>
+<section class="panel block"><h2>Quizzes and mock rounds</h2><p class="note">Counts the answers you have opened.</p><div class="p-rows" id="pPractice"></div></section>
+<section class="panel block" id="pBackup"><h2>Move or back up your progress</h2>
+<p>Progress lives only in this browser. To use it on another device, download it here and load it there.</p>
+<div class="btn-row"><button type="button" class="btn btn-secondary" id="pExport">Download progress</button>
+<label class="btn btn-secondary" for="pImport">Load progress file</label><input type="file" id="pImport" accept="application/json,.json" class="sr">
+<button type="button" class="link-btn" id="pReset">Clear all progress</button></div>
+<p class="note" id="pMsg" role="status"></p></section>
+</div></main>
+<script>window.PROGRESS_DATA={json.dumps(data, ensure_ascii=False, separators=(",", ":"))};</script>
+"""
+    write("progress/index.html", html + foot_html(root, scripts=f'<script src="{root}assets/roadmap-data.js?v={ASSET_V}"></script>'))
 
 
 def site_files():
@@ -1039,7 +1181,7 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     base = BASE
-    urls = ["", "about/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
