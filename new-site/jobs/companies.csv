@@ -32,7 +32,7 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 2. AI and analytics services,Tiger Analytics,Automatic,0,workable,tiger-analytics,https://apply.workable.com/tiger-analytics/
 2. AI and analytics services,Sigmoid,Automatic,5,greenhouse,sigmoid,https://job-boards.greenhouse.io/sigmoid
 2. AI and analytics services,Mu Sigma,Careers link only,?,own site,,https://www.mu-sigma.com/career
-2. AI and analytics services,Tredence,Careers link only,?,own site,,https://www.tredence.com/company-careers
+2. AI and analytics services,Tredence,Automatic,?,ripplehire,tredence/rzuz0vttMaz0VxxVzDiY,https://tredence.ripplehire.com/candidate/?token=rzuz0vttMaz0VxxVzDiY&source=CAREERSITE
 2. AI and analytics services,Quantiphi,Automatic,8,workday,quantiphi/wd1/Careers_at_Quantiphi,https://quantiphi.com/careers
 2. AI and analytics services,MathCo (TheMathCompany),Careers link only,?,own site,,https://mathco.com/careers
 2. AI and analytics services,ZS Associates,Automatic,?,jibe,jobs.zs.com,https://jobs.zs.com/jobs
@@ -69,12 +69,10 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 5. Enterprise software (SaaS),HighRadius,Automatic,0,greenhouse,highradius,https://job-boards.greenhouse.io/highradius
 "6. E-commerce, food and retail",Flipkart,Careers link only,?,own site,,https://www.flipkartcareers.com/
 "6. E-commerce, food and retail",Meesho,Automatic,6,lever,meesho,https://jobs.lever.co/meesho
-"6. E-commerce, food and retail",Myntra,Careers link only,?,own site,,https://careers.myntra.com/
 "6. E-commerce, food and retail",Swiggy,Automatic,2,smartrecruiters,swiggy,https://jobs.smartrecruiters.com/swiggy
 "6. E-commerce, food and retail",Eternal (Zomato),Automatic,0,lever,eternal,https://www.eternal.com/careers/
 "6. E-commerce, food and retail",Walmart Global Tech,Automatic,1+,workday,walmart/wd504/WalmartExternal,https://walmart.wd504.myworkdayjobs.com/WalmartExternal
 "6. E-commerce, food and retail",Target,Automatic,5+,workday,target/wd5/targetcareers,https://target.wd5.myworkdayjobs.com/targetcareers
-"6. E-commerce, food and retail",Nykaa,Careers link only,?,own site,,https://careers.nykaa.com/
 "6. E-commerce, food and retail",Lowe's India,Automatic,?,workday,lowes/wd5/LWS_External_CS,https://talent.lowes.com/in/en
 "6. E-commerce, food and retail",Tesco Bengaluru,Careers link only,?,own site,,https://careers.tesco.com/en_GB/careers
 "6. E-commerce, food and retail",Lenskart,Careers link only,?,own site,,https://www.lenskart.com/careers-at-lenskart
@@ -101,11 +99,10 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 8. Fintech and payments,Stripe,Automatic,1,greenhouse,stripe,https://job-boards.greenhouse.io/stripe
 8. Fintech and payments,PayPal,Automatic,?,workday,paypal/wd1/jobs,https://paypal.wd1.myworkdayjobs.com/jobs
 8. Fintech and payments,Mastercard,Automatic,7+,workday,mastercard/wd1/CorporateCareers,https://mastercard.wd1.myworkdayjobs.com/CorporateCareers
-8. Fintech and payments,Juspay,Careers link only,?,own site,,https://juspay.io/careers
+8. Fintech and payments,Juspay,Automatic,?,juspay,juspay,https://juspay.io/careers
 8. Fintech and payments,Cashfree Payments,Careers link only,?,own site,,https://www.cashfree.com/careers/
 8. Fintech and payments,PayU,Careers link only,?,own site,,https://corporate.payu.com/careers/
 8. Fintech and payments,Pine Labs,Careers link only,?,own site,,https://www.pinelabs.com/careers
-8. Fintech and payments,Zerodha,Careers link only,?,own site,,https://careers.zerodha.com/
 8. Fintech and payments,Upstox,Careers link only,?,own site,,https://upstox.com/careers/
 8. Fintech and payments,Visa,Automatic,3,workday,visa/wd5/Visa,https://visa.wd5.myworkdayjobs.com/Visa
 8. Fintech and payments,Policybazaar,Careers link only,?,own site,,https://www.policybazaar.com/careers/
@@ -120,7 +117,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 9. Banking and trading,Deutsche Bank,Automatic,3,workday,db/wd3/DBWebsite,https://careers.db.com/
 9. Banking and trading,Bank of America,Automatic,?,bofa,bofa,https://careers.bankofamerica.com/en-us/job-search/india?ref=search&start=0&rows=10&search=jobsByLocation&searchstring=India
 9. Banking and trading,Standard Chartered,Careers link only,?,own site,,https://www.sc.com/en/global-careers/
-10. Healthcare and life sciences,Innovaccer,Careers link only,?,own site,,https://innovaccer.com/careers
 10. Healthcare and life sciences,Optum (UnitedHealth Group),Automatic,?,radancy,careers.unitedhealthgroup.com,https://careers.unitedhealthgroup.com/search-jobs
 10. Healthcare and life sciences,GE HealthCare,Automatic,4,workday,gehc/wd5/GEHC_ExternalSite,https://careers.gehealthcare.com/global/en
 10. Healthcare and life sciences,Philips,Automatic,4,workday,philips/wd3/jobs-and-careers,https://www.careers.philips.com/in/en
@@ -130,14 +126,13 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 10. Healthcare and life sciences,Practo,Careers link only,?,own site,,https://practo.app.param.ai/jobs/
 10. Healthcare and life sciences,Niramai,Careers link only,?,own site,,https://niramai.com/careers/
 "11. Manufacturing, auto and industrial",Bosch,Automatic,15,smartrecruiters,BoschGroup,https://jobs.bosch.com/en
-"11. Manufacturing, auto and industrial",Siemens,Careers link only,?,own site,,https://www.siemens.com/en-us/company/jobs/
 "11. Manufacturing, auto and industrial",Honeywell,Automatic,?,oracle,ibqbjb.fa.ocs.oraclecloud.com/CX_1,https://careers.honeywell.com/en/sites/Honeywell
 "11. Manufacturing, auto and industrial",ABB,Automatic,1,workday,abb/wd3/external_career_page,https://careers.abb/global/en
 "11. Manufacturing, auto and industrial",Schneider Electric,Careers link only,?,own site,,https://careers.se.com/jobs
 "11. Manufacturing, auto and industrial",GE Aerospace,Automatic,0,workday,geaerospace/wd5/GE_ExternalSite,https://careers.geaerospace.com/global/en
 "11. Manufacturing, auto and industrial",GE Vernova,Automatic,28,workday,gevernova/wd5/Vernova_ExternalSite,https://careers.gevernova.com/
 "11. Manufacturing, auto and industrial",John Deere,Careers link only,?,own site,,https://careers.deere.com/careers
-"11. Manufacturing, auto and industrial",Mercedes-Benz R&D India,Careers link only,?,own site,,https://www.mbrdi.co.in/careers
+"11. Manufacturing, auto and industrial",Mercedes-Benz R&D India,Automatic,?,mercedes,mercedes,https://jobs.mercedes-benz.com/en?PositionLocation.Country=%5B390%5D
 "11. Manufacturing, auto and industrial",Continental,Careers link only,?,own site,,https://jobs.continental.com/en/
 "11. Manufacturing, auto and industrial",Tata Motors,Automatic,?,successfactors,careers.tatamotors.com,https://careers.tatamotors.com/
 "11. Manufacturing, auto and industrial",Mahindra,Careers link only,?,own site,,https://www.mahindra.com/career
@@ -147,12 +142,10 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 "11. Manufacturing, auto and industrial",Reliance Industries,Careers link only,?,own site,,https://careers.ril.com/
 "11. Manufacturing, auto and industrial",Larsen & Toubro (L&T),Careers link only,?,own site,,https://www.larsentoubro.com/corporate/careers
 "11. Manufacturing, auto and industrial",Adani Group,Careers link only,?,own site,,https://www.adani.com/careers
-12. Consulting (Big 4),Deloitte,Careers link only,?,own site,,https://www.deloitte.com/in/en/careers.html
 12. Consulting (Big 4),EY,Automatic,?,successfactors,careers.ey.com/ey,https://careers.ey.com/ey/search/?locationsearch=India
 12. Consulting (Big 4),PwC,Automatic,4,workday,pwc/wd3/Global_Experienced_Careers,https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers
 12. Consulting (Big 4),KPMG,Automatic,2,oracle,ejgk.fa.em2.oraclecloud.com/CX_3,https://kpmg.com/in/en/careers.html
 13. Telecom,Jio,Careers link only,?,own site,,https://careers.jio.com/
-13. Telecom,Airtel,Careers link only,?,own site,,https://careers.airtel.com/
 13. Telecom,Vi (Vodafone Idea),Careers link only,?,own site,,https://www.myvi.in/careers
 15. Edtech,Scaler,Careers link only,?,own site,,https://www.scaler.com/careers/
 16. Energy,Shell,Automatic,2,workday,shell/wd3/ShellCareers,https://www.shell.com/careers.html

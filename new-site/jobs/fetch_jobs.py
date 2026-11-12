@@ -469,11 +469,57 @@ def goldman(company, board):
     return out
 
 
+def mercedes(company, board):
+    """Mercedes-Benz jobs API, India only (country code 390), newest first."""
+    out = []
+    for first in range(1, 2001, 100):
+        q = {"SearchParameters": {"FirstItem": first, "CountItem": 100, "Sort": [{"Criterion": "PublicationStartDate", "Direction": "DESC"}],
+                                  "MatchedObjectDescriptor": ["PositionID", "PositionTitle", "PositionURI", "PositionLocation.CityName", "PositionLocation.CountryName", "PublicationStartDate"]},
+             "SearchCriteria": [{"CriterionName": "PositionLocation.Country", "CriterionValue": [390]}], "LanguageCode": "EN"}
+        r = get("https://jobs.api.mercedes-benz.com/search?data=" + urllib.parse.quote(json.dumps(q, separators=(",", ":"))))["SearchResult"]
+        for it in r["SearchResultItems"]:
+            j = it["MatchedObjectDescriptor"]
+            loc = ", ".join(dict.fromkeys(l.get("CityName", "") for l in j.get("PositionLocation", []) if l.get("CityName"))) + ", India"
+            p = j.get("PublicationStartDate")
+            out.append(job(company, j["PositionTitle"], loc.strip(", "), dt.datetime.fromisoformat(p).replace(tzinfo=dt.timezone.utc) if p else None, j["PositionURI"]))
+        if len(r["SearchResultItems"]) < 100:
+            break
+    return out
+
+
+def juspay(company, board):
+    """Juspay's job list. It has no posting dates; main() dates each job by when we first saw it."""
+    d = get("https://joinus.juspay.in/api/careerJobOpening?limit=1000")
+    return [job(company, j["job_title"], j.get("job_location") or "", None, f"https://juspay.io/careers/{j['job_id']}")
+            for j in d.get("allJobs", []) if j.get("opening_status", True)]
+
+
+def ripplehire(company, board):
+    """RippleHire career sites (board = subdomain/token), e.g. Tredence. No posting dates; dated by first sighting."""
+    sub, token = board.split("/")
+    out = []
+    for page in range(0, 20):
+        params = json.dumps({"page": page, "search": "*:*", "token": token, "source": "CAREERSITE", "pagesize": 100})
+        req = urllib.request.Request(f"https://{sub}.ripplehire.com/candidate/candidatejobsearch",
+                                     data=urllib.parse.urlencode({"careerSiteUrlParams": params, "lang": "en"}).encode(),
+                                     headers={**UA, "Content-Type": "application/x-www-form-urlencoded"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            d = json.load(r)
+        rows = d.get("jobVoList") or []
+        for j in rows:
+            out.append(job(company, j["jobTitle"], j.get("locations") or "", None,
+                           f"https://{sub}.ripplehire.com/candidate/?token={token}&source=CAREERSITE#detail/job/{j['jobId']}"))
+        if len(rows) < 100:
+            break
+    return out
+
+
 SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecruiters": smartrecruiters,
            "workable": workable, "workday": workday, "oracle": oracle,
            "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple,
            "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors, "radancy": radancy,
-           "eightfold_v2": eightfold_v2, "atlassian": atlassian, "bofa": bofa, "goldman": goldman}
+           "eightfold_v2": eightfold_v2, "atlassian": atlassian, "bofa": bofa, "goldman": goldman,
+           "mercedes": mercedes, "juspay": juspay, "ripplehire": ripplehire}
 
 
 def fetch(row):
@@ -487,6 +533,21 @@ def main():
     rows = [r for r in csv.DictReader(open(HERE / "companies.csv")) if r["how_we_get_jobs"] == "Automatic" and r["source"] in SOURCES]
     with ThreadPoolExecutor(12) as ex:
         results = list(ex.map(fetch, rows))
+    # Some boards give no posting date. Date those jobs by the day we first saw them (kept in seen.json);
+    # the first time a company is read, its existing jobs count as old so the backlog doesn't flood the page.
+    seen_path = HERE / "seen.json"
+    first_seen = json.loads(seen_path.read_text()) if seen_path.exists() else {}
+    today = NOW.date().isoformat()
+    for row, jobs, err in results:
+        undated = [j for j in jobs if j["posted"] is None]
+        if not undated or err:
+            continue
+        known = any(k.startswith(row["company"] + "|") for k in first_seen)
+        for j in undated:
+            key = row["company"] + "|" + j["url"]
+            first_seen.setdefault(key, today if known else "2000-01-01")
+            j["posted"] = dt.datetime.fromisoformat(first_seen[key]).replace(tzinfo=dt.timezone.utc)
+    seen_path.write_text(json.dumps(dict(sorted(first_seen.items())), indent=0))
     keep, seen, report = [], set(), []
     for row, jobs, err in results:
         n = 0
