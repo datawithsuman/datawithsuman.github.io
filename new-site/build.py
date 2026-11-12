@@ -968,9 +968,9 @@ def jobs_page():
     (DIST / "jobs").mkdir(parents=True, exist_ok=True)
     if (HERE / "jobs/jobs.json").exists():
         shutil.copy(HERE / "jobs/jobs.json", DIST / "jobs/jobs.json")
-    desc = "AI and ML roles in India, posted in the 7 days before each update, from companies' own careers pages. Updated daily."
-    html = head_html("AI/ML Job postings this week · AIML Rounds", desc, root, page="jobs", path="jobs/")
-    html += f"""<main id="main"><section class="page jobs-page"><p class="eyebrow">JOBS</p><h1 class="h1-track">AI/ML Job postings this week</h1><p class="lead">{desc}</p>
+    desc = "Fresh roles from 100+ companies, posted in the last 7 days. Updated daily."
+    html = head_html("AI/ML jobs in India · AIML Rounds", desc, root, page="jobs", path="jobs/")
+    html += f"""<main id="main"><section class="page jobs-page"><p class="eyebrow">JOBS</p><h1 class="h1-track">AI/ML jobs in India</h1><p class="lead">{desc}</p>
 <div class="jobs-tools"><label class="sr" for="jobSearch">Search jobs</label><input id="jobSearch" class="jobs-search" type="search" placeholder="Search by title, company or city" autocomplete="off"><p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
 <ul class="panel jobs-list" id="jobsList" tabindex="0" aria-label="Job postings, scroll for more"></ul>
 <noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
