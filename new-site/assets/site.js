@@ -696,4 +696,11 @@
       armed = false; reset.textContent = "Clear all progress"; msg.textContent = "All progress cleared."; render();
     });
   })();
+
+  // Email sign-up: posts into a hidden frame, then says thanks on the page.
+  document.querySelectorAll("[data-notify]").forEach(function (f) {
+    f.addEventListener("submit", function () {
+      setTimeout(function () { f.hidden = true; var d = f.parentNode.querySelector(".notify-done"); if (d) d.hidden = false; }, 300);
+    });
+  });
 })();

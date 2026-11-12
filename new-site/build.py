@@ -1073,19 +1073,17 @@ def updates():
     return sorted(items, key=lambda x: (x["date"], x["title"]), reverse=True)
 
 
-def notify_html(root, heading="Get notified when something new is added", on_new=False):
-    lead = "New lessons, system designs, papers and mock rounds." + (" One short email when there's something new, nothing else." if NOTIFY_FORM["action"] else "")
-    rss = f'<a href="{root}feed.xml">RSS feed</a>'
-    if NOTIFY_FORM["action"]:
-        body = (f'<form class="notify-form" action="{NOTIFY_FORM["action"]}" method="post" target="_blank">'
-                f'<label class="sr" for="notifyEmail">Email address</label><input id="notifyEmail" type="email" name="{NOTIFY_FORM["email_field"]}" placeholder="you@example.com" autocomplete="email" required>'
-                f'<button type="submit" class="btn btn-primary">Notify me</button></form>'
-                f'<p class="note">Unsubscribe from any email in one click. Your email is kept by {NOTIFY_FORM["provider"]} and used only for these updates. Prefer a reader? Use the {rss}.</p>')
-    else:
-        see = "" if on_new else f'<a class="btn btn-primary" href="{root}new/">See what\'s new</a>'
-        body = (f'<div class="btn-row">{see}<a class="btn btn-secondary" href="{root}feed.xml">Follow the RSS feed</a></div>'
-                f'<p class="note">Email updates are coming soon. Until then, paste the RSS feed into any reader (Feedly, Inoreader) to hear about new pages.</p>')
-    return f'<section class="panel block notify" id="notify"><p class="eyebrow">UPDATES</p><h2>{heading}</h2><p>{lead}</p>{body}</section>'
+def notify_html(root, heading="Get new lessons in your inbox", on_new=False):
+    """Email box only. Hidden until NOTIFY_FORM["action"] is set, so it never takes an email it can't keep."""
+    if not NOTIFY_FORM["action"]:
+        return ""
+    return (f'<section class="panel block notify" id="notify"><h2>{heading}</h2>'
+            f'<p>One short email when a new lesson, system design or paper is added.</p>'
+            f'<form class="notify-form" action="{NOTIFY_FORM["action"]}" method="post" target="notifyFrame" data-notify>'
+            f'<label class="sr" for="notifyEmail">Email address</label><input id="notifyEmail" type="email" name="{NOTIFY_FORM["email_field"]}" placeholder="Your email address" autocomplete="email" required>'
+            f'<button type="submit" class="btn btn-primary">Subscribe</button></form>'
+            f'<p class="note notify-done" role="status" hidden>Thanks, you\'re subscribed.</p>'
+            f'<iframe name="notifyFrame" title="Sign-up" hidden></iframe></section>')
 
 
 def new_page(items):
