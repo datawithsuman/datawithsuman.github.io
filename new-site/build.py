@@ -175,6 +175,8 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="{root}assets/site.css?v={ASSET_V}">
 {extra_head}
+<!-- Cloudflare Web Analytics: anonymous visit counts, no cookies -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "99b9fb2040864298af15ad158d509e17"}}'></script>
 </head>
 <body{f' class="t-{active["id"]}"' if active else ''} data-root="{root}">
 <a class="skip" href="#main">Skip to content</a>
@@ -1012,14 +1014,14 @@ def about_page():
 
 
 def privacy_page():
-    """Plain facts about what the site stores. Update this if analytics or a sign-up is added."""
+    """Plain facts about what the site stores. Update this if tracking changes or a sign-up is added."""
     root = "../"
     desc = "What this site stores, and which outside services your browser connects to."
     html = head_html("Privacy · AIML Rounds", desc, root, path="privacy/")
     html += f"""<main id="main"><div class="page about">
 <section class="hero-roadmaps"><p class="eyebrow">PRIVACY</p><h1 class="h1-home">Privacy, in plain words.</h1><p class="lead">{desc}</p></section>
-<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts, sign-ups, ads or analytics.</li><li>Your lesson progress and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
-<section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
+<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts, sign-ups or ads.</li><li>We count visits with <b>Cloudflare Web Analytics</b>: anonymous page views, which pages are popular and which sites send visitors. It sets no cookies and doesn't track you across other sites.</li><li>Your lesson progress and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
+<section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Cloudflare Web Analytics</b> counts page visits, as described above.</li><li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
 <section class="panel block"><h2>Questions</h2><p>Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></section>
 </div></main>
 """
