@@ -89,7 +89,7 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 "7. Consumer apps, media and mobility",Apna,Automatic,0,workable,apna,https://apply.workable.com/apna/
 "7. Consumer apps, media and mobility",Expedia,Automatic,1+,workday,expedia/wd108/search,https://expedia.wd108.myworkdayjobs.com/search
 "7. Consumer apps, media and mobility",Sabre,Automatic,2+,workday,sabre/wd1/SabreJobs,https://sabre.wd1.myworkdayjobs.com/SabreJobs
-8. Fintech and payments,PhonePe,Careers link only,?,own site,,https://www.phonepe.com/careers/
+8. Fintech and payments,PhonePe,Automatic,?,smartrecruiters,PHONEPELIMITED,https://www.phonepe.com/careers/
 8. Fintech and payments,Paytm,Automatic,2,lever,paytm,https://jobs.lever.co/paytm
 8. Fintech and payments,Razorpay,Automatic,1,greenhouse,razorpaysoftwareprivatelimited,https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited
 8. Fintech and payments,CRED,Automatic,0,lever,cred,https://jobs.lever.co/cred
@@ -122,7 +122,7 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 9. Banking and trading,Standard Chartered,Careers link only,?,own site,,https://www.sc.com/en/global-careers/
 9. Banking and trading,Nomura,Careers link only,?,own site,,https://www.nomura.com/careers/
 10. Healthcare and life sciences,Innovaccer,Careers link only,?,own site,,https://innovaccer.com/careers
-10. Healthcare and life sciences,Optum (UnitedHealth Group),Careers link only,?,own site,,https://careers.unitedhealthgroup.com/search-jobs
+10. Healthcare and life sciences,Optum (UnitedHealth Group),Automatic,?,radancy,careers.unitedhealthgroup.com,https://careers.unitedhealthgroup.com/search-jobs
 10. Healthcare and life sciences,GE HealthCare,Automatic,4,workday,gehc/wd5/GEHC_ExternalSite,https://careers.gehealthcare.com/global/en
 10. Healthcare and life sciences,Philips,Automatic,4,workday,philips/wd3/jobs-and-careers,https://www.careers.philips.com/in/en
 10. Healthcare and life sciences,Siemens Healthineers,Automatic,?,workday,onehealthineers/wd3/SHSJB,https://careers.siemens-healthineers.com/global/en

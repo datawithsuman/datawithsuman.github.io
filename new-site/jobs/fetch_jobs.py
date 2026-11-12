@@ -385,10 +385,30 @@ def successfactors(company, board):
     return out
 
 
+def radancy(company, board):
+    """Radancy (TalentBrew) career sites such as careers.unitedhealthgroup.com. Searches the AI/ML words,
+    keeps Indian locations, and reads the posting date from each matching job's page."""
+    out, seen = [], set()
+    for q in QUERIES:
+        d = get(f"https://{board}/search-jobs/results?" + urllib.parse.urlencode({
+            "ActiveFacetID": 0, "CurrentPage": 1, "RecordsPerPage": 250, "Distance": 50, "RadiusUnitType": 0, "Keywords": q,
+            "Location": "India", "ShowRadius": "False", "IsPagination": "False", "SearchResultsModuleName": "Search Results",
+            "SearchFiltersModuleName": "Search Filters", "SortCriteria": 0, "SortDirection": 0, "SearchType": 5}))
+        for path, title, loc in re.findall(r'<a href="(/job/[^"]+)"[^>]*>\s*<div>\s*<h2>([^<]+)</h2>.*?job-location[^>]*>([^<]+)<', d.get("results", ""), re.S):
+            title, loc = html.unescape(title.strip()), html.unescape(loc.strip())
+            if path in seen or not INDIA.search(loc) or not is_ai_ml(title):
+                continue
+            seen.add(path)
+            p = re.search(r'"datePosted"\s*:\s*"(\d{4}-\d{2}-\d{2})', get_text(f"https://{board}{path}"))
+            posted = dt.datetime.fromisoformat(p.group(1)).replace(tzinfo=dt.timezone.utc) if p else None
+            out.append(job(company, title, loc + ", India", posted, f"https://{board}{path}"))
+    return out
+
+
 SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecruiters": smartrecruiters,
            "workable": workable, "workday": workday, "oracle": oracle,
            "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple,
-           "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors}
+           "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors, "radancy": radancy}
 
 
 def fetch(row):
