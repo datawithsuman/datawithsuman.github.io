@@ -252,13 +252,18 @@ def microsoft(company, board):
     out = []
     for q in QUERIES:
         for start in (0, 10, 20):
-            d = slow_json("https://apply.careers.microsoft.com/api/pcsx/search?" + urllib.parse.urlencode(
-                {"domain": "microsoft.com", "query": q, "location": "India", "start": start, "sort_by": "timestamp"}))
+            try:
+                d = slow_json("https://apply.careers.microsoft.com/api/pcsx/search?" + urllib.parse.urlencode(
+                    {"domain": "microsoft.com", "query": q, "location": "India", "start": start, "sort_by": "timestamp"}))
+            except urllib.error.HTTPError as e:
+                if e.code == 429 and out:  # rate-limited late in the run: keep what we already have
+                    return out
+                raise
             posts = d["data"]["positions"]
             for j in posts:
                 posted = dt.datetime.fromtimestamp(j["postedTs"], dt.timezone.utc)
                 out.append(job(company, j["name"], " / ".join(j.get("locations") or []), posted, "https://apply.careers.microsoft.com" + j["positionUrl"]))
-            time.sleep(3)
+            time.sleep(5)
             if len(posts) < 10 or (posts and (NOW - dt.datetime.fromtimestamp(posts[-1]["postedTs"], dt.timezone.utc)).days > DAYS):
                 break
     return out
