@@ -405,10 +405,75 @@ def radancy(company, board):
     return out
 
 
+def eightfold_v2(company, board):
+    """Older Eightfold career sites (board = host/domain), e.g. HSBC. India only, newest first."""
+    host, domain = board.split("/")
+    out, seen = [], set()
+    for q in QUERIES:
+        for start in range(0, 100, 10):
+            d = slow_json(f"https://{host}/api/apply/v2/jobs?" + urllib.parse.urlencode({"domain": domain, "query": q, "location": "India", "start": start, "num": 10}))
+            pos = d.get("positions") or []
+            for j in pos:
+                if j["id"] in seen:
+                    continue
+                seen.add(j["id"])
+                ts = j.get("t_create") or j.get("t_update")
+                out.append(job(company, j["name"], j.get("location") or "India", dt.datetime.fromtimestamp(ts, dt.timezone.utc) if ts else None,
+                               j.get("canonicalPositionUrl") or f"https://{host}/careers/job/{j['id']}"))
+            if len(pos) < 10:
+                break
+    return out
+
+
+def atlassian(company, board):
+    """Atlassian publishes every open role as one JSON list."""
+    out = []
+    for j in get("https://www.atlassian.com/endpoint/careers/listings"):
+        loc = " / ".join(l for l in j.get("locations", []) if INDIA.search(l)) or " / ".join(j.get("locations", []))
+        upd = (j.get("portalJobPost") or {}).get("updatedDate")
+        posted = dt.datetime.strptime(upd, "%Y-%m-%d %I:%M %p").replace(tzinfo=dt.timezone.utc) if upd else None
+        out.append(job(company, j["title"], loc, posted, j.get("applyUrl") or (j.get("portalJobPost") or {}).get("portalUrl", "")))
+    return out
+
+
+def bofa(company, board):
+    """Bank of America's own job search, India only."""
+    out = []
+    for start in range(0, 2000, 200):
+        d = get("https://careers.bankofamerica.com/services/jobssearchservlet?" + urllib.parse.urlencode({"start": start, "rows": 200, "search": "jobsByLocation", "searchstring": "India"}))
+        rows = d.get("jobsList") or []
+        for j in rows:
+            loc = j.get("location") or j.get("additionalLocationsList") or "India"
+            loc = loc if INDIA.search(loc) else loc + ", India"
+            posted = dt.datetime.strptime(j["postedDate"], "%m/%d/%Y").replace(tzinfo=dt.timezone.utc) if j.get("postedDate") else None
+            out.append(job(company, j["postingTitle"], loc, posted, "https://careers.bankofamerica.com" + j["jcrURL"]))
+        if len(rows) < 200:
+            break
+    return out
+
+
+def goldman(company, board):
+    """Goldman Sachs careers (higher.gs.com) role search, India only."""
+    q = "query GetRoles($s: RoleSearchQueryInput!) { roleSearch(searchQueryInput: $s) { totalCount items { roleId jobTitle createdDate locations { city state country } externalSource { sourceId } } } }"
+    out = []
+    for page in range(0, 20):
+        v = {"s": {"page": {"pageSize": 50, "pageNumber": page}, "sort": {"sortStrategy": "POSTED_DATE", "sortOrder": "DESC"},
+                   "filters": [{"filterCategoryType": "LOCATION", "filters": [{"filter": "India", "subFilters": []}]}],
+                   "experiences": ["EARLY_CAREER", "PROFESSIONAL"], "searchTerm": ""}}
+        d = get("https://api-higher.gs.com/gateway/api/v1/graphql", json.dumps({"query": q, "variables": v}).encode())["data"]["roleSearch"]
+        for j in d["items"]:
+            loc = " / ".join(f'{l["city"]}, {l["country"]}' for l in j["locations"] if l.get("country") == "India" and l.get("city")) or "India"
+            out.append(job(company, j["jobTitle"], loc, iso(j.get("createdDate")), f"https://higher.gs.com/roles/{(j.get('externalSource') or {}).get('sourceId') or j['roleId']}"))
+        if len(d["items"]) < 50:
+            break
+    return out
+
+
 SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecruiters": smartrecruiters,
            "workable": workable, "workday": workday, "oracle": oracle,
            "amazon": amazon, "microsoft": microsoft, "google": google, "apple": apple,
-           "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors, "radancy": radancy}
+           "eightfold": eightfold, "jibe": jibe, "successfactors": successfactors, "radancy": radancy,
+           "eightfold_v2": eightfold_v2, "atlassian": atlassian, "bofa": bofa, "goldman": goldman}
 
 
 def fetch(row):

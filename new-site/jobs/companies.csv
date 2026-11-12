@@ -46,7 +46,7 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 3. Big tech,Cisco,Automatic,4+,workday,cisco/wd5/Cisco_Careers,https://cisco.wd5.myworkdayjobs.com/Cisco_Careers
 3. Big tech,HP,Automatic,2+,workday,hp/wd5/ExternalCareerSite,https://hp.wd5.myworkdayjobs.com/ExternalCareerSite
 3. Big tech,Samsung R&D India,Automatic,1+,workday,sec/wd3/Samsung_Careers,https://sec.wd3.myworkdayjobs.com/Samsung_Careers
-3. Big tech,Atlassian,Custom work needed,?,custom,,https://www.atlassian.com/company/careers/all-jobs
+3. Big tech,Atlassian,Automatic,?,atlassian,atlassian,https://www.atlassian.com/company/careers/all-jobs?location=India
 "4. Data, cloud and security",Databricks,Automatic,11,greenhouse,databricks,https://job-boards.greenhouse.io/databricks
 "4. Data, cloud and security",Snowflake,Automatic,1,ashby,snowflake,https://jobs.ashbyhq.com/snowflake
 "4. Data, cloud and security",MongoDB,Automatic,4,greenhouse,mongodb,https://job-boards.greenhouse.io/mongodb
@@ -110,17 +110,16 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 8. Fintech and payments,Visa,Automatic,3,workday,visa/wd5/Visa,https://visa.wd5.myworkdayjobs.com/Visa
 8. Fintech and payments,Policybazaar,Careers link only,?,own site,,https://www.policybazaar.com/careers/
 9. Banking and trading,JPMorgan Chase,Automatic,?,oracle,jpmc/CX_1001,https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001
-9. Banking and trading,Goldman Sachs,Custom work needed,?,graphql,higher.gs.com,https://higher.gs.com/
+9. Banking and trading,Goldman Sachs,Automatic,?,goldman,goldman,https://higher.gs.com/results?LOCATION=Bengaluru|Hyderabad|Mumbai&page=1&sort=RELEVANCE
 9. Banking and trading,Graviton Research,Automatic,1,greenhouse,gravitonresearchcapital,https://job-boards.greenhouse.io/gravitonresearchcapital
 9. Banking and trading,Tower Research,Automatic,0,greenhouse,towerresearchcapital,https://job-boards.greenhouse.io/towerresearchcapital
 9. Banking and trading,Morgan Stanley,Automatic,?,eightfold,morganstanley.eightfold.ai/morganstanley.com,https://www.morganstanley.com/careers/career-opportunities-search
 9. Banking and trading,Citi,Automatic,22,workday,citi/wd5/2,https://jobs.citi.com/
-9. Banking and trading,HSBC,Careers link only,?,own site,,https://www.hsbc.com/careers
+9. Banking and trading,HSBC,Automatic,?,eightfold_v2,portal.careers.hsbc.com/hsbc.com,https://portal.careers.hsbc.com/careers?location=India
 9. Banking and trading,Barclays,Automatic,8,workday,barclays/wd3/External_Career_Site_Barclays,https://search.jobs.barclays/
 9. Banking and trading,Deutsche Bank,Automatic,3,workday,db/wd3/DBWebsite,https://careers.db.com/
-9. Banking and trading,Bank of America,Careers link only,?,own site,,https://careers.bankofamerica.com/en-us
+9. Banking and trading,Bank of America,Automatic,?,bofa,bofa,https://careers.bankofamerica.com/en-us/job-search/india?ref=search&start=0&rows=10&search=jobsByLocation&searchstring=India
 9. Banking and trading,Standard Chartered,Careers link only,?,own site,,https://www.sc.com/en/global-careers/
-9. Banking and trading,Nomura,Careers link only,?,own site,,https://www.nomura.com/careers/
 10. Healthcare and life sciences,Innovaccer,Careers link only,?,own site,,https://innovaccer.com/careers
 10. Healthcare and life sciences,Optum (UnitedHealth Group),Automatic,?,radancy,careers.unitedhealthgroup.com,https://careers.unitedhealthgroup.com/search-jobs
 10. Healthcare and life sciences,GE HealthCare,Automatic,4,workday,gehc/wd5/GEHC_ExternalSite,https://careers.gehealthcare.com/global/en
@@ -128,7 +127,6 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 10. Healthcare and life sciences,Siemens Healthineers,Automatic,?,workday,onehealthineers/wd3/SHSJB,https://careers.siemens-healthineers.com/global/en
 10. Healthcare and life sciences,Novartis,Automatic,4,workday,novartis/wd3/Novartis_Careers,https://www.novartis.com/careers/career-search
 10. Healthcare and life sciences,IQVIA,Automatic,0,workday,iqvia/wd1/IQVIA,https://jobs.iqvia.com/en
-10. Healthcare and life sciences,Elevance Health,Careers link only,?,own site,,https://careers.elevancehealth.com/
 10. Healthcare and life sciences,Practo,Careers link only,?,own site,,https://practo.app.param.ai/jobs/
 10. Healthcare and life sciences,Niramai,Careers link only,?,own site,,https://niramai.com/careers/
 "11. Manufacturing, auto and industrial",Bosch,Automatic,15,smartrecruiters,BoschGroup,https://jobs.bosch.com/en
@@ -156,6 +154,5 @@ domain,company,how_we_get_jobs,india_ai_ml_roles_now,source,board_id,careers_url
 13. Telecom,Jio,Careers link only,?,own site,,https://careers.jio.com/
 13. Telecom,Airtel,Careers link only,?,own site,,https://careers.airtel.com/
 13. Telecom,Vi (Vodafone Idea),Careers link only,?,own site,,https://www.myvi.in/careers
-14. Gaming,Dream Sports (Dream11),Careers link only,?,own site,,https://www.dreamsports.group/lifeatdreamsports
 15. Edtech,Scaler,Careers link only,?,own site,,https://www.scaler.com/careers/
 16. Energy,Shell,Automatic,2,workday,shell/wd3/ShellCareers,https://www.shell.com/careers.html
