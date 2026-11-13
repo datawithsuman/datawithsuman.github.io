@@ -1,0 +1,1564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mechanistic Interpretability 4: Sparse autoencoders · Papers Explained · AIML Rounds</title>
+<meta name="description" content="How do you pull many features out of a few neurons?">
+<link rel="canonical" href="https://aimlrounds.com/tracks/papers/mech-interp-sparse-autoencoders/">
+<meta property="og:url" content="https://aimlrounds.com/tracks/papers/mech-interp-sparse-autoencoders/">
+<meta property="og:site_name" content="AIML Rounds">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mechanistic Interpretability 4: Sparse autoencoders · Papers Explained · AIML Rounds">
+<meta property="og:description" content="How do you pull many features out of a few neurons?">
+<meta property="og:image" content="https://aimlrounds.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.classList.add('has-js')</script>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="AIML Rounds: what's new" href="../../../feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css?v=90d685df">
+<link rel="stylesheet" href="../../../assets/lx-99149f0f.css">
+<script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
+<!-- Cloudflare Web Analytics: anonymous visit counts, no cookies -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "99b9fb2040864298af15ad158d509e17"}'></script>
+</head>
+<body class="t-papers" data-root="../../../">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head"><div class="page-wide head-inner">
+<a class="brand" href="../../../"><svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg><span>AIML Rounds</span></a>
+<nav class="tabs" aria-label="Tracks"><a class="t-fundamentals" href="../../../tracks/fundamentals/">Fundamentals</a><a class="t-ai-engineering" href="../../../tracks/ai-engineering/">AI Engineering</a><a class="t-system-design" href="../../../tracks/system-design/">System Design</a><a class="t-papers active" href="../../../tracks/papers/" aria-current="true">Papers Explained</a></nav>
+<a class="head-link" href="../../../roadmap/">Roadmap</a><a class="head-link" href="../../../mock/">Mocks</a><a class="head-link" href="../../../jobs/">Jobs</a>
+<button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
+</div></header>
+<main id="main" class="page-wide lesson-grid" data-lesson="papers/mech-interp-sparse-autoencoders">
+<aside class="contents" id="sideLeft" aria-label="Papers Explained contents">
+  <button type="button" class="side-handle" data-side="left" aria-controls="sideLeft" aria-expanded="true" aria-label="Collapse contents" title="Collapse contents" hidden></button>
+  <div class="side-resizer" data-side="left" role="separator" aria-orientation="vertical" aria-label="Drag to resize contents" tabindex="0" hidden></div>
+  <details class="contents-box" open><summary>Papers Explained contents</summary><details class="mod"><summary>Foundational</summary><ol><li><a href="../../../tracks/papers/attention-is-all-you-need/"><span class="dot" data-key="papers/attention-is-all-you-need" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Attention Is All You Need</span></a></li><li><a href="../../../tracks/papers/scaling-laws-and-chinchilla/"><span class="dot" data-key="papers/scaling-laws-and-chinchilla" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Scaling Laws and Chinchilla</span></a></li><li><a href="../../../tracks/papers/instructgpt/"><span class="dot" data-key="papers/instructgpt" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>InstructGPT</span></a></li><li><a href="../../../tracks/papers/deepseek-r1/"><span class="dot" data-key="papers/deepseek-r1" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>DeepSeek-R1</span></a></li><li><a href="../../../tracks/papers/lora/"><span class="dot" data-key="papers/lora" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>LoRA</span></a></li></ol></details><details class="mod"><summary>Agents and tool use</summary><ol><li><a href="../../../tracks/papers/harness-engineering/"><span class="dot" data-key="papers/harness-engineering" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Harness Engineering</span></a></li></ol></details><details class="mod"><summary>Context engineering and RAG</summary><ol><li><a href="../../../tracks/papers/context-language-models/"><span class="dot" data-key="papers/context-language-models" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Context Language Models</span></a></li></ol></details><details class="mod" open><summary>AI interpretability</summary><ol><li><a href="../../../tracks/papers/mech-interp-why-look-inside/"><span class="dot" data-key="papers/mech-interp-why-look-inside" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 1: Why look inside?</span></a></li><li><a href="../../../tracks/papers/mech-interp-building-blocks/"><span class="dot" data-key="papers/mech-interp-building-blocks" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 2: Building blocks</span></a></li><li><a href="../../../tracks/papers/mech-interp-four-bets/"><span class="dot" data-key="papers/mech-interp-four-bets" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 3: The four bets</span></a></li><li><a class="current" aria-current="page" href="../../../tracks/papers/mech-interp-sparse-autoencoders/"><span class="dot" data-key="papers/mech-interp-sparse-autoencoders" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 4: Sparse autoencoders</span></a></li><li><a href="../../../tracks/papers/mech-interp-beyond-one-layer/"><span class="dot" data-key="papers/mech-interp-beyond-one-layer" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 5: Beyond one layer</span></a></li><li><a href="../../../tracks/papers/mech-interp-finding-circuits/"><span class="dot" data-key="papers/mech-interp-finding-circuits" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 6: Finding circuits</span></a></li><li><a href="../../../tracks/papers/mech-interp-judging-claims/"><span class="dot" data-key="papers/mech-interp-judging-claims" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 7: Judging a claim</span></a></li><li><a href="../../../tracks/papers/mech-interp-reading-the-mind/"><span class="dot" data-key="papers/mech-interp-reading-the-mind" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 8: Reading the mind</span></a></li><li><a href="../../../tracks/papers/mech-interp-compare-locate-steer/"><span class="dot" data-key="papers/mech-interp-compare-locate-steer" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 9: Compare, locate, steer</span></a></li><li><a href="../../../tracks/papers/mech-interp-watching-models-learn/"><span class="dot" data-key="papers/mech-interp-watching-models-learn" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 10: Watching models learn</span></a></li><li><a href="../../../tracks/papers/mech-interp-six-schools/"><span class="dot" data-key="papers/mech-interp-six-schools" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 11: Six schools</span></a></li><li><a href="../../../tracks/papers/mech-interp-safety/"><span class="dot" data-key="papers/mech-interp-safety" role="img" aria-label="Not started"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 6.2 5.1 8.3 9 4" fill="none" stroke="#fff" stroke-width="1.7"/></svg></span><span>Mechanistic Interpretability 12: Safety</span></a></li></ol></details></details>
+</aside>
+<article class="lesson">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/">Papers Explained</a><span aria-hidden="true">/</span><a href="../../../tracks/papers/#module-9">AI interpretability</a><span aria-hidden="true">/</span><b aria-current="page">Mechanistic Interpretability 4: Sparse autoencoders</b></nav>
+  <div class="lesson-meta"><span class="chip type-paper">Paper</span><span class="mins">35 min</span><span class="before">Before this:</span><a class="chip chip-link t-papers" href="../../../tracks/papers/mech-interp-four-bets/">Mechanistic Interpretability 3: The four bets</a></div>
+  <h1 class="h1-lesson">Mechanistic Interpretability 4: Sparse autoencoders</h1>
+  <p class="lead">How do you pull many features out of a few neurons?</p>
+  <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-gist" aria-controls="panel-gist" data-tab="gist" aria-selected="true">Gist</button><button type="button" role="tab" id="tab-method" aria-controls="panel-method" data-tab="method" aria-selected="false">Method</button><button type="button" role="tab" id="tab-results" aria-controls="panel-results" data-tab="results" aria-selected="false">Results</button><button type="button" role="tab" id="tab-why" aria-controls="panel-why" data-tab="why" aria-selected="false">Why it matters</button></div><div class="lx"><div class="tab-panel" id="panel-gist" role="tabpanel" aria-labelledby="tab-gist" tabindex="-1"><section class="panel block paper-card" id="paper"><h2 class="eyebrow">The paper</h2><p class="paper-meta">Barez et al. · <i>Understanding AI from the Inside: The State of Mechanistic Interpretability for AI Safety</i> · arXiv <a href="https://arxiv.org/abs/2611.08438" target="_blank" rel="noopener">2611.08438</a> · 2026 · survey §6.1–6.5, 6.9 · episodes: 4.1 The sparse autoencoder: un-mixing superposition, 4.2 SAE variants: fixing shrinkage, 4.3 How SAEs fail, 4.4 Alternatives to SAEs, and when to use them · checked 11 Nov 2026</p><div class="paper-tldr">A <span class="k">sparse autoencoder</span> (SAE) un-mixes superposition by learning a wide dictionary of directions and rebuilding each activation from a few of them. Variants (Gated, JumpReLU, Top-k) fix shrinkage. SAEs also fail in known ways: dead and duplicate latents, absorption and seed dependence. When you already know the concept, supervised directions often beat them.</div><div class="legend"><span><i style="background:var(--b)"></i>true features (hidden)</span><span><i style="background:var(--a)"></i>learned SAE directions</span><span><i style="background:var(--st)"></i>neurons / axes</span><span><i style="background:var(--ok)"></i>recovered</span><span><i style="background:var(--bad)"></i>dead or missed</span></div></section><div class="sec" id="problem-sec"><h2 class="sec-title">The problem</h2><section class="ch" id="s1-c1" data-toc="4.1 · The problem">
+  <p class="small" style="margin:0 0 4px;letter-spacing:.04em;text-transform:uppercase">Episode 4.1 · The sparse autoencoder: un-mixing superposition</p><h3>Neurons are mixed; we want the features back</h3>
+  <p>Superposition stores more features than neurons as overlapping directions (Ep 3.2), so reading neurons gives polysemantic mush. If the activation <i>h</i> is really a sparse sum of feature directions, <i>h ≈ Σ α<sub>i</sub> φ<sub>i</sub></i>, then the job is to find the φ<sub>i</sub> and, for each input, the few α<sub>i</sub> that are on <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span>.</p>
+  <p>That job has a name and a long history: <span class="k">sparse dictionary learning</span>. Neuroscientists in the 1990s decomposed natural images into sparse basis signals and found they resembled receptive fields in the visual cortex; signal processing learned overcomplete dictionaries for compression <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span>. The SAE is the version that scales to language models.</p>
+</section></div><section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">A sparse autoencoder is like un-mixing a smoothie. It learns a long list of possible ingredients and explains each sip with only a few of them. If you push too hard for few ingredients, it under-measures the ones that are really there.</p><div class="picture"><ol style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px"><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-why-look-inside/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">01</span> Why look inside?</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-building-blocks/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">02</span> Building blocks</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-four-bets/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">03</span> The four bets</a></li><li style="border:1px solid var(--a);background:color-mix(in srgb,var(--a) 14%,transparent);color:var(--ink);font-weight:600;border-radius:8px;padding:6px 10px;font-size:13px"><span class="mono" style="opacity:.7">04</span> Sparse autoencoders</li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-beyond-one-layer/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">05</span> Beyond one layer</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-finding-circuits/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">06</span> Finding circuits</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-judging-claims/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">07</span> Judging a claim</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-reading-the-mind/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">08</span> Reading the mind</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-compare-locate-steer/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">09</span> Compare, locate, steer</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-watching-models-learn/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">10</span> Watching models learn</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-six-schools/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">11</span> Six schools</a></li><li style="border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:6px 10px;font-size:13px"><a href="../mech-interp-safety/" style="color:inherit;text-decoration:none"><span class="mono" style="opacity:.7">12</span> Safety</a></li></ol><p class="small" style="margin-top:10px">One survey, twelve parts. Each part covers one chapter of the survey and builds on the parts before it.</p></div></section><button type="button" class="btn btn-track panel-next" data-tab-go="method">Next: Method</button></div><div class="tab-panel" id="panel-method" role="tabpanel" aria-labelledby="tab-method" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Method</h2><section class="ch" id="s1-c2" data-toc="4.1 · The sparse coding problem">
+  <h3>Find a dictionary and sparse codes</h3>
+  <div class="reader" data-reader='[
+    {"t":"h","c":"st","label":"the activation","say":"h, one activation vector from the model, e.g. the residual stream at one token."},
+    {"t":"D","c":"a","label":"the dictionary","say":"D, a matrix whose columns are candidate feature directions. It has many more columns than h has dimensions: overcomplete."},
+    {"t":"z","c":"a","label":"the codes","say":"z, how much of each dictionary direction this input uses."},
+    {"t":"l0","c":"ok","label":"few active","say":"‖z‖₀ counts the non-zero codes. We want it small: each input should use only a handful of directions."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-h}{h} \approx \class{term t-D}{D}\,\class{term t-z}{z} \quad\text{and}\quad \class{term t-l0}{\lVert z\rVert_0}\ \text{is small}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Survey Eq. 2 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span>.</p>
+  </div>
+  <p>Classical methods solve for <i>z</i> separately for every input, which is far too slow for billions of tokens. An SAE instead trains an <b>encoder</b> to predict <i>z</i> in one pass <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span>.</p>
+</section><section class="ch" id="s1-c3" data-toc="4.1 · The SAE">
+  <span class="pill a">encode wide, decode back</span>
+  <h3>Encoder, decoder, and a loss with two parts</h3>
+  <div class="reader" data-reader='[
+    {"t":"L","c":"info","label":"the loss","say":"What training minimises, averaged over many activations from the model."},
+    {"t":"rec","c":"st","label":"rebuild it","say":"Reconstruction error: how far the SAE’s output D(z) is from the real activation hₗ."},
+    {"t":"lam","c":"info","label":"how much sparsity","say":"λ sets how hard the SAE is pushed to use few features. Too small: mixed, dense codes. Too large: it starts dropping or shrinking real features."},
+    {"t":"l1","c":"ok","label":"sparsity penalty","say":"‖z‖₁, the sum of code sizes. A stand-in for counting active features, because the count (L0) has no useful gradient."},
+    {"t":"enc","c":"a","label":"the encoder","say":"z = E(hₗ) = ReLU(W_in hₗ + b_in): a wide layer, usually e× the model width (e is the expansion factor)."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-L}{\mathcal{L}_{\text{SAE}}} = \mathbb{E}_{h_\ell}\Big[\class{term t-rec}{\lVert h_\ell - D(z)\rVert_2^2} + \class{term t-lam}{\lambda}\,\class{term t-l1}{\lVert z\rVert_1}\Big],\quad \class{term t-enc}{z = E(h_\ell)}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">Survey §6.2 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span> · hover any symbol.</p>
+  </div>
+  <p>Two design details matter. <b>L1, not L0:</b> the count of active features has zero gradient almost everywhere, so training uses the sum of sizes instead. <b>Unit-norm decoder columns:</b> otherwise the SAE could cheat the L1 penalty by making codes tiny and decoder columns huge, which leaves the output unchanged but lowers the penalty without making anything sparser <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=32">p. 32</a></span>.</p>
+</section><section class="ch" id="s1-c4" data-toc="4.1 · Train one">
+  <span class="pill ok">live training</span>
+  <h3>Recover the five hidden features from two neurons</h3>
+  <p>The data comes from the model in Ep 3.2: five features (cat, code, French, math, sports) packed into two neurons as a pentagon, each active about 8% of the time. The SAE sees only the two-neuron activations. Choose the dictionary size and the sparsity strength λ; it retrains (about 5,000 Adam steps) and shows what it learned.</p>
+  <div class="card lab" id="s1-lab">
+    <div class="labgrid">
+      <div class="stage plotbox"><svg id="s1-plot" viewBox="-130 -130 260 260" role="img" aria-label="True feature directions and the SAE's learned dictionary directions"></svg></div>
+      <div class="lab" style="align-content:start">
+        <label for="s1-m">Dictionary size m <input id="s1-m" type="range" min="2" max="12" step="1" value="8"><output></output></label>
+        <label for="s1-lam">Sparsity λ <input id="s1-lam" type="range" min="0" max="0.6" step="0.05" value="0.3"><output></output></label>
+        <div class="stats" aria-live="polite" id="s1-out">training…</div>
+      </div>
+    </div>
+    <noscript><p class="small">With m = 8 and λ = 0.3, the SAE recovers all 5 true directions (cosine above 0.95), with almost no dead latents and about 7% of variance unexplained. With λ = 0.05 it reconstructs almost perfectly but recovers only about 3; with m below 5 it cannot recover all five.</p></noscript>
+    <p class="small">Real training, fixed seed, computed in your browser. Dashed amber: the 5 true directions. Teal: learned decoder directions (red if dead, i.e. never active on 2,000 test inputs). “Recovered” = a live latent with cosine above 0.95 to a true direction.</p>
+  </div>
+  <div class="card ok"><h4>What to notice</h4><p>Reconstruction alone doesn’t pick out the true features: with λ near 0, almost any set of directions rebuilds a 2D vector, so error is tiny but the directions are arbitrary. Sparsity is what forces the SAE onto the real features. Too much sparsity, though, and error rises: the codes get shrunk (Ep 4.2).</p></div>
+</section><section class="ch" id="s1-c5" data-toc="4.1 · From vectors to meaning">
+  <h3>A latent is only a vector until someone labels it</h3>
+  <p>An SAE outputs directions, not meanings. To label a latent, you look at the inputs that activate it most and ask what they share; automated pipelines do this with a language model, at the scale of millions of latents <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=33">p. 33</a></span>. In practice SAE latents fire on recurring patterns in text: semantic, functional or lexical <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=33">p. 33</a></span>.</p>
+  <p>Scale: the first large demonstration decomposed a 512-neuron MLP layer into tens of thousands of features, with raters finding them more interpretable than neurons <span class="src"><a href="https://transformer-circuits.pub/2023/monosemantic-features/">Bricken et al. 2023</a></span>. OpenAI later trained a 16-million-latent Top-k SAE on GPT-4 activations <span class="src"><a href="https://arxiv.org/abs/2406.04093">Gao et al. 2025</a></span>.</p>
+  <div class="card"><h4>How SAEs are judged (survey)</h4><ul><li><b>Reconstruction:</b> how well it rebuilds activations.</li><li><b>Loss recovered:</b> swap the reconstruction into the model, and how much of the model’s performance survives?</li><li><b>Absorption:</b> how often a general feature fails to fire because a specific one stole its direction (Ep 4.3).</li></ul><p class="small"><span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=33">p. 33–34</a></span></p></div>
+</section><section class="ch" id="s2-c1" data-toc="4.2 · Shrinkage">
+  <span class="pill bad">shrinkage</span>
+  <p class="small" style="margin:0 0 4px;letter-spacing:.04em;text-transform:uppercase">Episode 4.2 · SAE variants: fixing shrinkage</p><h3>The penalty taxes every active feature</h3>
+  <p>L1 charges a cost proportional to how large each code is. So the cheapest solution under-reports strengths: a feature that is clearly present comes out weaker than it really is <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=34">p. 34</a></span>. Gao et al. name this directly: L1 is an imperfect approximation of L0 and “introduces a bias of shrinking all positive activations toward zero” <span class="src"><a href="https://arxiv.org/pdf/2406.04093#page=3">Gao et al. §2.3</a></span>.</p>
+
+  <h4>Try it: measure shrinkage</h4>
+  <p>Same five-feature data as Ep 4.1. Train an L1 SAE at different λ, or a Top-k SAE, then show it one feature at a known strength and measure how much of that strength it rebuilds.</p>
+  <div class="card lab" id="s2-lab">
+    <div class="seg" id="s2-variant" role="group" aria-label="SAE variant"></div>
+    <label for="s2-lam">L1 strength λ (L1 SAE only) <input id="s2-lam" type="range" min="0.05" max="0.6" step="0.05" value="0.3"><output></output></label>
+    <div class="stage plotbox wide"><svg id="s2-bars" viewBox="0 0 560 170" role="img" aria-label="True strength versus rebuilt strength"></svg></div>
+    <div class="stats" aria-live="polite" id="s2-out">training…</div>
+    <noscript><p class="small">An L1 SAE with λ = 0.3 rebuilds about 73% of a feature’s true strength (λ = 0.6: about 55%). A Top-k SAE (k = 1) rebuilds about 100%.</p></noscript>
+    <p class="small">Real training in your browser (m = 8, fixed seed). Strength measured on single-feature inputs at 0.6, 0.8 and 1.0.</p>
+  </div>
+</section><section class="ch" id="s2-c2" data-toc="4.2 · The variants">
+  <h3>Separate “on or off” from “how much”</h3>
+  <table class="t"><thead><tr><th>Variant</th><th>How a code turns on</th><th>Fixes shrinkage?</th><th>Must tune</th></tr></thead><tbody>
+    <tr><td><b>L1 (standard)</b></td><td>ReLU of the encoder output; L1 penalty</td><td>no</td><td>λ</td></tr>
+    <tr><td><b>Gated</b></td><td>a separate gate path decides on/off; another path sets magnitude</td><td>yes</td><td>λ</td></tr>
+    <tr><td><b>JumpReLU</b></td><td>each latent has its own learned threshold τ<sub>i</sub>: below it, 0; above it, the full value</td><td>yes</td><td>λ, threshold init, estimator bandwidth</td></tr>
+    <tr><td><b>Top-k</b></td><td>keep the k largest codes, zero the rest; no penalty</td><td>yes</td><td>k</td></tr>
+    <tr><td><b>Batch Top-k</b></td><td>keep the largest B·k codes across a batch, so busy inputs get more and quiet ones fewer</td><td>yes</td><td>k</td></tr>
+  </tbody></table>
+  <p class="small">Survey §6.3 and its trade-off table <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=35">pp. 34–35</a></span>. JumpReLU and Top-k are not differentiable everywhere; JumpReLU trains with straight-through estimators.</p>
+  <div class="reader" data-reader='[
+    {"t":"z","c":"a","label":"latent i’s value","say":"What latent i reports for this input."},
+    {"t":"a","c":"info","label":"pre-activation","say":"aᵢ, the encoder’s raw score for latent i: (W_in h + b_in)ᵢ."},
+    {"t":"tau","c":"b","label":"its own threshold","say":"τᵢ, learned per latent. Below it the latent is off; above it, the full value passes through, so nothing is shrunk."}
+  ]'>
+    <div class="stage"><div class="eq" data-tex="\class{term t-z}{z_i} = \begin{cases}\class{term t-a}{a_i} & \text{if } \class{term t-a}{a_i} > \class{term t-tau}{\tau_i}\\ 0 & \text{otherwise}\end{cases}"></div></div>
+    <ol class="say"></ol>
+    <p class="small">JumpReLU, survey §6.3 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=34">p. 34</a></span>.</p>
+  </div>
+</section><section class="ch" id="s4-c1" data-toc="4.4 · PCA vs SAE">
+  <p class="small" style="margin:0 0 4px;letter-spacing:.04em;text-transform:uppercase">Episode 4.4 · Alternatives to SAEs, and when to use them</p><h3>PCA finds orthogonal directions of high variance, and superposition isn’t that</h3>
+  <p>PCA finds an orthonormal basis ordered by explained variance. It is fast and stable, but its assumptions clash with superposition: it can only return as many directions as there are dimensions, they must be perpendicular, and variance is not the same as meaning <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=49">p. 49</a></span>.</p>
+  <div class="card lab" id="s4-lab">
+    <div class="stage plotbox wide"><svg id="s4-plot" viewBox="-130 -130 260 260" role="img" aria-label="PCA components versus SAE directions versus the true five features"></svg></div>
+    <div class="seg" id="s4-show" role="group" aria-label="Show"></div>
+    <div class="stats" aria-live="polite" id="s4-out">computing…</div>
+    <noscript><p class="small">On the 5-features-in-2-neurons data, PCA returns 2 perpendicular directions and matches at most a couple of true features; the SAE (m = 8, λ = 0.3) recovers all 5.</p></noscript>
+    <p class="small">Same data as Ep 4.1. PCA via the 2×2 covariance matrix; a PCA direction counts as matching a feature at |cosine| above 0.95. Computed in your browser.</p>
+  </div>
+  <p>That matches large-scale results: on the AxBench benchmark, PCA came last among representation methods for detecting concepts (mean AUROC 0.65) <span class="src"><a href="https://arxiv.org/pdf/2501.17148#page=7">Wu et al. Table 1</a></span>. The survey notes PCA can still beat SAEs in some localisation settings <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=49">p. 49</a></span>.</p>
+</section><section class="ch" id="s4-c2" data-toc="4.4 · The alternatives"><h3>4.4 · The alternatives</h3>
+  <div class="scroll"><table class="t"><thead><tr><th>Method</th><th>Assumes</th><th>Good at</th><th>Weak at</th></tr></thead><tbody>
+    <tr><td><b>SAE</b></td><td>sparse, linear features</td><td>open-ended discovery; fast inference</td><td>hyperparameters; identifiability</td></tr>
+    <tr><td><b>NMF / semi-NMF</b></td><td>non-negative, additive parts</td><td>parts-based reading; uniqueness guarantees</td><td>activations can be negative; little sparsity</td></tr>
+    <tr><td><b>PCA</b></td><td>variance = features</td><td>closed form; a baseline</td><td>orthogonal, at most d directions</td></tr>
+    <tr><td><b>ICA</b></td><td>independent sources, as many as dimensions</td><td>guarantees when assumptions hold</td><td>overcomplete case; dependent features</td></tr>
+    <tr><td><b>Supervised (probe, DAS, SMDS)</b></td><td>labelled concepts</td><td>targeted concepts</td><td>needs labels; discovers nothing new</td></tr>
+    <tr><td><b>K-SVD</b></td><td>sparse, linear features</td><td>solves sparse coding directly; a baseline</td><td>slow; no encoder</td></tr>
+  </tbody></table></div>
+  <p class="small">Survey Table 6 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=48">p. 48</a></span>. Recent updates: semi-NMF matched SAEs on small-scale evaluations; ICA reached SAE-level performance once implemented for this scale (Liu &amp; Han 2026), so whether ICA is just a baseline is now open <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=49">p. 49</a></span>. Classical dictionary learning can still produce better dictionaries; the SAE’s main advantage is speed <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=50">p. 50</a></span>.</p>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="results">Next: Results</button></div><div class="tab-panel" id="panel-results" role="tabpanel" aria-labelledby="tab-results" tabindex="-1"><div class="sec" id="found"><h2 class="sec-title">What they found</h2><section class="ch" id="s2-c3" data-toc="4.2 · Which to use">
+  <h3>A rule of thumb, not a ranking</h3>
+  <ul>
+    <li><b>Tight compute, fast iteration:</b> Top-k. It removes λ from the search; reported k is commonly 32–150 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=36">p. 36–37</a></span>.</li>
+    <li><b>Moderate tuning budget:</b> Gated, a better sparsity-vs-reconstruction trade-off than plain L1 <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=37">p. 37</a></span>.</li>
+    <li><b>Lots of tuning:</b> JumpReLU gave the strongest reconstruction at matched sparsity <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=37">p. 37</a></span>.</li>
+    <li><b>Open resources:</b> Gemma Scope (Gemma 2) and Gemma Scope 2 (Gemma 3) use JumpReLU; Llama Scope (Llama-3.1-8B) uses Top-k <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=37">p. 37</a></span>. Many can be browsed on Neuronpedia.</li>
+  </ul>
+  <div class="card bad"><h4>The catch</h4><p>Better scores on the sparsity-vs-reconstruction trade-off “do not reliably translate into better downstream performance”. Benchmarks such as SAEBench rank variants differently depending on the metric, and seed-to-seed variation can be larger than the gap between variants <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=37">pp. 37–39, Table 5</a></span>.</p></div>
+  <p class="small">Placement guidance from the survey’s Table 3: residual stream mid-layers are the most studied regime (expansion 4–8×); MLP outputs call for transcoders (Ch 5); attention outputs are the least studied <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=36">p. 36</a></span>.</p>
+</section><section class="ch" id="s4-c3" data-toc="4.4 · When supervision wins">
+  <span class="pill b">supervised beats unsupervised</span>
+  <h3>A difference of means can beat a 16k-latent SAE</h3>
+  <p>AxBench compared methods on 500 concepts in Gemma-2 models <span class="src"><a href="https://arxiv.org/abs/2501.17148">Wu et al. 2025</a></span>:</p>
+  <div class="card"><h4>Concept detection, mean AUROC (higher is better)</h4>
+    <div class="bars" data-max="1">
+      <div class="bar"><span>difference of means</span><div class="track"><div class="fill" style="--v:0.942;background:var(--b)"></div></div><span class="v">0.942</span></div>
+      <div class="bar"><span>linear probe</span><div class="track"><div class="fill" style="--v:0.940;background:var(--b)"></div></div><span class="v">0.940</span></div>
+      <div class="bar"><span>prompting an LLM judge</span><div class="track"><div class="fill" style="--v:0.929;background:var(--dim)"></div></div><span class="v">0.929</span></div>
+      <div class="bar"><span>SAE (feature chosen with labels)</span><div class="track"><div class="fill" style="--v:0.917;background:var(--a)"></div></div><span class="v">0.917</span></div>
+      <div class="bar"><span>SAE (feature by its label)</span><div class="track"><div class="fill" style="--v:0.695;background:var(--a)"></div></div><span class="v">0.695</span></div>
+      <div class="bar"><span>PCA</span><div class="track"><div class="fill" style="--v:0.652;background:var(--st)"></div></div><span class="v">0.652</span></div>
+    </div>
+    <p class="small">Average over Gemma-2-2B and 9B, two layers each <span class="src"><a href="https://arxiv.org/pdf/2501.17148#page=7">Table 1</a></span>. For <em>steering</em>, prompting beat every representation method, and difference of means beat SAEs <span class="src"><a href="https://arxiv.org/pdf/2501.17148#page=8">Table 2</a></span>.</p></div>
+  <p>The survey draws the same line: when labelled data exists, supervised directions often outperform SAEs at detection and steering, and they don’t need a dictionary size or sparsity penalty. But they need labels for every concept and cannot find anything you didn’t already name <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=50">p. 50</a></span>.</p>
+</section></div><div class="sec" id="limits"><h2 class="sec-title">Where it falls short</h2><section class="ch" id="s3-c1" data-toc="4.3 · Dead and duplicate">
+  <span class="pill bad">dead · duplicated</span>
+  <p class="small" style="margin:0 0 4px;letter-spacing:.04em;text-transform:uppercase">Episode 4.3 · How SAEs fail</p><h3>Latents that never fire, and features learned twice</h3>
+  <p><span class="k">Dead features</span> never (or almost never) activate. In a poorly tuned SAE they can be 10–50% of the dictionary. Causes: bad initialisation, a sparsity penalty that is too strong too early, or common patterns being claimed first so the rest find no role. Fixes include resampling dead latents and warming up λ <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=37">p. 37</a></span>. At scale, Gao et al. saw up to 90% dead latents without mitigations; with an encoder initialised as the decoder transpose and an auxiliary loss, their 16M-latent SAE had only 7% dead <span class="src"><a href="https://arxiv.org/pdf/2406.04093#page=3">Gao et al. §2.4</a></span>.</p>
+  <p><span class="k">Duplication</span>: several latents encode the same concept. You can spot it by high cosine similarity between decoder columns, plus latents that fire together <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=38">p. 37–38</a></span>.</p>
+
+  <h4>Try it: too big a dictionary, and a different seed</h4>
+  <p>The same 5-feature data again. Make the dictionary bigger than needed and train two SAEs that differ only in the random seed. Dead latents, duplicates and seed-dependence all show up.</p>
+  <div class="card lab" id="s3-lab">
+    <div class="stage plotbox wide"><svg id="s3-plot" viewBox="-130 -130 260 260" role="img" aria-label="Two SAE runs with different seeds overlaid on the true features"></svg></div>
+    <label for="s3-m">Dictionary size m <input id="s3-m" type="range" min="5" max="16" step="1" value="12"><output></output></label>
+    <label for="s3-seed">Seed of run B <input id="s3-seed" type="range" min="2" max="9" step="1" value="2"><output></output></label>
+    <div class="stats" aria-live="polite" id="s3-out">training…</div>
+    <noscript><p class="small">With 12 latents for 5 true features, both runs recover all 5, but a few latents are dead and the leftover live latents are near-duplicates that land in different places in each run, so only part of each dictionary is shared across seeds.</p></noscript>
+    <p class="small">Real training (λ = 0.3, run A seed 1). “Shared” = live latents of run A with a live latent in run B at cosine above 0.95. Dashed amber: true features.</p>
+  </div>
+</section><section class="ch" id="s3-c2" data-toc="4.3 · Absorption and splitting">
+  <span class="pill bad">absorption</span>
+  <h3>When a specific feature steals a general one’s job</h3>
+  <div data-scene>
+    <div class="stage scroll">
+      <svg viewBox="0 0 760 270" role="img" aria-label="Feature absorption: the starts-with-S latent fails to fire on short because the short latent absorbed its direction">
+        <g data-show="1" style="font-size:14px"><rect x="30" y="40" width="110" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text x="85" y="66" text-anchor="middle">snake</text><rect x="30" y="100" width="110" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text x="85" y="126" text-anchor="middle">soccer</text><rect x="30" y="160" width="110" height="40" rx="8" fill="var(--card)" stroke="var(--bad)"/><text x="85" y="186" text-anchor="middle">short</text></g>
+        <g data-show="1"><rect x="300" y="70" width="190" height="50" rx="10" fill="var(--card)" stroke="var(--a)"/><text x="395" y="100" text-anchor="middle" style="fill:var(--a);font-weight:600">“starts with S”</text><path d="M142 60 C 220 60 240 90 298 92" fill="none" stroke="var(--a)" stroke-width="2.5"/><path d="M142 120 C 220 120 240 100 298 98" fill="none" stroke="var(--a)" stroke-width="2.5"/></g>
+        <g data-show="2" data-hl="2" style="color:var(--bad)"><path d="M142 180 C 220 180 240 110 298 104" fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="6 5"/><text x="210" y="160" style="fill:var(--bad);font-size:13px">✗ doesn’t fire</text></g>
+        <g data-show="3" data-hl="3" style="color:var(--b)"><rect x="300" y="170" width="190" height="50" rx="10" fill="var(--card)" stroke="var(--b)"/><text x="395" y="192" text-anchor="middle" style="fill:var(--b);font-weight:600">“short” latent</text><text x="395" y="210" text-anchor="middle" style="fill:var(--dim);font-size:12px">+ a bit of “starts with S”</text><path d="M142 180 H 298" fill="none" stroke="var(--b)" stroke-width="2.5"/></g>
+        <g data-show="4"><rect x="530" y="80" width="210" height="130" rx="12" fill="var(--card)" stroke="var(--line)"/><text x="545" y="108" style="font-weight:600">why</text><text x="545" y="134" style="fill:var(--dim);font-size:13px">“short” always implies</text><text x="545" y="154" style="fill:var(--dim);font-size:13px">“starts with S”: firing one</text><text x="545" y="174" style="fill:var(--dim);font-size:13px">latent instead of two is</text><text x="545" y="194" style="fill:var(--dim);font-size:13px">sparser, same reconstruction</text></g>
+      </svg>
+    </div>
+    <div class="hint">Swipe sideways to see the whole diagram.</div>
+    <ol class="say"><li>In Gemma Scope, a latent seems to track “starts with S”: it fires on snake, soccer, steam.</li><li>But it silently fails on “short”.</li><li>Instead, a token-specific “short” latent fires and carries a small piece of the “starts with S” direction. It has absorbed the general feature.</li><li>Why: “short” always comes with “starts with S”. Firing one latent instead of two is sparser and rebuilds the same thing, so the sparsity penalty rewards absorption.</li></ol>
+  </div>
+  <p class="small">Example and mechanism from Chanin et al. (NeurIPS 2025), <a href="https://arxiv.org/abs/2409.14507">arXiv 2409.14507</a>: absorption appeared in every LLM SAE they tested, and was worse for wider and sparser SAEs. The survey describes how to detect it: compare the latent with a linear probe for the same concept <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=39">p. 39</a></span>.</p>
+  <p><span class="k">Feature splitting</span> is the related, sometimes harmless case: as the dictionary grows, one feature splits into finer ones. Helpful when “bank” splits into “investment bank” and “river bank”; less useful when the result is just a lexical “the token bank” detector <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=39">p. 39</a></span>.</p>
+  <div class="card bad"><h4>Why absorption matters for safety</h4><p>A latent that looks like a clean “deception” or “bias” detector can have arbitrary holes in its recall. <span class="mine">my take</span> Never use a single SAE latent as a monitor without measuring its recall against a probe or labelled data.</p></div>
+</section><section class="ch" id="s3-c3" data-toc="4.3 · Seeds and identifiability">
+  <h3>Different seeds, different dictionaries</h3>
+  <p>SAEs with the same architecture and data but different random seeds can learn substantially different dictionaries. Frequent, clear features tend to be stable; rare or context-specific ones vary. Often <b>fewer than 50%</b> of features are shared across seeds. So report seed stability alongside reconstruction <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=39">p. 39</a></span> <span class="src"><a href="https://arxiv.org/abs/2501.16615">Paulo &amp; Belrose</a></span>.</p>
+  <p>The deeper issue is <span class="k">identifiability</span>. If activations really are <i>h = D*z* + ε</i>, does training recover the true D* (up to reordering and rescaling)? Classical theory says yes when dictionary elements are close to orthogonal (low coherence). In language models, high coherence is likely unavoidable, so several different sparse decompositions can fit equally well <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=40">p. 40</a></span>. One proposed fix is to fine-tune the model together with an SAE whose decoder is forced to be orthogonal, which imposes low coherence by construction <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=40">p. 40</a></span>.</p>
+  <div class="card"><h4>Three tests before trusting an SAE feature (survey)</h4><ul><li><b>Necessity:</b> ablate it; does the concept disappear from the output?</li><li><b>Sufficiency:</b> activate only it; does the concept appear?</li><li><b>Specificity:</b> does its effect match only its concept?</li></ul><p class="small"><span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=40">p. 40</a></span></p></div>
+</section></div><button type="button" class="btn btn-track panel-next" data-tab-go="why">Next: Why it matters</button></div><div class="tab-panel" id="panel-why" role="tabpanel" aria-labelledby="tab-why" tabindex="-1"><div class="sec" id="changed"><h2 class="sec-title">What it changed</h2><section class="ch"><p><b>What to remember.</b> SAEs are the field's main tool for open-ended feature discovery. Top-k and JumpReLU fix the L1 shrinkage problem, but dead latents, absorption and seed dependence mean an SAE feature is one useful approximation, not ground truth. Test features causally, and use supervised directions when you already know the concept.</p></section><section class="ch" id="s1-c6" data-toc="4.1 · Takeaways"><h3>4.1 · Takeaways</h3>
+  <ol>
+    <li>The SAE solves sparse dictionary learning: rebuild each activation from a few directions out of a large learned dictionary.</li>
+    <li>Loss = reconstruction + λ·L1. L1 stands in for counting active features; decoder columns are kept unit length.</li>
+    <li>Sparsity is what makes the learned directions the real ones; reconstruction alone doesn’t.</li>
+    <li>Latents still need labels, usually from automated pipelines that read top-activating examples.</li>
+  </ol>
+  <div class="card ok"><h4>Next · 4.2</h4><p>SAE variants: Gated, JumpReLU, Top-k, and the shrinkage problem they fix.</p></div>
+  <h4>Sources for this tab</h4>
+  <ul class="small"><li>Survey §6.1–6.2, <a href="https://arxiv.org/abs/2611.08438">arXiv 2611.08438</a>, pp. 32–34.</li><li>Bricken et al. (2023). <i>Towards Monosemanticity.</i> <a href="https://transformer-circuits.pub/2023/monosemantic-features/">transformer-circuits.pub</a>.</li><li>Cunningham et al. (2024). <i>Sparse Autoencoders Find Highly Interpretable Features in Language Models.</i> <a href="https://arxiv.org/abs/2309.08600">arXiv 2309.08600</a>.</li><li>Gao et al. (2025). <i>Scaling and Evaluating Sparse Autoencoders.</i> <a href="https://arxiv.org/abs/2406.04093">arXiv 2406.04093</a>.</li></ul>
+</section><section class="ch" id="s2-c4" data-toc="4.2 · Takeaways"><h3>4.2 · Takeaways</h3>
+  <ol>
+    <li>L1 shrinks every active code: features come out weaker than they are.</li>
+    <li>Gated, JumpReLU and Top-k decouple on/off from magnitude; Top-k drops the penalty and fixes the number of active latents.</li>
+    <li>Choice depends on goal, layer, model size and tuning budget, and benchmark wins don’t always carry over to real use.</li>
+  </ol>
+  <div class="card ok"><h4>Next · 4.3</h4><p>Failure modes: dead features, duplicates, absorption, and SAEs that change with the random seed.</p></div>
+  <h4>Sources for this tab</h4>
+  <ul class="small"><li>Survey §6.3–6.4, <a href="https://arxiv.org/abs/2611.08438">arXiv 2611.08438</a>, pp. 34–37.</li><li>Gao et al. (2025). <i>Scaling and Evaluating Sparse Autoencoders.</i> <a href="https://arxiv.org/abs/2406.04093">arXiv 2406.04093</a>.</li><li>Rajamanoharan et al. (2024). Gated SAEs and JumpReLU SAEs, as cited in the survey.</li></ul>
+</section><section class="ch" id="s3-c4" data-toc="4.3 · Recommendations"><h3>4.3 · Recommendations</h3>
+  <ol>
+    <li><b>Report failure metrics</b>: dead-feature percentage, duplication rate, stability across seeds, not just reconstruction.</li>
+    <li><b>Validate causally</b>: necessity, sufficiency, specificity via ablation or steering.</li>
+    <li><b>Compare with baselines</b>, especially for safety-critical use.</li>
+    <li><b>Try several variants</b>: findings that hold across Gated, Top-k and JumpReLU are stronger evidence.</li>
+    <li><b>Acknowledge identifiability limits</b>: call SAE features “one valid approximate decomposition”, not “the true features”.</li>
+    <li><b>For known concepts, consider supervised methods</b> (probes, DAS), which can be more reliable (Ep 4.4).</li>
+  </ol>
+  <p class="small"><span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=40">pp. 40–41</a></span></p>
+  <div class="card ok"><h4>Next · 4.4</h4><p>Alternatives to SAEs, and when a simple supervised direction beats them.</p></div>
+  <h4>Sources for this tab</h4>
+  <ul class="small"><li>Survey §6.5, <a href="https://arxiv.org/abs/2611.08438">arXiv 2611.08438</a>, pp. 37–41.</li><li>Chanin et al. (2025). <i>A is for Absorption.</i> NeurIPS 2025, <a href="https://arxiv.org/abs/2409.14507">arXiv 2409.14507</a>.</li><li>Gao et al. (2025). <a href="https://arxiv.org/abs/2406.04093">arXiv 2406.04093</a> (dead latents).</li><li>Paulo &amp; Belrose. <i>Sparse Autoencoders Trained on the Same Data Learn Different Features.</i> <a href="https://arxiv.org/abs/2501.16615">arXiv 2501.16615</a>.</li></ul>
+</section><section class="ch" id="s4-c4" data-toc="4.4 · How to choose"><h3>4.4 · How to choose</h3>
+  <div class="card ok"><h4>A simple rule</h4><ul><li><b>Know the concept?</b> Start with a probe or difference of means; validate by steering.</li><li><b>Exploring what’s in there?</b> SAE (or transcoder, Ch 5), then validate the interesting latents causally.</li><li><b>Need a quick baseline?</b> PCA or K-SVD, to check the SAE is adding something.</li></ul></div>
+  <ol>
+    <li>An SAE learns a wide sparse dictionary; sparsity is what makes it find real features (4.1).</li>
+    <li>L1 shrinks codes; Gated, JumpReLU and Top-k fix that (4.2).</li>
+    <li>Dead latents, duplicates, absorption and seed dependence are real; validate causally and report them (4.3).</li>
+    <li>Supervised directions beat SAEs on known concepts; SAEs are for discovery (4.4).</li>
+  </ol>
+  <div class="card ok"><h4>Next · Chapter 5</h4><p>Beyond one layer: transcoders, cross-layer transcoders, crosscoders, and models designed to be interpretable.</p></div>
+  <h4>Sources for this tab</h4>
+  <ul class="small"><li>Survey §6.9, <a href="https://arxiv.org/abs/2611.08438">arXiv 2611.08438</a>, pp. 48–50.</li><li>Wu et al. (2025). <i>AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse Autoencoders.</i> <a href="https://arxiv.org/abs/2501.17148">arXiv 2501.17148</a>.</li></ul>
+</section></div><p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><details class="more" id="reference"><summary>Key terms and sources</summary></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+  
+  <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/papers/mech-interp-four-bets/"><span class="pn-label">Previous</span>Mechanistic Interpretability 3: The four bets</a><a class="btn btn-track" rel="next" href="../../../tracks/papers/mech-interp-beyond-one-layer/"><span class="pn-label">Next</span>Mechanistic Interpretability 5: Beyond one layer</a></nav>
+</article>
+<div class="rail" id="sideRight"><button type="button" class="side-handle" data-side="right" aria-controls="sideRight" aria-expanded="true" aria-label="Collapse side panel" title="Collapse side panel" hidden></button><div class="side-resizer" data-side="right" role="separator" aria-orientation="vertical" aria-label="Drag to resize side panel" tabindex="0" hidden></div><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="gist"><a href="#paper">The paper</a></li><li data-panel="gist"><a href="#problem-sec">The problem</a></li><li data-panel="gist"><a href="#idea">The idea</a></li><li data-panel="method"><a href="#s1-c2">4.1 · The sparse coding problem</a></li><li data-panel="method"><a href="#s1-c3">4.1 · The SAE</a></li><li data-panel="method"><a href="#s1-c4">4.1 · Train one</a></li><li data-panel="method"><a href="#s1-c5">4.1 · From vectors to meaning</a></li><li data-panel="method"><a href="#s2-c1">4.2 · Shrinkage</a></li><li data-panel="method"><a href="#s2-c2">4.2 · The variants</a></li><li data-panel="method"><a href="#s4-c1">4.4 · PCA vs SAE</a></li><li data-panel="method"><a href="#s4-c2">4.4 · The alternatives</a></li><li data-panel="results"><a href="#found">What they found</a></li><li data-panel="results"><a href="#limits">Where it falls short</a></li><li data-panel="why"><a href="#changed">What it changed</a></li><li><a href="#reference">Key terms and sources</a></li></ul></nav><aside class="related" aria-label="Related"><p class="eyebrow">Related</p><ul><li><span class="mono-mini">Paper</span><a href="../../../tracks/papers/mech-interp-beyond-one-layer/">Mechanistic Interpretability 5: Beyond one layer</a></li></ul></aside></div>
+</main>
+<script>
+// ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
+(() => {
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  // reading progress + side contents
+  const prog = document.getElementById('prog'), toc = document.querySelector('nav.toc'), chs = $$('section.ch[data-toc]');
+  toc.innerHTML = chs.map(c => `<a href="#${c.id}">${c.dataset.toc}</a>`).join('');
+  const onScroll = () => {
+    const h = document.documentElement; prog.style.width = (100 * h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + '%';
+    let cur = chs[0]; for (const c of chs) if (c.getBoundingClientRect().top < 140) cur = c;
+    $$('a', toc).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur?.id));
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // generic stepper used by scenes and readers
+  function stepper(root, n, render) {
+    root.classList.add('js');
+    const ctl = document.createElement('div'); ctl.className = 'ctl';
+    ctl.innerHTML = `<button data-a="prev">← Back</button><button data-a="next">Next →</button><button data-a="play">▶ Play</button><span class="count"></span><span class="dots">${Array.from({ length: n }, (_, i) => `<button aria-label="step ${i + 1}"></button>`).join('')}</span>`;
+    root.appendChild(ctl);
+    let i = 0, timer = null;
+    const go = (k) => { i = Math.max(0, Math.min(n - 1, k)); render(i);
+      ctl.querySelector('[data-a=prev]').disabled = i === 0; ctl.querySelector('[data-a=next]').disabled = i === n - 1;
+      ctl.querySelector('.count').textContent = `${i + 1} / ${n}`; $$('.dots button', ctl).forEach((d, k) => d.classList.toggle('on', k === i)); };
+    const stop = () => { clearInterval(timer); timer = null; ctl.querySelector('[data-a=play]').textContent = '▶ Play'; };
+    ctl.addEventListener('click', (e) => { const a = e.target.dataset.a;
+      if (a === 'prev') { stop(); go(i - 1); } if (a === 'next') { stop(); go(i + 1); }
+      if (a === 'play') { if (timer) stop(); else { if (i === n - 1) go(0); timer = setInterval(() => (i < n - 1 ? go(i + 1) : stop()), 4200); e.target.textContent = '❚❚ Pause'; } }
+      const d = $$('.dots button', ctl).indexOf(e.target); if (d >= 0) { stop(); go(d); } });
+    root.tabIndex = 0; root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(i + 1); if (e.key === 'ArrowLeft') go(i - 1); });
+    go(0); return go;
+  }
+
+  // scenes
+  $$('[data-scene]').forEach(sc => {
+    const lines = $$('.say li', sc), n = Math.max(1, lines.length);
+    stepper(sc, n, (i) => { const s = i + 1;
+      $$('[data-show],[data-hide]', sc).forEach(el => el.classList.toggle('off', (el.dataset.show !== undefined && s < +el.dataset.show) || (el.dataset.hide !== undefined && s >= +el.dataset.hide)));
+      $$('[data-hl]', sc).forEach(el => el.classList.toggle('glow', el.dataset.hl.split(' ').map(Number).includes(s)));
+      lines.forEach((l, k) => l.classList.toggle('on', k === i)); });
+  });
+
+  // equation readers (need MathJax; the page still reads without it)
+  const tip = document.getElementById('tip');
+  function initReaders() {
+    try { document.head.appendChild(MathJax.svgStylesheet()); } catch (e) { console.error(e); } // hides MathJax's assistive MathML copy
+    $$('[data-tex]').forEach(el => { try { el.prepend(MathJax.tex2svg(el.dataset.tex, { display: true })); } catch (e) { console.error(e); } });
+    $$('.reader').forEach(rd => {
+      const steps = JSON.parse(rd.dataset.reader), eq = rd.querySelector('.eq'), say = rd.querySelector('.say');
+      say.innerHTML = steps.map(s => `<li><b style="color:var(--${s.c || 'a'})">${s.label}.</b> ${s.say}</li>`).join('');
+      const brace = document.createElement('div'); brace.className = 'brace'; brace.innerHTML = '<span></span>'; eq.appendChild(brace);
+      const lines = $$('li', say);
+      // hover tooltips on every term
+      steps.forEach(s => $$('.t-' + s.t, eq).forEach(t => {
+        t.addEventListener('mousemove', (e) => { tip.innerHTML = `<b>${s.label}</b><br>${s.say}`; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; });
+        t.addEventListener('mouseleave', () => (tip.style.opacity = 0));
+      }));
+      rd.setAttribute('data-scene', ''); // reuse scene styling for the narration list
+      stepper(rd, steps.length, (i) => {
+        const s = steps[i]; eq.classList.add('reading'); eq.style.setProperty('--tc', `var(--${s.c || 'a'})`);
+        $$('.term', eq).forEach(t => t.classList.toggle('on', t.classList.contains('t-' + s.t)));
+        const on = $$('.t-' + s.t, eq); lines.forEach((l, k) => l.classList.toggle('on', k === i));
+        if (!on.length) { brace.style.opacity = 0; return; }
+        const box = eq.getBoundingClientRect(), r = on.map(x => x.getBoundingClientRect());
+        const l = Math.min(...r.map(x => x.left)) - box.left, rr = Math.max(...r.map(x => x.right)) - box.left, b = Math.max(...r.map(x => x.bottom)) - box.top;
+        Object.assign(brace.style, { left: l + 'px', width: (rr - l) + 'px', top: (b + 6) + 'px', opacity: 1 });
+        brace.querySelector('span').textContent = s.label;
+      });
+    });
+  }
+  const waitMJ = () => window.MathJax?.startup?.promise ? MathJax.startup.promise.then(initReaders) : console.error('MathJax failed to load');
+  if (document.readyState === 'complete') waitMJ(); else addEventListener('load', waitMJ);
+
+  // bars: width from --v / data-max
+  $$('.bars').forEach(b => { const m = +b.dataset.max || 100; $$('.fill', b).forEach(f => (f.style.width = (100 * parseFloat(getComputedStyle(f).getPropertyValue('--v')) / m) + '%')); });
+
+  // figure walkthroughs: <figure class="fig" data-walk> + .step buttons with data-rect="[x,y,w,h]" (fractions)
+  $$('figure.fig[data-walk]').forEach(fg => { const hl = fg.querySelector('.hl'), st = $$('.step', fg), pn = $$('.step-panel', fg);
+    const go = (k) => { const r = JSON.parse(st[k].dataset.rect); hl.hidden = false; Object.assign(hl.style, { left: r[0] * 100 + '%', top: r[1] * 100 + '%', width: r[2] * 100 + '%', height: r[3] * 100 + '%' });
+      st.forEach((b, j) => b.classList.toggle('on', j === k)); pn.forEach((p, j) => (p.hidden = j !== k)); };
+    st.forEach((b, k) => b.addEventListener('click', () => go(k))); if (st.length) go(0); });
+})();
+
+document.querySelectorAll('.card.lab .stats, .card.lab [data-out]').forEach(el => { if (!el.closest('[aria-live]')) el.setAttribute('aria-live', 'polite'); });
+// ---------- page-specific widgets: superposition ----------
+const CSSV = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent?.appendChild(e); return e; };
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// seeded rng (mulberry32) + gaussian
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const gauss = (r) => { const u = Math.max(1e-12, r()), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+
+// the hero model: 5 features at fixed angles, unit length
+const FEATS = ['cat', 'code', 'French', 'math', 'sports'];
+const ANG = [18, 90, 162, 234, 306].map((a) => a * Math.PI / 180);
+const Wc = ANG.map((a) => [Math.cos(a), Math.sin(a)]);   // column i = direction of feature i
+const colOf = (i) => (i === 0 ? 'var(--a)' : 'var(--b)');
+function readout(x, b, r = 1) {
+  const h = [0, 0]; x.forEach((v, i) => { h[0] += r * Wc[i][0] * v; h[1] += r * Wc[i][1] * v; });
+  const pre = Wc.map((w) => r * (w[0] * h[0] + w[1] * h[1]));
+  return { h, pre, post: pre.map((p) => Math.max(0, p + b)) };
+}
+
+// ---- Lab A: pentagon playground ----
+(() => {
+  const lab = document.getElementById('labA'); if (!lab) return;
+  const plot = document.getElementById('pentPlot'), bars = document.getElementById('pentBars'), out = document.getElementById('aOut');
+  const btnWrap = document.getElementById('featBtns'), sStr = document.getElementById('aStr'), sBias = document.getElementById('aBias');
+  const active = [true, false, false, false, false];
+  FEATS.forEach((f, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'feat-' + f; b.textContent = f; b.setAttribute('aria-pressed', active[i]);
+    b.addEventListener('click', () => { active[i] = !active[i]; b.setAttribute('aria-pressed', active[i]); upd(); }); btnWrap.appendChild(b); });
+  const S = 100;
+  // static plot: axes + directions
+  svgEl('line', { x1: -125, y1: 0, x2: 125, y2: 0, stroke: 'var(--st)', 'stroke-width': 1.2, opacity: .6 }, plot);
+  svgEl('line', { x1: 0, y1: -125, x2: 0, y2: 125, stroke: 'var(--st)', 'stroke-width': 1.2, opacity: .6 }, plot);
+  const t1 = svgEl('text', { x: 122, y: -6, 'text-anchor': 'end', style: 'fill:var(--st);font-size:10px' }, plot); t1.textContent = 'neuron 1';
+  const t2 = svgEl('text', { x: 6, y: -116, style: 'fill:var(--st);font-size:10px' }, plot); t2.textContent = 'neuron 2';
+  const arrows = Wc.map((w, i) => { const g = svgEl('g', {}, plot);
+    svgEl('line', { x1: 0, y1: 0, x2: w[0] * S * .82, y2: -w[1] * S * .82, stroke: colOf(i), 'stroke-width': 3, 'stroke-linecap': 'round' }, g);
+    const tx = svgEl('text', { x: w[0] * S * 1.0, y: -w[1] * S * 1.0 + 4, 'text-anchor': 'middle', style: `fill:${colOf(i)};font-size:11px;font-weight:600` }, g); tx.textContent = FEATS[i]; return g; });
+  const hLine = svgEl('line', { x1: 0, y1: 0, stroke: 'var(--info)', 'stroke-width': 2, 'stroke-dasharray': '4 3' }, plot);
+  const hDot = svgEl('circle', { r: 6, fill: 'var(--info)' }, plot);
+  // bars
+  const BX = 40, BW = 40, BG = 12, Y0 = 170, YS = 120; // y=0 baseline at 170 for value 0, value 1 → 120px up; negatives down to 1.
+  svgEl('line', { x1: 30, y1: Y0, x2: 295, y2: Y0, stroke: 'var(--line)' }, bars);
+  const barEls = FEATS.map((f, i) => { const x = BX + i * (BW + BG);
+    const pre = svgEl('rect', { x, width: BW, fill: 'none', stroke: colOf(i), 'stroke-dasharray': '3 3', 'stroke-width': 1.5 }, bars);
+    const post = svgEl('rect', { x: x + 6, width: BW - 12, fill: colOf(i), rx: 3 }, bars);
+    const lb = svgEl('text', { x: x + BW / 2, y: 266, 'text-anchor': 'middle', style: 'fill:var(--dim);font-size:11px' }, bars); lb.textContent = f;
+    const val = svgEl('text', { x: x + BW / 2, 'text-anchor': 'middle', style: 'font-size:10px;font-family:var(--mono)' }, bars);
+    return { pre, post, val }; });
+  const thr = svgEl('line', { x1: 30, x2: 295, stroke: 'var(--info)', 'stroke-width': 2 }, bars);
+  const thrT = svgEl('text', { x: 293, 'text-anchor': 'end', style: 'fill:var(--info);font-size:10px' }, bars);
+  const key = svgEl('text', { x: 30, y: 14, style: 'fill:var(--dim);font-size:10px' }, bars); key.textContent = 'dashed: before ReLU · solid: after ReLU · line: −b';
+  const yOf = (v) => Y0 - Math.max(-0.9, Math.min(1.35, v)) * YS * 0.75;
+  function upd() {
+    const s = +sStr.value, b = +sBias.value; sStr.nextElementSibling.textContent = s.toFixed(2); sBias.nextElementSibling.textContent = (b >= 0 ? '+' : '') + b.toFixed(2);
+    const x = active.map((a) => (a ? s : 0)), R = readout(x, b);
+    hLine.setAttribute('x2', R.h[0] * S * .82); hLine.setAttribute('y2', -R.h[1] * S * .82); hDot.setAttribute('cx', R.h[0] * S * .82); hDot.setAttribute('cy', -R.h[1] * S * .82);
+    arrows.forEach((g, i) => g.setAttribute('opacity', active[i] ? 1 : .45));
+    barEls.forEach((B, i) => { const p = R.pre[i], q = R.post[i];
+      const y1 = yOf(p); B.pre.setAttribute('y', Math.min(y1, Y0)); B.pre.setAttribute('height', Math.max(1, Math.abs(y1 - Y0)));
+      const y2 = yOf(q); B.post.setAttribute('y', y2); B.post.setAttribute('height', Math.max(0, Y0 - y2));
+      const ghost = q > 0.001 && !active[i], lost = active[i] && q <= 0.001;
+      B.post.setAttribute('fill', ghost ? 'var(--bad)' : colOf(i));
+      B.val.setAttribute('y', Math.min(y1, y2, Y0) - 5); B.val.textContent = q.toFixed(2);
+      B.val.style.fill = ghost || lost ? 'var(--bad)' : 'var(--ink)'; });
+    const ty = yOf(-b); thr.setAttribute('y1', ty); thr.setAttribute('y2', ty); thrT.setAttribute('y', ty - 4); thrT.textContent = 'threshold ' + (-b).toFixed(2);
+    const ghosts = FEATS.filter((f, i) => !active[i] && R.post[i] > 0.001), lost = FEATS.filter((f, i) => active[i] && R.post[i] <= 0.001);
+    const act = FEATS.filter((f, i) => active[i]);
+    let verdict = act.length === 0 ? 'Nothing active: every readout should be 0.' :
+      (!ghosts.length && !lost.length ? `<b style="color:var(--ok)">Clean.</b> Exactly the active feature${act.length > 1 ? 's' : ''} come${act.length > 1 ? '' : 's'} out.` :
+        [ghosts.length ? `<b style="color:var(--bad)">Ghost:</b> ${ghosts.join(', ')} fire${ghosts.length > 1 ? '' : 's'} but ${ghosts.length > 1 ? 'were' : 'was'} never active.` : '',
+         lost.length ? `<b style="color:var(--bad)">Lost:</b> ${lost.join(', ')} ${lost.length > 1 ? 'are' : 'is'} active but read as 0.` : ''].filter(Boolean).join(' '));
+    out.innerHTML = `${verdict}<br><span class="small mono">before ReLU: ${FEATS.map((f, i) => f + ' ' + R.pre[i].toFixed(2)).join(' · ')}</span>`;
+    out.dataset.ghosts = ghosts.join(','); out.dataset.lost = lost.join(',');
+  }
+  [sStr, sBias].forEach((e) => e.addEventListener('input', upd)); upd();
+})();
+
+// ---- Lab B: strategy loss vs density ----
+function strategyLoss(p, seed = 7, N = 2000) {
+  const r = rng(seed), X = [];
+  for (let k = 0; k < N; k++) X.push(FEATS.map(() => (r() < p ? r() : 0)));
+  let best = Infinity, bestB = 0, bestR = 1;
+  for (let bi = -8; bi <= 3; bi++) for (const sc of [0.8, 1, 1.1]) {
+    const b = bi / 10; let L = 0;
+    for (const x of X) { const o = readout(x, b, sc).post; for (let i = 0; i < 5; i++) L += (x[i] - o[i]) ** 2; }
+    L /= N; if (L < best) { best = L; bestB = b; bestR = sc; }
+  }
+  const c = p / 2; let D = 0; for (const x of X) D += (x[0] - c) ** 2 + (x[2] - c) ** 2 + (x[4] - c) ** 2;
+  return { pent: best, ded: D / N, b: bestB, r: bestR };
+}
+(() => {
+  const lab = document.getElementById('labB'); if (!lab) return;
+  const svg = document.getElementById('phasePlot'), sl = document.getElementById('bP'), out = document.getElementById('bOut');
+  const PS = [0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+  const X0 = 60, X1 = 540, Y0 = 200, Y1 = 20, maxL = 0.6;
+  const xp = (p) => X0 + (X1 - X0) * p, yl = (l) => Y0 - (Y0 - Y1) * Math.min(1, l / maxL);
+  setTimeout(() => {
+    const pts = PS.map((p) => ({ p, ...strategyLoss(p) }));
+    svgEl('line', { x1: X0, y1: Y0, x2: X1, y2: Y0, stroke: 'var(--line)' }, svg); svgEl('line', { x1: X0, y1: Y0, x2: X0, y2: Y1, stroke: 'var(--line)' }, svg);
+    [0, 0.25, 0.5, 0.75, 1].forEach((p) => { const t = svgEl('text', { x: xp(p), y: Y0 + 16, 'text-anchor': 'middle', style: 'fill:var(--dim);font-size:11px' }, svg); t.textContent = p; });
+    [0, 0.2, 0.4, 0.6].forEach((l) => { const t = svgEl('text', { x: X0 - 8, y: yl(l) + 4, 'text-anchor': 'end', style: 'fill:var(--dim);font-size:11px' }, svg); t.textContent = l.toFixed(1); svgEl('line', { x1: X0, x2: X1, y1: yl(l), y2: yl(l), stroke: 'var(--line)', opacity: .5 }, svg); });
+    const ax = svgEl('text', { x: (X0 + X1) / 2, y: Y0 + 34, 'text-anchor': 'middle', style: 'fill:var(--dim);font-size:11px' }, svg); ax.textContent = 'p = how often each feature is active (dense →)';
+    const ay = svgEl('text', { x: 14, y: 110, 'text-anchor': 'middle', transform: 'rotate(-90 14 110)', style: 'fill:var(--dim);font-size:11px' }, svg); ay.textContent = 'avg error ↓';
+    const path = (k) => pts.map((q, i) => (i ? 'L' : 'M') + xp(q.p).toFixed(1) + ' ' + yl(q[k]).toFixed(1)).join(' ');
+    svgEl('path', { d: path('pent'), fill: 'none', stroke: 'var(--a)', 'stroke-width': 3 }, svg);
+    svgEl('path', { d: path('ded'), fill: 'none', stroke: 'var(--b)', 'stroke-width': 3 }, svg);
+    const l1 = svgEl('text', { x: X0 + 10, y: Y1 + 10, style: 'fill:var(--a);font-size:12px;font-weight:600' }, svg); l1.textContent = 'pentagon (superposition)';
+    const l2 = svgEl('text', { x: X0 + 10, y: Y1 + 28, style: 'fill:var(--b);font-size:12px;font-weight:600' }, svg); l2.textContent = 'dedicated (2 kept, 3 dropped)';
+    const mk = svgEl('line', { y1: Y1, y2: Y0, stroke: 'var(--info)', 'stroke-width': 2, 'stroke-dasharray': '4 4' }, svg);
+    const upd = () => { const p = +sl.value; sl.nextElementSibling.textContent = p.toFixed(2); mk.setAttribute('x1', xp(p)); mk.setAttribute('x2', xp(p));
+      const R = strategyLoss(p), win = R.pent < R.ded;
+      out.innerHTML = `pentagon error <b class="mono">${R.pent.toFixed(3)}</b> (best bias ${R.b >= 0 ? '+' : ''}${R.b.toFixed(1)}) · dedicated error <b class="mono">${R.ded.toFixed(3)}</b> → <b style="color:${win ? 'var(--a)' : 'var(--b)'}">${win ? 'superposition wins' : 'dedicated neurons win'}</b>`;
+      out.dataset.winner = win ? 'pent' : 'ded'; };
+    sl.addEventListener('input', upd); upd();
+  }, 30);
+})();
+
+// ---- Lab C: 3D geometry viewer ----
+(() => {
+  const cv = document.getElementById('geoCanvas'); if (!cv) return;
+  const ctx = cv.getContext('2d'), out = document.getElementById('cOut'), wrap = document.getElementById('geoBtns');
+  const s3 = Math.sqrt(3), h8 = 0.5;
+  const norm = (v) => { const l = Math.hypot(...v); return v.map((x) => x / l); };
+  const SHAPES = {
+    'antipodal pair': { pts: [[1, 0, 0], [-1, 0, 0]], m: 1, frac: '1/2' },
+    triangle: { pts: [0, 1, 2].map((k) => [Math.cos(k * 2 * Math.PI / 3), Math.sin(k * 2 * Math.PI / 3), 0]), m: 2, frac: '2/3' },
+    pentagon: { pts: ANG.map((a) => [Math.cos(a), Math.sin(a), 0]), m: 2, frac: '2/5' },
+    tetrahedron: { pts: [[1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]].map((v) => v.map((x) => x / s3)), m: 3, frac: '3/4' },
+    'square antiprism': { pts: [...[0, 1, 2, 3].map((k) => norm([Math.cos(k * Math.PI / 2), Math.sin(k * Math.PI / 2), h8])), ...[0, 1, 2, 3].map((k) => norm([Math.cos(k * Math.PI / 2 + Math.PI / 4), Math.sin(k * Math.PI / 2 + Math.PI / 4), -h8]))], m: 3, frac: '3/8' },
+  };
+  let cur = 'tetrahedron', yaw = 0.6, pitch = 0.45, drag = null;
+  Object.keys(SHAPES).forEach((k) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'geo-' + k.replace(/\s/g, '-'); b.textContent = k;
+    b.addEventListener('click', () => { cur = k; draw(); }); wrap.appendChild(b); });
+  const rot = (v) => { const [x, y, z] = v; const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const x1 = cy * x + sy * z, z1 = -sy * x + cy * z; const y2 = cp * y - sp * z1, z2 = sp * y + cp * z1; return [x1, y2, z2]; };
+  function draw() {
+    const W = cv.width, H = cv.height, R = Math.min(W, H) * 0.36, cx = W / 2, cy = H / 2;
+    ctx.clearRect(0, 0, W, H);
+    const P = (v) => { const [x, y, z] = rot(v), f = 1 / (1 + z * 0.18); return [cx + x * R * f, cy - y * R * f, z]; };
+    // axes
+    const sh = SHAPES[cur];
+    [[1, 0, 0], [0, 1, 0], [0, 0, 1]].forEach((a, i) => { if (i >= Math.max(sh.m, 2) && sh.m < 3) return; const A = P(a.map((x) => -x * 1.15)), B = P(a.map((x) => x * 1.15));
+      ctx.strokeStyle = CSSV('--st'); ctx.globalAlpha = 0.55; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.fillStyle = CSSV('--st'); ctx.font = '11px Inter, sans-serif'; ctx.fillText('n' + (i + 1), B[0] + 4, B[1]); });
+    // edges of the shape (faint), then vectors sorted back-to-front
+    const pts = sh.pts.map((v, i) => ({ v, i, p: P(v) })).sort((a, b) => a.p[2] - b.p[2]);
+    ctx.strokeStyle = CSSV('--faint'); ctx.lineWidth = 1; ctx.globalAlpha = .5;
+    sh.pts.forEach((a, i) => sh.pts.forEach((b, j) => { if (j <= i) return; const d = Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]); const dmin = Math.min(...sh.pts.filter((_, k) => k !== i).map((c) => Math.hypot(a[0] - c[0], a[1] - c[1], a[2] - c[2]))); if (d < dmin * 1.05) { const A = P(a), B = P(b); ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); } }));
+    ctx.globalAlpha = 1;
+    const O = P([0, 0, 0]);
+    pts.forEach(({ i, p }) => { const c = i === 0 ? CSSV('--a') : CSSV('--b'), a = 0.55 + 0.45 * (1 - (p[2] + 1) / 2);
+      ctx.globalAlpha = a; ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(O[0], O[1]); ctx.lineTo(p[0], p[1]); ctx.stroke();
+      ctx.fillStyle = c; ctx.beginPath(); ctx.arc(p[0], p[1], 6, 0, 7); ctx.fill(); ctx.globalAlpha = 1; });
+    [...wrap.children].forEach((b) => b.setAttribute('aria-pressed', b.textContent === cur));
+    const n = sh.pts.length;
+    out.innerHTML = `<b>${cur}</b>: ${n} features in ${sh.m} dimension${sh.m > 1 ? 's' : ''} → <b class="mono">${sh.frac}</b> of a dimension per feature <span class="small">(TMS p. 19)</span>`;
+  }
+  cv.addEventListener('pointerdown', (e) => { drag = [e.clientX, e.clientY, yaw, pitch]; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', (e) => { if (!drag) return; yaw = drag[2] + (e.clientX - drag[0]) * 0.01; pitch = Math.max(-1.4, Math.min(1.4, drag[3] + (e.clientY - drag[1]) * 0.01)); draw(); });
+  cv.addEventListener('pointerup', () => (drag = null));
+  cv.tabIndex = 0; cv.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') yaw -= .15; if (e.key === 'ArrowRight') yaw += .15; if (e.key === 'ArrowUp') pitch -= .15; if (e.key === 'ArrowDown') pitch += .15; draw(); });
+  if (!REDUCED) { let last = performance.now(); const spin = (t) => { if (!drag && document.visibilityState === 'visible') { yaw += (t - last) * 0.00025; draw(); } last = t; requestAnimationFrame(spin); }; requestAnimationFrame(spin); }
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  draw();
+})();
+
+// ---- Lab D: angles between random directions ----
+(() => {
+  const svg = document.getElementById('angPlot'); if (!svg) return;
+  const sl = document.getElementById('dDim'), out = document.getElementById('dOut');
+  const DS = [2, 3, 5, 10, 30, 100, 300, 1000], N = 120;
+  const X0 = 50, X1 = 540, Y0 = 190, Y1 = 20, BINS = 36;
+  svgEl('line', { x1: X0, y1: Y0, x2: X1, y2: Y0, stroke: 'var(--line)' }, svg);
+  [0, 45, 90, 135, 180].forEach((a) => { const t = svgEl('text', { x: X0 + (X1 - X0) * a / 180, y: Y0 + 16, 'text-anchor': 'middle', style: 'fill:var(--dim);font-size:11px' }, svg); t.textContent = a + '°'; });
+  const band = svgEl('rect', { x: X0 + (X1 - X0) * 85 / 180, y: Y1, width: (X1 - X0) * 10 / 180, height: Y0 - Y1, fill: 'var(--ok)', opacity: .12 }, svg);
+  const bt = svgEl('text', { x: X0 + (X1 - X0) * 95 / 180 + 4, y: Y1 + 12, style: 'fill:var(--ok);font-size:11px' }, svg); bt.textContent = '85–95°';
+  const ax = svgEl('text', { x: (X0 + X1) / 2, y: Y0 + 34, 'text-anchor': 'middle', style: 'fill:var(--dim);font-size:11px' }, svg); ax.textContent = 'angle between two random feature directions';
+  const rects = Array.from({ length: BINS }, (_, k) => svgEl('rect', { x: X0 + (X1 - X0) * k / BINS + 1, width: (X1 - X0) / BINS - 2, fill: 'var(--a)', rx: 2 }, svg));
+  const cache = {};
+  function stats(d) {
+    if (cache[d]) return cache[d];
+    const r = rng(1000 + d), V = [];
+    for (let k = 0; k < N; k++) { const v = Array.from({ length: d }, () => gauss(r)), l = Math.hypot(...v); V.push(v.map((x) => x / l)); }
+    const hist = new Array(BINS).fill(0); let near = 0, pairs = 0, maxc = 0;
+    for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) { let c = 0; for (let k = 0; k < d; k++) c += V[i][k] * V[j][k];
+      c = Math.max(-1, Math.min(1, c)); const a = Math.acos(c) * 180 / Math.PI; hist[Math.min(BINS - 1, Math.floor(a / 180 * BINS))]++; if (a >= 85 && a <= 95) near++; pairs++; maxc = Math.max(maxc, Math.abs(c)); }
+    return (cache[d] = { hist, near: near / pairs, pairs, maxc });
+  }
+  const upd = () => { const d = DS[+sl.value]; sl.nextElementSibling.textContent = d; const S = stats(d), mx = Math.max(...S.hist);
+    rects.forEach((rc, k) => { const h = (Y0 - Y1 - 22) * S.hist[k] / mx; rc.setAttribute('y', Y0 - h); rc.setAttribute('height', h); });
+    out.innerHTML = `d = <b class="mono">${d}</b>: <b class="mono">${(100 * S.near).toFixed(1)}%</b> of the ${S.pairs.toLocaleString()} pairs are within 85–95° · worst overlap |cos| = <b class="mono">${S.maxc.toFixed(2)}</b>`;
+    out.dataset.near = S.near.toFixed(4); };
+  sl.addEventListener('input', upd); upd();
+})();
+
+// ---- chapter 9 weight heatmap ----
+(() => {
+  const g = document.getElementById('wGrid'); if (!g) return;
+  for (let n = 0; n < 2; n++) for (let i = 0; i < 5; i++) { const v = Wc[i][n], x = 185 + i * 100, y = 55 + n * 80;
+    svgEl('rect', { x: x + 4, y: y + 4, width: 82, height: 54, rx: 8, fill: v >= 0 ? 'var(--a)' : 'var(--bad)', 'fill-opacity': (0.12 + 0.8 * Math.abs(v)).toFixed(2) }, g);
+    const t = svgEl('text', { x: x + 45, y: y + 37, 'text-anchor': 'middle', style: 'font-family:var(--mono);font-weight:600' }, g); t.textContent = (v >= 0 ? '+' : '') + v.toFixed(2); }
+})();
+
+
+// ---- Ch 1 · question → method picker (survey Table 2, §3.1–3.6) ----
+(() => {
+  const wrap = document.getElementById('wl-qs'), out = document.getElementById('wl-out'); if (!wrap) return;
+  const Q = [
+    { q: 'Does it refuse harmful requests?', fam: 'Behavioural evaluation', col: 'var(--b)', claim: 'What the model does on the inputs you tried.', limit: 'Says nothing about why, and can miss evaluation-aware behaviour.', p: 17 },
+    { q: 'Which input words drove this answer?', fam: 'Input attribution (SHAP, LIME, saliency)', col: 'var(--st)', claim: 'Which inputs mattered for one prediction.', limit: 'Not how the model used them; different methods can disagree.', p: 18 },
+    { q: 'Is “deception” encoded in layer 20?', fam: 'Probing / concept methods', col: 'var(--st)', claim: 'The information is decodable from the activations.', limit: 'Decodable ≠ used. Becomes mechanistic only if you intervene along the probe direction.', p: 19 },
+    { q: 'How does it compute this behaviour?', fam: 'Mechanistic analysis (features, circuits)', col: 'var(--a)', claim: 'A causal account of which internals produce the behaviour.', limit: 'Costly, often incomplete, and not the same as reliable control.', p: 19 },
+    { q: 'Is it hiding an intent from us?', fam: 'Mechanistic analysis (probe first, then intervene)', col: 'var(--a)', claim: 'Hidden intent can leave internal signatures that outputs don’t show.', limit: 'A probe can flag it; telling a real signal from a false alarm needs intervention.', p: 19 },
+    { q: 'Can we prove a capability is gone?', fam: 'Mechanistic analysis', col: 'var(--a)', claim: 'Behavioural tests can only confirm presence, so absence needs internals.', limit: 'Still an open problem; partial coverage can create false confidence.', p: 19 },
+  ];
+  let cur = 0;
+  Q.forEach((x, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'wl-q' + i; b.textContent = x.q;
+    b.addEventListener('click', () => { cur = i; upd(); }); wrap.appendChild(b); });
+  function upd() {
+    const x = Q[cur];
+    [...wrap.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur));
+    out.innerHTML = `<b style="color:${x.col}">${x.fam}</b><br>Supports: ${x.claim}<br><span class="small">Limit: ${x.limit} <span class="src"><a href="https://arxiv.org/pdf/2611.08438#page=${x.p}">p. ${x.p}</a></span></span>`;
+  }
+  upd();
+})();
+
+
+// ---- 2.1 · neuron vs direction readout ----
+(() => {
+  const svg = document.getElementById('nf-plot'), sl = document.getElementById('nf-ang'), out = document.getElementById('nf-out'); if (!svg) return;
+  const r = rng(11), S = 100, pts = [];
+  for (const [cls, deg] of [['cat', 35], ['car', -30]]) for (let k = 0; k < 40; k++) {
+    const a = (deg + (r() - 0.5) * 24) * Math.PI / 180, m = 0.6 + 0.5 * r(); pts.push({ cls, x: m * Math.cos(a), y: m * Math.sin(a) }); }
+  svgEl('line', { x1: -140, y1: 0, x2: 140, y2: 0, stroke: 'var(--st)', 'stroke-width': 1.2, opacity: .6 }, svg);
+  svgEl('line', { x1: 0, y1: -118, x2: 0, y2: 118, stroke: 'var(--st)', 'stroke-width': 1.2, opacity: .6 }, svg);
+  const n1 = svgEl('text', { x: 138, y: 14, 'text-anchor': 'end', style: 'fill:var(--st);font-size:10px' }, svg); n1.textContent = 'neuron 1';
+  const n2 = svgEl('text', { x: 5, y: -108, style: 'fill:var(--st);font-size:10px' }, svg); n2.textContent = 'neuron 2';
+  const thr = svgEl('line', { stroke: 'var(--info)', 'stroke-width': 1.5, 'stroke-dasharray': '4 3', opacity: .8 }, svg);
+  const dir = svgEl('line', { x1: 0, y1: 0, stroke: 'var(--info)', 'stroke-width': 3, 'stroke-linecap': 'round' }, svg);
+  const dots = pts.map((p) => svgEl('circle', { cx: p.x * S, cy: -p.y * S, r: 3.6, fill: p.cls === 'cat' ? 'var(--a)' : 'var(--b)' }, svg));
+  const upd = () => {
+    const th = +sl.value * Math.PI / 180, ux = Math.cos(th), uy = Math.sin(th); sl.nextElementSibling.textContent = sl.value + '°';
+    dir.setAttribute('x2', ux * 125); dir.setAttribute('y2', -uy * 125);
+    const tx = ux * 0.5 * S, ty = -uy * 0.5 * S, px = -uy * 140, py = -ux * 140;
+    thr.setAttribute('x1', tx + px); thr.setAttribute('y1', ty + py); thr.setAttribute('x2', tx - px); thr.setAttribute('y2', ty - py);
+    let cat = 0, car = 0;
+    pts.forEach((p, i) => { const on = p.x * ux + p.y * uy > 0.5; dots[i].setAttribute('stroke', on ? 'var(--ink)' : 'none'); dots[i].setAttribute('stroke-width', on ? 1.6 : 0); if (on) (p.cls === 'cat' ? cat++ : car++); });
+    const pc = Math.round(100 * cat / 40), pr = Math.round(100 * car / 40);
+    const verdict = pc >= 70 && pr >= 70 ? '<b style="color:var(--bad)">Polysemantic reading</b>: fires for both concepts.' :
+      pc >= 80 && pr <= 10 ? '<b style="color:var(--ok)">Clean cat direction</b>: fires for cats, ignores cars.' :
+      pr >= 80 && pc <= 10 ? '<b style="color:var(--ok)">Clean car direction</b>: fires for cars, ignores cats.' : 'Partial: keep rotating.';
+    out.innerHTML = `${verdict} Fires on <b class="mono">${pc}%</b> of cat inputs and <b class="mono">${pr}%</b> of car inputs (outlined dots are above the dashed threshold).`;
+    out.dataset.cat = pc; out.dataset.car = pr;
+  };
+  sl.addEventListener('input', upd); upd();
+})();
+
+// ---- 2.2 · direct logit attribution (illustrative) ----
+(() => {
+  const svg = document.getElementById('rs-bars'), wrap = document.getElementById('rs-toggles'), out = document.getElementById('rs-out'); if (!svg) return;
+  const C = [
+    { n: 'embedding', v: -1.0, note: 'prior: “London” is more common' },
+    { n: 'attention 1', v: 0.4, note: 'moves “Eiffel Tower” to the last token' },
+    { n: 'MLP 1', v: 0.2, note: '' },
+    { n: 'attention 2', v: 0.6, note: '' },
+    { n: 'MLP 2', v: 2.4, note: 'fact lookup: Eiffel Tower → Paris' },
+    { n: 'MLP 3', v: -0.4, note: 'hedging' },
+  ];
+  const on = C.map(() => true);
+  C.forEach((c, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'rs-t' + i; b.textContent = c.n;
+    b.addEventListener('click', () => { on[i] = !on[i]; upd(); }); wrap.appendChild(b); });
+  const X0 = 280, SC = 70, RH = 30, Y0 = 18;
+  svgEl('line', { x1: X0, y1: 8, x2: X0, y2: 240, stroke: 'var(--line)' }, svg);
+  const t1 = svgEl('text', { x: X0 - 6, y: 246, 'text-anchor': 'end', style: 'fill:var(--b);font-size:11px' }, svg); t1.textContent = '← London';
+  const t2 = svgEl('text', { x: X0 + 6, y: 246, style: 'fill:var(--ok);font-size:11px' }, svg); t2.textContent = 'Paris →';
+  const rows = [...C, { n: 'total', v: 0 }].map((c, i) => { const y = Y0 + i * RH + (i === C.length ? 10 : 0);
+    const lb = svgEl('text', { x: 10, y: y + 15, style: `font-size:12px;${i === C.length ? 'font-weight:700' : ''}` }, svg); lb.textContent = c.n;
+    const bar = svgEl('rect', { y, height: 20, rx: 4 }, svg);
+    const val = svgEl('text', { y: y + 15, style: 'font-size:11px;font-family:var(--mono)' }, svg);
+    return { bar, val, lb }; });
+  function upd() {
+    let tot = 0;
+    C.forEach((c, i) => { const v = on[i] ? c.v : 0; tot += v; const R = rows[i];
+      R.bar.setAttribute('x', v >= 0 ? X0 : X0 + v * SC); R.bar.setAttribute('width', Math.max(1, Math.abs(v) * SC));
+      R.bar.setAttribute('fill', on[i] ? (v >= 0 ? 'var(--ok)' : 'var(--b)') : 'var(--line)');
+      R.val.setAttribute('x', v >= 0 ? X0 + v * SC + 6 : X0 + v * SC - 6); R.val.setAttribute('text-anchor', v >= 0 ? 'start' : 'end'); R.val.textContent = on[i] ? (v > 0 ? '+' : '') + v.toFixed(1) : 'off';
+      R.lb.style.fill = on[i] ? 'var(--ink)' : 'var(--faint)'; });
+    const T = rows[C.length]; T.bar.setAttribute('x', tot >= 0 ? X0 : X0 + tot * SC); T.bar.setAttribute('width', Math.max(1, Math.abs(tot) * SC)); T.bar.setAttribute('fill', tot > 0 ? 'var(--ok)' : 'var(--bad)');
+    T.val.setAttribute('x', tot >= 0 ? X0 + tot * SC + 6 : X0 + tot * SC - 6); T.val.setAttribute('text-anchor', tot >= 0 ? 'start' : 'end'); T.val.textContent = (tot > 0 ? '+' : '') + tot.toFixed(1);
+    [...wrap.children].forEach((b, i) => b.setAttribute('aria-pressed', on[i]));
+    const ans = tot > 0 ? 'Paris' : tot < 0 ? 'London' : 'a tie';
+    const offs = C.filter((c, i) => !on[i]).map((c) => c.n);
+    out.innerHTML = `Logit(Paris) − Logit(London) = sum of the bars = <b class="mono">${(tot > 0 ? '+' : '') + tot.toFixed(1)}</b> → the model says <b style="color:${tot > 0 ? 'var(--ok)' : 'var(--bad)'}">${ans}</b>.${offs.length ? ' Off: ' + offs.join(', ') + '.' : ''}`;
+    out.dataset.answer = ans;
+  }
+  upd();
+})();
+
+// ---- 2.3 · induction circuit simulator (idealised) ----
+(() => {
+  const svg = document.getElementById('ci-plot'), inp = document.getElementById('ci-input'), out = document.getElementById('ci-out'), pre = document.getElementById('ci-presets'); if (!svg) return;
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const P = [['Harry Potter', 'Mr Dursley was proud . Mr'], ['A B C A B', 'A B C A B'], ['random tokens', 'kp 3f vz q9 kp'], ['no repeat', 'the cat sat on a mat']];
+  P.forEach(([lab, seq], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'ci-p' + i; b.textContent = lab; b.addEventListener('click', () => { inp.value = seq; upd(); }); pre.appendChild(b); });
+  function upd() {
+    let t = inp.value.trim().split(/\s+/).filter(Boolean).slice(-14); if (!t.length) t = ['?'];
+    const n = t.length, j = n - 1;
+    let i = -1; for (let k = j - 1; k >= 0; k--) if (t[k] === t[j] && k + 1 < j) { i = k; break; }
+    const p = i >= 0 ? i + 1 : -1, pred = p >= 0 ? t[p] : null;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const W = Math.min(64, 560 / (n + 1)), bw = W - 8, y = 90, x = (k) => 14 + k * W;
+    svgEl('defs', {}, svg).innerHTML = '<marker id="ci-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--b)"/></marker>';
+    for (let k = 1; k < n; k++) svgEl('path', { d: `M${x(k - 1) + bw / 2} ${y + 34} Q ${x(k - 1) + W / 2 + bw / 2} ${y + 58} ${x(k) + bw / 2} ${y + 34}`, fill: 'none', stroke: 'var(--st)', 'stroke-width': 1.2, opacity: .55 }, svg);
+    t.forEach((tok, k) => { const hl = k === j ? 'var(--a)' : k === p ? 'var(--ok)' : k === i ? 'var(--b)' : 'var(--line)';
+      svgEl('rect', { x: x(k), y, width: bw, height: 32, rx: 6, fill: 'var(--card)', stroke: hl, 'stroke-width': k === j || k === p || k === i ? 2.5 : 1 }, svg);
+      const tx = svgEl('text', { x: x(k) + bw / 2, y: y + 21, 'text-anchor': 'middle', style: `font-size:${bw < 40 ? 10 : 12}px;font-family:var(--mono)` }, svg); tx.textContent = tok.length > 7 ? tok.slice(0, 6) + '…' : tok; });
+    const nx = x(n);
+    svgEl('rect', { x: nx, y, width: bw, height: 32, rx: 6, fill: 'none', stroke: pred ? 'var(--ok)' : 'var(--bad)', 'stroke-dasharray': '4 3' }, svg);
+    const pt = svgEl('text', { x: nx + bw / 2, y: y + 21, 'text-anchor': 'middle', style: `font-size:${bw < 40 ? 10 : 12}px;font-family:var(--mono);fill:${pred ? 'var(--ok)' : 'var(--bad)'}` }, svg); pt.textContent = pred ? (pred.length > 7 ? pred.slice(0, 6) + '…' : pred) : '?';
+    const lg = svgEl('text', { x: 14, y: 196, style: 'font-size:11px;fill:var(--dim)' }, svg); lg.textContent = 'faint arcs below: previous-token head (each token learns the one before it) · orange arc above: induction head';
+    if (p >= 0) svgEl('path', { d: `M${x(j) + bw / 2} ${y - 2} Q ${(x(j) + x(p)) / 2 + bw / 2} ${y - 80} ${x(p) + bw / 2} ${y - 4}`, fill: 'none', stroke: 'var(--b)', 'stroke-width': 2.5, 'marker-end': 'url(#ci-ar)' }, svg);
+    out.innerHTML = p >= 0
+      ? `At the last token <b class="mono">${esc(t[j])}</b>, the induction head finds an earlier <b class="mono">${esc(t[i])}</b> (position ${i + 1}). The previous-token head has written “after ${esc(t[i])}” into position ${p + 1}, so the head attends there and copies <b class="mono" style="color:var(--ok)">${esc(pred)}</b>. Prediction: <b style="color:var(--ok)">${esc(pred)}</b>.`
+      : `No earlier <b class="mono">${esc(t[j])}</b> to match, so the induction circuit contributes nothing here. The model would have to rely on other mechanisms.`;
+    out.dataset.pred = pred ?? '';
+    [...pre.children].forEach((b, k) => b.setAttribute('aria-pressed', inp.value.trim() === P[k][1]));
+  }
+  inp.addEventListener('input', upd); upd();
+})();
+
+
+// ---- 3.1 · steering along a concept direction (3D toy) ----
+(() => {
+  const cv = document.getElementById('lr-canvas'); if (!cv) return;
+  const ctx = cv.getContext('2d'), sl = document.getElementById('lr-alpha'), out = document.getElementById('lr-out'), segw = document.getElementById('lr-dir');
+  // axes: x = male⇒female, y = royalty, z = lower⇒upper (capitalisation)
+  const W = { man: [0, 0, 0], woman: [1, 0, 0], king: [0, 1, 0], queen: [1, 1, 0], Man: [0, 0, 1], Woman: [1, 0, 1], King: [0, 1, 1], Queen: [1, 1, 1] };
+  const DIRS = [['male ⇒ female', [1, 0, 0], '--a'], ['lower ⇒ upper case', [0, 0, 1], '--b']];
+  let di = 0, yaw = -0.7, pitch = 0.35, drag = null;
+  DIRS.forEach((d, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'lr-d' + i; b.textContent = 'push along ' + d[0]; b.addEventListener('click', () => { di = i; upd(); }); segw.appendChild(b); });
+  const rot = ([x, y, z]) => { x -= 0.5; y -= 0.5; z -= 0.5; const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const x1 = cy * x + sy * z, z1 = -sy * x + cy * z, y2 = cp * y - sp * z1, z2 = sp * y + cp * z1; return [x1, y2, z2]; };
+  function draw(p) {
+    const Wd = cv.width, H = cv.height, R = 150, cx = Wd / 2, cy0 = H / 2;
+    const P = (v) => { const [x, y, z] = rot(v), f = 1 / (1 + z * 0.35); return [cx + x * R * f, cy0 - y * R * f, z]; };
+    ctx.clearRect(0, 0, Wd, H); ctx.font = '12px Inter, sans-serif';
+    const corners = Object.values(W);
+    ctx.strokeStyle = CSSV('--line'); ctx.lineWidth = 1;
+    corners.forEach((a) => corners.forEach((b) => { const d = Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) + Math.abs(a[2] - b[2]); if (d === 1) { const A = P(a), B = P(b); ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); } }));
+    // axis labels along three edges from "man"
+    [[[1, 0, 0], 'female →', '--a'], [[0, 1, 0], 'royal →', '--st'], [[0, 0, 1], 'Capitalised →', '--b']].forEach(([v, t, c]) => { const A = P([v[0] * 0.55, v[1] * 0.55, v[2] * 0.55]); ctx.fillStyle = CSSV(c); ctx.fillText(t, A[0] + 4, A[1] + 14); });
+    const near = nearest(p);
+    Object.entries(W).forEach(([w, v]) => { const A = P(v); ctx.fillStyle = w === near ? CSSV('--ok') : CSSV('--dim'); ctx.beginPath(); ctx.arc(A[0], A[1], w === near ? 6 : 4, 0, 7); ctx.fill();
+      ctx.font = (w === near ? '600 ' : '') + '13px Inter, sans-serif'; ctx.fillText(w, A[0] + 8, A[1] - 6); });
+    const S = P(W.king), E = P(p); ctx.strokeStyle = CSSV(DIRS[di][2]); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(S[0], S[1]); ctx.lineTo(E[0], E[1]); ctx.stroke();
+    ctx.fillStyle = CSSV('--info'); ctx.beginPath(); ctx.arc(E[0], E[1], 7, 0, 7); ctx.fill();
+  }
+  const nearest = (p) => { let best = null, bd = 1e9; for (const [w, v] of Object.entries(W)) { const d = (v[0] - p[0]) ** 2 + (v[1] - p[1]) ** 2 + (v[2] - p[2]) ** 2; if (d < bd - 1e-9) { bd = d; best = w; } } return best; };
+  function upd() {
+    const a = +sl.value; sl.nextElementSibling.textContent = a.toFixed(2);
+    const d = DIRS[di][1], p = W.king.map((x, i) => x + a * d[i]);
+    [...segw.children].forEach((b, i) => b.setAttribute('aria-pressed', i === di));
+    draw(p);
+    const g = 6 * (p[0] - 0.5), c = 6 * (p[2] - 0.5), near = nearest(p);
+    out.innerHTML = `Nearest word: <b style="color:var(--ok)">${near}</b> · gender readout (queen vs king): <b class="mono">${g >= 0 ? '+' : ''}${g.toFixed(1)}</b> · capitalisation readout (King vs king): <b class="mono">${c >= 0 ? '+' : ''}${c.toFixed(1)}</b>. Pushing along one direction moves only its own readout.`;
+    out.dataset.near = near;
+  }
+  cv.addEventListener('pointerdown', (e) => { drag = [e.clientX, e.clientY, yaw, pitch]; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', (e) => { if (!drag) return; yaw = drag[2] + (e.clientX - drag[0]) * 0.01; pitch = Math.max(-1.2, Math.min(1.2, drag[3] + (e.clientY - drag[1]) * 0.01)); upd(); });
+  cv.addEventListener('pointerup', () => (drag = null));
+  cv.tabIndex = 0; cv.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') yaw -= .15; if (e.key === 'ArrowRight') yaw += .15; if (e.key === 'ArrowUp') pitch -= .15; if (e.key === 'ArrowDown') pitch += .15; upd(); });
+  new MutationObserver(upd).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  sl.addEventListener('input', upd); upd();
+})();
+
+// ---- 3.1 · privileged basis: rotate the basis around a linear vs element-wise layer ----
+(() => {
+  const svg = document.getElementById('lr-rot'), sl = document.getElementById('lr-theta'), out = document.getElementById('lr-out2'); if (!svg) return;
+  const x = [0.9, -0.45], S = 85;
+  const f = (th, relu) => { const c = Math.cos(th), s = Math.sin(th), u = [c * x[0] + s * x[1], -s * x[0] + c * x[1]].map((v) => (relu ? Math.max(0, v) : v));
+    return [c * u[0] - s * u[1], s * u[0] + c * u[1]]; };
+  const panel = (ox, title) => { const g = svgEl('g', { transform: `translate(${ox},120)` }, svg);
+    const t = svgEl('text', { x: 0, y: -98, 'text-anchor': 'middle', style: 'font-size:12px;font-weight:600' }, g); t.textContent = title; return g; };
+  const gL = panel(140, 'linear step (no element-wise op)'), gR = panel(420, 'element-wise ReLU');
+  const mk = (g) => { const ax1 = svgEl('line', { stroke: 'var(--st)', 'stroke-dasharray': '4 3', opacity: .8 }, g), ax2 = svgEl('line', { stroke: 'var(--st)', 'stroke-dasharray': '4 3', opacity: .8 }, g);
+    const inp = svgEl('line', { x1: 0, y1: 0, x2: x[0] * S, y2: -x[1] * S, stroke: 'var(--info)', 'stroke-width': 2, opacity: .5 }, g);
+    const ghost = svgEl('line', { x1: 0, y1: 0, stroke: 'var(--faint)', 'stroke-width': 3, 'stroke-dasharray': '2 3' }, g);
+    const o = svgEl('line', { x1: 0, y1: 0, 'stroke-width': 4, 'stroke-linecap': 'round' }, g); return { ax1, ax2, ghost, o }; };
+  const L = mk(gL), Rr = mk(gR);
+  const key = svgEl('text', { x: 280, y: 222, 'text-anchor': 'middle', style: 'font-size:11px;fill:var(--dim)' }, svg); key.textContent = 'faint blue: input · dashed: rotated axes · grey: output at θ = 0 · solid: output now';
+  const upd = () => { const th = +sl.value * Math.PI / 180; sl.nextElementSibling.textContent = sl.value + '°';
+    for (const [P, relu] of [[L, false], [Rr, true]]) { const c = Math.cos(th) * 95, s = Math.sin(th) * 95;
+      P.ax1.setAttribute('x1', -c); P.ax1.setAttribute('y1', s); P.ax1.setAttribute('x2', c); P.ax1.setAttribute('y2', -s);
+      P.ax2.setAttribute('x1', s); P.ax2.setAttribute('y1', c); P.ax2.setAttribute('x2', -s); P.ax2.setAttribute('y2', -c);
+      const y0 = f(0, relu), y = f(th, relu); P.ghost.setAttribute('x2', y0[0] * S); P.ghost.setAttribute('y2', -y0[1] * S);
+      P.o.setAttribute('x2', y[0] * S); P.o.setAttribute('y2', -y[1] * S); P.o.setAttribute('stroke', relu ? 'var(--b)' : 'var(--a)'); }
+    const dl = Math.hypot(...f(th, false).map((v, i) => v - f(0, false)[i])), dr = Math.hypot(...f(th, true).map((v, i) => v - f(0, true)[i]));
+    out.innerHTML = `Change in output after rotating the basis by ${sl.value}°: linear step <b class="mono">${dl.toFixed(2)}</b> · ReLU <b class="mono" style="color:${dr > 0.01 ? 'var(--bad)' : 'var(--ok)'}">${dr.toFixed(2)}</b>. ${dr > 0.01 ? 'The ReLU cares which axes you use: a privileged basis.' : 'At this angle both agree.'}`;
+    out.dataset.dr = dr.toFixed(2); out.dataset.dl = dl.toFixed(2); };
+  sl.addEventListener('input', upd); upd();
+})();
+
+// ---- 3.4 · comparing two models: neuron matching vs CKA vs mutual kNN ----
+(() => {
+  const sa = document.getElementById('un-a'), sb = document.getElementById('un-b'), sr = document.getElementById('un-rot'), sn = document.getElementById('un-noise'), out = document.getElementById('un-out'); if (!sa) return;
+  const r = rng(21), N = 30, CEN = [[0.9, 0.2, -0.3], [-0.6, 0.7, 0.4], [-0.2, -0.8, 0.6]], COL = ['var(--ok)', 'var(--info)', 'var(--st)'];
+  const A = [], cl = [], noiseBase = [];
+  for (let i = 0; i < N; i++) { const k = i % 3; cl.push(k); A.push(CEN[k].map((c) => c + (r() - 0.5) * 0.5)); noiseBase.push([gauss(r), gauss(r), gauss(r)]); }
+  const rotM = (t) => { const c = Math.cos(t), s = Math.sin(t), c2 = Math.cos(t / 2), s2 = Math.sin(t / 2);
+    const Rz = [[c, -s, 0], [s, c, 0], [0, 0, 1]], Rx = [[1, 0, 0], [0, c2, -s2], [0, s2, c2]]; return Rx.map((row) => [0, 1, 2].map((j) => row.reduce((acc, v, k) => acc + v * Rz[k][j], 0))); };
+  const center = (X) => { const m = [0, 1, 2].map((j) => X.reduce((a, x) => a + x[j], 0) / X.length); return X.map((x) => x.map((v, j) => v - m[j])); };
+  const corr = (u, v) => { const mu = u.reduce((a, b) => a + b) / u.length, mv = v.reduce((a, b) => a + b) / v.length; let n = 0, du = 0, dv = 0; u.forEach((x, i) => { n += (x - mu) * (v[i] - mv); du += (x - mu) ** 2; dv += (v[i] - mv) ** 2; }); return n / Math.sqrt(du * dv + 1e-12); };
+  const cka = (X, Y) => { X = center(X); Y = center(Y); const XtY = [0, 1, 2].map((i) => [0, 1, 2].map((j) => X.reduce((a, x, n) => a + x[i] * Y[n][j], 0)));
+    const XtX = [0, 1, 2].map((i) => [0, 1, 2].map((j) => X.reduce((a, x) => a + x[i] * x[j], 0))), YtY = [0, 1, 2].map((i) => [0, 1, 2].map((j) => Y.reduce((a, y) => a + y[i] * y[j], 0)));
+    const fro = (M) => M.flat().reduce((a, v) => a + v * v, 0); return fro(XtY) / Math.sqrt(fro(XtX) * fro(YtY)); };
+  const knn = (X, k = 3) => X.map((x, i) => X.map((y, j) => [j, (x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2 + (x[2] - y[2]) ** 2]).filter(([j]) => j !== i).sort((a, b) => a[1] - b[1]).slice(0, k).map(([j]) => j));
+  const KA = knn(A);
+  const pts = (svg) => { svgEl('line', { x1: -125, y1: 0, x2: 125, y2: 0, stroke: 'var(--st)', opacity: .4 }, svg); svgEl('line', { x1: 0, y1: -105, x2: 0, y2: 105, stroke: 'var(--st)', opacity: .4 }, svg);
+    return A.map((_, i) => svgEl('circle', { r: 4.5, fill: COL[cl[i]] }, svg)); };
+  const la = svgEl('text', { x: -122, y: -92, style: 'font-size:11px;font-weight:600;fill:var(--a)' }, sa); la.textContent = 'model A';
+  const lb = svgEl('text', { x: -122, y: -92, style: 'font-size:11px;font-weight:600;fill:var(--b)' }, sb); lb.textContent = 'model B';
+  const da = pts(sa), db = pts(sb); A.forEach((p, i) => { da[i].setAttribute('cx', p[0] * 90); da[i].setAttribute('cy', -p[1] * 90); });
+  const upd = () => { const t = +sr.value * Math.PI / 180, sg = +sn.value; sr.nextElementSibling.textContent = sr.value + '°'; sn.nextElementSibling.textContent = sg.toFixed(2);
+    const M = rotM(t), B = A.map((p, i) => [0, 1, 2].map((j) => p.reduce((a, v, k) => a + v * M[k][j], 0) + sg * 0.35 * noiseBase[i][j]));
+    B.forEach((p, i) => { db[i].setAttribute('cx', Math.max(-120, Math.min(120, p[0] * 90))); db[i].setAttribute('cy', Math.max(-100, Math.min(100, -p[1] * 90))); });
+    const neuron = [0, 1, 2].map((j) => corr(A.map((p) => p[j]), B.map((p) => p[j]))).reduce((a, b) => a + b) / 3;
+    const c = cka(A, B), KB = knn(B), mk = KA.reduce((a, s, i) => a + s.filter((j) => KB[i].includes(j)).length / 3, 0) / N;
+    const tag = (v) => `<b class="mono" style="color:${v > 0.8 ? 'var(--ok)' : v < 0.5 ? 'var(--bad)' : 'var(--ink)'}">${v.toFixed(2)}</b>`;
+    out.innerHTML = `Neuron-to-neuron matching ${tag(neuron)} · CKA ${tag(c)} · mutual 3-NN ${tag(mk)} <span class="small">(1 = identical)</span>`;
+    out.dataset.neuron = neuron.toFixed(2); out.dataset.cka = c.toFixed(2); out.dataset.knn = mk.toFixed(2); };
+  [sr, sn].forEach((e) => e.addEventListener('input', upd)); upd();
+})();
+
+
+// tiny SAE trainer for the browser labs (2D activations from the 5-feature pentagon)
+function saeRng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const SAE_TRUE = [18, 90, 162, 234, 306].map((a) => [Math.cos(a * Math.PI / 180), Math.sin(a * Math.PI / 180)]);
+function saeData(n, p, seed) { const r = saeRng(seed), H = [];
+  for (let i = 0; i < n; i++) { let h0 = 0, h1 = 0, any = false; for (let f = 0; f < 5; f++) if (r() < p) { const a = 0.5 + 0.5 * r(); h0 += a * SAE_TRUE[f][0]; h1 += a * SAE_TRUE[f][1]; any = true; } H.push([h0, h1]); }
+  return H; }
+// opts: m latents, lambda (L1), steps, seed, act: 'relu' | 'topk', k
+function saeTrain(o) {
+  const r = saeRng(o.seed), m = o.m, lam = o.lambda ?? 0.05, lr = o.lr ?? 0.02, B = 64, steps = o.steps ?? 3000;
+  const data = saeData(6000, o.p ?? 0.12, 1000 + (o.dataSeed ?? 1));
+  const D = []; for (let j = 0; j < m; j++) { const a = r() * 2 * Math.PI; D.push([Math.cos(a), Math.sin(a)]); }
+  const E = D.map((d) => [d[0], d[1]]), be = new Array(m).fill(0), bd = [0, 0];
+  const P = [E, D]; const mE = E.map(() => [0, 0]), vE = E.map(() => [0, 0]), mD = D.map(() => [0, 0]), vD = D.map(() => [0, 0]), mb = new Array(m).fill(0), vb = new Array(m).fill(0);
+  const b1 = 0.9, b2 = 0.999, eps = 1e-8;
+  const enc = (h) => { const pre = E.map((e, j) => e[0] * (h[0] - bd[0]) + e[1] * (h[1] - bd[1]) + be[j]);
+    if (o.act === 'topk') { const idx = pre.map((v, j) => [v, j]).sort((a, b) => b[0] - a[0]).slice(0, o.k).map((x) => x[1]); return pre.map((v, j) => (idx.includes(j) && v > 0 ? v : 0)); }
+    return pre.map((v) => (v > 0 ? v : 0)); };
+  for (let t = 1; t <= steps; t++) {
+    const gE = E.map(() => [0, 0]), gD = D.map(() => [0, 0]), gb = new Array(m).fill(0);
+    for (let s = 0; s < B; s++) { const h = data[Math.floor(r() * data.length)], z = enc(h);
+      const hh = [bd[0], bd[1]]; z.forEach((zj, j) => { if (zj) { hh[0] += zj * D[j][0]; hh[1] += zj * D[j][1]; } });
+      const err = [hh[0] - h[0], hh[1] - h[1]];
+      for (let j = 0; j < m; j++) { gD[j][0] += 2 * err[0] * z[j]; gD[j][1] += 2 * err[1] * z[j];
+        if (z[j] > 0) { const dz = 2 * (err[0] * D[j][0] + err[1] * D[j][1]) + (o.act === 'topk' ? 0 : lam); gE[j][0] += dz * (h[0] - bd[0]); gE[j][1] += dz * (h[1] - bd[1]); gb[j] += dz; } } }
+    const adam = (w, g, M, V, i) => { M[i] = b1 * M[i] + (1 - b1) * g; V[i] = b2 * V[i] + (1 - b2) * g * g; const mh = M[i] / (1 - b1 ** t), vh = V[i] / (1 - b2 ** t); return w - lr * mh / (Math.sqrt(vh) + eps); };
+    for (let j = 0; j < m; j++) { for (let c = 0; c < 2; c++) { E[j][c] = adam(E[j][c], gE[j][c] / B, mE[j], vE[j], c); D[j][c] = adam(D[j][c], gD[j][c] / B, mD[j], vD[j], c); }
+      be[j] = adam(be[j], gb[j] / B, mb, vb, j); const nn = Math.hypot(D[j][0], D[j][1]) || 1; D[j][0] /= nn; D[j][1] /= nn; }
+  }
+  // evaluation
+  const ev = saeData(2000, o.p ?? 0.12, 77); let alive = new Array(m).fill(0), l0 = 0, se = 0, tot = 0;
+  const mean = [ev.reduce((a, h) => a + h[0], 0) / ev.length, ev.reduce((a, h) => a + h[1], 0) / ev.length];
+  for (const h of ev) { const z = enc(h); const hh = [bd[0], bd[1]]; z.forEach((zj, j) => { if (zj > 1e-6) { alive[j]++; l0++; hh[0] += zj * D[j][0]; hh[1] += zj * D[j][1]; } });
+    se += (hh[0] - h[0]) ** 2 + (hh[1] - h[1]) ** 2; tot += (h[0] - mean[0]) ** 2 + (h[1] - mean[1]) ** 2; }
+  const dead = alive.map((a) => a === 0);
+  const match = SAE_TRUE.map((f) => { let best = 0, bj = -1; D.forEach((d, j) => { if (dead[j]) return; const c = d[0] * f[0] + d[1] * f[1]; if (c > best) { best = c; bj = j; } }); return { cos: best, j: bj }; });
+  // shrinkage: one true feature active at strength a; how much of a does the SAE reconstruct along that feature?
+  let ratio = 0, cnt = 0; for (let f = 0; f < 5; f++) for (const a of [0.6, 0.8, 1.0]) { const h = [a * SAE_TRUE[f][0], a * SAE_TRUE[f][1]], z = enc(h);
+    const hh = [bd[0], bd[1]]; z.forEach((zj, j) => { hh[0] += zj * D[j][0]; hh[1] += zj * D[j][1]; }); ratio += (hh[0] * SAE_TRUE[f][0] + hh[1] * SAE_TRUE[f][1]) / a; cnt++; }
+  return { shrink: ratio / cnt, D, E, be, bd, dead, nDead: dead.filter(Boolean).length, l0: l0 / ev.length, fvu: se / tot, match, recovered: match.filter((x) => x.cos > 0.95).length };
+}
+
+// ---- Ch 4 shared: memoised SAE training on the 5-features-in-2-neurons data ----
+const SAE_CACHE = {};
+const saeRun = (o) => { const key = JSON.stringify(o); return SAE_CACHE[key] ??= saeTrain({ steps: 5000, lr: 0.01, p: 0.08, ...o }); };
+function saePlotBase(svg) {
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  svgEl('line', { x1: -125, y1: 0, x2: 125, y2: 0, stroke: 'var(--st)', opacity: .45 }, svg); svgEl('line', { x1: 0, y1: -125, x2: 0, y2: 125, stroke: 'var(--st)', opacity: .45 }, svg);
+  const n1 = svgEl('text', { x: 122, y: 12, 'text-anchor': 'end', style: 'fill:var(--st);font-size:9px' }, svg); n1.textContent = 'neuron 1';
+  const n2 = svgEl('text', { x: -5, y: -116, 'text-anchor': 'end', style: 'fill:var(--st);font-size:9px' }, svg); n2.textContent = 'neuron 2';
+  ['cat', 'code', 'French', 'math', 'sports'].forEach((nm, i) => { const f = SAE_TRUE[i];
+    svgEl('line', { x1: 0, y1: 0, x2: f[0] * 100, y2: -f[1] * 100, stroke: 'var(--b)', 'stroke-width': 5, 'stroke-dasharray': '6 5', opacity: .55, 'stroke-linecap': 'round' }, svg);
+    const t = svgEl('text', { x: f[0] * 116, y: -f[1] * 116 + 4, 'text-anchor': 'middle', style: 'fill:var(--b);font-size:10px' }, svg); t.textContent = nm; });
+}
+function saeDraw(svg, res, color, w = 2.5) {
+  res.D.forEach((d, j) => { const dead = res.dead[j];
+    svgEl('line', { x1: 0, y1: 0, x2: d[0] * (dead ? 55 : 92), y2: -d[1] * (dead ? 55 : 92), stroke: dead ? 'var(--bad)' : color, 'stroke-width': dead ? 1.5 : w, 'stroke-dasharray': dead ? '2 3' : '', 'stroke-linecap': 'round', opacity: dead ? .8 : .95 }, svg); });
+}
+const debounce = (fn, ms = 80) => { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; };
+
+// ---- 4.1 · train an SAE ----
+(() => {
+  const svg = document.getElementById('s1-plot'), sm = document.getElementById('s1-m'), sl = document.getElementById('s1-lam'), out = document.getElementById('s1-out'); if (!svg) return;
+  const run = () => { const m = +sm.value, lam = +sl.value; const r = saeRun({ m, lambda: lam, seed: 1 });
+    saePlotBase(svg); saeDraw(svg, r, 'var(--a)');
+    out.innerHTML = `Recovered <b class="mono" style="color:${r.recovered === 5 ? 'var(--ok)' : 'var(--bad)'}">${r.recovered} / 5</b> true features · dead latents <b class="mono">${r.nDead} / ${m}</b> · active per input (L0) <b class="mono">${r.l0.toFixed(2)}</b> · unexplained variance <b class="mono">${(100 * r.fvu).toFixed(1)}%</b>`
+      + (m < 5 ? '<br><span class="small">Fewer latents than true features: it cannot recover all five.</span>' : lam <= 0.05 ? '<br><span class="small">Almost no sparsity pressure: tiny error, but the directions are not the true features.</span>' : '');
+    out.dataset.rec = r.recovered; };
+  const upd = () => { sm.nextElementSibling.textContent = sm.value; sl.nextElementSibling.textContent = (+sl.value).toFixed(2); out.textContent = 'training…'; go(); };
+  const go = debounce(run); sm.addEventListener('input', upd); sl.addEventListener('input', upd);
+  sm.nextElementSibling.textContent = sm.value; sl.nextElementSibling.textContent = (+sl.value).toFixed(2); setTimeout(run, 50);
+})();
+
+// ---- 4.2 · shrinkage: L1 vs Top-k ----
+(() => {
+  const svg = document.getElementById('s2-bars'), seg = document.getElementById('s2-variant'), sl = document.getElementById('s2-lam'), out = document.getElementById('s2-out'); if (!svg) return;
+  let v = 0; ['L1 SAE', 'Top-k SAE (k = 1)'].forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 's2-v' + i; b.textContent = t; b.addEventListener('click', () => { v = i; upd(); }); seg.appendChild(b); });
+  const run = () => { const r = v === 0 ? saeRun({ m: 8, lambda: +sl.value, seed: 1 }) : saeRun({ m: 8, act: 'topk', k: 1, lambda: 0, seed: 1 });
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 170, W = 320, rows = [['true strength', 1, 'var(--b)'], ['rebuilt by the SAE', r.shrink, v === 0 ? 'var(--a)' : 'var(--ok)']];
+    rows.forEach(([lab, val, c], i) => { const y = 30 + i * 55; const t = svgEl('text', { x: 10, y: y + 22, style: 'font-size:13px' }, svg); t.textContent = lab;
+      svgEl('rect', { x: X0, y, width: Math.max(2, W * Math.min(1.05, val)), height: 32, rx: 6, fill: c }, svg);
+      const tv = svgEl('text', { x: X0 + W * Math.min(1.05, val) + 8, y: y + 22, style: 'font-size:13px;font-family:var(--mono)' }, svg); tv.textContent = Math.round(100 * val) + '%'; });
+    if (r.shrink < 0.95) { svgEl('rect', { x: X0 + W * r.shrink, y: 85, width: W * (1 - r.shrink), height: 32, rx: 6, fill: 'var(--bad)', opacity: .25 }, svg); const t = svgEl('text', { x: X0 + W * r.shrink + 6, y: 150, style: 'font-size:12px;fill:var(--bad)' }, svg); t.textContent = 'lost to shrinkage'; }
+    out.innerHTML = `${v === 0 ? `L1 SAE, λ = ${(+sl.value).toFixed(2)}` : 'Top-k SAE, k = 1, no penalty'}: rebuilds <b class="mono">${Math.round(100 * r.shrink)}%</b> of a feature’s true strength · recovered <b class="mono">${r.recovered}/5</b> · unexplained variance <b class="mono">${(100 * r.fvu).toFixed(1)}%</b>`;
+    out.dataset.shrink = r.shrink.toFixed(2); };
+  const go = debounce(run);
+  const upd = () => { [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === v)); sl.disabled = v === 1; sl.nextElementSibling.textContent = (+sl.value).toFixed(2); out.textContent = 'training…'; go(); };
+  sl.addEventListener('input', upd); [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === v)); sl.nextElementSibling.textContent = (+sl.value).toFixed(2); setTimeout(run, 80);
+})();
+
+// ---- 4.3 · dead latents, duplicates, seeds ----
+(() => {
+  const svg = document.getElementById('s3-plot'), sm = document.getElementById('s3-m'), ss = document.getElementById('s3-seed'), out = document.getElementById('s3-out'); if (!svg) return;
+  const dupes = (r) => { const best = SAE_TRUE.map(() => 0); let alive = 0; r.D.forEach((d, j) => { if (r.dead[j]) return; alive++; let bc = -1, bf = -1; SAE_TRUE.forEach((f, i) => { const c = d[0] * f[0] + d[1] * f[1]; if (c > bc) { bc = c; bf = i; } }); if (bc > 0.95) best[bf]++; });
+    return { alive, dup: best.reduce((a, n) => a + Math.max(0, n - 1), 0) }; };
+  const run = () => { const m = +sm.value, A = saeRun({ m, lambda: 0.3, seed: 1 }), B = saeRun({ m, lambda: 0.3, seed: +ss.value });
+    saePlotBase(svg); saeDraw(svg, B, 'var(--st)', 4); saeDraw(svg, A, 'var(--a)', 2);
+    const la = A.D.filter((d, j) => !A.dead[j]), lb = B.D.filter((d, j) => !B.dead[j]);
+    const shared = la.filter((d) => lb.some((e) => d[0] * e[0] + d[1] * e[1] > 0.95)).length, da = dupes(A), db = dupes(B);
+    out.innerHTML = `Run A: recovered <b class="mono">${A.recovered}/5</b>, dead <b class="mono">${A.nDead}</b>, duplicates <b class="mono">${da.dup}</b> · Run B: recovered <b class="mono">${B.recovered}/5</b>, dead <b class="mono">${B.nDead}</b>, duplicates <b class="mono">${db.dup}</b><br>Shared across seeds: <b class="mono">${shared} of ${la.length}</b> live latents in run A (<b class="mono">${Math.round(100 * shared / Math.max(1, la.length))}%</b>). The true features come back every time${la.length > 5 ? '; the extra latents land in different places' : ''}.`;
+    out.dataset.shared = (shared / Math.max(1, la.length)).toFixed(2); out.dataset.dead = A.nDead; };
+  const go = debounce(run);
+  const upd = () => { sm.nextElementSibling.textContent = sm.value; ss.nextElementSibling.textContent = ss.value; out.textContent = 'training…'; go(); };
+  sm.addEventListener('input', upd); ss.addEventListener('input', upd); sm.nextElementSibling.textContent = sm.value; ss.nextElementSibling.textContent = ss.value; setTimeout(run, 110);
+})();
+
+// ---- 4.4 · PCA vs SAE ----
+(() => {
+  const svg = document.getElementById('s4-plot'), seg = document.getElementById('s4-show'), out = document.getElementById('s4-out'); if (!svg) return;
+  const H = saeData(6000, 0.08, 1001), mu = [0, 1].map((k) => H.reduce((a, h) => a + h[k], 0) / H.length);
+  let sxx = 0, sxy = 0, syy = 0; H.forEach((h) => { const x = h[0] - mu[0], y = h[1] - mu[1]; sxx += x * x; sxy += x * y; syy += y * y; });
+  const th = 0.5 * Math.atan2(2 * sxy, sxx - syy), pcs = [[Math.cos(th), Math.sin(th)], [-Math.sin(th), Math.cos(th)]];
+  const pcaMatch = SAE_TRUE.filter((f) => pcs.some((p) => Math.abs(p[0] * f[0] + p[1] * f[1]) > 0.95)).length;
+  let show = 2; ['PCA', 'SAE', 'both'].forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 's4-s' + i; b.textContent = t; b.addEventListener('click', () => { show = i; draw(); }); seg.appendChild(b); });
+  const draw = () => { const S = saeRun({ m: 8, lambda: 0.3, seed: 1 }); saePlotBase(svg);
+    if (show !== 0) saeDraw(svg, S, 'var(--a)');
+    if (show !== 1) pcs.forEach((p) => svgEl('line', { x1: -p[0] * 105, y1: p[1] * 105, x2: p[0] * 105, y2: -p[1] * 105, stroke: 'var(--st)', 'stroke-width': 3.5, opacity: .9 }, svg));
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === show));
+    out.innerHTML = `PCA: <b class="mono">2</b> perpendicular directions, matching <b class="mono" style="color:${pcaMatch === 5 ? 'var(--ok)' : 'var(--bad)'}">${pcaMatch}/5</b> true features · SAE (8 latents): <b class="mono" style="color:var(--ok)">${S.recovered}/5</b>. PCA can never return more directions than there are neurons.`;
+    out.dataset.pca = pcaMatch; out.dataset.sae = S.recovered; };
+  setTimeout(draw, 140);
+})();
+
+
+// ---- 5.1 · transcoder wiring: fixed weights x input-dependent activations ----
+(() => {
+  const svg = document.getElementById('t1-plot'), seg = document.getElementById('t1-in'), out = document.getElementById('t1-out'); if (!svg) return;
+  const E = ['Polish surname', 'English surname', 'city name'], L = ['Eastern Europe', 'a person', 'a place'];
+  const Wt = [[0.9, 0.7, 0.0], [0.0, 0.8, 0.0], [0.3, 0.0, 0.9]];   // decoder(earlier) · encoder(later): fixed
+  const IN = [['Kowalski', [1.0, 0.0, 0.0]], ['Smith', [0.0, 1.0, 0.0]], ['Warsaw', [0.0, 0.0, 1.0]], ['Nowak-Smith', [0.6, 0.6, 0.0]]];
+  let cur = 0; IN.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 't1-i' + i; b.textContent = '“' + t + '”'; b.addEventListener('click', () => { cur = i; draw(); }); seg.appendChild(b); });
+  const draw = () => { while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const z = IN[cur][1], y0 = 40, dy = 70, xL = 20, xR = 400;
+    const hd = (x, t) => { const e = svgEl('text', { x, y: 18, style: 'font-size:11px;fill:var(--dim)' }, svg); e.textContent = t; };
+    hd(xL, 'earlier features (activation z)'); hd(xR, 'later features (sum of z × weight)');
+    const tot = [0, 1, 2].map((j) => z.reduce((a, zi, i) => a + zi * Wt[i][j], 0));
+    E.forEach((n, i) => { const y = y0 + i * dy; svgEl('rect', { x: xL, y, width: 170, height: 40, rx: 8, fill: 'var(--card)', stroke: z[i] > 0 ? 'var(--a)' : 'var(--line)', 'stroke-width': z[i] > 0 ? 2.5 : 1 }, svg);
+      const t = svgEl('text', { x: xL + 10, y: y + 25, style: 'font-size:12px' }, svg); t.textContent = `${n}  z=${z[i].toFixed(1)}`; });
+    L.forEach((n, j) => { const y = y0 + j * dy; svgEl('rect', { x: xR, y, width: 180, height: 40, rx: 8, fill: 'var(--card)', stroke: tot[j] > 0.05 ? 'var(--ok)' : 'var(--line)', 'stroke-width': tot[j] > 0.05 ? 2.5 : 1 }, svg);
+      const t = svgEl('text', { x: xR + 10, y: y + 25, style: 'font-size:12px' }, svg); t.textContent = `${n}  ${tot[j].toFixed(2)}`; });
+    E.forEach((_, i) => L.forEach((_, j) => { if (!Wt[i][j]) return; const on = z[i] > 0;
+      const p = svgEl('path', { d: `M${xL + 172} ${y0 + i * dy + 20} C ${xL + 260} ${y0 + i * dy + 20} ${xR - 90} ${y0 + j * dy + 20} ${xR - 2} ${y0 + j * dy + 20}`, fill: 'none', stroke: on ? 'var(--a)' : 'var(--faint)', 'stroke-width': 1 + 4 * Wt[i][j] * (on ? 1 : 0.4), opacity: on ? 0.95 : 0.35 }, svg);
+      const m = svgEl('text', { x: (xL + xR) / 2 + 20, y: (y0 + i * dy + y0 + j * dy) / 2 + 24, style: `font-size:10px;font-family:var(--mono);fill:${on ? 'var(--ink)' : 'var(--faint)'}` }, svg); m.textContent = 'w=' + Wt[i][j]; }));
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur));
+    const top = tot.indexOf(Math.max(...tot));
+    out.innerHTML = `Input <b>“${IN[cur][0]}”</b>: strongest later feature is <b style="color:var(--ok)">${L[top]}</b> (${tot[top].toFixed(2)}). The connection weights (w) are the same for every input; only the earlier activations changed.`;
+    out.dataset.top = L[top]; };
+  draw();
+})();
+
+// ---- 5.1 · CLT parameter cost (survey formula) ----
+(() => {
+  const sL = document.getElementById('t1-L'), sd = document.getElementById('t1-d'), se = document.getElementById('t1-e'), out = document.getElementById('t1-out2'); if (!sL) return;
+  const DS = [1024, 2048, 4096, 8192, 12288, 16384], ES = [4, 8, 16, 32, 64];
+  const fmt = (n) => n >= 1e12 ? (n / 1e12).toFixed(2) + ' trillion' : n >= 1e9 ? (n / 1e9).toFixed(0) + ' billion' : (n / 1e6).toFixed(0) + ' million';
+  const upd = () => { const L = +sL.value, d = DS[+sd.value], e = ES[+se.value]; sL.nextElementSibling.textContent = L; sd.nextElementSibling.textContent = d.toLocaleString(); se.nextElementSibling.textContent = e;
+    const N = e * d * d / 2 * (L * L + 3 * L), gb = 2 * N / 1e9, N2 = e * d * d / 2 * (4 * L * L + 6 * L);
+    out.innerHTML = `CLT parameters ≈ <b class="mono">${fmt(N)}</b> · 16-bit memory ≈ <b class="mono">${gb >= 1000 ? (gb / 1000).toFixed(2) + ' TB' : gb.toFixed(0) + ' GB'}</b><br><span class="small">Doubling the depth to ${2 * L} layers would need ≈ ${fmt(N2)} (×${(N2 / N).toFixed(1)}).</span>`;
+    out.dataset.n = N; };
+  [sL, sd, se].forEach((x) => x.addEventListener('input', upd)); upd();
+})();
+
+// ---- 5.2 · crosscoder feature footprint across layers (illustrative) ----
+(() => {
+  const svg = document.getElementById('x2-plot'), seg = document.getElementById('x2-pick'), out = document.getElementById('x2-out'); if (!svg) return;
+  const N = 12, P = [
+    ['persists', (l) => 0.85 + 0.05 * Math.sin(l), 'Present at every layer with similar strength: one crosscoder feature replaces 12 per-layer SAE copies.'],
+    ['built mid-network', (l) => 0.9 / (1 + Math.exp(-(l - 5) * 1.6)), 'Absent early, created around layer 5, then carried forward: shows where a feature is computed.'],
+    ['consumed late', (l) => 0.9 / (1 + Math.exp((l - 8) * 1.6)), 'Strong early, fades after layer 8: used up or overwritten by later computation.'],
+    ['one layer only', (l) => (l === 6 ? 0.9 : 0.04), 'Lives in a single layer: a crosscoder adds little over an SAE here.']];
+  let cur = 0; P.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'x2-p' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; draw(); }); seg.appendChild(b); });
+  const draw = () => { while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 50, BW = 36, G = 6, Y0 = 170, H = 140;
+    svgEl('line', { x1: X0 - 6, y1: Y0, x2: X0 + N * (BW + G), y2: Y0, stroke: 'var(--line)' }, svg);
+    for (let l = 0; l < N; l++) { const v = P[cur][1](l), x = X0 + l * (BW + G);
+      svgEl('rect', { x, y: Y0 - H * v, width: BW, height: Math.max(1, H * v), rx: 4, fill: 'var(--b)', opacity: 0.35 + 0.65 * v }, svg);
+      const t = svgEl('text', { x: x + BW / 2, y: Y0 + 16, 'text-anchor': 'middle', style: 'font-size:11px;fill:var(--dim)' }, svg); t.textContent = l + 1; }
+    const a = svgEl('text', { x: X0 + N * (BW + G) / 2, y: Y0 + 34, 'text-anchor': 'middle', style: 'font-size:11px;fill:var(--dim)' }, svg); a.textContent = 'layer';
+    const yl = svgEl('text', { x: 14, y: 95, 'text-anchor': 'middle', transform: 'rotate(-90 14 95)', style: 'font-size:11px;fill:var(--dim)' }, svg); yl.textContent = 'decoder norm';
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur));
+    out.innerHTML = `<b>${P[cur][0]}</b>: ${P[cur][2]}`; };
+  draw();
+})();
+
+// ---- 5.3 · SoLU and layer-norm smuggling ----
+(() => {
+  const svg = document.getElementById('d3-plot'), seg = document.getElementById('d3-pat'), sb = document.getElementById('d3-beta'), out = document.getElementById('d3-out'); if (!svg) return;
+  const PAT = [['one neuron dominant', [3.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.3, -0.4]], ['spread-out pattern', [1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.6]]];
+  let cur = 0; PAT.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'd3-p' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  const norm = (v) => Math.hypot(...v), share = (v) => { const m = Math.max(...v.map(Math.abs)); return m * m / v.reduce((a, x) => a + x * x, 0); };
+  function upd() {
+    const u = PAT[cur][1], b = +sb.value; sb.nextElementSibling.textContent = b.toFixed(2);
+    const relu = u.map((x) => Math.max(0, x)), ex = u.map((x) => Math.exp(b * x)), S = ex.reduce((a, x) => a + x), solu = u.map((x, i) => x * ex[i] / S);
+    const mu = solu.reduce((a, x) => a + x) / solu.length, sd = Math.sqrt(solu.reduce((a, x) => a + (x - mu) ** 2, 0) / solu.length) || 1;
+    const ln = solu.map((x) => (x - mu) / sd * (norm(relu) / Math.sqrt(solu.length)));   // true layer norm (centre, divide by std), drawn at the ReLU output's scale
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const rows = [['ReLU', relu, 'var(--st)'], ['SoLU', solu, 'var(--a)'], ['SoLU → layer norm', ln, 'var(--b)']], mx = Math.max(...relu, ...ln.map(Math.abs)) || 1;
+    rows.forEach(([lab, v, c], r) => { const y = 20 + r * 76, H = 52;
+      const t = svgEl('text', { x: 6, y: y + 30, style: 'font-size:12px' }, svg); t.textContent = lab;
+      v.forEach((x, i) => { const h = H * Math.min(1, Math.abs(x) / mx); svgEl('rect', { x: 160 + i * 48, y: y + H - h, width: 36, height: Math.max(1, h), rx: 3, fill: x >= 0 ? c : 'var(--bad)' }, svg); });
+      svgEl('line', { x1: 156, y1: y + H, x2: 160 + 8 * 48, y2: y + H, stroke: 'var(--line)' }, svg); });
+    const sz = norm(solu) / norm(relu);
+    const msg = cur === 0
+      ? `SoLU keeps the dominant neuron and crushes the rest: top share ${(100 * share(relu)).toFixed(0)}% → <b class="mono">${(100 * share(solu)).toFixed(0)}%</b>. Here SoLU really does sparsify.`
+      : `SoLU shrinks the whole spread-out pattern to <b class="mono">${(100 * sz).toFixed(0)}%</b> of its size while mostly keeping its shape (top share ${(100 * share(relu)).toFixed(0)}% → ${(100 * share(solu)).toFixed(0)}%). Layer norm then rescales it to full size: <b style="color:var(--bad)">the spread-out, polysemantic code survives</b>.`;
+    out.innerHTML = msg; out.dataset.size = sz.toFixed(2); out.dataset.share = share(solu).toFixed(2);
+    [...seg.children].forEach((bt, i) => bt.setAttribute('aria-pressed', i === cur));
+  }
+  sb.addEventListener('input', upd); upd();
+})();
+
+
+// ---- Ch 6 shared toy circuit (IOI-shaped): D → S → N (+ backup B, negative Neg) → output ----
+const toyRun = (D0, fix = {}, directN) => { const v = {}; const g = (k, f) => { v[k] = k in fix ? fix[k] : f(); };
+  g('D', () => D0); g('S', () => v.D); g('N', () => 2 * v.S); g('B', () => Math.max(0, 1.6 * v.S - 0.8 * v.N)); g('Neg', () => -0.4 * v.S);
+  v.M = (directN === undefined ? v.N : directN) + v.B + v.Neg + 0.2; return v; };
+const TOY = { clean: toyRun(1), corrupt: toyRun(0), names: ['D', 'S', 'N', 'B', 'Neg'],
+  label: { D: 'duplicate detector', S: 'inhibition', N: 'name mover', B: 'backup mover', Neg: 'negative mover' },
+  pos: { D: [60, 115], S: [190, 115], N: [340, 40], B: [340, 115], Neg: [340, 190], out: [520, 115] },
+  edges: [['D', 'S'], ['S', 'N'], ['S', 'B'], ['S', 'Neg'], ['N', 'B'], ['N', 'out'], ['B', 'out'], ['Neg', 'out']] };
+TOY.gap = TOY.clean.M - TOY.corrupt.M;
+const toyDraw = (svg, v, opt = {}) => { while (svg.firstChild) svg.removeChild(svg.firstChild);
+  const P = TOY.pos, bw = 110, bh = 40;
+  TOY.edges.forEach(([a, b]) => { const [x1, y1] = P[a], [x2, y2] = P[b], hot = opt.edge && opt.edge[0] === a && opt.edge[1] === b;
+    const d = a === 'N' && b === 'B' ? `M${x1 + 20} ${y1 + bh / 2} L ${x2 + 20} ${y2 - bh / 2}` : `M${x1 + bw / 2} ${y1} L ${x2 - (b === 'out' ? 50 : bw / 2)} ${y2}`;
+    svgEl('path', { d, stroke: hot ? 'var(--b)' : 'var(--line)', 'stroke-width': hot ? 4 : 2, 'stroke-dasharray': hot ? '6 4' : (a === 'N' && b === 'B' ? '3 4' : 'none'), fill: 'none' }, svg); });
+  const nb = svgEl('text', { x: P.N[0] + 26, y: 82, style: 'font-size:10px;fill:var(--dim)' }, svg); nb.textContent = 'N suppresses B';
+  TOY.names.forEach((k) => { const [x, y] = P[k], hot = (opt.nodes || []).includes(k), outside = (opt.outside || []).includes(k);
+    svgEl('rect', { x: x - bw / 2, y: y - bh / 2, width: bw, height: bh, rx: 8, fill: hot ? 'color-mix(in srgb,var(--b) 20%,var(--card))' : 'var(--card)', stroke: hot ? 'var(--b)' : outside ? 'var(--st)' : (opt.inSet || []).includes(k) ? 'var(--a)' : 'var(--line)', 'stroke-width': hot || (opt.inSet || []).includes(k) ? 2.5 : 1.2, 'stroke-dasharray': outside ? '4 3' : 'none' }, svg);
+    const t = svgEl('text', { x, y: y - 3, 'text-anchor': 'middle', style: 'font-size:12px;font-weight:600' }, svg); t.textContent = k;
+    const u = svgEl('text', { x, y: y + 13, 'text-anchor': 'middle', style: 'font-size:10.5px;font-family:var(--mono);fill:var(--dim)' }, svg); u.textContent = `${v[k].toFixed(1)} (clean ${TOY.clean[k].toFixed(1)})`; });
+  const [ox, oy] = P.out; svgEl('rect', { x: ox - 50, y: oy - 26, width: 120, height: 52, rx: 10, fill: 'var(--card)', stroke: 'var(--ok)', 'stroke-width': 2 }, svg);
+  const o1 = svgEl('text', { x: ox + 10, y: oy - 5, 'text-anchor': 'middle', style: 'font-size:11px;fill:var(--dim)' }, svg); o1.textContent = 'logit difference';
+  const o2 = svgEl('text', { x: ox + 10, y: oy + 14, 'text-anchor': 'middle', style: 'font-size:14px;font-weight:700;font-family:var(--mono)' }, svg); o2.textContent = v.M.toFixed(2); };
+
+// ---- 6.1 · activation vs path patching on the toy circuit ----
+(() => {
+  const svg = document.getElementById('p1-plot'), sm = document.getElementById('p1-method'), sc = document.getElementById('p1-comp'), out = document.getElementById('p1-out'); if (!svg) return;
+  const M = ['activation patching', 'path patching (edge to output)']; let m = 0, c = 2;
+  M.forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'p1-m' + i; b.textContent = t; b.addEventListener('click', () => { m = i; upd(); }); sm.appendChild(b); });
+  TOY.names.forEach((k, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'p1-k' + i; b.textContent = k; b.title = TOY.label[k]; b.addEventListener('click', () => { c = i; upd(); }); sc.appendChild(b); });
+  function upd() { const k = TOY.names[c]; let v, note = '';
+    if (m === 0) v = toyRun(1, { [k]: TOY.corrupt[k] });
+    else if (k === 'N') v = toyRun(1, {}, TOY.corrupt.N);
+    else if (k === 'B' || k === 'Neg') v = toyRun(1, { [k]: TOY.corrupt[k] });
+    else { v = toyRun(1); note = `${k} has no direct edge to the output, so there is nothing to path-patch here; its effect only travels through other components.`; }
+    toyDraw(svg, v, m === 0 || !note ? (m === 0 ? { nodes: [k] } : { edge: [k, 'out'] }) : {});
+    const eff = (TOY.clean.M - v.M) / TOY.gap, pct = Math.round(100 * eff);
+    out.dataset.eff = pct;
+    const col = pct >= 90 ? 'var(--ok)' : pct < 0 ? 'var(--bad)' : pct < 50 ? 'var(--bad)' : 'var(--ink)';
+    let why = '';
+    if (m === 0 && k === 'N') why = ' The backup B sees N go quiet and fires (0 → 1.6), so most of the answer survives: the name mover looks unimportant.';
+    else if (m === 1 && k === 'N') why = ' Only N’s direct write to the output is corrupted; B still sees the clean N and stays silent. Now N’s real contribution shows, and it overshoots 100% because the negative mover still pulls down.';
+    else if (k === 'Neg') why = ' Negative: removing this component makes the answer <i>stronger</i>. A probability metric can miss this (see section 4).';
+    else if (k === 'B') why = ' On clean inputs the backup is silent, so patching it does nothing, even though it matters when N fails.';
+    else if (m === 0) why = ' Everything downstream loses its input.';
+    out.innerHTML = note ? note : `Patched metric <b class="mono">${v.M.toFixed(2)}</b> (clean 1.80, corrupted 0.20) → effect <b class="mono" style="color:${col}">${pct}%</b> of the clean–corrupted gap.${why}`;
+    [...sm.children].forEach((b, i) => b.setAttribute('aria-pressed', i === m)); [...sc.children].forEach((b, i) => b.setAttribute('aria-pressed', i === c)); }
+  upd();
+})();
+
+// ---- 6.2 · EAP (first-order) vs exact patching vs integrated gradients ----
+(() => {
+  const svg = document.getElementById('p2-plot'), s = document.getElementById('p2-hx'), out = document.getElementById('p2-out'); if (!svg) return;
+  const f = (h) => 3 * Math.tanh(h), df = (h) => 3 * (1 - Math.tanh(h) ** 2), hc = 1.5;
+  const X0 = 50, X1 = 330, Y0 = 210, Y1 = 20, hx0 = -2, hx1 = 2, mx = (h) => X0 + (h - hx0) / (hx1 - hx0) * (X1 - X0), my = (y) => Y0 - (y + 3.2) / 6.4 * (Y0 - Y1);
+  function upd() { const hx = +s.value; s.nextElementSibling.textContent = hx.toFixed(1);
+    const exact = f(hc) - f(hx), eap = df(hc) * (hc - hx); let ig = 0; const n = 50; for (let i = 0; i < n; i++) ig += df(hx + (i + 0.5) / n * (hc - hx)); ig = ig / n * (hc - hx);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svgEl('line', { x1: X0, y1: my(0), x2: X1, y2: my(0), stroke: 'var(--line)' }, svg); svgEl('line', { x1: mx(0), y1: Y0, x2: mx(0), y2: Y1, stroke: 'var(--line)' }, svg);
+    let d = ''; for (let i = 0; i <= 80; i++) { const h = hx0 + i / 80 * (hx1 - hx0); d += (i ? 'L' : 'M') + mx(h).toFixed(1) + ' ' + my(f(h)).toFixed(1); }
+    svgEl('path', { d, fill: 'none', stroke: 'var(--a)', 'stroke-width': 2.5 }, svg);
+    const t1 = hx0, t2 = hx1, ty = (h) => f(hc) + df(hc) * (h - hc), clip = (y) => Math.max(-3.2, Math.min(3.2, y));
+    svgEl('line', { x1: mx(t1), y1: my(clip(ty(t1))), x2: mx(t2), y2: my(clip(ty(t2))), stroke: 'var(--b)', 'stroke-width': 1.8, 'stroke-dasharray': '6 4' }, svg);
+    svgEl('line', { x1: mx(hx), y1: my(f(hx)), x2: mx(hx), y2: my(ty(hx) > 3.2 ? 3.2 : ty(hx)), stroke: 'var(--bad)', 'stroke-width': 1.5, 'stroke-dasharray': '2 3' }, svg);
+    [[hc, 'clean', 'var(--a)'], [hx, 'corrupt', 'var(--b)']].forEach(([h, l, c2], i) => { svgEl('circle', { cx: mx(h), cy: my(f(h)), r: 5.5, fill: c2 }, svg);
+      const t = svgEl('text', { x: mx(h) + (i ? -8 : 4), y: my(f(h)) + 20, 'text-anchor': i ? 'end' : 'start', style: 'font-size:11px' }, svg); t.textContent = l; });
+    const ax = svgEl('text', { x: X1, y: my(0) + 16, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); ax.textContent = 'edge activation h';
+    const ay = svgEl('text', { x: mx(0) + 6, y: Y1 + 4, style: 'font-size:10.5px;fill:var(--dim)' }, svg); ay.textContent = 'metric M = 3·tanh(h)';
+    const tl = svgEl('text', { x: mx(-1.95), y: my(clip(ty(-1.95))) - 16, style: 'font-size:10.5px;fill:var(--b)' }, svg); tl.textContent = 'EAP’s straight line';
+    const B = [['exact', exact, 'var(--a)'], ['EAP', eap, 'var(--b)'], ['EAP-IG', ig, 'var(--ok)']], bx = 370, bwid = 170, vmax = 6;
+    B.forEach(([l, v, c2], i) => { const y = 50 + i * 52;
+      const t = svgEl('text', { x: bx, y: y - 6, style: 'font-size:11.5px' }, svg); t.textContent = l;
+      svgEl('rect', { x: bx, y, width: Math.max(1, bwid * Math.min(1, Math.abs(v) / vmax)), height: 18, rx: 4, fill: c2 }, svg);
+      const n2 = svgEl('text', { x: bx + bwid + 2, y: y + 14, 'text-anchor': 'end', style: 'font-size:11.5px;font-family:var(--mono);font-weight:600' }, svg); n2.textContent = v.toFixed(2); });
+    const err = Math.abs(eap - exact) / Math.max(1e-9, Math.abs(exact));
+    out.innerHTML = `True effect <b class="mono" style="color:var(--a)">${exact.toFixed(2)}</b> · EAP <b class="mono" style="color:var(--b)">${eap.toFixed(2)}</b> (${err < 0.1 ? 'close' : `off by <b style="color:var(--bad)">${(100 * err).toFixed(0)}%</b>`}) · EAP-IG <b class="mono" style="color:var(--ok)">${ig.toFixed(2)}</b>.<br><span class="small">${hx > 1.1 ? 'Corrupted value is near the clean one, where the curve is almost straight, so the first-order guess works.' : 'The curve has flattened at the clean point, so its local slope badly underestimates the change. Averaging the slope along the whole path (IG) fixes it.'}</span>`;
+    out.dataset.exact = exact.toFixed(2); out.dataset.eap = eap.toFixed(2); out.dataset.ig = ig.toFixed(2); }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 6.3 · pruning a toy attribution graph (illustrative weights) ----
+(() => {
+  const svg = document.getElementById('p3-plot'), s = document.getElementById('p3-th'), out = document.getElementById('p3-out'); if (!svg) return;
+  const N = { t0: ['“Dallas”', 40, 70, 'tok'], t1: ['“state”', 40, 160, 'tok'], t2: ['“capital”', 40, 250, 'tok'],
+    dal: ['Dallas', 175, 40, 'f'], city: ['a city', 175, 100, 'f'], cap: ['capital', 175, 265, 'f'], n1: ['', 175, 150, 'n'], n2: ['', 175, 185, 'n'], n3: ['', 175, 220, 'n'],
+    tex: ['Texas', 315, 60, 'f'], scap: ['say a capital', 315, 255, 'f'], n4: ['', 315, 125, 'n'], n5: ['', 315, 160, 'n'], n6: ['', 315, 200, 'n'],
+    aus: ['say Austin', 455, 150, 'f'], n7: ['', 455, 70, 'n'], n8: ['', 455, 230, 'n'], out: ['Austin', 590, 150, 'out'] };
+  const E = [['t0', 'dal', .9], ['t0', 'city', .5], ['t2', 'cap', .9], ['t1', 'cap', .4], ['dal', 'tex', .8], ['city', 'tex', .35], ['cap', 'scap', .8], ['tex', 'aus', .7], ['scap', 'aus', .6], ['aus', 'out', .9], ['tex', 'out', .2],
+    ['t0', 'n1', .2], ['t1', 'n2', .25], ['t2', 'n3', .15], ['n1', 'n4', .2], ['n2', 'n5', .15], ['n3', 'n6', .1], ['dal', 'n5', .12], ['n4', 'n7', .18], ['n5', 'aus', .1], ['n6', 'n8', .2], ['n7', 'out', .15], ['n8', 'out', .08], ['cap', 'n6', .14], ['n4', 'aus', .08], ['city', 'n4', .1]];
+  const order = Object.keys(N).sort((a, b) => N[a][1] - N[b][1]);
+  const infl = (es) => { const v = {}; order.forEach((k) => { v[k] = N[k][3] === 'tok' ? 1 : 0; }); order.forEach((k) => es.filter((e) => e[0] === k).forEach(([a, b, w]) => { v[b] += v[a] * w; })); return v.out; };
+  const full = infl(E), feats = Object.keys(N).filter((k) => N[k][3] !== 'tok' && N[k][3] !== 'out');
+  function upd() { const th = +s.value; s.nextElementSibling.textContent = th.toFixed(2);
+    let es = E.filter((e) => e[2] >= th - 1e-9);
+    const fwd = new Set(Object.keys(N).filter((k) => N[k][3] === 'tok')); order.forEach((k) => { if (fwd.has(k)) es.filter((e) => e[0] === k).forEach((e) => fwd.add(e[1])); });
+    const bwd = new Set(['out']); [...order].reverse().forEach((k) => { if (bwd.has(k)) es.filter((e) => e[1] === k).forEach((e) => bwd.add(e[0])); });
+    const alive = (k) => fwd.has(k) && bwd.has(k); es = es.filter((e) => alive(e[0]) && alive(e[1]));
+    const kept = feats.filter(alive), pct = 100 * infl(es) / full, main = alive('tex') && alive('aus') && alive('dal');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    E.forEach((e) => { const [a, b, w] = e, on = es.includes(e), A = N[a], Bn = N[b];
+      svgEl('path', { d: `M${A[1] + 30} ${A[2]} C ${A[1] + 75} ${A[2]} ${Bn[1] - 75} ${Bn[2]} ${Bn[1] - 32} ${Bn[2]}`, fill: 'none', stroke: on ? 'var(--a)' : 'var(--bad)', 'stroke-width': on ? 1 + 5 * w : 1, opacity: on ? 0.85 : 0.25, 'stroke-dasharray': on ? 'none' : '3 4' }, svg); });
+    Object.entries(N).forEach(([k, [l, x, y, t]]) => { const on = t === 'tok' || alive(k) || k === 'out';
+      if (t === 'n') { svgEl('circle', { cx: x, cy: y, r: 9, fill: 'var(--card)', stroke: on ? 'var(--a)' : 'var(--bad)', opacity: on ? 1 : 0.35, 'stroke-dasharray': on ? 'none' : '3 3' }, svg); return; }
+      const w = t === 'f' ? 88 : 72; svgEl('rect', { x: x - w / 2 + (t === 'out' ? 10 : 0), y: y - 14, width: w, height: 28, rx: 7, fill: 'var(--card)', stroke: t === 'tok' ? 'var(--st)' : t === 'out' ? 'var(--ok)' : on ? 'var(--a)' : 'var(--bad)', 'stroke-width': 1.8, opacity: on ? 1 : 0.35, 'stroke-dasharray': on ? 'none' : '3 3' }, svg);
+      const tx = svgEl('text', { x: x + (t === 'out' ? 10 : 0), y: y + 4, 'text-anchor': 'middle', style: `font-size:${l.length > 10 ? 10.5 : 11.5}px;opacity:${on ? 1 : 0.4}` }, svg); tx.textContent = l; });
+    const k2 = svgEl('text', { x: 250, y: 295, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); k2.textContent = 'unlabelled circles = weak side features';
+    out.innerHTML = `Features kept <b class="mono">${kept.length} / ${feats.length}</b> · influence kept <b class="mono">${pct.toFixed(0)}%</b> · ${main ? '<b style="color:var(--ok)">Dallas → Texas → say Austin path intact</b>' : '<b style="color:var(--bad)">main path cut: the graph no longer explains the answer</b>'}`;
+    out.dataset.kept = kept.length; out.dataset.pct = pct.toFixed(0); out.dataset.main = main; }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 6.4 · necessity and sufficiency of a candidate circuit ----
+(() => {
+  const seg = document.getElementById('p4-pick'), svg = document.getElementById('p4-bars'), out = document.getElementById('p4-out'); if (!seg) return;
+  const set = new Set(['D', 'S', 'N']);
+  TOY.names.forEach((k) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'p4-' + k; b.textContent = k; b.title = TOY.label[k]; b.addEventListener('click', () => { set.has(k) ? set.delete(k) : set.add(k); upd(); }); seg.appendChild(b); });
+  function upd() { const inS = TOY.names.filter((k) => set.has(k)), outS = TOY.names.filter((k) => !set.has(k));
+    const fx = (ks) => Object.fromEntries(ks.map((k) => [k, TOY.corrupt[k]]));
+    const nec = (TOY.clean.M - toyRun(1, fx(inS)).M) / TOY.gap, suf = (toyRun(1, fx(outS)).M - TOY.corrupt.M) / TOY.gap;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 120, W = 360, sc = (p) => X0 + W * Math.max(0, Math.min(1.5, p)) / 1.5;
+    [0, 0.5, 1, 1.5].forEach((p) => { svgEl('line', { x1: sc(p), y1: 18, x2: sc(p), y2: 120, stroke: p === 1 ? 'var(--ok)' : 'var(--line)', 'stroke-dasharray': p === 1 ? '5 4' : '2 4' }, svg);
+      const t = svgEl('text', { x: sc(p), y: 136, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = (100 * p) + '%'; });
+    [['necessity', nec], ['sufficiency', suf]].forEach(([l, p], i) => { const y = 30 + i * 46, c = p > 1.05 ? 'var(--bad)' : p >= 0.9 ? 'var(--ok)' : p < 0.5 ? 'var(--bad)' : 'var(--a)';
+      const t = svgEl('text', { x: X0 - 8, y: y + 15, 'text-anchor': 'end', style: 'font-size:12px' }, svg); t.textContent = l;
+      svgEl('rect', { x: X0, y, width: Math.max(1, sc(p) - X0), height: 22, rx: 4, fill: c }, svg);
+      const n = svgEl('text', { x: Math.min(sc(p) + 6, 540), y: y + 16, 'text-anchor': sc(p) + 6 > 500 ? 'end' : 'start', style: 'font-size:12px;font-family:var(--mono);font-weight:600' }, svg); n.textContent = Math.round(100 * p) + '%'; });
+    const N = Math.round(100 * nec), S = Math.round(100 * suf);
+    let msg = '';
+    if (!inS.length) msg = 'Pick at least one component.';
+    else if (N >= 95 && S >= 95 && S <= 105) msg = 'Necessary and sufficient: a faithful circuit for this behaviour.';
+    else if (S > 105) msg = 'Overshoots: ablating the components outside the circuit removed something that was <i>hurting</i> the answer (the negative mover), so the circuit “recovers” more than the full model.';
+    else if (N < 50 && set.has('N') && !set.has('B')) msg = 'Weak necessity: knock out N and the backup B takes over. A redundant mechanism hides the circuit’s importance.';
+    else if (S < 50) msg = 'Not sufficient: something the circuit relies on (its inputs or a parallel path) was ablated.';
+    else msg = 'Partly explains the behaviour.';
+    out.innerHTML = `Circuit {${inS.join(', ')}}: necessity <b class="mono">${N}%</b> · sufficiency <b class="mono">${S}%</b>. ${msg}`;
+    out.dataset.nec = N; out.dataset.suf = S;
+    [...seg.children].forEach((b) => b.setAttribute('aria-pressed', set.has(b.textContent))); }
+  upd();
+})();
+
+
+// ---- 7.1 · cherry-picking and missing baselines (illustrative scores) ----
+(() => {
+  const svg = document.getElementById('j1-plot'), seg = document.getElementById('j1-view'), out = document.getElementById('j1-out'); if (!svg) return;
+  const r = rng(71), cl = (x) => Math.max(0.02, Math.min(0.98, x));
+  const M = Array.from({ length: 40 }, () => cl(0.5 + 0.22 * gauss(r))).sort((a, b) => b - a), Bz = Array.from({ length: 40 }, () => cl(0.35 + 0.15 * gauss(r))).sort((a, b) => b - a);
+  const V = ['paper figure (best 3)', 'all 40 prompts', 'all 40 + random baseline']; let v = 0;
+  V.forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'j1-v' + i; b.textContent = t; b.addEventListener('click', () => { v = i; upd(); }); seg.appendChild(b); });
+  const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
+  function upd() { while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 50, X1 = 540, Y0 = 190, Y1 = 15, xs = (i) => X0 + (i + 0.5) / 40 * (X1 - X0), ys = (s) => Y0 - s * (Y0 - Y1);
+    [0, 0.5, 1].forEach((s) => { svgEl('line', { x1: X0, y1: ys(s), x2: X1, y2: ys(s), stroke: 'var(--line)', 'stroke-dasharray': s === 0.5 ? '4 4' : 'none' }, svg); const t = svgEl('text', { x: X0 - 6, y: ys(s) + 4, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = s.toFixed(1); });
+    const xl = svgEl('text', { x: (X0 + X1) / 2, y: 212, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); xl.textContent = 'prompts, sorted by the method’s score';
+    if (v === 2) Bz.forEach((s, i) => svgEl('circle', { cx: xs(i), cy: ys(s), r: 4, fill: 'var(--st)', opacity: 0.8 }, svg));
+    M.forEach((s, i) => { const shown = v > 0 || i < 3; svgEl('circle', { cx: xs(i), cy: ys(s), r: 5, fill: shown ? (v === 0 ? 'var(--ok)' : 'var(--a)') : 'var(--bad)', opacity: shown ? 1 : 0.18 }, svg); });
+    if (v === 0) { const t = svgEl('text', { x: xs(5), y: ys(M[0]) + 4, style: 'font-size:11px;fill:var(--ok)' }, svg); t.textContent = '← shown in the paper; the faded rest is never reported'; }
+    const shown = v === 0 ? M.slice(0, 3) : M, cov = M.filter((s) => s >= 0.5).length;
+    out.innerHTML = v === 0 ? `Reported average <b class="mono" style="color:var(--ok)">${mean(shown).toFixed(2)}</b> on 3 hand-picked prompts. Looks excellent.`
+      : `Average over all 40 prompts <b class="mono">${mean(M).toFixed(2)}</b>; coverage (score ≥ 0.5) <b class="mono">${cov}/40</b>.` + (v === 2 ? ` A random-direction baseline already averages <b class="mono" style="color:var(--st)">${mean(Bz).toFixed(2)}</b>, so the method adds only <b class="mono">${(mean(M) - mean(Bz)).toFixed(2)}</b> over it; the figure suggested ${mean(M.slice(0, 3)).toFixed(2)}.` : ' Without a baseline, we still can’t tell if 0.5 is good.');
+    out.dataset.top3 = mean(M.slice(0, 3)).toFixed(2); out.dataset.all = mean(M).toFixed(2); out.dataset.base = mean(Bz).toFixed(2); out.dataset.cov = cov;
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === v)); }
+  upd();
+})();
+
+// ---- 7.2 · effect agreement vs effect-size error (EAP on a saturating metric) ----
+const rankOf = (a) => { const idx = a.map((x, i) => [x, i]).sort((p, q) => p[0] - q[0]), r = new Array(a.length); idx.forEach(([, i], k) => { r[i] = k; }); return r; };
+const pearson = (a, b) => { const n = a.length, ma = a.reduce((s, x) => s + x) / n, mb = b.reduce((s, x) => s + x) / n; let c = 0, va = 0, vb = 0; for (let i = 0; i < n; i++) { c += (a[i] - ma) * (b[i] - mb); va += (a[i] - ma) ** 2; vb += (b[i] - mb) ** 2; } return c / Math.sqrt(va * vb || 1); };
+(() => {
+  const svg = document.getElementById('j2-plot'), s = document.getElementById('j2-sat'), out = document.getElementById('j2-out'); if (!svg) return;
+  function upd() { const hm = +s.value; s.nextElementSibling.textContent = hm.toFixed(1);
+    const H = Array.from({ length: 12 }, (_, i) => hm * (i + 1) / 12), eff = H.map((h) => 3 * Math.tanh(h)), sc = H.map((h) => 3 * (1 - Math.tanh(h) ** 2) * h);
+    const sp = pearson(rankOf(sc), rankOf(eff)), pe = pearson(sc, eff), err = sc.reduce((a, x, i) => a + Math.abs(x - eff[i]), 0) / 12, meff = eff.reduce((a, x) => a + x) / 12;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 60, X1 = 330, Y0 = 220, Y1 = 15, mx = (x) => X0 + x / 3 * (X1 - X0), my = (y) => Y0 - y / 3 * (Y0 - Y1);
+    svgEl('rect', { x: X0, y: Y1, width: X1 - X0, height: Y0 - Y1, fill: 'none', stroke: 'var(--line)' }, svg);
+    svgEl('line', { x1: mx(0), y1: my(0), x2: mx(3), y2: my(3), stroke: 'var(--ok)', 'stroke-dasharray': '5 4' }, svg);
+    const dl = svgEl('text', { x: mx(2.15), y: my(1.85), style: 'font-size:10.5px;fill:var(--ok)' }, svg); dl.textContent = 'score = effect';
+    H.forEach((_, i) => { svgEl('line', { x1: mx(eff[i]), y1: my(eff[i]), x2: mx(eff[i]), y2: my(sc[i]), stroke: 'var(--bad)', opacity: 0.5 }, svg); svgEl('circle', { cx: mx(eff[i]), cy: my(sc[i]), r: 5, fill: 'var(--b)' }, svg); });
+    const xl = svgEl('text', { x: (X0 + X1) / 2, y: 242, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); xl.textContent = 'true patching effect s';
+    const yl = svgEl('text', { x: 20, y: (Y0 + Y1) / 2, 'text-anchor': 'middle', transform: `rotate(-90 20 ${(Y0 + Y1) / 2})`, style: 'font-size:10.5px;fill:var(--dim)' }, svg); yl.textContent = 'EAP score a';
+    [0, 1, 2, 3].forEach((t) => { const a = svgEl('text', { x: mx(t), y: Y0 + 13, 'text-anchor': 'middle', style: 'font-size:9.5px;fill:var(--dim)' }, svg); a.textContent = t; const b = svgEl('text', { x: X0 - 5, y: my(t) + 3, 'text-anchor': 'end', style: 'font-size:9.5px;fill:var(--dim)' }, svg); b.textContent = t; });
+    const R = [['Spearman (ranks)', sp, sp > 0.9], ['Pearson', pe, pe > 0.9], ['mean |a − s|', err, err < 0.2 * meff]];
+    R.forEach(([l, val, good], i) => { const y = 60 + i * 55; const t = svgEl('text', { x: 370, y, style: 'font-size:12px;fill:var(--dim)' }, svg); t.textContent = l;
+      const n = svgEl('text', { x: 370, y: y + 24, style: `font-size:20px;font-weight:700;font-family:var(--mono);fill:${good ? 'var(--ok)' : 'var(--bad)'}` }, svg); n.textContent = val.toFixed(2); });
+    out.innerHTML = sp > 0.99 && err < 0.2 * meff ? `Ranking perfect (Spearman <b class="mono">${sp.toFixed(2)}</b>) and sizes close (error <b class="mono">${err.toFixed(2)}</b> vs. average effect ${meff.toFixed(2)}). EAP is trustworthy here.`
+      : sp > 0.9 ? `Ranking still right (Spearman <b class="mono">${sp.toFixed(2)}</b>) but sizes are off (error <b class="mono" style="color:var(--bad)">${err.toFixed(2)}</b> vs. average effect ${meff.toFixed(2)}): good agreement, poor calibration.`
+      : `The biggest components now get the <i>smallest</i> scores: Spearman <b class="mono" style="color:var(--bad)">${sp.toFixed(2)}</b>, error <b class="mono" style="color:var(--bad)">${err.toFixed(2)}</b> vs. average effect ${meff.toFixed(2)}. A top-k selection by EAP would drop the most important parts.`;
+    out.dataset.sp = sp.toFixed(2); out.dataset.err = err.toFixed(2); out.dataset.meff = meff.toFixed(2); }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 7.2 · counterfactual recovery explodes when the denominator is small (illustrative) ----
+(() => {
+  const svg = document.getElementById('j2-rec'), s = document.getElementById('j2-gap'), out = document.getElementById('j2-out2'); if (!svg) return;
+  const r = rng(72), U = Array.from({ length: 12 }, () => [0.5 + r(), gauss(r)]);
+  function upd() { const g = +s.value; s.nextElementSibling.textContent = g.toFixed(2);
+    const rec = U.map(([u, z]) => { const gi = g * u; return (0.8 * gi + 0.1 * z) / gi; });
+    const m = rec.reduce((a, x) => a + x) / rec.length, outside = rec.filter((x) => x < 0 || x > 1).length, lo = Math.min(...rec), hi = Math.max(...rec);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const A = -2, B = 3, X0 = 30, X1 = 530, mx = (x) => X0 + (Math.max(A, Math.min(B, x)) - A) / (B - A) * (X1 - X0);
+    svgEl('rect', { x: mx(0), y: 30, width: mx(1) - mx(0), height: 50, fill: 'color-mix(in srgb,var(--ok) 15%,transparent)' }, svg);
+    svgEl('line', { x1: X0, y1: 80, x2: X1, y2: 80, stroke: 'var(--line)' }, svg);
+    [-2, -1, 0, 1, 2, 3].forEach((t) => { const a = svgEl('text', { x: mx(t), y: 98, 'text-anchor': 'middle', style: 'font-size:10px;fill:var(--dim)' }, svg); a.textContent = t === -2 ? '≤ −2' : t === 3 ? '≥ 3' : t; });
+    svgEl('line', { x1: mx(0.8), y1: 14, x2: mx(0.8), y2: 80, stroke: 'var(--a)', 'stroke-dasharray': '3 3' }, svg); const tr = svgEl('text', { x: mx(0.8) + 5, y: 16, style: 'font-size:10.5px;fill:var(--a)' }, svg); tr.textContent = 'true 0.8';
+    rec.forEach((x, i) => svgEl('circle', { cx: mx(x), cy: 40 + (i % 4) * 11, r: 5, fill: x < 0 || x > 1 ? 'var(--bad)' : 'var(--a)' }, svg));
+    const k = svgEl('text', { x: mx(0) - 6, y: 34, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--ok)' }, svg); k.textContent = 'sensible range [0, 1] →';
+    const k2 = svgEl('text', { x: (X0 + X1) / 2, y: 122, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); k2.textContent = 'per-pair recovery (dots beyond the ends are clipped)';
+    out.innerHTML = `Average recovery <b class="mono" style="color:${Math.abs(m - 0.8) < 0.1 ? 'var(--ok)' : 'var(--bad)'}">${m.toFixed(2)}</b> (truth 0.80) · range <b class="mono">${lo.toFixed(1)} to ${hi.toFixed(1)}</b> · <b class="mono">${outside}/12</b> pairs outside [0, 1].`;
+    out.dataset.mean = m.toFixed(2); out.dataset.outside = outside; out.dataset.lo = lo.toFixed(1); out.dataset.hi = hi.toFixed(1); }
+  s.addEventListener('input', upd); upd();
+})();
+
+
+// ---- Ch 8 helpers ----
+const lsSolve = (A, b) => { const n = A.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r; [M[c], M[p]] = [M[p], M[c]];
+    for (let r = 0; r < n; r++) if (r !== c) { const f = M[r][c] / M[c][c]; for (let k = c; k <= n; k++) M[r][k] -= f * M[c][k]; } }
+  return M.map((r, i) => r[n] / r[i]); };
+const softmaxV = (v, T = 1) => { const m = Math.max(...v), e = v.map((x) => Math.exp(T * (x - m))), s = e.reduce((a, x) => a + x); return e.map((x) => x / s); };
+const dotV = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+
+// ---- 8.1 · logit lens vs tuned lens on a toy with basis drift and a hidden answer ----
+(() => {
+  const svg = document.getElementById('l1-plot'), s = document.getElementById('l1-drift'), out = document.getElementById('l1-out'); if (!svg) return;
+  const V = 8, D = 16, L = 12, TOK = 'ABCDEFGH', PL = [[0, 3, 1.0], [1, 5, 0.8], [2, 6, 1.2], [4, 7, 0.9], [1, 2, 0.7], [0, 6, 0.6]];
+  const sig = (x) => 1 / (1 + Math.exp(-x)), sOut = (l) => sig((l - 9) * 1.5), sHid = (l) => sig((l - 4) * 1.5);
+  // dims 0–7: output-facing part (what W_U reads); dims 8–15: a hidden part where the answer is computed first
+  const content = (b, c, l) => { const v = new Array(D).fill(0); v[b] += 1 - sOut(l); v[c] += sOut(l); v[V + c] += sHid(l); return v; };
+  const rot = (v, ang) => { const x = [...v]; PL.forEach(([i, j, k]) => { const a = ang * k, ci = Math.cos(a), si = Math.sin(a), xi = x[i], xj = x[j]; x[i] = ci * xi - si * xj; x[j] = si * xi + ci * xj; }); return x; };
+  const r0 = rng(81), DATA = []; for (let n = 0; n < 300; n++) { const b = Math.floor(r0() * V); let c = Math.floor(r0() * (V - 1)); if (c >= b) c++; DATA.push([b, c, Array.from({ length: L + 1 }, () => Array.from({ length: D }, () => 0.05 * gauss(r0)))]); }
+  const cache = {};
+  const fit = (drift) => { const key = drift.toFixed(2); if (cache[key]) return cache[key];
+    const H = (b, c, l, nz) => rot(content(b, c, l), drift * (L - l) / L).map((x, i) => x + (nz ? nz[l][i] : 0));
+    const lenses = []; for (let l = 0; l <= L; l++) { const X = DATA.map(([b, c, nz]) => [...H(b, c, l, nz), 1]), Y = DATA.map(([b, c, nz]) => H(b, c, L, nz).slice(0, V));
+      const XtX = Array.from({ length: D + 1 }, (_, i) => Array.from({ length: D + 1 }, (_, j) => X.reduce((a, x) => a + x[i] * x[j], 0) + (i === j ? 1e-3 : 0)));
+      lenses.push(Array.from({ length: V }, (_, k) => lsSolve(XtX, Array.from({ length: D + 1 }, (_, i) => X.reduce((a, x, n) => a + x[i] * Y[n][k], 0))))); }
+    return (cache[key] = { H, lenses }); };
+  function upd() { const drift = +s.value; s.nextElementSibling.textContent = drift.toFixed(2);
+    const { H, lenses } = fit(drift), b = 1, c = 2, T = 4, rows = [];
+    for (let l = 0; l <= L; l++) { const h = H(b, c, l), hx = [...h, 1];
+      rows.push([softmaxV(h.slice(0, V), T), softmaxV(lenses[l].map((w) => dotV(w, hx)), T), softmaxV(content(b, c, l).slice(0, V), T), sHid(l)]); }
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const COL = [['logit lens', 'var(--a)'], ['tuned lens', 'var(--b)'], ['inside the toy', 'var(--ok)']], X0 = 70, CW = 160, RH = 22, Y0 = 34;
+    COL.forEach(([t, c2], j) => { const e = svgEl('text', { x: X0 + j * CW + 60, y: 20, 'text-anchor': 'middle', style: `font-size:12px;font-weight:600;fill:${c2}` }, svg); e.textContent = t; });
+    const first = [null, null, null], wrong = [0, 0]; let hid = null;
+    rows.forEach((r, l) => { const y = Y0 + l * RH; const lt = svgEl('text', { x: 10, y: y + 15, style: 'font-size:11px;fill:var(--dim)' }, svg); lt.textContent = 'layer ' + l;
+      const truthTop = r[2].indexOf(Math.max(...r[2])); if (hid === null && r[3] > 0.5) hid = l;
+      [0, 1, 2].forEach((j) => { const p = r[j], k = p.indexOf(Math.max(...p)), pr = p[k], x = X0 + j * CW, faint = pr < 0.2;
+        const bad = j === 0 && (faint || k !== truthTop);
+        if (k === c && first[j] === null && !faint) first[j] = l; if (j < 2 && bad) wrong[j]++;
+        svgEl('rect', { x, y: y + 2, width: 100, height: RH - 4, rx: 4, fill: 'var(--bg2)' }, svg);
+        svgEl('rect', { x, y: y + 2, width: Math.max(1, 100 * pr), height: RH - 4, rx: 4, fill: bad ? 'var(--bad)' : COL[j][1], opacity: faint ? 0.25 : 0.75 }, svg);
+        const t = svgEl('text', { x: x + 106, y: y + 15, style: 'font-size:11px;font-family:var(--mono);font-weight:600' }, svg); t.textContent = (faint ? '·' : TOK[k]) + (j === 2 && r[3] > 0.5 && k !== c ? ' +C' : ''); }); });
+    const fs = (v) => v === null ? 'never' : 'layer ' + v;
+    out.innerHTML = `Inside the toy, C is computed in a hidden part from <b class="mono">${fs(hid)}</b> and reaches the output-facing part at <b class="mono">${fs(first[2])}</b>; before that the output part still carries <b>B</b>. ` +
+      `Logit lens: C from <b class="mono" style="color:var(--a)">${fs(first[0])}</b>, misreading <b class="mono">${wrong[0]}</b> of 13 layers${drift > 0.3 ? ' (red: drift scrambles the early layers)' : ''}. ` +
+      `Tuned lens: C from <b class="mono" style="color:var(--b)">${fs(first[1])}</b>${first[1] !== null && first[2] !== null && first[1] < first[2] ? `, <b style="color:var(--bad)">${first[2] - first[1]} layers early</b>: it finds the answer wherever it is and never shows the B stage the layers still carry` : ''}.`;
+    out.dataset.first = first.join(','); out.dataset.wrong = wrong[0]; out.dataset.hid = hid; }
+  s.addEventListener('input', debounce(upd, 60)); upd();
+})();
+
+// ---- 8.3 · control tasks and selectivity: linear vs 1-nearest-neighbour probe ----
+(() => {
+  const svg = document.getElementById('l3-bars'), seg = document.getElementById('l3-probe'), out = document.getElementById('l3-out'); if (!svg) return;
+  const D = 5, NT = 30, r = rng(83), E = Array.from({ length: NT }, () => Array.from({ length: D }, () => gauss(r))), w = Array.from({ length: D }, () => gauss(r));
+  const yReal = E.map((e) => (dotV(e, w) > 0 ? 1 : 0)), yCtl = E.map(() => (r() < 0.5 ? 1 : 0));
+  const mk = (n) => Array.from({ length: n }, () => { const t = Math.floor(r() * NT); return [t, E[t].map((x) => x + 0.25 * gauss(r))]; });
+  const TR = mk(600), TE = mk(600);
+  const logreg = (y) => { const W = new Array(D + 1).fill(0); for (let ep = 0; ep < 400; ep++) { const g = new Array(D + 1).fill(0);
+      TR.forEach(([t, x]) => { const p = 1 / (1 + Math.exp(-(dotV(W.slice(0, D), x) + W[D]))), e = p - y[t]; for (let i = 0; i < D; i++) g[i] += e * x[i]; g[D] += e; });
+      for (let i = 0; i <= D; i++) W[i] -= 0.5 * (g[i] / TR.length + (i < D ? 1e-3 * W[i] : 0)); }
+    return (x) => (dotV(W.slice(0, D), x) + W[D] > 0 ? 1 : 0); };
+  const nn1 = (y) => (x) => { let best = 1e9, lab = 0; TR.forEach(([t, z]) => { let d = 0; for (let i = 0; i < D; i++) d += (z[i] - x[i]) ** 2; if (d < best) { best = d; lab = y[t]; } }); return lab; };
+  const acc = (f, y) => TE.reduce((a, [t, x]) => a + (f(x) === y[t] ? 1 : 0), 0) / TE.length;
+  const P = [['linear probe', logreg], ['1-nearest-neighbour (memoriser)', nn1]], RES = P.map(([, mkf]) => [acc(mkf(yReal), yReal), acc(mkf(yCtl), yCtl)]);
+  let cur = 0; P.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'l3-p' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  function upd() { const [ar, ac] = RES[cur], sel = ar - ac;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 150, W = 330, sc = (v) => X0 + W * v;
+    [0, 0.5, 1].forEach((v) => { svgEl('line', { x1: sc(v), y1: 12, x2: sc(v), y2: 145, stroke: 'var(--line)', 'stroke-dasharray': '2 4' }, svg); const t = svgEl('text', { x: sc(v), y: 162, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = (100 * v) + '%'; });
+    [['real task', ar, 'var(--a)'], ['control task', ac, 'var(--st)'], ['selectivity', sel, sel > 0.2 ? 'var(--ok)' : 'var(--bad)']].forEach(([l, v, c2], i) => { const y = 18 + i * 42;
+      const t = svgEl('text', { x: X0 - 8, y: y + 16, 'text-anchor': 'end', style: 'font-size:12px' }, svg); t.textContent = l;
+      svgEl('rect', { x: X0, y, width: Math.max(1, W * Math.max(0, v)), height: 24, rx: 4, fill: c2 }, svg);
+      const n = svgEl('text', { x: sc(Math.max(0, v)) + 6, y: y + 17, style: 'font-size:12px;font-family:var(--mono);font-weight:600' }, svg); n.textContent = (100 * v).toFixed(0) + (i === 2 ? ' pts' : '%'); });
+    out.innerHTML = `${P[cur][0]}: real task <b class="mono">${(100 * ar).toFixed(0)}%</b>, control task <b class="mono">${(100 * ac).toFixed(0)}%</b> → selectivity <b class="mono" style="color:${sel > 0.2 ? 'var(--ok)' : 'var(--bad)'}">${(100 * sel).toFixed(0)} points</b>. ` +
+      (sel > 0.2 ? 'It can’t fit random labels well, so its high real-task score says something about the representation.' : 'It fits random labels almost as well as real ones: it is memorising word identity, so its real-task score says little about how the property is encoded.');
+    out.dataset.real = (100 * ar).toFixed(0); out.dataset.ctl = (100 * ac).toFixed(0);
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur)); }
+  upd();
+})();
+
+// ---- 8.4 · amnesic probing: used vs unused vs nonlinear backup ----
+(() => {
+  const svg = document.getElementById('l4-bars'), se = document.getElementById('l4-erase'), sr = document.getElementById('l4-red'), out = document.getElementById('l4-out'); if (!svg) return;
+  const D = 12, N = 400, r = rng(84), unit = (v) => { const n = Math.hypot(...v); return v.map((x) => x / n); };
+  const orth = (v, us) => { let x = [...v]; us.forEach((u) => { const d = dotV(x, u); x = x.map((xi, i) => xi - d * u[i]); }); return unit(x); };
+  const uS = unit(Array.from({ length: D }, () => gauss(r))), uL = orth(Array.from({ length: D }, () => gauss(r)), [uS]), v2 = orth(Array.from({ length: D }, () => gauss(r)), [uS, uL]);
+  const S = Array.from({ length: N }, () => (r() < 0.5 ? 1 : -1)), Ln = Array.from({ length: N }, () => (r() < 0.5 ? 1 : -1)), Sg = Array.from({ length: N }, () => (r() < 0.5 ? 1 : -1)), NZ = Array.from({ length: N }, () => Array.from({ length: D }, () => 0.5 * gauss(r)));
+  const build = (backup) => S.map((s, n) => NZ[n].map((z, i) => z + 1.5 * s * uS[i] + 1.5 * Ln[n] * uL[i] + (backup && s > 0 ? 2.2 * Sg[n] * v2[i] : 0)));
+  const dm = (H, y) => { const a = new Array(D).fill(0), b = new Array(D).fill(0); let na = 0, nb = 0; H.forEach((h, n) => { if (y[n] > 0) { na++; h.forEach((x, i) => { a[i] += x; }); } else { nb++; h.forEach((x, i) => { b[i] += x; }); } }); return [a.map((x) => x / na), b.map((x) => x / nb)]; };
+  const probeAcc = (H, y) => { const [ma, mb] = dm(H, y), w = ma.map((x, i) => x - mb[i]), th = (dotV(ma, w) + dotV(mb, w)) / 2; return H.reduce((a, h, n) => a + ((dotV(h, w) > th ? 1 : -1) === y[n] ? 1 : 0), 0) / N; };
+  const model = (h, backup) => (dotV(h, uS) + (backup ? Math.abs(dotV(h, v2)) - 1.1 : 0) > 0 ? 1 : -1);
+  const E = ['erase nothing', 'erase sentiment probe direction', 'erase length probe direction'], V = ['model reads one copy', 'model also has a nonlinear backup copy']; let e = 0, v = 0;
+  E.forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'l4-e' + i; b.textContent = t; b.addEventListener('click', () => { e = i; upd(); }); se.appendChild(b); });
+  V.forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'l4-v' + i; b.textContent = t; b.addEventListener('click', () => { v = i; upd(); }); sr.appendChild(b); });
+  function upd() { const backup = v === 1; let H = build(backup);
+    if (e > 0) { const y = e === 1 ? S : Ln, [ma, mb] = dm(H, y), w = ma.map((x, i) => x - mb[i]), ww = dotV(w, w); H = H.map((h) => { const d = dotV(h, w) / ww; return h.map((x, i) => x - d * w[i]); }); }
+    const pS = probeAcc(H, S), pL = probeAcc(H, Ln), task = H.reduce((a, h, n) => a + (model(h, backup) === S[n] ? 1 : 0), 0) / N;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 200, W = 300, sc = (x) => X0 + W * x;
+    [0, 0.5, 1].forEach((x) => { svgEl('line', { x1: sc(x), y1: 12, x2: sc(x), y2: 145, stroke: x === 0.5 ? 'var(--bad)' : 'var(--line)', 'stroke-dasharray': '2 4' }, svg); const t = svgEl('text', { x: sc(x), y: 162, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = x === 0.5 ? '50% = chance' : (100 * x) + '%'; });
+    [['sentiment probe (refit)', pS, 'var(--a)'], ['length probe (refit)', pL, 'var(--st)'], ['model’s sentiment output', task, task > 0.8 ? 'var(--ok)' : 'var(--bad)']].forEach(([l, x, c2], i) => { const y = 18 + i * 42;
+      const t = svgEl('text', { x: X0 - 8, y: y + 16, 'text-anchor': 'end', style: 'font-size:12px' }, svg); t.textContent = l;
+      svgEl('rect', { x: X0, y, width: Math.max(1, W * x), height: 24, rx: 4, fill: c2 }, svg);
+      const n = svgEl('text', { x: Math.min(sc(x) + 6, 520), y: y + 17, 'text-anchor': sc(x) + 6 > 510 ? 'end' : 'start', style: 'font-size:12px;font-family:var(--mono);font-weight:600' }, svg); n.textContent = (100 * x).toFixed(0) + '%'; });
+    const msg = e === 0 ? 'Both properties are decodable. A probe alone can’t tell you which one the model uses.'
+      : e === 2 ? 'Length is gone, but the model doesn’t care: decodable, yet unused.'
+      : backup ? 'The linear probe now finds nothing, yet the model still gets most answers right from its nonlinear copy. “Unchanged performance does not establish that the information is unused.”'
+      : 'Sentiment is gone and the model drops to chance: the model really used that direction.';
+    out.innerHTML = `Sentiment probe <b class="mono">${(100 * pS).toFixed(0)}%</b> · length probe <b class="mono">${(100 * pL).toFixed(0)}%</b> · model output <b class="mono">${(100 * task).toFixed(0)}%</b>. ${msg}`;
+    out.dataset.vals = [pS, pL, task].map((x) => (100 * x).toFixed(0)).join(',');
+    [...se.children].forEach((b, i) => b.setAttribute('aria-pressed', i === e)); [...sr.children].forEach((b, i) => b.setAttribute('aria-pressed', i === v)); }
+  upd();
+})();
+
+
+// ---- 9.1 · model diffing: rotated features flagged as new ----
+(() => {
+  const svg = document.getElementById('m1-plot'), s = document.getElementById('m1-rot'), out = document.getElementById('m1-out'); if (!svg) return;
+  const BASE = [['cat', 20], ['code', 100], ['sports', 200], ['French', 290]], NEW = ['deception', 150], TH = Math.cos(25 * Math.PI / 180);
+  const P = (deg, R) => [R * Math.cos(deg * Math.PI / 180), -R * Math.sin(deg * Math.PI / 180)];
+  function upd() { const th = +s.value; s.nextElementSibling.textContent = th + '°';
+    const FT = [['cat', 20, false], ['code', 100, false], ['sports', 200 + th, false], ['French', 290, false], [NEW[0], NEW[1], true]];
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svgEl('circle', { cx: 0, cy: 0, r: 100, fill: 'none', stroke: 'var(--line)', 'stroke-dasharray': '2 4' }, svg);
+    BASE.forEach(([n, d]) => { const [x, y] = P(d, 100); svgEl('line', { x1: 0, y1: 0, x2: x, y2: y, stroke: 'var(--st)', 'stroke-width': 2, 'stroke-dasharray': '5 4' }, svg); });
+    let flagged = [];
+    FT.forEach(([n, d, isNew]) => { const best = Math.max(...BASE.map(([, b]) => Math.cos((d - b) * Math.PI / 180))), flag = best < TH; if (flag) flagged.push([n, isNew]);
+      const [x, y] = P(d, 100); svgEl('line', { x1: 0, y1: 0, x2: x, y2: y, stroke: flag ? 'var(--bad)' : 'var(--ok)', 'stroke-width': 3 }, svg);
+      svgEl('circle', { cx: x, cy: y, r: 4, fill: flag ? 'var(--bad)' : 'var(--ok)' }, svg);
+      const [lx, ly] = P(d, 116); const t = svgEl('text', { x: lx, y: ly + 4, 'text-anchor': lx > 15 ? 'start' : lx < -15 ? 'end' : 'middle', style: `font-size:13px;font-weight:${flag ? 700 : 400};fill:${flag ? 'var(--bad)' : 'var(--ink)'}` }, svg); t.textContent = n + (flag ? ' · new?' : ''); });
+    const fake = flagged.filter(([, n]) => !n).map(([n]) => n);
+    out.innerHTML = `Flagged as new: <b>${flagged.map(([n]) => n).join(', ')}</b>. ` + (fake.length ? `<b style="color:var(--bad)">“${fake.join(', ')}” is a false positive</b>: it existed in the base model and only turned ${th}° during fine-tuning, yet the diff reports it exactly like the genuinely new “deception” feature.` : 'Only the genuinely new feature is flagged; the rotated sports feature still matches its base version.');
+    out.dataset.flags = flagged.length; }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 9.2 · illustrative causal-tracing map ----
+(() => {
+  const svg = document.getElementById('m2-plot'), seg = document.getElementById('m2-kind'), out = document.getElementById('m2-out'); if (!svg) return;
+  const TOKS = ['The', 'Space', 'Needle*', 'is', 'in', 'downtown'], NL = 12, g = (x, m, s2) => Math.exp(-(((x - m) / s2) ** 2)), sg = (x) => 1 / (1 + Math.exp(-x));
+  const K = [['MLP', 'var(--a)', (l, t) => t === 2 ? 0.9 * g(l, 4, 2.2) : t === 1 ? 0.3 * g(l, 4, 2.2) : t === 5 ? 0.12 * g(l, 9, 2) : 0.02,
+      'Restoring the <b>MLP</b> output helps most at the subject’s last token (“Needle”) in early-to-middle layers: where the fact is recalled.'],
+    ['attention', 'var(--b)', (l, t) => t === 5 ? 0.8 * g(l, 8.5, 1.8) : t === 2 ? 0.1 * g(l, 6, 2) : 0.02,
+      'Restoring <b>attention</b> helps most at the last token in later layers: where the recalled fact is moved to the prediction position.'],
+    ['whole hidden state', 'var(--ok)', (l, t) => t === 2 ? 0.9 * sg(8 - l) : t === 5 ? 0.9 * sg((l - 7) * 1.4) : t === 1 ? 0.25 * sg(6 - l) : 0.03,
+      'Restoring the <b>whole residual stream</b> works at the subject token in early layers and at the last token in late layers: the information travels from one to the other in between.']];
+  let cur = 0; K.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'm2-k' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  function upd() { while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 110, CW = 70, Y0 = 20, RH = 20, [, col, f, msg] = K[cur];
+    for (let l = 0; l < NL; l++) { const y = Y0 + (NL - 1 - l) * RH; const lt = svgEl('text', { x: X0 - 8, y: y + 14, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); lt.textContent = 'layer ' + l;
+      TOKS.forEach((_, t) => { const v = f(l, t); svgEl('rect', { x: X0 + t * CW, y, width: CW - 3, height: RH - 3, rx: 3, fill: col, opacity: 0.06 + 0.94 * v }, svg); }); }
+    TOKS.forEach((tk, t) => { const e = svgEl('text', { x: X0 + t * CW + CW / 2, y: Y0 + NL * RH + 16, 'text-anchor': 'middle', style: `font-size:11px;fill:${t === 1 || t === 2 ? 'var(--st)' : 'var(--ink)'};font-weight:${t === 2 ? 700 : 400}` }, svg); e.textContent = tk.replace('*', ''); });
+    const k = svgEl('text', { x: X0 + 3 * CW, y: Y0 + NL * RH + 36, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); k.textContent = 'subject tokens in purple · darker = more of P(Seattle) restored';
+    out.innerHTML = msg; [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur)); }
+  upd();
+})();
+
+// ---- 9.3 · refusal direction: add, subtract, ablate ----
+(() => {
+  const svg = document.getElementById('m3-bars'), s = document.getElementById('m3-a'), seg = document.getElementById('m3-abl'), out = document.getElementById('m3-out'); if (!svg) return;
+  const D = 16, r = rng(93), unit = (v) => { const n = Math.hypot(...v); return v.map((x) => x / n); };
+  const u = unit(Array.from({ length: D }, () => gauss(r))); let w0 = Array.from({ length: D }, () => gauss(r)); const pu = dotV(w0, u); w0 = unit(w0.map((x, i) => x - pu * u[i]));
+  const w = unit(u.map((x, i) => 0.5 * x + Math.sqrt(1 - 0.5 * 0.5) * w0[i]));
+  const mk = (n) => Array.from({ length: n }, () => { const harm = r() < 0.5, t = r() < 0.5 ? 1 : -1; return [harm, t, Array.from({ length: D }, (_, i) => (harm ? 1.6 : 0) * u[i] + t * 1.0 * w[i] + 0.4 * gauss(r))]; });
+  const TR = mk(200), TE = mk(200);
+  const mean = (arr) => arr[0].map((_, i) => arr.reduce((a, v) => a + v[i], 0) / arr.length);
+  const rv = mean(TR.filter((x) => x[0]).map((x) => x[2])).map((x, i) => x - mean(TR.filter((y) => !y[0]).map((y) => y[2]))[i]), rh = unit(rv);
+  const projs = TR.map((x) => dotV(x[2], rh)), thr = (mean(TR.filter((x) => x[0]).map((x) => [dotV(x[2], rh)]))[0] + mean(TR.filter((x) => !x[0]).map((x) => [dotV(x[2], rh)]))[0]) / 2;
+  const c0 = TR.reduce((a, x) => a + dotV(x[2], w), 0) / TR.length;
+  let abl = 0; ['no ablation', 'project r out (directional ablation)'].forEach((t, i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'm3-b' + i; b.textContent = t; b.addEventListener('click', () => { abl = i; upd(); }); seg.appendChild(b); });
+  function upd() { const a = +s.value; s.nextElementSibling.textContent = (a >= 0 ? '+' : '') + a.toFixed(1);
+    let hf = 0, nh = 0, hl = 0, nl = 0, ok = 0;
+    TE.forEach(([harm, t, h0]) => { let h = h0; if (abl) { const d = dotV(h, rh); h = h.map((x, i) => x - d * rh[i]); } h = h.map((x, i) => x + a * rv[i]);
+      const ref = dotV(h, rh) > thr; if (harm) { nh++; if (ref) hf++; } else { nl++; if (ref) hl++; } if ((dotV(h, w) > c0 ? 1 : -1) === t) ok++; });
+    const R = [hf / nh, hl / nl, ok / TE.length];
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 210, W = 300, sc = (x) => X0 + W * x;
+    [0, 0.5, 1].forEach((x) => { svgEl('line', { x1: sc(x), y1: 12, x2: sc(x), y2: 145, stroke: 'var(--line)', 'stroke-dasharray': '2 4' }, svg); const t = svgEl('text', { x: sc(x), y: 162, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = (100 * x) + '%'; });
+    [['harmful prompts refused', R[0], 'var(--bad)'], ['harmless prompts refused', R[1], 'var(--a)'], ['unrelated task accuracy', R[2], R[2] >= 0.9 ? 'var(--ok)' : 'var(--b)']].forEach(([l, x, c2], i) => { const y = 18 + i * 42;
+      const t = svgEl('text', { x: X0 - 8, y: y + 16, 'text-anchor': 'end', style: 'font-size:12px' }, svg); t.textContent = l;
+      svgEl('rect', { x: X0, y, width: Math.max(1, W * x), height: 24, rx: 4, fill: c2 }, svg);
+      const n = svgEl('text', { x: Math.min(sc(x) + 6, 545), y: y + 17, 'text-anchor': sc(x) + 6 > 520 ? 'end' : 'start', style: 'font-size:12px;font-family:var(--mono);font-weight:600' }, svg); n.textContent = (100 * x).toFixed(0) + '%'; });
+    const p = (x) => (100 * x).toFixed(0) + '%';
+    let msg = abl && Math.abs(a) < 0.05 ? 'With the refusal direction projected out, the model stops refusing harmful prompts: the jailbreak-by-ablation result.'
+      : a > 0.45 ? 'Adding r makes the model refuse harmless prompts too.' : a < -0.45 ? 'Subtracting r makes the model answer harmful prompts.' : 'Near-normal behaviour.';
+    if (R[2] < 0.9 && Math.abs(a) > 0.05) msg += ` The unrelated task also suffers (${p(R[2])}): its reading direction overlaps r, so the push leaks into it.`;
+    out.innerHTML = `Harmful refused <b class="mono">${p(R[0])}</b> · harmless refused <b class="mono">${p(R[1])}</b> · unrelated task <b class="mono">${p(R[2])}</b>. ${msg}`;
+    out.dataset.vals = R.map((x) => (100 * x).toFixed(0)).join(',');
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === abl)); }
+  s.addEventListener('input', upd); upd();
+})();
+
+
+// ---- 10.2 · quantisation model: abrupt skills, smooth aggregate ----
+(() => {
+  const svg = document.getElementById('g2-plot'), s = document.getElementById('g2-n'), out = document.getElementById('g2-out'); if (!svg) return;
+  const NS = [1, 3, 10, 30, 100, 300, 1000], r = rng(102), JIT = Array.from({ length: 1000 }, () => 0.03 * gauss(r)), T = 200;
+  const tk = (k) => Math.min(0.95, Math.max(0.03, 0.1 + 0.8 * Math.log(k) / Math.log(1000) + (k > 1 ? JIT[k - 1] : 0)));
+  const step = (t, c) => 1 / (1 + Math.exp((t - c) / 0.003));
+  function upd() { const N = NS[+s.value]; s.nextElementSibling.textContent = N;
+    const Z = Array.from({ length: N }, (_, i) => 1 / (i + 5)), sz = Z.reduce((a, x) => a + x), ts = Array.from({ length: T + 1 }, (_, i) => i / T);
+    const agg = ts.map((t) => Z.reduce((a, f, i) => a + f / sz * step(t, tk(i + 1)), 0));
+    let maxDrop = 0; for (let i = 4; i <= T; i++) maxDrop = Math.max(maxDrop, agg[i - 4] - agg[i]);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 50, X1 = 540, Y0 = 190, Y1 = 15, mx = (t) => X0 + t * (X1 - X0), my = (v) => Y0 - v * (Y0 - Y1);
+    svgEl('line', { x1: X0, y1: Y0, x2: X1, y2: Y0, stroke: 'var(--line)' }, svg); svgEl('line', { x1: X0, y1: Y0, x2: X0, y2: Y1, stroke: 'var(--line)' }, svg);
+    const path = (vals, c, w, op) => svgEl('path', { d: vals.map((v, i) => (i ? 'L' : 'M') + mx(ts[i]).toFixed(1) + ' ' + my(v).toFixed(1)).join(''), fill: 'none', stroke: c, 'stroke-width': w, opacity: op }, svg);
+    [...new Set([1, Math.ceil(N / 3), N])].forEach((k) => path(ts.map((t) => step(t, tk(k))), 'var(--b)', 1.3, 0.55));
+    path(agg, 'var(--a)', 3.2, 1);
+    const xl = svgEl('text', { x: X1, y: Y0 + 18, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); xl.textContent = 'training →';
+    const yl = svgEl('text', { x: X1, y: Y1 + 10, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); yl.textContent = 'loss (thick: total; thin: sample skills)';
+    out.innerHTML = `${N} skill${N > 1 ? 's' : ''}: the largest drop of the total loss within any 2% of training is <b class="mono">${(100 * maxDrop).toFixed(0)}%</b> of its range. ` + (maxDrop > 0.3 ? 'The total curve is a cliff: you would see this transition in the loss.' : maxDrop > 0.1 ? 'Some steps still show as bumps.' : '<b style="color:var(--ok)">The total looks smooth</b>, yet every thin skill curve is still a cliff.');
+    out.dataset.drop = (100 * maxDrop).toFixed(0); }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 10.2 · exact match = p^k makes smooth progress look sudden ----
+(() => {
+  const svg = document.getElementById('g2-plot2'), s = document.getElementById('g2-k'), out = document.getElementById('g2-out2'); if (!svg) return;
+  const p = (t) => 0.02 + 0.96 / (1 + Math.exp(-(t - 0.5) / 0.12)), T = 200;
+  function upd() { const k = +s.value; s.nextElementSibling.textContent = k;
+    const ts = Array.from({ length: T + 1 }, (_, i) => i / T), P = ts.map(p), E = P.map((x) => x ** k);
+    const cross = (A) => { const i = A.findIndex((x) => x >= 0.5); return i < 0 ? null : ts[i]; };
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 50, X1 = 540, Y0 = 185, Y1 = 15, mx = (t) => X0 + t * (X1 - X0), my = (v) => Y0 - v * (Y0 - Y1);
+    svgEl('line', { x1: X0, y1: Y0, x2: X1, y2: Y0, stroke: 'var(--line)' }, svg); svgEl('line', { x1: X0, y1: my(0.5), x2: X1, y2: my(0.5), stroke: 'var(--line)', 'stroke-dasharray': '3 4' }, svg);
+    const path = (vals, c, w) => svgEl('path', { d: vals.map((v, i) => (i ? 'L' : 'M') + mx(ts[i]).toFixed(1) + ' ' + my(v).toFixed(1)).join(''), fill: 'none', stroke: c, 'stroke-width': w }, svg);
+    path(P, 'var(--ok)', 2.5); path(E, 'var(--bad)', 3);
+    const l1 = svgEl('text', { x: mx(0.2), y: my(p(0.2)) - 8, style: 'font-size:11px;fill:var(--ok)' }, svg); l1.textContent = 'per-token probability p';
+    const l2 = svgEl('text', { x: mx(0.3), y: Y0 + 16, 'text-anchor': 'middle', style: 'font-size:11px;fill:var(--bad)' }, svg); l2.textContent = `exact match = p^${k}`;
+    const xl = svgEl('text', { x: X1, y: Y0 + 18, 'text-anchor': 'end', style: 'font-size:10.5px;fill:var(--dim)' }, svg); xl.textContent = 'training →';
+    const cp = cross(P), ce = cross(E), lowWhileOk = ts.filter((t, i) => P[i] > 0.5 && E[i] < 0.1).length / T;
+    out.innerHTML = `Per-token probability passes 50% at <b class="mono">${(100 * cp).toFixed(0)}%</b> of training; exact match on a ${k}-token answer passes 50% only at <b class="mono" style="color:var(--bad)">${ce === null ? 'never' : (100 * ce).toFixed(0) + '%'}</b>. For <b class="mono">${(100 * lowWhileOk).toFixed(0)}%</b> of training the model is past halfway per token while exact match still reads under 10%.`;
+    out.dataset.ce = ce === null ? 'never' : (100 * ce).toFixed(0); out.dataset.low = (100 * lowWhileOk).toFixed(0); }
+  s.addEventListener('input', upd); upd();
+})();
+
+// ---- 10.4 · suffix array builder ----
+(() => {
+  const inp = document.getElementById('g4-word'), out = document.getElementById('g4-sa'); if (!inp) return;
+  const esc = (x) => x.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function upd() { const w = (inp.value || '').replace(/\$/g, '').slice(0, 16), x = w + '$';
+    const idx = [...Array(x.length).keys()].sort((a, b) => (x.slice(a) < x.slice(b) ? -1 : x.slice(a) > x.slice(b) ? 1 : 0));
+    out.innerHTML = `<b>Suffix array of “${esc(x)}”</b>: <b class="mono" style="color:var(--ok)">[${idx.join(', ')}]</b><br><span class="small mono">${idx.map((i) => `${i}: ${esc(x.slice(i))}`).join(' · ')}</span><br><span class="small">Sorted suffixes; “$” sorts first. To find any substring, binary-search this list.</span>`;
+    out.dataset.sa = idx.join(','); }
+  inp.addEventListener('input', upd); upd();
+})();
+
+// ---- 10.4 · maximal matching spans against a tiny corpus ----
+(() => {
+  const seg = document.getElementById('g4-out-pick'), out = document.getElementById('g4-spans'); if (!seg) return;
+  const tok = (s) => s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+  const DOCS = ['the river town of Marlow is known for its stone bridge and its annual boat race held every summer since 1890',
+    'Ada Brightwell is a painter known for her large seascapes and bold colour. She was born in Marlow and studied in Leeds',
+    'to make bread mix flour water salt and yeast then knead the dough for ten minutes and let it rise for one hour'].map(tok);
+  const OUTS = [['factual answer', 'Ada Brightwell is a painter known for her large seascapes and was born in Marlow, which is known for its stone bridge.'],
+    ['creative answer', 'The dough of the sea rose like a summer painter, and the bridge sang for one quiet hour.']];
+  const occurs = (seq) => { for (let d = 0; d < DOCS.length; d++) { const D = DOCS[d]; for (let i = 0; i + seq.length <= D.length; i++) { let ok = true; for (let j = 0; j < seq.length; j++) if (D[i + j] !== seq[j]) { ok = false; break; } if (ok) return d; } } return -1; };
+  let cur = 0; OUTS.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'g4-o' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  function upd() { const W = tok(OUTS[cur][1]), spans = []; let short = 0;
+    const LEN = []; for (let i = 0; i < W.length; i++) { let L = 0, doc = -1; while (i + L < W.length) { const d = occurs(W.slice(i, i + L + 1)); if (d < 0) break; L++; doc = d; } LEN.push(L); if (L >= 4) spans.push([i, i + L, doc]); }
+    const maxi = spans.filter(([a, b]) => !spans.some(([c, d]) => c <= a && d >= b && (d - c) > (b - a)));
+    const cov = new Set(); maxi.forEach(([a, b]) => { for (let i = a; i < b; i++) cov.add(i); }); LEN.forEach((L, i) => { if (L >= 2 && !cov.has(i)) short++; });
+    const words = W.map((w, i) => cov.has(i) ? `<b style="color:var(--ok);text-decoration:underline">${w}</b>` : w).join(' ');
+    out.innerHTML = `<span class="mono small">${words}</span><br>${maxi.length ? maxi.map(([a, b, d]) => `• “${W.slice(a, b).join(' ')}” (${b - a} words, document ${d + 1})`).join('<br>') : '<b style="color:var(--bad)">No span of 4+ words found.</b>'}<br>Coverage: <b class="mono">${Math.round(100 * cov.size / W.length)}%</b> of the output’s words · 2–3-word overlaps outside those spans: <b class="mono">${short}</b>.`;
+    out.dataset.cov = Math.round(100 * cov.size / W.length); out.dataset.n = maxi.length;
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur)); }
+  upd();
+})();
+
+
+// ---- 11.2 · simulator scoring of feature explanations (illustrative activations) ----
+(() => {
+  const svg = document.getElementById('o2-plot'), seg = document.getElementById('o2-pick'), out = document.getElementById('o2-out'); if (!svg) return;
+  const TOK = ['with', 'open', '(', "'data.csv'", ')', 'as', 'f', ':', 'rows', '=', 'f', '.read', '()', 'print'];
+  const REAL = [0.1, 0.9, 0.05, 0.6, 0.05, 0.2, 0.4, 0, 0.1, 0, 0.4, 1.0, 0.1, 0];
+  const EX = [['“file I/O in Python”', [0.1, 1, 0, 0.5, 0, 0.1, 0.3, 0, 0, 0, 0.3, 1, 0, 0]],
+    ['“Python code”', [0.6, 0.6, 0.3, 0.6, 0.3, 0.6, 0.6, 0.3, 0.6, 0.3, 0.6, 0.6, 0.3, 0.6]],
+    ['“brackets and quotes”', [0, 0, 0.9, 0.7, 0.9, 0, 0, 0.3, 0, 0, 0, 0.2, 0.9, 0]]];
+  let cur = 0; EX.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'o2-e' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  const scores = EX.map(([, s]) => pearson(s, REAL));
+  function upd() { const sim = EX[cur][1], sc = scores[cur];
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 20, CW = 43, Y0 = 140, H = 110;
+    svgEl('line', { x1: X0, y1: Y0, x2: X0 + TOK.length * CW, y2: Y0, stroke: 'var(--line)' }, svg);
+    TOK.forEach((t, i) => { const x = X0 + i * CW;
+      svgEl('rect', { x: x + 4, y: Y0 - H * REAL[i], width: 16, height: Math.max(1, H * REAL[i]), rx: 3, fill: 'var(--a)' }, svg);
+      svgEl('rect', { x: x + 21, y: Y0 - H * sim[i], width: 16, height: Math.max(1, H * sim[i]), rx: 3, fill: 'var(--b)', opacity: 0.8 }, svg);
+      const e = svgEl('text', { x: x + 21, y: Y0 + 16, 'text-anchor': 'middle', style: 'font-size:10px;font-family:var(--mono)' }, svg); e.textContent = t.length > 7 ? t.slice(0, 6) + '…' : t; });
+    const l = svgEl('text', { x: X0, y: 192, style: 'font-size:10.5px;fill:var(--dim)' }, svg); l.textContent = 'left bar: real activation · right bar: simulator’s prediction from the explanation';
+    out.innerHTML = `Explanation ${EX[cur][0]}: score (correlation with real activations) <b class="mono" style="color:${sc > 0.8 ? 'var(--ok)' : sc > 0.3 ? 'var(--ink)' : 'var(--bad)'}">${sc.toFixed(2)}</b>. ` +
+      (cur === 0 ? 'Precise and right: high score, the hypothesis is kept.' : cur === 1 ? 'True but vague: it predicts activity on every code token, so it gets only partial credit.' : 'Plausible-sounding but wrong: it predicts the wrong tokens, so the pipeline rejects it and re-investigates.');
+    out.dataset.score = sc.toFixed(2);
+    [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur)); }
+  upd();
+})();
+
+// ---- 11.2 · orientation chooser (survey §12.8 + Table 13) ----
+(() => {
+  const seg = document.getElementById('o2-goal'), out = document.getElementById('o2-out2'); if (!seg) return;
+  const G = [['immediate safety interventions', 'Pragmatic', 'Immediate safety interventions without complete understanding', 'Performance on proxy tasks', 'Steering vectors, probes, behavioural evaluation', 'Short-term', 'High', 'Medium'],
+    ['guarantee absence of harm, long term', 'Ambitious', 'Complete causal understanding regardless of cost', 'Faithfulness and simulatability', 'Circuit discovery, loose-to-strict verification', 'Long-term', 'Low', 'High'],
+    ['explain how capabilities develop', 'Developmental', 'Developmental processes of representations, mechanisms and capabilities', 'Phase-transition signatures (e.g. LLC) matched to mechanism formation', 'SLT, loss-landscape geometry, representation analysis', 'Long-term', 'Low', 'Unknown'],
+    ['train and deploy products safely', 'Across time', 'Prediction and control of future behaviour through training dynamics', 'Forecasting accuracy, intervention effectiveness', 'Longitudinal analysis, behavioural forecasting, training interventions', 'Medium', 'Medium', 'Unknown'],
+    ['accessible explanations for users', 'Introspective', 'Models explaining themselves', 'Agreement between self-reports and actual mechanisms', 'Introspective training, activation verbalisers', 'Medium', 'High', 'Low'],
+    ['analysis at huge scale', 'Automated', 'Scalable discovery via automated pipelines', 'Coverage, scalability, robustness, faithfulness', 'Circuit discovery, SAEs, LLM agents', 'Short-term', 'Medium', 'Low']];
+  let cur = 0; G.forEach(([t], i) => { const b = document.createElement('button'); b.type = 'button'; b.id = 'o2-g' + i; b.textContent = t; b.addEventListener('click', () => { cur = i; upd(); }); seg.appendChild(b); });
+  const col = (v) => v === 'High' ? 'var(--ok)' : v === 'Low' ? 'var(--bad)' : 'var(--ink)';
+  function upd() { const [, o, f, m, t, h, s, d] = G[cur];
+    out.innerHTML = `<b style="font-size:16px">→ ${o} interpretability</b><br><span class="small">Focus: ${f}<br>Key metrics: ${m}<br>Tools: ${t}<br>Time to impact: <b>${h}</b> · scalability: <b style="color:${col(s)}">${s}</b> · robustness to deception: <b style="color:${col(d)}">${d}</b></span>`;
+    out.dataset.o = o; [...seg.children].forEach((b, i) => b.setAttribute('aria-pressed', i === cur)); }
+  upd();
+})();
+
+
+// ---- 12.1 · simplified ROME rank-one edit: who else moves? ----
+(() => {
+  const svg = document.getElementById('z1-bars'), s = document.getElementById('z1-rho'), out = document.getElementById('z1-out'); if (!svg) return;
+  const D = 32, r = rng(121), unit = (v) => { const n = Math.hypot(...v); return v.map((x) => x / n); }, rv = () => Array.from({ length: D }, () => gauss(r));
+  const W = Array.from({ length: D }, () => rv().map((x) => x / Math.sqrt(D))), mv = (M, v) => M.map((row) => dotV(row, v));
+  const ks = unit(rv()); let u = rv(); const pu = dotV(u, ks); u = unit(u.map((x, i) => x - pu * ks[i]));
+  const UNREL = Array.from({ length: 5 }, () => unit(rv())), vstar = unit(rv()).map((x) => 2 * x);
+  function upd() { const rho = +s.value; s.nextElementSibling.textContent = rho.toFixed(2);
+    const kr = ks.map((x, i) => rho * x + Math.sqrt(1 - rho * rho) * u[i]);
+    const resid = vstar.map((x, i) => x - mv(W, ks)[i]), rn = Math.hypot(...resid);
+    const dW = resid.map((a) => ks.map((b) => a * b)), W2 = W.map((row, i) => row.map((x, j) => x + dW[i][j]));
+    const change = (k) => Math.hypot(...mv(W2, k).map((x, i) => x - mv(W, k)[i])) / rn;
+    const hit = Math.hypot(...mv(W2, ks).map((x, i) => x - vstar[i]));
+    const rows = [['edited fact', change(ks), 'var(--a)'], ['related fact', change(kr), 'var(--b)'], ...UNREL.map((k, i) => [`unrelated ${i + 1}`, change(k), 'var(--ok)'])];
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const X0 = 130, Wd = 380, sc = (x) => X0 + Wd * x;
+    [0, 0.5, 1].forEach((x) => { svgEl('line', { x1: sc(x), y1: 6, x2: sc(x), y2: 176, stroke: 'var(--line)', 'stroke-dasharray': '2 4' }, svg); const t = svgEl('text', { x: sc(x), y: 192, 'text-anchor': 'middle', style: 'font-size:10.5px;fill:var(--dim)' }, svg); t.textContent = (100 * x) + '%'; });
+    rows.forEach(([l, x, c], i) => { const y = 8 + i * 24; const t = svgEl('text', { x: X0 - 8, y: y + 13, 'text-anchor': 'end', style: 'font-size:11.5px' }, svg); t.textContent = l;
+      svgEl('rect', { x: X0, y, width: Math.max(1, Wd * Math.min(1, x)), height: 17, rx: 3, fill: i > 0 && x > 0.3 ? 'var(--bad)' : c }, svg);
+      const n = svgEl('text', { x: sc(Math.min(1, x)) + 6, y: y + 13, style: 'font-size:11px;font-family:var(--mono);font-weight:600' }, svg); n.textContent = (100 * x).toFixed(0) + '%'; });
+    const un = UNREL.map(change), mu = Math.max(...un);
+    out.innerHTML = `The edited key now returns the new value (error <b class="mono">${hit.toExponential(1)}</b>). A related fact with key cosine ${rho.toFixed(2)} moves <b class="mono" style="color:${change(kr) > 0.3 ? 'var(--bad)' : 'var(--ink)'}">${(100 * change(kr)).toFixed(0)}%</b> as far as the edit; unrelated facts move at most <b class="mono">${(100 * mu).toFixed(0)}%</b>. Bars show each fact’s output change as a share of the edit’s size.`;
+    out.dataset.rel = (100 * change(kr)).toFixed(0); out.dataset.unrel = (100 * mu).toFixed(0); }
+  s.addEventListener('input', upd); upd();
+})();
+
+</script>
+<footer class="site-foot"><div class="page-wide foot-inner"><span class="foot-name">@datawithsuman</span><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="../../../about/">About</a><a href="../../../new/">What's new</a><a href="../../../progress/">My progress</a><a href="../../../privacy/">Privacy</a></nav><nav class="foot-social" aria-label="Find us elsewhere"><a href="https://www.linkedin.com/in/sumandey02/" aria-label="LinkedIn" title="LinkedIn" rel=me><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.54h.05c.53-1 1.82-2.05 3.75-2.05 4 0 4.75 2.63 4.75 6.06V21h-4v-5c0-1.2-.02-2.73-1.66-2.73-1.67 0-1.92 1.3-1.92 2.65V21h-4z"/></svg></a><a href="https://github.com/datawithsuman/datawithsuman.github.io" aria-label="GitHub" title="GitHub" rel=me><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a><a href="https://x.com/datawithsuman" aria-label="X" title="X" rel=me><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M17.53 3h3.06l-6.69 7.65L21.77 21h-6.16l-4.83-6.31L5.26 21H2.2l7.16-8.18L1.8 3h6.32l4.36 5.77zm-1.07 16.17h1.7L7.2 4.73H5.38z"/></svg></a><a href="mailto:datawithsuman@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.4 7.5v9.5h15.2V7.5zM5.8 7l6.2 4.6L18.2 7z"/></svg></a></nav></div></footer>
+<dialog class="search" id="searchDialog" aria-label="Search lessons">
+<div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
+<div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../../../assets/search-index.js?v=90d685df"></script>
+<script src="../../../assets/site.js?v=90d685df"></script>
+</body>
+</html>

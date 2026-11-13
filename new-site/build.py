@@ -752,6 +752,8 @@ def paper_lesson(l, root):
 
     if imported:
         how, found, limits = block(plan["how"]), block(plan["found"]), block(plan["limits"])
+        found += f'<section class="ch">{plan["found_note"]}</section>' if plan.get("found_note") else ""
+        limits += f'<section class="ch">{plan["limits_note"]}</section>' if plan.get("limits_note") else ""
         if plan.get("found_first_figure"):
             found = f'<section class="ch">{src["figure"]}</section>' + found
         changed_extra, verdict = block(plan.get("changed_chapters", [])), block(plan["verdict"])

@@ -399,3 +399,6 @@ PLANS.update(INF2_PLANS)
 PLANS.update(PE2_PLANS)
 PLANS.update(OPS2_PLANS)
 PLANS.update(AG2_PLANS)
+
+from mech_interp_plans import MECH_PLANS  # noqa: E402
+PAPER_PLANS.update(MECH_PLANS)
