@@ -112,6 +112,25 @@ PARTS = [
         "evaluation-incidents": {"type": "interview", "prereqs": [_a("evaluating-llm-apps"), _f("llm-as-a-judge")]},
         "cost-and-reliability-incidents": {"type": "interview", "prereqs": [_a("cost-and-latency"), _a("llm-api-reliability")]},
     })),
+    ("AI Interpretability", "system-design/interpretability", _part("Looking inside models: features and superposition, circuits, sparse autoencoders, transcoders, patching, probes, lenses, steering, editing, model diffing and safety.", {
+        "why-look-inside-a-model": {"prereqs": [_f("self-attention")]},
+        "features-and-superposition": {"prereqs": [_a("why-look-inside-a-model")]},
+        "residual-stream-and-circuits": {"prereqs": [_a("features-and-superposition")]},
+        "linear-representations": {"prereqs": [_a("features-and-superposition")]},
+        "sparse-autoencoders": {"prereqs": [_a("features-and-superposition")]},
+        "sae-failures-and-alternatives": {"prereqs": [_a("sparse-autoencoders")]},
+        "transcoders-and-attribution-graphs": {"prereqs": [_a("sparse-autoencoders"), _a("residual-stream-and-circuits")]},
+        "activation-patching": {"prereqs": [_a("residual-stream-and-circuits")]},
+        "validating-interpretability-claims": {"prereqs": [_a("activation-patching")]},
+        "logit-lens-and-verbalisers": {"prereqs": [_a("residual-stream-and-circuits")]},
+        "probing-classifiers": {"prereqs": [_a("linear-representations")]},
+        "steering-vectors": {"prereqs": [_a("linear-representations")]},
+        "knowledge-localisation-and-editing": {"prereqs": [_a("activation-patching")]},
+        "model-diffing": {"prereqs": [_a("sparse-autoencoders")]},
+        "interpretability-for-safety": {"prereqs": [_a("probing-classifiers"), _a("steering-vectors")]},
+        "interpretability-practice": {"type": "interview", "prereqs": [_a("validating-interpretability-claims")]},
+        "interpretability-scenarios": {"type": "interview", "prereqs": [_a("probing-classifiers"), _a("steering-vectors")]},
+    })),
 ]
 for _p in PARTS:
     for _l in _p[2].LESSONS.values():

@@ -402,3 +402,5 @@ PLANS.update(AG2_PLANS)
 
 from mech_interp_plans import MECH_PLANS  # noqa: E402
 PAPER_PLANS.update(MECH_PLANS)
+from mi_plans import MI_PLANS  # noqa: E402
+PLANS.update(MI_PLANS)

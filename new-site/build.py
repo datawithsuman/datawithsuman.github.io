@@ -1189,6 +1189,19 @@ def site_files():
 
 # Old lesson addresses that moved, mapped to their new pages.
 REDIRECTS = {"tracks/ai-engineering/agent-scenarios-set-1/": "/tracks/ai-engineering/agent-scenarios-context-and-memory/"}
+# The 12-part paper series became AI Engineering › AI Interpretability on 13 Nov 2026.
+REDIRECTS["tracks/papers/mech-interp-why-look-inside/"] = "/tracks/papers/mech-interp-survey/"
+REDIRECTS["tracks/papers/mech-interp-building-blocks/"] = "/tracks/ai-engineering/residual-stream-and-circuits/"
+REDIRECTS["tracks/papers/mech-interp-four-bets/"] = "/tracks/ai-engineering/features-and-superposition/"
+REDIRECTS["tracks/papers/mech-interp-sparse-autoencoders/"] = "/tracks/ai-engineering/sparse-autoencoders/"
+REDIRECTS["tracks/papers/mech-interp-beyond-one-layer/"] = "/tracks/ai-engineering/transcoders-and-attribution-graphs/"
+REDIRECTS["tracks/papers/mech-interp-finding-circuits/"] = "/tracks/ai-engineering/activation-patching/"
+REDIRECTS["tracks/papers/mech-interp-judging-claims/"] = "/tracks/ai-engineering/validating-interpretability-claims/"
+REDIRECTS["tracks/papers/mech-interp-reading-the-mind/"] = "/tracks/ai-engineering/probing-classifiers/"
+REDIRECTS["tracks/papers/mech-interp-compare-locate-steer/"] = "/tracks/ai-engineering/steering-vectors/"
+REDIRECTS["tracks/papers/mech-interp-watching-models-learn/"] = "/tracks/papers/mech-interp-survey/"
+REDIRECTS["tracks/papers/mech-interp-six-schools/"] = "/tracks/ai-engineering/why-look-inside-a-model/"
+REDIRECTS["tracks/papers/mech-interp-safety/"] = "/tracks/ai-engineering/interpretability-for-safety/"
 
 
 def redirects():
