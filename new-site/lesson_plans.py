@@ -404,3 +404,11 @@ from mech_interp_plans import MECH_PLANS  # noqa: E402
 PAPER_PLANS.update(MECH_PLANS)
 from mi_plans import MI_PLANS  # noqa: E402
 PLANS.update(MI_PLANS)
+
+# Applied Evals (15 Nov 2026): new lessons, plus the eval pages moved in from RAG, Agentic AI and Fundamentals.
+from ev_plans import EV_PLANS  # noqa: E402
+PLANS.update(EV_PLANS)
+PLANS["ai-engineering/rag-evals"] = PLANS.pop("ai-engineering/evaluating-llm-apps")
+PLANS["ai-engineering/llm-as-a-judge"] = PLANS.pop("fundamentals/llm-as-a-judge")
+PLANS["ai-engineering/llm-as-a-judge"]["how"] = PLANS["ai-engineering/llm-as-a-judge"]["how"] + ["c4b"]
+PLANS["ai-engineering/agent-and-tool-evaluation-metrics"]["practice"] = ["c4b"] + PLANS["ai-engineering/agent-and-tool-evaluation-metrics"]["practice"]

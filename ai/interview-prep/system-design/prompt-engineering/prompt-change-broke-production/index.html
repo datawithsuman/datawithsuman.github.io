@@ -260,7 +260,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <h3>What the process should be</h3>
 <ol>
   <li><b>Version the prompt</b> in the repository, with the model version, reviewed like code.</li>
-  <li><b>Keep a regression set:</b> real requests across the main intents, every past incident, and edge cases. Each has expected behaviour checked by code or an <a href="../../../fundamentals/llms/llm-as-a-judge/">LLM judge</a>.</li>
+  <li><b>Keep a regression set:</b> real requests across the main intents, every past incident, and edge cases. Each has expected behaviour checked by code or an <a href="../../../system-design/applied-evals/llm-as-a-judge/">LLM judge</a>.</li>
   <li><b>Compare case by case:</b> list which cases got better and which got worse, not just the average.</li>
   <li><b>Roll out gradually:</b> shadow traffic or a small percentage, with live metrics such as escalations. See <a href="../../ml-system-design/design-llm-prompt-test/">Design an LLM Prompt Test</a>.</li>
   <li><b>Roll back fast:</b> switch to the previous version by its ID, without a redeploy.</li>

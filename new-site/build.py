@@ -1195,6 +1195,9 @@ def site_files():
 # Old lesson addresses that moved, mapped to their new pages.
 REDIRECTS = {"tracks/ai-engineering/agent-scenarios-set-1/": "/tracks/ai-engineering/agent-scenarios-context-and-memory/"}
 # The 12-part paper series became AI Engineering › AI Interpretability on 13 Nov 2026.
+REDIRECTS["tracks/ai-engineering/evaluating-llm-apps/"] = "/tracks/ai-engineering/rag-evals/"
+REDIRECTS["tracks/ai-engineering/agent-scenarios-evaluation/"] = "/tracks/ai-engineering/evaluation-incidents/"
+REDIRECTS["tracks/fundamentals/llm-as-a-judge/"] = "/tracks/ai-engineering/llm-as-a-judge/"
 REDIRECTS["tracks/papers/mech-interp-why-look-inside/"] = "/tracks/papers/mech-interp-survey/"
 REDIRECTS["tracks/papers/mech-interp-building-blocks/"] = "/tracks/ai-engineering/residual-stream-and-circuits/"
 REDIRECTS["tracks/papers/mech-interp-four-bets/"] = "/tracks/ai-engineering/features-and-superposition/"

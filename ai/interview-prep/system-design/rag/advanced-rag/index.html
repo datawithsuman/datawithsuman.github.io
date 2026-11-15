@@ -280,7 +280,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
   <div class="chap">4 · How it's done today</div>
   <h2>Diagnose, then upgrade</h2>
   <ul>
-    <li><b>Measure first:</b> label 100–300 real questions with their relevant chunks; compute recall@k and MRR (<a href="../evaluating-llm-apps/">Evaluating LLM Apps</a>). If recall@50 is high but recall@5 low, add a re-ranker; if recall@50 is low, fix chunking, hybrid search or query rewriting.</li>
+    <li><b>Measure first:</b> label 100–300 real questions with their relevant chunks; compute recall@k and MRR (<a href="../rag-evals/">Evaluating LLM Apps</a>). If recall@50 is high but recall@5 low, add a re-ranker; if recall@50 is low, fix chunking, hybrid search or query rewriting.</li>
     <li><b>Default stack:</b> structure-aware chunks with context → hybrid retrieval of ~50 to 150 → cross-encoder re-rank to ~5–20 → answer with citations.</li>
     <li><b>GraphRAG</b> answers corpus-wide "what are the main themes" questions far better than chunk retrieval, in its authors' tests, but classic indexing is expensive (many LLM calls), and it isn't needed for specific factual questions. Microsoft's LazyGraphRAG reports 0.1% of that indexing cost, by deferring LLM work to query time. One 2026 test found simply adding related facts to each document beat a more complex GraphRAG setup, so try simple structure first.</li>
     <li><b>Long-context models</b> reduce the need for aggressive chunking on small corpora; for large or changing corpora, retrieval remains cheaper and more controllable.</li>

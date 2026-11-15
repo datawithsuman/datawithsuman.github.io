@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../../../assets/site.css?v=445287d2">
+<link rel="stylesheet" href="../../../assets/site.css?v=d6c2c2ee">
 <link rel="stylesheet" href="../../../assets/lx-85e8c15e.css">
 <script>window.MathJax={tex:{packages:{'[+]':['html']}},svg:{fontCache:'local'},startup:{typeset:false}};</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js"></script>
@@ -44,7 +44,7 @@
 </aside>
 <article class="lesson">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/system-design/">System Design</a><span aria-hidden="true">/</span><a href="../../../tracks/system-design/#module-14">Designs</a><span aria-hidden="true">/</span><b aria-current="page">Test an LLM Prompt in Production</b></nav>
-  <div class="lesson-meta"><span class="chip type-design">Design</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/sample-size-and-power/">Sample Size, Power and Runtime</a><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/llm-as-a-judge/">LLM-as-a-Judge and Human Preference</a></div>
+  <div class="lesson-meta"><span class="chip type-design">Design</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/sample-size-and-power/">Sample Size, Power and Runtime</a><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/llm-as-a-judge/">LLM Judges: Pairwise Preferences and Pass/Fail Checks</a></div>
   <h1 class="h1-lesson">Test an LLM Prompt in Production</h1>
   <p class="lead">Your new LLM tutor&#x27;s prompt looks better in demos. How do you test it in production, and what&#x27;s your metric?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">Architecture</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">In practice</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="lx"><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
@@ -185,7 +185,7 @@
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Based on an education company's approach, from <a href="https://www.growthbook.io/blog/what-i-learned-from-khan-academy-about-a-b-testing-ai">a vendor's account of Khan Academy's webinar</a>, not from the team's own paper. The volumes, assumed judge accuracy and lab are our own illustrations. Uses <a href="../../fundamentals/randomisation-and-assignment/">randomisation</a>, <a href="../../fundamentals/sample-size-and-power/">sample size</a> and <a href="../../fundamentals/llm-as-a-judge/">LLM as a judge</a>.</p></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Based on an education company's approach, from <a href="https://www.growthbook.io/blog/what-i-learned-from-khan-academy-about-a-b-testing-ai">a vendor's account of Khan Academy's webinar</a>, not from the team's own paper. The volumes, assumed judge accuracy and lab are our own illustrations. Uses <a href="../../fundamentals/randomisation-and-assignment/">randomisation</a>, <a href="../../fundamentals/sample-size-and-power/">sample size</a> and <a href="../../ai-engineering/llm-as-a-judge/">LLM as a judge</a>.</p></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
   
   <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/system-design/design-llm-platform/"><span class="pn-label">Previous</span>Design a Shared LLM Platform</a><a class="btn btn-track" rel="next" href="../../../tracks/system-design/design-ai-subject-lines/"><span class="pn-label">Next</span>Fix a Failing AI Feature</a></nav>
 </article>
@@ -548,7 +548,7 @@ const counts = toks => toks.reduce((m, t) => (m[t] = (m[t] || 0) + 1, m), {});
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
 </dialog>
-<script src="../../../assets/search-index.js?v=445287d2"></script>
-<script src="../../../assets/site.js?v=445287d2"></script>
+<script src="../../../assets/search-index.js?v=d6c2c2ee"></script>
+<script src="../../../assets/site.js?v=d6c2c2ee"></script>
 </body>
 </html>

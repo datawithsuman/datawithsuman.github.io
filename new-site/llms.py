@@ -35,9 +35,8 @@ LESSONS = {
     "in-context-learning-and-cot": {"prereqs": ["decoding-and-sampling"]},
     "hallucination": {"prereqs": ["in-context-learning-and-cot"]},
     "benchmarks-and-contamination": {"prereqs": ["pretraining-data"]},
-    "llm-as-a-judge": {"prereqs": ["benchmarks-and-contamination"]},
     "llm-practice-scaling": {"type": "interview", "prereqs": ["distributed-training", "mixture-of-experts"]},
-    "llm-practice-post-training": {"type": "interview", "prereqs": ["lora-and-qlora", "llm-as-a-judge"]},
+    "llm-practice-post-training": {"type": "interview", "prereqs": ["lora-and-qlora", "benchmarks-and-contamination"]},
 }
 for _l in LESSONS.values():
     _l["prereqs"] = [f"fundamentals/{p}" for p in _l.get("prereqs", [])]
