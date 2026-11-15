@@ -45,7 +45,7 @@ TOPICS = {
     "llmops": ("LLMOps", ("run", "llmops")),
     "interp": ("AI interpretability", ("run", "why-look-inside-a-model")),
     "sdllm": ("AI and ML system design", ("group", "system-design", "designs")),
-    "sdrec": ("Recommenders and ranking", ("slugs", ["recommendation-system", "design-semantic-search", "design-feed-ranking", "design-search-ranking", "design-ad-click-prediction", "design-notification-optimization", "design-interleaving", "design-image-personalisation"])),
+    "sdrec": ("Recommenders and ranking", ("slugs", ["recommendation-system", "design-semantic-search", "design-feed-ranking", "design-search-ranking", "design-ad-click-prediction", "design-notification-optimization", "design-interleaving", "design-image-personalisation", "design-short-video-recs", "design-job-recommendations", "design-cross-category-cold-start", "design-rec-foundation-model"])),
     "sdexp": ("Experiment design", ("slugs", ["design-llm-prompt-test", "design-ai-subject-lines", "design-network-experiment", "design-launch-decision-rule", "design-experimentation-platform"])),
     "papers": ("Key papers", ("group", "papers", None)),
 }
