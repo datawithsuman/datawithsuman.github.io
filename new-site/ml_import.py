@@ -121,6 +121,12 @@ def _new_home(path):
     m = re.match(r"system-design/ml-system-design/([\w-]+)/?(.*)", path)
     if m:
         return "system-design", m.group(1), m.group(2)
+    # Old folders that no longer exist (applied-evals, genai-apps, ai-engineering): find the lesson by its slug.
+    m = re.match(r"(?:system-design/(?:applied-evals|genai-apps)|ai-engineering)/([\w-]+)/?(.*)", path)
+    if m and any((SRC / "system-design" / part / m.group(1)).is_dir() for part in AI_ENGINEERING.split("|")):
+        return "ai-engineering", m.group(1), m.group(2)
+    if m and any((SRC / "fundamentals" / part / m.group(1)).is_dir() for part in MOVED.split("|")):
+        return "fundamentals", m.group(1), m.group(2)
     return None
 
 
