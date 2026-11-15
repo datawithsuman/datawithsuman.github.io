@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RAG Practice · AI Engineering · AIML Rounds</title>
-<meta name="description" content="12 questions to work by hand: recall, MRR, fusion, memory, filters, tokens, faithfulness and migrations.">
+<meta name="description" content="10 questions to work by hand: recall, MRR, fusion, memory, filters, tokens and migrations.">
 <link rel="canonical" href="https://aimlrounds.com/tracks/ai-engineering/rag-practice/">
 <meta property="og:url" content="https://aimlrounds.com/tracks/ai-engineering/rag-practice/">
 <meta property="og:site_name" content="AIML Rounds">
 <meta property="og:type" content="website">
 <meta property="og:title" content="RAG Practice · AI Engineering · AIML Rounds">
-<meta property="og:description" content="12 questions to work by hand: recall, MRR, fusion, memory, filters, tokens, faithfulness and migrations.">
+<meta property="og:description" content="10 questions to work by hand: recall, MRR, fusion, memory, filters, tokens and migrations.">
 <meta property="og:image" content="https://aimlrounds.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
@@ -46,7 +46,7 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/">AI Engineering</a><span aria-hidden="true">/</span><a href="../../../tracks/ai-engineering/#module-6">Scenarios</a><span aria-hidden="true">/</span><b aria-current="page">RAG Practice</b></nav>
   <div class="lesson-meta"><span class="chip type-interview">Interview</span><span class="mins">40 min</span><span class="before">Before this:</span><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/reranking-and-late-interaction/">Re-ranking and Late Interaction</a><a class="chip chip-link t-ai-engineering" href="../../../tracks/ai-engineering/rag-evals/">RAG Evals: Retrieval, Faithfulness and Relevance</a></div>
   <h1 class="h1-lesson">RAG Practice</h1>
-  <p class="lead">12 questions to work by hand: recall, MRR, fusion, memory, filters, tokens, faithfulness and migrations.</p>
+  <p class="lead">10 questions to work by hand: recall, MRR, fusion, memory, filters, tokens and migrations.</p>
   <div class="lx">
 <section class="panel block idea" id="idea"><p class="eyebrow">How to use this page</p><div class="idea-text">Give yourself about 5 minutes per question, as in an interview. Work each one out by hand, then open the answer and compare.<div class="tool"><b>The toolkit:</b> precision@k = relevant found ÷ k; recall@k = relevant found ÷ all relevant; MRR = average of 1 ÷ first relevant rank; RRF score = Σ 1 ÷ (60 + rank); memory = chunks × dimensions × bytes, plus 8M bytes per chunk for HNSW links; loop tokens = Σ (S + i × C); faithfulness = supported claims ÷ all claims.</div></div></section>
 
@@ -54,7 +54,7 @@
 <div class="tip" id="tip"></div>
 </div>
 <div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
-<section class="say-card practice-card" id="questions"><ol class="say-stepper many" aria-label="Questions"><li><button type="button" data-pq-go="0" aria-label="Question 1"><span class="say-dot">1</span></button></li><li><button type="button" data-pq-go="1" aria-label="Question 2"><span class="say-dot">2</span></button></li><li><button type="button" data-pq-go="2" aria-label="Question 3"><span class="say-dot">3</span></button></li><li><button type="button" data-pq-go="3" aria-label="Question 4"><span class="say-dot">4</span></button></li><li><button type="button" data-pq-go="4" aria-label="Question 5"><span class="say-dot">5</span></button></li><li><button type="button" data-pq-go="5" aria-label="Question 6"><span class="say-dot">6</span></button></li><li><button type="button" data-pq-go="6" aria-label="Question 7"><span class="say-dot">7</span></button></li><li><button type="button" data-pq-go="7" aria-label="Question 8"><span class="say-dot">8</span></button></li><li><button type="button" data-pq-go="8" aria-label="Question 9"><span class="say-dot">9</span></button></li><li><button type="button" data-pq-go="9" aria-label="Question 10"><span class="say-dot">10</span></button></li><li><button type="button" data-pq-go="10" aria-label="Question 11"><span class="say-dot">11</span></button></li><li><button type="button" data-pq-go="11" aria-label="Question 12"><span class="say-dot">12</span></button></li></ol><div class="pq" data-pq id="q1" tabindex="-1">
+<section class="say-card practice-card" id="questions"><ol class="say-stepper many" aria-label="Questions"><li><button type="button" data-pq-go="0" aria-label="Question 1"><span class="say-dot">1</span></button></li><li><button type="button" data-pq-go="1" aria-label="Question 2"><span class="say-dot">2</span></button></li><li><button type="button" data-pq-go="2" aria-label="Question 3"><span class="say-dot">3</span></button></li><li><button type="button" data-pq-go="3" aria-label="Question 4"><span class="say-dot">4</span></button></li><li><button type="button" data-pq-go="4" aria-label="Question 5"><span class="say-dot">5</span></button></li><li><button type="button" data-pq-go="5" aria-label="Question 6"><span class="say-dot">6</span></button></li><li><button type="button" data-pq-go="6" aria-label="Question 7"><span class="say-dot">7</span></button></li><li><button type="button" data-pq-go="7" aria-label="Question 8"><span class="say-dot">8</span></button></li><li><button type="button" data-pq-go="8" aria-label="Question 9"><span class="say-dot">9</span></button></li><li><button type="button" data-pq-go="9" aria-label="Question 10"><span class="say-dot">10</span></button></li></ol><div class="pq" data-pq id="q1" tabindex="-1">
 <header class="say-head"><p class="eyebrow">Question 1 · Easy · precision and recall</p><h2>A question has 3 relevant chunks. You retrieve 5, and 2 of them are relevant. What are precision@5 and recall@5?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
@@ -69,77 +69,63 @@
 <div class="answer" id="q2-answer"><p class="ans">Answer: <b>About 0.46</b></p><ol><li>Reciprocal ranks: 1, 1/3, 0 and 1/2.</li><li>Their sum is 1.83, and 1.83 ÷ 4 ≈ 0.46.</li></ol><p class="small" style="margin:6px 0 0">A missing chunk counts as 0, so a few misses hurt a lot.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q3" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 3 · Easy · faithfulness</p><h2>An answer makes 4 claims. Three appear in the retrieved context. The fourth is true, but isn't in the context. What's its faithfulness, and is the answer OK?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 3 · Medium · fusion</p><h2>BM25 returns A, B, C. Dense search returns C, A, D. Using reciprocal rank fusion with k = 60, what's the merged order?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="3">Next question</button></div>
-<div class="answer" id="q3-answer"><p class="ans">Answer: <b>0.75. It's right today, but it isn't grounded</b></p><ol><li>Faithfulness = 3 ÷ 4 = 0.75.</li><li>The fourth claim came from the model's memory.</li><li>It'll stay wrong after the fact changes, because no document supports it.</li></ol><p class="small" style="margin:6px 0 0">That's why you score correctness and faithfulness separately.</p></div>
+<div class="answer" id="q3-answer"><p class="ans">Answer: <b>A, C, B, D</b></p><ol><li>A: 1/61 + 1/62 = 0.01639 + 0.01613 = 0.03252.</li><li>C: 1/63 + 1/61 = 0.01587 + 0.01639 = 0.03226.</li><li>B: 1/62 = 0.01613, and D: 1/63 = 0.01587.</li></ol><p class="small" style="margin:6px 0 0">Why ranks, rather than raw scores? BM25 and cosine scores aren't on the same scale.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q4" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 4 · Medium · fusion</p><h2>BM25 returns A, B, C. Dense search returns C, A, D. Using reciprocal rank fusion with k = 60, what's the merged order?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 4 · Medium · memory</p><h2>You have 10 million chunks at 1,024 dimensions. How much memory do float32 vectors need? And binary? How much do HNSW links add at M = 16?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q4-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="4">Next question</button></div>
-<div class="answer" id="q4-answer"><p class="ans">Answer: <b>A, C, B, D</b></p><ol><li>A: 1/61 + 1/62 = 0.01639 + 0.01613 = 0.03252.</li><li>C: 1/63 + 1/61 = 0.01587 + 0.01639 = 0.03226.</li><li>B: 1/62 = 0.01613, and D: 1/63 = 0.01587.</li></ol><p class="small" style="margin:6px 0 0">Why ranks, rather than raw scores? BM25 and cosine scores aren't on the same scale.</p></div>
+<div class="answer" id="q4-answer"><p class="ans">Answer: <b>About 41 GB, or 1.28 GB as binary, plus about 1.28 GB of links</b></p><ol><li>Float32: 10M × 1,024 × 4 bytes ≈ 41 GB.</li><li>Binary: 41 GB ÷ 32 ≈ 1.28 GB.</li><li>Links: 10M × 8 × 16 bytes = 1.28 GB.</li></ol><p class="small" style="margin:6px 0 0">With binary, the links cost as much as the vectors, and you still need full vectors somewhere for rescoring.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q5" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 5 · Medium · memory</p><h2>You have 10 million chunks at 1,024 dimensions. How much memory do float32 vectors need? And binary? How much do HNSW links add at M = 16?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 5 · Medium · filters</p><h2>You filter after search. You fetch 100 candidates, and a user can see 5% of documents. You want 10 results. What happens, and what do you do?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q5-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="5">Next question</button></div>
-<div class="answer" id="q5-answer"><p class="ans">Answer: <b>About 41 GB, or 1.28 GB as binary, plus about 1.28 GB of links</b></p><ol><li>Float32: 10M × 1,024 × 4 bytes ≈ 41 GB.</li><li>Binary: 41 GB ÷ 32 ≈ 1.28 GB.</li><li>Links: 10M × 8 × 16 bytes = 1.28 GB.</li></ol><p class="small" style="margin:6px 0 0">With binary, the links cost as much as the vectors, and you still need full vectors somewhere for rescoring.</p></div>
+<div class="answer" id="q5-answer"><p class="ans">Answer: <b>About 5 results come back. Filter during search, or fetch far more</b></p><ol><li>100 × 5% = about 5 visible candidates.</li><li>That's fewer than the 10 you want, and worse for rarer filters.</li><li>Fetching more costs time. Filtering during search is better, but you must check recall under that filter.</li></ol><p class="small" style="margin:6px 0 0">A filter-blind graph can lose most of its recall, with no error to warn you.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q6" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 6 · Medium · filters</p><h2>You filter after search. You fetch 100 candidates, and a user can see 5% of documents. You want 10 results. What happens, and what do you do?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 6 · Medium · agent cost</p><h2>An agent has a 2,000-token base prompt, and adds 5,000 tokens of results per search. It does 3 searches, then answers. How many input tokens does it use, keeping full history?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q6-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="6">Next question</button></div>
-<div class="answer" id="q6-answer"><p class="ans">Answer: <b>About 5 results come back. Filter during search, or fetch far more</b></p><ol><li>100 × 5% = about 5 visible candidates.</li><li>That's fewer than the 10 you want, and worse for rarer filters.</li><li>Fetching more costs time. Filtering during search is better, but you must check recall under that filter.</li></ol><p class="small" style="margin:6px 0 0">A filter-blind graph can lose most of its recall, with no error to warn you.</p></div>
+<div class="answer" id="q6-answer"><p class="ans">Answer: <b>38,000 tokens</b></p><ol><li>Call 1: 2,000.</li><li>Call 2: 7,000. Call 3: 12,000.</li><li>Call 4: 17,000. The total is 38,000.</li></ol><p class="small" style="margin:6px 0 0">One static search uses 7,000. What cuts this? Batching searches, capping rounds and trimming old results.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q7" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 7 · Medium · diagnosis</p><h2>Recall@50 is 95%, recall@5 is 55%, and faithfulness is high, but users say answers miss things. Where do you look?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 7 · Medium · should you index?</p><h2>Your documents total 120,000 tokens and change monthly. Your manager wants a vector database. What do you suggest?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q7-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="7">Next question</button></div>
-<div class="answer" id="q7-answer"><p class="ans">Answer: <b>Ranking: add or improve a re-ranker, then check how much context reaches the model</b></p><ol><li>High recall@50 means retrieval finds it.</li><li>Low recall@5 means it's ranked too low to be used.</li><li>Models favour early context, so put the best chunks first.</li></ol><p class="small" style="margin:6px 0 0">Would a better embedding model help? It might, but a re-ranker is the direct fix here. Test both.</p></div>
+<div class="answer" id="q7-answer"><p class="ans">Answer: <b>Try putting it in the prompt first, with prompt caching</b></p><ol><li>Anthropic suggests this under about 200,000 tokens.</li><li>It has no chunking, syncing or retrieval failures to manage.</li><li>Measure cost and latency, and add retrieval when they hurt, or the corpus grows.</li></ol><p class="small" style="margin:6px 0 0">When would you index anyway? When cost per call is too high, permissions differ per document, or it's growing fast.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q8" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 8 · Medium · agent cost</p><h2>An agent has a 2,000-token base prompt, and adds 5,000 tokens of results per search. It does 3 searches, then answers. How many input tokens does it use, keeping full history?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 8 · Hard · migration</p><h2>You have 200 million chunks of 300 tokens, and a limit of 10 million tokens a minute. Embedding costs $0.13 per million tokens. What are the cost and time, and how do you switch without downtime?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q8-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="8">Next question</button></div>
-<div class="answer" id="q8-answer"><p class="ans">Answer: <b>38,000 tokens</b></p><ol><li>Call 1: 2,000.</li><li>Call 2: 7,000. Call 3: 12,000.</li><li>Call 4: 17,000. The total is 38,000.</li></ol><p class="small" style="margin:6px 0 0">One static search uses 7,000. What cuts this? Batching searches, capping rounds and trimming old results.</p></div>
+<div class="answer" id="q8-answer"><p class="ans">Answer: <b>About $7,800 and about 4.2 days. Build a second index, dual write, backfill, test, then flip an alias</b></p><ol><li>Tokens: 200M × 300 = 60 billion.</li><li>Cost: 60,000 million × $0.13 = $7,800.</li><li>Time: 60B ÷ 10M = 6,000 minutes, about 4.2 days.</li><li>Dual writes keep the new index current during those days.</li></ol><p class="small" style="margin:6px 0 0">Why can't you mix old and new vectors in one index? They live in different spaces, so their scores mean nothing together.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q9" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 9 · Medium · should you index?</p><h2>Your documents total 120,000 tokens and change monthly. Your manager wants a vector database. What do you suggest?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 9 · Hard · permissions</p><h2>Your permission service has an outage. The code catches the error, and sets the allowed-folders list to empty, and the search code treats an empty list as no filter. What happens, and how do you fix it?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q9-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="9">Next question</button></div>
-<div class="answer" id="q9-answer"><p class="ans">Answer: <b>Try putting it in the prompt first, with prompt caching</b></p><ol><li>Anthropic suggests this under about 200,000 tokens.</li><li>It has no chunking, syncing or retrieval failures to manage.</li><li>Measure cost and latency, and add retrieval when they hurt, or the corpus grows.</li></ol><p class="small" style="margin:6px 0 0">When would you index anyway? When cost per call is too high, permissions differ per document, or it's growing fast.</p></div>
+<div class="answer" id="q9-answer"><p class="ans">Answer: <b>Every user can retrieve every document. Fail closed, and test for it</b></p><ol><li>An empty filter must mean no results, not all results.</li><li>On error, return nothing and show a clear message.</li><li>Add a test where the permission call fails, and one where user A asks for user B's document.</li></ol><p class="small" style="margin:6px 0 0">Which is worse here: an outage or a leak? Usually a leak, so accept the outage.</p></div>
 </div></div>
 </div><div class="pq" data-pq id="q10" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 10 · Hard · migration</p><h2>You have 200 million chunks of 300 tokens, and a limit of 10 million tokens a minute. Embedding costs $0.13 per million tokens. What are the cost and time, and how do you switch without downtime?</h2></header>
+<header class="say-head"><p class="eyebrow">Question 10 · Hard · conflicting results</p><h2>A paper says late interaction doubles the hit rate, and another says it loses to dense search. Your team asks which to believe. What do you say?</h2></header>
 <div class="say-body"><div class="say-step">
 <p class="say-hint">Say your approach out loud first.</p>
-<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q10-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="10">Next question</button></div>
-<div class="answer" id="q10-answer"><p class="ans">Answer: <b>About $7,800 and about 4.2 days. Build a second index, dual write, backfill, test, then flip an alias</b></p><ol><li>Tokens: 200M × 300 = 60 billion.</li><li>Cost: 60,000 million × $0.13 = $7,800.</li><li>Time: 60B ÷ 10M = 6,000 minutes, about 4.2 days.</li><li>Dual writes keep the new index current during those days.</li></ol><p class="small" style="margin:6px 0 0">Why can't you mix old and new vectors in one index? They live in different spaces, so their scores mean nothing together.</p></div>
-</div></div>
-</div><div class="pq" data-pq id="q11" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 11 · Hard · permissions</p><h2>Your permission service has an outage. The code catches the error, and sets the allowed-folders list to empty, and the search code treats an empty list as no filter. What happens, and how do you fix it?</h2></header>
-<div class="say-body"><div class="say-step">
-<p class="say-hint">Say your approach out loud first.</p>
-<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q11-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-go="11">Next question</button></div>
-<div class="answer" id="q11-answer"><p class="ans">Answer: <b>Every user can retrieve every document. Fail closed, and test for it</b></p><ol><li>An empty filter must mean no results, not all results.</li><li>On error, return nothing and show a clear message.</li><li>Add a test where the permission call fails, and one where user A asks for user B's document.</li></ol><p class="small" style="margin:6px 0 0">Which is worse here: an outage or a leak? Usually a leak, so accept the outage.</p></div>
-</div></div>
-</div><div class="pq" data-pq id="q12" tabindex="-1">
-<header class="say-head"><p class="eyebrow">Question 12 · Hard · conflicting results</p><h2>A paper says late interaction doubles the hit rate, and another says it loses to dense search. Your team asks which to believe. What do you say?</h2></header>
-<div class="say-body"><div class="say-step">
-<p class="say-hint">Say your approach out loud first.</p>
-<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q12-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-finish>Finish</button></div>
-<div class="answer" id="q12-answer"><p class="ans">Answer: <b>Both may be right for their setups. Test on your own data, and count the costs</b></p><ol><li>The first used synthetic questions and a different encoder, on 463,971 paper abstracts.</li><li>The second used visually rich reports, and text late interaction lost there.</li><li>Compare recall on your labelled questions, plus memory and latency.</li></ol><p class="small" style="margin:6px 0 0">It's a good general rule: gains measured alone may not survive in your full pipeline.</p></div>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="q10-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-pq-finish>Finish</button></div>
+<div class="answer" id="q10-answer"><p class="ans">Answer: <b>Both may be right for their setups. Test on your own data, and count the costs</b></p><ol><li>The first used synthetic questions and a different encoder, on 463,971 paper abstracts.</li><li>The second used visually rich reports, and text late interaction lost there.</li><li>Compare recall on your labelled questions, plus memory and latency.</li></ol><p class="small" style="margin:6px 0 0">It's a good general rule: gains measured alone may not survive in your full pipeline.</p></div>
 </div></div>
 </div></section>
-<div class="lx"><details class="more" id="reference"><summary>More practice and sources</summary><p class="small built-from">12 interview questions, easy to hard · answers hidden until you click · checked 7 Nov 2026</p><section class="ch" id="more" data-toc="Keep practising">
+<div class="lx"><details class="more" id="reference"><summary>More practice and sources</summary><p class="small built-from">10 interview questions, easy to hard · answers hidden until you click · checked 7 Nov 2026</p><section class="ch" id="more" data-toc="Keep practising">
   <div class="chap">Keep practising</div>
   <p class="small">Uses <a href="../rag-end-to-end/">RAG End to End</a>, <a href="../embeddings-and-vector-indexes/">Embeddings and Vector Indexes</a>, <a href="../reranking-and-late-interaction/">Re-ranking</a>, <a href="../grounded-answers/">Grounded Answers</a>, <a href="../agentic-rag/">Agentic RAG</a>, <a href="../permissions-and-poisoning/">Permissions</a>, <a href="../keeping-an-index-current/">Keeping an Index Current</a> and <a href="../rag-evals/">Evaluating LLM Apps</a>. Scenarios and numbers are invented, so the answers are worked examples.</p>
 </section></details></div>

@@ -6,7 +6,7 @@ GROUPS = [
     ("pretraining", "Pretraining", "Next-token prediction, data pipelines, scaling laws, distributed training and stability."),
     ("post-training", "Post-training", "SFT, policy gradients, RLHF and reward models, DPO, reasoning models, distillation, LoRA and safety."),
     ("generation", "Generation", "Decoding and sampling, prompting and chain-of-thought, and hallucination."),
-    ("llm-eval", "Evaluating LLMs and practice", "Benchmarks, contamination, LLM-as-a-judge and two practice sets."),
+    ("llm-eval", "Evaluating LLMs and practice", "Benchmarks, contamination and two practice sets. Applied evals for your own app live in AI Engineering › Applied Evals."),
 ]
 
 LESSONS = {
