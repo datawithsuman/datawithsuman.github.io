@@ -1,8 +1,43 @@
 {
- "updated": "2026-11-14",
+ "updated": "2026-11-15",
  "days": 7,
- "count": 61,
+ "count": 60,
  "jobs": [
+  {
+   "title": "Agile - EY - GDS Consulting - AIA - AI Engineer - senior manager",
+   "company": "EY",
+   "location": "Chennai",
+   "posted": "2026-11-15",
+   "url": "https://careers.ey.com/ey/job/Chennai-Agile-EY-GDS-Consulting-AIA%C2%A0-AI-Engineer-senior-manager-TN-600032/1447556733/"
+  },
+  {
+   "title": "AI And Generative AI Senior Developer",
+   "company": "EY",
+   "location": "Kochi",
+   "posted": "2026-11-15",
+   "url": "https://careers.ey.com/ey/job/Kochi-AI-And-Generative-AI-Senior-Developer-KL-682313/1452099533/"
+  },
+  {
+   "title": "EY - GDS Consulting - AI And DATA -AI Data Platform Engineer - Snowflake- Senior",
+   "company": "EY",
+   "location": "Bengaluru",
+   "posted": "2026-11-15",
+   "url": "https://careers.ey.com/ey/job/Bengaluru-EY-GDS-Consulting-AI-And-DATA-AI-Data-Platform-Engineer-Snowflake-Senior-KA-560048/1427709533/"
+  },
+  {
+   "title": "Agile - MS - FDL - Senior Manager - AI Architect",
+   "company": "EY",
+   "location": "Bengaluru",
+   "posted": "2026-11-15",
+   "url": "https://careers.ey.com/ey/job/Bengaluru-Agile-MS-FDL-Senior-Manager-AI-Architect-KA-560016/1452761433/"
+  },
+  {
+   "title": "BC Sector O and G-Data Scientist-Senior Manager",
+   "company": "EY",
+   "location": "Bengaluru",
+   "posted": "2026-11-15",
+   "url": "https://careers.ey.com/ey/job/Bengaluru-BC-Sector-O-and-G-Data-Scientist-Senior-Manager-KA-560016/1448742433/"
+  },
   {
    "title": "Data Science Engagement Lead",
    "company": "Shell",
@@ -32,6 +67,13 @@
    "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Prague/Specialist--AI-Engineer_REQ-10089980"
   },
   {
+   "title": "Data Scientist - AI Developer",
+   "company": "HP",
+   "location": "Bengaluru",
+   "posted": "2026-11-14",
+   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/AI---Data-Analytics_3164052-1"
+  },
+  {
    "title": "CT-NITRO-Experimental AI Engineer",
    "company": "EY",
    "location": "Bengaluru",
@@ -53,6 +95,20 @@
    "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Margarpatta/AI-Transformation-Lead--Global-Cards-and-Loyalty-Solutions--Director_R0456380"
   },
   {
+   "title": "Senior Lead Python AI/ML Engineer",
+   "company": "Citi",
+   "location": "2 locations in India",
+   "posted": "2026-11-14",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/DLF-CYBERCITY-12B/Senior-Lead-Python-AI-ML-Engineer_26996796"
+  },
+  {
+   "title": "Senior Manager, AI Engineer, Intelligence & Data Solutions (IDS)",
+   "company": "Visa",
+   "location": "Bengaluru",
+   "posted": "2026-11-13",
+   "url": "https://visa.wd5.myworkdayjobs.com/Visa/job/IN---Bengaluru-India/Senior-Manager--AI-Engineer--Intelligence---Data-Solutions--IDS-_REF089982W"
+  },
+  {
    "title": "Data Scientist (ML) - 3 to 5 years",
    "company": "PhonePe",
    "location": "Pune",
@@ -65,6 +121,13 @@
    "location": "Mumbai",
    "posted": "2026-11-13",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806312"
+  },
+  {
+   "title": "Agentic AI Engineer",
+   "company": "HP",
+   "location": "Bengaluru",
+   "posted": "2026-11-13",
+   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/Agentic-AI-Engineer_3164655-1"
   },
   {
    "title": "Agentic AI Evaluation Engineer",
@@ -102,6 +165,27 @@
    "url": "https://careers.ey.com/ey/job/Bengaluru-TC-CS-Cyber-Architecture-OT-and-Engineering-AI-Architect-Senior-Manager-KA-560048/1393927333/"
   },
   {
+   "title": "Senior Gen AI Engineer - Vice President",
+   "company": "Citi",
+   "location": "2 locations in India",
+   "posted": "2026-11-13",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Gen-AI-Engineer---Vice-President_26991742"
+  },
+  {
+   "title": "Machine Learning Engineering Technical Leader",
+   "company": "Cisco",
+   "location": "Hyderabad",
+   "posted": "2026-11-13",
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineering-Technical-Leader_2027055-1"
+  },
+  {
+   "title": "Machine Learning Engineer",
+   "company": "Cisco",
+   "location": "Hyderabad",
+   "posted": "2026-11-13",
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineer_2030936"
+  },
+  {
    "title": "Senior Machine Learning Engineer - Responsible AI",
    "company": "Atlassian",
    "location": "Bengaluru",
@@ -130,32 +214,11 @@
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PW-II/PRINCIPAL--DATA-SCIENTIST_R-2656082"
   },
   {
-   "title": "Senior AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
+   "title": "Senior Staff AI Scientist",
+   "company": "GE HealthCare",
+   "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer/34088/103216188224"
-  },
-  {
-   "title": "AI ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Noida",
-   "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/ai-ml-engineer/34088/103229769312"
-  },
-  {
-   "title": "Principal AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/principal-ai-or-ml-engineer/34088/102829678576"
-  },
-  {
-   "title": "Agile - EY - GDS Consulting - AIA - AI Engineer - senior manager",
-   "company": "EY",
-   "location": "Chennai",
-   "posted": "2026-11-12",
-   "url": "https://careers.ey.com/ey/job/Chennai-Agile-EY-GDS-Consulting-AIA%C2%A0-AI-Engineer-senior-manager-TN-600032/1447556733/"
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Senior-Staff-AI-Scientist_R4048849-1"
   },
   {
    "title": "DE-RCE-Agentic AI Python Developer",
@@ -184,34 +247,6 @@
    "location": "Pune",
    "posted": "2026-11-11",
    "url": "https://job-boards.greenhouse.io/zscaler/jobs/5278563007"
-  },
-  {
-   "title": "Principal AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Bengaluru",
-   "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/principal-ai-ml-engineer/34088/103145009280"
-  },
-  {
-   "title": "Lead AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Noida",
-   "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/lead-ai-ml-engineer/34088/103175595008"
-  },
-  {
-   "title": "AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Chennai",
-   "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/chennai/ai-or-ml-engineer/34088/102874035024"
-  },
-  {
-   "title": "Principal Data Scientist",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Noida",
-   "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/principal-data-scientist/34088/103184508768"
   },
   {
    "title": "Associate Director & Senior Principal Data Science, AI for Biologics",
@@ -291,13 +326,6 @@
    "url": "https://careers.ey.com/ey/job/Chennai-EY-GDS-Consulting-AIA-AI-Engineer-Senior-TN-600032/1430772233/"
   },
   {
-   "title": "EY - GDS Consulting - AI And DATA -AI Data Platform Engineer - Snowflake- Senior",
-   "company": "EY",
-   "location": "Bengaluru",
-   "posted": "2026-11-11",
-   "url": "https://careers.ey.com/ey/job/Bengaluru-EY-GDS-Consulting-AI-And-DATA-AI-Data-Platform-Engineer-Snowflake-Senior-KA-560048/1427709533/"
-  },
-  {
    "title": "Gen AI Specialist",
    "company": "Bosch",
    "location": "Bengaluru",
@@ -319,6 +347,13 @@
    "url": "https://www.amazon.jobs/en/jobs/10596351/applied-scientist-i-buyer-risk-prevention-brp"
   },
   {
+   "title": "Senior Manager, Data Science & Analytics",
+   "company": "eBay",
+   "location": "Bengaluru",
+   "posted": "2026-11-10",
+   "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Manager--Data-Science---Analytics-2_R0075171-1"
+  },
+  {
    "title": "Data Scientist",
    "company": "Shell",
    "location": "Chennai",
@@ -326,18 +361,32 @@
    "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/Chennai---RMZ-Millenia/Data-Scientist_R205059"
   },
   {
-   "title": "Senior Manager Data Science",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-10",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-manager-data-science/34088/102874034992"
-  },
-  {
    "title": "Canada D&A A2 AI Engineer",
    "company": "KPMG",
    "location": "Bengaluru",
    "posted": "2026-11-10",
    "url": "https://ejgk.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_3/job/30051787"
+  },
+  {
+   "title": "Staff Customer Journey Analytics & AI Lead",
+   "company": "GE HealthCare",
+   "location": "Bengaluru",
+   "posted": "2026-11-10",
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Staff-Customer-Journey-Analytics---AI-Lead_R4048847-1"
+  },
+  {
+   "title": "Senior AI Engineer - Wholesale Credit Risk Analytics",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-10",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-AI-Engineer---Wholesale-Credit-Risk-Analytics_261006394"
+  },
+  {
+   "title": "Lead GenAI Engineer",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-10",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Apps-Dev-Tech-Lead-Analyst---C13---PUNE_261005459"
   },
   {
    "title": "DevOps/MLOps Specialist",
@@ -361,13 +410,6 @@
    "url": "https://jobs.apple.com/en-in/details/200692863/data-scientist"
   },
   {
-   "title": "Senior Data Scientist",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-09",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-data-scientist/34088/103090916304"
-  },
-  {
    "title": "Principal Applied Sciences Manager",
    "company": "Microsoft",
    "location": "Bengaluru, Hyderabad",
@@ -375,60 +417,11 @@
    "url": "https://apply.careers.microsoft.com/careers/job/1970393557043397"
   },
   {
-   "title": "Data Science IC4",
-   "company": "Microsoft",
-   "location": "Bengaluru",
-   "posted": "2026-11-09",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393556980192"
-  },
-  {
-   "title": "Associate AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-08",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/associate-ai-ml-engineer/34088/103051748416"
-  },
-  {
-   "title": "Manager AI or ML Engineering - Java, Python, React, Angular, AWS",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-08",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/manager-ai-or-ml-engineering-java-python-react-angular-aws/34088/103051748512"
-  },
-  {
-   "title": "Senior AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-08",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-ai-or-ml-engineer/34088/103051748448"
-  },
-  {
    "title": "TC - MENA Technology - AI - ML Developer - Senior",
    "company": "EY",
    "location": "Thiruvananthapuram",
    "posted": "2026-11-08",
    "url": "https://careers.ey.com/ey/job/Trivandrum-TC-MENA-Technology-AI-ML-Developer-Senior-KL-695581/1370965633/"
-  },
-  {
-   "title": "IN_Senior Associate_AI Data science engineer_GCC_Advisory_Bangalore",
-   "company": "PwC",
-   "location": "Bengaluru",
-   "posted": "2026-11-07",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Bengaluru-Millenia/IN-Senior-Associate--Data-Scientist-D-A-Advisory-Hyderabad_753940WD-1"
-  },
-  {
-   "title": "Specialist AI Engineer",
-   "company": "Novartis",
-   "location": "Hyderabad",
-   "posted": "2026-11-07",
-   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/Specialist-AI-Engineer_REQ-10091759-1"
-  },
-  {
-   "title": "Senior Machine Learning Engineer",
-   "company": "Atlassian",
-   "location": "India · Remote",
-   "posted": "2026-11-06",
-   "url": "https://careers-apac-atlassian.icims.com/jobs/26639/senior-machine-learning-engineer/job?mode=apply"
   }
  ]
 }
