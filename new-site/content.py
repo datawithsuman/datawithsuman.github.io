@@ -4,8 +4,8 @@
 TRACKS = [
     {
         "id": "fundamentals", "n": "01", "name": "Fundamentals", "status": "Start here",
-        "desc": "The core ideas behind every model, from maths and regression to neural nets.",
-        "topics": ["Vectors, gradients and probability", "A/B testing", "Linear and logistic regression", "Trees and boosting", "Neural nets and backprop"],
+        "desc": "The core ideas behind every model, from maths to LLMs.",
+        "topics": ["Maths", "Classical ML", "Deep learning", "LLMs"],
         "know": [],
         # build.py adds the Maths for ML, A/B Testing, Classical ML, Deep Learning, NLP and LLMs modules.
         "modules": [
@@ -13,8 +13,8 @@ TRACKS = [
     },
     {
         "id": "ai-engineering", "n": "02", "name": "AI Engineering", "status": "Needs Fundamentals",
-        "desc": "How LLM applications are served, built and run, from inference to retrieval and agents.",
-        "topics": ["LLM inference and serving", "Prompts and RAG", "Agents and tool use", "MLOps and LLMOps"],
+        "desc": "How LLM apps are served, built and run.",
+        "topics": ["Inference", "RAG", "Agents", "LLMOps"],
         "know": ["fundamentals/logistic-regression", "fundamentals/backpropagation"],
         # build.py adds the modules.
         "modules": [
@@ -22,8 +22,8 @@ TRACKS = [
     },
     {
         "id": "system-design", "n": "03", "name": "System Design", "status": "Can run in parallel",
-        "desc": "How AI and ML systems are designed, from requirements to rollout.",
-        "topics": ["Design a support chatbot", "Design a research agent", "Design code autocomplete", "Design a shared LLM platform", "A/B testing design scenarios"],
+        "desc": "Real AI and ML systems, from requirements to rollout.",
+        "topics": ["LLM apps", "Agents", "RecSys", "A/B tests"],
         "know": ["fundamentals/gradient-boosting"],
         "modules": [
             {"part": "Recommendation Systems", "name": "Designs", "desc": "Find a few good items for each user from a very large catalogue.", "lessons": [
@@ -36,8 +36,8 @@ TRACKS = [
     },
     {
         "id": "papers", "n": "04", "name": "Papers Explained", "status": "Any time",
-        "desc": "Important papers taught step by step: the gist, the method, the results and why they matter. New papers added weekly.",
-        "topics": ["Attention Is All You Need", "Scaling Laws and Chinchilla", "InstructGPT", "DeepSeek-R1", "LoRA", "Harness Engineering", "Context Language Models", "Understanding AI from the Inside"],
+        "desc": "Key papers: the gist, the method, the results and why they matter.",
+        "topics": ["Foundations", "Agents", "Context", "Interpretability"],
         "know": ["fundamentals/self-attention"],
         "modules": [
             {"name": "Foundational", "desc": "The papers behind modern LLMs: the architecture, how to scale it, how to align it and how to fine-tune it.", "lessons": [

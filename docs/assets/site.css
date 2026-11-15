@@ -120,9 +120,10 @@ a.panel:hover { border-color: var(--ink); }
 .status-note { font-size: 13px; font-weight: 500; color: var(--muted); }
 .track-card h3 { font-size: 24px; font-weight: 700; color: var(--chip); }
 .track-card > p { color: var(--muted); }
-.track-card ul { margin-top: 4px; border-top: 1px solid var(--line-soft); }
-.track-card li { padding-block: 8px; border-bottom: 1px solid var(--line-soft); font-size: 14px; }
-.track-card li:last-child { border-bottom: 0; padding-bottom: 0; }
+.track-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.track-tags span { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-soft); color: var(--ink); }
+.track-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line-soft); display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--muted); }
+.track-go { font-weight: 600; color: var(--chip); }
 .grid-tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); }
 .tile { display: grid; gap: 8px; align-content: start; padding: 18px; }
 .tile h3 { font-size: 18px; }

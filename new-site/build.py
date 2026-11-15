@@ -229,9 +229,13 @@ def home():
     start_html = "".join(f'<a class="panel start{d}" href="{u}"><span class="eyebrow">{e}</span><h3>{t}</h3><p>{p}</p></a>' for e, t, p, u, d in starts)
     tracks = ""
     for t in TRACKS:
-        topics = "".join(f"<li>{esc(x)}</li>" for x in t["topics"])
+        topics = "".join(f"<span>{esc(x)}</span>" for x in t["topics"][:4])
+        n = len(track_lessons(t))
+        unit = "papers" if t["id"] == "papers" else "lessons"
+        extra = " · new weekly" if t["id"] == "papers" else ""
         tracks += (f'<a class="panel track-card t-{t["id"]}" href="tracks/{t["id"]}/"><span class="track-top"><span class="chip track-num">{t["n"]}</span>'
-                   f'<span class="status-note">{t["status"]}</span></span><h3>{t["name"]}</h3><p>{t["desc"]}</p><ul>{topics}</ul></a>')
+                   f'<span class="status-note">{t["status"]}</span></span><h3>{t["name"]}</h3><p>{t["desc"]}</p><span class="track-tags">{topics}</span>'
+                   f'<span class="track-foot"><span>{n} {unit}{extra}</span><span class="track-go">Explore →</span></span></a>')
     path = [("Maths for ML", "fundamentals/vectors-and-cosine-similarity"), ("Regression", "fundamentals/linear-regression"), ("Neural nets", "fundamentals/perceptron-to-mlp"),
             ("Attention", "fundamentals/self-attention"), ("Embeddings and RAG", "fundamentals/embeddings"),
             ("Serving LLMs", "ai-engineering/prefill-vs-decode"), ("Agent design", "system-design/design-refund-agent")]
