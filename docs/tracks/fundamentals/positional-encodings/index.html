@@ -54,6 +54,7 @@
 <div class="two" style="margin-top:18px"><div><p>Where this lesson sits: positions enter right after the token embeddings (RoPE applies them inside every attention layer).</p><p class="small">Full walkthrough: <a href="../transformer-end-to-end/">The Transformer, End to End</a>.</p></div><div data-minitf="pe"></div></div><section class="ch" id="c1" data-toc="1 · The problem">
   <h3>Attention is order-blind</h3>
   <p>Scores q·k depend only on the two tokens' contents. Permute the input and the outputs are permuted the same way: self-attention is <span class="k">permutation-equivariant</span>. For a bag of words that's fine; for language, "dog bites man" ≠ "man bites dog". RNNs got order for free by reading in sequence; Transformers have to be told.</p>
+  <p><b>One exception worth knowing:</b> a GPT-style decoder uses a <span class="k">causal mask</span>, so each token sees only itself and earlier tokens. That already leaks some order: the token at position 2 sees 3 tokens, the one at position 7 sees 8. Explicit position information is still added because the mask alone doesn't directly say "one word back" vs "ten words back". Section 6 shows models that lean on this anyway.</p>
 </section></div></section>
 <section class="panel block idea" id="idea"><h2 class="eyebrow">The idea</h2><p class="idea-analogy">Think of giving each word a clock hand, turned according to its position. Any two words a fixed distance apart have the same angle between their hands, wherever they sit. That&#x27;s RoPE: attention sees how far apart words are, not just where they are.</p>
 <figure class="picture"><svg viewBox="0 0 480 140" role="img" aria-label="Two clock faces. On each, two hands sit the same angle apart, even though their absolute positions differ, because the gap between the words is the same.">
@@ -83,7 +84,7 @@
     <p class="small" style="margin:0">A fixed 8-dimensional query and key (4 rotating pairs, θ<sub>i</sub> = 10000<sup>−2i/8</sup>). The circle shows pair 1 of the rotated query (teal) and key (orange); the score uses all 4 pairs.</p>
   </div>
   <p>Shift both positions by 40 and the score is identical: only m − n matters. Change the gap instead (move n) and the score changes. That's why RoPE models generalise across positions within the trained range: "the adjective two words before the noun" looks the same at the start or the end of a document.</p>
-</section><p class="play-why"><b>Now say why:</b> why does the score depend on the gap, and not on the absolute positions?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: Maths</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Maths</h2><section class="ch" id="summary"><h3>In one breath</h3>Attention compares every token with every other but has no idea of <b>order</b>: shuffle the words and each token gets the same weights. So position must be injected. The original Transformer <b>added</b> fixed <b>sinusoidal</b> vectors to the embeddings; BERT and GPT-2 <b>learned</b> one vector per position. Most modern LLMs use <b>RoPE</b>: rotate each pair of query and key dimensions by an angle proportional to the token's position. Then the attention score depends only on the <b>relative distance</b> between two tokens, which is what language mostly cares about. Extending a model to longer contexts usually means adjusting these position schemes.<span class="small">What you'll be able to do after this: explain why position is needed, compare absolute, learned, relative, RoPE and ALiBi, and show why RoPE gives relative positions.</span><div class="legend"><span><i style="background:var(--a)"></i>query</span><span><i style="background:var(--b)"></i>key</span><span><i style="background:var(--ok)"></i>same score</span><span><i style="background:var(--bad)"></i>order lost</span><span><i style="background:var(--info)"></i>numbers</span></div></section><section class="ch" id="c2" data-toc="2 · Sinusoids">
+</section><p class="play-why"><b>Now say why:</b> why does the score depend on the gap, and not on the absolute positions?</p></div><button type="button" class="btn btn-track panel-next" data-tab-go="how">Next: Maths</button></div><div class="tab-panel" id="panel-how" role="tabpanel" aria-labelledby="tab-how" tabindex="-1"><div class="sec" id="how"><h2 class="sec-title">Maths</h2><section class="ch" id="summary"><h3>In one breath</h3>Attention compares every token with every other but has no idea of <b>order</b>: shuffle the words and each token gets the same weights. So position must be injected. The original Transformer <b>added</b> fixed <b>sinusoidal</b> vectors to the embeddings; BERT and GPT-2 <b>learned</b> one vector per position. Most modern LLMs use <b>RoPE</b>: rotate each pair of query and key dimensions by an angle proportional to the token's position. Then the attention score depends only on the <b>relative distance</b> between two tokens, which is what language mostly cares about. Extending a model to longer contexts usually means adjusting these position schemes. Newer models also rotate only part of each head, skip RoPE in some layers, or add a learned distance bias instead.<span class="small">What you'll be able to do after this: explain why position is needed, compare absolute, learned, relative, RoPE and ALiBi, and show why RoPE gives relative positions, and say what recent models use instead of full RoPE.</span><div class="legend"><span><i style="background:var(--a)"></i>query</span><span><i style="background:var(--b)"></i>key</span><span><i style="background:var(--ok)"></i>same score</span><span><i style="background:var(--bad)"></i>order lost</span><span><i style="background:var(--info)"></i>numbers</span></div></section><section class="ch" id="c2" data-toc="2 · Sinusoids">
   <h3>Sinusoidal positional encoding</h3>
   <div class="reader" data-reader='[
     {"t":"p","c":"info","label":"position","say":"The token’s index in the sequence: 0, 1, 2, …"},
@@ -92,7 +93,7 @@
   ]'>
     <div class="stage"><div class="eq" data-tex="\class{term t-s}{PE_{(\class{term t-p}{pos},\,2i)} = \sin\!\Big(\frac{pos}{\class{term t-f}{10000^{2i/d}}}\Big),\qquad PE_{(pos,\,2i+1)} = \cos\!\Big(\frac{pos}{10000^{2i/d}}\Big)}"></div></div>
     <ol class="say"></ol>
-    <p class="small">Vaswani et al. (2017), §3.5: chosen because PE(pos + k) is a linear function (a rotation) of PE(pos), which may let the model attend by relative position; learned embeddings performed nearly identically in their tests.</p>
+    <p class="small">Vaswani et al. (2017), §3.5: chosen because PE(pos + k) is a linear function (a rotation) of PE(pos), which may let the model attend by relative position; learned embeddings performed nearly identically in their tests. A small detail: the paper also multiplies the token embeddings by √d<sub>model</sub> before adding the encoding, most likely so the two are on a similar scale and position doesn't swamp meaning.</p>
   </div>
   <div class="card lab" id="labPE">
     <label>Reference position p <input type="range" min="0" max="200" step="1" value="20" data-k="p"><output></output></label>
@@ -113,10 +114,22 @@
     <li><b>Position interpolation</b> (Chen et al. 2023): to run a RoPE model on 4× longer inputs, squeeze the positions (divide them by 4) so the angles stay in the trained range, then fine-tune briefly; later methods (NTK-aware scaling, YaRN) rescale the frequencies instead.</li>
     <li>Long-context models combine these with attention optimisations; position handling is usually the first thing to change when extending context.</li>
   </ul>
+</section><section class="ch" id="c6" data-toc="6 · Models today">
+  <span class="pill ok">2025–26 trends</span>
+  <h3>Partial RoPE, NoPE layers and learned bias</h3>
+  <p>RoPE in every attention layer is still the most common choice in open-weight LLMs. But recent models increasingly change it in three ways.</p>
+  <ul>
+    <li><b>Partial RoPE: rotate only some dimensions.</b> MiniMax-M3 rotates 64 of the 128 dimensions in each head and leaves the rest unchanged. That halves the precomputed sine and cosine tables; the KV cache doesn't shrink, because keys are stored in full. Khan et al. (2026) found that rotating about 10% of the dimensions in 1B–8B models gave training loss close to full RoPE, though full RoPE was better on some evaluations.</li>
+    <li><b>NoPE layers: no explicit position at all.</b> Because of the causal mask, a token that spreads its attention evenly gives the first token a weight of 1/3 at position 2, 1/4 at position 3, and so on. That fraction is a position signal a later layer can read. Kazemnejad et al. (NeurIPS 2023) found that small decoders without any position encoding handled longer-than-trained inputs better than RoPE on most of their synthetic tasks. In practice models mix the two: SmolLM3 drops RoPE from every 4th layer, which its authors report helped long context without hurting short context.</li>
+    <li><b>Learned relative bias, again.</b> Inkling (Thinking Machines Lab, 2026) uses no RoPE. It adds a learned bias to each attention score, chosen by the distance between the two tokens and the query, which is T5's 2019 idea brought back.</li>
+  </ul>
+  <p>In Raschka's count of open-weight architectures (Nov 2026), the share using full RoPE in every layer fell from 2025 to 2026, and among RoPE models partial RoPE went from a minority to a majority. The groups are small, so read this as a direction, not a rule.</p>
+  <p class="small">Even a layer that skips RoPE isn't position-blind: its inputs come from earlier layers that did use position.</p>
 </section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="c3" data-toc="3 · The trap">
   <span class="pill bad">The trap</span>
   <h3>Learned absolute positions don't extrapolate</h3>
   <p>BERT and GPT-2 learn one vector per position (512 and 1,024 positions). Simple and effective, but a model has never seen position 1,025 and has no vector for it, and absolute position is often less useful than "how far apart are these two words?". Relative schemes (Shaw et al. 2018; T5's relative biases) add a learned term to each attention score that depends on the distance i − j.</p>
+  <p>The table also gets expensive. In GPT-2 Medium, 1,024 position vectors are about 0.3% of the weights. Stretch the table to about 100,000 positions and it would be more than 22% of the model (Raschka, 2026), and every one of those vectors has to be trained.</p>
 </section></div><button type="button" class="btn btn-track panel-next" data-tab-go="say">Next: Say it</button></div></div><div class="tab-panel" id="panel-say" role="tabpanel" aria-labelledby="tab-say" tabindex="-1"><section class="say-card" id="interview">
 <header class="say-head"><p class="eyebrow">Say it</p><h2>How does a Transformer know word order, and why RoPE?</h2></header>
 <ol class="say-stepper" aria-label="Steps"><li><button type="button" data-say-go="0"><span class="say-dot">1</span><span>Say it</span></button></li><li><button type="button" data-say-go="1" disabled><span class="say-dot">2</span><span>Check</span></button></li><li><button type="button" data-say-go="2" disabled><span class="say-dot">3</span><span>Follow-ups</span></button></li><li><button type="button" data-say-go="3" disabled><span class="say-dot">4</span><span>Answer</span></button></li></ol>
@@ -128,47 +141,75 @@
 </div>
 <div class="say-step" data-say-step tabindex="-1">
 <h3>Tick what you covered</h3>
-<ul class="checks"><li><label><input type="checkbox" data-check><span>Self-attention is permutation-equivariant, so it can&#x27;t tell word order alone.</span></label></li><li><label><input type="checkbox" data-check><span>The original paper added fixed sinusoidal encodings to the embeddings.</span></label></li><li><label><input type="checkbox" data-check><span>BERT and GPT-2 learned absolute positions, which can&#x27;t go beyond the trained length.</span></label></li><li><label><input type="checkbox" data-check><span>RoPE rotates query and key pairs by an angle proportional to position.</span></label></li><li><label><input type="checkbox" data-check><span>So the dot product depends only on the relative offset.</span></label></li><li><label><input type="checkbox" data-check><span>ALiBi adds a distance penalty, and context can be extended by rescaling RoPE.</span></label></li></ul>
+<ul class="checks"><li><label><input type="checkbox" data-check><span>Self-attention is permutation-equivariant, so it can&#x27;t tell word order alone (a causal mask leaks only a little).</span></label></li><li><label><input type="checkbox" data-check><span>The original paper added fixed sinusoidal encodings to the embeddings.</span></label></li><li><label><input type="checkbox" data-check><span>BERT and GPT-2 learned absolute positions, which can&#x27;t go beyond the trained length.</span></label></li><li><label><input type="checkbox" data-check><span>RoPE rotates query and key pairs by an angle proportional to position.</span></label></li><li><label><input type="checkbox" data-check><span>So the dot product depends only on the relative offset.</span></label></li><li><label><input type="checkbox" data-check><span>ALiBi adds a distance penalty, and context can be extended by rescaling RoPE.</span></label></li><li><label><input type="checkbox" data-check><span>Recent models use partial RoPE, skip RoPE in some layers (NoPE), or use a learned distance bias.</span></label></li></ul>
 <div class="check-meter"><span class="meter"><i data-check-bar></i></span><span class="check-count" aria-live="polite" data-check-count></span></div>
 <div class="say-actions"><button type="button" class="btn btn-track" data-say-go="2">Take the follow-ups</button><button type="button" class="link-btn" data-say-go="3">Skip to our answer</button></div>
 </div>
 <div class="say-step" data-say-step tabindex="-1">
 <h3>The interviewer pushes further</h3>
 <div class="fu" data-fu>
-<p class="eyebrow">Follow-up 1 of 3</p>
+<p class="eyebrow">Follow-up 1 of 7</p>
 <p class="fu-q">Why is RoPE applied to Q and K but not V?</p>
 <p class="say-hint">Answer it out loud, then check.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu1-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
 <div class="answer" id="fu1-answer"><p>Position should affect <i>who attends to whom</i> (the scores), not the content that is passed along.</p></div>
 </div><div class="fu" data-fu>
-<p class="eyebrow">Follow-up 2 of 3</p>
+<p class="eyebrow">Follow-up 2 of 7</p>
 <p class="fu-q">Added vs multiplied position information?</p>
 <p class="say-hint">Answer it out loud, then check.</p>
 <div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu2-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
 <div class="answer" id="fu2-answer"><p>Sinusoidal and learned encodings are added once to the input; RoPE multiplies (rotates) inside every attention layer, so relative position is present at every layer.</p></div>
 </div><div class="fu" data-fu>
-<p class="eyebrow">Follow-up 3 of 3</p>
+<p class="eyebrow">Follow-up 3 of 7</p>
 <p class="fu-q">Why multiple frequencies?</p>
 <p class="say-hint">Answer it out loud, then check.</p>
-<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu3-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
 <div class="answer" id="fu3-answer"><p>Fast-rotating pairs distinguish nearby positions; slow ones cover long ranges without repeating, like the hands of a clock.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 4 of 7</p>
+<p class="fu-q">Can a decoder learn position with no positional encoding?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu4-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu4-answer"><p>Partly. The causal mask means each token sees a different number of earlier tokens, and attention can turn that count into a position signal. This is NoPE. It extrapolates well in small studies, and models like SmolLM3 skip RoPE in some layers, but most models still keep RoPE in most layers.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 5 of 7</p>
+<p class="fu-q">What is partial RoPE, and why use it?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu5-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu5-answer"><p>Rotate only some of each head's dimensions (MiniMax-M3 rotates 64 of 128) and leave the rest untouched. It halves the sine and cosine tables and leaves some dimensions for pure content matching. The KV cache stays the same size.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 6 of 7</p>
+<p class="fu-q">Two RoPE codebases pair dimensions differently. Which is right?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu6-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-next-fu>Next follow-up</button></div>
+<div class="answer" id="fu6-answer"><p>Both. The RoFormer paper and original LLaMA pair neighbouring dimensions (1,2), (3,4); most code now pairs the first half with the second half, (1,5), (2,6), because it's simpler to vectorise. Reorder the features and the scores are identical. But you can't load weights trained with one convention into code using the other.</p></div>
+</div><div class="fu" data-fu>
+<p class="eyebrow">Follow-up 7 of 7</p>
+<p class="fu-q">Are the RoPE sine and cosine tables learned or stored?</p>
+<p class="say-hint">Answer it out loud, then check.</p>
+<div class="say-actions"><button type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="fu7-answer" data-reveal>Reveal answer</button><button type="button" class="btn btn-track" data-say-go="3">See our answer</button></div>
+<div class="answer" id="fu7-answer"><p>Neither: they're computed once from the positions and frequencies and shared by every head, query and key. They're cheap enough that nobody saves them with the weights.</p></div>
 </div>
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
 <h3>The 30-second answer</h3>
-  <p class="say30">Self-attention is permutation-equivariant, so without position information a Transformer can't tell word order. The original paper added fixed sinusoidal encodings at different frequencies to the embeddings; BERT and GPT-2 learned absolute position embeddings, which can't go beyond the trained length. Most modern LLMs use RoPE: rotate each 2-D pair of query and key dimensions by an angle proportional to position, so the dot product depends only on the relative offset. ALiBi instead adds a distance penalty to the scores. To extend context, people interpolate or rescale RoPE frequencies and fine-tune.</p>
+  <p class="say30">Self-attention is permutation-equivariant, so without position information a Transformer can't reliably tell word order (a decoder's causal mask leaks only a little). The original paper added fixed sinusoidal encodings at different frequencies to the embeddings; BERT and GPT-2 learned absolute position embeddings, which can't go beyond the trained length. Most modern LLMs use RoPE: rotate each 2-D pair of query and key dimensions by an angle proportional to position, so the dot product depends only on the relative offset. ALiBi instead adds a distance penalty to the scores. To extend context, people interpolate or rescale RoPE frequencies and fine-tune. Recent models also use partial RoPE, skip RoPE in some layers, or use a learned distance bias.</p>
+  
+  
+  
+  
   
   
   
   
   
 <details class="say-more"><summary>Go further</summary><h3>What not to say</h3>
-  <ul><li>"Transformers know order from the input sequence." Without encodings they don't.</li><li>"RoPE lets any model handle unlimited length." It still degrades beyond the trained range unless rescaled.</li></ul></details>
+  <ul><li>"Transformers know order from the input sequence." An encoder like BERT doesn't at all; a decoder gets only a weak signal from its causal mask.</li><li>"Every modern LLM uses RoPE in every layer." Many now use partial RoPE, skip it in some layers, or use a learned distance bias.</li><li>"RoPE lets any model handle unlimited length." It still degrades beyond the trained range unless rescaled.</li></ul></details>
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Why attention needs position information, sinusoidal encodings, learned absolute positions, relative schemes, rotary position embeddings (RoPE) used in most modern LLMs, ALiBi, and stretching the context window · built from Vaswani et al. (2017), Devlin et al. (2019), Shaw et al. (2018), Su et al. (RoFormer, 2021), Press et al. (ALiBi, ICLR 2022), Chen et al. (2023) and Touvron et al. (2023) · checked 29 Oct 2026</p><section class="ch" id="src" data-toc="Sources"><h3>Sources</h3>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Why attention needs position information, sinusoidal encodings, learned absolute positions, relative schemes, rotary position embeddings (RoPE) used in most modern LLMs, ALiBi, and stretching the context window · built from Vaswani et al. (2017), Devlin et al. (2019), Shaw et al. (2018), Su et al. (RoFormer, 2021), Press et al. (ALiBi, ICLR 2022), Chen et al. (2023), Touvron et al. (2023), Kazemnejad et al. (NoPE, NeurIPS 2023), the SmolLM3 report (2025), Khan et al. (partial RoPE, 2026) and Raschka's "Understanding Positional Embeddings in Modern LLMs" (Nov 2026) · checked 16 Nov 2026</p><section class="ch" id="src" data-toc="Sources"><h3>Sources</h3>
   <ol class="src-list">
     <li>A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, <a href="https://arxiv.org/abs/1706.03762">arXiv:1706.03762</a>.</li>
     <li>P. Shaw, J. Uszkoreit &amp; A. Vaswani, "Self-Attention with Relative Position Representations", NAACL 2018, <a href="https://arxiv.org/abs/1803.02155">arXiv:1803.02155</a>.</li>
@@ -176,12 +217,19 @@
     <li>O. Press, N. Smith &amp; M. Lewis, "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (ALiBi), ICLR 2022, <a href="https://arxiv.org/abs/2108.12409">arXiv:2108.12409</a>.</li>
     <li>S. Chen, S. Wong, L. Chen &amp; Y. Tian, "Extending Context Window of Large Language Models via Positional Interpolation", <a href="https://arxiv.org/abs/2306.15595">arXiv:2306.15595</a>, 2023.</li>
     <li>H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", <a href="https://arxiv.org/abs/2302.13971">arXiv:2302.13971</a>, 2023.</li>
+    <li>C. Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer" (T5), JMLR 2020, <a href="https://arxiv.org/abs/1910.10683">arXiv:1910.10683</a>.</li>
+    <li>A. Kazemnejad et al., "The Impact of Positional Encoding on Length Generalization in Transformers" (NoPE), NeurIPS 2023, <a href="https://arxiv.org/abs/2305.19466">arXiv:2305.19466</a>.</li>
+    <li>Hugging Face, "SmolLM3: smol, multilingual, long-context reasoner", 2025, <a href="https://huggingface.co/blog/smollm3">huggingface.co/blog/smollm3</a>.</li>
+    <li>M. A. Khan, K. P. Gummadi, M. Gupta &amp; A. Ravichander, "Fractional Rotation, Full Potential? Investigating Performance and Convergence of Partial RoPE", EMNLP 2026, <a href="https://arxiv.org/abs/2603.11611">arXiv:2603.11611</a>.</li>
+    <li>Hugging Face Transformers, "MiniMax-M3-VL" model docs (rotary_dim = 64 of head_dim 128), <a href="https://huggingface.co/docs/transformers/model_doc/minimax_m3_vl">huggingface.co</a>.</li>
+    <li>S. Raschka, "Inkling Architecture and Benchmark Notes", 2026, <a href="https://sebastianraschka.com/blog/2026/inkling-architecture-benchmark-notes.html">sebastianraschka.com</a>.</li>
+    <li>S. Raschka, "Understanding Positional Embeddings in Modern LLMs", Ahead of AI, Nov 2026, <a href="https://magazine.sebastianraschka.com/p/understanding-positional-embeddings">magazine.sebastianraschka.com</a>.</li>
   </ol>
 </section></details><div class="tip" id="tip"></div></div><div hidden><div id="prog"></div><nav class="toc" aria-hidden="true"></nav></div>
   
   <nav class="prev-next" aria-label="Previous and next lesson"><a class="btn btn-secondary" rel="prev" href="../../../tracks/fundamentals/multi-head-attention/"><span class="pn-label">Previous</span>Multi-Head Attention</a><a class="btn btn-track" rel="next" href="../../../tracks/fundamentals/transformer-block/"><span class="pn-label">Next</span>The Transformer Block</a></nav>
 </article>
-<div class="rail" id="sideRight"><button type="button" class="side-handle" data-side="right" aria-controls="sideRight" aria-expanded="true" aria-label="Collapse side panel" title="Collapse side panel" hidden></button><div class="side-resizer" data-side="right" role="separator" aria-orientation="vertical" aria-label="Drag to resize side panel" tabindex="0" hidden></div><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="intuition"><a href="#play">Play</a></li><li data-panel="how"><a href="#summary">In one breath</a></li><li data-panel="how"><a href="#c2">Sinusoids</a></li><li data-panel="practice"><a href="#c5">Longer contexts</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
+<div class="rail" id="sideRight"><button type="button" class="side-handle" data-side="right" aria-controls="sideRight" aria-expanded="true" aria-label="Collapse side panel" title="Collapse side panel" hidden></button><div class="side-resizer" data-side="right" role="separator" aria-orientation="vertical" aria-label="Drag to resize side panel" tabindex="0" hidden></div><nav class="page-toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li data-panel="intuition"><a href="#situation">The situation</a></li><li data-panel="intuition"><a href="#idea">The idea</a></li><li data-panel="intuition"><a href="#play">Play</a></li><li data-panel="how"><a href="#summary">In one breath</a></li><li data-panel="how"><a href="#c2">Sinusoids</a></li><li data-panel="practice"><a href="#c5">Longer contexts</a></li><li data-panel="practice"><a href="#c6">Models today</a></li><li data-panel="practice"><a href="#trap">The answer that sounds right</a></li><li data-panel="say"><a href="#interview">Say it</a></li></ul></nav></div>
 </main>
 <script>
 // ---------- deep-explainer engine (keep unchanged; content lives in the HTML) ----------
