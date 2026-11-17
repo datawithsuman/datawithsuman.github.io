@@ -553,9 +553,22 @@ def main():
             first_seen.setdefault(key, today if known else "2000-01-01")
             j["posted"] = dt.datetime.fromisoformat(first_seen[key]).replace(tzinfo=dt.timezone.utc)
     seen_path.write_text(json.dumps(dict(sorted(first_seen.items())), indent=0))
+    # A company whose board fails this run keeps its jobs from the last good run (still within DAYS),
+    # so one timeout doesn't empty it from the page until tomorrow.
+    try:
+        previous = json.loads((HERE / "jobs.json").read_text())["jobs"]
+    except (OSError, ValueError, KeyError):
+        previous = []
     keep, seen, report = [], set(), []
     for row, jobs, err in results:
         n = 0
+        if err:
+            for j in previous:
+                if j["company"] == row["company"] and (NOW.date() - dt.date.fromisoformat(j["posted"])).days <= DAYS:
+                    seen.add((j["company"], j["title"].lower()))
+                    keep.append(j)
+                    n += 1
+            err += f" (kept {n} from last run)"
         for j in jobs:
             if not j["posted"] or (NOW - j["posted"]).days > DAYS:
                 continue
