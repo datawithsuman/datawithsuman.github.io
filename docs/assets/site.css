@@ -192,7 +192,7 @@ a.panel:hover { border-color: var(--ink); }
 .mod a { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 7px 8px; border-radius: 8px; font-size: 14px; line-height: 1.3; text-decoration: none; }
 .mod a:hover { background: var(--line-soft); }
 .mod a.current { background: var(--tint); color: var(--chip); font-weight: 600; }
-.lesson { display: grid; gap: 16px; min-width: 0; }
+.lesson { display: grid; gap: 16px; min-width: 0; width: 100%; max-width: 900px; margin-inline: auto; }
 .lesson > .crumbs { margin-top: -8px; }
 .lesson-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
 .before { font-size: 14px; color: var(--muted); }
@@ -315,7 +315,7 @@ html:not(.has-js) [data-reveal] { display: none; }
 .sit-more { color: var(--muted); font-size: 15px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding-top: 4px; border-top: 1px solid var(--line-soft); }
 .idea-analogy { font-size: 18px; line-height: 1.5; max-width: 620px; }
 .picture { margin: 0; display: grid; gap: 8px; }
-.picture svg { width: 100%; max-width: 520px; height: auto; display: block; }
+.picture svg { width: 100%; max-width: 640px; height: auto; display: block; }
 .picture figcaption { font-size: 14px; color: var(--muted); max-width: 620px; }
 .lesson-tabs { position: sticky; top: 0; z-index: 5; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-control); overflow: hidden; }
 .lesson-tabs button { min-height: 48px; padding: 6px 4px; background: none; border: 0; font-size: 15px; font-weight: 500; line-height: 1.15; color: var(--muted); }
