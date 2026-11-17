@@ -985,7 +985,9 @@ def jobs_page():
     desc = "Fresh roles from 100+ companies, posted in the last 7 days. Updated daily."
     html = head_html("AI/ML jobs in India · AIML Rounds", desc, root, page="jobs", path="jobs/")
     html += f"""<main id="main"><section class="page jobs-page"><p class="eyebrow">JOBS</p><h1 class="h1-track">AI/ML jobs in India</h1><p class="lead">{desc}</p>
-<div class="jobs-tools"><label class="sr" for="jobSearch">Search jobs</label><input id="jobSearch" class="jobs-search" type="search" placeholder="Search by title, company or city" autocomplete="off"><p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
+<div class="jobs-tools"><label class="sr" for="jobSearch">Search jobs</label><input id="jobSearch" class="jobs-search" type="search" placeholder="Search by title, company or city" autocomplete="off">
+<div class="jobs-exp"><span class="note" id="jobExpLabel">Experience</span><div class="depth" role="group" aria-labelledby="jobExpLabel"><button type="button" data-exp="any" aria-pressed="true">Any</button><button type="button" data-exp="0-2" aria-pressed="false">0–2 yrs</button><button type="button" data-exp="2-5" aria-pressed="false">2–5</button><button type="button" data-exp="5-8" aria-pressed="false">5–8</button><button type="button" data-exp="8-99" aria-pressed="false">8+</button></div></div>
+<p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
 <ul class="panel jobs-list" id="jobsList" tabindex="0" aria-label="Job postings, scroll for more"></ul>
 <noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
 <p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>

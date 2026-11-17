@@ -527,6 +527,100 @@ SOURCES = {"greenhouse": greenhouse, "lever": lever, "ashby": ashby, "smartrecru
            "mercedes": mercedes, "juspay": juspay, "ripplehire": ripplehire}
 
 
+# ---------- years of experience, read from each kept job's description ----------
+WORDS = {w: str(i) for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen".split())}
+YRS = r"\s*(?:years?|yrs?)\b"
+EXP_PATS = [
+    r"(\d{1,2})\s*\+?\s*(?:-|–|—|to|till)\s*(\d{1,2})\s*\+?" + YRS,
+    r"(\d{1,2})" + YRS + r"\s*(?:-|–|—|to|till)\s*(\d{1,2})" + YRS,
+    r"(\d{1,2})\s*\+" + YRS,
+    r"(?:minimum|min\.?|at least|over|more than)\s*(?:of\s*)?(\d{1,2})" + YRS,
+    r"(\d{1,2})" + YRS + r"['’]?\s*(?:of\s*)?(?:[\w-]+\s*){0,4}?(?:experience|exp\b)",
+]
+NOT_EXP = re.compile(r"founded|history|innovating|running|ago\b|old\b|insurance|screening|veteran|period|anniversar|warrant|contract term|\bage\b|of age", re.I)
+
+
+def description(url):
+    """The job's description as plain text, or "" if the page can't be read without a browser."""
+    u = urllib.parse.urlparse(url)
+    m = re.match(r"([\w-]+)\.(wd\d+)\.myworkdayjobs\.com", u.netloc)
+    if m:  # Workday pages are built by JavaScript; the same data comes from its JSON API
+        parts = [p for p in u.path.split("/") if p]
+        if parts and re.match(r"^[a-z]{2}-[A-Z]{2}$", parts[0]):
+            parts = parts[1:]
+        api = f"https://{u.netloc}/wday/cxs/{m.group(1)}/{parts[0]}/" + "/".join(parts[1:])
+        body = get(api, tries=2).get("jobPostingInfo", {}).get("jobDescription", "")
+    else:
+        req = urllib.request.Request(url, headers={**UA, "Accept": "text/html"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            body = r.read(2_000_000).decode("utf-8", "ignore")
+        body = re.sub(r"(?is)<(script|style)(?![^>]*ld\+json)[^>]*>.*?</\1>", " ", body)
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", body)))
+
+
+def years_from_text(t):
+    """(low, high or None) from the first experience requirement, preferring an 'overall/total' figure."""
+    t = re.sub(r"\b(" + "|".join(WORDS) + r")(?=\s*(?:\(\d+\)\s*)?\+?\s*(?:years?|yrs?)\b)", lambda m: WORDS[m.group(1).lower()], t, flags=re.I)
+    found = []
+    for p in EXP_PATS:
+        for m in re.finditer(p, t, re.I):
+            near = t[max(0, m.start() - 60): m.end() + 60]
+            if NOT_EXP.search(near):
+                continue
+            g = [int(x) for x in m.groups() if x]
+            lo, hi = g[0], (g[1] if len(g) > 1 else None)
+            if lo > 20 or (hi is not None and (hi < lo or hi > 30)):
+                continue
+            overall = bool(re.search(r"overall|total", near, re.I))
+            found.append((not overall, m.start(), lo, hi))
+    if not found:
+        return None
+    _, _, lo, hi = min(found)
+    return [lo, hi]
+
+
+def years_from_title(title):
+    """A rough guess when the description says nothing. Shown on the site with a '~'."""
+    t = title.lower()
+    if re.search(r"\b(principal|staff|director|head|vp|vice president|architect|avp)\b", t):
+        return [8, None]
+    if re.search(r"\b(lead|manager|lmts)\b", t):
+        return [7, None]
+    if re.search(r"\b(senior|sr\.?)\b|\b(iii|3)\b", t):
+        return [5, None]
+    if re.search(r"\b(junior|jr\.?|entry)\b|\b(i)\b(?![\w/])", t):
+        return [0, 2]
+    return None
+
+
+def add_experience(jobs, previous):
+    """Gives each job 'exp' = [low, high|None] and 'exp_from' = 'jd' or 'title'. Reuses last run's answer for known URLs."""
+    known = {j["url"]: j for j in previous if "exp_from" in j}
+    todo = []
+    for j in jobs:
+        if j["url"] in known:
+            for k in ("exp", "exp_from"):
+                if k in known[j["url"]]:
+                    j[k] = known[j["url"]][k]
+        else:
+            todo.append(j)
+
+    def one(j):
+        try:
+            return j, years_from_text(description(j["url"]))
+        except Exception:
+            return j, None
+    with ThreadPoolExecutor(8) as ex:
+        for j, yrs in ex.map(one, todo):
+            guess = None if yrs else years_from_title(j["title"])
+            if yrs or guess:
+                j["exp"], j["exp_from"] = (yrs, "jd") if yrs else (guess, "title")
+            else:
+                j["exp_from"] = "none"
+    counts = {s: sum(1 for j in jobs if j.get("exp_from") == s) for s in ("jd", "title", "none")}
+    return f'experience: {counts["jd"]} from the description, {counts["title"]} from the title, {counts["none"]} not stated ({len(todo)} new pages read)'
+
+
 def fetch(row):
     try:
         return row, SOURCES[row["source"]](row["company"], row["board_id"]), None
@@ -582,6 +676,7 @@ def main():
             n += 1
         report.append(f'{row["company"]:28} {"ERROR " + err if err else f"{len(jobs):4} postings, {n} kept"}')
     keep.sort(key=lambda j: (j["posted"], j["company"]), reverse=True)
+    report.append("\n" + add_experience(keep, previous))
     data = {"updated": NOW.date().isoformat(), "days": DAYS, "count": len(keep), "jobs": keep}
     text = json.dumps(data, ensure_ascii=False, indent=1)
     for out in [HERE / "jobs.json"] + [Path(p) for p in sys.argv[1:]]:

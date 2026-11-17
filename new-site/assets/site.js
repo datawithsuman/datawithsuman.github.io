@@ -489,20 +489,49 @@
         var a = appliedCount();
         meta.textContent = (q ? n + " of " + data.count + " jobs" : data.count + " jobs") + (a ? " · " + a + " applied" : "") + " · Updated " + updated;
       }
+      // Experience: read from each job description by the daily fetch ("~" = guessed from the title).
+      var expBtns = Array.prototype.slice.call(document.querySelectorAll(".jobs-exp [data-exp]")), expSel = "any";
+      function expLabel(j) {
+        if (!j.exp) return "";
+        var t = j.exp[1] != null ? j.exp[0] + "–" + j.exp[1] + " yrs" : j.exp[0] + "+ yrs";
+        return j.exp_from === "title" ? '<span class="job-exp" title="Not in the description; guessed from the job title">~' + t + "</span>" : '<span class="job-exp">' + t + "</span>";
+      }
+      function expMatch(j) {  // a job matches every band its stated range touches
+        var b = expSel.split("-").map(Number), lo = j.exp[0], hi = j.exp[1] != null ? j.exp[1] : lo;
+        return lo < b[1] && hi >= b[0];
+      }
+      function row(j) {
+        var on = !!applied[j.url], x = expLabel(j);
+        return '<li class="job' + (on ? " is-applied" : "") + '"><label class="job-check"><input type="checkbox" data-url="' + esc(j.url) + '"' + (on ? " checked" : "") +
+          '><span class="sr">Applied: ' + esc(j.title) + ' at ' + esc(j.company) + '</span></label>' +
+          '<a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + (on ? ' <span class="job-tag">Applied</span>' : "") + '</span>' +
+          '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + (x ? " · " + x : "") + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
+      }
       function draw() {
         var q = (search.value || "").trim().toLowerCase();
         var shown = data.jobs.filter(function (j) { return !q || (j.title + " " + j.company + " " + j.location).toLowerCase().indexOf(q) > -1; });
-        jobList.innerHTML = shown.length ? shown.map(function (j) {
-          var on = !!applied[j.url];
-          return '<li class="job' + (on ? " is-applied" : "") + '"><label class="job-check"><input type="checkbox" data-url="' + esc(j.url) + '"' + (on ? " checked" : "") +
-            '><span class="sr">Applied: ' + esc(j.title) + ' at ' + esc(j.company) + '</span></label>' +
-            '<a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + (on ? ' <span class="job-tag">Applied</span>' : "") + '</span>' +
-            '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
-        }).join("") : '<li class="jobs-empty">No jobs match that search.</li>';
-        jobList.classList.toggle("is-short", shown.length < 6);
+        var html, n = shown.length;
+        if (expSel === "any") {
+          html = shown.map(row).join("");
+        } else {
+          // Jobs that don't say stay visible, after the matches, so no real job is quietly hidden.
+          var hit = shown.filter(function (j) { return j.exp && expMatch(j); }), unknown = shown.filter(function (j) { return !j.exp; });
+          n = hit.length + unknown.length;
+          html = hit.map(row).join("") || '<li class="jobs-empty">No jobs in this range right now.</li>';
+          if (unknown.length) html += '<li class="jobs-sep">Experience not stated (' + unknown.length + ")</li>" + unknown.map(row).join("");
+        }
+        jobList.innerHTML = n ? html : '<li class="jobs-empty">No jobs match that search.</li>';
+        jobList.classList.toggle("is-short", n < 6);
         jobList.scrollTop = 0;
-        setMeta(q, shown.length);
+        setMeta(q || expSel !== "any", n);
       }
+      expBtns.forEach(function (b) {
+        b.addEventListener("click", function () {
+          expSel = b.dataset.exp;
+          expBtns.forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+          draw();
+        });
+      });
       jobList.addEventListener("change", function (e) {
         var box = e.target;
         if (!box.matches || !box.matches(".job-check input")) return;
@@ -513,7 +542,7 @@
         if (box.checked && !tag) title.insertAdjacentHTML("beforeend", ' <span class="job-tag">Applied</span>');
         if (!box.checked && tag) tag.remove();
         var q = (search.value || "").trim().toLowerCase();
-        setMeta(q, jobList.querySelectorAll(".job").length);
+        setMeta(q || expSel !== "any", jobList.querySelectorAll(".job").length);
       });
       search.addEventListener("input", draw);
       draw();

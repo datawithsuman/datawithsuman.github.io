@@ -1,476 +1,803 @@
 {
  "updated": "2026-11-17",
  "days": 7,
- "count": 67,
+ "count": 69,
  "jobs": [
   {
    "title": "Lead AI Engineer",
    "company": "Target",
    "location": "Bengaluru",
    "posted": "2026-11-17",
-   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/Tower-02-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Lead-Engineer--Advanced-AI_R0000441606"
+   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/Tower-02-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Lead-Engineer--Advanced-AI_R0000441606",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Research Scientist",
+   "company": "Quantiphi",
+   "location": "Bengaluru",
+   "posted": "2026-11-17",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Scientist_JR11668",
+   "exp_from": "none"
+  },
+  {
+   "title": "Research Engineer",
+   "company": "Quantiphi",
+   "location": "2 locations in India",
+   "posted": "2026-11-17",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-MH-Mumbai-Eureka/Research-Engineer_JR10781",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data and Analytics Engineering - Artificial Intelligence and Machine Learning - Specialist 3 - CS - G",
    "company": "PwC",
    "location": "Mumbai",
    "posted": "2026-11-17",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Mumbai-Goregaon/Data-and-Analytics-Engineering---Artificial-Intelligence-and-Machine-Learning---Specialist-3---CS---G_DB_009221-1"
+   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Mumbai-Goregaon/Data-and-Analytics-Engineering---Artificial-Intelligence-and-Machine-Learning---Specialist-3---CS---G_DB_009221-1",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "IN_Senior Associate_ Data Scientist_GCC_Advisory_Gurgaon",
    "company": "PwC",
    "location": "Gurugram",
    "posted": "2026-11-17",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Gurugram-Downtown-4/IN-Senior-Associate--Data-Scientist-D-A-Advisory-Hyderabad_753941WD-1"
+   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Gurugram-Downtown-4/IN-Senior-Associate--Data-Scientist-D-A-Advisory-Hyderabad_753941WD-1",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Staff Machine Learning Engineer",
    "company": "PayPal",
    "location": "2 locations in India",
    "posted": "2026-11-17",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Machine-Learning-Engineer_R0138937-1"
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Machine-Learning-Engineer_R0138937-1",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Python and PySpark Machine Learning Data Scientist",
    "company": "Citi",
    "location": "Gurugram",
    "posted": "2026-11-17",
-   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Gurugram-Haryana-India/Python-and-PySpark-Machine-Learning-Data-Scientist_261007896"
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Gurugram-Haryana-India/Python-and-PySpark-Machine-Learning-Data-Scientist_261007896",
+   "exp": [
+    4,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI DevSecOps Engineer",
    "company": "Cisco",
    "location": "Bengaluru",
    "posted": "2026-11-17",
-   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Bangalore-India/AI-DevSecOps-Engineer_2029202"
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Bangalore-India/AI-DevSecOps-Engineer_2029202",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Gen AI Engineer",
    "company": "Barclays",
    "location": "Bengaluru",
    "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Gen-AI-Engineer_JR-0000100208"
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Gen-AI-Engineer_JR-0000100208",
+   "exp_from": "none"
   },
   {
    "title": "AI Software Engineer",
    "company": "Barclays",
    "location": "Pune",
    "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129112"
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129112",
+   "exp_from": "none"
   },
   {
    "title": "Fincrime Screening Data Scientist - AVP",
    "company": "Barclays",
    "location": "2 locations in India",
    "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Noida-Candor-TechSpace/FCS-Data-Scientist_JR-0000125622-1"
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Noida-Candor-TechSpace/FCS-Data-Scientist_JR-0000125622-1",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Assistant Vice President - Applied AI Engineer",
    "company": "Barclays",
    "location": "Bengaluru",
    "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101372"
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101372",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Global Data AI Specialist",
    "company": "ABB",
    "location": "4 locations in India",
    "posted": "2026-11-17",
-   "url": "https://abb.wd3.myworkdayjobs.com/external_career_page/job/Bangalore-Karnataka-India/Senior-Global-Data-AI-Specialist_JR00050424"
+   "url": "https://abb.wd3.myworkdayjobs.com/external_career_page/job/Bangalore-Karnataka-India/Senior-Global-Data-AI-Specialist_JR00050424",
+   "exp": [
+    4,
+    6
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Research Scientist, Agent Evaluation",
    "company": "ServiceNow",
    "location": "Hyderabad",
    "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/servicenow/744000161739299"
+   "url": "https://jobs.smartrecruiters.com/servicenow/744000161739299",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Platform Engineer",
    "company": "ServiceNow",
    "location": "Hyderabad",
    "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/servicenow/744000161736459"
+   "url": "https://jobs.smartrecruiters.com/servicenow/744000161736459",
+   "exp": [
+    2,
+    4
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Applied Sciences",
    "company": "Microsoft",
    "location": "India",
    "posted": "2026-11-16",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393557074078"
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557074078",
+   "exp_from": "none"
   },
   {
    "title": "Lead Data Engineer - Data Engineering, Databricks, Model Serving, ML Ops, Data Architecture and modeling",
    "company": "JPMorgan Chase",
    "location": "Mumbai",
    "posted": "2026-11-16",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806251"
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806251",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "AI Architect",
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161774699"
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161774699",
+   "exp": [
+    11,
+    14
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Gen AI Specialist",
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161724733"
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161724733",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Applied Scientist, Amazon Core Search",
    "company": "Amazon",
    "location": "Bengaluru",
    "posted": "2026-11-16",
-   "url": "https://www.amazon.jobs/en/jobs/10606534/senior-applied-scientist-amazon-core-search"
+   "url": "https://www.amazon.jobs/en/jobs/10606534/senior-applied-scientist-amazon-core-search",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI or ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Pune",
    "posted": "2026-11-15",
-   "url": "https://careers.unitedhealthgroup.com/job/pune/ai-or-ml-engineer/34088/103359671488"
+   "url": "https://careers.unitedhealthgroup.com/job/pune/ai-or-ml-engineer/34088/103359671488",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "GenAI/Agentic AI specialists",
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-15",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161679729"
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161679729",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Science Engagement Lead",
    "company": "Shell",
    "location": "Chennai",
    "posted": "2026-11-14",
-   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/SHELL-CENTRE--CHENNAI/Data-Science-Engagement-Lead_R202317-1"
+   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/SHELL-CENTRE--CHENNAI/Data-Science-Engagement-Lead_R202317-1",
+   "exp": [
+    10,
+    12
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
    "company": "Salesforce",
    "location": "2 locations in India",
    "posted": "2026-11-14",
-   "url": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Bangalore/LMTS---Lead-AI-ML-Engineer--LLM-Post-Training-_JR368314"
+   "url": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Bangalore/LMTS---Lead-AI-ML-Engineer--LLM-Post-Training-_JR368314",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Principal Data Scientist",
    "company": "Philips",
    "location": "Bengaluru",
    "posted": "2026-11-14",
-   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Principal-Data-Scientist_592609"
+   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Principal-Data-Scientist_592609",
+   "exp": [
+    9,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Specialist, AI Engineer",
    "company": "Novartis",
    "location": "2 locations in India",
    "posted": "2026-11-14",
-   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Prague/Specialist--AI-Engineer_REQ-10089980"
+   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Prague/Specialist--AI-Engineer_REQ-10089980",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist - AI Developer",
    "company": "HP",
    "location": "Bengaluru",
    "posted": "2026-11-14",
-   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/AI---Data-Analytics_3164052-1"
+   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/AI---Data-Analytics_3164052-1",
+   "exp": [
+    5,
+    10
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Transformation Lead, Global Cards and Loyalty Solutions, Director",
    "company": "Deutsche Bank",
    "location": "Pune",
    "posted": "2026-11-14",
-   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Margarpatta/AI-Transformation-Lead--Global-Cards-and-Loyalty-Solutions--Director_R0456380"
+   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Margarpatta/AI-Transformation-Lead--Global-Cards-and-Loyalty-Solutions--Director_R0456380",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Senior Lead Python AI/ML Engineer",
    "company": "Citi",
    "location": "2 locations in India",
    "posted": "2026-11-14",
-   "url": "https://citi.wd5.myworkdayjobs.com/2/job/DLF-CYBERCITY-12B/Senior-Lead-Python-AI-ML-Engineer_26996796"
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/DLF-CYBERCITY-12B/Senior-Lead-Python-AI-ML-Engineer_26996796",
+   "exp": [
+    10,
+    12
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Manager, AI Engineer, Intelligence & Data Solutions (IDS)",
    "company": "Visa",
    "location": "Bengaluru",
    "posted": "2026-11-13",
-   "url": "https://visa.wd5.myworkdayjobs.com/Visa/job/IN---Bengaluru-India/Senior-Manager--AI-Engineer--Intelligence---Data-Solutions--IDS-_REF089982W"
+   "url": "https://visa.wd5.myworkdayjobs.com/Visa/job/IN---Bengaluru-India/Senior-Manager--AI-Engineer--Intelligence---Data-Solutions--IDS-_REF089982W",
+   "exp": [
+    10,
+    12
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist (ML) - 3 to 5 years",
    "company": "PhonePe",
    "location": "Pune",
    "posted": "2026-11-13",
-   "url": "https://jobs.smartrecruiters.com/PHONEPELIMITED/1000000000006105"
+   "url": "https://jobs.smartrecruiters.com/PHONEPELIMITED/1000000000006105",
+   "exp": [
+    3,
+    5
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Commercial & Investment Bank - Payments Data Scientist Associate",
    "company": "JPMorgan Chase",
    "location": "Mumbai",
    "posted": "2026-11-13",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806312"
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806312",
+   "exp_from": "none"
   },
   {
    "title": "Agentic AI Engineer",
    "company": "HP",
    "location": "Bengaluru",
    "posted": "2026-11-13",
-   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/Agentic-AI-Engineer_3164655-1"
+   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/Agentic-AI-Engineer_3164655-1",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Gen AI Engineer - Vice President",
    "company": "Citi",
    "location": "2 locations in India",
    "posted": "2026-11-13",
-   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Gen-AI-Engineer---Vice-President_26991742"
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Gen-AI-Engineer---Vice-President_26991742",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Machine Learning Engineering Technical Leader",
    "company": "Cisco",
    "location": "Hyderabad",
    "posted": "2026-11-13",
-   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineering-Technical-Leader_2027055-1"
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineering-Technical-Leader_2027055-1",
+   "exp_from": "none"
   },
   {
    "title": "Machine Learning Engineer",
    "company": "Cisco",
    "location": "Hyderabad",
    "posted": "2026-11-13",
-   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineer_2030936"
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineer_2030936",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Machine Learning Engineer - Responsible AI",
    "company": "Atlassian",
    "location": "Bengaluru",
    "posted": "2026-11-13",
-   "url": "https://careers-apac-atlassian.icims.com/jobs/27643/senior-machine-learning-engineer---responsible-ai/job?mode=apply"
+   "url": "https://careers-apac-atlassian.icims.com/jobs/27643/senior-machine-learning-engineer---responsible-ai/job?mode=apply",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Staff, Data Scientist – AI Agent Platform",
    "company": "Walmart Global Tech",
    "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Staff--Data-Scientist---AI-Agent-Platform_R-2696006"
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Staff--Data-Scientist---AI-Agent-Platform_R-2696006",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "PRINCIPAL, DATA SCIENTIST",
    "company": "Walmart Global Tech",
    "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PW-II/PRINCIPAL--DATA-SCIENTIST_R-2656082"
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PW-II/PRINCIPAL--DATA-SCIENTIST_R-2656082",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Gurugram",
    "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer/34088/103216188224"
+   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer/34088/103216188224",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Principal AI or ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Hyderabad",
    "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/principal-ai-or-ml-engineer/34088/102829678576"
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/principal-ai-or-ml-engineer/34088/102829678576",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Associate Director - CIB Business Risk - AI Governance Lead",
    "company": "HSBC",
    "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://portal.careers.hsbc.com/careers/job/563774612633241"
+   "url": "https://portal.careers.hsbc.com/careers/job/563774612633241",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Senior Staff AI Scientist",
    "company": "GE HealthCare",
    "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Senior-Staff-AI-Scientist_R4048849-1"
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Senior-Staff-AI-Scientist_R4048849-1",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist II, AWS - Quick",
    "company": "Amazon",
    "location": "Chennai",
    "posted": "2026-11-12",
-   "url": "https://www.amazon.jobs/en/jobs/10602065/data-scientist-ii-aws-quick"
+   "url": "https://www.amazon.jobs/en/jobs/10602065/data-scientist-ii-aws-quick",
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "IT Risk & AI Engineer, IT Risk",
    "company": "Amazon",
    "location": "Bengaluru",
    "posted": "2026-11-12",
-   "url": "https://www.amazon.jobs/en/jobs/10595131/it-risk-ai-engineer-it-risk"
+   "url": "https://www.amazon.jobs/en/jobs/10595131/it-risk-ai-engineer-it-risk",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior AI Platform Engineer",
    "company": "Zscaler",
    "location": "Pune",
    "posted": "2026-11-11",
-   "url": "https://job-boards.greenhouse.io/zscaler/jobs/5278563007"
+   "url": "https://job-boards.greenhouse.io/zscaler/jobs/5278563007",
+   "exp": [
+    4,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Principal AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/principal-ai-ml-engineer/34088/103145009280"
+   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/principal-ai-ml-engineer/34088/103145009280",
+   "exp": [
+    12,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Lead AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Noida",
    "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/lead-ai-ml-engineer/34088/103175595008"
+   "url": "https://careers.unitedhealthgroup.com/job/noida/lead-ai-ml-engineer/34088/103175595008",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Principal Data Scientist",
    "company": "Optum (UnitedHealth Group)",
    "location": "Noida",
    "posted": "2026-11-11",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/principal-data-scientist/34088/103184508768"
+   "url": "https://careers.unitedhealthgroup.com/job/noida/principal-data-scientist/34088/103184508768",
+   "exp": [
+    12,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Associate Director & Senior Principal Data Science, AI for Biologics",
    "company": "Novartis",
    "location": "Hyderabad",
    "posted": "2026-11-11",
-   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/Associate-Director---Senior-Principal-Data-Science--AI-for-Biologics_REQ-10092233"
+   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/Associate-Director---Senior-Principal-Data-Science--AI-for-Biologics_REQ-10092233",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Senior Architect- AI Native Engineering",
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://jobs.mercedes-benz.com/ai-senior-architect--ai-native-engineering-246250-MER0004AAP"
+   "url": "https://jobs.mercedes-benz.com/ai-senior-architect--ai-native-engineering-246250-MER0004AAP",
+   "exp": [
+    9,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Engineer- AI Native Engineering",
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://jobs.mercedes-benz.com/ai-engineer--ai-native-engineering-246244-MER0004AAR"
+   "url": "https://jobs.mercedes-benz.com/ai-engineer--ai-native-engineering-246244-MER0004AAR",
+   "exp": [
+    1,
+    4
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Data & Integration Architect- AI Native Engineering",
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://jobs.mercedes-benz.com/ai-data-integration-architect--ai-native-engineering-246239-MER0004AAO"
+   "url": "https://jobs.mercedes-benz.com/ai-data-integration-architect--ai-native-engineering-246239-MER0004AAO",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Senior Engineer- AI Native Engineering",
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://jobs.mercedes-benz.com/ai-senior-engineer--ai-native-engineering-246227-MER0004AAL"
+   "url": "https://jobs.mercedes-benz.com/ai-senior-engineer--ai-native-engineering-246227-MER0004AAL",
+   "exp": [
+    3,
+    8
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Applied AI ML Lead",
    "company": "JPMorgan Chase",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210805724"
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210805724",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Staff Software Engineer, Search ML Infrastructure",
    "company": "Google",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/123521561096266438"
+   "url": "https://www.google.com/about/careers/applications/jobs/results/123521561096266438",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Staff Software Engineer, Machine Learning, Geo",
    "company": "Google",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/104937753002549958"
+   "url": "https://www.google.com/about/careers/applications/jobs/results/104937753002549958",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Applied Scientist II, Detail Page",
    "company": "Amazon",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://www.amazon.jobs/en/jobs/10602090/applied-scientist-ii-detail-page"
+   "url": "https://www.amazon.jobs/en/jobs/10602090/applied-scientist-ii-detail-page",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Applied Scientist I, Buyer Risk Prevention (BRP)",
    "company": "Amazon",
    "location": "Bengaluru",
    "posted": "2026-11-11",
-   "url": "https://www.amazon.jobs/en/jobs/10596351/applied-scientist-i-buyer-risk-prevention-brp"
+   "url": "https://www.amazon.jobs/en/jobs/10596351/applied-scientist-i-buyer-risk-prevention-brp",
+   "exp": [
+    0,
+    2
+   ],
+   "exp_from": "title"
   },
   {
    "title": "Senior Manager, Data Science & Analytics",
    "company": "eBay",
    "location": "Bengaluru",
    "posted": "2026-11-10",
-   "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Manager--Data-Science---Analytics-2_R0075171-1"
+   "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Manager--Data-Science---Analytics-2_R0075171-1",
+   "exp": [
+    9,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist",
    "company": "Shell",
    "location": "Chennai",
    "posted": "2026-11-10",
-   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/Chennai---RMZ-Millenia/Data-Scientist_R205059"
+   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/Chennai---RMZ-Millenia/Data-Scientist_R205059",
+   "exp": [
+    6,
+    8
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Manager Data Science",
    "company": "Optum (UnitedHealth Group)",
    "location": "Gurugram",
    "posted": "2026-11-10",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-manager-data-science/34088/102874034992"
+   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-manager-data-science/34088/102874034992",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Canada D&A A2 AI Engineer",
    "company": "KPMG",
    "location": "Bengaluru",
    "posted": "2026-11-10",
-   "url": "https://ejgk.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_3/job/30051787"
+   "url": "https://ejgk.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_3/job/30051787",
+   "exp_from": "none"
   },
   {
    "title": "Staff Customer Journey Analytics & AI Lead",
    "company": "GE HealthCare",
    "location": "Bengaluru",
    "posted": "2026-11-10",
-   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Staff-Customer-Journey-Analytics---AI-Lead_R4048847-1"
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Staff-Customer-Journey-Analytics---AI-Lead_R4048847-1",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Lead GenAI Engineer",
    "company": "Citi",
    "location": "Pune",
    "posted": "2026-11-10",
-   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Apps-Dev-Tech-Lead-Analyst---C13---PUNE_261005459"
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Apps-Dev-Tech-Lead-Analyst---C13---PUNE_261005459",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "DevOps/MLOps Specialist",
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-10",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000160793069"
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000160793069",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist I A - GBS IND",
    "company": "Bank of America",
    "location": "Chennai",
    "posted": "2026-11-10",
-   "url": "https://careers.bankofamerica.com/en-us/job-detail/26038301/data-scientist-i-a-gbs-ind-chennai-india"
+   "url": "https://careers.bankofamerica.com/en-us/job-detail/26038301/data-scientist-i-a-gbs-ind-chennai-india",
+   "exp": [
+    6,
+    9
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Scientist",
    "company": "Apple",
    "location": "Hyderabad",
    "posted": "2026-11-10",
-   "url": "https://jobs.apple.com/en-in/details/200692863/data-scientist"
+   "url": "https://jobs.apple.com/en-in/details/200692863/data-scientist",
+   "exp_from": "none"
   },
   {
    "title": "Principal Applied Sciences Manager",
    "company": "Microsoft",
    "location": "Bengaluru, Hyderabad",
    "posted": "2026-11-09",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393557043397"
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557043397",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   }
  ]
 }
