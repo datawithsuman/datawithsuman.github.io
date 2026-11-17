@@ -83,16 +83,7 @@ PARTS = [
         "agent-scenarios-human-in-the-loop": {"type": "interview", "prereqs": [_a("human-in-the-loop-design")]},
         "agent-scenarios-long-running": {"type": "interview", "prereqs": [_a("long-running-and-scheduled-agents")]},
     })),
-    ("Applied Evals", "system-design/applied-evals", SimpleNamespace(GROUPS=[
-        ("start", "Getting started", "Why LLM apps fail, and which kind of eval each job needs."),
-        ("find", "Finding failures", "Building a test set, error analysis and reviewing traces at scale."),
-        ("build", "Building evaluators", "Code checks, LLM judges, validating judges and labelling with a team."),
-        ("chat", "RAG and chat evals", "Retrieval and generation, and whole conversations."),
-        ("agents", "Agent evals", "End states and pass^k, simulated users, coding agents and multi-agent systems."),
-        ("mcp", "MCP and tool evals", "Tool calls, MCP servers and improving tools with held-out tasks."),
-        ("prod", "Evals in production", "CI gates, online evals and guardrails, red-team evals and improving with evals."),
-        ("scenarios", "Practice and scenarios", "Interview questions and real evaluation incidents to diagnose."),
-    ], LESSONS={
+    ("Applied Evals", "system-design/applied-evals", _part("Evaluating LLM apps and agents end to end: finding failures, building and validating evaluators, RAG, chat, agent and tool evals, and evals in production.", {
         "why-llm-apps-fail": {"prereqs": [_a("prompt-engineering-patterns")]},
         "choosing-the-right-eval": {"prereqs": [_a("why-llm-apps-fail")]},
         "building-an-eval-dataset": {"prereqs": [_a("why-llm-apps-fail")]},
