@@ -465,7 +465,7 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .jobs-list:empty { display: none; }
 .job + .job { border-top: 1px solid var(--line-soft); }
 .job { display: flex; align-items: stretch; }
-.job-check { flex: none; display: grid; place-items: center; width: 48px; padding-left: 8px; cursor: pointer; }
+.job-check { position: relative; flex: none; display: grid; place-items: center; width: 48px; padding-left: 8px; cursor: pointer; }
 .job-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); cursor: pointer; }
 .job a { flex: 1; min-width: 0; padding-left: 4px !important; }
 .job.is-applied .job-title, .job.is-applied .job-meta { opacity: .6; }
