@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-17",
  "days": 7,
- "count": 66,
+ "count": 67,
  "jobs": [
   {
    "title": "Lead AI Engineer",
@@ -457,6 +457,13 @@
    "location": "Chennai",
    "posted": "2026-11-10",
    "url": "https://careers.bankofamerica.com/en-us/job-detail/26038301/data-scientist-i-a-gbs-ind-chennai-india"
+  },
+  {
+   "title": "Data Scientist",
+   "company": "Apple",
+   "location": "Hyderabad",
+   "posted": "2026-11-10",
+   "url": "https://jobs.apple.com/en-in/details/200692863/data-scientist"
   },
   {
    "title": "Principal Applied Sciences Manager",
