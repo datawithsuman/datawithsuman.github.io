@@ -227,7 +227,8 @@
     document.querySelectorAll("[data-tab-go]").forEach(function (b) {
       b.addEventListener("click", function () {
         openTab(b.dataset.tabGo, false);
-        tabBar.scrollIntoView();
+        // The tab bar is sticky, so scrolling to it does nothing once it's stuck. Go to the new part's top instead.
+        document.getElementById("panel-" + b.dataset.tabGo).scrollIntoView();
         document.getElementById("tab-" + b.dataset.tabGo).focus({ preventScroll: true });
       });
     });
