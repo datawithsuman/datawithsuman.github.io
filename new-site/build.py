@@ -414,20 +414,33 @@ def interview_html(questions):
     return out
 
 
+def crumb_name(l):
+    """The module's name, or its part's name when the module's own name is generic ("Lessons", "Designs") or it is the part's only group."""
+    m, part = l["module"], l["module"].get("part")
+    alone = part and sum(1 for x in l["track"]["modules"] if x["lessons"] and x.get("part") == part) == 1
+    return part if part and (alone or m["name"] in ("Lessons", "Scenarios", "Designs")) else m["name"]
+
+
 def contents_html(l, root):
     t = l["track"]
+    mods = [m for m in t["modules"] if m["lessons"]]
+    # A part with one group shows the part's name as the toggle, so "Designs"/"Lessons" doesn't repeat under every heading.
+    per_part = {}
+    for m in mods:
+        per_part[m.get("part")] = per_part.get(m.get("part"), 0) + 1
     out, part = "", None
-    for m in t["modules"]:
-        if not m["lessons"]:
-            continue
+    for m in mods:
+        alone = m.get("part") and per_part[m["part"]] == 1
         if m.get("part") and m["part"] != part:
             part = m["part"]
-            out += f'<p class="contents-part">{part}</p>'
+            if not alone:
+                out += f'<p class="contents-part">{part}</p>'
         links = ""
         for x in m["lessons"]:
             cur = x is l
             links += (f'<li><a{" class=\"current\" aria-current=\"page\"" if cur else ""} href="{root}{x["url"]}">{dot(x)}<span>{esc(x["title"])}</span></a></li>')
-        out += f'<details class="mod"{" open" if m is l["module"] else ""}><summary>{m["name"]}</summary><ol>{links}</ol></details>'
+        name = f'<span>{m["part"]}</span><span class="mod-n">{len(m["lessons"])}</span>' if alone else m["name"]
+        out += f'<details class="mod{" mod-part" if alone else ""}"{" open" if m is l["module"] else ""}><summary>{name}</summary><ol>{links}</ol></details>'
     return out
 
 
@@ -862,7 +875,7 @@ def lesson_page(l):
   <details class="contents-box" open><summary>{t['name']} contents</summary>{contents_html(l, root)}</details>
 </aside>
 <article class="lesson">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/">{t['name']}</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/#module-{l['module_n']}">{l['module']['name']}</a><span aria-hidden="true">/</span><b aria-current="page">{esc(l['title'])}</b></nav>
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="{root}">Home</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/">{t['name']}</a><span aria-hidden="true">/</span><a href="{root}tracks/{t['id']}/#module-{l['module_n']}">{crumb_name(l)}</a><span aria-hidden="true">/</span><b aria-current="page">{esc(l['title'])}</b></nav>
   <div class="lesson-meta">{meta}</div>
   <h1 class="h1-lesson">{esc(l['title'])}</h1>
   <p class="lead">{esc(l['lead'])}</p>

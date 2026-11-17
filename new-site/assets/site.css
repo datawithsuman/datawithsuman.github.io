@@ -297,6 +297,9 @@ html:not(.has-js) [data-reveal] { display: none; }
 .part-title { font-size: 28px; margin-top: 12px; }
 .part-title:first-child { margin-top: 0; }
 .module h3 { font-size: 24px; font-weight: 700; }
+.mod-part > summary { gap: 10px; }
+.mod-part > summary > span:first-child { flex: 1; }
+.mod-n { font: 500 12px/1 var(--mono); color: var(--muted); }
 .contents-part { padding: 12px 4px 6px; font: 500 12px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 .answer h3 { margin: 18px 0 6px; color: #fff; font-size: 18px; }
 .answer h3:first-child { margin-top: 0; }
