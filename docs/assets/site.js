@@ -482,17 +482,39 @@
       }
       function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
       var updated = today.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+      // "Applied" ticks live only in this browser (dws.* keys travel with the My progress download).
+      var APPLIED = "dws.applied", applied = read(APPLIED, {}) || {};
+      function appliedCount() { return data.jobs.filter(function (j) { return applied[j.url]; }).length; }
+      function setMeta(q, n) {
+        var a = appliedCount();
+        meta.textContent = (q ? n + " of " + data.count + " jobs" : data.count + " jobs") + (a ? " · " + a + " applied" : "") + " · Updated " + updated;
+      }
       function draw() {
         var q = (search.value || "").trim().toLowerCase();
         var shown = data.jobs.filter(function (j) { return !q || (j.title + " " + j.company + " " + j.location).toLowerCase().indexOf(q) > -1; });
         jobList.innerHTML = shown.length ? shown.map(function (j) {
-          return '<li class="job"><a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + '</span>' +
+          var on = !!applied[j.url];
+          return '<li class="job' + (on ? " is-applied" : "") + '"><label class="job-check"><input type="checkbox" data-url="' + esc(j.url) + '"' + (on ? " checked" : "") +
+            '><span class="sr">Applied: ' + esc(j.title) + ' at ' + esc(j.company) + '</span></label>' +
+            '<a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + (on ? ' <span class="job-tag">Applied</span>' : "") + '</span>' +
             '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
         }).join("") : '<li class="jobs-empty">No jobs match that search.</li>';
         jobList.classList.toggle("is-short", shown.length < 6);
         jobList.scrollTop = 0;
-        meta.textContent = (q ? shown.length + " of " + data.count + " jobs" : data.count + " jobs") + " · Updated " + updated;
+        setMeta(q, shown.length);
       }
+      jobList.addEventListener("change", function (e) {
+        var box = e.target;
+        if (!box.matches || !box.matches(".job-check input")) return;
+        if (box.checked) applied[box.dataset.url] = new Date().toISOString().slice(0, 10); else delete applied[box.dataset.url];
+        write(APPLIED, applied);
+        var li = box.closest(".job"), title = li.querySelector(".job-title"), tag = title.querySelector(".job-tag");
+        li.classList.toggle("is-applied", box.checked);
+        if (box.checked && !tag) title.insertAdjacentHTML("beforeend", ' <span class="job-tag">Applied</span>');
+        if (!box.checked && tag) tag.remove();
+        var q = (search.value || "").trim().toLowerCase();
+        setMeta(q, jobList.querySelectorAll(".job").length);
+      });
       search.addEventListener("input", draw);
       draw();
     }).catch(function () {

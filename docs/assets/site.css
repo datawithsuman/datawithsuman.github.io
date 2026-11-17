@@ -464,6 +464,12 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .jobs-list.is-short { height: auto; }
 .jobs-list:empty { display: none; }
 .job + .job { border-top: 1px solid var(--line-soft); }
+.job { display: flex; align-items: stretch; }
+.job-check { flex: none; display: grid; place-items: center; width: 48px; padding-left: 8px; cursor: pointer; }
+.job-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+.job a { flex: 1; min-width: 0; padding-left: 4px !important; }
+.job.is-applied .job-title, .job.is-applied .job-meta { opacity: .6; }
+.job-tag { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; vertical-align: 2px; background: var(--line-soft); color: var(--ink); opacity: 1; }
 .job a { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; padding: 14px 18px; text-decoration: none; }
 .job a:hover { background: var(--line-soft); }
 .job-title { font-weight: 600; line-height: 1.35; }
