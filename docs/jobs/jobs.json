@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-18",
  "days": 7,
- "count": 64,
+ "count": 68,
  "jobs": [
   {
    "title": "Lead AI Engineer",
@@ -60,12 +60,44 @@
    "exp_from": "jd"
   },
   {
+   "title": "Software Engineer III - Python, AWS / MLOps",
+   "company": "JPMorgan Chase",
+   "location": "Bengaluru",
+   "posted": "2026-11-18",
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210809553",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
    "title": "Data Scientist- Gen AI",
    "company": "Fractal Analytics",
    "location": "8 locations in India",
    "posted": "2026-11-18",
    "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Data-Scientist--Gen-AI_SR-47746-1",
    "exp_from": "none"
+  },
+  {
+   "title": "Data Scientist",
+   "company": "EXL",
+   "location": "India",
+   "posted": "2026-11-18",
+   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22714",
+   "exp_from": "none"
+  },
+  {
+   "title": "GCP Data & AI Engineer, AS",
+   "company": "Deutsche Bank",
+   "location": "Pune",
+   "posted": "2026-11-18",
+   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Margarpatta/GCP-Data-Engineer--AS_R0420719",
+   "exp": [
+    6,
+    10
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Data Science and AI Engineering Lead, VP",
@@ -90,6 +122,30 @@
     null
    ],
    "exp_from": "title"
+  },
+  {
+   "title": "Research Engineer – Neuro-Symbolic AI (Knowledge Graphs) & Multimodal Assistant Systems",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-18",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162231579",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI & Backend Software Engineer – Intellectual Property Rights(Python / FastAPI / GenAI)",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-18",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162220979",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Staff Machine Learning Engineer",
@@ -273,18 +329,6 @@
    "location": "Bengaluru",
    "posted": "2026-11-16",
    "url": "https://www.amazon.jobs/en/jobs/10606534/senior-applied-scientist-amazon-core-search",
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Pune",
-   "posted": "2026-11-15",
-   "url": "https://careers.unitedhealthgroup.com/job/pune/ai-or-ml-engineer/34088/103359671488",
    "exp": [
     6,
     null
@@ -608,6 +652,14 @@
    "exp_from": "jd"
   },
   {
+   "title": "AI or ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Chennai",
+   "posted": "2026-11-11",
+   "url": "https://careers.unitedhealthgroup.com/job/chennai/ai-or-ml-engineer/34088/102874035024",
+   "exp_from": "none"
+  },
+  {
    "title": "Associate Director & Senior Principal Data Science, AI for Biologics",
    "company": "Novartis",
    "location": "Hyderabad",
@@ -726,18 +778,6 @@
     2
    ],
    "exp_from": "title"
-  },
-  {
-   "title": "DevOps/MLOps Specialist",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-10",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000160793069",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
   }
  ]
 }
