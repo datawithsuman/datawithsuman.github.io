@@ -1,12 +1,15 @@
 name = "aimlrounds-mcp"
 main = "worker.js"
 compatibility_date = "2026-11-01"
+# Serve only at mcp.aimlrounds.com, not a workers.dev address.
+workers_dev = false
+
+# Serve the worker at https://mcp.aimlrounds.com (the zone must be on this Cloudflare account).
+# Keep this above [vars]: anything after a [table] header belongs to that table.
+routes = [
+  { pattern = "mcp.aimlrounds.com", custom_domain = true }
+]
 
 # Where the content lives (the published site). Change only for local testing.
 [vars]
 DATA_BASE = "https://aimlrounds.com/"
-
-# Serve the worker at https://mcp.aimlrounds.com (the zone must be on this Cloudflare account).
-routes = [
-  { pattern = "mcp.aimlrounds.com", custom_domain = true }
-]
