@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-19",
  "days": 7,
- "count": 61,
+ "count": 62,
  "jobs": [
   {
    "title": "Senior, Data Scientist",
@@ -28,6 +28,30 @@
    "exp_from": "jd"
   },
   {
+   "title": "Associate Lead Data Scientist (RGM)",
+   "company": "Sigmoid",
+   "location": "Bengaluru",
+   "posted": "2026-11-19",
+   "url": "https://job-boards.greenhouse.io/sigmoid/jobs/8011986002",
+   "exp": [
+    4,
+    6
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Lead AI or ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-19",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/lead-ai-or-ml-engineer/34088/103501773520",
+   "exp": [
+    12,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "Research Scientist - Nemotron India",
    "company": "NVIDIA",
    "location": "3 locations in India",
@@ -40,6 +64,18 @@
    "exp_from": "jd"
   },
   {
+   "title": "Lead AI Product Engineer",
+   "company": "Fractal Analytics",
+   "location": "2 locations in India",
+   "posted": "2026-11-19",
+   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
    "title": "Senior Data Scientist",
    "company": "Citi",
    "location": "Bengaluru",
@@ -50,6 +86,14 @@
     5
    ],
    "exp_from": "jd"
+  },
+  {
+   "title": "AI / ML and Generative AI research assistant",
+   "company": "Bosch",
+   "location": "Coimbatore",
+   "posted": "2026-11-19",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162445000",
+   "exp_from": "none"
   },
   {
    "title": "Lead AI Engineer",
@@ -144,18 +188,6 @@
    "exp_from": "jd"
   },
   {
-   "title": "Software Engineer III - Python, AWS / MLOps",
-   "company": "JPMorgan Chase",
-   "location": "Bengaluru",
-   "posted": "2026-11-18",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210809553",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "title"
-  },
-  {
    "title": "Customer Experience AI and Knowledge Architect",
    "company": "Google",
    "location": "Bengaluru, Hyderabad, Gurugram",
@@ -166,14 +198,6 @@
     null
    ],
    "exp_from": "jd"
-  },
-  {
-   "title": "Data Scientist- Gen AI",
-   "company": "Fractal Analytics",
-   "location": "8 locations in India",
-   "posted": "2026-11-18",
-   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Data-Scientist--Gen-AI_SR-47746-1",
-   "exp_from": "none"
   },
   {
    "title": "Data Scientist",
@@ -659,18 +683,6 @@
    "url": "https://www.amazon.jobs/en/jobs/10595131/it-risk-ai-engineer-it-risk",
    "exp": [
     5,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Senior AI Platform Engineer",
-   "company": "Zscaler",
-   "location": "Pune",
-   "posted": "2026-11-11",
-   "url": "https://job-boards.greenhouse.io/zscaler/jobs/5278563007",
-   "exp": [
-    4,
     null
    ],
    "exp_from": "jd"
