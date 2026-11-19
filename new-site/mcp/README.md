@@ -26,11 +26,12 @@ Proof is the public key in `mcp-registry-auth`, which `build.py` publishes at
 `~/.config/aimlrounds/mcp-registry-key.pem`: never commit it, and back it up (a password manager is fine).
 If it's lost, make a new pair, replace `mcp-registry-auth`, rebuild and push.
 
-Publish after the worker is deployed and the site is pushed:
+Published 19 Nov 2026 as version 1.0.0. To publish again (after the worker is deployed and the site is pushed):
 
     brew install mcp-publisher
     curl -sS -A 'mcp-registry/1.0' -H 'Accept: text/plain' https://aimlrounds.com/.well-known/mcp-registry-auth
-    KEY="$(openssl pkey -in ~/.config/aimlrounds/mcp-registry-key.pem -noout -text | grep -A3 'priv:' | tail -n +2 | tr -d ' :\n')"
+    # raw 32-byte key as hex (works with OpenSSL 3 and 4; the docs' grep version breaks on OpenSSL 4)
+    KEY="$(openssl pkey -in ~/.config/aimlrounds/mcp-registry-key.pem -outform DER | tail -c 32 | xxd -p -c 64)"
     mcp-publisher login http --domain aimlrounds.com --private-key "$KEY"
     mcp-publisher publish server.json
 
