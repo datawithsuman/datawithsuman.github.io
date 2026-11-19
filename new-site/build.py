@@ -103,6 +103,9 @@ ASSET_V = hashlib.md5(b"".join((HERE / "assets" / n).read_bytes() for n in ("sit
 
 
 BASE = "https://aimlrounds.com/"
+# The MCP server runs at mcp.aimlrounds.com, but the site doesn't mention it until launch.
+# Set True to show it on the About page and in llms.txt.
+MCP_PUBLIC = False
 LOGO = '<svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg>'
 SEARCH_ICON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>'
 
@@ -1029,14 +1032,14 @@ def about_page():
         "<b>It starts with a question.</b> Each lesson opens with what an interviewer would actually ask.",
         "<b>You build the idea.</b> One analogy, one picture, then a lab you can try to break.",
         "<b>You say it out loud.</b> Lessons end with you explaining the answer and taking follow-up questions, because reading isn't the same as knowing."])
+    ai_tools = ('<section class="panel block" id="ai-tools"><h2>Use it with AI tools</h2><p>Claude and other AI assistants can use these lessons, quizzes, mock interviews and jobs directly. The official AIML Rounds MCP server is <code>https://mcp.aimlrounds.com/mcp</code>, listed in the MCP Registry as <code>com.aimlrounds/aimlrounds</code>. Servers at any other address aren\'t run by this site. There\'s also a short map for AI tools at <a href="/llms.txt">/llms.txt</a>.</p></section>\n' if MCP_PUBLIC else "")
     html = head_html("About · AIML Rounds", desc, root, path="about/")
     html += f"""<main id="main"><div class="page about">
 <section class="hero-roadmaps"><p class="eyebrow">ABOUT</p><h1 class="h1-home">Learn AI until you can explain it.</h1><p class="lead">{desc}</p></section>
 <section class="panel block" id="why"><h2>Why this site exists</h2><p>You can read about an idea, recognise it and still get stuck when someone asks you to explain it. AIML Rounds is built to close that gap. Its {len(ORDERED)} lessons cover maths, machine learning, deep learning, LLMs, AI engineering and system design.</p></section>
 <section class="panel block" id="how"><h2>How lessons work</h2><ul class="about-list">{how}</ul></section>
 <section class="panel block" id="faq"><h2>Common questions</h2><div class="faq">{items}</div></section>
-<section class="panel block" id="ai-tools"><h2>Use it with AI tools</h2><p>Claude and other AI assistants can use these lessons, quizzes, mock interviews and jobs directly. The official AIML Rounds MCP server is <code>https://mcp.aimlrounds.com/mcp</code>, listed in the MCP Registry as <code>com.aimlrounds/aimlrounds</code>. Servers at any other address aren't run by this site. There's also a short map for AI tools at <a href="/llms.txt">/llms.txt</a>.</p></section>
-<section class="panel block" id="contact"><h2>Get in touch</h2><p>Questions, corrections and ideas are all welcome at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>{social_html("about-social")}</section>
+{ai_tools}<section class="panel block" id="contact"><h2>Get in touch</h2><p>Questions, corrections and ideas are all welcome at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>{social_html("about-social")}</section>
 </div></main>
 """
     write("about/index.html", html + foot_html(root))
