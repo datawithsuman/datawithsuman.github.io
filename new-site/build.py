@@ -1250,4 +1250,8 @@ if __name__ == "__main__":
         lesson_page(l)
     search_index()
     redirects()
+    import sys
+    import api_export
+    n_api = api_export.export(sys.modules[__name__])
+    print(f"Exported {n_api} lessons to api/v1 and llms.txt")
     print(f"Built {1 + len(TRACKS) + len(ORDERED)} pages into {DIST}")

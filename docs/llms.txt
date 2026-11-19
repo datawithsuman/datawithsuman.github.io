@@ -1,0 +1,382 @@
+# AIML Rounds
+
+> Free AI/ML interview prep: lessons on maths, classical ML, deep learning, NLP, LLMs, RAG, agents, inference, MLOps, evals and AI/ML system design, plus role roadmaps, topic quizzes, mock interviews and a daily AI/ML jobs list for India.
+
+Every lesson is also available as Markdown under https://aimlrounds.com/api/v1/lessons/. A JSON index is at https://aimlrounds.com/api/v1/index.json. An MCP server for Claude and other AI tools is at https://mcp.aimlrounds.com/mcp.
+
+## Fundamentals
+
+- [Vectors, Dot Products & Cosine Similarity](https://aimlrounds.com/api/v1/lessons/fundamentals/vectors-and-cosine-similarity.md): Why does search use the angle between embeddings, not the distance?
+- [Vector and Matrix Norms](https://aimlrounds.com/api/v1/lessons/fundamentals/vector-and-matrix-norms.md): What's the difference between L1 and L2 norms, and why does L1 give sparse weights?
+- [Matrices as Transformations](https://aimlrounds.com/api/v1/lessons/fundamentals/matrices-as-transformations.md): What does a matrix actually do to space, and what does its determinant measure?
+- [Matrix Multiplication and Tensor Shapes](https://aimlrounds.com/api/v1/lessons/fundamentals/matrix-multiplication-and-tensor-shapes.md): How do you reason about tensor shapes and the cost of matrix multiplication in a model?
+- [Linear Independence, Basis and Rank](https://aimlrounds.com/api/v1/lessons/fundamentals/linear-independence-basis-and-rank.md): What is the rank of a matrix, and why do correlated features break linear regression?
+- [Orthogonality and Projections](https://aimlrounds.com/api/v1/lessons/fundamentals/orthogonality-and-projections.md): Why is least squares a projection, and why are orthogonal matrices so useful?
+- [Eigenvalues & Eigenvectors](https://aimlrounds.com/api/v1/lessons/fundamentals/eigenvalues-and-eigenvectors.md): Which directions does a matrix only stretch, and why does PCA care?
+- [Positive Definite Matrices](https://aimlrounds.com/api/v1/lessons/fundamentals/positive-definite-matrices.md): What is a positive definite matrix, and where does it show up in ML?
+- [SVD & Low-Rank Approximation](https://aimlrounds.com/api/v1/lessons/fundamentals/svd-and-low-rank.md): How LoRA and compression keep most of a matrix with a fraction of the numbers.
+- [Solving Ax = b: LU, QR, Cholesky and the Pseudoinverse](https://aimlrounds.com/api/v1/lessons/fundamentals/solving-linear-systems.md): Why shouldn't you invert a matrix to solve Ax = b, and what is the pseudoinverse?
+- [Matrix Calculus](https://aimlrounds.com/api/v1/lessons/fundamentals/matrix-calculus.md): How do you differentiate a matrix expression, like the least-squares loss?
+- [Linear Algebra Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/linear-algebra-practice.md): Shapes, rank, eigenvalues, least squares, SVD and gradients: can you do them by hand?
+- [Derivatives, Gradients & the Chain Rule](https://aimlrounds.com/api/v1/lessons/fundamentals/derivatives-and-chain-rule.md): How backprop is just the chain rule, applied carefully.
+- [Automatic Differentiation](https://aimlrounds.com/api/v1/lessons/fundamentals/automatic-differentiation.md): How does automatic differentiation work, and why does training use reverse mode?
+- [Taylor Series and Curvature](https://aimlrounds.com/api/v1/lessons/fundamentals/taylor-series-and-curvature.md): What does a Taylor expansion tell you about optimisation, and why does curvature limit the learning rate?
+- [Gradient Descent, Momentum & Adam](https://aimlrounds.com/api/v1/lessons/fundamentals/gradient-descent.md): Why does a slightly bigger learning rate make training explode?
+- [Newton's Method and Second-Order Optimisation](https://aimlrounds.com/api/v1/lessons/fundamentals/newton-and-second-order-methods.md): What is Newton's method, and why isn't it used to train deep networks?
+- [Convexity & Local Minima](https://aimlrounds.com/api/v1/lessons/fundamentals/convexity-and-local-minima.md): When does the starting point decide where you end up?
+- [Lagrange Multipliers and KKT](https://aimlrounds.com/api/v1/lessons/fundamentals/lagrange-multipliers-and-kkt.md): What are Lagrange multipliers, and how do they explain PCA, SVMs and regularisation?
+- [Integrals for ML](https://aimlrounds.com/api/v1/lessons/fundamentals/integrals-for-ml.md): Where do integrals show up in machine learning, and what do you do when you can't compute one?
+- [Calculus Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/calculus-practice.md): Derivatives, gradients, step sizes and constraints: can you do them by hand?
+- [Probability Basics & Bayes' Rule](https://aimlrounds.com/api/v1/lessons/fundamentals/probability-and-bayes.md): A 99% accurate fraud flag fires. Is it really fraud?
+- [Joint, Marginal and Conditional Distributions](https://aimlrounds.com/api/v1/lessons/fundamentals/joint-marginal-conditional.md): What's the difference between joint, marginal and conditional distributions, and what is conditional independence?
+- [Common Probability Distributions](https://aimlrounds.com/api/v1/lessons/fundamentals/probability-distributions.md): Bernoulli to Gaussian, and which loss each one implies.
+- [Expectation, Variance & Covariance](https://aimlrounds.com/api/v1/lessons/fundamentals/expectation-and-variance.md): Why averaging correlated models helps less than you expect.
+- [The Multivariate Gaussian](https://aimlrounds.com/api/v1/lessons/fundamentals/multivariate-gaussian.md): What does the covariance matrix do to a multivariate Gaussian, and what are its useful properties?
+- [Law of Large Numbers and Central Limit Theorem](https://aimlrounds.com/api/v1/lessons/fundamentals/law-of-large-numbers-and-clt.md): What's the difference between the law of large numbers and the central limit theorem?
+- [Concentration Inequalities](https://aimlrounds.com/api/v1/lessons/fundamentals/concentration-inequalities.md): What do Markov, Chebyshev and Hoeffding inequalities tell you, and how many test samples do you need?
+- [Maximum Likelihood & MAP](https://aimlrounds.com/api/v1/lessons/fundamentals/mle-and-map.md): Why L2 regularisation is a Gaussian prior in disguise.
+- [Bayesian Inference and Conjugate Priors](https://aimlrounds.com/api/v1/lessons/fundamentals/bayesian-inference-and-conjugate-priors.md): What does Bayesian inference give you that MLE and MAP don't, and what is a conjugate prior?
+- [Markov Chains](https://aimlrounds.com/api/v1/lessons/fundamentals/markov-chains.md): What is a Markov chain, and what is its stationary distribution?
+- [Sampling Methods: Inverse Transform, Importance Sampling and MCMC](https://aimlrounds.com/api/v1/lessons/fundamentals/sampling-methods.md): How do you draw samples from a hard distribution, and when would you use importance sampling or MCMC?
+- [Bayes' Rule Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-bayes.md): You test positive for a rare disease. How worried should you be?
+- [Coin Flip Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-coins.md): Why does HH take 6 flips on average but HT only 4?
+- [Dice Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-dice.md): Should you re-roll a 3? Expected values in five minutes.
+- [Playing Card Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-cards.md): How many cards until the first ace? Counting without counting.
+- [Balls & Urns Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-balls-and-urns.md): With or without replacement, and the symmetry shortcut that saves minutes.
+- [Classic Probability Puzzles](https://aimlrounds.com/api/v1/lessons/fundamentals/practice-classic-puzzles.md): Monty Hall, birthdays, broken sticks and the secretary problem.
+- [Descriptive Statistics and Outliers](https://aimlrounds.com/api/v1/lessons/fundamentals/descriptive-statistics-and-outliers.md): When would you use the median instead of the mean, and how do you detect outliers?
+- [Sampling and Bias](https://aimlrounds.com/api/v1/lessons/fundamentals/sampling-and-bias.md): What sampling methods would you use, and how can selection or survivorship bias ruin a dataset?
+- [Confidence Intervals & the Bootstrap](https://aimlrounds.com/api/v1/lessons/fundamentals/confidence-intervals-and-bootstrap.md): What does 95% confidence actually promise?
+- [Hypothesis Tests, p-values & A/B Testing](https://aimlrounds.com/api/v1/lessons/fundamentals/hypothesis-testing-and-ab-tests.md): Why peeking at your A/B test every day breaks it.
+- [T-Tests and Z-Tests](https://aimlrounds.com/api/v1/lessons/fundamentals/t-tests-and-z-tests.md): What's the difference between a t-test and a z-test, and when would you use a paired test?
+- [Chi-Squared Tests and ANOVA](https://aimlrounds.com/api/v1/lessons/fundamentals/chi-squared-tests-and-anova.md): When would you use a chi-squared test or ANOVA, and why not just run many t-tests?
+- [Non-Parametric and Permutation Tests](https://aimlrounds.com/api/v1/lessons/fundamentals/non-parametric-and-permutation-tests.md): What do you do when a t-test's assumptions fail, and how does a permutation test work?
+- [Inference for Regression](https://aimlrounds.com/api/v1/lessons/fundamentals/inference-for-regression.md): How do you interpret a regression coefficient, its p-value and R², and how do you check the model's assumptions?
+- [Correlation vs Causation](https://aimlrounds.com/api/v1/lessons/fundamentals/correlation-vs-causation.md): When the data says the opposite of the truth: confounders and Simpson's paradox.
+- [Causal Inference Without an Experiment](https://aimlrounds.com/api/v1/lessons/fundamentals/causal-inference-without-experiments.md): You can't run an A/B test. How can you still estimate a causal effect?
+- [Bayesian vs Frequentist](https://aimlrounds.com/api/v1/lessons/fundamentals/bayesian-vs-frequentist.md): What's the difference between Bayesian and frequentist statistics, and when would you use each?
+- [Statistics Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/statistics-practice.md): Which test would you use, and can you work it out by hand?
+- [Entropy, Cross-Entropy & KL Divergence](https://aimlrounds.com/api/v1/lessons/fundamentals/entropy-cross-entropy-kl.md): Why every classifier is trained on cross-entropy, and what KL adds.
+- [Information, Compression and Perplexity](https://aimlrounds.com/api/v1/lessons/fundamentals/information-compression-and-perplexity.md): What does entropy have to do with compression, and what does perplexity tell you about a model?
+- [Mutual Information](https://aimlrounds.com/api/v1/lessons/fundamentals/mutual-information.md): What is mutual information, and when would it find a relationship that correlation misses?
+- [Comparing Distributions: KL, Jensen-Shannon and Wasserstein](https://aimlrounds.com/api/v1/lessons/fundamentals/comparing-distributions.md): How do KL divergence, Jensen-Shannon and Wasserstein distance differ, and when would you use each?
+- [Information Theory Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/information-theory-practice.md): Entropy, surprise, KL and information gain: can you work them out by hand?
+- [Randomisation and Assignment](https://aimlrounds.com/api/v1/lessons/fundamentals/randomisation-and-assignment.md): Why do we randomise users in an A/B test, and how should you choose the unit of assignment?
+- [Choosing Metrics: OEC, Drivers and Guardrails](https://aimlrounds.com/api/v1/lessons/fundamentals/choosing-ab-metrics.md): How do you choose the metrics for an A/B test, and what is a guardrail metric?
+- [Sample Size, Power and Runtime](https://aimlrounds.com/api/v1/lessons/fundamentals/sample-size-and-power.md): How do you work out how long an A/B test must run?
+- [Reading the Result: Significance and Decisions](https://aimlrounds.com/api/v1/lessons/fundamentals/reading-ab-results.md): Your A/B test came back significant. How do you decide whether to ship?
+- [Ratio Metrics and the Delta Method](https://aimlrounds.com/api/v1/lessons/fundamentals/ratio-metrics-and-delta-method.md): You randomise by user but measure click-through rate per page view. What goes wrong, and how do you fix it?
+- [Variance Reduction with CUPED](https://aimlrounds.com/api/v1/lessons/fundamentals/variance-reduction-cuped.md): Your test would take six weeks to reach power. How can you shorten it without losing validity?
+- [Revenue and Heavy-Tailed Metrics](https://aimlrounds.com/api/v1/lessons/fundamentals/revenue-and-heavy-tailed-metrics.md): Revenue per user is your main metric, and a few huge spenders swing every result. What do you do?
+- [Peeking and Sequential Testing](https://aimlrounds.com/api/v1/lessons/fundamentals/sequential-testing.md): Your manager wants to check the test every day and stop as soon as it wins. How do you make that valid?
+- [Multiple Testing and Segments](https://aimlrounds.com/api/v1/lessons/fundamentals/multiple-testing.md): You tested 20 metrics and one came back significant. Is it a real win?
+- [Trust Checks: SRM and A/A Tests](https://aimlrounds.com/api/v1/lessons/fundamentals/sample-ratio-mismatch.md): You planned a 50/50 split, but got 50,500 users against 49,500. Does it matter?
+- [Novelty, Primacy and Long-Term Effects](https://aimlrounds.com/api/v1/lessons/fundamentals/novelty-and-long-term-effects.md): Your new feature lifted engagement by 5% in week one. Will that lift last?
+- [Interference: When Groups Affect Each Other](https://aimlrounds.com/api/v1/lessons/fundamentals/interference-in-experiments.md): Your A/B test on a ride app shows 10% more bookings for treated riders. After launch, bookings barely move. Why?
+- [Bandits vs A/B Tests](https://aimlrounds.com/api/v1/lessons/fundamentals/bandits-vs-ab-tests.md): Why not use a multi-armed bandit instead of an A/B test, so fewer users see the worse version?
+- [Running Many Tests at Once](https://aimlrounds.com/api/v1/lessons/fundamentals/running-many-tests-at-once.md): Your teams want to run 50 tests this month, but you only have so many users. How do you run them together?
+- [Heterogeneous Effects and Uplift Modelling](https://aimlrounds.com/api/v1/lessons/fundamentals/heterogeneous-effects-and-uplift.md): Your coupon test is flat overall. Could it still work for some users, and who should get it?
+- [A/B Testing Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/ab-testing-practice.md): 12 by-hand questions: sample size, intervals, SRM, CUPED, multiple testing, peeking, launch rules and uplift.
+- [Encoding Categorical Features](https://aimlrounds.com/api/v1/lessons/fundamentals/categorical-encoding.md): 400 pincodes and a 'late order' flag: how do you encode them without leaking the answer?
+- [Missing Values & Feature Scaling](https://aimlrounds.com/api/v1/lessons/fundamentals/missing-values-and-scaling.md): Slow kitchens hide their prep time. Does it matter how you fill the gap, and when must you scale?
+- [Feature Engineering](https://aimlrounds.com/api/v1/lessons/fundamentals/feature-engineering.md): How would you create useful features for a model, and how do you avoid leaking the future?
+- [Feature Selection](https://aimlrounds.com/api/v1/lessons/fundamentals/feature-selection.md): How do you choose which features to keep, and how can selecting features leak information?
+- [Linear Regression](https://aimlrounds.com/api/v1/lessons/fundamentals/linear-regression.md): What does least squares actually minimise, and when does it break?
+- [Regularized Linear Models](https://aimlrounds.com/api/v1/lessons/fundamentals/regularized-linear-models.md): Ridge vs Lasso vs Elastic Net: why does L1 zero out weights while L2 only shrinks them?
+- [Logistic Regression](https://aimlrounds.com/api/v1/lessons/fundamentals/logistic-regression.md): Why is a classifier called regression, and what does log-loss punish?
+- [Softmax Regression](https://aimlrounds.com/api/v1/lessons/fundamentals/softmax-regression.md): How does logistic regression handle many classes, and why does every LLM end with it?
+- [Generalised Linear Models](https://aimlrounds.com/api/v1/lessons/fundamentals/generalised-linear-models.md): How would you predict counts or insurance costs, and what do linear and logistic regression have in common?
+- [Decision Trees](https://aimlrounds.com/api/v1/lessons/fundamentals/decision-trees.md): How does a tree choose its questions, and why does a deep tree memorise noise?
+- [Random Forest](https://aimlrounds.com/api/v1/lessons/fundamentals/random-forest.md): How do many wobbly trees make one steady prediction?
+- [Gradient Boosting](https://aimlrounds.com/api/v1/lessons/fundamentals/gradient-boosting.md): How do hundreds of tiny trees, each fixing the last one's mistakes, win on tabular data?
+- [Ensembles: Voting, Stacking and Bagging vs Boosting](https://aimlrounds.com/api/v1/lessons/fundamentals/ensembles-voting-and-stacking.md): Why does combining models help, when does it stop helping, and how would you build a stack?
+- [Support Vector Machines](https://aimlrounds.com/api/v1/lessons/fundamentals/support-vector-machines.md): Of all the lines that separate the data, why pick the one with the widest street?
+- [k-Nearest Neighbours](https://aimlrounds.com/api/v1/lessons/fundamentals/k-nearest-neighbours.md): No training at all: how can copying your neighbours work, and when does it fail?
+- [Naive Bayes](https://aimlrounds.com/api/v1/lessons/fundamentals/naive-bayes.md): Its core assumption is almost always wrong. Why does it still classify so well?
+- [Discriminant Analysis: LDA and QDA](https://aimlrounds.com/api/v1/lessons/fundamentals/discriminant-analysis.md): How do LDA and QDA classify, and when would you choose them over logistic regression or naive Bayes?
+- [k-Means Clustering](https://aimlrounds.com/api/v1/lessons/fundamentals/k-means.md): How do you split customers into groups when nobody has labelled them?
+- [Hierarchical Clustering](https://aimlrounds.com/api/v1/lessons/fundamentals/hierarchical-clustering.md): What if you don't know k? Build every grouping at once and cut the tree.
+- [DBSCAN](https://aimlrounds.com/api/v1/lessons/fundamentals/dbscan.md): How do you find curved clusters and flag the points that belong nowhere?
+- [Gaussian Mixture Models](https://aimlrounds.com/api/v1/lessons/fundamentals/gaussian-mixture-models.md): What if clusters are tilted, overlap, and you need a probability of membership?
+- [Principal Component Analysis](https://aimlrounds.com/api/v1/lessons/fundamentals/pca.md): Ten correlated columns, two real ideas: how does PCA find them, and why scale first?
+- [t-SNE & UMAP](https://aimlrounds.com/api/v1/lessons/fundamentals/t-sne-and-umap.md): How do you see 768-dimensional data, and what are the plots lying about?
+- [Anomaly Detection](https://aimlrounds.com/api/v1/lessons/fundamentals/anomaly-detection.md): How do you find fraud when you have no examples of fraud?
+- [Time-Series Forecasting Basics](https://aimlrounds.com/api/v1/lessons/fundamentals/forecasting-basics.md): Can your forecasting model beat 'same as last week'? And are you measuring it honestly?
+- [Stationarity, ARIMA and Exponential Smoothing](https://aimlrounds.com/api/v1/lessons/fundamentals/stationarity-arima-and-smoothing.md): What is stationarity, and how do ARIMA and exponential smoothing produce a forecast?
+- [Classification Metrics](https://aimlrounds.com/api/v1/lessons/fundamentals/classification-metrics.md): Your fraud model is 99.8% accurate. Why is your manager unhappy?
+- [ROC-AUC vs PR-AUC](https://aimlrounds.com/api/v1/lessons/fundamentals/roc-auc-vs-pr-auc.md): Why can a 0.98 ROC-AUC fraud model still be nearly useless?
+- [Thresholds & Misclassification Costs](https://aimlrounds.com/api/v1/lessons/fundamentals/thresholds-and-costs.md): Why flag at 0.5, when a missed fraud costs 100 reviews?
+- [Regression Metrics](https://aimlrounds.com/api/v1/lessons/fundamentals/regression-metrics.md): RMSE went up 9× but MAE barely moved. Is the model worse?
+- [Ranking Metrics](https://aimlrounds.com/api/v1/lessons/fundamentals/ranking-metrics.md): How do you score a search page, a recommendation list, or a RAG retriever?
+- [Probability Metrics](https://aimlrounds.com/api/v1/lessons/fundamentals/probability-metrics.md): The model ranks perfectly, so why are the bids wrong?
+- [Choosing the Right Metric](https://aimlrounds.com/api/v1/lessons/fundamentals/choosing-the-right-metric.md): Which metric would you use for X? Twelve scenarios to practise.
+- [The Bias–Variance Trade-off](https://aimlrounds.com/api/v1/lessons/fundamentals/bias-variance.md): Two models are equally wrong for opposite reasons. How do you tell which, and fix it?
+- [Cross-Validation & Data Leakage](https://aimlrounds.com/api/v1/lessons/fundamentals/cross-validation-and-leakage.md): How did a model score 86% on pure noise, and how do you make sure yours isn't?
+- [Class Imbalance](https://aimlrounds.com/api/v1/lessons/fundamentals/class-imbalance.md): 2% fraud: should you SMOTE it, weight it, or just move the threshold?
+- [Hyperparameter Tuning](https://aimlrounds.com/api/v1/lessons/fundamentals/hyperparameter-tuning.md): Grid, random or Bayesian: how do you spend 30 expensive training runs?
+- [Learning Curves and Debugging Models](https://aimlrounds.com/api/v1/lessons/fundamentals/learning-curves-and-debugging.md): Your model isn't good enough. How do you decide whether to get more data, or change the model?
+- [Explaining Models: SHAP, Permutation Importance and PDPs](https://aimlrounds.com/api/v1/lessons/fundamentals/explaining-models.md): How would you explain what your model learned, and why it made a particular prediction?
+- [Classical ML Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/classical-ml-practice.md): Ensembles, metrics, odds, Gini and leakage: can you answer these quickly?
+- [From Perceptron to MLP](https://aimlrounds.com/api/v1/lessons/fundamentals/perceptron-to-mlp.md): Why can't one neuron learn XOR, and what does a hidden layer add?
+- [Activation Functions](https://aimlrounds.com/api/v1/lessons/fundamentals/activation-functions.md): Why did ReLU replace sigmoid, and what do LLMs use now?
+- [Loss Functions for Deep Learning](https://aimlrounds.com/api/v1/lessons/fundamentals/loss-functions.md): Why is cross-entropy the classifier loss, not MSE?
+- [Backpropagation Through a Network](https://aimlrounds.com/api/v1/lessons/fundamentals/backpropagation.md): How does one backward pass get every gradient, and what does it cost?
+- [Weight Initialisation](https://aimlrounds.com/api/v1/lessons/fundamentals/weight-initialisation.md): Why does a 20-layer net die at step 0 with the wrong init?
+- [Vanishing & Exploding Gradients](https://aimlrounds.com/api/v1/lessons/fundamentals/vanishing-exploding-gradients.md): Why do early layers stop learning, and how do residuals fix it?
+- [BatchNorm vs LayerNorm vs RMSNorm](https://aimlrounds.com/api/v1/lessons/fundamentals/normalisation-layers.md): Why do transformers use LayerNorm instead of BatchNorm?
+- [Learning-Rate Schedules](https://aimlrounds.com/api/v1/lessons/fundamentals/learning-rate-schedules.md): Why do LLMs warm up, then decay the learning rate?
+- [Batch Size and Learning Rate](https://aimlrounds.com/api/v1/lessons/fundamentals/batch-size-and-learning-rate.md): You 8× the batch size. What should happen to the learning rate?
+- [Dropout](https://aimlrounds.com/api/v1/lessons/fundamentals/dropout.md): Why does randomly switching off neurons make a network generalise?
+- [Weight Decay vs L2, and AdamW](https://aimlrounds.com/api/v1/lessons/fundamentals/weight-decay-and-adamw.md): Why is Adam with L2 not the same as AdamW?
+- [Data Augmentation and Mixup](https://aimlrounds.com/api/v1/lessons/fundamentals/data-augmentation-and-mixup.md): How do you get more training data without collecting any?
+- [Early Stopping and Label Smoothing](https://aimlrounds.com/api/v1/lessons/fundamentals/early-stopping-and-label-smoothing.md): When should training stop, and why soften the labels?
+- [Debugging Training: Loss Won't Go Down](https://aimlrounds.com/api/v1/lessons/fundamentals/debugging-training-practice-1.md): Stuck loss, NaNs and a model that can't overfit 8 examples.
+- [Debugging Training: It Trains, But Something's Off](https://aimlrounds.com/api/v1/lessons/fundamentals/debugging-training-practice-2.md): 99.8% accuracy, a slow GPU and a model that fails in production.
+- [Convolution and Receptive Field](https://aimlrounds.com/api/v1/lessons/fundamentals/convolution-and-receptive-field.md): Why does a 3×3 filter beat a dense layer on images?
+- [Pooling, Stride, Padding and Output Shapes](https://aimlrounds.com/api/v1/lessons/fundamentals/pooling-stride-padding.md): What's the output shape of this conv layer? (The interview favourite.)
+- [ResNets and Skip Connections](https://aimlrounds.com/api/v1/lessons/fundamentals/resnets-and-skip-connections.md): Why did deeper networks train worse, and how did ResNet fix it?
+- [CNN Architectures: AlexNet to ConvNeXt](https://aimlrounds.com/api/v1/lessons/fundamentals/cnn-architectures.md): How did CNN architectures evolve, and what idea did each one add?
+- [Transfer Learning and Fine-Tuning](https://aimlrounds.com/api/v1/lessons/fundamentals/transfer-learning.md): Only 15 labelled examples? Reuse a model trained on 1,000.
+- [RNNs and Backprop Through Time](https://aimlrounds.com/api/v1/lessons/fundamentals/rnns-and-backprop-through-time.md): Why can't a plain RNN remember a word from 50 steps ago?
+- [LSTM and GRU](https://aimlrounds.com/api/v1/lessons/fundamentals/lstm-and-gru.md): How do gates let a network remember for hundreds of steps?
+- [Seq2seq and Bahdanau Attention](https://aimlrounds.com/api/v1/lessons/fundamentals/seq2seq-and-attention.md): How did attention fix translation of long sentences?
+- [Self-Attention (Q, K, V)](https://aimlrounds.com/api/v1/lessons/fundamentals/self-attention.md): What do Q, K and V do, and why divide by √d?
+- [Multi-Head Attention](https://aimlrounds.com/api/v1/lessons/fundamentals/multi-head-attention.md): Why several heads, and what do they cost at long context?
+- [Positional Encodings (incl. RoPE)](https://aimlrounds.com/api/v1/lessons/fundamentals/positional-encodings.md): How does a Transformer know word order, and why RoPE?
+- [The Transformer Block](https://aimlrounds.com/api/v1/lessons/fundamentals/transformer-block.md): What's inside one block, and where do the parameters go?
+- [Encoder vs Decoder vs Encoder-Decoder](https://aimlrounds.com/api/v1/lessons/fundamentals/encoder-decoder-architectures.md): BERT vs GPT vs T5: what's actually different?
+- [The Transformer, End to End](https://aimlrounds.com/api/v1/lessons/fundamentals/transformer-end-to-end.md): Walk a sentence through a whole Transformer, with shapes.
+- [Vision Transformers](https://aimlrounds.com/api/v1/lessons/fundamentals/vision-transformers.md): How does a Transformer process an image, and when would you use one instead of a CNN?
+- [Object Detection](https://aimlrounds.com/api/v1/lessons/fundamentals/object-detection.md): How does an object detector work, and how do you measure one?
+- [Image Segmentation](https://aimlrounds.com/api/v1/lessons/fundamentals/image-segmentation.md): How do networks label every pixel, and how do you measure and train them?
+- [Interpreting Networks and Adversarial Examples](https://aimlrounds.com/api/v1/lessons/fundamentals/interpreting-networks-and-adversarial-examples.md): How can you see what a network is using, and why can tiny changes fool it?
+- [Embeddings and Representation Learning](https://aimlrounds.com/api/v1/lessons/fundamentals/embeddings.md): How do models learn that biryani is like pulao?
+- [Autoencoders and VAEs](https://aimlrounds.com/api/v1/lessons/fundamentals/autoencoders-and-vaes.md): How does a VAE turn compression into generation?
+- [GANs](https://aimlrounds.com/api/v1/lessons/fundamentals/gans.md): Why are GANs so hard to train?
+- [Diffusion Models](https://aimlrounds.com/api/v1/lessons/fundamentals/diffusion-models.md): How does denoising noise produce new images?
+- [Contrastive Learning (SimCLR, CLIP)](https://aimlrounds.com/api/v1/lessons/fundamentals/contrastive-learning.md): How did CLIP learn to match photos and text without labels?
+- [Deep Learning Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/deep-learning-practice.md): Shapes, parameters, attention cost and IoU: can you work them out by hand?
+- [Text Preprocessing](https://aimlrounds.com/api/v1/lessons/fundamentals/text-preprocessing.md): Stemming, lemmas, stop words: what helps, and what quietly breaks sentiment?
+- [Bag-of-Words, N-grams and TF-IDF](https://aimlrounds.com/api/v1/lessons/fundamentals/bag-of-words-and-tf-idf.md): Why does TF-IDF find the right review when raw counts can't?
+- [Text Classification: Naive Bayes vs Logistic Regression](https://aimlrounds.com/api/v1/lessons/fundamentals/text-classification.md): Why does “not good” fool a unigram model, and how do bigrams fix it?
+- [Topic Modelling: LDA, NMF and BERTopic](https://aimlrounds.com/api/v1/lessons/fundamentals/topic-modelling.md): How would you find what thousands of documents are about, without any labels?
+- [N-gram Language Models and Perplexity](https://aimlrounds.com/api/v1/lessons/fundamentals/n-gram-language-models.md): How likely is this sentence, and what does perplexity mean?
+- [Edit Distance and Spelling Correction](https://aimlrounds.com/api/v1/lessons/fundamentals/edit-distance-and-spelling-correction.md): How do you measure how different two strings are, and how would you correct a misspelt word?
+- [Subword Tokenisation (BPE, WordPiece, SentencePiece)](https://aimlrounds.com/api/v1/lessons/fundamentals/subword-tokenisation.md): How do LLMs handle words they've never seen?
+- [Sequence Labelling and NER](https://aimlrounds.com/api/v1/lessons/fundamentals/sequence-labelling-and-ner.md): BIO tags, CRFs, and why NER is scored with entity F1.
+- [HMMs, CRFs and the Viterbi Algorithm](https://aimlrounds.com/api/v1/lessons/fundamentals/hmms-crfs-and-viterbi.md): How do you find the best label for every word at once, and how do HMMs and CRFs differ?
+- [BERT and Masked Language Models](https://aimlrounds.com/api/v1/lessons/fundamentals/bert-and-masked-language-models.md): How is BERT trained, and how do you adapt it for classification, tagging and question answering?
+- [Information Extraction: Relations, Coreference and Entity Linking](https://aimlrounds.com/api/v1/lessons/fundamentals/information-extraction.md): How do you turn messy text into structured facts, and how far do LLMs replace this work?
+- [Search: BM25, Dense and Hybrid Retrieval](https://aimlrounds.com/api/v1/lessons/fundamentals/search-and-retrieval.md): Why does RAG search miss exact names, and how does hybrid fix it?
+- [NLP Evaluation: BLEU, ROUGE, EM/F1](https://aimlrounds.com/api/v1/lessons/fundamentals/nlp-evaluation-metrics.md): Why can word salad beat a correct paraphrase on BLEU?
+- [NLP Fundamentals Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/nlp-practice.md): 10 interview questions: TF-IDF, perplexity, BPE, BLEU, NER F1 and hybrid search.
+- [Anatomy of a Modern LLM](https://aimlrounds.com/api/v1/lessons/fundamentals/modern-llm-architecture.md): What changed since 2017, and where do an 8B model's parameters live?
+- [Attention Variants: MQA, GQA and MLA](https://aimlrounds.com/api/v1/lessons/fundamentals/attention-variants-mqa-gqa-mla.md): How many conversations fit on one GPU, and how GQA and MLA raise that?
+- [GPUs, TPUs and Memory Bandwidth](https://aimlrounds.com/api/v1/lessons/fundamentals/gpus-tpus-and-memory-bandwidth.md): Why is decoding limited by memory, while prefill is limited by compute?
+- [FlashAttention](https://aimlrounds.com/api/v1/lessons/fundamentals/flashattention.md): Why is exact attention faster when it does more maths?
+- [Long Context: RoPE Scaling, Sliding Windows and Attention Sinks](https://aimlrounds.com/api/v1/lessons/fundamentals/long-context.md): Why does a 4k model break at 16k, and how does YaRN fix it?
+- [Attention Alternatives: Sparse, Linear and Compressed](https://aimlrounds.com/api/v1/lessons/fundamentals/attention-alternatives.md): How do new models handle a million tokens of context, and what do they give up?
+- [Mixture of Experts](https://aimlrounds.com/api/v1/lessons/fundamentals/mixture-of-experts.md): How does a 47B model run at 13B cost, and what goes wrong?
+- [Vision-Language Models](https://aimlrounds.com/api/v1/lessons/fundamentals/vision-language-models.md): How does an LLM see an image, and how many tokens does one cost?
+- [The Next-Token Objective](https://aimlrounds.com/api/v1/lessons/fundamentals/next-token-prediction.md): How does one sentence become eight training examples?
+- [Pretraining Data: Deduplication, Filtering and Mixtures](https://aimlrounds.com/api/v1/lessons/fundamentals/pretraining-data.md): How do trillions of web tokens become training data?
+- [Scaling Laws: Kaplan vs Chinchilla](https://aimlrounds.com/api/v1/lessons/fundamentals/scaling-laws.md): Bigger model or more tokens, and why was Llama 3 8B trained on 15T?
+- [Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP](https://aimlrounds.com/api/v1/lessons/fundamentals/distributed-training.md): Why does a 70B model need 1.1 TB to train, and how is it split?
+- [Training Instabilities: Loss Spikes, z-loss and QK-norm](https://aimlrounds.com/api/v1/lessons/fundamentals/training-instabilities.md): Your loss spikes at step 40k. What happened, and what do you do?
+- [SFT and Instruction Tuning](https://aimlrounds.com/api/v1/lessons/fundamentals/supervised-fine-tuning.md): How does a text-completer become an assistant, and why mask the prompt?
+- [Policy Gradients for LLMs](https://aimlrounds.com/api/v1/lessons/fundamentals/policy-gradients-for-llms.md): How can a reward that isn't differentiable train an LLM, and why do you need a baseline?
+- [Reward Models and RLHF (PPO)](https://aimlrounds.com/api/v1/lessons/fundamentals/rlhf-and-reward-models.md): Why does optimising a reward model too hard make answers worse?
+- [DPO and Preference Optimisation](https://aimlrounds.com/api/v1/lessons/fundamentals/dpo.md): How does DPO skip the reward model, and what can go wrong?
+- [Reasoning Models: RLVR, GRPO and Test-Time Compute](https://aimlrounds.com/api/v1/lessons/fundamentals/reasoning-models-grpo.md): How did DeepSeek-R1 learn to think from right/wrong rewards alone?
+- [Distillation: How Small Models Learn from Big Ones](https://aimlrounds.com/api/v1/lessons/fundamentals/distillation.md): Why did distilling R1 beat RL on the same 32B model?
+- [LoRA and QLoRA: Parameter-Efficient Fine-Tuning](https://aimlrounds.com/api/v1/lessons/fundamentals/lora-and-qlora.md): How do you fine-tune an 8B model on one 24 GB GPU?
+- [Safety Training and Jailbreaks](https://aimlrounds.com/api/v1/lessons/fundamentals/safety-training-and-jailbreaks.md): How are LLMs trained to refuse, why do jailbreaks still work, and how do you defend a model?
+- [Decoding: Temperature, Top-k, Top-p and Min-p](https://aimlrounds.com/api/v1/lessons/fundamentals/decoding-and-sampling.md): Why does top-p fall apart at high temperature, and is min-p really better?
+- [In-Context Learning and Chain-of-Thought](https://aimlrounds.com/api/v1/lessons/fundamentals/in-context-learning-and-cot.md): How did 'Let's think step by step' take maths from 18% to 79%?
+- [Hallucination: Why LLMs Make Things Up](https://aimlrounds.com/api/v1/lessons/fundamentals/hallucination.md): Why do models guess confidently, and how do you stop an invented refund policy?
+- [Benchmarks and Contamination](https://aimlrounds.com/api/v1/lessons/fundamentals/benchmarks-and-contamination.md): Is a 3-point GPQA gap real, and did the model see the test?
+- [LLM Practice 1: Pretraining and Scaling Maths](https://aimlrounds.com/api/v1/lessons/fundamentals/llm-practice-scaling.md): 9 back-of-the-envelope questions: parameters, KV cache, FLOPs, memory, MoE, image tokens.
+- [LLM Practice 2: Post-training and Generation](https://aimlrounds.com/api/v1/lessons/fundamentals/llm-practice-post-training.md): 9 scenarios: SFT bugs, reward hacking, DPO and GRPO maths, hallucination, judges, safety.
+
+## AI Engineering
+
+- [Prefill vs Decode](https://aimlrounds.com/api/v1/lessons/ai-engineering/prefill-vs-decode.md): Why does an LLM read your prompt fast but write its answer slowly?
+- [LLM Quantization](https://aimlrounds.com/api/v1/lessons/ai-engineering/llm-quantization.md): How does an LLM survive losing 75% of its bits?
+- [KV Cache Management and PagedAttention](https://aimlrounds.com/api/v1/lessons/ai-engineering/kv-cache-and-pagedattention.md): Why did naive serving waste most of its KV memory, and how do blocks fix it?
+- [KV Cache Compression, Eviction and Offloading](https://aimlrounds.com/api/v1/lessons/ai-engineering/kv-cache-compression.md): Long conversations are filling GPU memory with KV cache. How do you shrink it, drop some of it, or move it?
+- [Continuous Batching and Scheduling](https://aimlrounds.com/api/v1/lessons/ai-engineering/continuous-batching.md): Trace one request through a vLLM-style engine.
+- [Prefix and Prompt Caching](https://aimlrounds.com/api/v1/lessons/ai-engineering/prefix-caching.md): Why are repeated system prompts nearly free, until a timestamp breaks them?
+- [Speculative Decoding](https://aimlrounds.com/api/v1/lessons/ai-engineering/speculative-decoding.md): How does a small draft make a big model faster with identical outputs?
+- [Serving Metrics and SLOs](https://aimlrounds.com/api/v1/lessons/ai-engineering/serving-metrics-and-slos.md): TTFT, TPOT, p99 and goodput: why latency explodes near capacity.
+- [Scaling Inference: Parallelism, Replicas and Routing](https://aimlrounds.com/api/v1/lessons/ai-engineering/scaling-inference.md): How many GPUs for 1,000 users, and why FP8 weights may not help?
+- [Serving Mixture-of-Experts Models](https://aimlrounds.com/api/v1/lessons/ai-engineering/serving-moe-models.md): An MoE model activates only 37B of its 671B parameters. Why is it still hard and expensive to serve?
+- [Serving Agents and Reasoning Models](https://aimlrounds.com/api/v1/lessons/ai-engineering/serving-agents-and-reasoning-models.md): Agents make dozens of calls per task, and reasoning models write thousands of hidden tokens. What does that do to serving?
+- [Sizing and Cost: Cost per Million Tokens](https://aimlrounds.com/api/v1/lessons/ai-engineering/sizing-and-cost.md): What does a million tokens cost to self-host, and when is an API cheaper?
+- [LLM Inference Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/llm-inference-practice.md): 7 questions: KV maths, speculative speedup, a caching incident, fleet sizing.
+- [LLM Serving Incidents](https://aimlrounds.com/api/v1/lessons/ai-engineering/llm-serving-incidents.md): 9 incidents: out of memory, slow first tokens, cache misses, a bad quantization, noisy neighbours, MoE hot spots, reasoning costs.
+- [Prompt Engineering Patterns](https://aimlrounds.com/api/v1/lessons/ai-engineering/prompt-engineering-patterns.md): How should a production prompt be structured, ordered and tested?
+- [Prompting Reasoning Models](https://aimlrounds.com/api/v1/lessons/ai-engineering/prompting-reasoning-models.md): Your team moved to a reasoning model, but kept the old prompt full of step-by-step instructions. What should change?
+- [Structured Output and Constrained Decoding](https://aimlrounds.com/api/v1/lessons/ai-engineering/structured-output.md): Why does 'return JSON' fail, and how do grammars fix it?
+- [System Prompts with Many Rules](https://aimlrounds.com/api/v1/lessons/ai-engineering/system-prompts-with-many-rules.md): Your assistant's system prompt has grown to 20 rules, and it keeps breaking one or another. Why, and how do you fix it?
+- [Automatic Prompt Optimisation](https://aimlrounds.com/api/v1/lessons/ai-engineering/automatic-prompt-optimization.md): Instead of hand-tuning prompts, your team wants an optimiser to write them. How do these work, and what can go wrong?
+- [Prompt vs RAG vs Fine-Tuning: How to Choose](https://aimlrounds.com/api/v1/lessons/ai-engineering/prompt-vs-rag-vs-fine-tuning.md): Knowledge or behaviour: which tool fixes which gap?
+- [A Prompt Fix That Broke Production](https://aimlrounds.com/api/v1/lessons/ai-engineering/prompt-change-broke-production.md): A one-line prompt fix solved a reported bug, passed five spot checks, and broke other cases in production. What went wrong, and what process prevents it?
+- [Prompt Engineering Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/prompt-engineering-practice.md): 8 questions: effort costs, layout, many rules, regression sets, optimisers, schemas and migrations.
+- [RAG End to End](https://aimlrounds.com/api/v1/lessons/ai-engineering/rag-end-to-end.md): How do you build RAG, and how big should a chunk be?
+- [Parsing and Chunking](https://aimlrounds.com/api/v1/lessons/ai-engineering/parsing-and-chunking.md): Your RAG misreads tables and splits answers in half. How do you parse and chunk documents?
+- [Embeddings and Vector Indexes](https://aimlrounds.com/api/v1/lessons/ai-engineering/embeddings-and-vector-indexes.md): You have 100 million chunks. Which embedding model and index do you use, and what does it cost?
+- [Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG](https://aimlrounds.com/api/v1/lessons/ai-engineering/advanced-rag.md): Which upgrade cut retrieval failures by 67%?
+- [Re-ranking and Late Interaction](https://aimlrounds.com/api/v1/lessons/ai-engineering/reranking-and-late-interaction.md): The right chunk is retrieved, but it's ranked 12th. What do you do, and what's late interaction?
+- [Grounded Answers: Citations, Conflicts and Saying No](https://aimlrounds.com/api/v1/lessons/ai-engineering/grounded-answers.md): The right chunk was retrieved, but the answer is still wrong. Why, and how do you make answers trustworthy?
+- [Agentic RAG, and When Not to Index](https://aimlrounds.com/api/v1/lessons/ai-engineering/agentic-rag.md): Should your RAG be an agent? When do you skip the index altogether?
+- [Permissions and Poisoning in RAG](https://aimlrounds.com/api/v1/lessons/ai-engineering/permissions-and-poisoning.md): How do you stop users retrieving documents they can't see, or attackers planting bad ones?
+- [Keeping an Index Current](https://aimlrounds.com/api/v1/lessons/ai-engineering/keeping-an-index-current.md): Documents change daily, and a better embedding model has come out. How do you keep your index current?
+- [RAG: Wrong Answer, Where to Look First](https://aimlrounds.com/api/v1/lessons/ai-engineering/rag-wrong-answer.md): Your chatbot gave a confident, wrong answer. Where do you look first?
+- [RAG at Scale: Slow and Wrong](https://aimlrounds.com/api/v1/lessons/ai-engineering/rag-at-scale.md): Your RAG worked on 100 docs, but broke at 10 million. Why?
+- [RAG Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/rag-practice.md): 10 questions to work by hand: recall, MRR, fusion, memory, filters, tokens and migrations.
+- [What Is an Agent? The ReAct Loop](https://aimlrounds.com/api/v1/lessons/ai-engineering/what-is-an-agent.md): Agent or workflow, and why does a 95%-per-step agent fail most 20-step tasks?
+- [Tool and Function Calling](https://aimlrounds.com/api/v1/lessons/ai-engineering/tool-calling.md): How do models call tools, and why do 100 tools make an agent worse?
+- [Planning and Reflection](https://aimlrounds.com/api/v1/lessons/ai-engineering/planning-and-reflection.md): When does 'check your work' actually help an agent?
+- [Memory and Context Engineering](https://aimlrounds.com/api/v1/lessons/ai-engineering/memory-and-context-engineering.md): How does an agent remember a peanut allergy 50 turns later?
+- [Agent Skills and Self-Improving Context](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-skills-and-self-improving-context.md): Your agent needs dozens of procedures, like how to file an expense or write a release note. How do you give it that know-how without filling its context, and can it learn new ones?
+- [MCP: The Model Context Protocol](https://aimlrounds.com/api/v1/lessons/ai-engineering/model-context-protocol.md): What is MCP, and how is it different from function calling?
+- [MCP Under the Hood: Messages, Transports and Authorization](https://aimlrounds.com/api/v1/lessons/ai-engineering/mcp-under-the-hood.md): Walk me through what actually happens when an agent calls a tool on a remote MCP server, including how it's authorised. What changed in the 2026 spec?
+- [Agent Protocols: MCP, A2A, AG-UI and Commerce](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-protocols.md): Your agent needs tools from other teams, help from another company's agent, a live UI and the ability to pay. Which protocols cover which connection?
+- [Multi-Agent Systems](https://aimlrounds.com/api/v1/lessons/ai-engineering/multi-agent-systems.md): When do several agents beat one, and what does it cost?
+- [Agent Infrastructure: Durable Execution, Retries and Budgets](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-infrastructure.md): How do long agent runs survive failures without paying twice?
+- [Agent Frameworks and Harnesses: Graphs, State and Middleware](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-frameworks-and-harnesses.md): Your team is choosing between LangGraph, LangChain's agent middleware, Google ADK, an agent SDK, or writing its own loop. What concepts should drive the choice?
+- [Long-Running and Scheduled Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/long-running-and-scheduled-agents.md): An agent must build an app over many hours, longer than any context window. Another runs every morning without being asked. How do you design harnesses for both?
+- [Agent Safety: Permissions, Sandboxing and the Lethal Trifecta](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-safety.md): How can one email make an agent leak data, and how do you stop it?
+- [Human-in-the-Loop Design for Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/human-in-the-loop-design.md): Your agent can issue refunds, send emails and change code. Which actions should wait for a person, how should approval work, and why do approvals often fail to catch problems?
+- [Agentic AI Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/agentic-ai-practice.md): 9 questions: compounding errors, tool overload, durable runs, trifecta, parallel sub-agents, skills, MCP auth, A2A.
+- [Agent Scenarios: Context and Memory](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-context-and-memory.md): What the agent sees at each step: forgotten facts, lossy summaries, context collapse and stale memories.
+- [Agent Scenarios: Tools and MCP](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-tools-and-mcp.md): Wrong tools, bad arguments, bloated tool outputs, changing MCP servers and authorisation mistakes.
+- [Agent Scenarios: Planning and Reliability](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-planning-and-reliability.md): Loops, early 'done' claims, bad plans, retry storms, crashes and repeated side effects.
+- [Agent Scenarios: Multi-Agent and Protocols](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-multi-agent-and-protocols.md): Sub-agents that contradict each other, untrusted remote agents and authority that grows across hand-offs.
+- [Agent Scenarios: Observability and Debugging](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-observability.md): Finding the first wrong step in a trace, silent failures, cost jumps and 'worse this week' with green dashboards.
+- [Agent Scenarios: Safety and Security](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-safety-and-security.md): Prompt injection, the Rule of Two, excessive permissions, sandbox escapes and malicious skills.
+- [Agent Scenarios: Cost and Latency](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-cost-and-latency.md): Hidden reasoning tokens, cache misses on long histories, too many sub-agents and agents that run too often.
+- [Agent Scenarios: Human in the Loop](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-human-in-the-loop.md): Approval design, rubber-stamping, pauses that resume wrongly, and which actions need a person.
+- [Agent Scenarios: Long-Running and Scheduled Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-scenarios-long-running.md): Hand-offs between sessions, self-judged work, duplicated effort and proactive agents that spam.
+- [Why LLM Apps Fail: The Three Gulfs](https://aimlrounds.com/api/v1/lessons/ai-engineering/why-llm-apps-fail.md): Your email assistant worked in the demo, and real users say it's unreliable. Where do you start?
+- [Choosing the Right Eval: Ship Checks, Regression Tests, Monitors and Guardrails](https://aimlrounds.com/api/v1/lessons/ai-engineering/choosing-the-right-eval.md): Should this check run in CI, on live traffic, or before every answer reaches the user?
+- [Building Your First Eval Set: Real Traces and Synthetic Queries](https://aimlrounds.com/api/v1/lessons/ai-engineering/building-an-eval-dataset.md): You have no users yet. How do you build a test set that finds real failures?
+- [Error Analysis: From Traces to Failure Rates](https://aimlrounds.com/api/v1/lessons/ai-engineering/error-analysis.md): You have 100 traces. How do you turn reading them into numbers you can act on?
+- [Reviewing Traces at Scale: Sampling, Clustering and Review Tools](https://aimlrounds.com/api/v1/lessons/ai-engineering/reviewing-traces-at-scale.md): You have 50,000 traces a day and time to read 50. Which 50?
+- [Code Checks First: Assertions, Schemas and Execution](https://aimlrounds.com/api/v1/lessons/ai-engineering/code-based-evaluators.md): Before reaching for an LLM judge, what can you check with plain code, and how can code checks go wrong?
+- [LLM Judges: Pairwise Preferences and Pass/Fail Checks](https://aimlrounds.com/api/v1/lessons/ai-engineering/llm-as-a-judge.md): Can you trust a GPT judge's 62% win rate, and how do you write one for your app?
+- [Can You Trust Your Judge? TPR, TNR and Corrected Pass Rates](https://aimlrounds.com/api/v1/lessons/ai-engineering/validating-an-llm-judge.md): Your LLM judge says 85% of answers pass. How do you know the real pass rate?
+- [Labelling with a Team: Rubrics, Cohen's Kappa and Alignment](https://aimlrounds.com/api/v1/lessons/ai-engineering/labelling-with-a-team.md): Two experts label the same 50 answers and agree 90% of the time. Is your rubric good?
+- [RAG Evals: Retrieval, Faithfulness and Relevance](https://aimlrounds.com/api/v1/lessons/ai-engineering/rag-evals.md): Why can a correct answer still fail your evaluation?
+- [Multi-Turn Chat Evals: Sessions, Simulated Users and Drift](https://aimlrounds.com/api/v1/lessons/ai-engineering/multi-turn-evals.md): Your chatbot answers single questions well and falls apart in long conversations. How do you evaluate that?
+- [Agent Evals: End States, pass^k and Cost](https://aimlrounds.com/api/v1/lessons/ai-engineering/evaluating-agents.md): Why is 59% on one run not 59% for your customers?
+- [Simulated Users and Test Environments for Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/simulated-users-and-environments.md): Your support agent changes databases and talks to customers. How do you test it before real customers do?
+- [Coding Agent Evals: Hidden Tests and Test Tampering](https://aimlrounds.com/api/v1/lessons/ai-engineering/coding-agent-evals.md): Your coding agent's tests all pass. How do you know it fixed the bug rather than the tests?
+- [Multi-Agent Evals: Hand-offs, Roles and Verification](https://aimlrounds.com/api/v1/lessons/ai-engineering/multi-agent-evals.md): Your planner, researcher and writer agents produce a bad report. Which agent failed, and how do you measure it?
+- [Tool-Call Evals: Selection, Arguments, Trajectories and Effects](https://aimlrounds.com/api/v1/lessons/ai-engineering/agent-and-tool-evaluation-metrics.md): Which metrics tell you where an agent's tool use went wrong?
+- [Evaluating an MCP Server: Tool Choice, Descriptions and Distractors](https://aimlrounds.com/api/v1/lessons/ai-engineering/evaluating-mcp-servers.md): You're shipping an MCP server for your product. How do you test that agents can actually use it?
+- [Improving Tools with Evals: Held-Out Tasks and Transcripts](https://aimlrounds.com/api/v1/lessons/ai-engineering/improving-tools-with-evals.md): You keep rewriting tool descriptions and the score keeps rising. How do you know you're not overfitting?
+- [Evals in CI: Golden Sets, Regression Gates and Model Upgrades](https://aimlrounds.com/api/v1/lessons/ai-engineering/evals-in-ci.md): A prompt change drops your golden-set pass rate from 94% to 90%. Do you block the release?
+- [Online Evals: Sampled Judges, Guardrails and User Signals](https://aimlrounds.com/api/v1/lessons/ai-engineering/online-evals-and-guardrails.md): Your assistant handles 100,000 conversations a day. How do you know today's quality without reading them?
+- [Safety and Red-Team Evals: Jailbreaks, Injection and Tool Poisoning](https://aimlrounds.com/api/v1/lessons/ai-engineering/safety-and-red-team-evals.md): How do you test that your agent can't be talked into leaking data or misusing its tools?
+- [Improving with Evals: Cheapest Fix First, Then Cut Cost](https://aimlrounds.com/api/v1/lessons/ai-engineering/improving-with-evals.md): Your evals show the agent fails 12% of the time and costs too much. What do you change first?
+- [Applied Evals Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/applied-evals-practice.md): 16 questions: gulfs, placement, datasets, error analysis, judges, kappa, pass^k, trajectories, faithfulness, coding agents, MCP, security.
+- [Evaluation Incidents: LLM Apps and Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/evaluation-incidents.md): 22 incidents: overfitted prompts, leaky judges, flaky agents, misleading metrics and more.
+- [Training/Serving Skew and Feature Stores](https://aimlrounds.com/api/v1/lessons/ai-engineering/training-serving-skew-and-feature-stores.md): Why does a model look great offline and fail online?
+- [Batch vs Online vs Streaming Inference](https://aimlrounds.com/api/v1/lessons/ai-engineering/batch-vs-online-inference.md): When do you precompute predictions, and when compute them live?
+- [Deployment Patterns: Shadow, Canary, A/B and Rollback](https://aimlrounds.com/api/v1/lessons/ai-engineering/deployment-patterns.md): How long must a canary run to catch a regression?
+- [Experiment Tracking, Reproducibility and the Model Registry](https://aimlrounds.com/api/v1/lessons/ai-engineering/experiment-tracking-and-model-registry.md): Can you rebuild last month's model, and roll back in minutes?
+- [Drift Detection and Monitoring](https://aimlrounds.com/api/v1/lessons/ai-engineering/drift-detection-and-monitoring.md): How do you know a model is degrading before labels arrive?
+- [Monitoring Without Labels: Estimating Performance](https://aimlrounds.com/api/v1/lessons/ai-engineering/monitoring-without-labels.md): Your fraud model's labels arrive 60 days late. How do you know its accuracy today?
+- [Retraining Pipelines and Continuous Training](https://aimlrounds.com/api/v1/lessons/ai-engineering/retraining-pipelines.md): How often should you retrain, and what stops a bad retrain?
+- [Feedback Loops and Unbiased Training Data](https://aimlrounds.com/api/v1/lessons/ai-engineering/feedback-loops-and-unbiased-data.md): Your recommender is retrained on its own clicks every week, and it keeps showing the same few items. Why, and how do you get data it can learn from?
+- [MLOps Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/mlops-practice.md): 10 production questions: skew, drift alerts, canaries, audits, retraining, label-free estimation, feedback loops, LLMOps.
+- [LLMOps: What's Different](https://aimlrounds.com/api/v1/lessons/ai-engineering/llmops.md): How do you ship prompt changes without breaking things?
+- [Tracing and Observability for LLM Apps and Agents](https://aimlrounds.com/api/v1/lessons/ai-engineering/tracing-and-observability.md): Users say your assistant 'got worse this week', but every dashboard is green. What should you have been recording, and how do you find the problem?
+- [Model Upgrades and Retirements](https://aimlrounds.com/api/v1/lessons/ai-engineering/model-upgrades-and-retirements.md): Your provider is retiring the model your product uses in 60 days. The new one scores higher on benchmarks. How do you migrate safely?
+- [Guardrails and Prompt Injection](https://aimlrounds.com/api/v1/lessons/ai-engineering/guardrails-and-prompt-injection.md): Why can't filters alone stop prompt injection?
+- [Cost and Latency: Routing, Caching and Batching](https://aimlrounds.com/api/v1/lessons/ai-engineering/cost-and-latency.md): How do you cut an LLM bill by 80% without losing quality?
+- [LLM API Reliability: Rate Limits, Retries and Fallbacks](https://aimlrounds.com/api/v1/lessons/ai-engineering/llm-api-reliability.md): Your provider starts returning overload errors at peak time, and your retries make it worse. How do you design calls to an LLM API so they fail gracefully?
+- [GenAI App Scenarios: Set 1](https://aimlrounds.com/api/v1/lessons/ai-engineering/genai-scenarios-set-1.md): 7 incidents: stale citations, broken JSON, a bad fine-tune, a cost spike, injection, a retry storm, a retired model.
+- [GenAI App Scenarios: Set 2](https://aimlrounds.com/api/v1/lessons/ai-engineering/genai-scenarios-set-2.md): 9 incidents: wrong reply language, wrong dates, malformed tool calls, misread tables, lost caveats, forgotten constraints, a template leak, a broken parser, fake citations.
+- [Fine-Tuning Incidents](https://aimlrounds.com/api/v1/lessons/ai-engineering/fine-tuning-incidents.md): 9 incidents: wrong chat template, echoing users, forgetting, leaked evals, LoRA that does nothing, flattering DPO, memorised personal data.
+- [Safety and Guardrail Incidents](https://aimlrounds.com/api/v1/lessons/ai-engineering/safety-and-guardrail-incidents.md): 9 incidents: leaked prompts, over-refusal, indirect injection, data exfiltration, role-play jailbreaks, slow guardrails, other languages, sensitive logs.
+- [Cost and Reliability Incidents](https://aimlrounds.com/api/v1/lessons/ai-engineering/cost-and-reliability-incidents.md): 9 incidents: an overnight cost spike, rate limits, a retry storm, runaway outputs, a cache leak, bad routing, a provider outage, cut-off streams, long chats.
+- [Why Look Inside a Model?](https://aimlrounds.com/api/v1/lessons/ai-engineering/why-look-inside-a-model.md): Your model passes every safety evaluation. Why might that not be enough, and what does interpretability add?
+- [Features, Polysemanticity and Superposition](https://aimlrounds.com/api/v1/lessons/ai-engineering/features-and-superposition.md): Why do single neurons respond to unrelated things, and what is superposition?
+- [The Residual Stream and Circuits](https://aimlrounds.com/api/v1/lessons/ai-engineering/residual-stream-and-circuits.md): How does information flow through a transformer, and what is a circuit?
+- [Linear Representations and Universality](https://aimlrounds.com/api/v1/lessons/ai-engineering/linear-representations.md): What does it mean that concepts are linear inside a model, and when does that break?
+- [Sparse Autoencoders](https://aimlrounds.com/api/v1/lessons/ai-engineering/sparse-autoencoders.md): How does a sparse autoencoder pull features out of activations, and how do you choose a variant?
+- [SAE Failures and Alternatives](https://aimlrounds.com/api/v1/lessons/ai-engineering/sae-failures-and-alternatives.md): When do sparse autoencoders fail, and when should you use something simpler?
+- [Transcoders and Attribution Graphs](https://aimlrounds.com/api/v1/lessons/ai-engineering/transcoders-and-attribution-graphs.md): How do transcoders make circuits readable, and what does an attribution graph show?
+- [Activation Patching and Circuit Discovery](https://aimlrounds.com/api/v1/lessons/ai-engineering/activation-patching.md): How do you test whether a component causes a behaviour, and how do you scale that to a whole model?
+- [Validating Interpretability Claims](https://aimlrounds.com/api/v1/lessons/ai-engineering/validating-interpretability-claims.md): You found a circuit. How do you know it's a real explanation and not just a convincing story?
+- [Logit Lens, Tuned Lens and Verbalisers](https://aimlrounds.com/api/v1/lessons/ai-engineering/logit-lens-and-verbalisers.md): How can you read what a model is predicting at a middle layer?
+- [Probing Classifiers](https://aimlrounds.com/api/v1/lessons/ai-engineering/probing-classifiers.md): A probe detects a property from activations with 95% accuracy. What does that tell you, and what doesn't it?
+- [Steering Vectors](https://aimlrounds.com/api/v1/lessons/ai-engineering/steering-vectors.md): How can you change a model's behaviour at inference time without retraining it?
+- [Knowledge Localisation and Editing](https://aimlrounds.com/api/v1/lessons/ai-engineering/knowledge-localisation-and-editing.md): Where does a fact live in a model, and can you edit it safely?
+- [Model Diffing](https://aimlrounds.com/api/v1/lessons/ai-engineering/model-diffing.md): After fine-tuning, how do you find out what changed inside the model?
+- [Interpretability for AI Safety](https://aimlrounds.com/api/v1/lessons/ai-engineering/interpretability-for-safety.md): How is interpretability actually used for AI safety today, and what can go wrong?
+- [AI Interpretability Practice](https://aimlrounds.com/api/v1/lessons/ai-engineering/interpretability-practice.md): 10 questions: superposition, probes, patching, SAEs, steering, lenses, circuits, editing, diffing.
+- [Interpretability Scenarios](https://aimlrounds.com/api/v1/lessons/ai-engineering/interpretability-scenarios.md): 8 incidents: deception monitors, SAE detectors, steering side effects, edits that spill over, fine-tunes gone wrong.
+
+## System Design
+
+- [Design a Support Chatbot](https://aimlrounds.com/api/v1/lessons/system-design/design-support-chatbot.md): Design a support chatbot for delivery partners that answers from your help articles and knows when to hand over to a human.
+- [Design an AI Tutor](https://aimlrounds.com/api/v1/lessons/system-design/design-ai-tutor.md): Students working on maths problems can ask an AI tutor for help. Design it so it guides them to the answer instead of giving it away, is fast and correct, and provably helps them learn.
+- [Design a Voice AI Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-voice-agent.md): Customers call a support line, and an AI agent answers. Design it so it responds fast enough to feel natural and can still look up orders and take actions.
+- [Design a Store Assistant](https://aimlrounds.com/api/v1/lessons/system-design/design-store-assistant.md): Merchants want an assistant that can act in their store, not just answer questions. Design it, knowing tools will grow from a handful to dozens.
+- [Design a Codebase Q&A Assistant](https://aimlrounds.com/api/v1/lessons/system-design/design-codebase-qa.md): Engineers ask questions about a company's code, spread across thousands of repositories. Design an assistant that finds the right code and answers with it.
+- [Design an On-Call Engineering Copilot](https://aimlrounds.com/api/v1/lessons/system-design/design-oncall-copilot.md): Engineering teams answer tens of thousands of questions a month in chat support channels. Design a copilot that answers them from internal docs, including long policy documents full of tables.
+- [Design Support Answers from Past Tickets](https://aimlrounds.com/api/v1/lessons/system-design/design-ticket-graph-rag.md): A customer service team has years of resolved support tickets. Design a system that answers a new issue by finding similar past tickets and their fixes.
+- [Design Semantic Product Search](https://aimlrounds.com/api/v1/lessons/system-design/design-semantic-search.md): Shoppers type long, specific queries, and keyword search returns nothing useful for them. Design search that understands meaning, without breaking exact matches like model numbers.
+- [Design an Enterprise RAG System](https://aimlrounds.com/api/v1/lessons/system-design/design-enterprise-rag.md): Design a system that answers employees' questions across 10 million internal documents, respecting who can see what.
+- [Design a Text-to-SQL System](https://aimlrounds.com/api/v1/lessons/system-design/design-text-to-sql.md): Analysts spend too long finding tables and writing SQL. Design a system that turns their questions into queries across a huge data warehouse.
+- [Design a Custom Vision LLM](https://aimlrounds.com/api/v1/lessons/system-design/design-vision-llm.md): Your onboarding flow reads ID cards and licences in four languages. API models are slow at the tail and struggle with non-Latin scripts. Design an in-house vision model, and decide when it's worth building.
+- [Design a Document Extraction Pipeline](https://aimlrounds.com/api/v1/lessons/system-design/design-document-extraction.md): Thousands of suppliers send invoices in different layouts and languages, and people type them in by hand. Design a system that extracts the data accurately and knows when to ask a person.
+- [Design Spam and Fake Account Detection](https://aimlrounds.com/api/v1/lessons/system-design/design-spam-abuse-detection.md): A professional network with hundreds of millions of members is hit by fake accounts, scraping and spam. Design defences that stop bulk abuse early without blocking real members.
+- [Design AI Content Moderation](https://aimlrounds.com/api/v1/lessons/system-design/design-content-moderation.md): A platform gets billions of chat messages and hours of voice every day. Design moderation that blocks harmful content fast, without silencing normal users, and knows when a person must decide.
+- [Design a Refund-Handling Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-refund-agent.md): Walk through an agent system design, from requirements to rollout.
+- [Design an Incident Investigation Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-incident-agent.md): When an alert fires at 3 a.m., the on-call engineer spends most of the first half hour gathering context. Design an agent that investigates the alert and hands the engineer a head start.
+- [Design a Recruiting Assistant Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-hiring-agent.md): Recruiters spend hours turning a role into searches, reading profiles and writing outreach. Design an agent that does this work with them, across many steps and days.
+- [Design a Trip Planner Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-trip-planner-agent.md): A travel site wants a chat assistant that answers trip questions using its own data: which hotels match, how far they are from the sights, what's nearby. Design the agent.
+- [Design a Research Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-research-agent.md): Users ask open-ended questions that need many sources. Design an agent that splits the work across parallel subagents and writes one answer.
+- [Design a recommendation system](https://aimlrounds.com/api/v1/lessons/system-design/recommendation-system.md): How do you pick a few items for a user from millions?
+- [Design Short-Video Recommendations](https://aimlrounds.com/api/v1/lessons/system-design/design-short-video-recs.md): A short-video app must learn what each user likes within minutes of their first swipes, while new videos and users arrive constantly. Design the recommendation system.
+- [Design Job Recommendations](https://aimlrounds.com/api/v1/lessons/system-design/design-job-recommendations.md): A professional network recommends jobs to hundreds of millions of members and candidates to recruiters. Design job recommendations that match on meaning, handle new postings instantly and help both sides.
+- [Design Recommendations for a New Category](https://aimlrounds.com/api/v1/lessons/system-design/design-cross-category-cold-start.md): A delivery app with years of restaurant orders launches grocery and retail. Most users have never shopped there. Design recommendations for users who are new to the category.
+- [Design a Shared Recommendation Foundation Model](https://aimlrounds.com/api/v1/lessons/system-design/design-rec-foundation-model.md): A large app runs hundreds of separate recommendation models, one per surface, each trained on its own slice of data. Design one large foundation model that makes all of them better.
+- [Design Real-Time Fraud Detection](https://aimlrounds.com/api/v1/lessons/system-design/design-fraud-detection.md): An online payments company must decide in under 100 ms whether each payment is fraud. Fraud is about 1 in 1,000 payments, and blocking good customers loses money too. Design the system.
+- [Design Feed Ranking](https://aimlrounds.com/api/v1/lessons/system-design/design-feed-ranking.md): A photo and video app shows each user a feed of posts from billions of candidates. Design the ranking so people see what they value, quickly, without filling the feed with clickbait.
+- [Design Ad Click Prediction](https://aimlrounds.com/api/v1/lessons/system-design/design-ad-click-prediction.md): An ads platform must predict, for every ad it might show, the chance that this user clicks. The prediction sets prices in the auction, so it must be accurate and calibrated. Design it.
+- [Design Search Ranking with Deep Learning](https://aimlrounds.com/api/v1/lessons/system-design/design-search-ranking.md): A travel marketplace ranks thousands of available homes for each search. A boosted-tree ranker has stopped improving. Design the move to deep learning, and say what to expect.
+- [Design ETA Prediction](https://aimlrounds.com/api/v1/lessons/system-design/design-eta-prediction.md): A ride-hailing and delivery app shows an arrival time on every request, and prices depend on it. Design an ETA system that is accurate, fast enough for every request, and works across products and cities.
+- [Design Notification Optimisation](https://aimlrounds.com/api/v1/lessons/system-design/design-notification-optimization.md): A learning app sends millions of daily reminders, choosing from dozens of message templates. Design a system that picks the best message for each user each day, without wearing users out with the same one.
+- [Design a Background Coding Agent](https://aimlrounds.com/api/v1/lessons/system-design/design-coding-agent.md): Engineers want an agent that makes code changes across thousands of repositories, like migrations and upgrades, and opens pull requests for review. Design it so its changes can be trusted.
+- [Design Code Autocomplete](https://aimlrounds.com/api/v1/lessons/system-design/design-code-autocomplete.md): Design code autocomplete for hundreds of millions of requests a day, with suggestions arriving in under 200 ms.
+- [Design an LLM Evaluation Platform](https://aimlrounds.com/api/v1/lessons/system-design/design-llm-eval-platform.md): Teams change prompts, models and retrieval every week, and quality keeps slipping without anyone noticing. Design a platform that catches regressions before users do.
+- [Design a Shared LLM Platform](https://aimlrounds.com/api/v1/lessons/system-design/design-llm-platform.md): Dozens of teams want to use LLMs from different vendors, and customer data mustn't leak. Design a shared platform for them.
+- [Test an LLM Prompt in Production](https://aimlrounds.com/api/v1/lessons/system-design/design-llm-prompt-test.md): Your new LLM tutor's prompt looks better in demos. How do you test it in production, and what's your metric?
+- [Fix a Failing AI Feature](https://aimlrounds.com/api/v1/lessons/system-design/design-ai-subject-lines.md): AI-written email subject lines lost to the old rule-based ones in an A/B test. What do you do next?
+- [Test Rankers Faster with Interleaving](https://aimlrounds.com/api/v1/lessons/system-design/design-interleaving.md): A ranking A/B test takes weeks, and you have many candidate models. How do you test faster?
+- [Measure a Feed Change with Network Effects](https://aimlrounds.com/api/v1/lessons/system-design/design-network-experiment.md): A feed change affects what a user's connections see. How do you measure its real effect?
+- [Personalise Images with Bandits](https://aimlrounds.com/api/v1/lessons/system-design/design-image-personalisation.md): You want to personalise which image each user sees for each title. How do you choose it, and how do you prove it helps?
+- [Set a Launch Decision Rule](https://aimlrounds.com/api/v1/lessons/system-design/design-launch-decision-rule.md): A launch wins on the main metric, but looks slightly worse on two guardrails. What's your decision rule before the test starts?
+- [Design an Experimentation Platform](https://aimlrounds.com/api/v1/lessons/system-design/design-experimentation-platform.md): Your company runs a few A/B tests by hand. Design a platform that lets teams run hundreds at once, and trust the results.
+
+## Papers Explained
+
+- [Attention Is All You Need](https://aimlrounds.com/api/v1/lessons/papers/attention-is-all-you-need.md): What happens if you remove recurrence and keep only attention?
+- [Scaling Laws and Chinchilla](https://aimlrounds.com/api/v1/lessons/papers/scaling-laws-and-chinchilla.md): For a fixed compute budget, should you train a bigger model or feed it more data?
+- [InstructGPT](https://aimlrounds.com/api/v1/lessons/papers/instructgpt.md): How did GPT-3 become an assistant that follows instructions?
+- [DeepSeek-R1](https://aimlrounds.com/api/v1/lessons/papers/deepseek-r1.md): Can a model learn to reason without copying human reasoning?
+- [LoRA](https://aimlrounds.com/api/v1/lessons/papers/lora.md): How do you fine-tune a 175B model by training only a few million numbers?
+- [Harness Engineering](https://aimlrounds.com/api/v1/lessons/papers/harness-engineering.md): What is actually inside a coding agent?
+- [Context Language Models](https://aimlrounds.com/api/v1/lessons/papers/context-language-models.md): What if an AI agent could edit its own memory?
+- [Understanding AI from the Inside](https://aimlrounds.com/api/v1/lessons/papers/mech-interp-survey.md): Does looking inside a model actually make it safer?
+
+## Practice
+
+- [Role roadmaps](https://aimlrounds.com/roadmap/)
+- [Mock interviews](https://aimlrounds.com/mock/)
+- [AI/ML jobs in India](https://aimlrounds.com/jobs/): updated daily, JSON at https://aimlrounds.com/jobs/jobs.json
