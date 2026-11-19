@@ -80,6 +80,17 @@ function pickRole(roles, ref) {
       (/\bml\b|machine learning|mlops/.test(r) && x.id === "ml-engineering") || (/data|\bds\b/.test(r) && x.id === "data-science"));
 }
 
+// old / alternate city names → the spelling the jobs data uses (arrays = any of these)
+const CITY_ALIASES = {
+  bangalore: "bengaluru", blr: "bengaluru", bengalooru: "bengaluru",
+  bombay: "mumbai", "navi mumbai": "mumbai",
+  gurgaon: "gurugram", madras: "chennai", calcutta: "kolkata",
+  poona: "pune", hyd: "hyderabad", secunderabad: "hyderabad",
+  trivandrum: "thiruvananthapuram", cochin: "kochi", mysore: "mysuru",
+  "new delhi": "delhi", ncr: ["delhi", "noida", "gurugram"], "delhi ncr": ["delhi", "noida", "gurugram"],
+  "work from home": "remote", wfh: "remote",
+};
+
 function expRange(v) {
   const m = { "0-2": [0, 2], "2-5": [2, 5], "5-8": [5, 8], "8+": [8, 99], "8-99": [8, 99] }[String(v || "").replace(/\s|yrs?|years?/g, "")];
   if (m) return m;
@@ -184,7 +195,7 @@ const TOOLS = [
       properties: {
         query: { type: "string", description: "Words in the job title, e.g. 'machine learning engineer', 'GenAI', 'data scientist'" },
         company: { type: "string" },
-        location: { type: "string", description: "City, e.g. 'Bengaluru', 'Hyderabad', 'Remote'" },
+        location: { type: "string", description: "City, e.g. 'Bengaluru', 'Hyderabad', 'Remote'. Old names like 'Bangalore' or 'Gurgaon' also work" },
         experience: { type: "string", description: "'0-2', '2-5', '5-8', '8+' or a number of years" },
         limit: { type: "integer", minimum: 1, maximum: 100, default: 20 },
       },
@@ -304,13 +315,15 @@ const HANDLERS = {
   async jobs(a, env) {
     const data = await load(env, "jobs/jobs.json");
     const terms = words(a.query);
-    const co = norm(a.company), loc = norm(a.location);
+    const co = norm(a.company);
+    const rawLoc = norm(a.location).trim();
+    const loc = CITY_ALIASES[rawLoc] || rawLoc;
     const er = a.experience ? expRange(a.experience) : null;
     let jobs = data.jobs.filter((j) => {
       const t = norm(j.title);
       if (terms.length && !terms.every((w) => t.includes(w) || (w === "ml" && t.includes("machine learning")) || (w === "ai" && /\bai\b|artificial/.test(t)))) return false;
       if (co && !norm(j.company).includes(co)) return false;
-      if (loc && !norm(j.location).includes(loc)) return false;
+      if (loc && ![].concat(loc).some((c) => norm(j.location).includes(c))) return false;
       return true;
     });
     let unstated = [];
@@ -332,6 +345,9 @@ const HANDLERS = {
       experience: j.exp ? (j.exp[1] == null ? `${j.exp[0]}+ yrs` : `${j.exp[0]}–${j.exp[1]} yrs`) : "not stated", apply: j.url });
     return { updated: data.updated, window_days: data.days, matches: jobs.length, jobs: jobs.slice(0, limit).map(show),
       experience_not_stated: er ? unstated.slice(0, 10).map(show) : undefined,
+      cities_available: rawLoc && !jobs.length
+        ? [...new Set(data.jobs.flatMap((j) => j.location.split(/,\s*/)).filter((c) => !/locations? in|^india/i.test(c)))].sort()
+        : undefined,
       note: "Links go to each company's own careers page. Listings are collected automatically and not vetted; check details before applying.",
       page: "https://aimlrounds.com/jobs/" };
   },
