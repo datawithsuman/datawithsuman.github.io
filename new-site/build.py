@@ -1035,6 +1035,7 @@ def about_page():
 <section class="panel block" id="why"><h2>Why this site exists</h2><p>You can read about an idea, recognise it and still get stuck when someone asks you to explain it. AIML Rounds is built to close that gap. Its {len(ORDERED)} lessons cover maths, machine learning, deep learning, LLMs, AI engineering and system design.</p></section>
 <section class="panel block" id="how"><h2>How lessons work</h2><ul class="about-list">{how}</ul></section>
 <section class="panel block" id="faq"><h2>Common questions</h2><div class="faq">{items}</div></section>
+<section class="panel block" id="ai-tools"><h2>Use it with AI tools</h2><p>Claude and other AI assistants can use these lessons, quizzes, mock interviews and jobs directly. The official AIML Rounds MCP server is <code>https://mcp.aimlrounds.com/mcp</code>, listed in the MCP Registry as <code>com.aimlrounds/aimlrounds</code>. Servers at any other address aren't run by this site. There's also a short map for AI tools at <a href="/llms.txt">/llms.txt</a>.</p></section>
 <section class="panel block" id="contact"><h2>Get in touch</h2><p>Questions, corrections and ideas are all welcome at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>{social_html("about-social")}</section>
 </div></main>
 """
@@ -1201,6 +1202,8 @@ def site_files():
 """
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
+    # proves to the official MCP Registry that this domain owns the com.aimlrounds/* server names (public key only)
+    write(".well-known/mcp-registry-auth", (Path(__file__).parent / "mcp" / "mcp-registry-auth").read_text(encoding="utf-8"))
     base = BASE
     urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)

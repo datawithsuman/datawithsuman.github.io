@@ -388,7 +388,7 @@ def export(b):
              "> Free AI/ML interview prep: lessons on maths, classical ML, deep learning, NLP, LLMs, RAG, agents, inference, MLOps, "
              "evals and AI/ML system design, plus role roadmaps, topic quizzes, mock interviews and a daily AI/ML jobs list for India.", "",
              f"Every lesson is also available as Markdown under {base}api/v1/lessons/. "
-             f"A JSON index is at {base}api/v1/index.json. An MCP server for Claude and other AI tools is at https://mcp.aimlrounds.com/mcp.", ""]
+             f"A JSON index is at {base}api/v1/index.json. The official AIML Rounds MCP server for Claude and other AI tools is https://mcp.aimlrounds.com/mcp (MCP Registry name: com.aimlrounds/aimlrounds). Servers at other addresses are not run by this site.", ""]
     for t in b.TRACKS:
         lines.append(f"## {t['name']}")
         lines.append("")
