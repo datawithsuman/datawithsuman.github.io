@@ -558,6 +558,178 @@ def description(url):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", body)))
 
 
+# ---------- job description extract (the "Details" toggle on the jobs page, and the MCP jobs tool) ----------
+# Each job system gives its description in its own way; read the clean source for each, never the whole page.
+BROWSER = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"}
+
+
+def page(url):
+    req = urllib.request.Request(url, headers={**BROWSER, "Accept": "text/html"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read(4_000_000).decode("utf-8", "ignore")
+
+
+def html_text(h):
+    """HTML to plain text that keeps list items as '• ' lines and blocks as line breaks."""
+    h = html.unescape(h or "") if "&lt;" in (h or "") else (h or "")
+    h = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h)
+    h = re.sub(r"(?i)<li[^>]*>", "\n• ", h)
+    h = re.sub(r"\s*[●▪■◦]\s*", "\n• ", h)
+    h = re.sub(r"(?i)<br\s*/?>|</(p|div|h\d|ul|ol|li|tr)>|<(p|h\d)[^>]*>", "\n", h)
+    t = html.unescape(re.sub(r"<[^>]+>", " ", h)).replace("\xa0", " ")
+    out = []
+    for l in (re.sub(r"[ \t]+", " ", l).strip() for l in t.split("\n")):
+        if not l or l == "•":
+            continue
+        l = re.sub(r"^[-*·]\s+", "• ", l)  # "- 5+ years…" written as plain lines
+        if out and out[-1].startswith("• ") and not l.startswith("• ") and l[0].islower():
+            out[-1] += " " + l  # a bullet that wrapped onto the next line
+        else:
+            out.append(l)
+    return "\n".join(out)
+
+
+def json_ld_description(h):
+    for b in re.findall(r'(?is)<script[^>]*ld\+json[^>]*>(.*?)</script>', h):
+        try:
+            d = json.loads(b.strip())
+        except ValueError:
+            continue
+        for x in (d if isinstance(d, list) else d.get("@graph", [d]) if isinstance(d, dict) else []):
+            if isinstance(x, dict) and x.get("@type") == "JobPosting" and x.get("description"):
+                return x["description"]
+    return ""
+
+
+_ashby = {}
+
+
+def clean_description(url, source="", board=""):
+    """The job description as text with bullets, or "" when no clean source is known."""
+    u = urllib.parse.urlsplit(url)
+    if re.match(r"[\w-]+\.wd\d+\.myworkdayjobs\.com", u.netloc):
+        tenant = u.netloc.split(".")[0]
+        parts = [p for p in u.path.split("/") if p]
+        if parts and re.match(r"^[a-z]{2}-[A-Z]{2}$", parts[0]):
+            parts = parts[1:]
+        api = f"https://{u.netloc}/wday/cxs/{tenant}/{parts[0]}/" + "/".join(parts[1:])
+        return html_text(get(api, tries=2).get("jobPostingInfo", {}).get("jobDescription", ""))
+    if source == "greenhouse" or "greenhouse.io" in u.netloc:
+        q = urllib.parse.parse_qs(u.query)
+        m = re.search(r"/jobs/(\d+)", u.path)
+        jid = (q.get("gh_jid") or [m.group(1) if m else ""])[0]
+        b = board or (re.search(r"greenhouse\.io/([\w-]+)/jobs", url) or [None, ""])[1]
+        if jid and b:
+            return html_text(get(f"https://boards-api.greenhouse.io/v1/boards/{b}/jobs/{jid}", tries=2).get("content", ""))
+    if "jobs.lever.co" in u.netloc:
+        co, jid = [p for p in u.path.split("/") if p][:2]
+        d = get(f"https://api.lever.co/v0/postings/{co}/{jid}", tries=2)
+        lists = "".join(f"<h3>{x.get('text', '')}</h3><ul>{x.get('content', '')}</ul>" for x in d.get("lists", []))
+        return html_text(d.get("description", "") + lists + d.get("additional", ""))
+    if "ashbyhq.com" in u.netloc:
+        b = board or [p for p in u.path.split("/") if p][0]
+        if b not in _ashby:
+            _ashby[b] = {j.get("jobUrl", "").rstrip("/"): j.get("descriptionHtml", "")
+                         for j in get(f"https://api.ashbyhq.com/posting-api/job-board/{b}", tries=2).get("jobs", [])}
+        return html_text(_ashby[b].get(url.split("?")[0].rstrip("/"), ""))
+    if "smartrecruiters.com" in u.netloc:
+        co, jid = [p for p in u.path.split("/") if p][:2]
+        secs = get(f"https://api.smartrecruiters.com/v1/companies/{co}/postings/{jid.split('-')[0]}", tries=2)["jobAd"]["sections"]
+        return html_text("".join(secs.get(k, {}).get("text", "") for k in ("jobDescription", "qualifications", "additionalInformation")))
+    m = re.search(r"/sites/([\w-]+)/job/(\d+)", u.path)
+    if "oraclecloud.com" in u.netloc and m:
+        d = get(f"https://{u.netloc}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?expand=all&onlyData=true"
+                f"&finder=ById;Id=%22{m.group(2)}%22,siteNumber={m.group(1)}", tries=2)["items"][0]
+        return html_text("".join(d.get(k) or "" for k in ("ExternalResponsibilitiesStr", "ExternalQualificationsStr", "ExternalDescriptionStr")))
+    if "icims.com" in u.netloc:
+        h = page(url.split("?")[0] + "?in_iframe=1")
+        m = re.search(r'(?is)<div[^>]*class="iCIMS_JobContent[^"]*"[^>]*>(.*?)<div[^>]*class="iCIMS_(?:Footer|JobOptions|PageFooter)', h)
+        return html_text(json_ld_description(h) or (m.group(1) if m else ""))
+    h = page(url)
+    if "amazon.jobs" in u.netloc:
+        secs = re.findall(r'(?is)<div class="section[^"]*">\s*<h2>([^<]+)</h2>(.*?)</div>', h)
+        return html_text("".join(f"<h2>{a}</h2>{b}" for a, b in secs if re.search(r"description|qualifications", a, re.I)))
+    if "google.com" in u.netloc and "/careers/" in u.path:
+        m = re.search(r"(?is)<h3>\s*Minimum qualifications.*?(?=<h3>\s*Responsibilities|<div[^>]*class=\"[^\"]*(?:apply|footer))", h)
+        return html_text(m.group(0) if m else "")
+    return html_text(json_ld_description(h))
+
+
+SKILLS = [  # (shown name, pattern). Order is only a tie-break; the most-mentioned come first.
+    ("Python", r"python"), ("SQL", r"sql"), ("PyTorch", r"pytorch"), ("TensorFlow", r"tensorflow"), ("JAX", r"jax"),
+    ("scikit-learn", r"scikit[- ]learn|sklearn"), ("Spark", r"(?:py)?spark"), ("Kafka", r"kafka"), ("Airflow", r"airflow"),
+    ("Kubernetes", r"kubernetes|k8s"), ("Docker", r"docker"), ("AWS", r"aws|amazon web services|sagemaker"),
+    ("GCP", r"gcp|google cloud|vertex ai"), ("Azure", r"azure"), ("Databricks", r"databricks"), ("Snowflake", r"snowflake"),
+    ("LLMs", r"llms?|large language models?"), ("Generative AI", r"gen ?ai|generative ai"), ("RAG", r"rag|retrieval[- ]augmented"),
+    ("Agents", r"agentic|ai agents?|multi-agent"), ("NLP", r"nlp|natural language processing"),
+    ("Computer vision", r"computer vision|image recognition|object detection"), ("Deep learning", r"deep learning|neural networks?"),
+    ("Transformers", r"transformers?"), ("Fine-tuning", r"fine[- ]tun\w+|lora|rlhf"), ("Prompt engineering", r"prompt engineering"),
+    ("Vector databases", r"vector (?:databases?|db|stores?)|faiss|pinecone|milvus"), ("LangChain", r"langchain|langgraph"),
+    ("Hugging Face", r"hugging ?face"), ("MLOps", r"mlops|model deployment|ml pipelines?"), ("Statistics", r"statistic\w*|probability"),
+    ("A/B testing", r"a/b test\w*|experimentation|hypothesis test\w*"), ("Recommender systems", r"recommend\w* (?:systems?|engines?)|personali[sz]ation"),
+    ("Search and ranking", r"search ranking|learning to rank|information retrieval|ranking models?"),
+    ("Time series", r"time[- ]series|forecasting"), ("Causal inference", r"causal inference|uplift"),
+    ("Reinforcement learning", r"reinforcement learning"), ("Optimisation", r"optimi[sz]ation|operations research"),
+    ("CUDA", r"cuda|gpu programming"), ("C++", r"c\+\+"), ("Java", r"java(?!script)"), ("Scala", r"scala"), ("Go", r"golang"),
+]
+REQ_HEAD = re.compile(r"minimum qualifications|basic qualifications|required (?:skills|qualifications)|requirements|qualifications|"
+                      r"what you(?:'|’)ll (?:need|bring)|what we(?:'|’)re looking for|you (?:have|bring|will need)|must have|"
+                      r"who you are|about you|your profile|skills (?:and|&) experience|preferred qualifications", re.I)
+NEED_WORDS = re.compile(r"experience|degree|knowledge|proficien|familiar|understanding|expertise|skills?|background|hands-on|ability", re.I)
+
+
+def shorten(s, n=170):
+    s = re.sub(r"^(?:about you|requirements?|qualifications?)\s*:?\s+", "", s.strip(" •*●-–:;"), flags=re.I)
+    return s if len(s) <= n else s[:n].rsplit(" ", 1)[0].rstrip(",;:") + "…"
+
+
+DUTY_START = re.compile(r"^(?:lead|develop|design|build|collaborat|conduct|apply|analy[sz]e|implement|actively|commit|drive|own|work|partner|"
+                        r"support|manage|deliver|ensure|participate|promote|coach|train|communicat|mentor)\w*\b", re.I)
+
+
+def need_score(b):
+    s = 3 * bool(re.search(r"\d+\s*\+?\s*(?:-|–|to)?\s*\d*\s*\+?\s*(?:years|yrs)", b, re.I))
+    s += 2 * bool(re.search(r"\b(?:bachelor|master|ph\.?d|degree|b\.?tech|m\.?tech)", b, re.I))
+    s += 2 * bool(re.search(r"experience (?:in|with|building|developing|designing)|proficien|hands-on|knowledge of|familiar|expertise in|strong (?:background|understanding)", b, re.I))
+    s -= 3 * bool(DUTY_START.match(b))
+    return s
+
+
+def pick_needs(cands):
+    """Up to 3 requirement lines, best first by need_score but kept in the posting's order."""
+    good = [(need_score(b), i, b) for i, b in enumerate(cands) if NEED_WORDS.search(b) and need_score(b) > 0]
+    top = sorted(good, key=lambda x: (-x[0], x[1]))[:3]
+    return [b for _, _, b in sorted(top, key=lambda x: x[1])]
+
+
+def jd_extract(text):
+    """{'skills': up to 6 named skills, 'needs': up to 3 requirement lines}, or {} when the text is too thin."""
+    if len(text) < 200:
+        return {}
+    low = text.lower()
+    counts = [(len(re.findall(r"(?<![\w/+])(?:" + p + r")(?![\w+])", low)), i, name) for i, (name, p) in enumerate(SKILLS)]
+    skills = [name for c, i, name in sorted(counts, key=lambda x: (-x[0], x[1])) if c][:6]
+    lines = text.split("\n")
+    bullets = lambda ls: [l[2:] for l in ls if l.startswith("• ") and 25 <= len(l) <= 400]
+    needs = []
+    for i, l in enumerate(lines):
+        if len(l) < 80 and REQ_HEAD.search(l):
+            needs = pick_needs(bullets(lines[i + 1:i + 30]))
+            if needs:
+                break
+    if not needs:
+        needs = pick_needs(bullets(lines))
+    if not needs:
+        sents = re.split(r"(?<=[.!?])\s+", " ".join(lines))
+        needs = [s for s in sents if 30 <= len(s) <= 300 and re.search(r"\d\+? years|degree|experience (?:in|with)", s, re.I)][:2]
+    out = {}
+    if skills:
+        out["skills"] = skills
+    if needs:
+        out["needs"] = [shorten(x) for x in needs]
+    return out
+
+
 def years_from_text(t):
     """(low, high or None) from the first experience requirement, preferring an 'overall/total' figure."""
     t = re.sub(r"\b(" + "|".join(WORDS) + r")(?=\s*(?:\(\d+\)\s*)?\+?\s*(?:years?|yrs?)\b)", lambda m: WORDS[m.group(1).lower()], t, flags=re.I)
@@ -593,32 +765,54 @@ def years_from_title(title):
     return None
 
 
-def add_experience(jobs, previous):
-    """Gives each job 'exp' = [low, high|None] and 'exp_from' = 'jd' or 'title'. Reuses last run's answer for known URLs."""
+def add_experience(jobs, previous, boards=None):
+    """Gives each job 'exp' = [low, high|None], 'exp_from' = 'jd' | 'title' | 'none', and 'jd' = {'skills', 'needs'}
+    ({} when the description can't be read cleanly). Reuses last run's answers for known URLs."""
+    boards = boards or {}
     known = {j["url"]: j for j in previous if "exp_from" in j}
     todo = []
     for j in jobs:
-        if j["url"] in known:
-            for k in ("exp", "exp_from"):
-                if k in known[j["url"]]:
-                    j[k] = known[j["url"]][k]
-        else:
+        old = known.get(j["url"])
+        if old:
+            for k in ("exp", "exp_from", "jd"):
+                if k in old:
+                    j[k] = old[k]
+        if not old or "jd" not in old:
             todo.append(j)
 
     def one(j):
+        row = boards.get(j["company"], {})
         try:
-            return j, years_from_text(description(j["url"]))
+            clean = clean_description(j["url"], row.get("source", ""), row.get("board_id", ""))
         except Exception:
-            return j, None
+            clean = ""
+        jd = jd_extract(clean) if clean else {}
+        yrs = None
+        if "exp_from" not in j or jd.get("needs"):
+            try:
+                # the requirement lines shown under "Details" first, so the badge and the details agree
+                # (Walmart's footer boilerplate says "6 years" while the role asks for 15)
+                yrs = next((y for y in map(years_from_text, jd.get("needs", [])) if y), None) or years_from_text(clean or description(j["url"]))
+            except Exception:
+                pass
+        return j, yrs, jd
     with ThreadPoolExecutor(8) as ex:
-        for j, yrs in ex.map(one, todo):
+        for j, yrs, jd in ex.map(one, todo):
+            j["jd"] = jd
+            if yrs:
+                j["exp"], j["exp_from"] = yrs, "jd"
+                continue
+            if "exp_from" in j:
+                continue
             guess = None if yrs else years_from_title(j["title"])
             if yrs or guess:
                 j["exp"], j["exp_from"] = (yrs, "jd") if yrs else (guess, "title")
             else:
                 j["exp_from"] = "none"
     counts = {s: sum(1 for j in jobs if j.get("exp_from") == s) for s in ("jd", "title", "none")}
-    return f'experience: {counts["jd"]} from the description, {counts["title"]} from the title, {counts["none"]} not stated ({len(todo)} new pages read)'
+    details = sum(1 for j in jobs if j.get("jd"))
+    return (f'experience: {counts["jd"]} from the description, {counts["title"]} from the title, {counts["none"]} not stated ({len(todo)} new pages read)\n'
+            f'details: {details} of {len(jobs)} jobs have skills or requirement lines')
 
 
 def fetch(row):
@@ -708,7 +902,7 @@ def main():
             n += 1
         report.append(f'{row["company"]:28} {"ERROR " + err if err else f"{len(jobs):4} postings, {n} kept"}')
     keep.sort(key=lambda j: (j["posted"], j["company"]), reverse=True)
-    report.append("\n" + add_experience(keep, previous))
+    report.append("\n" + add_experience(keep, previous, {r["company"]: r for r in rows}))
     data = {"updated": NOW.date().isoformat(), "days": DAYS, "count": len(keep), "jobs": keep}
     text = json.dumps(data, ensure_ascii=False, indent=1)
     for out in [HERE / "jobs.json"] + [Path(p) for p in sys.argv[1:]]:

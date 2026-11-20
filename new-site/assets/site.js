@@ -505,11 +505,21 @@
         return '<li class="job' + (on ? " is-applied" : "") + '"><label class="job-check"><input type="checkbox" data-url="' + esc(j.url) + '"' + (on ? " checked" : "") +
           '><span class="sr">Applied: ' + esc(j.title) + ' at ' + esc(j.company) + '</span></label>' +
           '<a href="' + esc(j.url) + '" target="_blank" rel="noopener"><span class="job-title">' + esc(j.title) + (on ? ' <span class="job-tag">Applied</span>' : "") + '</span>' +
-          '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + (x ? " · " + x : "") + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a></li>';
+          '<span class="job-meta"><b>' + esc(j.company) + '</b> · ' + esc(j.location) + (x ? " · " + x : "") + ' · ' + ago(j.posted) + '</span><span class="job-apply">Apply →</span></a>' +
+          details(j) + '</li>';
+      }
+      // Skills and a few requirement lines, read from the job description by the daily fetch. Tap to open (no hover: most visitors are on phones).
+      function details(j) {
+        var d = j.jd || {}, skills = d.skills || [], needs = d.needs || [];
+        if (!skills.length && !needs.length) return "";
+        return '<details class="job-more"><summary>Details</summary><div class="job-more-body">' +
+          (skills.length ? '<p class="job-skills"><span class="sr">Skills: </span>' + skills.map(function (s) { return '<span class="job-skill">' + esc(s) + "</span>"; }).join("") + "</p>" : "") +
+          (needs.length ? '<p class="job-needs-h">They ask for</p><ul class="job-needs">' + needs.map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("") + "</ul>" : "") +
+          '<a class="job-jd-link" href="' + esc(j.url) + '" target="_blank" rel="noopener">Read the full job description →</a></div></details>';
       }
       function draw() {
         var q = (search.value || "").trim().toLowerCase();
-        var shown = data.jobs.filter(function (j) { return !q || (j.title + " " + j.company + " " + j.location).toLowerCase().indexOf(q) > -1; });
+        var shown = data.jobs.filter(function (j) { return !q || (j.title + " " + j.company + " " + j.location + " " + ((j.jd || {}).skills || []).join(" ")).toLowerCase().indexOf(q) > -1; });
         var html, n = shown.length;
         if (expSel === "any") {
           html = shown.map(row).join("");

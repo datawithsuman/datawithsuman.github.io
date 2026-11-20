@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-20",
  "days": 7,
- "count": 71,
+ "count": 72,
  "jobs": [
   {
    "title": "Director, Data Science",
@@ -10,10 +10,25 @@
    "posted": "2026-11-20",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Director--Data-Science_R-2698750",
    "exp": [
-    6,
+    15,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Generative AI",
+     "Optimisation",
+     "Computer vision",
+     "Deep learning",
+     "A/B testing"
+    ],
+    "needs": [
+     "Minimum of 15 years of data science experience",
+     "Demonstrated history of technology leadership and strong hands-on experience",
+     "Past experience in strong programming skills across big data and ML engineering stack"
+    ]
+   }
   },
   {
    "title": "Distinguished, Machine Learning Engineer",
@@ -22,10 +37,25 @@
    "posted": "2026-11-20",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Distinguished--Machine-Learning-Engineer_R-2698758",
    "exp": [
-    6,
+    15,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "Fine-tuning",
+     "MLOps",
+     "A/B testing",
+     "Optimisation"
+    ],
+    "needs": [
+     "Minimum of 15 years of AI/ML experience",
+     "Demonstrated history of technology leadership and strong hands-on experience",
+     "Past experience in strong programming skills across big data and ML engineering stack"
+    ]
+   }
   },
   {
    "title": "SW AI Engineer",
@@ -34,10 +64,25 @@
    "posted": "2026-11-20",
    "url": "https://onehealthineers.wd3.myworkdayjobs.com/SHSJB/job/PUN-MIC-T-4/SW-AI-Engineer_R-31941",
    "exp": [
-    5,
+    6,
     8
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "LangChain",
+     "Generative AI",
+     "RAG",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "Experience: 6–8 years of hands-on software development / AI engineering experience.",
+     "AI Harness Development is a mandatory skill: Must have hands-on experience designing and building an AI/LLM Harness, orchestration framework, agentic framework, or…",
+     "Strong hands-on experience developing Generative AI / LLM-based applications, beyond simply using AI coding assistants."
+    ]
+   }
   },
   {
    "title": "Data Scientist",
@@ -49,7 +94,22 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "Agents",
+     "RAG",
+     "Time series",
+     "Deep learning"
+    ],
+    "needs": [
+     "You have at least five years hands-on experience developing AI/ML systems, with significant experience in LLMs, Generative AI, or AI agents in a professional or…",
+     "You are proficient in Python and relevant libraries for data science and deep learning (e.g., NumPy, Pandas, TensorFlow, PyTorch)",
+     "You have a strong understanding of classic NLP and LLM-based approaches and hands-on experience with LLM-based architecture, such as RAG, prompt engineering, data…"
+    ]
+   }
   },
   {
    "title": "Senior AI/ML Engineer",
@@ -61,7 +121,22 @@
     10,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "AWS",
+     "GCP",
+     "Azure",
+     "RAG",
+     "NLP"
+    ],
+    "needs": [
+     "Bachelor's degree or higher in computer science engineering",
+     "10+ years of experience in AI ML roles",
+     "Proficiency in Python, pytorch , SQL and other programming languages for data analysis and modeling with atleast 5+ years of experience"
+    ]
+   }
   },
   {
    "title": "Research Scientist - Nemotron India",
@@ -73,7 +148,22 @@
     3,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "NLP",
+     "LLMs",
+     "Generative AI",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "MS or PhD in Electrical Engineering, Computer Science/Engineering, or a related field (or equivalent experience).",
+     "3+ years of experience.",
+     "Knowledge of application areas such as natural language processing and computer vision."
+    ]
+   }
   },
   {
    "title": "Applied Sciences",
@@ -81,7 +171,14 @@
    "location": "India",
    "posted": "2026-11-20",
    "url": "https://apply.careers.microsoft.com/careers/job/1970393557074078",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "NLP",
+     "Computer vision"
+    ]
+   }
   },
   {
    "title": "Lead AI Product Engineer",
@@ -93,7 +190,20 @@
     7,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Python",
+     "Azure",
+     "Databricks",
+     "LLMs"
+    ],
+    "needs": [
+     "Production experience with LLM and agentic systems: multi-step workflows, tool use, orchestration frameworks, and the failure modes that only appear at scale.",
+     "Experience with agent observability and tracing tooling."
+    ]
+   }
   },
   {
    "title": "Data Scientist",
@@ -101,7 +211,26 @@
    "location": "Gurugram",
    "posted": "2026-11-20",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/13375",
-   "exp_from": "none"
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "SQL",
+     "NLP",
+     "Deep learning",
+     "Python",
+     "scikit-learn",
+     "Spark"
+    ],
+    "needs": [
+     "Bachelor's or Master's degree in a quantitative field (CS, machine learning, mathematics, statistics) or equivalent experience.",
+     "3+ years of experience in data science, building hands-on ML models.",
+     "Knowledge of advanced RAG pipelines with proper embeddings, indexing, chunking, reranking, prompts and evaluation"
+    ]
+   }
   },
   {
    "title": "Generative AI and Deep Learning Data Scientist",
@@ -113,6 +242,44 @@
     2,
     5
    ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "LLMs",
+     "Deep learning",
+     "Statistics"
+    ],
+    "needs": [
+     "2-5 years relevant experience",
+     "Bachelors/University degree or equivalent experience"
+    ]
+   }
+  },
+  {
+   "title": "Senior AI & Data Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-20",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162670229",
+   "jd": {
+    "skills": [
+     "SQL",
+     "Azure",
+     "Databricks",
+     "RAG",
+     "Python",
+     "Spark"
+    ],
+    "needs": [
+     "Educational qualification: Bachelor’s or Master’s degree in Computer Science, Information Technology, Engineering, Data Science, or a related field.",
+     "Experience : 5+ years of experience in Data Engineering, AI Engineering, or related domains."
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
    "exp_from": "jd"
   },
   {
@@ -122,10 +289,24 @@
    "posted": "2026-11-20",
    "url": "https://careers-apac-atlassian.icims.com/jobs/27643/senior-machine-learning-engineer---responsible-ai/job?mode=apply",
    "exp": [
-    5,
+    7,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Fine-tuning",
+     "Python",
+     "SQL",
+     "Spark",
+     "Kafka"
+    ],
+    "needs": [
+     "Your background Bachelor’s or Master’s degree in Computer Science, Machine Learning, Data Science, or a related quantitative field, with 7+ years of industry experience…",
+     "Deep hands-on experience with modern NLP and LLM techniques, transformer architectures, prompt engineering, fine-tuning (e.g., PEFT/LoRA), and model alignment."
+    ]
+   }
   },
   {
    "title": "Senior, Data Scientist",
@@ -137,7 +318,21 @@
     3,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Statistics",
+     "Time series",
+     "Python",
+     "TensorFlow",
+     "scikit-learn"
+    ],
+    "needs": [
+     "Option 1- Bachelor’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3 years' experience in an…",
+     "Option 2- Master’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
+    ]
+   }
   },
   {
    "title": "SENIOR, DATA SCIENTIST",
@@ -149,7 +344,22 @@
     7,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "Python",
+     "Statistics",
+     "LLMs",
+     "NLP",
+     "MLOps"
+    ],
+    "needs": [
+     "Bachelor's with > 7 years of relevant experience OR Masters with > 5 years of relevant experience OR PHD in Comp Science/Statistics/Mathematics with > 3 years of…",
+     "Experience in machine learning, supervised and unsupervised: NLP, Classification, Data/Text Mining, Multi-modal models, Neural Networks, Deep Learning Algorithms",
+     "Strong Experience in Python, PySpark,Google Cloud platform, model deployment"
+    ]
+   }
   },
   {
    "title": "Associate Lead Data Scientist (RGM)",
@@ -161,7 +371,22 @@
     4,
     6
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Python",
+     "Causal inference",
+     "SQL",
+     "scikit-learn",
+     "Spark"
+    ],
+    "needs": [
+     "Hands-on experience with RGM use cases such as price-pack architecture (PPA), price elasticity modeling, promo effectiveness, and revenue decomposition",
+     "Proficiency in statistical modeling, machine learning, and causal inference techniques applied to commercial problems (e.g., MMM, demand modeling, uplift modeling)",
+     "4- 6 years of relevant Machine Learning experience."
+    ]
+   }
   },
   {
    "title": "Data Scientist",
@@ -173,7 +398,20 @@
     1,
     3
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "Statistics",
+     "scikit-learn",
+     "Spark",
+     "AWS",
+     "A/B testing"
+    ],
+    "needs": [
+     "Tech is preferred in Computer Science, Information Technology, or similar degree."
+    ]
+   }
   },
   {
    "title": "Senior AI/ML Engineer",
@@ -185,7 +423,22 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Vector databases",
+     "LLMs",
+     "RAG",
+     "Azure",
+     "Prompt engineering",
+     "LangChain"
+    ],
+    "needs": [
+     "Bachelor's degree in Computer Science, Data Science, Machine Learning, or a related field, or equivalent experience",
+     "8+ years of software or machine learning engineering experience",
+     "6+ years hands-on building with LLMs, including prompt engineering, tool/function calling, and agent or multi-step orchestration"
+    ]
+   }
   },
   {
    "title": "Lead AI or ML Engineer",
@@ -197,7 +450,20 @@
     12,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "NLP",
+     "Deep learning",
+     "Optimisation",
+     "Computer vision"
+    ],
+    "needs": [
+     "Undergraduate degree or equivalent experience",
+     "12+ years of relevant professional experience"
+    ]
+   }
   },
   {
    "title": "AI Full Stack Developer - AI Connectors, Plugins, MCP",
@@ -205,7 +471,20 @@
    "location": "Hyderabad",
    "posted": "2026-11-19",
    "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-full-stack-developer-ai-connectors-plugins-mcp/34088/102141801840",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Python",
+     "Azure",
+     "Optimisation",
+     "Java"
+    ],
+    "needs": [
+     "Bachelor's degree in computer science, engineering or a related field, or equivalent practical experience. Demonstrated problem-solving and clear technical documentation…",
+     "Familiarity with AI and enterprise governance, legal review, data privacy and least-privilege principles. Ability to document data flows and controls, participate in…",
+     "Experience with TypeScript or C#, Azure, Copilot Studio or Power Platform"
+    ]
+   }
   },
   {
    "title": "Principal Applied Scientist",
@@ -217,7 +496,8 @@
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {}
   },
   {
    "title": "Silicon Senior AI/ML Hardware Architect, Google Cloud",
@@ -229,7 +509,19 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "GCP",
+     "Python",
+     "C++"
+    ],
+    "needs": [
+     "Bachelor's degree in Electrical Engineering, Computer Engineering, Computer Science, a related field, or equivalent practical experience.",
+     "8 years of experience in architecture and micro-architecture design of graphics or Machine Learning (ML) or Ethernet/ROCE/UAL/NVlink scaleup/out fabrics or managing Low…",
+     "Experience in memory hierarchy on chip fabrics, memory controllers, High Bandwidth Memory (HBM), and Dynamic Random-Access Memory (DRAM) technologies."
+    ]
+   }
   },
   {
    "title": "Senior Data Scientist",
@@ -241,7 +533,20 @@
     4,
     5
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "SQL",
+     "Generative AI",
+     "MLOps"
+    ],
+    "needs": [
+     "4-5 years relevant experience in data science, ML, DL, Gen AI Models",
+     "Good to have exposure and knowledge of model deployment, performance monitoring and MRM processes",
+     "Bachelors/University degree or equivalent experience"
+    ]
+   }
   },
   {
    "title": "AI / ML and Generative AI research assistant",
@@ -249,7 +554,8 @@
    "location": "Coimbatore",
    "posted": "2026-11-19",
    "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162445000",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {}
   },
   {
    "title": "Lead AI Engineer",
@@ -261,7 +567,21 @@
     6,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "Optimisation",
+     "Deep learning",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "4-year degree in Quantitative disciplines (Science, Tech, Engineering, Mathematics) or equivalent industry experience required; MS in Computer Science, Machine Learning…",
+     "6+ years of hands-on software engineering experience, including experience building and operating production systems."
+    ]
+   }
   },
   {
    "title": "Research Scientist",
@@ -269,7 +589,22 @@
    "location": "Bengaluru",
    "posted": "2026-11-18",
    "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Scientist_JR11668",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "PyTorch",
+     "Reinforcement learning",
+     "Python",
+     "LLMs",
+     "Agents",
+     "Transformers"
+    ],
+    "needs": [
+     "(PhD + 2) / (MTech + 5) years of research experience in RL with a strong publication record in top venues",
+     "Strong programming skills in Python, with proven expertise in PyTorch or equivalent, and a track record of writing clean, modular, and deployable code.",
+     "Familiarity with advanced ML architectures such as graphs and transformers."
+    ]
+   }
   },
   {
    "title": "Research Engineer",
@@ -281,7 +616,22 @@
     3,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "NLP",
+     "Deep learning",
+     "Reinforcement learning",
+     "Python",
+     "PyTorch",
+     "TensorFlow"
+    ],
+    "needs": [
+     "Master’s degree, PhD, or equivalent experience in Biological Sciences/ Biotechnology, Computer Science, Artificial Intelligence, Machine Learning, Applied Mathematics…",
+     "Minimum work experience required : from new graduates to 3+ yrs of research experience post graduation (in ML research)",
+     "Strong foundation in AI/ML concepts with hands-on experience in model development, experimental design, and large-scale data analysis."
+    ]
+   }
   },
   {
    "title": "Data and Analytics Engineering - Artificial Intelligence and Machine Learning - Specialist 3 - CS - G",
@@ -293,7 +643,15 @@
     5,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "CUDA",
+     "C++",
+     "Java"
+    ]
+   }
   },
   {
    "title": "Staff Data Scientist",
@@ -305,7 +663,22 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "SQL",
+     "GCP",
+     "LLMs",
+     "Python",
+     "Generative AI",
+     "Agents"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Bachelor’s degree in computer science, Engineering, Mathematics, Statistics, Data Mining or related field or equivalent practical experience",
+     "A minimum of 8 years of experience in building and shipping machine-learning systems to production, with demonstrated Staff-level scope, ownership and technical…"
+    ]
+   }
   },
   {
    "title": "Staff Data Scientist",
@@ -317,7 +690,21 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "A/B testing",
+     "SQL",
+     "Statistics",
+     "Optimisation"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Bachelor’s degree with at least 8 years of professional experience , or a master’s degree with at least six years of experience.",
+     "Advanced proficiency in SQL and Python , with hands-on experience working with large and complex datasets."
+    ]
+   }
   },
   {
    "title": "Lead AI/ML Engineer",
@@ -329,7 +716,22 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "MLOps",
+     "RAG",
+     "Optimisation",
+     "Python",
+     "AWS"
+    ],
+    "needs": [
+     "Bachelor's degree in Computer Science, Engineering, Data Science, Mathematics, or related field",
+     "8+ years of software engineering, machine learning engineering, or related experience",
+     "Experience with Generative AI, LLMs, Retrieval Augmented Generation (RAG), prompt engineering, and AI agents"
+    ]
+   }
   },
   {
    "title": "Lead AI/ML Engineer",
@@ -341,7 +743,19 @@
     7,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "NLP",
+     "Deep learning",
+     "Optimisation",
+     "Computer vision"
+    ],
+    "needs": [
+     "Maintain up-to-date knowledge of the latest data science trends and technologies, implementing new methodologies as appropriate"
+    ]
+   }
   },
   {
    "title": "AI or ML Engineer",
@@ -353,7 +767,22 @@
     6,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Agents",
+     "Python",
+     "Kubernetes",
+     "LLMs",
+     "scikit-learn"
+    ],
+    "needs": [
+     "6+ years of experience in software development, machine learning, data science, analytics, or AI/ML engineering",
+     "4+ years of professional experience in Python using core data science, analytics, and machine learning libraries (e.g., Pandas, NumPy, Scikit-learn, Databricks)",
+     "2+ years of experience developing and deploying NLP or Generative AI solutions, including Transformers, GPT models, Retrieval-Augmented Generation (RAG), vector…"
+    ]
+   }
   },
   {
    "title": "Manager AI or ML Engineering",
@@ -365,7 +794,22 @@
     10,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Azure",
+     "Agents",
+     "LLMs",
+     "RAG",
+     "LangChain",
+     "MLOps"
+    ],
+    "needs": [
+     "10+ years of overall software Engineering experience, 6+ years of experience in Python development using common AI/ML and data science libraries such as Scikit-Learn…",
+     "3+ years of experience designing and implementing Generative AI solutions utilizing Large Language Models (GPT, Claude, Gemini, Llama, Mistral, etc.)",
+     "3+ years of experience building enterprise RAG solutions using embeddings, vector databases, semantic search, and knowledge retrieval techniques"
+    ]
+   }
   },
   {
    "title": "Customer Experience AI and Knowledge Architect",
@@ -377,7 +821,17 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI"
+    ],
+    "needs": [
+     "Bachelor’s degree or equivalent practical experience.",
+     "8 years of experience in a technical project management or a customer-facing role.",
+     "Knowledge of Google Ads and related ads products."
+    ]
+   }
   },
   {
    "title": "Data Scientist",
@@ -385,7 +839,19 @@
    "location": "Gurugram",
    "posted": "2026-11-18",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22714",
-   "exp_from": "none"
+   "exp": [
+    2,
+    5
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics"
+    ],
+    "needs": [
+     "Bachelor's/Master's in Engineering 2-5 years Data Scientists design and implement data analysis processes to derive actionable insights."
+    ]
+   }
   },
   {
    "title": "Data Scientist / AI Engineer, AVP",
@@ -397,7 +863,21 @@
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "LangChain",
+     "Python",
+     "SQL",
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn"
+    ],
+    "needs": [
+     "Experience with data / feature engineering and modern data solutions such as BigQuery, Looker, PostgreSQL, Pinecone, Spark, Clickhouse, MongoDB, Redis, Databricks…",
+     "Strong knowledge of current best practice for AI risk management across the solution lifecycle, and how to leverage technology to implement these controls (e.g. from…"
+    ]
+   }
   },
   {
    "title": "Research Engineer – Neuro-Symbolic AI (Knowledge Graphs) & Multimodal Assistant Systems",
@@ -409,7 +889,22 @@
     3,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "NLP",
+     "RAG",
+     "Deep learning",
+     "PyTorch",
+     "Agents"
+    ],
+    "needs": [
+     "Advanced Data Engineering for Multi-Modal Integration: Demonstrated proficiency in building robust data pipelines capable of integrating, cleaning, and preprocessing…",
+     "Proven experience in extracting structured knowledge from unstructured text using NLP techniques like Named Entity Recognition (NER) and Relation Extraction. to…",
+     "Strong understanding of knowledge representation and reasoning techniques, including ontology design, schema alignment, rule authoring, explainable inference workflows…"
+    ]
+   }
   },
   {
    "title": "AI & Backend Software Engineer – Intellectual Property Rights(Python / FastAPI / GenAI)",
@@ -421,7 +916,21 @@
     3,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "SQL",
+     "LLMs",
+     "Databricks",
+     "Generative AI"
+    ],
+    "needs": [
+     "3+ years of professional software engineering experience, mainly writing production backend code in Python.",
+     "Experience building REST APIs (FastAPI preferred; Flask/Django acceptable), including async programming, Pydantic validation and authentication.",
+     "Hands-on experience building LLM workflows via API (Gemini, Claude, GPT): context assembly, multi-step prompt chaining, embeddings/retrieval, and making output quality…"
+    ]
+   }
   },
   {
    "title": "Staff Machine Learning Engineer",
@@ -433,7 +942,22 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "MLOps",
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn",
+     "GCP",
+     "Java"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Extensive experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
+     "8+ years of professional software engineering experience, with a proven record of leading projects end to end."
+    ]
+   }
   },
   {
    "title": "Staff Machine Learning Engineer",
@@ -445,7 +969,22 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn",
+     "GCP",
+     "MLOps",
+     "Java"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Extensive experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
+     "8+ years of professional software engineering experience."
+    ]
+   }
   },
   {
    "title": "AI or ML Engineer",
@@ -453,7 +992,22 @@
    "location": "Bengaluru",
    "posted": "2026-11-17",
    "url": "https://careers.unitedhealthgroup.com/job/bengaluru/ai-or-ml-engineer/34088/102446557264",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "RAG",
+     "Deep learning",
+     "Vector databases",
+     "MLOps"
+    ],
+    "needs": [
+     "Hands-on experience with ML frameworks and libraries such as TensorFlow, PyTorch, Keras, and Scikit-learn",
+     "Hands-on experience integrating LLM provider APIs (e.g., Anthropic Claude, OpenAI, Azure OpenAI) into applications",
+     "Experience building LLM workflows and agentic applications using orchestration frameworks such as LangGraph and LangChain"
+    ]
+   }
   },
   {
    "title": "Associate AI or ML Engineer",
@@ -461,7 +1015,22 @@
    "location": "Noida",
    "posted": "2026-11-17",
    "url": "https://careers.unitedhealthgroup.com/job/noida/associate-ai-or-ml-engineer/34088/103445991232",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Python",
+     "LLMs",
+     "Vector databases",
+     "Generative AI",
+     "RAG",
+     "Agents"
+    ],
+    "needs": [
+     "Bachelor's degree in Computer Science, Engineering, Data Science, AI/ML or a related technical field, or equivalent practical experience",
+     "Experience developing REST APIs / backend services",
+     "Solid programming fundamentals with hands-on experience in Python"
+    ]
+   }
   },
   {
    "title": "Data Science IC4",
@@ -473,7 +1042,13 @@
     1,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Optimisation"
+    ]
+   }
   },
   {
    "title": "Applied AI ML Lead RISK MODELING",
@@ -482,10 +1057,25 @@
    "posted": "2026-11-17",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210803766",
    "exp": [
-    7,
+    8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Spark",
+     "Statistics",
+     "AWS",
+     "Python",
+     "SQL"
+    ],
+    "needs": [
+     "Advanced degree in Mathematics, Statistics, Computer Science, Operations Research, Econometrics, Physics, or other related quantitative fields (or equivalent practical…",
+     "Minimum 8 years of experience in developing and managing predictive risk models in financial institutions.",
+     "Strong programming proficiency (Python, PyTorch or TensorFlow, PySpark, SQL) and ability to write production-quality, maintainable code (version control, testing…"
+    ]
+   }
   },
   {
    "title": "AI DevSecOps Engineer",
@@ -497,7 +1087,22 @@
     7,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "AWS",
+     "Agents",
+     "Kubernetes",
+     "LLMs",
+     "Generative AI"
+    ],
+    "needs": [
+     "Solid scripting and automation capability in Python (or Go/Bash) with hands-on Terraform (IaC) and GitHub Actions (CI/CD pipelines).",
+     "Hands-on with SBOMs, provenance, and artifact signing (e.g., Sigstore/Cosign).",
+     "Experience with SIEM logging, detection engineering, and incident triage."
+    ]
+   }
   },
   {
    "title": "Gen AI Engineer",
@@ -505,7 +1110,21 @@
    "location": "Bengaluru",
    "posted": "2026-11-17",
    "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Gen-AI-Engineer_JR-0000100208",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "AWS",
+     "LLMs",
+     "Agents",
+     "Vector databases",
+     "LangChain"
+    ],
+    "needs": [
+     "To be successful as a Gen AI Engineer, you should have experience with: Strong proficiency in Python around Agentic, GenAI and framework such as LangChain, LangGraph…",
+     "Hands-on experience with AWS ML ecosystem (Bedrock, SageMaker, Lambda, API Gateway)."
+    ]
+   }
   },
   {
    "title": "AI Software Engineer",
@@ -513,7 +1132,22 @@
    "location": "Pune",
    "posted": "2026-11-17",
    "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129112",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Java",
+     "Python",
+     "AWS",
+     "RAG",
+     "Agents",
+     "Kubernetes"
+    ],
+    "needs": [
+     "AWS and experience in solving complex business issues.",
+     "Hands-on delivery of Generative AI solutions, including LLM integration, prompt engineering, Retrieval-Augmented Generation, embeddings, vector databases and agentic AI…",
+     "Knowledge of programming / scripting languages such as Bash, Power Shell, Python or Java."
+    ]
+   }
   },
   {
    "title": "AI Software Engineer",
@@ -521,7 +1155,22 @@
    "location": "Pune",
    "posted": "2026-11-17",
    "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129116",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Java",
+     "Python",
+     "AWS",
+     "RAG",
+     "Agents",
+     "Kubernetes"
+    ],
+    "needs": [
+     "AWS and experience in solving complex business issues.",
+     "Hands-on delivery of Generative AI solutions, including LLM integration, prompt engineering, Retrieval-Augmented Generation, embeddings, vector databases and agentic AI…",
+     "Knowledge of programming / scripting languages such as Bash, Power Shell, Python or Java."
+    ]
+   }
   },
   {
    "title": "Assistant Vice President - Applied AI Engineer",
@@ -533,7 +1182,22 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Fine-tuning",
+     "LLMs",
+     "AWS",
+     "RAG",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
+     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
+     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
+    ]
+   }
   },
   {
    "title": "Assistant Vice President - Applied AI Engineer",
@@ -545,7 +1209,22 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Fine-tuning",
+     "LLMs",
+     "AWS",
+     "RAG",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
+     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
+     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
+    ]
+   }
   },
   {
    "title": "Assistant Vice President - Applied AI Engineer",
@@ -557,7 +1236,22 @@
     8,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Fine-tuning",
+     "LLMs",
+     "AWS",
+     "RAG",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
+     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
+     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
+    ]
+   }
   },
   {
    "title": "Senior Machine Learning Engineer",
@@ -569,7 +1263,17 @@
     5,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "MLOps",
+     "A/B testing",
+     "Python",
+     "AWS",
+     "GCP",
+     "Azure"
+    ]
+   }
   },
   {
    "title": "Senior Global Data AI Specialist",
@@ -581,7 +1285,22 @@
     4,
     6
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Azure",
+     "Snowflake",
+     "Generative AI",
+     "LLMs",
+     "MLOps",
+     "Agents"
+    ],
+    "needs": [
+     "Master's degree in Computer Science, Data Science, Statistics, Applied Mathematics, Engineering or a related technical field, or equivalent practical experience.",
+     "4–6 years of hands-on experience in Data Science, AI/ML Engineering, analytics engineering or related roles, including taking AI/ML solutions to production.",
+     "Hands-on experience with Azure Machine Learning and Microsoft Foundry : pipelines, compute, environments, model deployment, endpoints, agents and evaluation."
+    ]
+   }
   },
   {
    "title": "Senior Research Scientist, Agent Evaluation",
@@ -593,7 +1312,20 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Agents",
+     "LLMs",
+     "Prompt engineering",
+     "Python"
+    ],
+    "needs": [
+     "Experience designing evaluation methodologies, not just running evaluations",
+     "Hands-on production work with LLM APIs — prompt engineering, structured output, cost and latency tradeoffs",
+     "Good to have Experience with AI-assisted development tools (Claude code, Windsurf, or similar)"
+    ]
+   }
   },
   {
    "title": "Lead Data Engineer - Data Engineering, Databricks, Model Serving, ML Ops, Data Architecture and modeling",
@@ -602,10 +1334,25 @@
    "posted": "2026-11-16",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806251",
    "exp": [
-    7,
+    5,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Spark",
+     "Databricks",
+     "SQL",
+     "MLOps",
+     "Kafka",
+     "Airflow"
+    ],
+    "needs": [
+     "Formal training or certification on data engineering concepts and 5+ years applied experience",
+     "Demonstrates strong, hands-on proficiency with Apache Spark or comparable distributed compute frameworks, including experience optimizing jobs for performance and cost…",
+     "Demonstrates hands-on exposure to distributed computing, cloud data platforms, and production ML infrastructure."
+    ]
+   }
   },
   {
    "title": "AI Architect",
@@ -617,7 +1364,20 @@
     11,
     14
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Airflow",
+     "AWS",
+     "Generative AI",
+     "NLP",
+     "Deep learning"
+    ],
+    "needs": [
+     "Good to have skills : Experience with Mobility / Automotive / Manufacturing domainExperience in presenting research papers in international conferences like CVPR, EMNLP…"
+    ]
+   }
   },
   {
    "title": "Gen AI Specialist",
@@ -629,7 +1389,21 @@
     5,
     8
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "NLP",
+     "Azure",
+     "RAG",
+     "Transformers"
+    ],
+    "needs": [
+     "Able to lead the project independently.· Experience in turning ideas into actionable designs.",
+     "If Bachelors, Machine Learning or Computer Science specialization only A Master’s or PhD is preferred (Computer Science / Machine Learning/ Mechanical, etc) 5- 8 years"
+    ]
+   }
   },
   {
    "title": "Gen AI Specialist",
@@ -641,7 +1415,21 @@
     5,
     8
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "NLP",
+     "Azure",
+     "RAG",
+     "Transformers"
+    ],
+    "needs": [
+     "Able to lead the project independently.· Experience in turning ideas into actionable designs.",
+     "If Bachelors, Machine Learning or Computer Science specialization only A Master’s or PhD is preferred (Computer Science / Machine Learning/ Mechanical, etc) 5- 8 years"
+    ]
+   }
   },
   {
    "title": "Senior Applied Scientist, Amazon Core Search",
@@ -653,7 +1441,22 @@
     6,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Spark",
+     "Search and ranking",
+     "Python",
+     "TensorFlow",
+     "scikit-learn",
+     "Deep learning"
+    ],
+    "needs": [
+     "PhD, or Master's degree and 6+ years of applied research experience",
+     "6+ years of building machine learning models or developing algorithms for business application experience",
+     "Experience with neural deep learning methods and machine learning"
+    ]
+   }
   },
   {
    "title": "GenAI/Agentic AI specialists",
@@ -665,7 +1468,17 @@
     5,
     8
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "LangChain",
+     "RAG",
+     "Transformers",
+     "Azure"
+    ]
+   }
   },
   {
    "title": "GenAI/Agentic AI specialists",
@@ -677,7 +1490,17 @@
     5,
     8
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "LangChain",
+     "RAG",
+     "Transformers",
+     "Azure"
+    ]
+   }
   },
   {
    "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
@@ -689,7 +1512,22 @@
     10,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Fine-tuning",
+     "LLMs",
+     "Optimisation",
+     "Agents",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "10+ years of software engineering experience, including technical leadership on production systems.",
+     "Strong Python engineering experience building and maintaining reliable production systems.",
+     "Hands-on ownership of LLM post-training. You have trained or materially improved open-weight language models through SFT and LoRA/QLoRA. Experience with preference…"
+    ]
+   }
   },
   {
    "title": "AI Transformation Lead, Global Cards and Loyalty Solutions, Director",
@@ -701,7 +1539,17 @@
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Agents",
+     "A/B testing"
+    ],
+    "needs": [
+     "University degree in Business Administration, Economics, Technology, Finance or a related discipline",
+     "Strong knowledge of financial services, with experience in cards, payments, loyalty, retail banking or related customer-facing businesses is highly desirable"
+    ]
+   }
   },
   {
    "title": "Senior Lead Python AI/ML Engineer",
@@ -713,7 +1561,22 @@
     10,
     12
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Vector databases",
+     "Python",
+     "LLMs",
+     "Spark",
+     "MLOps"
+    ],
+    "needs": [
+     "Education: Bachelor’s or Master’s degree in Computer Science, Data Science, Artificial Intelligence, Applied Mathematics, or a related quantitative field.",
+     "Total Experience: 10 to 12 years of professional experience in software engineering and production AI/ML system development.",
+     "Core Python Expertise: Advanced proficiency in Python 3.x (multiprocessing/asyncio, design patterns, profiling, packaging, and clean code paradigms)."
+    ]
+   }
   },
   {
    "title": "Senior Manager, AI Engineer, Intelligence & Data Solutions (IDS)",
@@ -725,7 +1588,22 @@
     10,
     12
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Agents",
+     "Fine-tuning",
+     "RAG",
+     "Deep learning",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "10-12+ years of relevant AI/ML experience with demonstrated leadership in delivering enterprise-scale AI solutions.",
+     "Deep expertise in Generative AI, including hands-on experience with LLMs (GPT, Claude, Llama, etc.), prompt engineering, fine-tuning, and production deployment of GenAI…",
+     "Proficiency of Agentic AI architectures including multi-agent systems, autonomous reasoning frameworks, tool-use agents, and workflow orchestration platforms (Bedrock…"
+    ]
+   }
   },
   {
    "title": "Commercial & Investment Bank - Payments Data Scientist Associate",
@@ -733,7 +1611,23 @@
    "location": "Mumbai",
    "posted": "2026-11-13",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806312",
-   "exp_from": "none"
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "SQL",
+     "Optimisation"
+    ],
+    "needs": [
+     "Undergraduate degree with 3+ years of experience",
+     "Proven experience with emerging technologies related to insights and the ability to do rapid prototyping (in Tableau).",
+     "Experience in the payments industry and/or technology-enabled industries (preferred but not required)."
+    ]
+   }
   },
   {
    "title": "Agentic AI Engineer",
@@ -745,7 +1639,20 @@
     10,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "NLP",
+     "Agents",
+     "Python",
+     "LLMs",
+     "Generative AI",
+     "Deep learning"
+    ],
+    "needs": [
+     "Bachelor’s degree in engineering, computer science, information technology or a related field."
+    ]
+   }
   },
   {
    "title": "Senior Gen AI Engineer - Vice President",
@@ -757,7 +1664,19 @@
     10,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Python",
+     "RAG"
+    ],
+    "needs": [
+     "10+ years of professional software development experience with a strong focus on Python. ​",
+     "Proven hands-on experience with Generative AI concepts and technologies.",
+     "Solid understanding and practical experience in implementing Retrieval Augmented Generation (RAG) systems."
+    ]
+   }
   },
   {
    "title": "Machine Learning Engineering Technical Leader",
@@ -765,7 +1684,22 @@
    "location": "Hyderabad",
    "posted": "2026-11-13",
    "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineering-Technical-Leader_2027055-1",
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "LLMs",
+     "Agents",
+     "Python",
+     "Kubernetes",
+     "AWS"
+    ],
+    "needs": [
+     "Strong backend development experience in Python (preferred) or Java .",
+     "Experience building API-driven and event-driven services for AI inference, agent orchestration, tool invocation, and data pipelines.",
+     "Hands-on experience with Generative AI and Large Language Models (LLMs)"
+    ]
+   }
   },
   {
    "title": "Machine Learning Engineer",
@@ -777,7 +1711,22 @@
     5,
     null
    ],
-   "exp_from": "jd"
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Vector databases",
+     "Kubernetes",
+     "Python",
+     "AWS",
+     "GCP"
+    ],
+    "needs": [
+     "Education & Experience: Bachelor’s degree in CS/Engineering with 5+ years of relevant experience, or Master’s with 3+ years.",
+     "Software Development: 3+ years of programming experience in Python, Go, or Java building automation, tooling, or production backend services.",
+     "Cloud Platforms: Hands-on working knowledge of AWS, Azure, or GCP ."
+    ]
+   }
   },
   {
    "title": "Associate Director - CIB Business Risk - AI Governance Lead",
@@ -789,7 +1738,14 @@
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "needs": [
+     "Have proven experience in technology risk, business risk or operational resilience governance.",
+     "Hold a relevant degree or equivalent experience in risk, technology, data, engineering, mathematics or a related field.",
+     "Bring useful additional expertise in model risk, data governance, privacy, information security, third-party risk, regulatory standards, cloud technology, delivery…"
+    ]
+   }
   },
   {
    "title": "AI Engineer - Generative & Agentic AI / Associate Director, Software Engineering Specialist",
@@ -801,7 +1757,22 @@
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "RAG",
+     "Agents",
+     "Generative AI",
+     "Python",
+     "GCP",
+     "LLMs"
+    ],
+    "needs": [
+     "Bring strong hands-on Python software engineering experience, including backend services and APIs",
+     "Demonstrate practical experience designing, delivering and operating enterprise AI, ML or generative AI applications in production",
+     "Use hands-on experience with RAG, embeddings, enterprise search and vector retrieval"
+    ]
+   }
   }
  ]
 }

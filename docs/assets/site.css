@@ -467,7 +467,24 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 .jobs-list.is-short { height: auto; }
 .jobs-list:empty { display: none; }
 .job + .job { border-top: 1px solid var(--line-soft); }
-.job { display: flex; align-items: stretch; }
+.job { display: flex; flex-wrap: wrap; align-items: stretch; }
+/* "Details": skills and requirement lines from the job description; a tap-to-open toggle, since hover doesn't exist on phones */
+.job-more { flex: 0 0 100%; padding: 0 18px 12px 52px; }
+.job-more summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; list-style: none; border-radius: 6px; }
+.job-more summary::-webkit-details-marker { display: none; }
+.job-more summary::before { content: "▸"; font-size: 13px; transition: transform .15s; }
+.job-more[open] summary::before { transform: rotate(90deg); }
+.job-more summary:hover { color: var(--ink); }
+.job-more-body { padding: 4px 0 2px; font-size: 14px; line-height: 1.5; }
+.job-skills { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.job-skill { padding: 2px 10px; border-radius: 999px; background: var(--line-soft); font-size: 13px; font-weight: 500; }
+.job-needs-h { margin: 0 0 4px; font-weight: 600; }
+.job-needs { margin: 0 0 10px; padding-left: 18px; color: var(--muted); list-style: disc; }
+.job-needs li { display: list-item; list-style: disc; }
+.job-needs li + li { margin-top: 4px; }
+.job .job-more a.job-jd-link { display: inline; padding: 0 !important; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.job .job-more a.job-jd-link:hover { background: none; }
+@media (prefers-reduced-motion: reduce) { .job-more summary::before { transition: none; } }
 .job-check { position: relative; flex: none; display: grid; place-items: center; width: 48px; padding-left: 8px; cursor: pointer; }
 .job-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); cursor: pointer; }
 .job a { flex: 1; min-width: 0; padding-left: 4px !important; }
@@ -488,6 +505,7 @@ html:not(.has-js) .say-stepper.many, html:not(.has-js) [data-pq-go], html:not(.h
 @media (max-width: 560px) {
   .job a { grid-template-columns: 1fr; padding: 14px 16px; }
   .job-apply { grid-column: 1; grid-row: auto; font-size: 14px; }
+  .job-more { padding: 0 16px 12px 52px; }
 }
 
 /* Roadmap: home role cards */

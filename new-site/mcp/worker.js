@@ -189,11 +189,11 @@ const TOOLS = [
   {
     name: "jobs",
     title: "AI/ML jobs in India",
-    description: "AI/ML job postings in India from the last 7 days (100+ companies, refreshed daily), newest first, with direct apply links to the company's careers page. Filter by keywords, company, city or years of experience.",
+    description: "AI/ML job postings in India from the last 7 days (100+ companies, refreshed daily), newest first, with direct apply links to the company's careers page. Most jobs include skills and key requirement lines from the job description, useful for matching against a resume. Filter by keywords (title or skill), company, city or years of experience.",
     inputSchema: {
       type: "object",
       properties: {
-        query: { type: "string", description: "Words in the job title, e.g. 'machine learning engineer', 'GenAI', 'data scientist'" },
+        query: { type: "string", description: "Words in the job title or a skill, e.g. 'machine learning engineer', 'GenAI', 'PyTorch'" },
         company: { type: "string" },
         location: { type: "string", description: "City, e.g. 'Bengaluru', 'Hyderabad', 'Remote'. Old names like 'Bangalore' or 'Gurgaon' also work" },
         experience: { type: "string", description: "'0-2', '2-5', '5-8', '8+' or a number of years" },
@@ -320,7 +320,7 @@ const HANDLERS = {
     const loc = CITY_ALIASES[rawLoc] || rawLoc;
     const er = a.experience ? expRange(a.experience) : null;
     let jobs = data.jobs.filter((j) => {
-      const t = norm(j.title);
+      const t = norm(j.title + " " + ((j.jd && j.jd.skills) || []).join(" "));
       if (terms.length && !terms.every((w) => t.includes(w) || (w === "ml" && t.includes("machine learning")) || (w === "ai" && /\bai\b|artificial/.test(t)))) return false;
       if (co && !norm(j.company).includes(co)) return false;
       if (loc && ![].concat(loc).some((c) => norm(j.location).includes(c))) return false;
@@ -342,7 +342,8 @@ const HANDLERS = {
     }
     const limit = Math.min(a.limit || 20, 100);
     const show = (j) => ({ title: j.title, company: j.company, location: j.location, posted: j.posted,
-      experience: j.exp ? (j.exp[1] == null ? `${j.exp[0]}+ yrs` : `${j.exp[0]}–${j.exp[1]} yrs`) : "not stated", apply: j.url });
+      experience: j.exp ? (j.exp[1] == null ? `${j.exp[0]}+ yrs` : `${j.exp[0]}–${j.exp[1]} yrs`) : "not stated",
+      skills: (j.jd && j.jd.skills) || undefined, they_ask_for: (j.jd && j.jd.needs) || undefined, apply: j.url });
     return { updated: data.updated, window_days: data.days, matches: jobs.length, jobs: jobs.slice(0, limit).map(show),
       experience_not_stated: er ? unstated.slice(0, 10).map(show) : undefined,
       cities_available: rawLoc && !jobs.length
