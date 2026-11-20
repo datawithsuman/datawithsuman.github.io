@@ -82,7 +82,7 @@ Drift-Adapter trains a small mapping from old vectors into the new model's space
 
 #### The maths
 
-$$ \text{days} = \frac{N \times T}{\text{tokens per minute} \times 1{,}440}, \qquad \text{cost} = N \times T \times \text{price} $$
+$$ {\text{days}} = \frac{{N} \times {T}}{{\text{tokens per minute}} \times 1{,}440}, \qquad {\text{cost}} = {N} \times T \times {\text{price}} $$
 
 Worked example from Tian Pan’s post: 100M chunks of 400 tokens is 40B tokens, about $5,200 at $0.13 per million, and over 5 days at 5M tokens per minute.
 
@@ -146,22 +146,24 @@ How often should you re-index?
 
 Update content as it changes, on events if you can. Do full rebuilds only when the chunker or model changes, or when tombstones and drift hurt recall. Let your freshness needs and a fixed recall test decide.
 
+#### The 30-second answer
+
 I'd update incrementally: detect changes with events or content hashes, re-embed only changed sections, and replace old chunks with new ones together. Deletes need care, as graph indexes usually leave tombstones, which slow search and crowd out real results until cleanup, so I'd track them. For a new embedding model, vectors can't be mixed, so I'd build a second index, dual write new documents, backfill history, compare recall on real queries, then flip an alias and keep the old index for rollback. 100 million chunks of 400 tokens costs about $5,000, but takes over 5 days at 5 million tokens a minute, so rate limits often set the schedule. An adapter can bridge the gap, but test it.
 
 **Key terms and sources**
 
-Incremental updates and hashing, why deletes are hard in HNSW, tombstones and vacuuming, migrating embedding models with dual writes and an alias, costs, and adapters.
+Incremental updates and hashing, why deletes are hard in HNSW, tombstones and vacuuming, migrating embedding models with dual writes and an alias, costs, and adapters. · checked 7 Nov 2026
 
 #### Sources
 
-- Tian Pan, Retiring an embedding model
+- [Tian Pan, Retiring an embedding model](https://tianpan.co/blog/2026/07/05/retiring-an-embedding-model-reindex-without-downtime)
 
-- Vejendla, Drift-Adapter
+- [Vejendla, Drift-Adapter](https://arxiv.org/abs/2509.23471)
 
-- Doug Turnbull, Updating a graph vector database
+- [Doug Turnbull, Updating a graph vector database](https://softwaredoug.com/blog/2026/08/18/update-graph-vector-db)
 
-- Deletion that reaches the vector index
+- [Deletion that reaches the vector index](https://dev.to/multigrid/deletion-that-reaches-the-vector-index-5bf1)
 
-- Vector database GDPR erasure and HNSW soft deletes
+- [Vector database GDPR erasure and HNSW soft deletes](https://particula.tech/blog/vector-database-gdpr-erasure-hnsw-soft-delete)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

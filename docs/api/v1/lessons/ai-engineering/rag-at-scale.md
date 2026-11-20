@@ -154,6 +154,8 @@ These are two different problems, so I'd split them first: time each stage, and 
 
 **Key terms and sources**
 
+Sources checked 5 Nov 2026
+
 #### Sources
 
 –

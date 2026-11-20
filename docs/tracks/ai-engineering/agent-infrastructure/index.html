@@ -93,7 +93,7 @@
     <li><b>Deployment:</b> run agents as async jobs with queues, not inside an HTTP request; stream progress to the user; make cancellation possible.</li>
     <li><b>Monitor:</b> success rate, steps and cost per task, tool error rates, loops detected, budget stops, escalations; alert on drifts.</li>
   </ul>
-  <p id="x-frameworks-2026"><b>Added 7 Nov 2026.</b> Current frameworks share a few concepts: LangGraph saves checkpoints per thread, pauses with interrupts and can replay or branch from any checkpoint; LangChain 1.x adds middleware for retries, fallbacks, summarisation, approvals and call limits; Google ADK has callbacks and graph workflows. See <a href="../agent-frameworks-and-harnesses/">Agent Frameworks and Harnesses</a> and <a href="../long-running-and-scheduled-agents/">Long-Running and Scheduled Agents</a>.</p>
+  <p id="x-frameworks-2026">Current frameworks share a few concepts: LangGraph saves checkpoints per thread, pauses with interrupts and can replay or branch from any checkpoint; LangChain 1.x adds middleware for retries, fallbacks, summarisation, approvals and call limits; Google ADK has callbacks and graph workflows. See <a href="../agent-frameworks-and-harnesses/">Agent Frameworks and Harnesses</a> and <a href="../long-running-and-scheduled-agents/">Long-Running and Scheduled Agents</a>.</p>
 </section><section class="ch" id="c5" data-toc="5 · Core idea">
   <span class="pill ok">One sentence</span>
   <h3>Treat an agent run like a long-running transaction</h3>
@@ -149,7 +149,7 @@
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">What it takes to run agents reliably in production: long-running tasks that survive crashes (durable execution and checkpoints), retries with backoff, idempotent tools, timeouts and budgets, human-in-the-loop pauses, observability and tracing, and the framework landscape (LangGraph, OpenAI Agents SDK, Claude Agent SDK, Temporal-style workflow engines) · built from the LangGraph persistence documentation, Temporal documentation, the OpenAI Agents SDK and Claude Agent SDK documentation, OpenTelemetry GenAI semantic conventions, and Meta's Llama 3 report on long-running job reliability · checked 29 Oct 2026</p><section class="ch" id="src" data-toc="Sources"><h3>Sources</h3>
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">What it takes to run agents reliably in production: long-running tasks that survive crashes (durable execution and checkpoints), retries with backoff, idempotent tools, timeouts and budgets, human-in-the-loop pauses, observability and tracing, and the framework landscape (LangGraph, OpenAI Agents SDK, Claude Agent SDK, Temporal-style workflow engines) · built from the LangGraph persistence documentation, Temporal documentation, the OpenAI Agents SDK and Claude Agent SDK documentation, OpenTelemetry GenAI semantic conventions, and Meta's Llama 3 report on long-running job reliability · checked 7 Nov 2026</p><section class="ch" id="src" data-toc="Sources"><h3>Sources</h3>
   <ol class="src-list">
     <li>LangGraph documentation: persistence, checkpointers and human-in-the-loop.</li>
     <li>Temporal documentation: durable execution, retries and idempotency.</li>

@@ -38,7 +38,7 @@ _From the lesson's ETA example, in minutes._
 
 If you could only predict one number for every case, which number would each metric reward? MSE is minimised by the **mean**, MAE by the **median**, pinball loss at level α by the **α-quantile**. That's the deep reason the metric choice matters: it decides what your model is trained and judged to predict. Drag the constant and watch each loss bottom out at a different place:
 
-23 right-skewed delivery times (most 20–35 min, a few long ones). Curves scaled to a common height. The long tail pulls the mean above the median; a service-level target ("promise a time we beat 90% of the time") is a quantile. scikit-learn calls these "strictly consistent scoring functions": pick the metric for the statistic you want predicted docs.
+23 right-skewed delivery times (most 20–35 min, a few long ones). Curves scaled to a common height. The long tail pulls the mean above the median; a service-level target ("promise a time we beat 90% of the time") is a quantile. scikit-learn calls these "strictly consistent scoring functions": pick the metric for the statistic you want predicted [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 **Now say why:** why does each metric reward a different number, and what does that mean for what your model will learn to predict?
 
@@ -48,11 +48,11 @@ If you could only predict one number for every case, which number would each met
 
 #### In one breath
 
-Every regression metric is a different way to average errors, and each one quietly rewards a different prediction. **MSE/RMSE** square errors, so big misses dominate and the best constant prediction is the **mean**. **MAE** treats every unit of error equally and rewards the **median**. **Pinball loss** rewards a chosen **quantile** (e.g. "enough stock 90% of days"). **R²** compares you with predicting the average and can go negative. **MAPE** is a percentage but explodes near zero and favours under-forecasting; **WAPE** and **MASE** fix that for demand forecasting. **RMSLE** cares about ratios and punishes under-prediction more.What you'll be able to do after this: pick the metric that matches what the business actually wants predicted (mean, median, quantile, ratio), and explain why a model's RMSE and MAE can tell opposite stories.
+Every regression metric is a different way to average errors, and each one quietly rewards a different prediction. **MSE/RMSE** square errors, so big misses dominate and the best constant prediction is the **mean**. **MAE** treats every unit of error equally and rewards the **median**. **Pinball loss** rewards a chosen **quantile** (e.g. "enough stock 90% of days"). **R²** compares you with predicting the average and can go negative. **MAPE** is a percentage but explodes near zero and favours under-forecasting; **WAPE** and **MASE** fix that for demand forecasting. **RMSLE** cares about ratios and punishes under-prediction more. What you'll be able to do after this: pick the metric that matches what the business actually wants predicted (mean, median, quantile, ratio), and explain why a model's RMSE and MAE can tell opposite stories.
 
 #### Errors, and three ways to average them
 
-$$ \text{MAE} = \tfrac1n\textstyle\sum|y_i - \hat y_i| \qquad \text{MSE} = \tfrac1n\textstyle\sum(y_i - \hat y_i)^2 \qquad \text{RMSE} = \sqrt{\text{MSE}} $$
+$$ {\text{MAE} = \tfrac1n\textstyle\sum|y_i - \hat y_i|} \qquad {\text{MSE} = \tfrac1n\textstyle\sum(y_i - \hat y_i)^2} \qquad {\text{RMSE} = \sqrt{\text{MSE}}} $$
 
 - **MAE**: Mean absolute error: the average size of a miss, in the target's own units (“off by 1.7 minutes”). Every minute of error counts the same.
 
@@ -62,9 +62,9 @@ $$ \text{MAE} = \tfrac1n\textstyle\sum|y_i - \hat y_i| \qquad \text{MSE} = \tfra
 
 #### R²: better than predicting the average?
 
-$$ R^2 = 1 - \textstyle\sum(y_i-\hat y_i)^2 \,/\, \textstyle\sum(y_i-\bar y)^2 \qquad \bar R^2 = 1 - (1-R^2)\,\tfrac{n-1}{n-p-1} $$
+$$ {R^2} = 1 - {\textstyle\sum(y_i-\hat y_i)^2} \,/\, {\textstyle\sum(y_i-\bar y)^2} \qquad {\bar R^2 = 1 - (1-R^2)\,\tfrac{n-1}{n-p-1}} $$
 
-scikit-learn: a constant model that always predicts the average "would get an R² score of 0.0", and R² "can be negative (because the model can be arbitrarily worse)" docs.
+scikit-learn: a constant model that always predicts the average "would get an R² score of 0.0", and R² "can be negative (because the model can be arbitrarily worse)" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 - **R²**: Share of the target's variance the model explains. 1 is perfect; 0 equals always predicting the mean; negative means worse than that.
 
@@ -76,13 +76,13 @@ scikit-learn: a constant model that always predicts the average "would get an R�
 
 ##### R² is not comparable across datasets
 
-It depends on how spread out the target is. In the traffic-jam example, R² fell from 0.87 to 0.04 because the jams made the denominator huge, not only because errors grew. A model with RMSE ₹5 lakh can have R² 0.9 on all-India house prices and 0.2 within one housing society. Report an error in real units next to R². scikit-learn also notes that explained variance ignores systematic offset, so R² "should be preferred in general" docs.
+It depends on how spread out the target is. In the traffic-jam example, R² fell from 0.87 to 0.04 because the jams made the denominator huge, not only because errors grew. A model with RMSE ₹5 lakh can have R² 0.9 on all-India house prices and 0.2 within one housing society. Report an error in real units next to R². scikit-learn also notes that explained variance ignores systematic offset, so R² "should be preferred in general" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 #### MAPE, sMAPE, WAPE and MASE for forecasting
 
 Business teams love percentages ("we're 8% off") because they compare across products of different sizes. MAPE averages |error| / |actual|, and that denominator is the problem:
 
-14 days of demand. On a zero-demand day, |error| / 0 is infinite; scikit-learn divides by a tiny ε instead, so a single zero turns MAPE into an astronomical number docs. WAPE divides total error by total demand, so zeros are harmless. MASE divides by the error of a naive "same as yesterday" forecast: below 1 means you beat naive.
+14 days of demand. On a zero-demand day, |error| / 0 is infinite; scikit-learn divides by a tiny ε instead, so a single zero turns MAPE into an astronomical number [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). WAPE divides total error by total demand, so zeros are harmless. MASE divides by the error of a naive "same as yesterday" forecast: below 1 means you beat naive.
 
 ##### MAPE's two biases
 
@@ -90,9 +90,9 @@ Business teams love percentages ("we're 8% off") because they compare across pro
 
 ##### What forecasters use instead
 
-Hyndman and Koehler showed the common measures "can give infinite or undefined values in commonly occurring situations" and proposed **MASE**, the mean absolute scaled error, for comparing accuracy across series Hyndman & Koehler 2006. Retail teams also use **WAPE** (volume-weighted). sMAPE bounds the range but has its own asymmetry.
+Hyndman and Koehler showed the common measures "can give infinite or undefined values in commonly occurring situations" and proposed **MASE**, the mean absolute scaled error, for comparing accuracy across series [Hyndman & Koehler 2006](https://www.doi.org/10.1016/J.IJFORECAST.2006.03.001). Retail teams also use **WAPE** (volume-weighted). sMAPE bounds the range but has its own asymmetry.
 
-$$ \text{MASE} = \tfrac1n\textstyle\sum|y_t - \hat y_t| \,\Big/\, \tfrac{1}{T-1}\textstyle\sum_{t=2}^{T}|y_t - y_{t-1}| $$
+$$ {\text{MASE}} = {\tfrac1n\textstyle\sum|y_t - \hat y_t|} \,\Big/\, {\tfrac{1}{T-1}\textstyle\sum_{t=2}^{T}|y_t - y_{t-1}|} $$
 
 - **MASE**: Your forecast's MAE divided by a benchmark MAE. Scale-free, works with zeros, and 1 means “as good as naive”.
 
@@ -104,9 +104,9 @@ $$ \text{MASE} = \tfrac1n\textstyle\sum|y_t - \hat y_t| \,\Big/\, \tfrac{1}{T-1}
 
 An e-grocery store doesn't want to stock the _average_ demand; it wants enough to cover demand on 90% of days. A delivery app promising "arrives by 7:40" wants a time it beats 90% of the time. Train and judge those models with **pinball loss**:
 
-$$ \ell_\alpha(y,\hat y) = \alpha\,\max(y - \hat y, 0) + (1-\alpha)\,\max(\hat y - y, 0) $$
+$$ {\ell_\alpha(y,\hat y)} = {\alpha\,\max(y - \hat y, 0)} + {(1-\alpha)\,\max(\hat y - y, 0)} $$
 
-scikit-learn's `mean_pinball_loss`; with α = 0.5 it "equals half of MAE" docs. Use the same α in the training loss (e.g. gradient boosting with `loss="quantile"`).
+scikit-learn's `mean_pinball_loss`; with α = 0.5 it "equals half of MAE" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Use the same α in the training loss (e.g. gradient boosting with `loss="quantile"`).
 
 - **pinball loss at level α**: Asymmetric absolute error. α = 0.5 gives half the MAE (the median); α = 0.9 targets the 90th percentile.
 
@@ -118,11 +118,11 @@ scikit-learn's `mean_pinball_loss`; with α = 0.5 it "equals half of MAE" docs. 
 
 ##### RMSLE: errors as ratios
 
-RMSE on log(1 + y). Predicting ₹50k for a ₹1 lakh salary and ₹50 lakh for a ₹1 crore salary are the same error. scikit-learn notes it suits targets with exponential growth and "penalizes an under-predicted estimate greater than an over-predicted estimate" docs. Example: actual 100, predict 50 → 0.68; predict 150 → 0.40.
+RMSE on log(1 + y). Predicting ₹50k for a ₹1 lakh salary and ₹50 lakh for a ₹1 crore salary are the same error. scikit-learn notes it suits targets with exponential growth and "penalizes an under-predicted estimate greater than an over-predicted estimate" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Example: actual 100, predict 50 → 0.68; predict 150 → 0.40.
 
 ##### Poisson / Gamma / Tweedie deviance
 
-For counts (calls per hour, claims per policy) and positive skewed amounts (claim sizes), use the deviance of the matching distribution. Tweedie with power 0 is MSE, 1 is Poisson, 2 is Gamma; at power 2 the deviance "is thus only sensitive to relative errors" docs. Insurance pricing teams use exactly this.
+For counts (calls per hour, claims per policy) and positive skewed amounts (claim sizes), use the deviance of the matching distribution. Tweedie with power 0 is MSE, 1 is Poisson, 2 is Gamma; at power 2 the deviance "is thus only sensitive to relative errors" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Insurance pricing teams use exactly this.
 
 ## In practice
 
@@ -235,10 +235,10 @@ MAE, MSE, RMSE, R², MAPE, sMAPE, WAPE, MASE, RMSLE, pinball loss and more · bu
 
 #### What this page is built from
 
-1. scikit-learn, Metrics and scoring: regression metrics (R², MAPE ε, MSLE, pinball, Tweedie, D², consistent scoring functions).
+1. scikit-learn, [Metrics and scoring: regression metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) (R², MAPE ε, MSLE, pinball, Tweedie, D², consistent scoring functions).
 
-2. R. J. Hyndman & A. B. Koehler, Another look at measures of forecast accuracy, International Journal of Forecasting 22 (2006).
+2. R. J. Hyndman & A. B. Koehler, [Another look at measures of forecast accuracy](https://www.doi.org/10.1016/J.IJFORECAST.2006.03.001), International Journal of Forecasting 22 (2006).
 
-3. Interview angle: Interview Query; DataLemur.
+3. Interview angle: [Interview Query](https://interviewquery.com/p/linear-regression-interview-questions); [DataLemur](https://datalemur.com/blog/machine-learning-interview-questions).
 
 Delivery, demand and skewed-time data are illustrative.

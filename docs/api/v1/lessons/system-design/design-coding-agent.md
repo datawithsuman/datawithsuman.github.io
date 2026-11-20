@@ -160,8 +160,10 @@ How do you know a new prompt is better than the old one?
 
 Run both on the same held-out set of repositories and compare merge rate, CI failures, judge vetoes and review comments. Without that, you're choosing by intuition.
 
+#### The 30-second answer
+
 First I'd clarify the kinds of tasks, how many repositories, who reviews and what the agent may access. A task is a versioned prompt that describes the end state, says when not to act and includes examples, tested on a few repositories first. The existing fleet system targets repositories and runs one job each. The agent works in a sandboxed container with few tools: file edits, a restricted shell, Git that can't push, and a verify tool that knows how to build and test any repository and returns only the key errors. The agent fixes failures within a turn limit. Then an LLM judge compares the diff with the task and vetoes out-of-scope changes. Only then does a pull request open for normal review. The worst failure is a change that passes CI but is wrong, so I'd be careful with repositories that have weak tests, and track merges, CI failures and reverts per task. Rollout goes in waves, pausing if quality drops.
 
 **Key terms and sources**
 
-Based on a music-streaming company's published series: Spotify's background coding agent, parts 1–3 (November–December 2025). The lab's numbers, apart from the judge's veto rate, and the estimate are ours. Uses agents, agent safety and evaluating agents.
+Based on a music-streaming company's published series: [Spotify's background coding agent, parts 1–3](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) (November–December 2025). The lab's numbers, apart from the judge's veto rate, and the estimate are ours. Uses agents, agent safety and evaluating agents. · checked 5 Nov 2026

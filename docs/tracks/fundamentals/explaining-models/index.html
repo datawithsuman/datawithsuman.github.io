@@ -155,12 +155,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">It depends on the question. For which features matter overall, I'd use permutation importance on held-out data: shuffle a feature, and measure the score drop. For how a feature moves predictions, I'd use partial dependence, with ICE to reveal interactions. For one prediction, I'd use SHAP, which splits the gap from a baseline fairly among features, and always adds up. I'd watch correlated features, which hide each other or create unrealistic rows. And these explain the model, not the world, so they don't show cause.</p>
+<h3>The 30-second answer</h3><p class="say30">It depends on the question. For which features matter overall, I'd use permutation importance on held-out data: shuffle a feature, and measure the score drop. For how a feature moves predictions, I'd use partial dependence, with ICE to reveal interactions. For one prediction, I'd use SHAP, which splits the gap from a baseline fairly among features, and always adds up. I'd watch correlated features, which hide each other or create unrealistic rows. And these explain the model, not the world, so they don't show cause.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Global and local explanations: permutation importance, partial dependence and ICE, SHAP and LIME, how each can mislead, and why none shows cause.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Global and local explanations: permutation importance, partial dependence and ICE, SHAP and LIME, how each can mislead, and why none shows cause. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://arxiv.org/abs/1705.07874">Lundberg and Lee, A Unified Approach to Interpreting Model Predictions (2017)</a></li><li><a href="https://scikit-learn.org/stable/modules/permutation_importance.html">scikit-learn on permutation importance</a></li><li><a href="https://scikit-learn.org/stable/modules/partial_dependence.html">scikit-learn on partial dependence and ICE</a></li><li><a href="https://christophm.github.io/interpretable-ml-book/shap.html">Molnar, Interpretable Machine Learning: SHAP</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

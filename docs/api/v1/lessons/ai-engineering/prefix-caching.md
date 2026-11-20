@@ -48,7 +48,7 @@ With the shared **2,000-token system prompt first**, all but the first request r
 
 #### In one breath
 
-Most production prompts start with the same text: a long system prompt, tool definitions, few-shot examples, a shared document, or the conversation so far. Because each token's K and V depend only on the tokens before it, the KV cache of an identical **prefix** can be computed once and **reused**, skipping that part of prefill. Engines do this automatically: vLLM hashes each full KV block together with everything before it, and SGLang keeps prefixes in a radix tree (RadixAttention). API providers expose it as **prompt caching**, billing cached input at a fraction of the normal price (Anthropic: reads at 10% of the base input price, writes at a 25% premium). The catch: only an **exact prefix** matches, so anything that changes per request (a timestamp, user name, shuffled tools) must go **after** the shared part.What you'll be able to do after this: explain how prefix caching works, structure prompts for high hit rates, and estimate the savings.
+Most production prompts start with the same text: a long system prompt, tool definitions, few-shot examples, a shared document, or the conversation so far. Because each token's K and V depend only on the tokens before it, the KV cache of an identical **prefix** can be computed once and **reused**, skipping that part of prefill. Engines do this automatically: vLLM hashes each full KV block together with everything before it, and SGLang keeps prefixes in a radix tree (RadixAttention). API providers expose it as **prompt caching**, billing cached input at a fraction of the normal price (Anthropic: reads at 10% of the base input price, writes at a 25% premium). The catch: only an **exact prefix** matches, so anything that changes per request (a timestamp, user name, shuffled tools) must go **after** the shared part. What you'll be able to do after this: explain how prefix caching works, structure prompts for high hit rates, and estimate the savings.
 
 #### How engines find a reusable prefix
 
@@ -126,10 +126,10 @@ Reusing the KV cache of repeated prompt prefixes (system prompts, few-shot examp
 
 #### Sources
 
-1. L. Zheng et al., "SGLang: Efficient Execution of Structured Language Model Programs", NeurIPS 2024, arXiv:2312.07104.
+1. L. Zheng et al., "SGLang: Efficient Execution of Structured Language Model Programs", NeurIPS 2024, [arXiv:2312.07104](https://arxiv.org/abs/2312.07104).
 
-2. vLLM documentation, "Automatic Prefix Caching", docs.vllm.ai.
+2. vLLM documentation, "Automatic Prefix Caching", [docs.vllm.ai](https://docs.vllm.ai/).
 
 3. Anthropic, "Prompt caching" documentation; OpenAI, "Prompt caching" guide (pricing and minimum lengths vary by model; checked Oct 2026).
 
-4. I. Gim et al., "Prompt Cache: Modular Attention Reuse for Low-Latency Inference", MLSys 2024, arXiv:2311.04934.
+4. I. Gim et al., "Prompt Cache: Modular Attention Reuse for Low-Latency Inference", MLSys 2024, [arXiv:2311.04934](https://arxiv.org/abs/2311.04934).

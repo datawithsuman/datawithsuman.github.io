@@ -47,19 +47,19 @@ Things to try. Add the same amount to every logit: nothing changes (the Maths ta
 
 #### In one breath
 
-Softmax regression extends logistic regression to K classes. Each class gets its own weight vector and its own score (a **logit**); the **softmax** exponentiates the scores and normalises them, so they're positive and sum to 1. It's trained with **cross-entropy**, and the gradient is beautifully simple: (predicted probability − one-hot label) × features. With two classes it reduces exactly to the sigmoid. And it's not just classical ML: the last layer of every LLM is softmax regression over its vocabulary.What you'll be able to do after this: derive softmax and its gradient, explain why logits are shift-invariant, implement it without overflow, compare it with one-vs-rest, and connect temperature to LLM sampling.
+Softmax regression extends logistic regression to K classes. Each class gets its own weight vector and its own score (a **logit**); the **softmax** exponentiates the scores and normalises them, so they're positive and sum to 1. It's trained with **cross-entropy**, and the gradient is beautifully simple: (predicted probability − one-hot label) × features. With two classes it reduces exactly to the sigmoid. And it's not just classical ML: the last layer of every LLM is softmax regression over its vocabulary. What you'll be able to do after this: derive softmax and its gradient, explain why logits are shift-invariant, implement it without overflow, compare it with one-vs-rest, and connect temperature to LLM sampling.
 
 #### One score per class, then turn scores into probabilities
 
-Give each class k its own weight vector θk. For a fruit with features x, each class gets a score tk = θkᵀx: how much the features look like that class. These raw scores are called **logits**. They can be any real number, so we need a function that turns K arbitrary numbers into a probability distribution. CS229 points out the two problems with using them directly: θkᵀx "is not necessarily within [0, 1]" and "the summation of θkᵀx's is not necessarily 1" CS229 §2.3.
+Give each class k its own weight vector θk. For a fruit with features x, each class gets a score tk = θkᵀx: how much the features look like that class. These raw scores are called **logits**. They can be any real number, so we need a function that turns K arbitrary numbers into a probability distribution. CS229 points out the two problems with using them directly: θkᵀx "is not necessarily within [0, 1]" and "the summation of θkᵀx's is not necessarily 1" [CS229 §2.3](https://cs229.stanford.edu/main_notes.pdf).
 
 Notation: the label is often written **one-hot**, a vector with a 1 in the true class's slot and 0 elsewhere. A banana is (0, 0, 1).
 
 #### Exponentiate the scores, then normalise
 
-$$ P(y=i\mid x) = \exp(\theta_i^{\top}x) \,\Big/\, \textstyle\sum_{j=1}^{K}\exp(\theta_j^{\top}x) $$
+$$ {P(y=i\mid x)} = {\exp({\theta_i^{\top}x})} \,\Big/\, {\textstyle\sum_{j=1}^{K}\exp(\theta_j^{\top}x)} $$
 
-CS229 Eqs. 2.9–2.10 CS229 §2.3. "Softmax" because it's a smooth version of "argmax": the biggest score gets most of the probability, but the others keep some.
+CS229 Eqs. 2.9–2.10 [CS229 §2.3](https://cs229.stanford.edu/main_notes.pdf). "Softmax" because it's a smooth version of "argmax": the biggest score gets most of the probability, but the others keep some.
 
 - **probability of class i**: The model's probability that this fruit is class i.
 
@@ -71,7 +71,7 @@ CS229 Eqs. 2.9–2.10 CS229 §2.3. "Softmax" because it's a smooth version of "a
 
 #### Adding a constant to every logit changes nothing
 
-$$ \mathrm{softmax}(t + c)_i = e^{c}\,e^{t_i} \,/\, \textstyle\sum_j e^{c}\,e^{t_j} = \mathrm{softmax}(t)_i $$
+$$ {\mathrm{softmax}(t + c)_i} = {e^{c}\,e^{t_i} \,/\, \textstyle\sum_j e^{c}\,e^{t_j}} = {\mathrm{softmax}(t)_i} $$
 
 - **shifted scores**: Add the same number c to every class's logit.
 
@@ -85,9 +85,9 @@ Computed live in your browser with 64-bit floats. e1000 overflows to Infinity, a
 
 #### Cross-entropy, and the cleanest gradient in ML
 
-Maximum likelihood again: maximise the probability the model gives to the true class. For one example the loss is just −log of that probability CS229 §2.3:
+Maximum likelihood again: maximise the probability the model gives to the true class. For one example the loss is just −log of that probability [CS229 §2.3](https://cs229.stanford.edu/main_notes.pdf):
 
-$$ \ell_{\text{ce}} = -\log\phi_{y} \qquad \nabla_{\theta_i}\ell_{\text{ce}} = \big(\phi_i - \mathbb{1}\{y=i\}\big)\,x $$
+$$ {\ell_{\text{ce}}} = -\log{\phi_{y}} \qquad {\nabla_{\theta_i}\ell_{\text{ce}}} = {\big(\phi_i - \mathbb{1}\{y=i\}\big)}\,{x} $$
 
 With φ = softmax of the logits; in vector form, ∂ℓ/∂t = φ − ey (CS229 Eq. 2.17).
 
@@ -117,7 +117,7 @@ Using the trained model from the next section. Bars: predicted probability φ (f
 
 **Go deeper: two classes = the sigmoid**
 
-With K = 2 and logits (t₁, t₂): P(class 1) = et₁ / (et₁ + et₂) = 1 / (1 + e−(t₁ − t₂)) = σ(t₁ − t₂). Binary softmax is exactly logistic regression, with weight vector θ₁ − θ₂ (the redundancy from the section above, in action). In GLM terms, softmax is the canonical response function of the multinomial distribution, just as the sigmoid is for the Bernoulli CS229 §3.
+With K = 2 and logits (t₁, t₂): P(class 1) = et₁ / (et₁ + et₂) = 1 / (1 + e−(t₁ − t₂)) = σ(t₁ − t₂). Binary softmax is exactly logistic regression, with weight vector θ₁ − θ₂ (the redundancy from the section above, in action). In GLM terms, softmax is the canonical response function of the multinomial distribution, just as the sigmoid is for the Bernoulli [CS229 §3](https://cs229.stanford.edu/main_notes.pdf).
 
 For the wider family, see Generalised Linear Models.
 
@@ -132,7 +132,7 @@ For the wider family, see Generalised Linear Models.
 | **One-vs-rest (OvR)** | Train K separate binary logistic regressions ("apple vs not", …), predict the highest | Simple and parallel, but the K probabilities don't sum to 1 and weren't trained together (see Softmax vs one-vs-rest below) |
 | **Multinomial / softmax** | One model, K weight vectors, a single softmax, a single cross-entropy loss | Coherent probabilities; the standard choice; it's the output layer of neural classifiers and LLMs |
 
-scikit-learn's `LogisticRegression` fits the multinomial (softmax) model for multi-class problems with its default solver, and uses a coefficient matrix W with one row per class; the old liblinear solver "cannot learn a true multinomial (multiclass) model" scikit-learn docs. In PyTorch, it's a `nn.Linear` layer followed by `CrossEntropyLoss`, which applies the softmax internally.
+scikit-learn's `LogisticRegression` fits the multinomial (softmax) model for multi-class problems with its default solver, and uses a coefficient matrix W with one row per class; the old liblinear solver "cannot learn a true multinomial (multiclass) model" [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html). In PyTorch, it's a `nn.Linear` layer followed by `CrossEntropyLoss`, which applies the softmax internally.
 
 #### OvR's probabilities don't add up
 
@@ -140,11 +140,11 @@ Both models trained on the same 27 fruits. OvR runs three independent "this clas
 
 #### Every LLM ends with softmax regression
 
-A language model's last step is exactly this lesson. The network turns the context into a hidden vector (4,096 numbers in Llama 3.1 8B), and a final linear layer produces one logit per token in the vocabulary: 128,256 of them. Softmax turns those into next-token probabilities, and training minimises cross-entropy against the actual next token Llama 3.1 8B config (a copy that needs no login). That one output matrix alone holds 4,096 × 128,256 ≈ 525 million weights: softmax regression with 128,256 classes.
+A language model's last step is exactly this lesson. The network turns the context into a hidden vector (4,096 numbers in Llama 3.1 8B), and a final linear layer produces one logit per token in the vocabulary: 128,256 of them. Softmax turns those into next-token probabilities, and training minimises cross-entropy against the actual next token [Llama 3.1 8B config (a copy that needs no login)](https://huggingface.co/unsloth/Llama-3.1-8B/raw/main/config.json). That one output matrix alone holds 4,096 × 128,256 ≈ 525 million weights: softmax regression with 128,256 classes.
 
-$$ q_i = \exp(z_i / T) \,\Big/\, \textstyle\sum_j \exp(z_j / T) $$
+$$ {q_i} = \exp({z_i / {T}}) \,\Big/\, \textstyle\sum_j \exp(z_j / T) $$
 
-Temperature softmax as used in knowledge distillation, Hinton, Vinyals & Dean, Distilling the Knowledge in a Neural Network (2015), where a high T exposes the teacher's "dark knowledge" in the small probabilities of wrong classes. The same knob controls randomness in LLM sampling.
+Temperature softmax as used in knowledge distillation, Hinton, Vinyals & Dean, [Distilling the Knowledge in a Neural Network](https://arxiv.org/abs/1503.02531) (2015), where a high T exposes the teacher's "dark knowledge" in the small probabilities of wrong classes. The same knob controls randomness in LLM sampling.
 
 - **softened probability**: The probability of class (or token) i at temperature T.
 
@@ -283,14 +283,14 @@ Multinomial logistic regression · built from Stanford CS229 notes (§2.3, §3),
 
 #### What this page is built from
 
-1. A. Ng, T. Ma et al., Stanford CS229 lecture notes, §2.3 (multi-class classification: softmax, cross-entropy, gradient Eqs. 2.9–2.19) and §3 (GLMs).
+1. A. Ng, T. Ma et al., [Stanford CS229 lecture notes](https://cs229.stanford.edu/main_notes.pdf), §2.3 (multi-class classification: softmax, cross-entropy, gradient Eqs. 2.9–2.19) and §3 (GLMs).
 
-2. scikit-learn, Linear models user guide: multinomial logistic regression, solvers.
+2. scikit-learn, [Linear models user guide](https://scikit-learn.org/stable/modules/linear_model.html): multinomial logistic regression, solvers.
 
-3. G. Hinton, O. Vinyals & J. Dean, Distilling the Knowledge in a Neural Network, 2015: temperature softmax.
+3. G. Hinton, O. Vinyals & J. Dean, [Distilling the Knowledge in a Neural Network](https://arxiv.org/abs/1503.02531), 2015: temperature softmax.
 
-4. Meta, Llama 3.1 8B config (a copy that needs no login): hidden size 4,096, vocabulary 128,256.
+4. Meta, [Llama 3.1 8B config (a copy that needs no login)](https://huggingface.co/unsloth/Llama-3.1-8B/raw/main/config.json): hidden size 4,096, vocabulary 128,256.
 
-5. Interview angle: DataLemur ML interview questions; AIM, 60 ML interview questions.
+5. Interview angle: [DataLemur ML interview questions](https://datalemur.com/blog/machine-learning-interview-questions); [AIM, 60 ML interview questions](https://analyticsindiamag.com/60-interview-questions-on-machine-learning).
 
 Fruit data is illustrative; models are trained with a fixed seed and computed live in this page.

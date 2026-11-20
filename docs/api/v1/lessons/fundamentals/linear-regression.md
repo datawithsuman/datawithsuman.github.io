@@ -57,15 +57,15 @@ Illustrative data: 12 flats. The red squares are the squared residuals; their to
 
 #### In one breath
 
-Linear regression predicts a number as a weighted sum of features, ŷ = w·x + b, and picks the weights that make the **sum of squared errors** as small as possible. There's a closed-form answer (the normal equation) and an iterative one (gradient descent). Under Gaussian noise, least squares is exactly maximum likelihood. It's simple, fast and interpretable, and it breaks in predictable ways: outliers, curved relationships, and correlated features.What you'll be able to do after this: derive and explain the loss, solve it two ways, read the assumptions, spot when the line is lying to you, and answer the classic follow-ups.
+Linear regression predicts a number as a weighted sum of features, ŷ = w·x + b, and picks the weights that make the **sum of squared errors** as small as possible. There's a closed-form answer (the normal equation) and an iterative one (gradient descent). Under Gaussian noise, least squares is exactly maximum likelihood. It's simple, fast and interpretable, and it breaks in predictable ways: outliers, curved relationships, and correlated features. What you'll be able to do after this: derive and explain the loss, solve it two ways, read the assumptions, spot when the line is lying to you, and answer the classic follow-ups.
 
 #### A weighted sum of features
 
 With one feature, the model is a line: slope w and intercept b. With many features (size, floor, age, distance to metro), it's the same idea in more dimensions: each feature gets a weight, and the prediction is the weighted sum plus a bias.
 
-$$ \hat{y} = w_1x_1 + w_2x_2 + \dots + b \qquad \hat{\mathbf y} = X\theta $$
+$$ {\hat{y}} = {w_1}{x_1} + {w_2}{x_2} + \dots + {b} \qquad {\hat{\mathbf y} = X\theta} $$
 
-CS229 writes hθ(x) = θ⊤x with x0 = 1 standing in for the bias CS229 §1 · hover any symbol.
+CS229 writes hθ(x) = θ⊤x with x0 = 1 standing in for the bias [CS229 §1](https://cs229.stanford.edu/main_notes.pdf) · hover any symbol.
 
 - **prediction**: The model's guess: the predicted price ŷ.
 
@@ -81,9 +81,9 @@ CS229 writes hθ(x) = θ⊤x with x0 = 1 standing in for the bias CS229 §1 · h
 
 #### Choose the weights that minimise the sum of squared residuals
 
-$$ J(\theta) = \tfrac12\sum_{i=1}^{n}\big(\theta^{\top}x^{(i)} - y^{(i)}\big)^2 $$
+$$ {J(\theta)} = {\tfrac12\sum_{i=1}^{n}}{\big(}{\theta^{\top}x^{(i)}} - {y^{(i)}}{\big)^2} $$
 
-The least-squares cost function, CS229 §1 CS229 notes. The mean squared error (MSE) is the same thing divided by n.
+The least-squares cost function, CS229 §1 [CS229 notes](https://cs229.stanford.edu/main_notes.pdf). The mean squared error (MSE) is the same thing divided by n.
 
 - **the cost**: One number that scores a choice of weights θ. Lower is better.
 
@@ -99,9 +99,9 @@ J is a bowl: a smooth, convex function of the weights with a single lowest point
 
 #### The normal equation: set the slope of the bowl to zero
 
-At the bottom of a bowl, the gradient is zero. Differentiate J, set it to zero, and you get a linear system you can solve in one shot CS229 §1.2:
+At the bottom of a bowl, the gradient is zero. Differentiate J, set it to zero, and you get a linear system you can solve in one shot [CS229 §1.2](https://cs229.stanford.edu/main_notes.pdf):
 
-$$ \theta^{*} = (X^{\top}X)^{-1}\,X^{\top}\mathbf{y} \qquad \text{if } X^{\top}X \text{ is invertible} $$
+$$ {\theta^{*}} = {(X^{\top}X)^{-1}}\,{X^{\top}\mathbf{y}} \qquad {\text{if } X^{\top}X \text{ is invertible}} $$
 
 From X⊤Xθ = X⊤y, CS229 §1.2 and footnote 3 on invertibility.
 
@@ -123,13 +123,13 @@ From X⊤Xθ = X⊤y, CS229 §1.2 and footnote 3 on invertibility.
 
 ##### What breaks: cost and conditioning
 
-Inverting XᵀX costs about p³ operations, fine for hundreds or thousands of features, painful for millions. And when features are nearly collinear, tiny changes in the data swing the weights wildly; scikit-learn: the least-squares estimate "becomes highly sensitive to random errors in the observed target, producing a large variance" scikit-learn docs. Libraries solve via QR or SVD rather than an explicit inverse for stability.
+Inverting XᵀX costs about p³ operations, fine for hundreds or thousands of features, painful for millions. And when features are nearly collinear, tiny changes in the data swing the weights wildly; scikit-learn: the least-squares estimate "becomes highly sensitive to random errors in the observed target, producing a large variance" [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html). Libraries solve via QR or SVD rather than an explicit inverse for stability.
 
 #### Gradient descent: small steps against the slope
 
-Instead of solving the system, start anywhere and repeatedly nudge each weight in the direction that lowers J. For least squares the update is the **LMS rule**: move each weight by the error times its feature CS229 §1.1.
+Instead of solving the system, start anywhere and repeatedly nudge each weight in the direction that lowers J. For least squares the update is the **LMS rule**: move each weight by the error times its feature [CS229 §1.1](https://cs229.stanford.edu/main_notes.pdf).
 
-$$ \theta_j := \theta_j + \alpha\,\big(y^{(i)} - h_\theta(x^{(i)})\big)\,x^{(i)}_j $$
+$$ {\theta_j} := {\theta_j} + {\alpha}\,{\big(y^{(i)} - h_\theta(x^{(i)})\big)}\,{x^{(i)}_j} $$
 
 - **one weight**: Weight j, updated in place.
 
@@ -145,9 +145,9 @@ Full-batch gradient descent on our 12 flats, starting from w = b = 0. With raw s
 
 #### Least squares = maximum likelihood under Gaussian noise
 
-Assume each price is the true line plus random noise ε that is Gaussian, independent, and has the same spread σ for every flat. Ask which weights make the observed prices most probable. Take the log of that probability and you get CS229 §1.3:
+Assume each price is the true line plus random noise ε that is Gaussian, independent, and has the same spread σ for every flat. Ask which weights make the observed prices most probable. Take the log of that probability and you get [CS229 §1.3](https://cs229.stanford.edu/main_notes.pdf):
 
-$$ \ell(\theta) = n\log\tfrac{1}{\sqrt{2\pi}\,\sigma} - \tfrac{1}{\sigma^{2}}\cdot\tfrac12\sum_{i}\big(y^{(i)} - \theta^{\top}x^{(i)}\big)^2 $$
+$$ {\ell(\theta)} = {n\log\tfrac{1}{\sqrt{2\pi}\,\sigma}} - {\tfrac{1}{\sigma^{2}}}\cdot{\tfrac12\sum_{i}\big(y^{(i)} - \theta^{\top}x^{(i)}\big)^2} $$
 
 - **log-likelihood**: How probable the data is under weights θ (on a log scale). Higher is better.
 
@@ -173,11 +173,11 @@ Dashed line: the original fit. One mislabelled or unusual flat drags the whole l
 | **Gradient descent** / SGD | Repeatedly step the weights downhill on the loss | Huge data or many features; streaming data; the same machinery that trains neural nets |
 | **Statistical inference** (e.g. statsmodels) | Same fit, plus standard errors, p-values, confidence intervals | When you need to explain or test the coefficients, not just predict |
 
-All three minimise the same squared-error loss. scikit-learn's docs: `LinearRegression` "fits a linear model with coefficients w = (w₁, …, wp) to minimize the residual sum of squares" scikit-learn docs.
+All three minimise the same squared-error loss. scikit-learn's docs: `LinearRegression` "fits a linear model with coefficients w = (w₁, …, wp) to minimize the residual sum of squares" [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html).
 
 #### R²: how much of the variation the line explains
 
-$$ R^{2} = 1 - \textstyle\sum_i (y_i - \hat y_i)^2 \,\big/\, \textstyle\sum_i (y_i - \bar y)^2 $$
+$$ {R^{2}} = 1 - {\textstyle\sum_i (y_i - \hat y_i)^2} \,\big/\, {\textstyle\sum_i (y_i - \bar y)^2} $$
 
 - **R²**: Share of the target's variance explained by the model. 1 is perfect; 0 means no better than predicting the mean.
 
@@ -245,7 +245,7 @@ In 1973 the statistician Francis Anscombe built four small datasets that share t
 
 –
 
-Real data: Anscombe's quartet (Anscombe, 1973). The orange line is the fitted line, identical for all four.
+Real data: [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) (Anscombe, 1973). The orange line is the fitted line, identical for all four.
 
 The assumptions behind the usual statistics (standard errors, p-values, prediction intervals) are often remembered as **LINE**:
 
@@ -270,7 +270,7 @@ Note those two words. A biased method like ridge can still have lower total erro
 
 Leave out a feature that affects y **and** is correlated with a feature you kept, and the coefficient you kept absorbs part of its effect.
 
-$$ \tilde\beta_1 = \beta_1 + \beta_2\,\delta $$
+$$ {\tilde\beta_1} = {\beta_1} + {\beta_2}\,{\delta} $$
 
 The standard result for two features, in expectation.
 
@@ -396,14 +396,14 @@ Built from Stanford CS229 notes (§1), scikit-learn's linear-model docs and Ansc
 
 #### What this page is built from
 
-1. A. Ng, T. Ma et al., Stanford CS229 lecture notes, §1: LMS, the normal equations, the probabilistic interpretation.
+1. A. Ng, T. Ma et al., [Stanford CS229 lecture notes](https://cs229.stanford.edu/main_notes.pdf), §1: LMS, the normal equations, the probabilistic interpretation.
 
-2. scikit-learn, Linear models user guide: OLS objective, collinearity note.
+2. scikit-learn, [Linear models user guide](https://scikit-learn.org/stable/modules/linear_model.html): OLS objective, collinearity note.
 
-3. F. J. Anscombe, "Graphs in Statistical Analysis", _The American Statistician_, 1973; data via Anscombe's quartet.
+3. F. J. Anscombe, "Graphs in Statistical Analysis", _The American Statistician_, 1973; data via [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet).
 
 4. Hastie, Tibshirani & Friedman, _The Elements of Statistical Learning_, ch. 3 (linear methods for regression), background.
 
-5. Interview angle: Interview Query, linear regression questions; Analytics Vidhya.
+5. Interview angle: [Interview Query, linear regression questions](https://interviewquery.com/p/linear-regression-interview-questions); [Analytics Vidhya](https://www.analyticsvidhya.com/blog/2025/11/linear-regression-interview-questions/).
 
 Flat sizes and prices, the polynomial dataset and the gradient-descent runs are illustrative and computed live in this page.

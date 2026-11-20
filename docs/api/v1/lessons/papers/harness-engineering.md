@@ -12,7 +12,7 @@
 
 ### The paper
 
-Barbaste, Darrigol, Vu, Wiltberger · Inclusive Brains, Wavestone AI Lab · arXiv 2609.00006 · July 2026 · 9 sources, checked 27 Oct 2026
+Barbaste, Darrigol, Vu, Wiltberger · Inclusive Brains, Wavestone AI Lab · arXiv [2609.00006](https://arxiv.org/abs/2609.00006) · July 2026 · 9 sources, checked 27 Oct 2026
 
 An agent is a model plus a harness, and the harness is everything except the model. The authors read the source code of eleven production coding agents (Claude Code, Codex CLI, Gemini CLI, Mistral Vibe, OpenHands, Aider, Mini-SWE-Agent, Hermes, Pi, OpenCode, OpenClaw) and found that every one of them is built from the same seven subsystems. They also found two things none of them use: agent frameworks and vector RAG over code. After this you can draw a harness from memory, and explain how real agents handle loops, context, tools, safety, sub-agents and extensions.
 
@@ -28,7 +28,7 @@ A real coding agent has to find the file, read it, run the tests, edit the code,
 
 #### The model can write the fix. It cannot run anything.
 
-A language model takes text in and gives text out. It can suggest the fix for `test_invoice.py`, but on its own it cannot open the file, run pytest, or decide whether it is done. Everything that turns its text into actions is the harness: "the runtime that couples an LLM to the world—its loop, its tools, its context, its safety controls, its orchestration, and its extension surfaces" p. 3.
+A language model takes text in and gives text out. It can suggest the fix for `test_invoice.py`, but on its own it cannot open the file, run pytest, or decide whether it is done. Everything that turns its text into actions is the harness: "the runtime that couples an LLM to the world—its loop, its tools, its context, its safety controls, its orchestration, and its extension surfaces" [p. 3](https://arxiv.org/pdf/2609.00006#page=3).
 
 1. On its own, the model only produces text. It can describe the fix to `test_invoice.py`, but nothing on disk changes.
 
@@ -38,7 +38,7 @@ A language model takes text in and gives text out. It can suggest the fix for `t
 
 4. That is the paper's one-line definition. The model supplies the intelligence; the harness turns it into work.
 
-By mid-2026 every major AI lab shipped one of these, and the term "harness engineering" was barely five months old (first used by Mitchell Hashimoto, then defined by LangChain's Vivek Trivedy in February 2026) p. 3. What was missing was a reference: a description, from real source code, of what a harness is made of. That is this paper. It reads eleven production harnesses at source level and does not benchmark or rank them; it describes how they are built p. 1.
+By mid-2026 every major AI lab shipped one of these, and the term "harness engineering" was barely five months old (first used by Mitchell Hashimoto, then defined by LangChain's Vivek Trivedy in February 2026) [p. 3](https://arxiv.org/pdf/2609.00006#page=3). What was missing was a reference: a description, from real source code, of what a harness is made of. That is this paper. It reads eleven production harnesses at source level and does not benchmark or rank them; it describes how they are built [p. 1](https://arxiv.org/pdf/2609.00006#page=1).
 
 ### The idea
 
@@ -52,7 +52,7 @@ _The paper's seven subsystems around the model. Every system in the study takes 
 
 **Try it.** Your agent keeps running the same test without changing anything. Drag the slider to repeat the call, and see when each real agent steps in.
 
-Rules from §6.2 and Table 5 p. 15–17. Simplified: real detectors also look at errors, alternating patterns and output chunks.
+Rules from §6.2 and Table 5 [p. 15–17](https://arxiv.org/pdf/2609.00006#page=15). Simplified: real detectors also look at errors, alternating patterns and output chunks.
 
 **Notice:** some production agents never step in at all. The paper still calls them production-quality, and that's why it warns against over-engineering stuck detection.
 
@@ -62,7 +62,7 @@ Rules from §6.2 and Table 5 p. 15–17. Simplified: real detectors also look at
 
 #### At the core: ask the model, run what it asks for, repeat
 
-Every system in the study runs a variation of the ReAct loop: the model thinks, asks for an action, the harness runs it, and the result goes back into the conversation p. 13. The smallest real example is Mini-SWE-Agent, whose loop fits on one screen. Step through it with our task.
+Every system in the study runs a variation of the ReAct loop: the model thinks, asks for an action, the harness runs it, and the result goes back into the conversation [p. 13](https://arxiv.org/pdf/2609.00006#page=13). The smallest real example is Mini-SWE-Agent, whose loop fits on one screen. Step through it with our task.
 
 ```
 def run(self, task):
@@ -94,11 +94,11 @@ def execute_actions(self):
 
 6. Repeat until the model replies with an exit. That is the whole agent.
 
-Condensed from the paper's Listing 1 p. 14; the project README describes "just some 100 lines of python for the agent class", bash as the only tool, and a completely linear history repo.
+Condensed from the paper's Listing 1 [p. 14](https://arxiv.org/pdf/2609.00006#page=14); the project README describes "just some 100 lines of python for the agent class", bash as the only tool, and a completely linear history [repo](https://github.com/SWE-agent/mini-swe-agent).
 
 #### A 100-line loop scores like the big ones. So why are the big ones huge?
 
-Mini-SWE-Agent reports 74%+ on SWE-bench Verified, in the same range as systems three orders of magnitude larger p. 5 (self-reported, different models and dates, so not a clean comparison). The paper's first observation: **loop sophistication does not predict benchmark performance** Obs. 1, p. 12. So is the rest of a production harness wasted code?
+Mini-SWE-Agent reports 74%+ on SWE-bench Verified, in the same range as systems three orders of magnitude larger [p. 5](https://arxiv.org/pdf/2609.00006#page=5) (self-reported, different models and dates, so not a clean comparison). The paper's first observation: **loop sophistication does not predict benchmark performance** [Obs. 1, p. 12](https://arxiv.org/pdf/2609.00006#page=12). So is the rest of a production harness wasted code?
 
 1. The minimal loop solves benchmark tasks surprisingly well.
 
@@ -114,15 +114,15 @@ Mini-SWE-Agent reports 74%+ on SWE-bench Verified, in the same range as systems 
 
 ##### The resolution
 
-Production systems "invest in scaffolding not because models need it for task completion, but because users need it for safety, reliability, and workflow integration" p. 58. Roughly three-fifths of OpenCode's non-test source is clients (TUI, web, desktop, SDK), not the harness proper p. 12.
+Production systems "invest in scaffolding not because models need it for task completion, but because users need it for safety, reliability, and workflow integration" [p. 58](https://arxiv.org/pdf/2609.00006#page=58). Roughly three-fifths of OpenCode's non-test source is clients (TUI, web, desktop, SDK), not the harness proper [p. 12](https://arxiv.org/pdf/2609.00006#page=12).
 
 #### Every harness takes a position on the same seven parts
 
-From the 100-line baseline to the million-line Codex, every system "must take a position on the same seven subsystems … even when that position is deliberate absence" p. 4. For each, the paper records the smallest and the largest version found.
+From the 100-line baseline to the million-line Codex, every system "must take a position on the same seven subsystems … even when that position is deliberate absence" [p. 4](https://arxiv.org/pdf/2609.00006#page=4). For each, the paper records the smallest and the largest version found.
 
-$$ \text{Agent} \;=\; \text{Model} \;+\; \text{Harness} $$
+$$ {\text{Agent}} \;=\; {\text{Model}} \;+\; {\text{Harness}} $$
 
-The paper's definition, popularized by Trivedy's LangChain series p. 3 · hover a term.
+The paper's definition, popularized by Trivedy's LangChain series [p. 3](https://arxiv.org/pdf/2609.00006#page=3) · hover a term.
 
 - **what you use**: The agent: the thing you type the task into, e.g. Claude Code or Codex.
 
@@ -144,21 +144,21 @@ The paper's definition, popularized by Trivedy's LangChain series p. 3 · hover 
 
 7. **Extensibility**: lets users add capability through config, hooks, skills, plugins and MCP. Smallest: Python protocols. Largest: Pi's everything-is-an-extension runtime and Codex's plugin marketplace.
 
-Minimal and maximal forms from Table 1 p. 5. Chapters 6–12 take them one at a time.
+Minimal and maximal forms from Table 1 [p. 5](https://arxiv.org/pdf/2609.00006#page=5). Chapters 6–12 take them one at a time.
 
 #### The hard part of a loop is knowing when it is stuck
 
-The paper finds three loop shapes p. 13: the plain **action–observation** loop (nine systems), the **reflection** loop (Aider lints and tests after each edit and re-asks the model, up to 3 times), and a **coordinator–worker** overlay where a lead agent dispatches workers (Claude Code, Codex; configuration-gated in Hermes).
+The paper finds three loop shapes [p. 13](https://arxiv.org/pdf/2609.00006#page=13): the plain **action–observation** loop (nine systems), the **reflection** loop (Aider lints and tests after each edit and re-asks the model, up to 3 times), and a **coordinator–worker** overlay where a lead agent dispatches workers (Claude Code, Codex; configuration-gated in Hermes).
 
 Suppose our agent keeps running `pytest test_invoice.py` without changing anything. Each system reacts differently, and you can try that in the Play section of the Gist tab.
 
 ##### What the paper recommends
 
-Start with a linear `while` loop; move to a middleware pipeline (Mistral Vibe's design, where turn limits, cost caps and compaction are pluggable policies) only once you have three or more independent turn policies. Ship the cheap caps (they "cost a dozen lines"), but do not over-engineer stuck detection: Claude Code and Codex ship none and are production-quality Recs. 1, 18.
+Start with a linear `while` loop; move to a middleware pipeline (Mistral Vibe's design, where turn limits, cost caps and compaction are pluggable policies) only once you have three or more independent turn policies. Ship the cheap caps (they "cost a dozen lines"), but do not over-engineer stuck detection: Claude Code and Codex ship none and are production-quality [Recs. 1, 18](https://arxiv.org/pdf/2609.00006#page=70).
 
 #### Split the prompt so most of it never changes
 
-Every turn re-sends the system prompt. Providers can cache a prompt prefix that is byte-identical to last time, so harnesses arrange the prompt around that. Claude Code splits its dozen-plus sections at a `SYSTEM_PROMPT_DYNAMIC_BOUNDARY`: identity, rules, tool guidance and tone go before it and stay cached; session guidance, memory, environment and MCP instructions go after it and are recomputed each turn p. 21. OpenHands arrived at the same static/dynamic split independently.
+Every turn re-sends the system prompt. Providers can cache a prompt prefix that is byte-identical to last time, so harnesses arrange the prompt around that. Claude Code splits its dozen-plus sections at a `SYSTEM_PROMPT_DYNAMIC_BOUNDARY`: identity, rules, tool guidance and tone go before it and stay cached; session guidance, memory, environment and MCP instructions go after it and are recomputed each turn [p. 21](https://arxiv.org/pdf/2609.00006#page=21). OpenHands arrived at the same static/dynamic split independently.
 
 1. Most of the system prompt is the same on every turn: who the agent is, its rules, how to use tools.
 
@@ -174,23 +174,23 @@ Illustrative model of the system prompt only (conversation history is cached sep
 
 ##### Coupling to one provider buys the update loop
 
-The paper's Observation 2: provider tricks like caching, thinking budgets and model-specific prompts are not exclusive to single-provider harnesses; multi-provider ones (Hermes, Pi, OpenCode) reach them by paying for per-provider code. What only the vendor keeps is **server-side co-evolution**: Codex downloads its per-model prompts from a catalog endpoint, so OpenAI can re-tune the harness on model-release day without shipping a client p. 19.
+The paper's Observation 2: provider tricks like caching, thinking budgets and model-specific prompts are not exclusive to single-provider harnesses; multi-provider ones (Hermes, Pi, OpenCode) reach them by paying for per-provider code. What only the vendor keeps is **server-side co-evolution**: Codex downloads its per-model prompts from a catalog endpoint, so OpenAI can re-tune the harness on model-release day without shipping a client [p. 19](https://arxiv.org/pdf/2609.00006#page=19).
 
 #### How many tools, and how to edit a file safely
 
 ##### Built-in tools or edit formats per system (July 2026)
 
-Figure 3 p. 27. Aider's 13 are edit formats; Pi builds 7 and exposes 4 by default; OpenClaw's count includes messaging channels.
+Figure 3 [p. 27](https://arxiv.org/pdf/2609.00006#page=27). Aider's 13 are edit formats; Pi builds 7 and exposes 4 by default; OpenClaw's count includes messaging channels.
 
 ##### Deferred tool loading
 
-Every tool's schema costs prompt space. Claude Code marks most of its 43 tools as deferred: they stay out of the prompt until the model searches for them with a `ToolSearch` tool, which cuts the initial prompt by about 40% Table 18, p. 77. Codex and Hermes later added the same idea with BM25 search. The paper recommends it once you pass about 15 tools Rec. 4.
+Every tool's schema costs prompt space. Claude Code marks most of its 43 tools as deferred: they stay out of the prompt until the model searches for them with a `ToolSearch` tool, which cuts the initial prompt by about 40% [Table 18, p. 77](https://arxiv.org/pdf/2609.00006#page=77). Codex and Hermes later added the same idea with BM25 search. The paper recommends it once you pass about 15 tools [Rec. 4](https://arxiv.org/pdf/2609.00006#page=68).
 
 Illustrative token counts. The paper's measured figure for Claude Code's whole prompt is about 40% smaller.
 
 ##### File editing: the most consequential tool
 
-The eleven systems use eight different editing strategies Table 7, p. 28. For our task, the agent must change one line in `invoice.py`:
+The eleven systems use eight different editing strategies [Table 7, p. 28](https://arxiv.org/pdf/2609.00006#page=28). For our task, the agent must change one line in `invoice.py`:
 
 | Strategy | Who | How the edit is located |
 |---|---|---|
@@ -203,15 +203,15 @@ The eleven systems use eight different editing strategies Table 7, p. 28. For ou
 
 ##### The trend
 
-Mistral Vibe deleted its fuzzy search-replace tool between April and July 2026 and moved to Claude Code's exact-match contract, "evidence that stronger models shift the optimum from tool-side drift tolerance toward strict contracts" p. 29. Recommendation 5: exact matching for frontier models, a fuzzy cascade for weaker ones, and never line numbers.
+Mistral Vibe deleted its fuzzy search-replace tool between April and July 2026 and moved to Claude Code's exact-match contract, "evidence that stronger models shift the optimum from tool-side drift tolerance toward strict contracts" [p. 29](https://arxiv.org/pdf/2609.00006#page=29). Recommendation 5: exact matching for frontier models, a fuzzy cascade for weaker ones, and never line numbers.
 
 #### When the conversation outgrows the window, summarize the old part
 
-Long debugging sessions eventually overflow the context window. Four strategies appear Fig. 4, p. 31: keep everything (Mini-SWE-Agent), recursive summarization (Aider), pluggable condensers (OpenHands), and **threshold compaction**, used by seven of the eleven, including all four provider-native systems.
+Long debugging sessions eventually overflow the context window. Four strategies appear [Fig. 4, p. 31](https://arxiv.org/pdf/2609.00006#page=31): keep everything (Mini-SWE-Agent), recursive summarization (Aider), pluggable condensers (OpenHands), and **threshold compaction**, used by seven of the eleven, including all four provider-native systems.
 
-$$ n_{\text{context}} \;\ge\; W - B \;\;\Longrightarrow\;\; \text{summarize the old, keep the recent} $$
+$$ {n_{\text{context}}} \;\ge\; {W} - {B} \;\;\Longrightarrow\;\; {\text{summarize the old, keep the recent}} $$
 
-Claude Code's trigger (`AUTOCOMPACT_BUFFER_TOKENS = 13 000`), §9.5 p. 32. Gemini CLI fires at 50% of the window instead; Pi at W − 16,384.
+Claude Code's trigger (`AUTOCOMPACT_BUFFER_TOKENS = 13 000`), §9.5 [p. 32](https://arxiv.org/pdf/2609.00006#page=32). Gemini CLI fires at 50% of the window instead; Pi at W − 16,384.
 
 - **tokens in context**: How many tokens the conversation currently occupies.
 
@@ -221,11 +221,11 @@ Claude Code's trigger (`AUTOCOMPACT_BUFFER_TOKENS = 13 000`), §9.5 p. 32. Gemin
 
 - **then compact**: When the condition is true, an LLM summarizes the older messages, recent ones stay verbatim, and the summary replaces the history.
 
-Trigger rules from §9.5 p. 32–33; tokens per turn is illustrative.
+Trigger rules from §9.5 [p. 32–33](https://arxiv.org/pdf/2609.00006#page=32); tokens per turn is illustrative.
 
 ##### The new frontier: who writes long-term memory?
 
-Compaction has converged. What differs now is cross-session memory, and the paper's Observation 5 sorts it by who writes it and who reviews it p. 34:
+Compaction has converged. What differs now is cross-session memory, and the paper's Observation 5 sorts it by who writes it and who reviews it [p. 34](https://arxiv.org/pdf/2609.00006#page=34):
 
 | Model | Example | How it works |
 |---|---|---|
@@ -238,7 +238,7 @@ And for the repository itself, every system auto-discovers Markdown context file
 
 #### Every command passes through checks before it runs
 
-Safety is where the systems differ most. Claude Code uses three layers: static hook rules, then an LLM permission classifier, then an interactive dialog Fig. 5, p. 35. Codex grew to four p. 36. Follow one command from our task through Codex's stack.
+Safety is where the systems differ most. Claude Code uses three layers: static hook rules, then an LLM permission classifier, then an interactive dialog [Fig. 5, p. 35](https://arxiv.org/pdf/2609.00006#page=35). Codex grew to four [p. 36](https://arxiv.org/pdf/2609.00006#page=36). Follow one command from our task through Codex's stack.
 
 1. After fixing the bug, the model asks to run `git push`.
 
@@ -254,15 +254,15 @@ Safety is where the systems differ most. Claude Code uses three layers: static h
 
 ##### Try it: what would stop each command?
 
-Illustrative stack built from the paper's examples (Codex's `git status` rule and GitHub network rule, Hermes' hardline floor, OpenCode's `.env` ask); no single harness has exactly these layers p. 36–38.
+Illustrative stack built from the paper's examples (Codex's `git status` rule and GitHub network rule, Hermes' hardline floor, OpenCode's `.env` ask); no single harness has exactly these layers [p. 36–38](https://arxiv.org/pdf/2609.00006#page=36).
 
 ##### Sandboxing is a choice, not a side effect of size
 
-Hermes, about 642K lines, has zero OS-level isolation and spends its safety budget on scanning content for prompt injection instead; OpenCode is policy-only. Hermes' floor of twelve hardline patterns (`rm -rf /`, `mkfs`, fork bombs…) survives even `--yolo` mode, and the yolo flag is frozen at start-up so an injected skill cannot flip it Obs. 6, p. 37–38.
+Hermes, about 642K lines, has zero OS-level isolation and spends its safety budget on scanning content for prompt injection instead; OpenCode is policy-only. Hermes' floor of twelve hardline patterns (`rm -rf /`, `mkfs`, fork bombs…) survives even `--yolo` mode, and the yolo flag is frozen at start-up so an injected skill cannot flip it [Obs. 6, p. 37–38](https://arxiv.org/pdf/2609.00006#page=37).
 
 #### Hand slices of the task to sub-agents with their own context
 
-Nine of the eleven systems can spawn sub-agents, in six patterns from sequential delegation to recursive composition p. 39. Claude Code's coordinator mode is the most structured.
+Nine of the eleven systems can spawn sub-agents, in six patterns from sequential delegation to recursive composition [p. 39](https://arxiv.org/pdf/2609.00006#page=39). Claude Code's coordinator mode is the most structured.
 
 1. A lead agent receives the task. It mostly plans and delegates.
 
@@ -278,15 +278,15 @@ Nine of the eleven systems can spawn sub-agents, in six patterns from sequential
 
 ##### Why not always use sub-agents?
 
-Anthropic's multi-agent case study reported about 15× the tokens of a single chat p. 7, and warns that coding has fewer truly parallel tasks than research. The paper finds sub-agents are mostly used for breadth-first exploration, not parallel implementation, and recommends staying single-agent until you can point to such a phase Rec. 12.
+Anthropic's multi-agent case study reported about 15× the tokens of a single chat [p. 7](https://arxiv.org/pdf/2609.00006#page=7), and warns that coding has fewer truly parallel tasks than research. The paper finds sub-agents are mostly used for breadth-first exploration, not parallel implementation, and recommends staying single-agent until you can point to such a phase [Rec. 12](https://arxiv.org/pdf/2609.00006#page=69).
 
 #### Skills overtook MCP
 
-Two standards compete. **MCP** is a wire protocol: the agent talks to a separately running server that exposes tools. **Skills** are a file convention: a folder with a `SKILL.md` (instructions plus YAML front matter) that the agent reads when relevant. By July 2026 skills led 9 to 8, because Pi adopted skills while rejecting MCP ("build CLI tools with READMEs") Obs. 8, p. 51.
+Two standards compete. **MCP** is a wire protocol: the agent talks to a separately running server that exposes tools. **Skills** are a file convention: a folder with a `SKILL.md` (instructions plus YAML front matter) that the agent reads when relevant. By July 2026 skills led 9 to 8, because Pi adopted skills while rejecting MCP ("build CLI tools with READMEs") [Obs. 8, p. 51](https://arxiv.org/pdf/2609.00006#page=51).
 
 ##### Adoption across the 11 systems
 
-§12.4–12.5 and §14.1 p. 47–59.
+§12.4–12.5 and §14.1 [p. 47–59](https://arxiv.org/pdf/2609.00006#page=47).
 
 Eight of the nine skill adopters load only each skill's name and description up front and fetch the body on demand, the same trick as deferred tools. Some skills activate only when the agent touches matching files (Claude Code's `paths`, OpenHands' PathTrigger). And skills now have a supply chain: registries in four systems, trust tiers and quarantine in Hermes, and the first skills written by agents themselves.
 
@@ -300,9 +300,9 @@ Use skills for capability templates (workflows, domain knowledge, recipes) and M
 
 #### No agent frameworks. No vector RAG over code.
 
-The authors grepped about four million lines of Python, TypeScript and Rust for imports of LangChain, LangGraph, LlamaIndex, AutoGen, CrewAI, Pydantic AI, Genkit, Google ADK, Semantic Kernel and more. **No production agent code path imports any of them.** Gemini CLI uses neither of Google's own frameworks p. 53. Every loop is hand-written in the language's async primitives.
+The authors grepped about four million lines of Python, TypeScript and Rust for imports of LangChain, LangGraph, LlamaIndex, AutoGen, CrewAI, Pydantic AI, Genkit, Google ADK, Semantic Kernel and more. **No production agent code path imports any of them.** Gemini CLI uses neither of Google's own frameworks [p. 53](https://arxiv.org/pdf/2609.00006#page=53). Every loop is hand-written in the language's async primitives.
 
-A parallel search for vector stores and embedding libraries found **zero systems that retrieve code with embeddings**. They use ripgrep, glob, tree-sitter and auto-discovered Markdown files. Embeddings appear only for chat memory, on by default in exactly one system (OpenClaw) p. 54–56.
+A parallel search for vector stores and embedding libraries found **zero systems that retrieve code with embeddings**. They use ripgrep, glob, tree-sitter and auto-discovered Markdown files. Embeddings appear only for chat memory, on by default in exactly one system (OpenClaw) [p. 54–56](https://arxiv.org/pdf/2609.00006#page=54).
 
 ##### Why no frameworks
 
@@ -314,7 +314,7 @@ Code has exact structure (paths, symbols, language servers) that similarity sear
 
 ##### The platform turn
 
-The paper's thesis is that in the first half of 2026 the harness went from tool to platform Obs. 12, p. 63. Harnesses became importable SDKs (Claude Agent SDK, openai-codex), framework vendors shipped harnesses (LangChain's Deep Agents), plugin marketplaces appeared, Codex shipped an importer for Claude Code's sessions and settings, and Databricks' Omnigent now orchestrates 23 harness adapters behind one API. That also resolves the framework puzzle: harnesses did not adopt frameworks, they replaced them.
+The paper's thesis is that in the first half of 2026 the harness went from tool to platform [Obs. 12, p. 63](https://arxiv.org/pdf/2609.00006#page=63). Harnesses became importable SDKs (Claude Agent SDK, openai-codex), framework vendors shipped harnesses (LangChain's Deep Agents), plugin marketplaces appeared, Codex shipped an importer for Claude Code's sessions and settings, and Databricks' Omnigent now orchestrates 23 harness adapters behind one API. That also resolves the framework puzzle: harnesses did not adopt frameworks, they replaced them.
 
 #### What backs these claims
 
@@ -326,7 +326,7 @@ Counts from Observations 5–9 and §14.1. "Native OS sandbox" counts the two wi
 
 ##### Independent evidence that structure matters
 
-The paper leans on a separate study, Agentic Harness Engineering (AHE), which evolves a harness automatically from a bash-only seed to 71.9% on SWE-bench Verified. Its ablation shows which parts carry the gain p. 66:
+The paper leans on a separate study, Agentic Harness Engineering (AHE), which evolves a harness automatically from a bash-only seed to 71.9% on SWE-bench Verified. Its ablation shows which parts carry the gain [p. 66](https://arxiv.org/pdf/2609.00006#page=66):
 
 ##### Percentage-point change from each evolved component (AHE)
 
@@ -334,7 +334,7 @@ Tools, middleware and long-term memory add points; the evolved system prompt alo
 
 ##### Update · my check (27 Oct 2026)
 
-A controlled study published 23 Oct 2026, _When Agents Fail: Model or Harness?_ (Shanghai AI Lab), crossed four harnesses (OpenCode, Codex CLI, Pi CLI, DeepAgents) with four models over 52,168 trajectories. Harness rankings flip depending on the model. On LOCA-Bench, harness choice accounted for 67.2% of the variation in mean scores, against 9.4% for the model and 23.4% for their interaction Zhang et al. 2026, Table 22. That is the measurement this paper explicitly did not run, and it supports its premise that the harness matters as much as the model.
+A controlled study published 23 Oct 2026, _When Agents Fail: Model or Harness?_ (Shanghai AI Lab), crossed four harnesses (OpenCode, Codex CLI, Pi CLI, DeepAgents) with four models over 52,168 trajectories. Harness rankings flip depending on the model. On LOCA-Bench, harness choice accounted for 67.2% of the variation in mean scores, against 9.4% for the model and 23.4% for their interaction [Zhang et al. 2026, Table 22](https://arxiv.org/abs/2610.32483). That is the measurement this paper explicitly did not run, and it supports its premise that the harness matters as much as the model.
 
 Self-reported SWE-bench Verified figures from spring 2026, which the authors removed from their main table as not comparable: OpenHands 77.6%, Mini-SWE-Agent 74%+, Claude Code 72.7%, Codex 69.1% (p. 11).
 
@@ -358,7 +358,7 @@ Self-reported SWE-bench Verified figures from spring 2026, which the authors rem
 
 The paper is only a few months old, so it's too early to say what it changed. What it gives you today is a shared map: one vocabulary for parts that every agent has, and evidence from real source code instead of opinion.
 
-**What to remember.** A coding agent is a small loop surrounded by a large amount of engineering whose job is not to make the model smarter but to make it safe, affordable, recoverable and extensible. The field converged fast: the same seven parts, hand-rolled loops, deterministic retrieval, threshold compaction, coordinator–worker sub-agents and skills. And it copies itself: Codex adopted Claude Code's hook vocabulary verbatim; Hermes' code comments credit OpenCode, Codex and OpenClaw p. 62.
+**What to remember.** A coding agent is a small loop surrounded by a large amount of engineering whose job is not to make the model smarter but to make it safe, affordable, recoverable and extensible. The field converged fast: the same seven parts, hand-rolled loops, deterministic retrieval, threshold compaction, coordinator–worker sub-agents and skills. And it copies itself: Codex adopted Claude Code's hook vocabulary verbatim; Hermes' code comments credit OpenCode, Codex and OpenClaw [p. 62](https://arxiv.org/pdf/2609.00006#page=62).
 
 #### Since the paper
 
@@ -406,7 +406,7 @@ The paper closes with these 18 recommendations and a 90-line scaffold that imple
 
 18. Do not over-engineer stuck detection, but ship the cheap caps.
 
-§16 p. 67–70.
+§16 [p. 67–70](https://arxiv.org/pdf/2609.00006#page=67).
 
 #### Verdict
 
@@ -418,11 +418,11 @@ The paper closes with these 18 recommendations and a 90-line scaffold that imple
 
 Three earlier lines of work circle the same object:
 
-- **SWE-agent's Agent-Computer Interface (2024).** It showed that designing tools for the model matters: custom file viewer, editor and search commands solved 10.7 points more SWE-bench Lite tasks than a plain shell (a 64% relative gain) SWE-agent. That is one subsystem (tools), studied alone.
+- **SWE-agent's Agent-Computer Interface (2024).** It showed that designing tools for the model matters: custom file viewer, editor and search commands solved 10.7 points more SWE-bench Lite tasks than a plain shell (a 64% relative gain) [SWE-agent](https://arxiv.org/abs/2405.15793). That is one subsystem (tools), studied alone.
 
 - **Agent frameworks** (LangChain, LangGraph, AutoGen, CrewAI): libraries you import to build an agent. As the Results tab shows, no production coding harness uses them.
 
-- **Surveys and taxonomies** describe patterns "without implementations"; the one concurrent source-level taxonomy (Rombaut, 13 open-source scaffolds) excludes the provider-native systems p. 2.
+- **Surveys and taxonomies** describe patterns "without implementations"; the one concurrent source-level taxonomy (Rombaut, 13 open-source scaffolds) excludes the provider-native systems [p. 2](https://arxiv.org/pdf/2609.00006#page=2).
 
 ##### Not quite a scaffold
 
@@ -440,7 +440,7 @@ SWE-bench's "harness" wraps an agent to test it. Same word, opposite direction.
 
 A meta-harness coordinates harnesses from above and has no editing loop of its own.
 
-From §2.2 p. 3–4.
+From §2.2 [p. 3–4](https://arxiv.org/pdf/2609.00006#page=3).
 
 #### Key terms
 
@@ -490,20 +490,20 @@ A layer that orchestrates several harnesses behind one API (Omnigent).
 
 #### Everything on this page comes from these
 
-1. Barbaste, Darrigol, Vu, Wiltberger (2026). Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents. arXiv 2609.00006 (read in full)
+1. Barbaste, Darrigol, Vu, Wiltberger (2026). Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents. [arXiv 2609.00006](https://arxiv.org/abs/2609.00006) (read in full)
 
-2. mini-swe-agent repository and README. github.com/SWE-agent/mini-swe-agent
+2. mini-swe-agent repository and README. [github.com/SWE-agent/mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)
 
-3. Yang et al. (2024). SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering. arXiv 2405.15793
+3. Yang et al. (2024). SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering. [arXiv 2405.15793](https://arxiv.org/abs/2405.15793)
 
-4. Anthropic. Building Effective Agents (Dec 2024) and related engineering posts, as cited by the paper. anthropic.com
+4. Anthropic. Building Effective Agents (Dec 2024) and related engineering posts, as cited by the paper. [anthropic.com](https://www.anthropic.com/research/building-effective-agents)
 
-5. Zhang et al. (2026). When Agents Fail: Model or Harness—Who's to Blame? arXiv 2610.32483
+5. Zhang et al. (2026). When Agents Fail: Model or Harness—Who's to Blame? [arXiv 2610.32483](https://arxiv.org/abs/2610.32483)
 
-6. Google Cloud Tech (2026). AI harness crash course. YouTube
+6. Google Cloud Tech (2026). AI harness crash course. [YouTube](https://www.youtube.com/watch?v=2C_CefSQEAQ)
 
-7. Böckeler (2026). Harness engineering for coding agent users. martinfowler.com
+7. Böckeler (2026). Harness engineering for coding agent users. [martinfowler.com](https://martinfowler.com/articles/harness-engineering.html)
 
-8. Further reading: Context Engineering for AI Agents (Schmid). The authors' own blog or talk: searched, none found.
+8. Further reading: [Context Engineering for AI Agents (Schmid)](https://www.philschmid.de/context-engineering-part-2). The authors' own blog or talk: searched, none found.
 
 The test_invoice.py task and the numbers inside the widgets (tokens per schema, tokens per turn, the example policy) are illustrative. All other facts and numbers come from the sources above. @datawithsuman

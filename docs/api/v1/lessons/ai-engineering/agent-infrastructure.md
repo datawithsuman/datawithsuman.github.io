@@ -48,7 +48,7 @@ With **100 steps** and a **2%** transient failure rate per step, only **13.3%** 
 
 #### In one breath
 
-An agent task can run for minutes or hours, making dozens of model and tool calls, any of which can fail: rate limits, timeouts, flaky APIs, a deploy restarting the worker. If a failure means **starting over**, long tasks rarely finish and you pay for the same work again and again. **Durable execution** saves the agent's state after every step (a **checkpoint**), so it resumes exactly where it stopped; combined with **retries with backoff**, **idempotent tools** (so a retried refund doesn't pay twice), **timeouts**, **step and cost budgets**, pauses for **human approval**, and **tracing** of every step, it turns a demo into a service. Frameworks like LangGraph (checkpointers), the OpenAI and Claude Agent SDKs, and workflow engines like Temporal provide these pieces; the details change fast, the needs don't.What you'll be able to do after this: design reliable agent execution, explain checkpoints and idempotency, and list what to monitor.
+An agent task can run for minutes or hours, making dozens of model and tool calls, any of which can fail: rate limits, timeouts, flaky APIs, a deploy restarting the worker. If a failure means **starting over**, long tasks rarely finish and you pay for the same work again and again. **Durable execution** saves the agent's state after every step (a **checkpoint**), so it resumes exactly where it stopped; combined with **retries with backoff**, **idempotent tools** (so a retried refund doesn't pay twice), **timeouts**, **step and cost budgets**, pauses for **human approval**, and **tracing** of every step, it turns a demo into a service. Frameworks like LangGraph (checkpointers), the OpenAI and Claude Agent SDKs, and workflow engines like Temporal provide these pieces; the details change fast, the needs don't. What you'll be able to do after this: design reliable agent execution, explain checkpoints and idempotency, and list what to monitor.
 
 #### The reliability toolkit
 
@@ -78,7 +78,7 @@ An agent task can run for minutes or hours, making dozens of model and tool call
 
 - **Monitor:** success rate, steps and cost per task, tool error rates, loops detected, budget stops, escalations; alert on drifts.
 
-**Added 7 Nov 2026.** Current frameworks share a few concepts: LangGraph saves checkpoints per thread, pauses with interrupts and can replay or branch from any checkpoint; LangChain 1.x adds middleware for retries, fallbacks, summarisation, approvals and call limits; Google ADK has callbacks and graph workflows. See Agent Frameworks and Harnesses and Long-Running and Scheduled Agents.
+Current frameworks share a few concepts: LangGraph saves checkpoints per thread, pauses with interrupts and can replay or branch from any checkpoint; LangChain 1.x adds middleware for retries, fallbacks, summarisation, approvals and call limits; Google ADK has callbacks and graph workflows. See Agent Frameworks and Harnesses and Long-Running and Scheduled Agents.
 
 #### Treat an agent run like a long-running transaction
 
@@ -128,7 +128,7 @@ Agent runs are long chains of calls that fail transiently, so I'd use durable ex
 
 **Key terms and sources**
 
-What it takes to run agents reliably in production: long-running tasks that survive crashes (durable execution and checkpoints), retries with backoff, idempotent tools, timeouts and budgets, human-in-the-loop pauses, observability and tracing, and the framework landscape (LangGraph, OpenAI Agents SDK, Claude Agent SDK, Temporal-style workflow engines) · built from the LangGraph persistence documentation, Temporal documentation, the OpenAI Agents SDK and Claude Agent SDK documentation, OpenTelemetry GenAI semantic conventions, and Meta's Llama 3 report on long-running job reliability · checked 29 Oct 2026
+What it takes to run agents reliably in production: long-running tasks that survive crashes (durable execution and checkpoints), retries with backoff, idempotent tools, timeouts and budgets, human-in-the-loop pauses, observability and tracing, and the framework landscape (LangGraph, OpenAI Agents SDK, Claude Agent SDK, Temporal-style workflow engines) · built from the LangGraph persistence documentation, Temporal documentation, the OpenAI Agents SDK and Claude Agent SDK documentation, OpenTelemetry GenAI semantic conventions, and Meta's Llama 3 report on long-running job reliability · checked 7 Nov 2026
 
 #### Sources
 
@@ -138,4 +138,4 @@ What it takes to run agents reliably in production: long-running tasks that surv
 
 3. OpenAI Agents SDK documentation (agents, handoffs, guardrails, tracing); Anthropic, Claude Agent SDK documentation.
 
-4. OpenTelemetry, semantic conventions for generative AI systems; Llama Team, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783 (checkpointing long jobs through frequent interruptions).
+4. OpenTelemetry, semantic conventions for generative AI systems; Llama Team, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783) (checkpointing long jobs through frequent interruptions).

@@ -48,11 +48,11 @@ With a sharp start and peak 1.0, the schedules that begin at full speed (**const
 
 #### In one breath
 
-A big learning rate makes fast progress but, with noisy mini-batch gradients, keeps bouncing around the minimum; a small one settles precisely but crawls. So we **decay** it: large early, small late. **Step decay** drops it by 10× at fixed points, **cosine** lowers it smoothly to near zero. **Warmup** starts tiny and ramps up over the first few hundred or thousand steps, because early in training the loss surface is sharpest and a full-size step can blow up. Modern LLMs use **linear warmup then cosine decay** to about 10% of the peak; **one-cycle** ramps up and then down within a single run.What you'll be able to do after this: explain why decay lowers the final loss, why warmup prevents early divergence, and sketch the schedules used for CNNs and LLMs.
+A big learning rate makes fast progress but, with noisy mini-batch gradients, keeps bouncing around the minimum; a small one settles precisely but crawls. So we **decay** it: large early, small late. **Step decay** drops it by 10× at fixed points, **cosine** lowers it smoothly to near zero. **Warmup** starts tiny and ramps up over the first few hundred or thousand steps, because early in training the loss surface is sharpest and a full-size step can blow up. Modern LLMs use **linear warmup then cosine decay** to about 10% of the peak; **one-cycle** ramps up and then down within a single run. What you'll be able to do after this: explain why decay lowers the final loss, why warmup prevents early divergence, and sketch the schedules used for CNNs and LLMs.
 
 #### The common shapes
 
-$$ \eta_t = \begin{cases} \eta_{\max}\,\dfrac{t}{W} & t < W \\[6pt] \eta_{\min} + \tfrac12(\eta_{\max}-\eta_{\min})\big(1+\cos\big(\pi\tfrac{t-W}{T-W}\big)\big) & t \ge W \end{cases} $$
+$$ \eta_t = \begin{cases} {\eta_{\max}\,\dfrac{t}{W}} & t < W \\[6pt] {\eta_{\min} + \tfrac12(\eta_{\max}-\eta_{\min})\big(1+\cos\big(\pi\tfrac{t-W}{T-W}\big)\big)} & t \ge W \end{cases} $$
 
 Others: **step decay** (×0.1 at e.g. 50% and 75% of training, the classic ResNet recipe); **one-cycle** (ramp up for ~30%, then anneal far below the start; Smith & Topin 2018); **inverse square root** (original Transformer); **warmup-stable-decay** (hold the peak, then decay quickly at the end).
 
@@ -62,9 +62,9 @@ Others: **step decay** (×0.1 at e.g. 50% and 75% of training, the classic ResNe
 
 #### Why a slow start helps
 
-- **Sharp early landscape:** at initialisation the loss surface is often much sharper than later. Warmup lets training move into flatter regions while steps are still small, after which a large learning rate is stable (Gilmer et al., ICLR 2022 arXiv:2110.04369). Kalra & Barkeshli (NeurIPS 2024) find that warmup's main benefit is letting the network tolerate a larger target learning rate arXiv:2406.09405.
+- **Sharp early landscape:** at initialisation the loss surface is often much sharper than later. Warmup lets training move into flatter regions while steps are still small, after which a large learning rate is stable (Gilmer et al., ICLR 2022 [arXiv:2110.04369](https://arxiv.org/abs/2110.04369)). Kalra & Barkeshli (NeurIPS 2024) find that warmup's main benefit is letting the network tolerate a larger target learning rate [arXiv:2406.09405](https://arxiv.org/abs/2406.09405).
 
-- **Large batches:** Goyal et al. (2017) trained ResNet-50 on ImageNet with batch size 8,192 in one hour by scaling the learning rate linearly with batch size, which only worked with a **gradual warmup** over the first 5 epochs arXiv:1706.02677 (next lesson).
+- **Large batches:** Goyal et al. (2017) trained ResNet-50 on ImageNet with batch size 8,192 in one hour by scaling the learning rate linearly with batch size, which only worked with a **gradual warmup** over the first 5 epochs [arXiv:1706.02677](https://arxiv.org/abs/1706.02677) (next lesson).
 
 - **Transformers:** post-norm transformers are especially unstable early; pre-norm reduces the need for warmup (normalisation lesson).
 
@@ -131,14 +131,14 @@ Why the learning rate should change during training: step decay, cosine annealin
 
 #### Sources
 
-1. P. Goyal et al., "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour", arXiv:1706.02677, 2017.
+1. P. Goyal et al., "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour", [arXiv:1706.02677](https://arxiv.org/abs/1706.02677), 2017.
 
-2. I. Loshchilov & F. Hutter, "SGDR: Stochastic Gradient Descent with Warm Restarts", ICLR 2017, arXiv:1608.03983.
+2. I. Loshchilov & F. Hutter, "SGDR: Stochastic Gradient Descent with Warm Restarts", ICLR 2017, [arXiv:1608.03983](https://arxiv.org/abs/1608.03983).
 
-3. L. Smith & N. Topin, "Super-Convergence: Very Fast Training of Neural Networks Using Large Learning Rates", arXiv:1708.07120, 2018.
+3. L. Smith & N. Topin, "Super-Convergence: Very Fast Training of Neural Networks Using Large Learning Rates", [arXiv:1708.07120](https://arxiv.org/abs/1708.07120), 2018.
 
-4. J. Gilmer et al., "A Loss Curvature Perspective on Training Instabilities of Deep Learning Models", ICLR 2022, arXiv:2110.04369.
+4. J. Gilmer et al., "A Loss Curvature Perspective on Training Instabilities of Deep Learning Models", ICLR 2022, [arXiv:2110.04369](https://arxiv.org/abs/2110.04369).
 
-5. D. Kalra & M. Barkeshli, "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements", NeurIPS 2024, arXiv:2406.09405.
+5. D. Kalra & M. Barkeshli, "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements", NeurIPS 2024, [arXiv:2406.09405](https://arxiv.org/abs/2406.09405).
 
-6. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", arXiv:2302.13971, 2023.
+6. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023.

@@ -48,11 +48,11 @@ With a **fixed** learning rate, the final loss climbs from **0.027** at B = 32 t
 
 #### In one breath
 
-A mini-batch gradient is an average over B examples, so its **noise shrinks like 1/√B**. A bigger batch gives a cleaner gradient per step but **fewer steps per epoch**. To keep making the same progress per epoch, you raise the learning rate: the **linear scaling rule** (multiply η by k when you multiply B by k) works for SGD up to a point, and needs **warmup**. Past the **critical batch size**, extra batch stops buying fewer steps: the learning rate can't grow further without going unstable, so you just waste compute. For Adam, a **square-root** rule is often closer to right. Large batches were once blamed for worse generalisation; much of that gap closes with proper learning-rate tuning and longer training.What you'll be able to do after this: predict what happens when you change the batch size, rescale the learning rate correctly, and explain the critical batch size.
+A mini-batch gradient is an average over B examples, so its **noise shrinks like 1/√B**. A bigger batch gives a cleaner gradient per step but **fewer steps per epoch**. To keep making the same progress per epoch, you raise the learning rate: the **linear scaling rule** (multiply η by k when you multiply B by k) works for SGD up to a point, and needs **warmup**. Past the **critical batch size**, extra batch stops buying fewer steps: the learning rate can't grow further without going unstable, so you just waste compute. For Adam, a **square-root** rule is often closer to right. Large batches were once blamed for worse generalisation; much of that gap closes with proper learning-rate tuning and longer training. What you'll be able to do after this: predict what happens when you change the batch size, rescale the learning rate correctly, and explain the critical batch size.
 
 #### Averaging B examples shrinks the noise
 
-$$ \hat{g}_B = \frac{1}{B}\sum_{i=1}^{B} \nabla \ell_i, \qquad \mathrm{Var}(\hat{g}_B) = \frac{\sigma^2}{B} $$
+$$ {\hat{g}_B = \frac{1}{B}\sum_{i=1}^{B} \nabla \ell_i}, \qquad {\mathrm{Var}(\hat{g}_B) = \frac{\sigma^2}{B}} $$
 
 An SGD step of size η then moves the weights by η·ĝ: its "signal" scales with η and its noise with η/√B. Doubling both B and η gives one step that moves about as far as two of the original steps with similar total noise: the intuition behind linear scaling (Goyal et al. 2017; Smith et al. 2018).
 
@@ -62,11 +62,11 @@ An SGD step of size η then moves the weights by η·ĝ: its "signal" scales wit
 
 #### Linear scaling, warmup and the critical batch size
 
-- **Linear scaling rule (SGD):** multiply B by k → multiply η by k, keep other hyperparameters. Goyal et al. trained ResNet-50 on ImageNet with batch 8,192 on 256 GPUs in about an hour, matching small-batch accuracy, using this rule plus a 5-epoch **gradual warmup**; without warmup the large-batch run lost accuracy arXiv:1706.02677.
+- **Linear scaling rule (SGD):** multiply B by k → multiply η by k, keep other hyperparameters. Goyal et al. trained ResNet-50 on ImageNet with batch 8,192 on 256 GPUs in about an hour, matching small-batch accuracy, using this rule plus a 5-epoch **gradual warmup**; without warmup the large-batch run lost accuracy [arXiv:1706.02677](https://arxiv.org/abs/1706.02677).
 
-- **Critical batch size:** McCandlish et al. (2018) predict it from the _gradient noise scale_ (roughly the gradient's variance over its squared size): below it, doubling B nearly halves the steps; above it, returns diminish arXiv:1812.06162. The noise scale grows during training, so later phases tolerate bigger batches. Shallue et al. (2019) measured the same pattern across many models and datasets.
+- **Critical batch size:** McCandlish et al. (2018) predict it from the _gradient noise scale_ (roughly the gradient's variance over its squared size): below it, doubling B nearly halves the steps; above it, returns diminish [arXiv:1812.06162](https://arxiv.org/abs/1812.06162). The noise scale grows during training, so later phases tolerate bigger batches. Shallue et al. (2019) measured the same pattern across many models and datasets.
 
-- **Adam:** Adam normalises the update size, so linear scaling overshoots. Analyses based on stochastic differential equations suggest a **square-root** rule (η ∝ √B) for Adam (Malladi et al., NeurIPS 2022 arXiv:2205.10287); in practice, re-tune η when you change B.
+- **Adam:** Adam normalises the update size, so linear scaling overshoots. Analyses based on stochastic differential equations suggest a **square-root** rule (η ∝ √B) for Adam (Malladi et al., NeurIPS 2022 [arXiv:2205.10287](https://arxiv.org/abs/2205.10287)); in practice, re-tune η when you change B.
 
 ## In practice
 
@@ -91,7 +91,7 @@ With the learning rate fixed, a 64× bigger batch makes 64× fewer steps of the 
 
 #### Do large batches generalise worse?
 
-Keskar et al. (ICLR 2017) found a generalisation gap for large batches and argued that large-batch training converges to **sharp minima** while small-batch noise helps find **flat** ones arXiv:1609.04836. Later work showed much of the gap came from under-tuned learning rates and too few updates: Goyal et al. found that optimisation difficulty, not generalisation, was the main issue on ImageNet, and Shallue et al. found no consistent degradation once hyperparameters were re-tuned for each batch size. Treat batch size as a speed/compute knob, and re-tune the learning rate (and warmup) whenever you change it.
+Keskar et al. (ICLR 2017) found a generalisation gap for large batches and argued that large-batch training converges to **sharp minima** while small-batch noise helps find **flat** ones [arXiv:1609.04836](https://arxiv.org/abs/1609.04836). Later work showed much of the gap came from under-tuned learning rates and too few updates: Goyal et al. found that optimisation difficulty, not generalisation, was the main issue on ImageNet, and Shallue et al. found no consistent degradation once hyperparameters were re-tuned for each batch size. Treat batch size as a speed/compute knob, and re-tune the learning rate (and warmup) whenever you change it.
 
 ## Say it
 
@@ -135,14 +135,14 @@ What batch size changes (gradient noise, steps per epoch, hardware use), the lin
 
 #### Sources
 
-1. P. Goyal et al., "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour", arXiv:1706.02677, 2017.
+1. P. Goyal et al., "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour", [arXiv:1706.02677](https://arxiv.org/abs/1706.02677), 2017.
 
-2. N. Keskar et al., "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima", ICLR 2017, arXiv:1609.04836.
+2. N. Keskar et al., "On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima", ICLR 2017, [arXiv:1609.04836](https://arxiv.org/abs/1609.04836).
 
-3. S. Smith, P.-J. Kindermans, C. Ying & Q. Le, "Don't Decay the Learning Rate, Increase the Batch Size", ICLR 2018, arXiv:1711.00489.
+3. S. Smith, P.-J. Kindermans, C. Ying & Q. Le, "Don't Decay the Learning Rate, Increase the Batch Size", ICLR 2018, [arXiv:1711.00489](https://arxiv.org/abs/1711.00489).
 
-4. S. McCandlish, J. Kaplan, D. Amodei et al., "An Empirical Model of Large-Batch Training", arXiv:1812.06162, 2018.
+4. S. McCandlish, J. Kaplan, D. Amodei et al., "An Empirical Model of Large-Batch Training", [arXiv:1812.06162](https://arxiv.org/abs/1812.06162), 2018.
 
-5. C. Shallue et al., "Measuring the Effects of Data Parallelism on Neural Network Training", _JMLR_ 20, 2019, arXiv:1811.03600.
+5. C. Shallue et al., "Measuring the Effects of Data Parallelism on Neural Network Training", _JMLR_ 20, 2019, [arXiv:1811.03600](https://arxiv.org/abs/1811.03600).
 
-6. S. Malladi, K. Lyu, A. Panigrahi & S. Arora, "On the SDEs and Scaling Rules for Adaptive Gradient Algorithms", NeurIPS 2022, arXiv:2205.10287.
+6. S. Malladi, K. Lyu, A. Panigrahi & S. Arora, "On the SDEs and Scaling Rules for Adaptive Gradient Algorithms", NeurIPS 2022, [arXiv:2205.10287](https://arxiv.org/abs/2205.10287).

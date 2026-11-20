@@ -48,7 +48,7 @@ With raw counts, the cold-biryani review is **0.64–0.79** similar to _every_ o
 
 #### In one breath
 
-**Bag-of-words** turns a document into a vector with one entry per vocabulary word: how many times it appears. Word order is thrown away (hence "bag"); adding **n-grams** (pairs like "not good") keeps some of it. Raw counts are dominated by words like "the" and "was" that appear everywhere. **TF-IDF** multiplies each word's count (**term frequency**) by its **inverse document frequency**, log(N / df): a word in every document gets weight 0, a rare word gets a high weight. Documents are compared with **cosine similarity**. The vectors are huge but **sparse**, and TF-IDF plus a linear model is still a strong, fast baseline for text classification and search.What you'll be able to do after this: build a bag-of-words / TF-IDF vector by hand, explain IDF, use n-grams, and compare documents with cosine similarity.
+**Bag-of-words** turns a document into a vector with one entry per vocabulary word: how many times it appears. Word order is thrown away (hence "bag"); adding **n-grams** (pairs like "not good") keeps some of it. Raw counts are dominated by words like "the" and "was" that appear everywhere. **TF-IDF** multiplies each word's count (**term frequency**) by its **inverse document frequency**, log(N / df): a word in every document gets weight 0, a rare word gets a high weight. Documents are compared with **cosine similarity**. The vectors are huge but **sparse**, and TF-IDF plus a linear model is still a strong, fast baseline for text classification and search. What you'll be able to do after this: build a bag-of-words / TF-IDF vector by hand, explain IDF, use n-grams, and compare documents with cosine similarity.
 
 #### Bag-of-words and n-grams
 
@@ -60,7 +60,7 @@ With raw counts, the cold-biryani review is **0.64–0.79** similar to _every_ o
 
 #### TF-IDF: weight words by how distinctive they are
 
-$$ w_{t,d} = \mathrm{tf}_{t,d} \times \log\frac{N}{\mathrm{df}_t} $$
+$$ {w_{t,d}} = {\mathrm{tf}_{t,d}} \times {\log\frac{N}{\mathrm{df}_t}} $$
 
 IDF was introduced by Spärck Jones (1972); Salton & Buckley (1988) compared term-weighting schemes. scikit-learn's default uses a smoothed version, ln((1 + N)/(1 + df)) + 1, so no weight is exactly 0, and then L2-normalises each vector. Manning et al. (2008), ch. 6.
 
@@ -136,8 +136,8 @@ Representing documents as word-count vectors, adding n-grams for word order, and
 
 2. G. Salton & C. Buckley, "Term-weighting approaches in automatic text retrieval", _Information Processing & Management_ 24(5), 1988.
 
-3. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, 2008, ch. 6, nlp.stanford.edu/IR-book.
+3. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, 2008, ch. 6, [nlp.stanford.edu/IR-book](https://nlp.stanford.edu/IR-book/).
 
-4. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 5 (embeddings and TF-IDF), web.stanford.edu/~jurafsky/slp3.
+4. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 5 (embeddings and TF-IDF), [web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3/).
 
-5. scikit-learn documentation, TF-IDF term weighting.
+5. scikit-learn documentation, [TF-IDF term weighting](https://scikit-learn.org/stable/modules/feature_extraction.html#tfidf-term-weighting).

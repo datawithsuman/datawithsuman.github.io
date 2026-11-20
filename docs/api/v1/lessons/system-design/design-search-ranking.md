@@ -153,8 +153,10 @@ Long views went up a lot, but bookings didn't. Why?
 
 Views aren't bookings: people browse expensive or unusual homes they won't book. Optimise the real goal, and treat views as a helper signal only if they actually move it.
 
+#### The 30-second answer
+
 First I'd clarify the goal, bookings, the candidate set per search, the current model and the latency budget. Training data comes from search logs: within each search, I'd pair the booked listing with listings not booked, and train a network with a pairwise loss weighted by the change in NDCG, so it focuses on the top of the list. I'd normalise every feature to a small range, prefer smooth distributions, and represent location as offsets plus a hashed city-and-area feature. I'd start with a simple network that matches the trees, to prove the pipeline, then add data, since networks need far more of it, and watch learning curves. I'd fix the training pipeline early, because data loading often starves GPUs. I'd be careful with per-listing embeddings, which overfit when bookings are scarce, and with proxy signals like views. Every change is tested offline on NDCG, then online on bookings.
 
 **Key terms and sources**
 
-Based on a home-sharing marketplace's published paper: "Applying Deep Learning To Airbnb Search" (KDD 2019). The lab reports the paper's own outcomes; the estimate is ours. Uses ranking metrics, training deep nets and explaining models.
+Based on a home-sharing marketplace's published paper: ["Applying Deep Learning To Airbnb Search"](https://arxiv.org/abs/1810.09591) (KDD 2019). The lab reports the paper's own outcomes; the estimate is ours. Uses ranking metrics, training deep nets and explaining models. · checked 5 Nov 2026

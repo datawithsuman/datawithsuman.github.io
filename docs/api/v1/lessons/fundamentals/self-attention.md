@@ -53,13 +53,13 @@ The query for **cold** looks for a noun in its own clause: the biggest weight go
 
 #### In one breath
 
-In **self-attention**, each token asks a question (its **query**), every token advertises what it contains (its **key**), and the match between a query and each key, a dot product, decides how much of each token's **value** to blend in. Scores are divided by **√d** (the key size) so they don't grow with dimension and push the softmax into near one-hot outputs with tiny gradients. The result: every token's new vector is a weighted mix of all tokens, so "cold" can pull in information from "biryani" no matter how far apart they are. All tokens are computed at once as matrix products, which is fast on GPUs, but the score matrix is **n × n**, so cost grows with the square of the sequence length.What you'll be able to do after this: compute attention by hand, explain Q, K and V, justify the √d scaling, and state attention's cost.
+In **self-attention**, each token asks a question (its **query**), every token advertises what it contains (its **key**), and the match between a query and each key, a dot product, decides how much of each token's **value** to blend in. Scores are divided by **√d** (the key size) so they don't grow with dimension and push the softmax into near one-hot outputs with tiny gradients. The result: every token's new vector is a weighted mix of all tokens, so "cold" can pull in information from "biryani" no matter how far apart they are. All tokens are computed at once as matrix products, which is fast on GPUs, but the score matrix is **n × n**, so cost grows with the square of the sequence length. What you'll be able to do after this: compute attention by hand, explain Q, K and V, justify the √d scaling, and state attention's cost.
 
 #### Scaled dot-product attention
 
-$$ \mathrm{Attention}(Q,K,V) = \mathrm{softmax}\!\Big(\frac{Q\,K^{\top}}{\sqrt{d_k}}\Big)\,V, \qquad Q = XW_Q,\; K = XW_K,\; V = XW_V $$
+$$ \mathrm{Attention}(Q,K,V) = {\mathrm{softmax}}\!\Big({\frac{{Q}\,{K}^{\top}}{\sqrt{d_k}}}\Big)\,{V}, \qquad Q = XW_Q,\; K = XW_K,\; V = XW_V $$
 
-Vaswani et al., "Attention Is All You Need", NeurIPS 2017, Eq. 1 arXiv:1706.03762. Jay Alammar's "The Illustrated Transformer" is the classic visual guide.
+Vaswani et al., "Attention Is All You Need", NeurIPS 2017, Eq. 1 [arXiv:1706.03762](https://arxiv.org/abs/1706.03762). Jay Alammar's "The Illustrated Transformer" is the classic visual guide.
 
 - **queries**: Each token’s embedding times a learned matrix W_Q: what this token is looking for. Stacked into an n × d matrix.
 
@@ -137,10 +137,10 @@ How every token builds a new representation by looking at every other token: que
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. D. Bahdanau, K. Cho & Y. Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015, arXiv:1409.0473.
+2. D. Bahdanau, K. Cho & Y. Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015, [arXiv:1409.0473](https://arxiv.org/abs/1409.0473).
 
-3. J. Alammar, "The Illustrated Transformer", 2018.
+3. J. Alammar, ["The Illustrated Transformer"](https://jalammar.github.io/illustrated-transformer/), 2018.
 
-4. T. Dao et al., "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", NeurIPS 2022, arXiv:2205.14135.
+4. T. Dao et al., "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", NeurIPS 2022, [arXiv:2205.14135](https://arxiv.org/abs/2205.14135).

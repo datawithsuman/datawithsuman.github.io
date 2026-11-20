@@ -156,8 +156,10 @@ The query encoder adds 50 ms. How do you fix it?
 
 Use a smaller distilled model, fix the input length to avoid dynamic shapes, serve it on GPUs, cache embeddings and ANN results for frequent queries, and only call semantic retrieval for queries that need it.
 
+#### The 30-second answer
+
 First I'd clarify the catalogue size, the mix of head and tail queries, the latency budget and what must keep working, like exact model numbers and filters. I'd build a hybrid. The existing keyword index stays for exact matches and facets. Alongside it, a two-tower transformer embeds the query at request time and products offline, and an ANN index returns the closest products. Both run in parallel, results are merged and de-duplicated, and the gradient-boosted re-ranker orders them, with the embedding similarity as a new feature. I'd train on engagement, with purchases scored above clicks, and use hard negatives mined from the model's own results, filtered to remove products that are actually relevant. I'd shrink the embedding with a linear projection, since 256 dimensions keeps recall at a third of the storage. For latency, a small query encoder on GPUs and cached ANN results. I'd measure recall on a golden set, then prove it with human ratings and interleaving, starting with tail queries.
 
 **Key terms and sources**
 
-Based on a retailer's published paper: "Semantic Retrieval at Walmart" (KDD 2022). The lab uses the paper's own reported numbers; the estimate is ours. Uses embeddings and vector indexes, hybrid search and re-ranking.
+Based on a retailer's published paper: ["Semantic Retrieval at Walmart"](https://arxiv.org/abs/2412.04637) (KDD 2022). The lab uses the paper's own reported numbers; the estimate is ours. Uses embeddings and vector indexes, hybrid search and re-ranking. · checked 5 Nov 2026

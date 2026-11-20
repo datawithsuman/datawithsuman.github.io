@@ -30,7 +30,7 @@ Ask a chatbot to summarise a long document and you see the same pattern every ti
 
 4. So for this request, decode is about 1.44 s of the 1.47 s total. And as you'll see, during that time the GPU's maths units sit almost idle.
 
-The same pattern shows up in measurements, not just my arithmetic. Profiling Llama-2-7B on an RTX 4090, the AWQ authors found that reading a 200-token prompt took **10 ms** while generating 20 tokens took **310 ms** AWQ, Fig. 3, p. 5.
+The same pattern shows up in measurements, not just my arithmetic. Profiling Llama-2-7B on an RTX 4090, the AWQ authors found that reading a 200-token prompt took **10 ms** while generating 20 tokens took **310 ms** [AWQ, Fig. 3, p. 5](https://arxiv.org/pdf/2306.00978#page=5).
 
 So "how fast is this LLM?" has two answers. The services that run LLMs track them separately:
 
@@ -42,7 +42,7 @@ How long until the first word. Set by prefill, grows with prompt length. Matters
 
 The gap between streamed tokens (also called TBT, time between tokens). Set by decode. 10 ms per token = 100 tokens per second for that user.
 
-DistServe, p. 1–2 · Splitwise, Table II, p. 2
+[DistServe, p. 1–2](https://arxiv.org/pdf/2401.09670#page=1) · [Splitwise, Table II, p. 2](https://arxiv.org/pdf/2311.18677#page=2)
 
 ### The idea
 
@@ -60,7 +60,7 @@ _Rough figures from the lesson, for Llama 3.1 8B on one H100 serving one user._
 
 For one user, a decode step does 2 FLOPs per weight but has to read 2 bytes per weight. The tensor cores finish their 16 GFLOPs in 0.016 ms, then wait 4.8 ms for the bytes. So the speed limit is set by bytes, and anything that shrinks them speeds decode up directly.
 
-$$ t_{\text{step}} \approx \big(bP + B\,n_{\text{ctx}}\,\text{KV}_{\text{tok}}\big)\,\big/\,\text{BW} \;\Rightarrow\; 16.1\ \text{GB} / 3.35\ \text{TB/s} \approx 4.8\ \text{ms} $$
+$$ {t_{\text{step}}} \approx \big({bP} + {B\,n_{\text{ctx}}\,\text{KV}_{\text{tok}}}\big)\,\big/\,{\text{BW}} \;\Rightarrow\; {16.1\ \text{GB} / 3.35\ \text{TB/s} \approx 4.8\ \text{ms}} $$
 
 Memory-bound estimate (my derivation, standard in the inference literature) · hover any symbol.
 
@@ -76,11 +76,11 @@ Memory-bound estimate (my derivation, standard in the inference literature) · h
 
 ##### Try it: shrink the bytes
 
-Weights only, batch of 1, Llama 3.1 8B on an H100. Halving the bytes halves the ideal time. In practice one precision step down (16 → 8 bits) is typically 30–50% faster, not 2×, because of kernels, the KV cache and other overheads (Inference Engineering, P. Kiely, ch. 5.1). AWQ's 4-bit TinyChat kernels measured about 3.2–3.3× over Hugging Face FP16 AWQ, p. 2.
+Weights only, batch of 1, Llama 3.1 8B on an H100. Halving the bytes halves the ideal time. In practice one precision step down (16 → 8 bits) is typically 30–50% faster, not 2×, because of kernels, the KV cache and other overheads (Inference Engineering, P. Kiely, ch. 5.1). AWQ's 4-bit TinyChat kernels measured about 3.2–3.3× over Hugging Face FP16 [AWQ, p. 2](https://arxiv.org/pdf/2306.00978#page=2).
 
 ##### What breaks: the KV cache keeps growing
 
-Every generated token adds 128 KiB to every user's cache, and decode re-reads the whole cache each step. Splitwise: "each active generated token that is being processed accesses the KV cache of its entire context so far", which makes the token phase "limited by memory capacity" Insight V, p. 5. Long contexts slow decode even when the weights are tiny. That's why GQA, KV-cache quantization and paged cache memory exist.
+Every generated token adds 128 KiB to every user's cache, and decode re-reads the whole cache each step. Splitwise: "each active generated token that is being processed accesses the KV cache of its entire context so far", which makes the token phase "limited by memory capacity" [Insight V, p. 5](https://arxiv.org/pdf/2311.18677#page=5). Long contexts slow decode even when the weights are tiny. That's why GQA, KV-cache quantization and paged cache memory exist.
 
 **Now say why:** the tensor cores are almost idle, so what is decode actually waiting for?
 
@@ -90,7 +90,7 @@ Every generated token adds 128 KiB to every user's cache, and decode re-reads th
 
 #### In one breath
 
-Every LLM request runs in two phases. **Prefill** reads the whole prompt in one pass and is limited by the GPU's maths. **Decode** writes the answer one token per pass and is limited by how fast memory can feed the weights. Almost every inference trick (batching, quantization, chunked prefill, disaggregation) is a fix for one phase or for the two getting in each other's way.What you'll be able to do after this: estimate TTFT and tokens per second on a napkin, explain why decode is memory-bound, and pick the right fix when an LLM feels slow.
+Every LLM request runs in two phases. **Prefill** reads the whole prompt in one pass and is limited by the GPU's maths. **Decode** writes the answer one token per pass and is limited by how fast memory can feed the weights. Almost every inference trick (batching, quantization, chunked prefill, disaggregation) is a fix for one phase or for the two getting in each other's way. What you'll be able to do after this: estimate TTFT and tokens per second on a napkin, explain why decode is memory-bound, and pick the right fix when an LLM feels slow.
 
 #### A GPU is a fast calculator behind a narrow pipe
 
@@ -108,9 +108,9 @@ You need three ideas: where the weights live, the KV cache, and the ratio betwee
 
 The KV cache is why the model doesn't redo the whole prompt for every new token. Attention needs every past token's key and value, so prefill computes them once and stores them. Its size per token comes from the model's shape:
 
-$$ \text{KV}_{\text{tok}} = 2\cdotL\cdotH_{kv}\cdotd_h\cdotb = 131{,}072\ \text{bytes} $$
+$$ {\text{KV}_{\text{tok}}} = {2}\cdot{L}\cdot{H_{kv}}\cdot{d_h}\cdot{b} = {131{,}072\ \text{bytes}} $$
 
-Standard formula; model shape from the Llama 3.1 8B config (32 layers, 8 KV heads, head size 128, bfloat16) · hover any symbol for its meaning.
+Standard formula; model shape from the [Llama 3.1 8B config](https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json) (32 layers, 8 KV heads, head size 128, bfloat16) · hover any symbol for its meaning.
 
 - **bytes per token**: How much KV cache one token adds, across the whole model.
 
@@ -128,15 +128,15 @@ Standard formula; model shape from the Llama 3.1 8B config (32 layers, 8 KV head
 
 **Go deeper: why 2 FLOPs per parameter per token**
 
-A linear layer computes y = Wx. Each weight wij is used once per token: multiply it by xj, add it to yi. That is 2 FLOPs. Linear layers hold almost all of a transformer's parameters, so a forward pass costs about 2·P FLOPs per token, plus attention, which costs about 2·L·d·n per token at context length n (small until the context gets long). This is the standard estimate used in the inference literature; the attention term is why very long prompts make prefill grow faster than linearly DistServe, p. 13.
+A linear layer computes y = Wx. Each weight wij is used once per token: multiply it by xj, add it to yi. That is 2 FLOPs. Linear layers hold almost all of a transformer's parameters, so a forward pass costs about 2·P FLOPs per token, plus attention, which costs about 2·L·d·n per token at context length n (small until the context gets long). This is the standard estimate used in the inference literature; the attention term is why very long prompts make prefill grow faster than linearly [DistServe, p. 13](https://arxiv.org/pdf/2401.09670#page=13).
 
 #### Both phases read the same weights. Only prefill gets to reuse them.
 
 Every forward pass streams all the weights from memory once. What changes is how many tokens share that one read. Prefill pushes thousands of prompt tokens through together, so each weight byte gets used thousands of times. Decode pushes one token per user, so each byte is used once (per user) and thrown away. The number that captures this is arithmetic intensity: FLOPs done per byte read.
 
-$$ I = 2PN\,\big/\,bP = 2N/b \qquad I_{\text{prefill}}\approx 2000 \quad I_{\text{decode}}\approx 1 $$
+$$ {I} = {2PN}\,\big/\,{bP} = {2N/b} \qquad {I_{\text{prefill}}\approx 2000} \quad {I_{\text{decode}}\approx 1} $$
 
-Weights-only roofline estimate (my derivation from the standard 2·P FLOPs rule). AWQ's profile of Llama-2-7B reports the same picture: intensity ≈ 1 for 16-bit decode and ≥ 165 for the prompt stage AWQ, Fig. 3b, p. 5.
+Weights-only roofline estimate (my derivation from the standard 2·P FLOPs rule). AWQ's profile of Llama-2-7B reports the same picture: intensity ≈ 1 for 16-bit decode and ≥ 165 for the prompt stage [AWQ, Fig. 3b, p. 5](https://arxiv.org/pdf/2306.00978#page=5).
 
 - **intensity**: FLOPs per byte moved from memory. Compare it with the GPU ridge point (295 on an H100) to know which limit you hit.
 
@@ -158,11 +158,11 @@ Once the prompt is a few hundred tokens long, the weights stream in faster than 
 
 Ideal H100 ceiling for Llama 3.1 8B (P = 8.03 B, L = 32, d = 4,096). Below about 300 tokens, prefill is actually memory-bound too. Above it, every extra token costs maths, and at very long prompts the n² attention term takes a growing share.
 
-The papers see the same switch point on real hardware. DistServe found a single 512-token prompt "can fully engage an A100" for a 13B model p. 4. Sarathi-Serve notes the theory says about 200 tokens on an A100 (whose ridge is lower, about 153), but in practice it happens at about 500–600 tokens because of fixed overheads p. 6, footnote 2.
+The papers see the same switch point on real hardware. DistServe found a single 512-token prompt "can fully engage an A100" for a 13B model [p. 4](https://arxiv.org/pdf/2401.09670#page=4). Sarathi-Serve notes the theory says about 200 tokens on an A100 (whose ridge is lower, about 153), but in practice it happens at about 500–600 tokens because of fixed overheads [p. 6, footnote 2](https://arxiv.org/pdf/2403.02310#page=6).
 
 ##### What breaks: batching prefills doesn't help
 
-Once one prompt saturates compute, adding a second prompt to the same pass just doubles the time. DistServe: "adding more requests to the batch no longer improves GPU efficiency. Instead, it proportionally extends the total processing time" p. 4. That's why prefill fixes are about doing less maths (prefix caching, shorter prompts) or faster maths (FP8 tensor cores, more GPUs via tensor parallelism), not bigger batches.
+Once one prompt saturates compute, adding a second prompt to the same pass just doubles the time. DistServe: "adding more requests to the batch no longer improves GPU efficiency. Instead, it proportionally extends the total processing time" [p. 4](https://arxiv.org/pdf/2401.09670#page=4). That's why prefill fixes are about doing less maths (prefix caching, shorter prompts) or faster maths (FP8 tensor cores, more GPUs via tensor parallelism), not bigger batches.
 
 #### Serve many users in one step
 
@@ -172,15 +172,15 @@ If one read of the weights feeds 64 users instead of 1, the expensive part of th
 
 Ideal H100 model, Llama 3.1 8B in 16-bit: step = max(compute, (weights + all KV) ÷ 3.35 TB/s). The purple bar is the share of each step spent reading KV cache. 80 GB − 16.1 GB of weights leaves about 64 GB for caches (ignoring activations and allocator overhead).
 
-Three things to notice. Up to a point, total throughput climbs almost linearly while each user's speed barely drops: the step time is still "read the weights". Sarathi-Serve measured exactly this flat region: LLaMA2-70B's linear layers take about the same time for 128 to 512 tokens per batch Fig. 6, p. 6. With long contexts, the KV cache reads take over and per-user speed falls. And the batch often runs out of _memory capacity_ for caches long before it reaches the compute ridge.
+Three things to notice. Up to a point, total throughput climbs almost linearly while each user's speed barely drops: the step time is still "read the weights". Sarathi-Serve measured exactly this flat region: LLaMA2-70B's linear layers take about the same time for 128 to 512 tokens per batch [Fig. 6, p. 6](https://arxiv.org/pdf/2403.02310#page=6). With long contexts, the KV cache reads take over and per-user speed falls. And the batch often runs out of _memory capacity_ for caches long before it reaches the compute ridge.
 
 ##### Why "295" is only a rule of thumb
 
-Weights-only, a 16-bit decode batch reaches the ridge at about 295 users. But each user also reads their own cache: at 2,300 tokens that is about 0.3 GB per user per step against 16.1 GB of shared weights. Per user, the cache adds bytes without adding much maths, so intensity never reaches the ridge, and the step stays memory-bound however big the batch. Real engines hit KV memory limits first, which is why PagedAttention (removing cache fragmentation so more requests run at once) mattered so much: with iteration-level batching it reached an order of magnitude more throughput than FasterTransformer Sarathi-Serve, p. 3 and 7.
+Weights-only, a 16-bit decode batch reaches the ridge at about 295 users. But each user also reads their own cache: at 2,300 tokens that is about 0.3 GB per user per step against 16.1 GB of shared weights. Per user, the cache adds bytes without adding much maths, so intensity never reaches the ridge, and the step stays memory-bound however big the batch. Real engines hit KV memory limits first, which is why PagedAttention (removing cache fragmentation so more requests run at once) mattered so much: with iteration-level batching it reached an order of magnitude more throughput than FasterTransformer [Sarathi-Serve, p. 3 and 7](https://arxiv.org/pdf/2403.02310#page=7).
 
 #### Chunked prefill: hide prompt work in decode's idle maths
 
-Decode steps leave the tensor cores mostly idle. Sarathi-Serve's insight: fill that idle compute with a slice of someone's prompt. Each step gets a token budget. First every running decode gets its one token, then the leftover budget goes to a chunk of a waiting prompt. Steps stay roughly the same size, so streaming users never see a multi-second freeze §4.2, Algorithm 3, p. 8–9.
+Decode steps leave the tensor cores mostly idle. Sarathi-Serve's insight: fill that idle compute with a slice of someone's prompt. Each step gets a token budget. First every running decode gets its one token, then the leftover budget goes to a chunk of a waiting prompt. Steps stay roughly the same size, so streaming users never see a multi-second freeze [§4.2, Algorithm 3, p. 8–9](https://arxiv.org/pdf/2403.02310#page=8).
 
 1. Each iteration has a fixed budget of tokens, chosen so one step stays under the latency target. Here, 512.
 
@@ -200,33 +200,33 @@ Smaller budgets mean smoother streams, but chunking isn't free, and the ideal mo
 
 ##### What breaks with chunks that are too small
 
-- Each chunk's attention re-reads the KV cache of all earlier chunks: N chunks means O(N²) cache loads instead of O(N) DistServe, p. 4. Sarathi-Serve found attention prefill stays compute-bound even with small chunks, but fixed overheads like kernel launches add up p. 9.
+- Each chunk's attention re-reads the KV cache of all earlier chunks: N chunks means O(N²) cache loads instead of O(N) [DistServe, p. 4](https://arxiv.org/pdf/2401.09670#page=4). Sarathi-Serve found attention prefill stays compute-bound even with small chunks, but fixed overheads like kernel launches add up [p. 9](https://arxiv.org/pdf/2403.02310#page=9).
 
-- Tile quantization: GPUs compute in tiles, so a chunk of 257 tokens can make prefill 32% slower than a chunk of 256 Sarathi-Serve, p. 9.
+- Tile quantization: GPUs compute in tiles, so a chunk of 257 tokens can make prefill 32% slower than a chunk of 256 [Sarathi-Serve, p. 9](https://arxiv.org/pdf/2403.02310#page=9).
 
-- DistServe's critique: chunking "trades TTFT for TPOT and cannot eliminate the interference" p. 3.
+- DistServe's critique: chunking "trades TTFT for TPOT and cannot eliminate the interference" [p. 3](https://arxiv.org/pdf/2401.09670#page=3).
 
 ##### What it buys
 
-Naively mixing a full prefill into a decode batch raised time-between-tokens by up to **28.3×** over a decode-only batch, while chunking kept it tightly bounded p. 8. Sarathi-Serve reports 2.6× higher serving capacity for Mistral-7B on one A100 and up to 3.7× for Yi-34B on two A100s, versus vLLM at the time abstract. vLLM V1 now turns chunked prefill on by default and schedules decodes first; a smaller `max_num_batched_tokens` (e.g. 2,048) gives better inter-token latency, a larger one better TTFT vLLM docs.
+Naively mixing a full prefill into a decode batch raised time-between-tokens by up to **28.3×** over a decode-only batch, while chunking kept it tightly bounded [p. 8](https://arxiv.org/pdf/2403.02310#page=8). Sarathi-Serve reports 2.6× higher serving capacity for Mistral-7B on one A100 and up to 3.7× for Yi-34B on two A100s, versus vLLM at the time [abstract](https://arxiv.org/pdf/2403.02310#page=1). vLLM V1 now turns chunked prefill on by default and schedules decodes first; a smaller `max_num_batched_tokens` (e.g. 2,048) gives better inter-token latency, a larger one better TTFT [vLLM docs](https://docs.vllm.ai/en/latest/configuration/optimization.html).
 
 #### Disaggregation: give each phase its own GPUs
 
-If the two phases want opposite things, stop sharing. A prefill pool runs prompts and produces the KV cache. It sends the cache to a decode pool, which streams the answer. Each pool gets its own GPU count, batch policy and parallelism, tuned for TTFT or for TPOT DistServe, p. 4.
+If the two phases want opposite things, stop sharing. A prefill pool runs prompts and produces the KV cache. It sends the cache to a decode pool, which streams the answer. Each pool gets its own GPU count, batch policy and parallelism, tuned for TTFT or for TPOT [DistServe, p. 4](https://arxiv.org/pdf/2401.09670#page=4).
 
-1. A router assigns each request a prefill machine and a decode machine (Splitwise uses join-the-shortest-queue) p. 6.
+1. A router assigns each request a prefill machine and a decode machine (Splitwise uses join-the-shortest-queue) [p. 6](https://arxiv.org/pdf/2311.18677#page=6).
 
 2. The prefill pool only ever runs prompts. It can use more tensor parallelism to cut TTFT without slowing anyone's stream.
 
-3. The KV cache is copied to the decode machine. Splitwise sends it layer by layer while the prompt is still computing, to hide the transfer p. 7.
+3. The KV cache is copied to the decode machine. Splitwise sends it layer by layer while the prompt is still computing, to hide the transfer [p. 7](https://arxiv.org/pdf/2311.18677#page=7).
 
 4. The decode pool only ever decodes, so it can pack huge continuous batches and never stalls for a prompt.
 
-5. Each pool scales on its own. DistServe searches for the best GPU split and parallelism per phase given the TTFT and TPOT targets p. 10.
+5. Each pool scales on its own. DistServe searches for the best GPU split and parallelism per phase given the TTFT and TPOT targets [p. 10](https://arxiv.org/pdf/2401.09670#page=10).
 
 ##### Worked example: DistServe's opening experiment
 
-A 13B model on A100s, 512-token prompts, 64-token answers, with SLOs on both TTFT and TPOT. The metric is goodput: the highest request rate per GPU at which 90% of requests meet both SLOs p. 2.
+A 13B model on A100s, 512-token prompts, 64-token answers, with SLOs on both TTFT and TPOT. The metric is goodput: the highest request rate per GPU at which 90% of requests meet both SLOs [p. 2](https://arxiv.org/pdf/2401.09670#page=2).
 
 ##### Requests per second per GPU within SLO (↑ better)
 
@@ -246,15 +246,15 @@ a GPU doing decode only
 
 3.3
 
-Two prefill GPUs (2 × 5.6 = 11.2) can feed one decode GPU (10 rps), so 3 GPUs serve 10 rps: 3.3 per GPU, 2.1× the colocated 1.6 DistServe, Fig. 1, p. 2.
+Two prefill GPUs (2 × 5.6 = 11.2) can feed one decode GPU (10 rps), so 3 GPUs serve 10 rps: 3.3 per GPU, 2.1× the colocated 1.6 [DistServe, Fig. 1, p. 2](https://arxiv.org/pdf/2401.09670#page=2).
 
 ##### What it costs
 
-- A KV cache copy per request. With prefill and decode on the same node, DistServe measured transmission at under 0.1% of total latency for OPT-175B, and 95% of transfers under 30 ms, using intra-node NVLink p. 11. Across slower links it matters more.
+- A KV cache copy per request. With prefill and decode on the same node, DistServe measured transmission at under 0.1% of total latency for OPT-175B, and 95% of transfers under 30 ms, using intra-node NVLink [p. 11](https://arxiv.org/pdf/2401.09670#page=11). Across slower links it matters more.
 
-- Small setups lose. With one or a few GPUs there is little to rebalance, and DistServe says a non-disaggregated system can be the better choice p. 13. The Modular inference handbook reports 20–30% slowdowns on small or mistuned setups, and notes short or already-cached prompts are often faster prefilled locally.
+- Small setups lose. With one or a few GPUs there is little to rebalance, and DistServe says a non-disaggregated system can be the better choice [p. 13](https://arxiv.org/pdf/2401.09670#page=13). The Modular inference handbook reports 20–30% slowdowns on small or mistuned setups, and notes short or already-cached prompts are often faster prefilled locally.
 
-- It is a latency tool, not a raw throughput tool. vLLM's docs say plainly: disaggregated prefill "DOES NOT improve throughput"; it lets you tune TTFT and tail ITL separately vLLM docs.
+- It is a latency tool, not a raw throughput tool. vLLM's docs say plainly: disaggregated prefill "DOES NOT improve throughput"; it lets you tune TTFT and tail ITL separately [vLLM docs](https://docs.vllm.ai/en/latest/features/disagg_prefill.html).
 
 ## In practice
 
@@ -262,15 +262,15 @@ Two prefill GPUs (2 × 5.6 = 11.2) can feed one decode GPU (10 rps), so 3 GPUs s
 
 #### Four ways to schedule the two phases, each with a cost
 
-A real server has many users at once: some mid-answer (decoding), some just arrived (needing prefill). How a server interleaves them decides whether you get high throughput, smooth streaming, or both. Here are the four families, following Sarathi-Serve's taxonomy Sarathi-Serve, p. 2.
+A real server has many users at once: some mid-answer (decoding), some just arrived (needing prefill). How a server interleaves them decides whether you get high throughput, smooth streaming, or both. Here are the four families, following Sarathi-Serve's taxonomy [Sarathi-Serve, p. 2](https://arxiv.org/pdf/2403.02310#page=2).
 
-1. **Request-level batching** finishes a whole batch before starting new prompts. Streams stay smooth, but the batch shrinks as requests finish and newcomers queue, so throughput is poor p. 2.
+1. **Request-level batching** finishes a whole batch before starting new prompts. Streams stay smooth, but the batch shrinks as requests finish and newcomers queue, so throughput is poor [p. 2](https://arxiv.org/pdf/2403.02310#page=2).
 
-2. **Iteration-level batching** (Orca) lets requests join and leave every step, and prefill-first schedulers run new prompts as soon as memory allows. Throughput jumps, but while a long prefill runs, every streaming user freezes. Sarathi-Serve calls this a **generation stall**, and measured stalls lasting several seconds in vLLM Fig. 1, p. 1.
+2. **Iteration-level batching** (Orca) lets requests join and leave every step, and prefill-first schedulers run new prompts as soon as memory allows. Throughput jumps, but while a long prefill runs, every streaming user freezes. Sarathi-Serve calls this a **generation stall**, and measured stalls lasting several seconds in vLLM [Fig. 1, p. 1](https://arxiv.org/pdf/2403.02310#page=1).
 
-3. **Chunked prefill with stall-free batching** cuts each prompt into chunks and builds every step from all running decodes plus one chunk, up to a fixed token budget. Decodes never wait for a whole prefill §4.2, p. 8.
+3. **Chunked prefill with stall-free batching** cuts each prompt into chunks and builds every step from all running decodes plus one chunk, up to a fixed token budget. Decodes never wait for a whole prefill [§4.2, p. 8](https://arxiv.org/pdf/2403.02310#page=8).
 
-4. **Disaggregation** runs prefill and decode on separate GPUs and ships the KV cache between them. No interference at all, and each pool can be sized and parallelised for its own job, at the price of more machines and a transfer DistServe, p. 4.
+4. **Disaggregation** runs prefill and decode on separate GPUs and ships the KV cache between them. No interference at all, and each pool can be sized and parallelised for its own job, at the price of more machines and a transfer [DistServe, p. 4](https://arxiv.org/pdf/2401.09670#page=4).
 
 The How it works tab takes the last two apart, starting with the one principle that explains all four.
 
@@ -291,9 +291,9 @@ Put the two phases side by side and every common optimisation falls into place.
 | Chunked prefill | Both | Hides prompt work in decode's idle compute, no stalls |
 | Disaggregation | Both | Separates them entirely; each pool tuned for its own metric |
 
-And one formula ties the user's experience together. A request's total latency is TTFT plus TPOT for every token after the first DistServe, footnote 1, p. 2:
+And one formula ties the user's experience together. A request's total latency is TTFT plus TPOT for every token after the first [DistServe, footnote 1, p. 2](https://arxiv.org/pdf/2401.09670#page=2):
 
-$$ T_{\text{request}} = \text{TTFT} + \text{TPOT}\cdot(n_{\text{out}}-1) \approx 1.47\ \text{s} $$
+$$ {T_{\text{request}}} = {\text{TTFT}} + {\text{TPOT}}\cdot{(n_{\text{out}}-1)} \approx {1.47\ \text{s}} $$
 
 - **what the user waits**: End-to-end latency for the full answer.
 
@@ -333,19 +333,19 @@ DistServe · OPT chatbot (13B–175B)
 
 2.0–4.6×
 
-Sarathi-Serve: capacity under P99 time-between-tokens SLOs abstract. DistServe: per-GPU request rate with 90% of requests meeting both TTFT and TPOT SLOs p. 10–11. Splitwise (cluster-level, simulated on production traces): 1.4× throughput at 20% lower cost, or 2.35× throughput at the same cost and power abstract.
+Sarathi-Serve: capacity under P99 time-between-tokens SLOs [abstract](https://arxiv.org/pdf/2403.02310#page=1). DistServe: per-GPU request rate with 90% of requests meeting both TTFT and TPOT SLOs [p. 10–11](https://arxiv.org/pdf/2401.09670#page=10). Splitwise (cluster-level, simulated on production traces): 1.4× throughput at 20% lower cost, or 2.35× throughput at the same cost and power [abstract](https://arxiv.org/pdf/2311.18677#page=1).
 
 ##### Read these numbers fairly
 
 - The baseline is 2023–24 vLLM, which then used prefill-first scheduling. Today's vLLM has chunked prefill on by default, so the gap against a current baseline is smaller.
 
-- They measure capacity _under latency targets_, not raw tokens per second. With loose SLOs the gains shrink: Sarathi-Serve reports 3.5× under a strict 100 ms SLO (Mistral-7B) but 1.65× under a relaxed 1 s SLO (Yi-34B) p. 12.
+- They measure capacity _under latency targets_, not raw tokens per second. With loose SLOs the gains shrink: Sarathi-Serve reports 3.5× under a strict 100 ms SLO (Mistral-7B) but 1.65× under a relaxed 1 s SLO (Yi-34B) [p. 12](https://arxiv.org/pdf/2403.02310#page=12).
 
-- The two papers each compare against a system without the other's idea, so the bars aren't a head-to-head. DistServe's own comparison with DeepSpeed-MII (which does chunked prefill) shows 1.6–7.4× on the chatbot workload p. 10.
+- The two papers each compare against a system without the other's idea, so the bars aren't a head-to-head. DistServe's own comparison with DeepSpeed-MII (which does chunked prefill) shows 1.6–7.4× on the chatbot workload [p. 10](https://arxiv.org/pdf/2401.09670#page=10).
 
 ##### Update · my check (28 Oct 2026)
 
-Disaggregation moved from paper to default. NVIDIA says production platforms such as NVIDIA Dynamo use concepts that came from DistServe's lab (NVIDIA blog), and coverage of the authors' 2025 retrospective lists NVIDIA, llm-d, vLLM and Mooncake among adopters (secondary source, 36Kr). On Blackwell B200s, each GPU has about 180 GB and 8 TB/s, from NVIDIA's 8-GPU system figures, so the same arithmetic gives roughly 2.4× faster decode than an H100. Checked again on 7 Nov 2026: vLLM still labels its disaggregated prefill "experimental", and chunked prefill is on by default in vLLM V1 (vLLM docs).
+Disaggregation moved from paper to default. NVIDIA says production platforms such as NVIDIA Dynamo use concepts that came from DistServe's lab ([NVIDIA blog](https://blogs.nvidia.com/blog/ucsd-generative-ai-research-dgx-b200/)), and coverage of the authors' 2025 retrospective lists NVIDIA, llm-d, vLLM and Mooncake among adopters (secondary source, 36Kr). On Blackwell B200s, each GPU has about 180 GB and 8 TB/s, from NVIDIA's 8-GPU system figures, so the same arithmetic gives roughly 2.4× faster decode than an H100. Checked again on 7 Nov 2026: vLLM still labels its disaggregated prefill "experimental", and chunked prefill is on by default in vLLM V1 ([vLLM docs](https://docs.vllm.ai/en/latest/features/disagg_prefill.html)).
 
 #### Your LLM feels slow. Diagnose it.
 
@@ -373,13 +373,13 @@ Disaggregation moved from paper to default. NVIDIA says production platforms suc
 
 - **Short prompts are not compute-bound.** Below about 300 tokens on an H100, even prefill is limited by reading the weights (see the prefill section).
 
-- **Disaggregation and chunking aren't rivals.** DistServe notes that when throughput matters more than strict latency, chunked prefill's fuller batches can be preferable p. 13; at long contexts the KV transfer grows linearly while prefill maths grows faster, which keeps disaggregation attractive p. 13.
+- **Disaggregation and chunking aren't rivals.** DistServe notes that when throughput matters more than strict latency, chunked prefill's fuller batches can be preferable [p. 13](https://arxiv.org/pdf/2401.09670#page=13); at long contexts the KV transfer grows linearly while prefill maths grows faster, which keeps disaggregation attractive [p. 13](https://arxiv.org/pdf/2401.09670#page=13).
 
 ### The answer that sounds right
 
 #### "Just buy a faster GPU" speeds up the wrong phase
 
-The obvious move when generation is slow: get the newer chip with far more FLOPs. Splitwise (Microsoft) measured exactly this on production traces. Going from an A100 to an H100 buys **3.43× more compute** but only **1.64× more memory bandwidth** Splitwise, Table I, p. 1. Look at what each phase got:
+The obvious move when generation is slow: get the newer chip with far more FLOPs. Splitwise (Microsoft) measured exactly this on production traces. Going from an A100 to an H100 buys **3.43× more compute** but only **1.64× more memory bandwidth** [Splitwise, Table I, p. 1](https://arxiv.org/pdf/2311.18677#page=1). Look at what each phase got:
 
 ##### Llama-70B, coding traces, P50 latency · H100 time as a fraction of A100 time (lower = faster)
 
@@ -391,11 +391,11 @@ TBT (decode)
 
 0.70×
 
-Prefill got about 2× faster. Decode got only about 1.4× faster, close to the bandwidth gain, nowhere near the compute gain. The conversation trace shows the same split (0.54× vs 0.70×) Splitwise, Table IV, p. 5.
+Prefill got about 2× faster. Decode got only about 1.4× faster, close to the bandwidth gain, nowhere near the compute gain. The conversation trace shows the same split (0.54× vs 0.70×) [Splitwise, Table IV, p. 5](https://arxiv.org/pdf/2311.18677#page=5).
 
 ##### What breaks: you pay for maths decode can't use
 
-Splitwise also capped H100 power from 700 W to 350 W per GPU. Prefill latency rose sharply, while decode latency barely moved Fig. 9, p. 5. Their conclusion: token generation "does not need the compute capability of the latest GPUs and can be run with lower power and cost" abstract. Decode is waiting on memory, so more FLOPs mostly sit idle.
+Splitwise also capped H100 power from 700 W to 350 W per GPU. Prefill latency rose sharply, while decode latency barely moved [Fig. 9, p. 5](https://arxiv.org/pdf/2311.18677#page=5). Their conclusion: token generation "does not need the compute capability of the latest GPUs and can be run with lower power and cost" [abstract](https://arxiv.org/pdf/2311.18677#page=1). Decode is waiting on memory, so more FLOPs mostly sit idle.
 
 ## Say it
 
@@ -437,7 +437,7 @@ Follow-up 6 of 6
 
 Why would someone put decode on older GPUs?
 
-Decode doesn't use the compute, so the newest GPU's extra FLOPs are mostly wasted there. Splitwise found A100s could match or beat H100s on cost and energy for token generation and proposed H100 prefill with A100 decode (Splitwise-HA) p. 5.
+Decode doesn't use the compute, so the newest GPU's extra FLOPs are mostly wasted there. Splitwise found A100s could match or beat H100s on cost and energy for token generation and proposed H100 prefill with A100 decode (Splitwise-HA) [p. 5](https://arxiv.org/pdf/2311.18677#page=5).
 
 #### The 30-second answer
 
@@ -495,26 +495,26 @@ Built from Splitwise, DistServe, Sarathi-Serve, AWQ, the vLLM docs and NVIDIA's 
 
 #### What this page is built from
 
-1. Patel et al., Splitwise: Efficient Generative LLM Inference Using Phase Splitting, Microsoft / UW, ISCA 2024.
+1. Patel et al., [Splitwise: Efficient Generative LLM Inference Using Phase Splitting](https://arxiv.org/abs/2311.18677), Microsoft / UW, ISCA 2024.
 
-2. Zhong et al., DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving, PKU / UCSD, OSDI 2024.
+2. Zhong et al., [DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving](https://arxiv.org/abs/2401.09670), PKU / UCSD, OSDI 2024.
 
-3. Agrawal et al., Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve, Microsoft Research India / Georgia Tech, OSDI 2024.
+3. Agrawal et al., [Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve](https://arxiv.org/abs/2403.02310), Microsoft Research India / Georgia Tech, OSDI 2024.
 
-4. Lin et al., AWQ: Activation-aware Weight Quantization, MIT, MLSys 2024 (Fig. 3 bottleneck profile).
+4. Lin et al., [AWQ: Activation-aware Weight Quantization](https://arxiv.org/abs/2306.00978), MIT, MLSys 2024 (Fig. 3 bottleneck profile).
 
-5. vLLM docs: Optimization and tuning (chunked prefill) and Disaggregated prefilling.
+5. vLLM docs: [Optimization and tuning (chunked prefill)](https://docs.vllm.ai/en/latest/configuration/optimization.html) and [Disaggregated prefilling](https://docs.vllm.ai/en/latest/features/disagg_prefill.html).
 
-6. NVIDIA, H100 specifications (989 TFLOP/s dense BF16, 3.35 TB/s, SXM).
+6. NVIDIA, [H100 specifications](https://www.nvidia.com/en-us/data-center/h100/) (989 TFLOP/s dense BF16, 3.35 TB/s, SXM).
 
-7. Meta, Llama 3.1 8B config (layers, KV heads, head size).
+7. Meta, [Llama 3.1 8B config](https://huggingface.co/meta-llama/Llama-3.1-8B/blob/main/config.json) (layers, KV heads, head size).
 
 8. P. Kiely, _Inference Engineering_ (Baseten), ch. 1.4, 2.2, 2.4, 5.1: latency metrics, ops:byte, precision speedups.
 
 9. Modular, LLM inference handbook: prefill-decode disaggregation (small-setup slowdowns, local prefill for short prompts).
 
-10. NVIDIA blog, UC San Diego lab and DistServe's influence on Dynamo; 36Kr coverage of the 2025 disaggregation retrospective (secondary).
+10. NVIDIA blog, [UC San Diego lab and DistServe's influence on Dynamo](https://blogs.nvidia.com/blog/ucsd-generative-ai-research-dgx-b200/); 36Kr coverage of the 2025 disaggregation retrospective (secondary).
 
-11. Interview angle: techinterview.org, GPTQ, AWQ and FP8 in the LLM inference interview.
+11. Interview angle: [techinterview.org, GPTQ, AWQ and FP8 in the LLM inference interview](https://www.techinterview.org/post/3233477292/gptq-awq-fp8-llm-inference-interview/).
 
 Napkin numbers (4.8 ms, 34 ms, 209 tokens/s, 295 FLOPs/byte, 128 KiB per token) are my arithmetic from the specs above and are ideal ceilings.

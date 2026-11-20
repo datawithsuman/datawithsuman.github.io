@@ -74,7 +74,7 @@ It shows what _can_ fail, not how _often_ it fails for real users, because you c
 
 #### The maths
 
-$$ N = |F| \times |P| \times |S| $$
+$$ {N} = {|F|} \times {|P|} \times {|S|} $$
 
 Four features, three client types and three scenarios already make 36 combinations. 100 well-spread queries can cover most of them; 100 queries from one blunt prompt usually cover a handful.
 
@@ -134,18 +134,20 @@ How many traces before you stop?
 
 Start around 100 and stop at saturation: when 20 more traces show nothing new. Complex agents need more.
 
+#### The 30-second answer
+
 If I have production logs, I'd sample about 100 traces across features and include bad experiences like thumbs-down, rephrased requests and abandoned sessions. If not, I wouldn't ask an LLM for queries directly, since it repeats itself. I'd define dimensions where the app might fail, like feature, user type and how clear the request is, write about 20 tuples by hand, scale them with an LLM, and turn each tuple into a realistic query in a separate step. I'd stop when new traces stop showing new failures, and replace synthetic data with real traffic as soon as I can, because synthetic data can't tell me how often a failure happens.
 
 **Key terms and sources**
 
-Where the first 100 traces come from: sampling production logs well, or generating synthetic queries through dimensions and tuples so they're varied, plus when to stop and what synthetic data can't tell you.
+Where the first 100 traces come from: sampling production logs well, or generating synthetic queries through dimensions and tuples so they're varied, plus when to stop and what synthetic data can't tell you. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

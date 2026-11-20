@@ -148,12 +148,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">Integrals give probabilities from densities, expectations, and marginals, where you sum out a hidden variable. AUC is one too. Most real ones can't be solved exactly, and grid methods fail, because they need n to the d points. So I'd use Monte Carlo: sample from the distribution, and average. Its error shrinks as one over root N, whatever the dimension. Mini-batch SGD is Monte Carlo on the expected gradient. Or I'd use variational methods, which replace the integral with an optimisation over a bound, as in VAEs.</p>
+<h3>The 30-second answer</h3><p class="say30">Integrals give probabilities from densities, expectations, and marginals, where you sum out a hidden variable. AUC is one too. Most real ones can't be solved exactly, and grid methods fail, because they need n to the d points. So I'd use Monte Carlo: sample from the distribution, and average. Its error shrinks as one over root N, whatever the dimension. Mini-batch SGD is Monte Carlo on the expected gradient. Or I'd use variational methods, which replace the integral with an optimisation over a bound, as in VAEs.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Integrals as area and as weighted averages: continuous probability, expectations, marginalising, AUC, and why intractable integrals lead to sampling and variational methods.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Integrals as area and as weighted averages: continuous probability, expectations, marginalising, AUC, and why intractable integrals lead to sampling and variational methods. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://mml-book.github.io/">Deisenroth, Faisal and Ong, Mathematics for Machine Learning</a></li><li><a href="../autoencoders-and-vaes/">Autoencoders and VAEs on this site</a></li><li><a href="../roc-auc-vs-pr-auc/">ROC and PR AUC on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

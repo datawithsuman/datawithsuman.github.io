@@ -77,7 +77,7 @@ Every bad trace a user or reviewer flags becomes a golden set case. Over time, t
 
 #### The maths
 
-$$ n \approx \frac{2\,(z_{\alpha/2}+z_{\beta})^2\,p(1-p)}{\delta^2} $$
+$$ {n} \approx \frac{2\,(z_{\alpha/2}+z_{\beta})^2\,{p(1-p)}}{{\delta}^2} $$
 
 The usual sample-size formula for comparing two rates, with 5% significance and 80% power. It sets how much live traffic you need to score, or how long you wait.
 
@@ -133,20 +133,22 @@ Your judge says quality is flat after a model upgrade. Trust it?
 
 Not without checking. The judge may share the new model's blind spots, or have drifted itself. Compare it with human labels on a fresh sample.
 
+#### The 30-second answer
+
 Dashboards that check uptime miss quality, so I'd trace every request: configuration version, retrieved documents, each model and tool call with tokens, latency and cost, and user signals, all linked. I'd redact personal data and keep full content for a sample and for errors. I'd score a sample of live traffic with checked LLM judges, sized so a real drop shows up in days, and score more right after releases. I'd keep error text out of model inputs, since a study found errors turned into confident false answers, and most silent failures were caught by a person reading output. Every flagged trace becomes a golden set case.
 
 **Key terms and sources**
 
-What to record for each LLM request and agent run, traces and spans, cost and latency by step, privacy and retention, sampling live traffic for quality scoring, silent failures, and turning traces into evaluation cases.
+What to record for each LLM request and agent run, traces and spans, cost and latency by step, privacy and retention, sampling live traffic for quality scoring, silent failures, and turning traces into evaluation cases. · checked 7 Nov 2026
 
 #### Sources
 
-- Pan et al., Measuring Agents in Production, ICML 2026
+- [Pan et al., Measuring Agents in Production, ICML 2026](https://arxiv.org/abs/2512.04123)
 
-- Wu, When Errors Become Narratives: silent failures in a production LLM agent runtime
+- [Wu, When Errors Become Narratives: silent failures in a production LLM agent runtime](https://arxiv.org/abs/2606.14589)
 
-- OpenTelemetry, GenAI semantic conventions
+- [OpenTelemetry, GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai)
 
-- Shankar et al., Who Validates the Validators?
+- [Shankar et al., Who Validates the Validators?](https://arxiv.org/abs/2404.12272)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

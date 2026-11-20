@@ -92,7 +92,7 @@ Say half of the orders are late, so H(Y) = 1 bit. A feature splits them into two
 
 #### The maths
 
-$$ I(X; Y) = H(Y) - H(Y \mid X) = \sum_{x,y} p(x, y) \log \frac{p(x, y)}{p(x)\,p(y)} $$
+$$ {I(X; Y)} = {H(Y)} - {H(Y \mid X)} = {\sum_{x,y} p(x, y) \log \frac{p(x, y)}{p(x)\,p(y)}} $$
 
 For jointly Gaussian variables, I = −½ log(1 − ρ²). So for those, correlation tells you everything, and mutual information adds nothing.
 
@@ -148,17 +148,19 @@ How does mutual information relate to contrastive learning?
 
 InfoNCE maximises a lower bound on the mutual information between two views of the same item. The bound can't exceed log N with N examples. However, research suggests a good representation isn't only about more mutual information: the encoder and the views matter a lot too.
 
+#### The 30-second answer
+
 Mutual information is how much knowing X reduces uncertainty about Y: H of Y minus H of Y given X. Equivalently, it's the KL divergence between the joint and the product of the marginals. So it's zero only if they're independent, which means it catches non-linear relationships that correlation misses, like a U-shape. It's the same as information gain in decision trees. For feature selection, it misses redundancy and interactions, as with XOR, since it looks at one feature at a time, and it's hard to estimate in high dimensions.
 
 **Key terms and sources**
 
-Joint and conditional entropy, mutual information and how to estimate it, information gain in trees, feature selection, and the link with InfoNCE.
+Joint and conditional entropy, mutual information and how to estimate it, information gain in trees, feature selection, and the link with InfoNCE. · checked 6 Nov 2026
 
 #### Sources
 
-- Murphy, Probabilistic Machine Learning: An Introduction, chapter 6
+- [Murphy, Probabilistic Machine Learning: An Introduction, chapter 6](https://probml.github.io/pml-book/book1.html)
 
-- Deep Learning Interviews (Kashani and Ivry)
+- [Deep Learning Interviews (Kashani and Ivry)](https://arxiv.org/pdf/2201.00650)
 
 - Decision trees on this site
 

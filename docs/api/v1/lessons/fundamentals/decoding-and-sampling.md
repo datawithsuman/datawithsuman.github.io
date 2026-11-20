@@ -48,11 +48,11 @@ At **T = 1** with no truncation, each junk token is negligible but together they
 
 #### In one breath
 
-The model outputs a probability for every token in its vocabulary; **decoding** decides which one to emit. **Greedy** always takes the top token (deterministic, but prone to repetitive loops); **beam search** keeps the few best partial sequences (good for translation, bland for open-ended text). **Sampling** picks at random in proportion to the probabilities, and **temperature** T reshapes them first: T < 1 sharpens, T > 1 flattens. Because the vocabulary has 100k+ tokens, the long **tail** of individually unlikely tokens adds up, so samplers truncate it: **top-k** keeps the k best, **top-p** keeps the smallest set covering p of the probability, and **min-p** keeps tokens at least a fraction of the top token's probability. At high temperature top-p can let junk back in, and min-p's cut-off tightens instead, though a later critique found little evidence that this gives better text overall.What you'll be able to do after this: explain each decoding method, pick settings per task, and explain why min-p holds up at high temperature.
+The model outputs a probability for every token in its vocabulary; **decoding** decides which one to emit. **Greedy** always takes the top token (deterministic, but prone to repetitive loops); **beam search** keeps the few best partial sequences (good for translation, bland for open-ended text). **Sampling** picks at random in proportion to the probabilities, and **temperature** T reshapes them first: T < 1 sharpens, T > 1 flattens. Because the vocabulary has 100k+ tokens, the long **tail** of individually unlikely tokens adds up, so samplers truncate it: **top-k** keeps the k best, **top-p** keeps the smallest set covering p of the probability, and **min-p** keeps tokens at least a fraction of the top token's probability. At high temperature top-p can let junk back in, and min-p's cut-off tightens instead, though a later critique found little evidence that this gives better text overall. What you'll be able to do after this: explain each decoding method, pick settings per task, and explain why min-p holds up at high temperature.
 
 #### Temperature and truncation
 
-$$ p_i = \frac{\exp(z_i/T)}{\sum_j \exp(z_j/T)} $$
+$$ p_i = {\frac{\exp({z_i}/{T})}{\sum_j \exp(z_j/T)}} $$
 
 - **logits**: The raw scores the model outputs for each token.
 
@@ -140,21 +140,21 @@ How an LLM turns next-token probabilities into text: greedy decoding and beam se
 
 #### Sources
 
-1. A. Holtzman et al., "The Curious Case of Neural Text Degeneration", ICLR 2020, arXiv:1904.09751.
+1. A. Holtzman et al., "The Curious Case of Neural Text Degeneration", ICLR 2020, [arXiv:1904.09751](https://arxiv.org/abs/1904.09751).
 
-2. A. Fan, M. Lewis & Y. Dauphin, "Hierarchical Neural Story Generation", ACL 2018, arXiv:1805.04833.
+2. A. Fan, M. Lewis & Y. Dauphin, "Hierarchical Neural Story Generation", ACL 2018, [arXiv:1805.04833](https://arxiv.org/abs/1805.04833).
 
-3. M. Nguyen et al., "Turning Up the Heat: Min-p Sampling for Creative and Coherent LLM Outputs", ICLR 2025, arXiv:2407.01082.
+3. M. Nguyen et al., "Turning Up the Heat: Min-p Sampling for Creative and Coherent LLM Outputs", ICLR 2025, [arXiv:2407.01082](https://arxiv.org/abs/2407.01082).
 
-4. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, arXiv:2506.13681.
+4. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, [arXiv:2506.13681](https://arxiv.org/abs/2506.13681).
 
 5. D. Ackley, G. Hinton & T. Sejnowski, "A Learning Algorithm for Boltzmann Machines", Cognitive Science, 1985.
 
-6. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, arXiv:2506.13681.
+6. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, [arXiv:2506.13681](https://arxiv.org/abs/2506.13681).
 
 7. D. Ackley, G. Hinton & T. Sejnowski, "A Learning Algorithm for Boltzmann Machines", Cognitive Science, 1985.
 
-8. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, arXiv:2506.13681.
+8. R. Schaeffer, J. Kazdan & Y. Denisov-Blanch, "Min-p, Max Exaggeration: A Critical Analysis of Min-p Sampling in Language Models", 2025, [arXiv:2506.13681](https://arxiv.org/abs/2506.13681).
 
 9. D. Ackley, G. Hinton & T. Sejnowski, "A Learning Algorithm for Boltzmann Machines", Cognitive Science, 1985.
 

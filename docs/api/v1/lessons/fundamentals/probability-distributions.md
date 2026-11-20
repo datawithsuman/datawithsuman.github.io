@@ -44,7 +44,7 @@ _Illustrative shapes. The losses come from maximum likelihood._
 
 #### In one breath
 
-A distribution says how likely each possible value is. A few shapes cover most of ML: **Bernoulli** (one yes/no, like "is this order late?"), **binomial** (how many yeses in n tries), **Poisson** (how many events in a time window, like orders per minute), **Gaussian** (sums of many small effects, like measurement noise) and **exponential** (waiting time until the next event). Choosing a distribution for your target is the same as choosing a loss: Gaussian noise gives squared error, Bernoulli gives log loss, categorical gives softmax cross-entropy, Poisson gives Poisson loss for counts.What you'll be able to do after this: recognise which distribution fits a quantity, state its mean and variance, explain how binomial, Poisson and Gaussian connect, and map each to its ML loss.
+A distribution says how likely each possible value is. A few shapes cover most of ML: **Bernoulli** (one yes/no, like "is this order late?"), **binomial** (how many yeses in n tries), **Poisson** (how many events in a time window, like orders per minute), **Gaussian** (sums of many small effects, like measurement noise) and **exponential** (waiting time until the next event). Choosing a distribution for your target is the same as choosing a loss: Gaussian noise gives squared error, Bernoulli gives log loss, categorical gives softmax cross-entropy, Poisson gives Poisson loss for counts. What you'll be able to do after this: recognise which distribution fits a quantity, state its mean and variance, explain how binomial, Poisson and Gaussian connect, and map each to its ML loss.
 
 #### PMFs, PDFs, mean and variance
 
@@ -66,7 +66,7 @@ A distribution says how likely each possible value is. A few shapes cover most o
 
 #### The density, read term by term
 
-$$ p(x) = \tfrac{1}{\sqrt{2\pi\sigma^2}}\exp\!\Bigl(-\tfrac{(x-\mu)^2}{2\sigma^2}\Bigr) $$
+$$ p(x) = {\tfrac{1}{\sqrt{2\pi\sigma^2}}}\exp\!\Bigl({-\tfrac{(x-\mu)^2}{2\sigma^2}}\Bigr) $$
 
 - **normalising constant**: Makes the total area 1; wider curves are lower.
 
@@ -162,7 +162,7 @@ Bernoulli, binomial, Poisson, Gaussian and exponential: what each models, their 
 
 #### Sources
 
-1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, ch. 3–5, stat110.
+1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, ch. 3–5, [stat110](https://projects.iq.harvard.edu/stat110).
 
 2. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, §6.5–6.6.
 

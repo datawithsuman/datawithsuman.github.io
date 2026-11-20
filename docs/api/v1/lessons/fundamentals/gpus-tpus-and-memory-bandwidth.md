@@ -85,7 +85,7 @@ The main difference for LLM work is how chips connect. An H100 has fast links wi
 
 #### The maths
 
-$$ T_{\min} = \max\!\Big(\frac{\text{FLOPs}}{\text{compute}},\; \frac{\text{bytes}}{\text{bandwidth}}\Big), \qquad I = \frac{\text{FLOPs}}{\text{bytes}} $$
+$$ {T_{\min}} = \max\!\Big({\frac{\text{FLOPs}}{\text{compute}}},\; {\frac{\text{bytes}}{\text{bandwidth}}}\Big), \qquad {I = \frac{\text{FLOPs}}{\text{bytes}}} $$
 
 The roofline idea, as used in How to Scale Your Model. If the maths and the data movement can’t overlap, the two times add up, which gives an upper limit.
 
@@ -143,22 +143,24 @@ Why does on-chip SRAM matter if it's so small?
 
 It's much faster than HBM, and a kernel can keep its working data there. FlashAttention works in tiles that fit in SRAM, so the large score matrix never has to go to main memory.
 
+#### The 30-second answer
+
 A job's best time is the larger of its maths time and its data movement time. Maths time is operations over compute, and data time is bytes over bandwidth. An H100 does about 989 TFLOPS but moves about 3.35 TB/s, so its balance point is about 295 operations per byte. Prefill does a lot of maths per byte, so compute limits it. Decode reads all the weights and the KV cache to produce one token per conversation, so memory bandwidth limits it. That's why GQA and MLA speed up decoding, and why batching helps: each read of the weights is shared across more conversations.
 
 **Key terms and sources**
 
-What is inside an AI chip, the roofline model, arithmetic intensity, why prefill and decode hit different limits, and how GPUs and TPUs differ.
+What is inside an AI chip, the roofline model, arithmetic intensity, why prefill and decode hit different limits, and how GPUs and TPUs differ. · checked 7 Nov 2026
 
 #### Sources
 
-- Austin et al., How to Scale Your Model (roofline, TPUs, GPUs, inference)
+- [Austin et al., How to Scale Your Model (roofline, TPUs, GPUs, inference)](https://jax-ml.github.io/scaling-book/)
 
-- NVIDIA H100 specification
+- [NVIDIA H100 specification](https://www.nvidia.com/en-us/data-center/h100/)
 
-- Google Cloud, TPU v5p specification
+- [Google Cloud, TPU v5p specification](https://docs.cloud.google.com/tpu/docs/v5p)
 
-- Shah et al., FlashAttention-3
+- [Shah et al., FlashAttention-3](https://arxiv.org/abs/2407.08608)
 
-- Stanford CS336, resource accounting and GPUs lectures
+- [Stanford CS336, resource accounting and GPUs lectures](https://cs336.stanford.edu/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

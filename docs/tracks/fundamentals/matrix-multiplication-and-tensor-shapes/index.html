@@ -147,12 +147,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">For matrices to multiply, the inner sizes must match: m by n times n by p gives m by p, at about m times n times p multiplications. I track shapes through a model with batch first. A linear layer takes B by d to B by k. Attention scores are batch, heads, tokens, tokens, so doubling the tokens quadruples cost. Multiplication is associative, so order doesn't change the result, but it can change the cost hugely. That's why backprop keeps multiplying a vector instead of building whole matrices.</p>
+<h3>The 30-second answer</h3><p class="say30">For matrices to multiply, the inner sizes must match: m by n times n by p gives m by p, at about m times n times p multiplications. I track shapes through a model with batch first. A linear layer takes B by d to B by k. Attention scores are batch, heads, tokens, tokens, so doubling the tokens quadruples cost. Multiplication is associative, so order doesn't change the result, but it can change the cost hugely. That's why backprop keeps multiplying a vector instead of building whole matrices.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How to track shapes through a model, what each multiplication costs, how the order matters, and how batches, broadcasting and attention use it.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How to track shapes through a model, what each multiplication costs, how the order matters, and how batches, broadcasting and attention use it. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://cs229.stanford.edu/section/cs229-linalg.pdf">Kolter and Do, CS229 Linear Algebra Review</a></li><li><a href="https://math.mit.edu/~gs/learningfromdata/">Strang, Linear Algebra and Learning from Data</a></li><li><a href="https://web.stanford.edu/~boyd/vmls/">Boyd and Vandenberghe, Introduction to Applied Linear Algebra</a></li><li><a href="../self-attention/">Attention on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

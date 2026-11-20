@@ -154,12 +154,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">A job's best time is the larger of its maths time and its data movement time. Maths time is operations over compute, and data time is bytes over bandwidth. An H100 does about 989 TFLOPS but moves about 3.35 TB/s, so its balance point is about 295 operations per byte. Prefill does a lot of maths per byte, so compute limits it. Decode reads all the weights and the KV cache to produce one token per conversation, so memory bandwidth limits it. That's why GQA and MLA speed up decoding, and why batching helps: each read of the weights is shared across more conversations.</p>
+<h3>The 30-second answer</h3><p class="say30">A job's best time is the larger of its maths time and its data movement time. Maths time is operations over compute, and data time is bytes over bandwidth. An H100 does about 989 TFLOPS but moves about 3.35 TB/s, so its balance point is about 295 operations per byte. Prefill does a lot of maths per byte, so compute limits it. Decode reads all the weights and the KV cache to produce one token per conversation, so memory bandwidth limits it. That's why GQA and MLA speed up decoding, and why batching helps: each read of the weights is shared across more conversations.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">What is inside an AI chip, the roofline model, arithmetic intensity, why prefill and decode hit different limits, and how GPUs and TPUs differ.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">What is inside an AI chip, the roofline model, arithmetic intensity, why prefill and decode hit different limits, and how GPUs and TPUs differ. · checked 7 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://jax-ml.github.io/scaling-book/">Austin et al., How to Scale Your Model (roofline, TPUs, GPUs, inference)</a></li><li><a href="https://www.nvidia.com/en-us/data-center/h100/">NVIDIA H100 specification</a></li><li><a href="https://docs.cloud.google.com/tpu/docs/v5p">Google Cloud, TPU v5p specification</a></li><li><a href="https://arxiv.org/abs/2407.08608">Shah et al., FlashAttention-3</a></li><li><a href="https://cs336.stanford.edu/">Stanford CS336, resource accounting and GPUs lectures</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

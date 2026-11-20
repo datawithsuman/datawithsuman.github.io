@@ -52,7 +52,7 @@ The formula reproduces the published sizes: **GPT-2 small ≈ 124M**, **BERT-bas
 
 #### In one breath
 
-A Transformer is the same **block** stacked N times. Each block has two sub-layers: **multi-head self-attention**, which mixes information _across tokens_, and a position-wise **feed-forward network** (an MLP applied to each token separately, usually 4× wider), which transforms information _within_ each token. Each sub-layer is wrapped as x + Sublayer(Norm(x)): a **residual connection** plus **layer normalisation**. Modern LLMs use **pre-norm** with RMSNorm and a SwiGLU FFN. Surprisingly, about **two-thirds of the parameters** sit in the FFNs, not in attention.What you'll be able to do after this: draw a Transformer block, explain each part's role, compare pre- and post-norm, and count a model's parameters.
+A Transformer is the same **block** stacked N times. Each block has two sub-layers: **multi-head self-attention**, which mixes information _across tokens_, and a position-wise **feed-forward network** (an MLP applied to each token separately, usually 4× wider), which transforms information _within_ each token. Each sub-layer is wrapped as x + Sublayer(Norm(x)): a **residual connection** plus **layer normalisation**. Modern LLMs use **pre-norm** with RMSNorm and a SwiGLU FFN. Surprisingly, about **two-thirds of the parameters** sit in the FFNs, not in attention. What you'll be able to do after this: draw a Transformer block, explain each part's role, compare pre- and post-norm, and count a model's parameters.
 
 #### Inside one block (pre-norm)
 
@@ -82,7 +82,7 @@ A Transformer is the same **block** stacked N times. Each block has two sub-laye
 
 #### Where the norm goes matters
 
-$$ x_{l+1} = \mathrm{Norm}\big(x_l + F(x_l)\big) \qquad\text{vs}\qquad x_{l+1} = x_l + F\big(\mathrm{Norm}(x_l)\big) $$
+$$ {x_{l+1} = \mathrm{Norm}\big(x_l + F(x_l)\big)} \qquad\text{vs}\qquad {x_{l+1} = x_l + F\big(\mathrm{Norm}(x_l)\big)} $$
 
 Details: BatchNorm vs LayerNorm vs RMSNorm and learning-rate warmup.
 
@@ -132,14 +132,14 @@ The repeating unit of every Transformer: multi-head attention and a feed-forward
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, arXiv:2002.04745.
+2. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, [arXiv:2002.04745](https://arxiv.org/abs/2002.04745).
 
-3. M. Geva, R. Schuster, J. Berant & O. Levy, "Transformer Feed-Forward Layers Are Key-Value Memories", EMNLP 2021, arXiv:2012.14913.
+3. M. Geva, R. Schuster, J. Berant & O. Levy, "Transformer Feed-Forward Layers Are Key-Value Memories", EMNLP 2021, [arXiv:2012.14913](https://arxiv.org/abs/2012.14913).
 
-4. N. Shazeer, "GLU Variants Improve Transformer", arXiv:2002.05202, 2020.
+4. N. Shazeer, "GLU Variants Improve Transformer", [arXiv:2002.05202](https://arxiv.org/abs/2002.05202), 2020.
 
-5. A. Radford et al., "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019; J. Devlin et al., "BERT", NAACL 2019, arXiv:1810.04805.
+5. A. Radford et al., "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019; J. Devlin et al., "BERT", NAACL 2019, [arXiv:1810.04805](https://arxiv.org/abs/1810.04805).
 
-6. H. Touvron et al., "LLaMA", arXiv:2302.13971, 2023; J. Kaplan et al., "Scaling Laws for Neural Language Models", arXiv:2001.08361, 2020.
+6. H. Touvron et al., "LLaMA", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023; J. Kaplan et al., "Scaling Laws for Neural Language Models", [arXiv:2001.08361](https://arxiv.org/abs/2001.08361), 2020.

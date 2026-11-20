@@ -75,7 +75,7 @@ The gradient tells the same story. L2's pull weakens as a weight approaches zero
 
 #### The maths
 
-$$ \|x\|_p = \Big(\sum_i |x_i|^{p}\Big)^{1/p}, \qquad \|A\|_F = \sqrt{\sum_i \sigma_i^2}, \qquad \|A\|_2 = \sigma_{\max} $$
+$$ {\|x\|_p} = \Big(\sum_i |x_i|^{{p}}\Big)^{1/p}, \qquad {\|A\|_F} = \sqrt{\sum_i \sigma_i^2}, \qquad {\|A\|_2} = \sigma_{\max} $$
 
 Worked example: for x = (3, −4), L1 = 7, L2 = 5 and L∞ = 4. See the SVD lesson for singular values.
 
@@ -133,19 +133,21 @@ When would you prefer the spectral norm to Frobenius?
 
 When you care about the worst case: the most a matrix can stretch any input. That matters for stability and Lipschitz limits. Frobenius is about total energy across all directions, which is what matters for low-rank approximation error.
 
+#### The 30-second answer
+
 A norm measures size. L2 is straight-line length, and L1 is the sum of absolute values. L1 gives sparse weights because its unit ball is a diamond with corners on the axes, so the loss's contours tend to touch it where some weights are exactly zero. In terms of gradients, L1 keeps a constant pull towards zero, while L2's pull fades. For matrices, Frobenius treats all entries as one vector, and the spectral norm is the largest singular value, which limits how much a layer can amplify.
 
 **Key terms and sources**
 
-L1, L2 and max norms for vectors, Frobenius and spectral norms for matrices, and how they drive regularisation, gradient clipping and stability.
+L1, L2 and max norms for vectors, Frobenius and spectral norms for matrices, and how they drive regularisation, gradient clipping and stability. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
 - Regularised linear models on this site
 

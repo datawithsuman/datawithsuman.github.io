@@ -145,8 +145,10 @@ You upgrade the embedding model. What breaks?
 
 Downstream models trained on old vectors. Learn a mapping from new to old vectors for the transition, or retrain them together.
 
+#### The 30-second answer
+
 I'd clarify the surfaces, scale, freshness and that matching is two-sided. I'd embed jobs and member profiles with one fine-tuned LLM in a two-tower setup, using different prompts per input type and a contrastive loss with semi-hard negatives, so meaning matches beyond keywords. A graph neural network over members, jobs and skills adds relational signals, using the LLM embeddings as features. Retrieval is nearest-neighbour search, then a ranker predicts apply and recruiter response. Embeddings update nearline on every real text change, so new postings are recommendable immediately. I'd measure qualified applications, dismiss-to-apply and recruiter responses, cap exposure per job, check fairness across groups, and handle embedding model upgrades with a compatibility mapping.
 
 **Key terms and sources**
 
-Based on a professional network's published work: the paper "A Scalable and Efficient Signal Integration System for Job Matching" (KDD 2025) and the post "JUDE: LLM-based representation learning for job recommendations" (May 2025). The lab uses the paper's own numbers; the estimate is ours. Uses embeddings, contrastive learning and LoRA.
+Based on a professional network's published work: the paper ["A Scalable and Efficient Signal Integration System for Job Matching"](https://arxiv.org/abs/2507.09797) (KDD 2025) and the post ["JUDE: LLM-based representation learning for job recommendations"](https://www.linkedin.com/blog/engineering/ai/jude-llm-based-representation-learning-for-linkedin-job-recommendations) (May 2025). The lab uses the paper's own numbers; the estimate is ours. Uses embeddings, contrastive learning and LoRA. · checked 15 Nov 2026

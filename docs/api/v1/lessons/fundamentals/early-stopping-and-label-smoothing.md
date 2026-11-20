@@ -48,11 +48,11 @@ Validation loss is lowest at step **125** (0.48), then climbs to **1.43** by ste
 
 #### In one breath
 
-Training loss keeps falling for as long as you train, but **validation loss** usually falls, bottoms out, then rises as the network starts memorising. **Early stopping** watches validation loss, waits a set number of checks (the **patience**) for an improvement, then stops and restores the **best checkpoint**. **Label smoothing** replaces the one-hot target with 1 − ε for the true class and spreads ε over all classes, so the best possible logit is finite instead of infinite. It reduces overconfidence and improves calibration; the catch is that a smoothed teacher is a worse teacher for distillation.What you'll be able to do after this: set up early stopping with patience and checkpoints, compute a smoothed target, and explain the trade-offs of both.
+Training loss keeps falling for as long as you train, but **validation loss** usually falls, bottoms out, then rises as the network starts memorising. **Early stopping** watches validation loss, waits a set number of checks (the **patience**) for an improvement, then stops and restores the **best checkpoint**. **Label smoothing** replaces the one-hot target with 1 − ε for the true class and spreads ε over all classes, so the best possible logit is finite instead of infinite. It reduces overconfidence and improves calibration; the catch is that a smoothed teacher is a worse teacher for distillation. What you'll be able to do after this: set up early stopping with patience and checkpoints, compute a smoothed target, and explain the trade-offs of both.
 
 #### Label smoothing
 
-$$ y^{\mathrm{LS}}_k = \begin{cases}1-\varepsilon+\varepsilon/K & k = \text{true}\\ \varepsilon/K & \text{otherwise}\end{cases} \qquad \Delta z^{*} = \log\frac{1-\varepsilon+\varepsilon/K}{\varepsilon/K} $$
+$$ y^{\mathrm{LS}}_k = \begin{cases}{1-\varepsilon+\varepsilon/K} & k = \text{true}\\ {\varepsilon/K} & \text{otherwise}\end{cases} \qquad {\Delta z^{*} = \log\frac{1-\varepsilon+\varepsilon/K}{\varepsilon/K}} $$
 
 Introduced in Inception-v3 (Szegedy et al., CVPR 2016) with ε = 0.1, now a common default. In PyTorch: `CrossEntropyLoss(label_smoothing=0.1)`.
 
@@ -86,7 +86,7 @@ Goodfellow et al. §7.8 show that for a simple quadratic model, early stopping b
 
 #### What label smoothing helps and hurts
 
-- **Helps:** generalisation and calibration; Müller, Kornblith & Hinton (NeurIPS 2019) show it improves calibration and beam search in translation arXiv:1906.02629.
+- **Helps:** generalisation and calibration; Müller, Kornblith & Hinton (NeurIPS 2019) show it improves calibration and beam search in translation [arXiv:1906.02629](https://arxiv.org/abs/1906.02629).
 
 - **Hurts distillation:** a teacher trained with label smoothing makes a worse teacher, because smoothing pulls same-class examples into tight clusters and erases information about which other classes an example resembles.
 
@@ -140,10 +140,10 @@ Two cheap regularisers: stop training when validation loss stops improving (and 
 
 1. L. Prechelt, "Early Stopping – But When?", in _Neural Networks: Tricks of the Trade_, Springer 1998.
 
-2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.8, deeplearningbook.org.
+2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.8, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-3. C. Szegedy, V. Vanhoucke, S. Ioffe, J. Shlens & Z. Wojna, "Rethinking the Inception Architecture for Computer Vision", CVPR 2016, arXiv:1512.00567.
+3. C. Szegedy, V. Vanhoucke, S. Ioffe, J. Shlens & Z. Wojna, "Rethinking the Inception Architecture for Computer Vision", CVPR 2016, [arXiv:1512.00567](https://arxiv.org/abs/1512.00567).
 
-4. R. Müller, S. Kornblith & G. Hinton, "When Does Label Smoothing Help?", NeurIPS 2019, arXiv:1906.02629.
+4. R. Müller, S. Kornblith & G. Hinton, "When Does Label Smoothing Help?", NeurIPS 2019, [arXiv:1906.02629](https://arxiv.org/abs/1906.02629).
 
-5. PyTorch documentation, torch.nn.CrossEntropyLoss.
+5. PyTorch documentation, [torch.nn.CrossEntropyLoss](https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html).

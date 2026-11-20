@@ -48,11 +48,11 @@ The **vertical-edge** filter (a Sobel filter) responds on the left and right sid
 
 #### In one breath
 
-A **convolution** slides a small grid of weights (a **filter** or kernel, e.g. 3×3) across the image and, at every position, takes the dot product with the patch underneath, producing a **feature map**. The same weights are used at every position (**weight sharing**), and each output only looks at a small neighbourhood (**local connectivity**), so a conv layer needs a tiny fraction of a dense layer's parameters and detects a pattern wherever it appears. Stacking layers grows the **receptive field**, the patch of the original image an output can see: early layers find edges, deeper ones find textures, parts and whole objects.What you'll be able to do after this: compute a convolution by hand, count a conv layer's parameters, and calculate the receptive field of a stack of layers.
+A **convolution** slides a small grid of weights (a **filter** or kernel, e.g. 3×3) across the image and, at every position, takes the dot product with the patch underneath, producing a **feature map**. The same weights are used at every position (**weight sharing**), and each output only looks at a small neighbourhood (**local connectivity**), so a conv layer needs a tiny fraction of a dense layer's parameters and detects a pattern wherever it appears. Stacking layers grows the **receptive field**, the patch of the original image an output can see: early layers find edges, deeper ones find textures, parts and whole objects. What you'll be able to do after this: compute a convolution by hand, count a conv layer's parameters, and calculate the receptive field of a stack of layers.
 
 #### Slide, multiply, add
 
-$$ y_{i,j} = \sum_{u=0}^{K-1}\sum_{v=0}^{K-1} w_{u,v}\;x_{i+u,\,j+v} + b $$
+$$ {y_{i,j}} = \sum_{u=0}^{K-1}\sum_{v=0}^{K-1} {w_{u,v}}\;{x_{i+u,\,j+v}} + b $$
 
 Strictly this is cross-correlation (true convolution flips the filter); deep learning libraries use this form and still call it convolution. Goodfellow et al. ch. 9.
 
@@ -64,7 +64,7 @@ Strictly this is cross-correlation (true convolution flips the filter); deep lea
 
 #### The receptive field grows layer by layer
 
-$$ r_l = r_{l-1} + (k_l - 1)\cdot j_{l-1}, \qquad j_l = j_{l-1}\cdot s_l, \qquad r_0 = j_0 = 1 $$
+$$ {r_l} = r_{l-1} + {(k_l - 1)}\cdot {j_{l-1}}, \qquad j_l = j_{l-1}\cdot s_l, \qquad r_0 = j_0 = 1 $$
 
 - **receptive field after layer l**: How many input pixels (along one side) can influence one unit of layer l.
 
@@ -144,10 +144,10 @@ What a convolution layer computes, why weight sharing and local connections make
 
 2. A. Krizhevsky, I. Sutskever & G. Hinton, "ImageNet Classification with Deep Convolutional Neural Networks", NeurIPS 2012.
 
-3. M. Zeiler & R. Fergus, "Visualizing and Understanding Convolutional Networks", ECCV 2014, arXiv:1311.2901.
+3. M. Zeiler & R. Fergus, "Visualizing and Understanding Convolutional Networks", ECCV 2014, [arXiv:1311.2901](https://arxiv.org/abs/1311.2901).
 
-4. W. Luo, Y. Li, R. Urtasun & R. Zemel, "Understanding the Effective Receptive Field in Deep Convolutional Neural Networks", NeurIPS 2016, arXiv:1701.04128.
+4. W. Luo, Y. Li, R. Urtasun & R. Zemel, "Understanding the Effective Receptive Field in Deep Convolutional Neural Networks", NeurIPS 2016, [arXiv:1701.04128](https://arxiv.org/abs/1701.04128).
 
-5. K. Simonyan & A. Zisserman, "Very Deep Convolutional Networks for Large-Scale Image Recognition" (VGG), ICLR 2015, arXiv:1409.1556.
+5. K. Simonyan & A. Zisserman, "Very Deep Convolutional Networks for Large-Scale Image Recognition" (VGG), ICLR 2015, [arXiv:1409.1556](https://arxiv.org/abs/1409.1556).
 
-6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 9; Stanford CS231n, Convolutional Neural Networks notes.
+6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 9; Stanford CS231n, [Convolutional Neural Networks notes](https://cs231n.github.io/convolutional-networks/).

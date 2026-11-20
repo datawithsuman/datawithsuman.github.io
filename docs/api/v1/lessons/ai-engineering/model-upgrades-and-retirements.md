@@ -80,7 +80,7 @@ Xu and Wu ran 900 benchmark items 50 times each on three successive GPT versions
 
 #### The maths
 
-$$ \Delta_{\text{avg}} \approx P_{+} - P_{-} $$
+$$ {\Delta_{\text{avg}}} \approx {P_{+}} - {P_{-}} $$
 
 A rough relation: the average reflects the balance of gains and losses, so it says nothing about how many cases changed. Look at both shares.
 
@@ -136,22 +136,24 @@ Should you always use the provider's 'latest' alias?
 
 It avoids retirements of old versions but changes behaviour without warning. Most teams pin a dated version, and upgrade on purpose after testing.
 
+#### The 30-second answer
+
 Hosted models have expiry dates: at least 60 days' notice from Anthropic and 6 months from OpenAI for generally available models. Yet a study of thousands of projects found 82% migrated only after the shutdown, mostly with hard-coded model IDs. I'd keep the model ID in configuration, watch deprecation notices in CI, and run the golden set on old and new models several times per case, listing what got better and worse, because averages hide regressions. One upgrade gained 7.3 points while 6% of items got reliably worse. Then re-tune prompts, shadow and canary, and make sure failures alert rather than hide.
 
 **Key terms and sources**
 
-Why hosted models have expiry dates, what providers promise, what happened when models were retired across thousands of apps, why a better average can hide regressions, and a migration playbook.
+Why hosted models have expiry dates, what providers promise, what happened when models were retired across thousands of apps, why a better average can hide regressions, and a migration playbook. · checked 7 Nov 2026
 
 #### Sources
 
-- Kim, When the Model Retires: An Empirical Study of LLM Migration in Open-Source Applications
+- [Kim, When the Model Retires: An Empirical Study of LLM Migration in Open-Source Applications](https://arxiv.org/abs/2609.31288)
 
-- Xu and Wu, What Aggregate Scores Miss: Measuring Item-Level Regressions in Commercial LLM API Migrations
+- [Xu and Wu, What Aggregate Scores Miss: Measuring Item-Level Regressions in Commercial LLM API Migrations](https://arxiv.org/abs/2608.17719)
 
-- Chen, Zaharia and Zou, How Is ChatGPT's Behavior Changing over Time?
+- [Chen, Zaharia and Zou, How Is ChatGPT's Behavior Changing over Time?](https://arxiv.org/abs/2307.09009)
 
-- Anthropic, Model deprecations (checked 7 Nov 2026)
+- [Anthropic, Model deprecations (checked 7 Nov 2026)](https://platform.claude.com/docs/en/about-claude/model-deprecations)
 
-- OpenAI, Deprecations (checked 7 Nov 2026)
+- [OpenAI, Deprecations (checked 7 Nov 2026)](https://developers.openai.com/api/docs/deprecations)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

@@ -48,11 +48,11 @@ Logistic regression is stuck near **72%** test accuracy: its one straight line c
 
 #### In one breath
 
-A **neuron** takes a weighted sum of its inputs plus a bias and passes it through an **activation function**. One neuron (a **perceptron** or logistic regression) can only draw a straight line between classes, so it fails on patterns like XOR. Stack neurons into a **hidden layer** and the network can bend its boundary: each hidden unit draws one line, and the output combines them. Without a non-linear activation, any stack of layers collapses back into one linear layer. With one, a wide enough single hidden layer can approximate any continuous function (**universal approximation**), and in practice **deeper** networks get there with far fewer units.What you'll be able to do after this: write the forward pass of an MLP, explain why it needs a non-linearity, count its parameters, and explain why width and depth help.
+A **neuron** takes a weighted sum of its inputs plus a bias and passes it through an **activation function**. One neuron (a **perceptron** or logistic regression) can only draw a straight line between classes, so it fails on patterns like XOR. Stack neurons into a **hidden layer** and the network can bend its boundary: each hidden unit draws one line, and the output combines them. Without a non-linear activation, any stack of layers collapses back into one linear layer. With one, a wide enough single hidden layer can approximate any continuous function (**universal approximation**), and in practice **deeper** networks get there with far fewer units. What you'll be able to do after this: write the forward pass of an MLP, explain why it needs a non-linearity, count its parameters, and explain why width and depth help.
 
 #### One neuron
 
-$$ a = f\big(w_1 x_1 + w_2 x_2 + b\big) $$
+$$ a = {f}\big({w_1 x_1 + w_2 x_2} + {b}\big) $$
 
 Rosenblatt's perceptron (1958) used a step function and a simple error-driven update rule; logistic regression is the same neuron with a sigmoid and log loss (Logistic Regression).
 
@@ -64,7 +64,7 @@ Rosenblatt's perceptron (1958) used a step function and a simple error-driven up
 
 #### The multi-layer perceptron (MLP)
 
-$$ \mathbf{h} = \phi(W_1 \mathbf{x} + \mathbf{b}_1), \qquad \hat{p} = \sigma(\mathbf{w}_2^{\top} \mathbf{h} + b_2) $$
+$$ {\mathbf{h} = {\phi}(W_1 \mathbf{x} + \mathbf{b}_1)}, \qquad {\hat{p} = \sigma(\mathbf{w}_2^{\top} \mathbf{h} + b_2)} $$
 
 Parameters: 2 × 16 + 16 for the hidden layer plus 16 + 1 for the output = 65. "Fully connected" or "dense" layer = this matrix-product-plus-bias layer. Goodfellow et al. ch. 6.
 
@@ -168,4 +168,4 @@ The artificial neuron, the perceptron and its XOR limit, hidden layers, why a no
 
 5. K. Hornik, "Approximation capabilities of multilayer feedforward networks", _Neural Networks_ 4(2), 1991.
 
-6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 6, deeplearningbook.org.
+6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 6, [deeplearningbook.org](https://www.deeplearningbook.org/).

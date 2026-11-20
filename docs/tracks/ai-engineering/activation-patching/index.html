@@ -204,7 +204,7 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I&#x27;d use activation patching: run the model on a clean prompt and a minimally corrupted one, swap one component&#x27;s activation between the runs, and measure the change in logit difference. Path patching does the same for a single connection. The choices matter: corrupt with a realistic swap rather than zeros, and use logit difference, because probability saturates. Backup heads can hide importance, so I&#x27;d test groups too. To scale up, ACDC prunes edges against a threshold, and edge attribution patching estimates every edge&#x27;s effect with gradients in one backward pass, and then I&#x27;d check the top edges with real patches.</p>
+<h3>The 30-second answer</h3><p class="say30">I&#x27;d use activation patching: run the model on a clean prompt and a minimally corrupted one, swap one component&#x27;s activation between the runs, and measure the change in logit difference. Path patching does the same for a single connection. The choices matter: corrupt with a realistic swap rather than zeros, and use logit difference, because probability saturates. Backup heads can hide importance, so I&#x27;d test groups too. To scale up, ACDC prunes edges against a threshold, and edge attribution patching estimates every edge&#x27;s effect with gradients in one backward pass, and then I&#x27;d check the top edges with real patches.</p>
 
 </div>
 </div>

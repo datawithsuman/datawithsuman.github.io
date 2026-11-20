@@ -149,8 +149,10 @@ How do you know it's any good?
 
 Replay incidents with known causes and inject faults; measure whether it finds the cause, how much guidance it needs, and its time and cost. Then track engineer ratings live.
 
+#### The 30-second answer
+
 I'd clarify triggers, the data available, how fast findings must arrive and what the agent may change. When an alert fires, the agent gathers context first: the alert, runbook, recent deploys and past incidents. It runs structured checks in parallel, like platform health and the service's logs, metrics and traces against a baseline. Then the LLM proposes hypotheses and tests each with targeted queries, marking them confirmed, ruled out or unclear. Tools sit behind APIs that are read-only and rate-limited. It posts a summary with evidence and honest confidence to the incident channel, and the engineer can ask follow-ups. Fixes are drafts that a human approves. I'd evaluate by replaying past incidents and injected faults, and cap queries, time and tokens per investigation.
 
 **Key terms and sources**
 
-Based on published write-ups: an observability company's investigation agent (Jun 2025, updated Dec 2025), a data platform's internal AI SRE (Aug 2026), a database company's guide and its experiment (Aug 2025). The lab's arithmetic follows the guide's example; the estimate is ours. Uses tool calling, agent safety and human-in-the-loop design.
+Based on published write-ups: an observability company's [investigation agent](https://www.datadoghq.com/blog/bits-ai-sre/) (Jun 2025, updated Dec 2025), a data platform's [internal AI SRE](https://www.databricks.com/blog/how-databricks-uses-ai-accelerate-incident-investigation) (Aug 2026), a database company's [guide](https://clickhouse.com/resources/engineering/ai-sre-agents) and its [experiment](https://clickhouse.com/blog/llm-observability-challenge) (Aug 2025). The lab's arithmetic follows the guide's example; the estimate is ours. Uses tool calling, agent safety and human-in-the-loop design. · checked 15 Nov 2026

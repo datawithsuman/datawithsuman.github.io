@@ -46,11 +46,11 @@ Push |z| above about 5 (e.g. w = 3, x = 2): the sigmoid saturates, ∂a/∂z col
 
 #### In one breath
 
-A **derivative** answers "if I nudge this input a little, how much does the output change?". With many inputs (every weight in a model), each has a **partial derivative**, and together they form the **gradient**: an arrow pointing in the direction where the loss rises fastest. Training walks the other way. Models are long chains of simple steps (multiply, add, squash, compare to the target), and the **chain rule** says the sensitivity through a chain is the **product of the local sensitivities**. **Backpropagation** computes all of them in one backward pass by reusing shared products, so a gradient costs about as much as one forward pass.What you'll be able to do after this: differentiate a loss with respect to a weight by hand, explain what the gradient vector means, apply the chain rule on a computation graph, and check a gradient numerically.
+A **derivative** answers "if I nudge this input a little, how much does the output change?". With many inputs (every weight in a model), each has a **partial derivative**, and together they form the **gradient**: an arrow pointing in the direction where the loss rises fastest. Training walks the other way. Models are long chains of simple steps (multiply, add, squash, compare to the target), and the **chain rule** says the sensitivity through a chain is the **product of the local sensitivities**. **Backpropagation** computes all of them in one backward pass by reusing shared products, so a gradient costs about as much as one forward pass. What you'll be able to do after this: differentiate a loss with respect to a weight by hand, explain what the gradient vector means, apply the chain rule on a computation graph, and check a gradient numerically.
 
 #### Derivative, partial derivative, gradient
 
-$$ f^{\prime}(x) = \lim_{h\to 0} \tfrac{f(x+h) - f(x)}{h}, \qquad \nabla_\theta L = \bigl(\tfrac{\partial L}{\partial \theta_1}, \dots, \tfrac{\partial L}{\partial \theta_n}\bigr) $$
+$$ {f^{\prime}(x)} = {\lim_{h\to 0} \tfrac{f(x+h) - f(x)}{h}}, \qquad {\nabla_\theta L = \bigl(\tfrac{\partial L}{\partial \theta_1}, \dots, \tfrac{\partial L}{\partial \theta_n}\bigr)} $$
 
 MML §5.1–5.2. Useful rules: d(x²)/dx = 2x; dσ(z)/dz = σ(z)(1 − σ(z)); d(log x)/dx = 1/x.
 
@@ -62,7 +62,7 @@ MML §5.1–5.2. Useful rules: d(x²)/dx = 2x; dσ(z)/dz = σ(z)(1 − σ(z)); d
 
 #### The chain rule
 
-$$ \frac{\partial L}{\partial w} = \frac{\partial L}{\partial a} \cdot \frac{\partial a}{\partial z} \cdot \frac{\partial z}{\partial w} $$
+$$ {\frac{\partial L}{\partial w}} = {\frac{\partial L}{\partial a}} \cdot {\frac{\partial a}{\partial z}} \cdot {\frac{\partial z}{\partial w}} $$
 
 The multivariate chain rule, MML §5.2.2. Backpropagation applies it systematically from the loss backwards (Rumelhart, Hinton & Williams, _Nature_ 1986).
 
@@ -171,8 +171,8 @@ Derivatives as sensitivity, partial derivatives, the gradient vector, the chain 
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, mml-book.github.io (ch. 5).
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, [mml-book.github.io](https://mml-book.github.io/) (ch. 5).
 
-2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.5, deeplearningbook.org.
+2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.5, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
 3. D. Rumelhart, G. Hinton & R. Williams, "Learning representations by back-propagating errors", _Nature_ 323, 1986.

@@ -48,13 +48,13 @@ Put the generator **far away** (μ = 80): D* is 1 on the real data and 0 on the 
 
 #### In one breath
 
-A **GAN** trains two networks against each other. The **generator** turns random noise into fake samples; the **discriminator** tries to tell fake from real. Each improves by exploiting the other's weaknesses until fakes are indistinguishable. Goodfellow et al. showed that with an optimal discriminator, the generator is minimising the **Jensen–Shannon divergence** between real and generated data. In practice training is fragile: the generator can cover only a few kinds of output (**mode collapse**), and when the two distributions barely overlap the discriminator wins easily and the generator's **gradients vanish**. Tricks like the non-saturating loss and the **Wasserstein** distance help. GANs produced the first photorealistic faces (StyleGAN) and still power fast one-step generators, but diffusion models now lead on quality and diversity.What you'll be able to do after this: write the GAN objective, derive the optimal discriminator, and explain mode collapse, vanishing gradients and the WGAN fix.
+A **GAN** trains two networks against each other. The **generator** turns random noise into fake samples; the **discriminator** tries to tell fake from real. Each improves by exploiting the other's weaknesses until fakes are indistinguishable. Goodfellow et al. showed that with an optimal discriminator, the generator is minimising the **Jensen–Shannon divergence** between real and generated data. In practice training is fragile: the generator can cover only a few kinds of output (**mode collapse**), and when the two distributions barely overlap the discriminator wins easily and the generator's **gradients vanish**. Tricks like the non-saturating loss and the **Wasserstein** distance help. GANs produced the first photorealistic faces (StyleGAN) and still power fast one-step generators, but diffusion models now lead on quality and diversity. What you'll be able to do after this: write the GAN objective, derive the optimal discriminator, and explain mode collapse, vanishing gradients and the WGAN fix.
 
 #### A two-player minimax game
 
-$$ \min_G \max_D\; \mathbb{E}_{x\sim p_{\text{data}}}\big[\log D(x)\big] + \mathbb{E}_{z\sim p_z}\big[\log\big(1 - D(G(z))\big)\big] $$
+$$ {\min_G \max_D}\; {\mathbb{E}_{x\sim p_{\text{data}}}\big[\log D(x)\big]} + {\mathbb{E}_{z\sim p_z}\big[\log\big(1 - D(G(z))\big)\big]} $$
 
-Goodfellow et al., "Generative Adversarial Nets", NeurIPS 2014 arXiv:1406.2661. For a fixed G the best discriminator is D*(x) = pdata(x) / (pdata(x) + pg(x)), and plugging it in gives the value 2·JSD(pdata, pg) − log 4, minimised exactly when pg = pdata.
+Goodfellow et al., "Generative Adversarial Nets", NeurIPS 2014 [arXiv:1406.2661](https://arxiv.org/abs/1406.2661). For a fixed G the best discriminator is D*(x) = pdata(x) / (pdata(x) + pg(x)), and plugging it in gives the value 2·JSD(pdata, pg) − log 4, minimised exactly when pg = pdata.
 
 - **discriminator on real data**: D outputs the probability that a sample is real. It wants D(x) close to 1 for real samples…
 
@@ -132,14 +132,14 @@ Generative adversarial networks: a generator and a discriminator in a minimax ga
 
 #### Sources
 
-1. I. Goodfellow et al., "Generative Adversarial Nets", NeurIPS 2014, arXiv:1406.2661.
+1. I. Goodfellow et al., "Generative Adversarial Nets", NeurIPS 2014, [arXiv:1406.2661](https://arxiv.org/abs/1406.2661).
 
-2. A. Radford, L. Metz & S. Chintala, "Unsupervised Representation Learning with Deep Convolutional GANs" (DCGAN), ICLR 2016, arXiv:1511.06434.
+2. A. Radford, L. Metz & S. Chintala, "Unsupervised Representation Learning with Deep Convolutional GANs" (DCGAN), ICLR 2016, [arXiv:1511.06434](https://arxiv.org/abs/1511.06434).
 
-3. M. Arjovsky & L. Bottou, "Towards Principled Methods for Training Generative Adversarial Networks", ICLR 2017, arXiv:1701.04862.
+3. M. Arjovsky & L. Bottou, "Towards Principled Methods for Training Generative Adversarial Networks", ICLR 2017, [arXiv:1701.04862](https://arxiv.org/abs/1701.04862).
 
-4. M. Arjovsky, S. Chintala & L. Bottou, "Wasserstein GAN", ICML 2017, arXiv:1701.07875; I. Gulrajani et al., "Improved Training of Wasserstein GANs", NeurIPS 2017, arXiv:1704.00028.
+4. M. Arjovsky, S. Chintala & L. Bottou, "Wasserstein GAN", ICML 2017, [arXiv:1701.07875](https://arxiv.org/abs/1701.07875); I. Gulrajani et al., "Improved Training of Wasserstein GANs", NeurIPS 2017, [arXiv:1704.00028](https://arxiv.org/abs/1704.00028).
 
-5. T. Karras, S. Laine & T. Aila, "A Style-Based Generator Architecture for Generative Adversarial Networks", CVPR 2019, arXiv:1812.04948.
+5. T. Karras, S. Laine & T. Aila, "A Style-Based Generator Architecture for Generative Adversarial Networks", CVPR 2019, [arXiv:1812.04948](https://arxiv.org/abs/1812.04948).
 
-6. P. Dhariwal & A. Nichol, "Diffusion Models Beat GANs on Image Synthesis", NeurIPS 2021, arXiv:2105.05233.
+6. P. Dhariwal & A. Nichol, "Diffusion Models Beat GANs on Image Synthesis", NeurIPS 2021, [arXiv:2105.05233](https://arxiv.org/abs/2105.05233).

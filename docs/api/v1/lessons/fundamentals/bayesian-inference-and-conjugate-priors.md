@@ -90,7 +90,7 @@ The denominator, p(data), averages over every possible parameter value. For neur
 
 #### The maths
 
-$$ p(\theta \mid D) = \frac{p(D \mid \theta)\,p(\theta)}{\int p(D \mid \theta)\,p(\theta)\,d\theta}, \qquad \mathrm{Beta}(\alpha, \beta) \to \mathrm{Beta}(\alpha + k,\; \beta + n - k) $$
+$$ {p(\theta \mid D)} = \frac{{p(D \mid \theta)}\,{p(\theta)}}{{\int p(D \mid \theta)\,p(\theta)\,d\theta}}, \qquad {\mathrm{Beta}(\alpha, \beta) \to \mathrm{Beta}(\alpha + k,\; \beta + n - k)} $$
 
 Worked example: Beta(2, 2) with 7 successes in 10 gives Beta(9, 5), with a mean of 9/14 ≈ 0.64.
 
@@ -150,17 +150,19 @@ When does the prior stop mattering?
 
 As data grows, the likelihood dominates, because it multiplies with each sample, and the prior stays fixed. So Bayesian answers converge with MLE. The prior matters most with little data, or when it rules out certain values with zero probability, which no amount of data can then fix.
 
+#### The 30-second answer
+
 MLE and MAP give one value. Bayesian inference keeps a whole distribution, so I also know how uncertain I am. The posterior is proportional to the likelihood times the prior. A conjugate prior keeps the same form: with a Beta prior and yes-or-no data, I just add successes and failures to its parameters. The posterior gives credible intervals and predictions averaged over uncertainty. With lots of data, the prior stops mattering. For complex models, the normalising integral is intractable, so I'd use sampling or variational methods.
 
 **Key terms and sources**
 
-Updating a full distribution over parameters, Beta-Binomial as a worked example, credible intervals, predictive distributions, and why the evidence integral is hard.
+Updating a full distribution over parameters, Beta-Binomial as a worked example, credible intervals, predictive distributions, and why the evidence integral is hard. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
 - MLE and MAP on this site
 

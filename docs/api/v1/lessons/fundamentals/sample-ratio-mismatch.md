@@ -78,7 +78,7 @@ Run the same experience on both sides. With nothing changed, about 5% should com
 
 #### The maths
 
-$$ \chi^2 = \sum_{g} \frac{(O_g - E_g)^2}{E_g} $$
+$$ {\chi^2} = \sum_{g} \frac{({O_g} - {E_g})^2}{{E_g}} $$
 
 Example: 50,500 and 49,500, expecting 50,000 each. χ² = 500²/50,000 × 2 = 10, so p ≈ 0.0016. A 50.5% share looks harmless, but chance rarely produces it at this scale.
 
@@ -134,20 +134,22 @@ The SRM check passes, but only logged-in users are counted. Could there still be
 
 Yes. If treatment changes who logs in, the groups may differ even with equal sizes. So define users by assignment, not by behaviour after it. And passing an SRM check doesn't prove the test is valid.
 
+#### The 30-second answer
+
 Yes, it matters. With 100,000 users, a chi-squared test gives about p equals 0.0016, so it's unlikely to be chance. That's a sample ratio mismatch: something in assignment, execution, logging or analysis broke. For example, treatment may crash for some users, and they drop out of its data. So I wouldn't trust the results. I'd slice the mismatch by browser, version and day to find the cause, fix it, and rerun. I'd run this check on every test, and use A/A tests to validate the platform.
 
 **Key terms and sources**
 
-How to detect a sample ratio mismatch with a chi-squared test, what causes it, and how A/A tests validate your experiment platform.
+How to detect a sample ratio mismatch with a chi-squared test, what causes it, and how A/A tests validate your experiment platform. · checked 7 Nov 2026
 
 #### Sources
 
-- Fabijan et al., Diagnosing Sample Ratio Mismatch (KDD 2019)
+- [Fabijan et al., Diagnosing Sample Ratio Mismatch (KDD 2019)](https://www.lukasvermeer.nl/publications/papers/2019/07/25/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments.html)
 
-- Talk with the 6% figure
+- [Talk with the 6% figure](https://www.slideshare.net/slideshow/detecting-incorrectly-implemented-experiments/236489000)
 
-- Sample ratio mismatch, Wikipedia
+- [Sample ratio mismatch, Wikipedia](https://en.wikipedia.org/wiki/Sample_ratio_mismatch)
 
-- Book chapter on SRM and trust guardrails
+- [Book chapter on SRM and trust guardrails](https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/sample-ratio-mismatch-and-other-trustrelated-guardrail-metrics/8DBB0F59AC7729D7BC6B94690DB9CCD5)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

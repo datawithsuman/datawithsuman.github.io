@@ -48,7 +48,7 @@ Computing the restaurant's average over **all orders** (including later ones and
 
 #### In one breath
 
-**Training/serving skew** is any difference between the data a model was trained on and the data it sees when serving. Three common causes: **different code** (features computed one way in the training pipeline and another way in the live service), **different data** (a source available offline but stale or missing online), and **time travel**: training features computed with information that didn't exist yet at prediction time. The last one is the sneakiest: if a restaurant's "average delay" feature includes the very order you're predicting, offline error looks great and production error is worse than an honest model's. A **feature store** is the standard fix as a concept: define each feature once, compute it for training with **point-in-time (as-of) joins**, serve the same values online, and log the features actually served so future training uses exactly what the model saw.What you'll be able to do after this: diagnose "great offline, bad online", explain point-in-time correctness, and describe what a feature store does.
+**Training/serving skew** is any difference between the data a model was trained on and the data it sees when serving. Three common causes: **different code** (features computed one way in the training pipeline and another way in the live service), **different data** (a source available offline but stale or missing online), and **time travel**: training features computed with information that didn't exist yet at prediction time. The last one is the sneakiest: if a restaurant's "average delay" feature includes the very order you're predicting, offline error looks great and production error is worse than an honest model's. A **feature store** is the standard fix as a concept: define each feature once, compute it for training with **point-in-time (as-of) joins**, serve the same values online, and log the features actually served so future training uses exactly what the model saw. What you'll be able to do after this: diagnose "great offline, bad online", explain point-in-time correctness, and describe what a feature store does.
 
 #### Where skew comes from
 
@@ -137,4 +137,4 @@ Why a model that looks great offline disappoints in production: training/serving
 
 4. S. Kaufman et al., "Leakage in Data Mining: Formulation, Detection, and Avoidance", ACM TKDD 2012; N. Polyzotis et al., "Data Validation for Machine Learning", MLSys 2019.
 
-5. S. Shankar et al., "Operationalizing Machine Learning: An Interview Study", 2022, arXiv:2209.09125.
+5. S. Shankar et al., "Operationalizing Machine Learning: An Interview Study", 2022, [arXiv:2209.09125](https://arxiv.org/abs/2209.09125).

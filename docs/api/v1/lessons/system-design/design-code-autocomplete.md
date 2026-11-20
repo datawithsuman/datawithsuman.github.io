@@ -167,8 +167,10 @@ Doesn't a proxy add a hop and slow things down?
 
 It adds a small hop, but it's in the same region as the model, and it holds open connections, which saves far more than it costs. In return you get central sign-in, a hidden model key, routing, cancels, experiments and fixes for old clients.
 
+#### The 30-second answer
+
 First I'd confirm the scale, the latency target and where users are. At 400 million requests a day and about 8,000 a second at peak, under 200 ms leaves little room, and the network matters as much as the model. The client waits for a pause, builds a short prompt from the code around the cursor and sends it over a connection that's already open. About half of requests go stale as people type, so cancelling is central. I'd use HTTP/2, so the client resets one stream and keeps the connection, avoiding five or six round trips per reconnect. The proxy passes the cancel to the model, so it stops wasting GPU time. I'd put a proxy in every region with the model, and route by DNS to the closest healthy one. It checks a short-lived token locally and holds the real model key. Each proxy watches its success rate and fails its health check when it's unhealthy, so a regional outage only reduces capacity. The proxy also lets me A/B test models and fix problems without client releases. I'd measure acceptance, code kept, percentile latency and cost.
 
 **Key terms and sources**
 
-Based on a talk about a real system: David Cheney on serving GitHub Copilot (QCon SF 2024). We could read most of the transcript and only a summary of the rest. Context building, quality metrics, privacy and the lab's numbers come from our own knowledge and are not from the talk. Uses prefill and decode, continuous batching, serving metrics and scaling inference.
+Based on a talk about a real system: [David Cheney on serving GitHub Copilot](https://www.infoq.com/presentations/github-copilot/) ([QCon SF 2024](https://qconsf.com/presentation/nov2024/how-github-copilot-serves-400-million-completion-requests-day)). We could read most of the transcript and only a summary of the rest. Context building, quality metrics, privacy and the lab's numbers come from our own knowledge and are not from the talk. Uses prefill and decode, continuous batching, serving metrics and scaling inference. · checked 5 Nov 2026

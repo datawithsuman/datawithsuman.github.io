@@ -150,12 +150,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">Topic models find themes with no labels. LDA is generative: each document is a mix of topics, and each topic is a distribution over words, fitted with Gibbs sampling or variational inference. NMF factorises a TF-IDF matrix into non-negative parts, and it's a fast baseline. BERTopic embeds documents, reduces dimensions with UMAP, clusters with HDBSCAN, and describes clusters with c-TF-IDF, and it tends to suit short texts. I'd choose the number of topics with coherence plus reading the topics, check stability across seeds, and read sample documents. Then I might use the themes to train a classifier.</p>
+<h3>The 30-second answer</h3><p class="say30">Topic models find themes with no labels. LDA is generative: each document is a mix of topics, and each topic is a distribution over words, fitted with Gibbs sampling or variational inference. NMF factorises a TF-IDF matrix into non-negative parts, and it's a fast baseline. BERTopic embeds documents, reduces dimensions with UMAP, clusters with HDBSCAN, and describes clusters with c-TF-IDF, and it tends to suit short texts. I'd choose the number of topics with coherence plus reading the topics, check stability across seeds, and read sample documents. Then I might use the themes to train a classifier.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Latent Dirichlet Allocation, non-negative matrix factorisation, BERTopic and c-TF-IDF, how to choose the number of topics, and how to check the results.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Latent Dirichlet Allocation, non-negative matrix factorisation, BERTopic and c-TF-IDF, how to choose the number of topics, and how to check the results. · checked 7 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://jmlr.org/papers/v3/blei03a.html">Blei, Ng and Jordan, Latent Dirichlet Allocation (2003)</a></li><li><a href="https://arxiv.org/abs/2203.05794">Grootendorst, BERTopic</a></li><li><a href="https://scikit-learn.org/stable/modules/decomposition.html">scikit-learn on decomposition: LDA and NMF</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

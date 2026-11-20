@@ -37,7 +37,7 @@ _Illustrative. In the model, each shot is a small tree fitted to the remaining e
 
 #### Train a boosted model live
 
-Lower ν needs more trees but reaches a better test error; scikit-learn: "Smaller values of learning_rate require larger numbers of weak learners… Empirical evidence suggests that small values of learning_rate favor better test error" docs. The test curve's minimum is where **early stopping** would stop.
+Lower ν needs more trees but reaches a better test error; scikit-learn: "Smaller values of learning_rate require larger numbers of weak learners… Empirical evidence suggests that small values of learning_rate favor better test error" [docs](https://scikit-learn.org/stable/modules/ensemble.html). The test curve's minimum is where **early stopping** would stop.
 
 **Now say why:** why does test error rise at full strength while training error keeps falling, and why does a smaller learning rate help?
 
@@ -47,7 +47,7 @@ Lower ν needs more trees but reaches a better test error; scikit-learn: "Smalle
 
 #### In one breath
 
-Gradient boosting builds a model one small tree at a time, and each new tree is trained to fix the **mistakes** of everything before it. "Mistakes" means the **negative gradient** of the loss, which for squared error is just the residual, so boosting is gradient descent in function space. A small **learning rate** (shrinkage) plus many shallow trees, stopped early on validation data, gives the strongest off-the-shelf models for tabular data. **XGBoost** added a regularised second-order objective and fast, sparsity-aware split finding; **LightGBM** added histograms, leaf-wise growth and sampling tricks for speed; **CatBoost** fixed target leakage with ordered boosting and native categorical handling.What you'll be able to do after this: explain boosting vs bagging, derive the residual-fitting update, tune learning rate vs number of trees, read XGBoost's split-gain formula, and choose between XGBoost, LightGBM and CatBoost.
+Gradient boosting builds a model one small tree at a time, and each new tree is trained to fix the **mistakes** of everything before it. "Mistakes" means the **negative gradient** of the loss, which for squared error is just the residual, so boosting is gradient descent in function space. A small **learning rate** (shrinkage) plus many shallow trees, stopped early on validation data, gives the strongest off-the-shelf models for tabular data. **XGBoost** added a regularised second-order objective and fast, sparsity-aware split finding; **LightGBM** added histograms, leaf-wise growth and sampling tricks for speed; **CatBoost** fixed target leakage with ordered boosting and native categorical handling. What you'll be able to do after this: explain boosting vs bagging, derive the residual-fitting update, tune learning rate vs number of trees, read XGBoost's split-gain formula, and choose between XGBoost, LightGBM and CatBoost.
 
 #### Fit the leftovers, step by step
 
@@ -63,9 +63,9 @@ Gradient boosting builds a model one small tree at a time, and each new tree is 
 
 #### Gradient descent, where each step is a tree
 
-$$ F_m(x) = F_{m-1}(x) + \nu\,h_m(x), \qquad h_m \approx -\,\partial L\big(y_i, F(x_i)\big)\,/\,\partial F(x_i)\Big|_{F=F_{m-1}} $$
+$$ {F_m(x)} = {F_{m-1}(x)} + {\nu}\,{h_m(x)}, \qquad h_m \approx {-\,\partial L\big(y_i, F(x_i)\big)\,/\,\partial F(x_i)}\Big|_{F=F_{m-1}} $$
 
-Friedman (2001) framed boosting as "numerical optimization in function space"; scikit-learn: "at each iteration, the estimator hm is fitted to predict the negative gradients of the samples" scikit-learn ensemble guide.
+Friedman (2001) framed boosting as "numerical optimization in function space"; scikit-learn: "at each iteration, the estimator hm is fitted to predict the negative gradients of the samples" [scikit-learn ensemble guide](https://scikit-learn.org/stable/modules/ensemble.html).
 
 - **the model after m trees**: A sum: the starting guess plus every tree's contribution.
 
@@ -81,11 +81,11 @@ Because only the gradient is needed, the same machinery handles any differentiab
 
 #### A penalty on tree complexity, and Newton steps
 
-XGBoost adds a complexity penalty to every tree and uses both the gradient g and the second derivative h of the loss Chen & Guestrin 2016, §2:
+XGBoost adds a complexity penalty to every tree and uses both the gradient g and the second derivative h of the loss [Chen & Guestrin 2016, §2](https://arxiv.org/pdf/1603.02754#page=2):
 
-$$ \mathcal L = \textstyle\sum_i l(y_i,\hat y_i) + \sum_k \big(\gamma T + \tfrac12\lambda\|w\|^2\big), \qquad w_j^{*} = -\,G_j \,/\, (H_j + \lambda) $$
+$$ {\mathcal L} = \textstyle\sum_i {l(y_i,\hat y_i)} + \sum_k {\big(\gamma T + \tfrac12\lambda\|w\|^2\big)}, \qquad {w_j^{*} = -\,G_j \,/\, (H_j + \lambda)} $$
 
-Eq. 2 and Eq. 5 p. 2–3, with Gj = Σ gi and Hj = Σ hi over leaf j.
+Eq. 2 and Eq. 5 [p. 2–3](https://arxiv.org/pdf/1603.02754#page=3), with Gj = Σ gi and Hj = Σ hi over leaf j.
 
 - **what each tree minimises**: Training loss plus a complexity penalty for every tree.
 
@@ -97,9 +97,9 @@ Eq. 2 and Eq. 5 p. 2–3, with Gj = Σ gi and Hj = Σ hi over leaf j.
 
 Plugging the best leaf values back in gives a score for any split, used to choose (and reject) splits:
 
-$$ \text{Gain} = \tfrac12\Big[\tfrac{G_L^2}{H_L+\lambda} + \tfrac{G_R^2}{H_R+\lambda} - \tfrac{(G_L+G_R)^2}{H_L+H_R+\lambda}\Big] - \gamma $$
+$$ {\text{Gain}} = \tfrac12\Big[{\tfrac{G_L^2}{H_L+\lambda}} + {\tfrac{G_R^2}{H_R+\lambda}} - {\tfrac{(G_L+G_R)^2}{H_L+H_R+\lambda}}\Big] - {\gamma} $$
 
-Eq. 7 p. 3.
+Eq. 7 [p. 3](https://arxiv.org/pdf/1603.02754#page=3).
 
 - **split gain**: How much the regularised objective improves if we split this node.
 
@@ -137,7 +137,7 @@ The very first split on our deliveries, starting from F₀ = mean, with squared 
 | **Number of trees + early stopping** | n_estimators, early_stopping_rounds | Stop when validation loss stops improving |
 | **Tree size** | max_depth (XGBoost) / num_leaves (LightGBM) | Interaction order the model can capture; shallow trees (3–8) are typical |
 | **Row subsampling** | subsample / bagging_fraction | Stochastic gradient boosting (Friedman 2002); "a typical value of subsample is 0.5" in scikit-learn |
-| **Column subsampling** | colsample_bytree / feature_fraction | Borrowed from random forests; XGBoost users found it "prevents over-fitting even more so than the traditional row sub-sampling" p. 3 |
+| **Column subsampling** | colsample_bytree / feature_fraction | Borrowed from random forests; XGBoost users found it "prevents over-fitting even more so than the traditional row sub-sampling" [p. 3](https://arxiv.org/pdf/1603.02754#page=3) |
 | **Leaf regularisation** | reg_lambda, reg_alpha, gamma / min_split_gain | Shrink leaf values; demand a minimum gain per split |
 | **Minimum leaf size** | min_child_weight / min_data_in_leaf | No leaves built on a handful of points |
 
@@ -151,11 +151,11 @@ The very first split on our deliveries, starting from F₀ = mean, with squared 
 | **Categorical features** | Native support in recent versions; otherwise encode | Native (gradient-statistics based splits) | Native: ordered target statistics, plus feature combinations |
 | **Signature fix** | Regularised 2nd-order objective | Training speed on big data | "Prediction shift" from target leakage → ordered boosting |
 
-Sources: XGBoost §3–4; LightGBM abstract (GOSS, EFB, "up to over 20 times") NeurIPS 2017; CatBoost arXiv 1706.09516.
+Sources: XGBoost [§3–4](https://arxiv.org/pdf/1603.02754#page=4); LightGBM abstract (GOSS, EFB, "up to over 20 times") [NeurIPS 2017](https://proceedings.neurips.cc/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf); CatBoost [arXiv 1706.09516](https://arxiv.org/pdf/1706.09516).
 
 ##### CatBoost's insight: boosting leaks the target
 
-Each residual is computed with a model that was trained on that same example, so training residuals are systematically smaller than they would be on new data. The authors call this a "prediction shift caused by a special kind of target leakage present in all currently existing implementations of gradient boosting." The same leak happens when you replace a category with the mean target of that category. Their fix computes each example's statistics only from examples that come earlier in a random ordering CatBoost, p. 1–4. With high-cardinality categories (user, ad, publisher IDs), this matters.
+Each residual is computed with a model that was trained on that same example, so training residuals are systematically smaller than they would be on new data. The authors call this a "prediction shift caused by a special kind of target leakage present in all currently existing implementations of gradient boosting." The same leak happens when you replace a category with the mean target of that category. Their fix computes each example's statistics only from examples that come earlier in a random ordering [CatBoost, p. 1–4](https://arxiv.org/pdf/1706.09516#page=1). With high-cardinality categories (user, ad, publisher IDs), this matters.
 
 #### Random Forest and Gradient Boosting, side by side
 
@@ -174,7 +174,7 @@ For voting and stacking too, see ensembles.
 
 AdaBoost is the older form of boosting. Instead of fitting each tree to errors, it gives every row a weight, and trains each small tree on the weighted data. Rows it got wrong become heavier, so the next tree focuses on them.
 
-$$ \alpha_m = \tfrac12 \ln\frac{1-\epsilon_m}{\epsilon_m}, \qquad w_i \leftarrow w_i\, e^{-\alpha_m y_i h_m(x_i)}, \qquad F(x) = \mathrm{sign}\sum_m \alpha_m h_m(x) $$
+$$ {\alpha_m} = \tfrac12 \ln\frac{1-{\epsilon_m}}{\epsilon_m}, \qquad {w_i} \leftarrow w_i\, e^{-\alpha_m y_i h_m(x_i)}, \qquad {F(x)} = \mathrm{sign}\sum_m \alpha_m h_m(x) $$
 
 Binary AdaBoost. Libraries may scale α by a constant, and scikit-learn uses the SAMME version for several classes.
 
@@ -195,7 +195,7 @@ Binary AdaBoost. Libraries may scale α by a constant, and scikit-learn uses the
 | Label noise | Sensitive, as wrong rows keep gaining weight | Less sensitive with log-loss |
 | Today | Simple baseline | The usual choice |
 
-Sources: scikit-learn on ensembles; the link to exponential loss is from Friedman, Hastie and Tibshirani (2000).
+Sources: [scikit-learn on ensembles](https://scikit-learn.org/stable/modules/ensemble.html); the link to exponential loss is from Friedman, Hastie and Tibshirani (2000).
 
 #### Training a gradient-boosted model
 
@@ -309,7 +309,7 @@ GBM, XGBoost, LightGBM, CatBoost · built from Friedman (2001), Chen & Guestrin 
 
 ##### Competitions
 
-Of 29 winning Kaggle solutions published in 2015, **17 used XGBoost** (8 used it alone); deep nets were second with 11. At KDD Cup 2015, "XGBoost was used by every winning team in the top-10" Chen & Guestrin, p. 1.
+Of 29 winning Kaggle solutions published in 2015, **17 used XGBoost** (8 used it alone); deep nets were second with 11. At KDD Cup 2015, "XGBoost was used by every winning team in the top-10" [Chen & Guestrin, p. 1](https://arxiv.org/pdf/1603.02754#page=1).
 
 ##### Higgs-1M, 500 trees: time per tree (s, ↓) and test AUC
 
@@ -325,15 +325,15 @@ scikit-learn (2016) · AUC 0.8302
 
 28.5 s
 
-Table 3 p. 8. scikit-learn has since added HistGradientBoosting, which its docs describe as "orders of magnitude faster" on large data.
+Table 3 [p. 8](https://arxiv.org/pdf/1603.02754#page=8). scikit-learn has since added HistGradientBoosting, which its docs describe as "orders of magnitude faster" on large data.
 
 ##### Trees vs deep learning on tabular data
 
-On a benchmark of 45 datasets, "tree-based models remain state-of-the-art on medium-sized data (∼10K samples) even without accounting for their superior speed." Their three reasons: neural networks are biased toward overly smooth functions, they're hurt by uninformative features, and they're rotation-invariant while tabular columns have meaning Grinsztajn et al. 2022. With larger training sets (50K) the gap narrowed in their appendix.
+On a benchmark of 45 datasets, "tree-based models remain state-of-the-art on medium-sized data (∼10K samples) even without accounting for their superior speed." Their three reasons: neural networks are biased toward overly smooth functions, they're hurt by uninformative features, and they're rotation-invariant while tabular columns have meaning [Grinsztajn et al. 2022](https://arxiv.org/pdf/2207.08815). With larger training sets (50K) the gap narrowed in their appendix.
 
 ##### Read library benchmarks carefully
 
-CatBoost's paper reports big wins where categorical features dominate (Amazon: log-loss 0.139 vs 0.163–0.164 for LightGBM/XGBoost, +17%), but with categorical handling equalised, the raw implementations differ by about 0.2% on average CatBoost, Tables 8–9. The library matters less than features, tuning and early stopping.
+CatBoost's paper reports big wins where categorical features dominate (Amazon: log-loss 0.139 vs 0.163–0.164 for LightGBM/XGBoost, +17%), but with categorical handling equalised, the raw implementations differ by about 0.2% on average [CatBoost, Tables 8–9](https://arxiv.org/pdf/1706.09516#page=21). The library matters less than features, tuning and early stopping.
 
 #### Glossary
 
@@ -350,16 +350,16 @@ CatBoost's paper reports big wins where categorical features dominate (Amazon: l
 
 #### What this page is built from
 
-1. J. H. Friedman, "Greedy function approximation: a gradient boosting machine", Annals of Statistics 29(5) (2001); "Stochastic gradient boosting", CSDA 38 (2002).
+1. J. H. Friedman, "Greedy function approximation: a gradient boosting machine", [Annals of Statistics 29(5) (2001)](https://www.doi.org/10.1214/AOS/1013203451); "Stochastic gradient boosting", CSDA 38 (2002).
 
-2. T. Chen & C. Guestrin, XGBoost: A Scalable Tree Boosting System, KDD 2016.
+2. T. Chen & C. Guestrin, [XGBoost: A Scalable Tree Boosting System](https://arxiv.org/abs/1603.02754), KDD 2016.
 
-3. G. Ke et al., LightGBM: A Highly Efficient Gradient Boosting Decision Tree, NeurIPS 2017.
+3. G. Ke et al., [LightGBM: A Highly Efficient Gradient Boosting Decision Tree](https://proceedings.neurips.cc/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf), NeurIPS 2017.
 
-4. L. Prokhorenkova et al., CatBoost: unbiased boosting with categorical features, NeurIPS 2018.
+4. L. Prokhorenkova et al., [CatBoost: unbiased boosting with categorical features](https://arxiv.org/abs/1706.09516), NeurIPS 2018.
 
-5. L. Grinsztajn, E. Oyallon & G. Varoquaux, Why do tree-based models still outperform deep learning on tabular data?, NeurIPS 2022.
+5. L. Grinsztajn, E. Oyallon & G. Varoquaux, [Why do tree-based models still outperform deep learning on tabular data?](https://arxiv.org/abs/2207.08815), NeurIPS 2022.
 
-6. scikit-learn, Ensembles: gradient boosting and HistGradientBoosting.
+6. scikit-learn, [Ensembles: gradient boosting and HistGradientBoosting](https://scikit-learn.org/stable/modules/ensemble.html).
 
 The delivery data is simulated; the boosted models on this page are trained live with a small implementation (squared error, CART trees fitted to residuals).

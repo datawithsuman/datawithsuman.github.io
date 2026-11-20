@@ -84,7 +84,7 @@ Prompted LLMs need no labelled data and handle new relations easily. But Han et 
 
 #### The maths
 
-$$ P = \frac{|\text{predicted} \cap \text{gold}|}{|\text{predicted}|}, \quad R = \frac{|\text{predicted} \cap \text{gold}|}{|\text{gold}|}, \qquad s(i,j) = s_m(i) + s_m(j) + s_a(i,j) $$
+$$ {P = \frac{|\text{predicted} \cap \text{gold}|}{|\text{predicted}|}}, \quad {R = \frac{|\text{predicted} \cap \text{gold}|}{|\text{gold}|}}, \qquad {s(i,j) = s_m(i) + s_m(j) + s_a(i,j)} $$
 
 A fact usually counts only if subject, relation and object all match. The coreference score is the form used by Lee et al.
 
@@ -140,24 +140,26 @@ You extract contracts with an LLM, and the JSON is always valid. Is it accurate?
 
 Not necessarily. A schema only guarantees the format. Values can still be invented or wrong. Compare with a labelled set by field, require a supporting quote, check it appears in the document, and send low-confidence cases to people.
 
+#### The 30-second answer
+
 Information extraction turns text into structured facts. NER finds names, coreference connects "it" to its antecedent, entity linking maps names to database records, and relation extraction finds the links between them. For relations, I can use patterns, supervised models, distant supervision or an LLM with a schema. Distant supervision is cheap, but noisy, because mentioning two entities doesn't mean stating a relation. I'd start with an LLM and a strict schema, measure fact-level precision and recall on a labelled set, and keep the source sentence for checking. For a high-volume stable task, I'd consider a smaller trained model.
 
 **Key terms and sources**
 
-Relation extraction, distant supervision, coreference resolution, entity linking, how to evaluate extracted facts, and using LLMs with a schema.
+Relation extraction, distant supervision, coreference resolution, entity linking, how to evaluate extracted facts, and using LLMs with a schema. · checked 7 Nov 2026
 
 #### Sources
 
-- Mintz et al., Distant Supervision for Relation Extraction
+- [Mintz et al., Distant Supervision for Relation Extraction](https://aclanthology.org/P09-1113/)
 
-- Lee et al., End-to-end Neural Coreference Resolution
+- [Lee et al., End-to-end Neural Coreference Resolution](https://arxiv.org/abs/1707.07045)
 
-- Wu et al., BLINK: Scalable Zero-shot Entity Linking
+- [Wu et al., BLINK: Scalable Zero-shot Entity Linking](https://arxiv.org/abs/1911.03814)
 
-- Han et al., An Empirical Study on Information Extraction using LLMs
+- [Han et al., An Empirical Study on Information Extraction using LLMs](https://arxiv.org/abs/2305.14450)
 
-- Jurafsky and Martin, chapter 21: Information Extraction
+- [Jurafsky and Martin, chapter 21: Information Extraction](https://web.stanford.edu/~jurafsky/slp3/21.pdf)
 
-- Jurafsky and Martin, chapter 24: Coreference and Entity Linking
+- [Jurafsky and Martin, chapter 24: Coreference and Entity Linking](https://web.stanford.edu/~jurafsky/slp3/24.pdf)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

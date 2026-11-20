@@ -48,11 +48,11 @@ With weight scale 1 and tanh, the gradient falls below 10⁻³ about **22 steps*
 
 #### In one breath
 
-An **RNN** processes a sequence one item at a time, keeping a **hidden state** ht that mixes the new input with the previous state, using the **same weights at every step**. That lets one small network handle sequences of any length. To train it, we **unroll** it into a deep network with one layer per time step and run ordinary backprop through it: **backpropagation through time (BPTT)**. The catch: the gradient from step T back to step t is a product of T − t Jacobians of the same recurrent matrix, so it **vanishes** or **explodes** exponentially. Plain RNNs struggle to remember more than about 10–20 steps, which is why LSTMs, GRUs and then attention took over.What you'll be able to do after this: write the RNN update, explain BPTT and truncated BPTT, and explain why long-range memory fails.
+An **RNN** processes a sequence one item at a time, keeping a **hidden state** ht that mixes the new input with the previous state, using the **same weights at every step**. That lets one small network handle sequences of any length. To train it, we **unroll** it into a deep network with one layer per time step and run ordinary backprop through it: **backpropagation through time (BPTT)**. The catch: the gradient from step T back to step t is a product of T − t Jacobians of the same recurrent matrix, so it **vanishes** or **explodes** exponentially. Plain RNNs struggle to remember more than about 10–20 steps, which is why LSTMs, GRUs and then attention took over. What you'll be able to do after this: write the RNN update, explain BPTT and truncated BPTT, and explain why long-range memory fails.
 
 #### One update, repeated
 
-$$ h_t = \tanh\!\big(W_{hh}\,h_{t-1} + W_{xh}\,x_t + b\big), \qquad \hat{y}_t = W_{hy}\,h_t $$
+$$ {h_t} = \tanh\!\big({W_{hh}\,h_{t-1}} + {W_{xh}\,x_t} + b\big), \qquad {\hat{y}_t = W_{hy}\,h_t} $$
 
 The Elman network (1990). Goodfellow et al. ch. 10.
 
@@ -146,6 +146,6 @@ Recurrent neural networks read a sequence one step at a time with a hidden state
 
 3. Y. Bengio, P. Simard & P. Frasconi, "Learning long-term dependencies with gradient descent is difficult", _IEEE Trans. Neural Networks_ 5(2), 1994.
 
-4. R. Pascanu, T. Mikolov & Y. Bengio, "On the difficulty of training recurrent neural networks", ICML 2013, arXiv:1211.5063.
+4. R. Pascanu, T. Mikolov & Y. Bengio, "On the difficulty of training recurrent neural networks", ICML 2013, [arXiv:1211.5063](https://arxiv.org/abs/1211.5063).
 
-5. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 10, deeplearningbook.org.
+5. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 10, [deeplearningbook.org](https://www.deeplearningbook.org/).

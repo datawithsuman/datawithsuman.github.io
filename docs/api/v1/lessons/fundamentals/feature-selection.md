@@ -80,7 +80,7 @@ If two features carry the same signal, either can be dropped, and which one is c
 
 #### The maths
 
-$$ \min_w \|Xw - y\|^2 + \lambda \|w\|_1, \qquad \text{Gain}(j \mid S) = \text{score}(S \cup \{j\}) - \text{score}(S) $$
+$$ {\min_w \|Xw - y\|^2 + \lambda \|w\|_1}, \qquad {\text{Gain}(j \mid S)} = {\text{score}(S \cup \{j\})} - {\text{score}(S)} $$
 
 Whichever method you use, keep a test set out of it, or run the whole selection inside each fold.
 
@@ -138,18 +138,20 @@ Filter methods missed a useful pair of features. How?
 
 They score features one at a time. With an XOR-style pattern, each is useless alone, and together they predict perfectly. Trees and wrapper methods can find that pair, since they evaluate features in combination.
 
+#### The 30-second answer
+
 There are three families. Filter methods score each feature alone, which is fast, but misses interactions and redundancy. Wrapper methods try subsets with the model, which is slow and can overfit. Embedded methods like Lasso select during training. The main trap is selecting with all the data, then cross-validating: with many noise features, you can score far above chance on random labels. So I'd make selection a step inside each fold. Accuracy often isn't the main reason to select. Cost and reliability often are.
 
 **Key terms and sources**
 
-Filter, wrapper and embedded methods, why selection can leak into your evaluation, and when you shouldn't bother.
+Filter, wrapper and embedded methods, why selection can leak into your evaluation, and when you shouldn't bother. · checked 6 Nov 2026
 
 #### Sources
 
-- Hastie, Tibshirani and Friedman, The Elements of Statistical Learning
+- [Hastie, Tibshirani and Friedman, The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
 
-- scikit-learn on feature selection
+- [scikit-learn on feature selection](https://scikit-learn.org/stable/modules/feature_selection.html)
 
-- ISLR
+- [ISLR](https://www.statlearning.com/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

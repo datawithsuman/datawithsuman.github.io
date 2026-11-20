@@ -80,7 +80,7 @@ Capping revenue at $10 per user per week took skewness from about 18 to about 5.
 
 #### The maths
 
-$$ s = \frac{E[(X - \mu)^3]}{\mathrm{Var}(X)^{3/2}}, \qquad n_{\min} \approx 355\, s^2 $$
+$$ {s} = \frac{{E[(X - \mu)^3]}}{{\mathrm{Var}(X)^{3/2}}}, \qquad {n_{\min} \approx 355\, s^2} $$
 
 From Kohavi, Deng, Longbotham and Xu (KDD 2014). With it, each tail of a 95% interval holds between 2% and 3%, against a target of 2.5%. They recommend the rule when skewness is above 1.
 
@@ -138,15 +138,17 @@ Capped revenue is flat, but uncapped revenue is up 8%. What's going on?
 
 The change may be real but limited to big spenders, or a few large orders may have landed in one group by chance. I'd look at the top users in each group, check for bots, and see whether the uncapped interval excludes zero. Then I'd rerun it if the decision matters.
 
+#### The 30-second answer
+
 A few big spenders dominate revenue, which causes two problems. Variance is large, so tests need more users, and the average stays skewed for longer, so the usual intervals can be off. A rule of thumb from Kohavi and colleagues says you need about 355 times skewness squared users per group. Bing's revenue per user had a skewness of about 18, which gives 114,000. I'd cap values at a limit fixed before the test, for both groups, which cut Bing's skewness to about 5. But capping can hide a change that only affects big spenders, so I'd also check the uncapped result, and break revenue into buyers per user and spend per buyer.
 
 **Key terms and sources**
 
-Why a few big spenders make revenue so noisy, the 355 × skewness² rule, capping and its cost, and when to use logs, ranks or the bootstrap.
+Why a few big spenders make revenue so noisy, the 355 × skewness² rule, capping and its cost, and when to use logs, ranks or the bootstrap. · checked 7 Nov 2026
 
 #### Sources
 
-- Kohavi, Deng, Longbotham and Xu, Seven Rules of Thumb for Web Site Experimenters (KDD 2014)
+- [Kohavi, Deng, Longbotham and Xu, Seven Rules of Thumb for Web Site Experimenters (KDD 2014)](https://exp-platform.com/rules-of-thumb/)
 
 - Non-parametric and permutation tests on this site
 

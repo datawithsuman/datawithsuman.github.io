@@ -50,11 +50,11 @@ At first both scores rise: picking the best of 16 answers lifts true quality fro
 
 #### In one breath
 
-It's easier for people to say which of two answers is better than to write the perfect one. **RLHF** collects such **comparisons**, trains a **reward model** to score answers so that preferred ones score higher (the **Bradley–Terry** model: P(A preferred over B) = σ(r(A) − r(B))), and then uses reinforcement learning, usually **PPO**, to make the policy produce high-reward answers, with a **KL penalty** that keeps it close to the SFT model. It worked: labellers preferred a 1.3B InstructGPT model to the 175B GPT-3. But the reward model is only a **proxy** for what people want. Push too hard and the policy finds its blind spots, such as longer, more confident, more flattering answers: **reward hacking**. True quality first rises, then falls.What you'll be able to do after this: write the reward-model loss and the RLHF objective, and explain reward hacking and the role of the KL penalty.
+It's easier for people to say which of two answers is better than to write the perfect one. **RLHF** collects such **comparisons**, trains a **reward model** to score answers so that preferred ones score higher (the **Bradley–Terry** model: P(A preferred over B) = σ(r(A) − r(B))), and then uses reinforcement learning, usually **PPO**, to make the policy produce high-reward answers, with a **KL penalty** that keeps it close to the SFT model. It worked: labellers preferred a 1.3B InstructGPT model to the 175B GPT-3. But the reward model is only a **proxy** for what people want. Push too hard and the policy finds its blind spots, such as longer, more confident, more flattering answers: **reward hacking**. True quality first rises, then falls. What you'll be able to do after this: write the reward-model loss and the RLHF objective, and explain reward hacking and the role of the KL penalty.
 
 #### From comparisons to a reward, then to a policy
 
-$$ \mathcal{L}_{RM} = -\log\sigma\big(r_\phi(x,y_w) - r_\phi(x,y_l)\big), \qquad \max_{\pi_\theta}\; \mathbb{E}\,[\,r_\phi(x,y)\,] - \beta\,\mathrm{KL}\big(\pi_\theta \,\|\, \pi_{ref}\big) $$
+$$ \mathcal{L}_{RM} = -\log{\sigma\big(r_\phi(x,y_w) - r_\phi(x,y_l)\big)}, \qquad \max_{\pi_\theta}\; {\mathbb{E}\,[\,r_\phi(x,y)\,]} - {\beta\,\mathrm{KL}\big(\pi_\theta \,\|\, \pi_{ref}\big)} $$
 
 Ouyang et al. 2022, Eq. 1–2. InstructGPT labellers ranked 4–9 answers per prompt, giving many pairs per ranking.
 
@@ -136,12 +136,12 @@ How human preferences become a training signal: collecting comparisons, training
 
 #### Sources
 
-1. P. Christiano et al., "Deep Reinforcement Learning from Human Preferences", NeurIPS 2017, arXiv:1706.03741; N. Stiennon et al., "Learning to summarize from human feedback", NeurIPS 2020, arXiv:2009.01325.
+1. P. Christiano et al., "Deep Reinforcement Learning from Human Preferences", NeurIPS 2017, [arXiv:1706.03741](https://arxiv.org/abs/1706.03741); N. Stiennon et al., "Learning to summarize from human feedback", NeurIPS 2020, [arXiv:2009.01325](https://arxiv.org/abs/2009.01325).
 
-2. L. Ouyang et al., "Training language models to follow instructions with human feedback", NeurIPS 2022, arXiv:2203.02155.
+2. L. Ouyang et al., "Training language models to follow instructions with human feedback", NeurIPS 2022, [arXiv:2203.02155](https://arxiv.org/abs/2203.02155).
 
-3. J. Schulman et al., "Proximal Policy Optimization Algorithms", 2017, arXiv:1707.06347.
+3. J. Schulman et al., "Proximal Policy Optimization Algorithms", 2017, [arXiv:1707.06347](https://arxiv.org/abs/1707.06347).
 
-4. L. Gao, J. Schulman & J. Hilton, "Scaling Laws for Reward Model Overoptimization", ICML 2023, arXiv:2210.10760; P. Singhal et al., "A Long Way to Go: Investigating Length Correlations in RLHF", 2023, arXiv:2310.03716.
+4. L. Gao, J. Schulman & J. Hilton, "Scaling Laws for Reward Model Overoptimization", ICML 2023, [arXiv:2210.10760](https://arxiv.org/abs/2210.10760); P. Singhal et al., "A Long Way to Go: Investigating Length Correlations in RLHF", 2023, [arXiv:2310.03716](https://arxiv.org/abs/2310.03716).
 
-5. Y. Bai et al., "Training a Helpful and Harmless Assistant with RLHF", 2022, arXiv:2204.05862; "Constitutional AI", 2022, arXiv:2212.08073.
+5. Y. Bai et al., "Training a Helpful and Harmless Assistant with RLHF", 2022, [arXiv:2204.05862](https://arxiv.org/abs/2204.05862); "Constitutional AI", 2022, [arXiv:2212.08073](https://arxiv.org/abs/2212.08073).

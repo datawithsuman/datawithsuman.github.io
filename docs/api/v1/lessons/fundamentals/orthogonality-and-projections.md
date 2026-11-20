@@ -79,7 +79,7 @@ Take the columns one at a time. Subtract each column's projection onto those bef
 
 #### The maths
 
-$$ \hat b = \frac{a^\top b}{a^\top a}\,a, \qquad P = X(X^\top X)^{-1}X^\top, \qquad \hat y = Py $$
+$$ {\hat b} = \frac{{a^\top b}}{{a^\top a}}\,a, \qquad {P} = X(X^\top X)^{-1}X^\top, \qquad {\hat y = Py} $$
 
 Example: project b = (2, 3) onto a = (1, 0). The result is (2, 0), and the residual (0, 3) is orthogonal to a.
 
@@ -139,19 +139,21 @@ Why is P squared equal to P?
 
 Once a point is in the space, it's already its own closest point, so projecting again doesn't move it. Algebraically, the middle XᵀX cancels with its inverse. It's a useful test of whether a matrix is a projection.
 
+#### The 30-second answer
+
 Xw can only produce vectors in the column space of X. y usually isn't there, so least squares finds the closest point, which is y's projection onto that space. The residual must be orthogonal to every column, giving X transpose times y minus Xw equals zero, which is the normal equations. Orthogonal matrices have Q transpose Q equal to the identity, so they keep lengths, and their inverse is just the transpose. That's why QR, built with Gram-Schmidt, is a stable way to solve least squares.
 
 **Key terms and sources**
 
-Orthogonal vectors and matrices, projecting onto a line and subspace, least squares as a projection, Gram-Schmidt and QR.
+Orthogonal vectors and matrices, projecting onto a line and subspace, least squares as a projection, Gram-Schmidt and QR. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
 - Linear regression on this site
 

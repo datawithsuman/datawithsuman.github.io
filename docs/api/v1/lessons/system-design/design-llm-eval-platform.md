@@ -159,8 +159,10 @@ How do you stop teams from overfitting to the eval set?
 
 Keep a held-out set that teams can't see, refresh datasets from live traffic regularly, and compare offline gains with online results. If offline keeps improving while users don't notice, the set has stopped measuring what matters.
 
+#### The 30-second answer
+
 First I'd clarify what we evaluate, who changes the system and how fast a check must be. I'd treat evaluation like testing code. Datasets are versioned and come from real anonymised queries, synthetic questions over representative documents, public benchmarks for a baseline, and hard cases mined from bad live answers. Scorers include code checks like "citations present", metrics such as source recall, and LLM judges with rubrics. Each judge is versioned and calibrated against human labels every few weeks. Every run records the dataset, prompt hash, retriever and model, so it can be reproduced. Gates are layered: a small set on every pull request that returns in minutes, a larger stricter set before release, and asynchronous scoring of sampled live traffic with drift alerts. Hard rules block changes, budgets set limits on things like latency, and rubric scores are tracked. A small gate set only catches big regressions, which is why the release gate is larger. Poorly rated live answers flow back into the suite.
 
 **Key terms and sources**
 
-Based on a file-storage company's published approach for its AI assistant: Dropbox's "A practical blueprint for evaluating conversational AI at scale" (October 2025). The lab's maths and the estimate are ours. Uses evaluating LLM apps, LLMOps and tracing.
+Based on a file-storage company's published approach for its AI assistant: [Dropbox's "A practical blueprint for evaluating conversational AI at scale"](https://dropbox.tech/machine-learning/practical-blueprint-evaluating-conversational-ai-at-scale-dash) (October 2025). The lab's maths and the estimate are ours. Uses evaluating LLM apps, LLMOps and tracing. · checked 5 Nov 2026

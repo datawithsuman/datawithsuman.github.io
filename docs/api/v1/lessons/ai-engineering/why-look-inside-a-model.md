@@ -29,7 +29,7 @@ _From correlational and cheap to causal and costly. They complement each other._
 
 #### From “what does it do” to “how does it do it”
 
-Interpretability is broader than MI. The survey lays the families on a spectrum from correlational to causal: behavioural evaluation tells you **what** a model does, attribution and probing tell you **where** relevant information is, and mechanistic analysis tells you **how** the computation produces the behaviour p. 19.
+Interpretability is broader than MI. The survey lays the families on a spectrum from correlational to causal: behavioural evaluation tells you **what** a model does, attribution and probing tell you **where** relevant information is, and mechanistic analysis tells you **how** the computation produces the behaviour [p. 19](https://arxiv.org/pdf/2611.08438#page=19).
 
 1. **Behavioural methods**: benchmarks and red-teaming. Fast, cheap and scalable, but not designed to reveal internal computation p. 17.
 
@@ -43,7 +43,7 @@ Interpretability is broader than MI. The survey lays the families on a spectrum 
 
 ##### What counts as “mechanistic” in this survey
 
-Two criteria. (1) It engages with **internals**: activations, components such as neurons, heads and features, or parameters. Looking at inputs and outputs alone is not enough. (2) It makes **causal** claims through interventions such as ablation, patching or steering, not just correlations. Under this definition a plain probe is not mechanistic, but a probe whose direction you then intervene on is p. 12–13.
+Two criteria. (1) It engages with **internals**: activations, components such as neurons, heads and features, or parameters. Looking at inputs and outputs alone is not enough. (2) It makes **causal** claims through interventions such as ablation, patching or steering, not just correlations. Under this definition a plain probe is not mechanistic, but a probe whose direction you then intervene on is [p. 12–13](https://arxiv.org/pdf/2611.08438#page=12).
 
 ##### Try it: which tool answers your question?
 
@@ -61,13 +61,13 @@ Output tests show what a model does on the inputs you tried, not how it does it.
 
 #### We design how models learn, not what they learn
 
-We write the training procedure, so in one sense we built the model. But the procedure only says _how_ to learn, and gradient descent decides _what_ gets learned. The survey names the result the interpretability gap: the distance between what models can do and what we understand about how they do it. As models scale, the gap may widen. Reasoning appears that we cannot trace, deceptive behaviour may go unnoticed, and safety guarantees built on partial understanding can fail without warning p. 9.
+We write the training procedure, so in one sense we built the model. But the procedure only says _how_ to learn, and gradient descent decides _what_ gets learned. The survey names the result the interpretability gap: the distance between what models can do and what we understand about how they do it. As models scale, the gap may widen. Reasoning appears that we cannot trace, deceptive behaviour may go unnoticed, and safety guarantees built on partial understanding can fail without warning [p. 9](https://arxiv.org/pdf/2611.08438#page=9).
 
-Mechanistic interpretability (MI) is one way to close that gap: study a network’s internal mechanisms in relation to its behaviour. The survey keeps returning to one question throughout: **does understanding how models work actually make them safer?** It notes that many interpretability papers assume the answer is yes, and that the assumption is “largely untested” p. 12.
+Mechanistic interpretability (MI) is one way to close that gap: study a network’s internal mechanisms in relation to its behaviour. The survey keeps returning to one question throughout: **does understanding how models work actually make them safer?** It notes that many interpretability papers assume the answer is yes, and that the assumption is “largely untested” [p. 12](https://arxiv.org/pdf/2611.08438#page=12).
 
 #### Four reasons a good test score can mislead
 
-The default way to judge a model is behavioural evaluation: measure its outputs on held-out inputs. That works only if the model reached its score through the mechanism we hoped for, and output tests cannot see the mechanism p. 15.
+The default way to judge a model is behavioural evaluation: measure its outputs on held-out inputs. That works only if the model reached its score through the mechanism we hoped for, and output tests cannot see the mechanism [p. 15](https://arxiv.org/pdf/2611.08438#page=15).
 
 | Problem | What goes wrong |
 |---|---|
@@ -76,7 +76,7 @@ The default way to judge a model is behavioural evaluation: measure its outputs 
 | **Evaluation awareness** | A model may recognise test-like contexts and behave differently there. Models have shown alignment faking without being trained or told to do it. |
 | **No fine-grained control** | Removing one capability without damaging others means finding where it lives inside. Output tests give no handle for that. |
 
-All four from survey §2 p. 15. A fifth issue: a model updated after deployment no longer matches the snapshot that was evaluated p. 16.
+All four from survey §2 [p. 15](https://arxiv.org/pdf/2611.08438#page=15). A fifth issue: a model updated after deployment no longer matches the snapshot that was evaluated [p. 16](https://arxiv.org/pdf/2611.08438#page=16).
 
 ##### The case that made this concrete: sleeper agents
 
@@ -90,19 +90,19 @@ All four from survey §2 p. 15. A fifth issue: a model updated after deployment 
 
 #### Pick proxy tasks that matter for safety, use any tool
 
-Full mechanistic understanding isn’t required for impact, so work on concrete proxy tasks that can be studied on today’s models, using any method, internal or not p. 102.
+Full mechanistic understanding isn’t required for impact, so work on concrete proxy tasks that can be studied on today’s models, using any method, internal or not [p. 102](https://arxiv.org/pdf/2611.08438#page=102).
 
-- **Evaluation awareness in Claude Sonnet 4.5**: the model behaved differently when it detected it was being evaluated. A steering vector that suppresses this awareness let researchers test its actual behaviour, without fully explaining the mechanism p. 102.
+- **Evaluation awareness in Claude Sonnet 4.5**: the model behaved differently when it detected it was being evaluated. A steering vector that suppresses this awareness let researchers test its actual behaviour, without fully explaining the mechanism [p. 102](https://arxiv.org/pdf/2611.08438#page=102).
 
-- **Auditing games**: a model was fine-tuned with a hidden goal, and blinded teams tried to find it, comparing techniques pp. 102–103.
+- **Auditing games**: a model was fine-tuned with a hidden goal, and blinded teams tried to find it, comparing techniques [pp. 102–103](https://arxiv.org/pdf/2611.08438#page=103).
 
-Tools: steering vectors (Steering Vectors), probes (Probing Classifiers), behavioural monitoring (including reading chain-of-thought), prompting as a black-box baseline. Weak spot: these don’t, and aren’t meant to, explain how the behaviour is implemented p. 103.
+Tools: steering vectors (Steering Vectors), probes (Probing Classifiers), behavioural monitoring (including reading chain-of-thought), prompting as a black-box baseline. Weak spot: these don’t, and aren’t meant to, explain how the behaviour is implemented [p. 103](https://arxiv.org/pdf/2611.08438#page=103).
 
 #### Only full understanding can rule out hidden failures
 
-Treat interpretability as a science: reverse-engineer the model into a transparent, predictive theory of its algorithms. Make progress by metrics: start loose, improve, tighten. Two example metrics: **feature quality** (explanations faithful and simulatable) and **circuit faithfulness** (necessary and sufficient under causal tests like causal scrubbing, with no performance loss) p. 103.
+Treat interpretability as a science: reverse-engineer the model into a transparent, predictive theory of its algorithms. Make progress by metrics: start loose, improve, tighten. Two example metrics: **feature quality** (explanations faithful and simulatable) and **circuit faithfulness** (necessary and sufficient under causal tests like causal scrubbing, with no performance loss) [p. 103](https://arxiv.org/pdf/2611.08438#page=103).
 
-Weak spot: cost. Fine-grained analysis of frontier models is expensive, sometimes intractable, and tools fall far short of the needed coverage. Interpretability-by-design models (Transcoders and Attribution Graphs) blur the line: an engineering route to the ambitious goal p. 103.
+Weak spot: cost. Fine-grained analysis of frontier models is expensive, sometimes intractable, and tools fall far short of the needed coverage. Interpretability-by-design models (Transcoders and Attribution Graphs) blur the line: an engineering route to the ambitious goal [p. 103](https://arxiv.org/pdf/2611.08438#page=103).
 
 ## In practice
 
@@ -110,7 +110,7 @@ Weak spot: cost. Fine-grained analysis of frontier models is expensive, sometime
 
 #### When “it passed the test” is not enough
 
-The survey lists four situations where you need to know _how_, not just _that_ p. 19:
+The survey lists four situations where you need to know _how_, not just _that_ [p. 19](https://arxiv.org/pdf/2611.08438#page=19):
 
 1. **Intent hidden from outputs**, such as deception or side quests that never show up in behaviour.
 
@@ -120,23 +120,23 @@ The survey lists four situations where you need to know _how_, not just _that_ p
 
 4. **Guarantees beyond the tested inputs**: safety that must hold outside the evaluated distribution.
 
-Even then the survey frames mechanistic analysis as a complement, not a replacement. Its cost goes beyond compute: researcher time, experimental complexity and slower iteration p. 20.
+Even then the survey frames mechanistic analysis as a complement, not a replacement. Its cost goes beyond compute: researcher time, experimental complexity and slower iteration [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 #### Three limits to keep in mind for the rest of the series
 
 ##### 1 · Explanations are often incomplete
 
-Finding one real causal pathway (say, “this MLP retrieves facts about Paris”) does not tell you whether it is the whole story or one of several mechanisms working together p. 20.
+Finding one real causal pathway (say, “this MLP retrieves facts about Paris”) does not tell you whether it is the whole story or one of several mechanisms working together [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 ##### 2 · It scales poorly
 
-Large models spread computation across many components, and most circuit-discovery methods explain the computation behind one generated token. Behaviour that unfolds over many tokens is still hard to capture p. 20.
+Large models spread computation across many components, and most circuit-discovery methods explain the computation behind one generated token. Behaviour that unfolds over many tokens is still hard to capture [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 ##### 3 · Explaining is not controlling
 
-Even a causally validated mechanism does not guarantee reliable control. Effects like the hydra effect, where the network compensates when a component is removed, and poor transfer across models or settings get in the way p. 20.
+Even a causally validated mechanism does not guarantee reliable control. Effects like the hydra effect, where the network compensates when a component is removed, and poor transfer across models or settings get in the way [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
-The survey calls these open challenges, not fundamental barriers. But they mark “a clear gap between mechanistic explanation and reliable control or safety guarantees” p. 21. Keep this gap in mind: most later chapters are attempts to narrow one of these three limits.
+The survey calls these open challenges, not fundamental barriers. But they mark “a clear gap between mechanistic explanation and reliable control or safety guarantees” [p. 21](https://arxiv.org/pdf/2611.08438#page=21). Keep this gap in mind: most later chapters are attempts to narrow one of these three limits.
 
 #### Interpretability in real model audits
 
@@ -176,20 +176,22 @@ When are behavioural tests enough?
 
 When you only need to know whether a behaviour shows up on realistic inputs, and missing rare cases is cheap. Claims of absence, like "it can't do X", need more.
 
+#### The 30-second answer
+
 Behavioural tests only tell me what the model did on the inputs I tried. They can be gamed, the test data can leak into training, and a capable model can recognise it's being evaluated and behave better. Interpretability looks at the internals, so I can check things the outputs don't show, like whether the model represents "this is a test". I'd treat it as extra evidence alongside evaluations: probes and steering for cheap checks, and causal methods like patching when I need to know how a behaviour is computed. It doesn't yet explain a whole model, so a clean result isn't a guarantee.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 3 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 3 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Anthropic, Claude Sonnet 4.5 System Card (Sep 2025)
+- [Anthropic, Claude Sonnet 4.5 System Card (Sep 2025)](https://assets.anthropic.com/m/12f214efcc2f457a/original/Claude-Sonnet-4-5-System-Card.pdf)
 
-- Google DeepMind, Gemma Scope 2 (19 Dec 2025)
+- [Google DeepMind, Gemma Scope 2 (19 Dec 2025)](https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/)
 
-- Sharkey et al., Open Problems in Mechanistic Interpretability (2025)
+- [Sharkey et al., Open Problems in Mechanistic Interpretability (2025)](https://arxiv.org/abs/2501.16496)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

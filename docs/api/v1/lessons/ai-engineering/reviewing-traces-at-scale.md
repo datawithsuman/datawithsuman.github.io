@@ -122,18 +122,20 @@ What makes uncertainty sampling useful?
 
 Disagreement between checks marks traces where your criteria are unclear, so labelling them improves both your rubric and your judges.
 
+#### The 30-second answer
+
 I'd mix three kinds of sampling: random for an honest picture, failure-driven from thumbs-down and guardrail trips to explain known problems, and uncertainty sampling where checks disagree to find borderline cases, plus a slice of traces that passed everything, since that's where silent failures hide. Across thousands of traces I'd plot simple per-trace numbers, cluster and read a few per cluster, and use semantic search to size a problem once I've found it. A small custom review tool makes this fast, and every finding should become a bug, a test case or a fix.
 
 **Key terms and sources**
 
-How to choose traces for human review (random, uncertainty and failure-driven sampling), how to find patterns across thousands of traces (clustering, per-trace statistics, semantic search), and what makes a review tool worth building.
+How to choose traces for human review (random, uncertainty and failure-driven sampling), how to find patterns across thousands of traces (clustering, per-trace statistics, semantic search), and what makes a review tool worth building. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- S. Shankar et al., Who validates the validators? (EvalGen), UIST 2024
+- [S. Shankar et al., Who validates the validators? (EvalGen), UIST 2024](https://arxiv.org/abs/2404.12272)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

@@ -49,11 +49,11 @@ Nobody told the method which dishes belong together. With **d = 4**, the embeddi
 
 #### In one breath
 
-A model can't do maths on the word "biryani"; it needs numbers. **One-hot** vectors make every word equally different from every other. An **embedding** maps each item to a short **dense vector**, learned so that items used in similar ways end up close together: "biryani" near "pulao", "pizza" near "pasta". For words this rests on the **distributional hypothesis** (a word is known by the company it keeps). word2vec learns them by predicting neighbouring words, which amounts to factorising a word–context co-occurrence matrix. Modern models produce **contextual** embeddings that change with the sentence, and embeddings of whole sentences, images, users and products drive **semantic search, RAG and recommendations**.What you'll be able to do after this: explain why embeddings beat one-hot, how they're learned, how to compare them, and where they're used.
+A model can't do maths on the word "biryani"; it needs numbers. **One-hot** vectors make every word equally different from every other. An **embedding** maps each item to a short **dense vector**, learned so that items used in similar ways end up close together: "biryani" near "pulao", "pizza" near "pasta". For words this rests on the **distributional hypothesis** (a word is known by the company it keeps). word2vec learns them by predicting neighbouring words, which amounts to factorising a word–context co-occurrence matrix. Modern models produce **contextual** embeddings that change with the sentence, and embeddings of whole sentences, images, users and products drive **semantic search, RAG and recommendations**. What you'll be able to do after this: explain why embeddings beat one-hot, how they're learned, how to compare them, and where they're used.
 
 #### An embedding is a lookup table you learn
 
-$$ e_{w} = E^{\top}\mathbf{1}_{w}, \quad E \in \mathbb{R}^{V\times d}, \qquad \cos(a,b) = \frac{a\cdot b}{\lVert a\rVert\,\lVert b\rVert} $$
+$$ {e_{w} = E^{\top}{\mathbf{1}_{w}}}, \quad E \in \mathbb{R}^{V\times d}, \qquad {\cos(a,b) = \frac{a\cdot b}{\lVert a\rVert\,\lVert b\rVert}} $$
 
 Bengio et al. (2003) learned word vectors jointly with a neural language model. Cosine similarity: Vectors & Cosine Similarity.
 
@@ -137,10 +137,10 @@ Turning discrete things (words, dishes, users) into dense vectors where similar 
 
 1. Y. Bengio, R. Ducharme, P. Vincent & C. Jauvin, "A Neural Probabilistic Language Model", _JMLR_ 3, 2003.
 
-2. T. Mikolov, K. Chen, G. Corrado & J. Dean, "Efficient Estimation of Word Representations in Vector Space", arXiv:1301.3781, 2013.
+2. T. Mikolov, K. Chen, G. Corrado & J. Dean, "Efficient Estimation of Word Representations in Vector Space", [arXiv:1301.3781](https://arxiv.org/abs/1301.3781), 2013.
 
 3. O. Levy & Y. Goldberg, "Neural Word Embedding as Implicit Matrix Factorization", NeurIPS 2014.
 
 4. J. Pennington, R. Socher & C. Manning, "GloVe: Global Vectors for Word Representation", EMNLP 2014.
 
-5. N. Reimers & I. Gurevych, "Sentence-BERT", EMNLP 2019, arXiv:1908.10084.
+5. N. Reimers & I. Gurevych, "Sentence-BERT", EMNLP 2019, [arXiv:1908.10084](https://arxiv.org/abs/1908.10084).

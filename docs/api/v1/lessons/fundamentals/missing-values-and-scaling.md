@@ -53,7 +53,7 @@ Test RMSE (lower is better; 1.00 if nothing were missing). Regression imputation
 
 #### In one breath
 
-Before choosing how to fill a gap, ask **why it's missing**. If values are missing at random, a simple fill loses little; if missingness depends on the missing value itself ("customers who give bad ratings often don't rate"), the fact that it's missing is **information**, so add a **missing indicator** column. Model-based imputation (predict the missing feature from the others) beats the mean when features are correlated. Gradient-boosted trees can take NaN directly. **Scaling** matters for anything distance- or penalty-based (k-NN, SVM, k-means, PCA, regularised linear models, neural nets) and not for trees; with outliers, use a robust or quantile scaler. Both steps are learned from data, so both go **inside the pipeline**.What you'll be able to do after this: name the three missingness mechanisms with examples, pick an imputer and justify an indicator column, choose a scaler for skewed data with outliers, and say which models don't care.
+Before choosing how to fill a gap, ask **why it's missing**. If values are missing at random, a simple fill loses little; if missingness depends on the missing value itself ("customers who give bad ratings often don't rate"), the fact that it's missing is **information**, so add a **missing indicator** column. Model-based imputation (predict the missing feature from the others) beats the mean when features are correlated. Gradient-boosted trees can take NaN directly. **Scaling** matters for anything distance- or penalty-based (k-NN, SVM, k-means, PCA, regularised linear models, neural nets) and not for trees; with outliers, use a robust or quantile scaler. Both steps are learned from data, so both go **inside the pipeline**. What you'll be able to do after this: name the three missingness mechanisms with examples, pick an imputer and justify an indicator column, choose a scaler for skewed data with outliers, and say which models don't care.
 
 #### Three reasons a value goes missing
 
@@ -71,7 +71,7 @@ For prediction (not for estimating population averages), you don't need the "tru
 
 #### Who needs scaling, and which scaler
 
-scikit-learn: "many elements used in the objective function of a learning algorithm (such as the RBF kernel of Support Vector Machines or the l1 and l2 regularizers of linear models) may assume that all features are centered around zero or have variance in the same order. If a feature has a variance that is orders of magnitude larger than others, it might dominate the objective function" preprocessing guide.
+scikit-learn: "many elements used in the objective function of a learning algorithm (such as the RBF kernel of Support Vector Machines or the l1 and l2 regularizers of linear models) may assume that all features are centered around zero or have variance in the same order. If a feature has a variance that is orders of magnitude larger than others, it might dominate the objective function" [preprocessing guide](https://scikit-learn.org/stable/modules/preprocessing.html).
 
 ##### Needs scaling
 
@@ -95,7 +95,7 @@ scikit-learn: "many elements used in the objective function of a learning algori
 
 1,000 order values: 990 everyday orders (median ₹401) and 10 corporate catering orders of ₹20,000–50,000.
 
-Ten catering orders inflate the mean to ₹832 and the standard deviation to ₹3,860, so **StandardScaler** squeezes all everyday orders into −0.20 to 0.30, and **MinMaxScaler** into 0 to 0.04: the model can barely tell a ₹150 order from a ₹1,000 one. **RobustScaler** uses the median and interquartile range (₹309), so everyday orders spread over −1.1 to 5.2 and the catering orders sit far out (around 80), still extreme but no longer squashing everyone else. scikit-learn: "If your data contains many outliers, scaling using the mean and variance of the data is likely to not work very well" docs. A **quantile** transform maps values to ranks, removing the outlier effect entirely, at the cost of distorting distances. For skewed money values, a log transform before scaling is often the simplest fix.
+Ten catering orders inflate the mean to ₹832 and the standard deviation to ₹3,860, so **StandardScaler** squeezes all everyday orders into −0.20 to 0.30, and **MinMaxScaler** into 0 to 0.04: the model can barely tell a ₹150 order from a ₹1,000 one. **RobustScaler** uses the median and interquartile range (₹309), so everyday orders spread over −1.1 to 5.2 and the catering orders sit far out (around 80), still extreme but no longer squashing everyone else. scikit-learn: "If your data contains many outliers, scaling using the mean and variance of the data is likely to not work very well" [docs](https://scikit-learn.org/stable/modules/preprocessing.html). A **quantile** transform maps values to ranks, removing the outlier effect entirely, at the cost of distorting distances. For skewed money values, a log transform before scaling is often the simplest fix.
 
 ## In practice
 
@@ -112,11 +112,11 @@ Ten catering orders inflate the mean to ₹832 and the standard deviation to ₹
 | Model-based (round-robin) | "models each feature with missing values as a function of other features" (still experimental) | `IterativeImputer` |
 | Native NaN support | Trees learn which branch missing values take | `HistGradientBoosting*`, XGBoost, LightGBM |
 
-Quotes from scikit-learn's imputation guide docs.
+Quotes from scikit-learn's imputation guide [docs](https://scikit-learn.org/stable/modules/impute.html).
 
 #### Fit on training data, in the right order
 
-- **Fit imputers and scalers on training folds only.** A mean or median computed on all rows leaks test information (see Cross-Validation & Leakage). scikit-learn's pitfall example: forgetting to apply the train-fitted scaler to the test set gave a test MSE of 62.8 instead of 0.90 common pitfalls.
+- **Fit imputers and scalers on training folds only.** A mean or median computed on all rows leaks test information (see Cross-Validation & Leakage). scikit-learn's pitfall example: forgetting to apply the train-fitted scaler to the test set gave a test MSE of 62.8 instead of 0.90 [common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html).
 
 - **Order:** impute, then scale, so the scaler sees the final values; encode categorical columns in their own branch of a `ColumnTransformer`.
 
@@ -251,11 +251,11 @@ Lower is better. Illustrative.
 
 #### What this page is built from
 
-1. scikit-learn, Imputation of missing values (SimpleImputer, IterativeImputer, KNNImputer, MissingIndicator, native NaN support).
+1. scikit-learn, [Imputation of missing values](https://scikit-learn.org/stable/modules/impute.html) (SimpleImputer, IterativeImputer, KNNImputer, MissingIndicator, native NaN support).
 
-2. scikit-learn, Preprocessing data (scalers, outliers, quantile and power transforms).
+2. scikit-learn, [Preprocessing data](https://scikit-learn.org/stable/modules/preprocessing.html) (scalers, outliers, quantile and power transforms).
 
-3. scikit-learn, Common pitfalls (inconsistent preprocessing).
+3. scikit-learn, [Common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html) (inconsistent preprocessing).
 
 4. D. Rubin, "Inference and missing data", _Biometrika_ 63, 1976; R. Little & D. Rubin, _Statistical Analysis with Missing Data_, 3rd ed., Wiley 2019 (MCAR/MAR/MNAR; background).
 

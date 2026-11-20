@@ -53,13 +53,13 @@ Anything that ignores the weekly pattern (mean, naive, drift) is useless here. T
 
 #### In one breath
 
-Forecasting predicts future values of a series from its own past (and known future inputs like holidays). Most series are a **trend** plus a repeating **seasonal** pattern plus noise. Start with **benchmarks**: the seasonal naive forecast ("same as last week") is often surprisingly hard to beat, and any model that doesn't beat it isn't worth using. Then add structure: regression on trend and calendar features, exponential smoothing, ARIMA, or gradient-boosted trees on lag features. Evaluate with a **rolling-origin backtest** (train only on the past, forecast the next window, roll forward), never shuffled cross-validation, and report **scale-free errors** like MASE.What you'll be able to do after this: decompose a series, run the four benchmarks, build a calendar-feature regression, backtest it honestly, and choose an error metric.
+Forecasting predicts future values of a series from its own past (and known future inputs like holidays). Most series are a **trend** plus a repeating **seasonal** pattern plus noise. Start with **benchmarks**: the seasonal naive forecast ("same as last week") is often surprisingly hard to beat, and any model that doesn't beat it isn't worth using. Then add structure: regression on trend and calendar features, exponential smoothing, ARIMA, or gradient-boosted trees on lag features. Evaluate with a **rolling-origin backtest** (train only on the past, forecast the next window, roll forward), never shuffled cross-validation, and report **scale-free errors** like MASE. What you'll be able to do after this: decompose a series, run the four benchmarks, build a calendar-feature regression, backtest it honestly, and choose an error metric.
 
 #### Trend, seasonality, remainder
 
-$$ y_t = T_t \times S_{t} + R_t $$
+$$ {y_t} = {T_t} \times {S_{t}} + {R_t} $$
 
-Classical decomposition (additive or multiplicative); FPP3 ch. 3 otexts.com/fpp3. In practice STL does this robustly.
+Classical decomposition (additive or multiplicative); FPP3 ch. 3 [otexts.com/fpp3](https://otexts.com/fpp3/decomposition.html). In practice STL does this robustly.
 
 - **orders on day t**: What we observe.
 
@@ -71,7 +71,7 @@ Classical decomposition (additive or multiplicative); FPP3 ch. 3 otexts.com/fpp3
 
 #### Beat the benchmark, measured the way you'll use it
 
-FPP3 uses four simple methods as benchmarks: "any forecasting methods we develop will be compared to these simple methods … If not, the new method is not worth considering" FPP3 §5.2:
+FPP3 uses four simple methods as benchmarks: "any forecasting methods we develop will be compared to these simple methods … If not, the new method is not worth considering" [FPP3 §5.2](https://otexts.com/fpp3/simple-methods.html):
 
 - **Mean:** "the forecasts of all future values are equal to the average … of the historical data".
 
@@ -85,9 +85,9 @@ And "measured the way you'll use it" means: forecast 14 days ahead from a cut-of
 
 #### MAE, RMSE, MAPE and MASE
 
-$$ \mathrm{MASE} = \tfrac{1}{h}\sum_{j=1}^{h} |y_{T+j} - \hat y_{T+j}| \,/\, \tfrac{1}{T-m}\sum_{t=m+1}^{T} |y_t - y_{t-m}| $$
+$$ {\mathrm{MASE}} = {\tfrac{1}{h}\sum_{j=1}^{h} |y_{T+j} - \hat y_{T+j}|} \,/\, {\tfrac{1}{T-m}\sum_{t=m+1}^{T} |y_t - y_{t-m}|} $$
 
-Hyndman & Koehler, "Another look at measures of forecast accuracy", _International Journal of Forecasting_ 22, 2006; FPP3 §5.8 otexts.com/fpp3.
+Hyndman & Koehler, "Another look at measures of forecast accuracy", _International Journal of Forecasting_ 22, 2006; FPP3 §5.8 [otexts.com/fpp3](https://otexts.com/fpp3/accuracy.html).
 
 - **MASE**: Mean absolute scaled error: below 1 means better than the seasonal naive method’s typical one-step error; comparable across series of different sizes.
 
@@ -130,7 +130,7 @@ To see how ARIMA and exponential smoothing work, see Stationarity, ARIMA and Exp
 | **Gradient boosting on lag features** | Lags, rolling means, calendar, many related series at once | LightGBM, XGBoost |
 | **Deep learning / foundation models** | N-BEATS, DeepAR, TFT; pretrained models like Chronos, TimesFM | various |
 
-Competition evidence: in M4 (100,000 series), combinations and hybrid methods led, the top two using ML components; in M5 (Walmart sales, 2020), the top solutions were machine-learning based, most built on LightGBM with lag and calendar features across many series survey, arXiv:2401.13912. Gradient boosting shines with many related series; for one short series, simple methods remain hard to beat.
+Competition evidence: in M4 (100,000 series), combinations and hybrid methods led, the top two using ML components; in M5 (Walmart sales, 2020), the top solutions were machine-learning based, most built on LightGBM with lag and calendar features across many series [survey, arXiv:2401.13912](https://arxiv.org/abs/2401.13912). Gradient boosting shines with many related series; for one short series, simple methods remain hard to beat.
 
 #### The whole recipe
 
@@ -158,7 +158,7 @@ Check: shuffled CV? lag features unavailable at the horizon? low-volume stores d
 
 #### "Shuffle the days and cross-validate like any other dataset"
 
-Random K-fold puts Tuesday in the test set and Monday and Wednesday in training, so the model interpolates between neighbours it will never have in real life. Hyndman & Athanasopoulos define time-series cross-validation so that "the corresponding training set consists only of observations that occurred prior to the observation that forms the test set. Thus, no future observations can be used in constructing the forecast" FPP3 §5.10. scikit-learn's guide agrees: shuffled splits on time-ordered data give "a model that is overfit and an inflated validation score" (see Cross-Validation & Leakage). The Backtesting section measures how much.
+Random K-fold puts Tuesday in the test set and Monday and Wednesday in training, so the model interpolates between neighbours it will never have in real life. Hyndman & Athanasopoulos define time-series cross-validation so that "the corresponding training set consists only of observations that occurred prior to the observation that forms the test set. Thus, no future observations can be used in constructing the forecast" [FPP3 §5.10](https://otexts.com/fpp3/tscv.html). scikit-learn's guide agrees: shuffled splits on time-ordered data give "a model that is overfit and an inflated validation score" (see Cross-Validation & Leakage). The Backtesting section measures how much.
 
 #### Rolling origin vs shuffled CV
 
@@ -263,12 +263,12 @@ Illustrative simulated series. The same "+ yearly wave" model scored 42.3 under 
 
 #### What this page is built from
 
-1. R. Hyndman & G. Athanasopoulos, _Forecasting: Principles and Practice_, 3rd ed., otexts.com/fpp3 (decomposition, simple methods §5.2, accuracy §5.8, time-series CV §5.10).
+1. R. Hyndman & G. Athanasopoulos, _Forecasting: Principles and Practice_, 3rd ed., [otexts.com/fpp3](https://otexts.com/fpp3/) (decomposition, simple methods §5.2, accuracy §5.8, time-series CV §5.10).
 
 2. R. Hyndman & A. Koehler, "Another look at measures of forecast accuracy", _International Journal of Forecasting_ 22, 2006 (MASE).
 
-3. S. Makridakis, E. Spiliotis & V. Assimakopoulos, M4 (2018/2020) and M5 (2022) competition papers, _International Journal of Forecasting_; summarised in arXiv:2401.13912.
+3. S. Makridakis, E. Spiliotis & V. Assimakopoulos, M4 (2018/2020) and M5 (2022) competition papers, _International Journal of Forecasting_; summarised in [arXiv:2401.13912](https://arxiv.org/abs/2401.13912).
 
-4. scikit-learn, TimeSeriesSplit.
+4. scikit-learn, [TimeSeriesSplit](https://scikit-learn.org/stable/modules/cross_validation.html#time-series-split).
 
 The order series is simulated with a known trend, weekly pattern and yearly wave; every forecast and backtest is computed live in your browser.

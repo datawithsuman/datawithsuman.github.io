@@ -84,7 +84,7 @@ In the Measuring Agents in Production study, 17 of 20 interviewed teams built th
 
 #### The maths
 
-$$ P(\text{run finishes}) = \big(1 - f^{\,r+1}\big)^{N} $$
+$$ {P(\text{run finishes})} = \big(1 - {f}^{\,{r}+1}\big)^{{N}} $$
 
 Assumes failures are independent and passing. Retries don't help with real errors, like a bad argument, which is why retry middleware should only retry transient ones.
 
@@ -144,24 +144,26 @@ When would you skip a framework?
 
 When the loop is simple, you need tight control or strict dependency rules, and you can add checkpoints, retries and tracing yourself.
 
+#### The 30-second answer
+
 An agent is a model plus a harness: prompt, tools, loop, memory, error handling and limits. Graph runtimes like LangGraph model it as nodes updating shared state with merge rules, checkpoint after each step under a thread, pause for humans with interrupts, and let you replay or branch from any checkpoint. Middleware, as in LangChain 1.x or ADK callbacks, wraps model and tool calls with retries, fallbacks, summarisation, approvals and limits. Deep agents add planning, a file system and sub-agents. I'd choose on durability, interrupts, tracing and control, and remember many production teams write their own loop: 17 of 20 in one study.
 
 **Key terms and sources**
 
-Agent = model + harness. How graph runtimes work (state, merge rules, steps, checkpoints, threads, interrupts, time travel, subgraphs), middleware hooks around model and tool calls, workflow agents, 'deep agents' with planning, files and sub-agents, and when to build your own.
+Agent = model + harness. How graph runtimes work (state, merge rules, steps, checkpoints, threads, interrupts, time travel, subgraphs), middleware hooks around model and tool calls, workflow agents, 'deep agents' with planning, files and sub-agents, and when to build your own. · checked 7 Nov 2026
 
 #### Sources
 
-- LangGraph documentation: graph API, persistence, interrupts, time travel
+- [LangGraph documentation: graph API, persistence, interrupts, time travel](https://docs.langchain.com/oss/python/langgraph/overview)
 
-- LangChain documentation: agents and built-in middleware
+- [LangChain documentation: agents and built-in middleware](https://docs.langchain.com/oss/python/langchain/overview)
 
-- LangChain Deep Agents documentation
+- [LangChain Deep Agents documentation](https://docs.langchain.com/oss/python/deepagents/overview)
 
-- Google Agent Development Kit documentation
+- [Google Agent Development Kit documentation](https://adk.dev/)
 
-- OpenAI Agents SDK guide
+- [OpenAI Agents SDK guide](https://developers.openai.com/api/docs/guides/agents)
 
-- Pan et al., Measuring Agents in Production, ICML 2026
+- [Pan et al., Measuring Agents in Production, ICML 2026](https://arxiv.org/abs/2512.04123)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

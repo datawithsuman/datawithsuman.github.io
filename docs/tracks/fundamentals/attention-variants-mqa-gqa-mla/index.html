@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Attention Variants: MQA, GQA and MLA · Fundamentals · AIML Rounds</title>
-<meta name="description" content="How many conversations fit on one GPU, and how GQA and MLA raise that?">
+<meta name="description" content="How many conversations fit on one GPU, and how do GQA and MLA raise that?">
 <link rel="canonical" href="https://aimlrounds.com/tracks/fundamentals/attention-variants-mqa-gqa-mla/">
 <meta property="og:url" content="https://aimlrounds.com/tracks/fundamentals/attention-variants-mqa-gqa-mla/">
 <meta property="og:site_name" content="AIML Rounds">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Attention Variants: MQA, GQA and MLA · Fundamentals · AIML Rounds">
-<meta property="og:description" content="How many conversations fit on one GPU, and how GQA and MLA raise that?">
+<meta property="og:description" content="How many conversations fit on one GPU, and how do GQA and MLA raise that?">
 <meta property="og:image" content="https://aimlrounds.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
@@ -46,7 +46,7 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a><span aria-hidden="true">/</span><a href="../../../tracks/fundamentals/">Fundamentals</a><span aria-hidden="true">/</span><a href="../../../tracks/fundamentals/#module-30">Modern architecture</a><span aria-hidden="true">/</span><b aria-current="page">Attention Variants: MQA, GQA and MLA</b></nav>
   <div class="lesson-meta"><span class="chip type-concept">Concept</span><span class="mins">25 min</span><span class="before">Before this:</span><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/modern-llm-architecture/">Anatomy of a Modern LLM</a><a class="chip chip-link t-fundamentals" href="../../../tracks/fundamentals/multi-head-attention/">Multi-Head Attention</a></div>
   <h1 class="h1-lesson">Attention Variants: MQA, GQA and MLA</h1>
-  <p class="lead">How many conversations fit on one GPU, and how GQA and MLA raise that?</p>
+  <p class="lead">How many conversations fit on one GPU, and how do GQA and MLA raise that?</p>
   <div class="lesson-tabs" role="tablist" aria-label="Lesson sections"><button type="button" role="tab" id="tab-intuition" aria-controls="panel-intuition" data-tab="intuition" aria-selected="true">Intuition</button><button type="button" role="tab" id="tab-how" aria-controls="panel-how" data-tab="how" aria-selected="false">Maths</button><button type="button" role="tab" id="tab-practice" aria-controls="panel-practice" data-tab="practice" aria-selected="false">In practice</button><button type="button" role="tab" id="tab-say" aria-controls="panel-say" data-tab="say" aria-selected="false">Say it</button></div><div class="lx"><div class="tab-panel" id="panel-intuition" role="tabpanel" aria-labelledby="tab-intuition" tabindex="-1"><section class="panel block sit" id="situation"><h2 class="eyebrow">The situation</h2>
 <p class="sit-lead">Your 8B assistant runs on one 80 GB GPU, and its weights take about 16 GB. Customers chat with 8k tokens of history each. A colleague assumes the weights decide how many fit at once. The interviewer asks:</p>
 <blockquote class="sit-q">How many conversations fit on one GPU, and how do GQA and MLA raise that?</blockquote><div class="sit-more"><div class="two" style="margin-top:18px"><div><p>Where this lesson sits: the attention box, specifically how many K and V heads it keeps.</p><p class="small">Background: <a href="../self-attention/">Self-Attention</a> · <a href="../multi-head-attention/">Multi-Head Attention</a> · <a href="../../ai-engineering/prefill-vs-decode/">Prefill vs Decode</a>.</p></div><div data-minitf="mha"></div></div>

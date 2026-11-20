@@ -66,7 +66,7 @@ Two or three rounds are normal: you'll split, merge and rename modes as you read
 
 #### The maths
 
-$$ \hat p = \frac{k}{n} \pm 1.96\sqrt{\frac{\hat p(1-\hat p)}{n}} $$
+$$ {\hat p} = \frac{{k}}{{n}} \pm 1.96\sqrt{\frac{\hat p(1-\hat p)}{n}} $$
 
 Rates from 100 traces are rough: good enough to rank what to fix, not to promise a number to a customer.
 
@@ -124,18 +124,20 @@ Two failures look similar. One category or two?
 
 Two if they need different fixes, such as invented listing details (a grounding problem) and invented user requests (an intent problem).
 
+#### The 30-second answer
+
 I'd read about 100 traces and, for each, write a short note on the first failure, judged from the user's side, plus a pass or fail. Then I'd group the notes into failure modes specific to our app, splitting any that need different fixes; an LLM can help group, but not invent the categories. I'd label every trace 1 or 0 per mode and compute rates, which tell me what to fix first. I'd stop at saturation, when new traces show nothing new, and repeat after big changes.
 
 **Key terms and sources**
 
-Open coding (a short note on the first failure in each trace), axial coding (grouping notes into failure modes specific to your app), labelling every trace, and turning counts into rates with error bars.
+Open coding (a short note on the first failure in each trace), axial coding (grouping notes into failure modes specific to your app), labelling every trace, and turning counts into rates with error bars. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- E. Yan, Product evals in three simple steps
+- [E. Yan, Product evals in three simple steps](https://eugeneyan.com/writing/product-evals/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

@@ -151,12 +151,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I wouldn't invert. Computing the inverse costs about three times an LU solve, and it's less accurate. I'd factor A into easy pieces: LU for general matrices, Cholesky for positive definite ones at half the cost, QR for least squares and SVD if the rank is in doubt. The condition number, largest over smallest singular value, says how much errors get amplified, and normal equations square it, which is why libraries use QR or SVD. The pseudoinverse inverts only the non-zero singular values, giving the least-squares answer with the smallest norm.</p>
+<h3>The 30-second answer</h3><p class="say30">I wouldn't invert. Computing the inverse costs about three times an LU solve, and it's less accurate. I'd factor A into easy pieces: LU for general matrices, Cholesky for positive definite ones at half the cost, QR for least squares and SVD if the rank is in doubt. The condition number, largest over smallest singular value, says how much errors get amplified, and normal equations square it, which is why libraries use QR or SVD. The pseudoinverse inverts only the non-zero singular values, giving the least-squares answer with the smallest norm.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How computers actually solve linear systems: LU, QR, Cholesky and SVD, the condition number, and the Moore-Penrose pseudoinverse.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How computers actually solve linear systems: LU, QR, Cholesky and SVD, the condition number, and the Moore-Penrose pseudoinverse. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://web.stanford.edu/~boyd/vmls/">Boyd and Vandenberghe, Introduction to Applied Linear Algebra</a></li><li><a href="https://math.mit.edu/~gs/learningfromdata/">Strang, Linear Algebra and Learning from Data</a></li><li><a href="https://mml-book.github.io/">Deisenroth, Faisal and Ong, Mathematics for Machine Learning</a></li><li><a href="https://cs229.stanford.edu/section/cs229-linalg.pdf">Kolter and Do, CS229 Linear Algebra Review</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

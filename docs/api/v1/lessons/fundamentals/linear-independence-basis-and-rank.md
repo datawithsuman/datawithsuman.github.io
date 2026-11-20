@@ -78,7 +78,7 @@ Vectors are **independent** if none can be built from the others. The **rank** o
 
 #### The maths
 
-$$ \mathrm{rank}(A) + \dim(\mathrm{null}(A)) = n, \qquad \mathrm{VIF}_j = \frac{1}{1 - R_j^2} $$
+$$ {\mathrm{rank}(A)} + {\dim(\mathrm{null}(A))} = {n}, \qquad {\mathrm{VIF}_j} = \frac{1}{1 - R_j^2} $$
 
 As R² approaches 1, VIF grows without limit. At exactly 1, the matrix has lost rank, and the weight isn’t defined.
 
@@ -136,19 +136,21 @@ You have 100 rows and 1,000 features. What happens to linear regression?
 
 The rank is at most 100, so there are infinitely many weights that fit perfectly, and no unique solution. Use regularisation, such as ridge or lasso, reduce the features, or use a minimum-norm solution through the pseudoinverse. Each of those picks one answer.
 
+#### The 30-second answer
+
 The rank is the number of truly independent columns, which is the real dimension of the data. If a feature is a mix of others, the matrix loses rank, XᵀX can't be inverted, and many sets of weights fit equally well. That's what the null space means: directions you can't determine from the data. With strong but not perfect correlation, a solution exists, but weights are unstable, with variance inflated by one over one minus R squared. I'd drop or combine features, or use ridge. Predictions may be fine, but weights can't be trusted.
 
 **Key terms and sources**
 
-Linear independence, span, basis, rank, column and null space, and how they explain collinearity, the dummy variable trap and low-dimensional embeddings.
+Linear independence, span, basis, rank, column and null space, and how they explain collinearity, the dummy variable trap and low-dimensional embeddings. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
 - Linear regression on this site
 

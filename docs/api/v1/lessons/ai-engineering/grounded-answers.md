@@ -83,7 +83,7 @@ CRAG found that simple RAG raised accuracy from at most 34% to 44%, and that eve
 
 #### The maths
 
-$$ \text{missed answers} = P(s < t \mid \text{answerable}), \qquad \text{invented answers} = P(s \ge t \mid \text{not answerable}) $$
+$$ {\text{missed answers}} = {P(s < t \mid \text{answerable})}, \qquad {\text{invented answers}} = {P(s \ge t \mid \text{not answerable})} $$
 
 A simple way to frame the trade-off, as with any classifier. Retrieval scores aren’t always comparable across queries, so calibrate this on your own data.
 
@@ -141,26 +141,28 @@ Why not just send 20 chunks, to be safe?
 
 More chunks can add noise and cost without helping, because the model uses later ones less. Anthropic did find 20 worked best among 5, 10 and 20 for its retrieval tests, so test it, but expect a limit. Re-ranking the best to the top matters more.
 
+#### The 30-second answer
+
 Good retrieval doesn't guarantee a good answer. Models favour early text, and in one study use fell from 98% at rank 1 to 44% at ranks 6 to 10, so I'd re-rank, send fewer chunks and place the best first. I'd require citations per claim, and check both correctness, which asks whether the source supports the claim, and faithfulness, which asks whether the model really used it. One study found up to 57% of citations weren't faithful. I test that by changing the document and seeing if the answer changes. For conflicts, I'd remove stale versions at ingest and show real disagreements. And I'd design abstention, with no-answer questions in my test set.
 
 **Key terms and sources**
 
-Why models miss retrieved evidence, context order, citations that look right but aren't real, conflicting and stale documents, and abstaining when the evidence isn't there.
+Why models miss retrieved evidence, context order, citations that look right but aren't real, conflicting and stale documents, and abstaining when the evidence isn't there. · checked 7 Nov 2026
 
 #### Sources
 
-- Chen et al., Is GraphRAG Needed?
+- [Chen et al., Is GraphRAG Needed?](https://arxiv.org/abs/2606.25656)
 
-- Wallat et al., Correctness is not Faithfulness in RAG Attributions
+- [Wallat et al., Correctness is not Faithfulness in RAG Attributions](https://arxiv.org/abs/2412.18004)
 
-- Yang et al., CRAG: Comprehensive RAG Benchmark
+- [Yang et al., CRAG: Comprehensive RAG Benchmark](https://arxiv.org/abs/2406.04744)
 
-- Yang et al., RAGStress
+- [Yang et al., RAGStress](https://arxiv.org/abs/2610.04691)
 
-- Barnett et al., Seven Failure Points
+- [Barnett et al., Seven Failure Points](https://arxiv.org/abs/2401.05856)
 
-- Liu et al., Lost in the Middle
+- [Liu et al., Lost in the Middle](https://arxiv.org/abs/2307.03172)
 
-- Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality
+- [Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality](https://arxiv.org/abs/2610.29722)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

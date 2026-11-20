@@ -152,12 +152,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">The mean uses every value, so an outlier can drag it, while the median is the middle value, and barely moves. I'd use the median for a typical case in skewed data, and the mean when totals matter, since mean times count gives the total. For outliers, I'd prefer the IQR rule to z-scores, because an outlier inflates the standard deviation and can mask itself. Then I'd ask why it's there before removing it. For latency, I'd report p99, because averages hide slow requests that many users actually hit.</p>
+<h3>The 30-second answer</h3><p class="say30">The mean uses every value, so an outlier can drag it, while the median is the middle value, and barely moves. I'd use the median for a typical case in skewed data, and the mean when totals matter, since mean times count gives the total. For outliers, I'd prefer the IQR rule to z-scores, because an outlier inflates the standard deviation and can mask itself. Then I'd ask why it's there before removing it. For latency, I'd report p99, because averages hide slow requests that many users actually hit.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Mean, median, percentiles, spread and skew, how outliers distort them, how to detect outliers, and why latency is reported as p99.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Mean, median, percentiles, spread and skew, how outliers distort them, how to detect outliers, and why latency is reported as p99. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://www.openintro.org/book/os/">Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics</a></li><li><a href="https://toc.uni.li/FLMF048415.pdf">Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt</a></li><li><a href="../../ai-engineering/serving-metrics-and-slos/">Serving metrics on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

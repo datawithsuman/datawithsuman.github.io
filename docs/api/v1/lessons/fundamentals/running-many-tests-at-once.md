@@ -74,7 +74,7 @@ You can compare A's effect among users in B's treatment and control. But that's 
 
 #### The maths
 
-$$ \hat\tau_A = \tau_A + p_B\,I, \qquad \text{both vs neither} = \tau_A + \tau_B + I $$
+$$ {\hat\tau_A} = {\tau_A} + {p_B}\,{I}, \qquad {\text{both vs neither}} = \tau_A + \tau_B + I $$
 
 A standard two-by-two factorial result. The interaction’s estimate has twice the standard error of a main effect, on the same users.
 
@@ -134,18 +134,20 @@ Two teams want to launch big changes to the same page next week. What do you do?
 
 Run a planned two-by-two test across both, or at least keep them in the same layer until one has launched. Then compare each change alone and both together, because the combination is what users will see.
 
+#### The 30-second answer
+
 I'd let tests overlap. Each test hashes the user with its own salt, so being in one test tells you nothing about another, and other tests affect both groups equally. Each test then keeps all the traffic. The risk is an interaction, where two changes together differ from the sum of each. Microsoft's analysis across four products found these were very rare. For changes that could clash, I'd use layers, so a user is in at most one test per layer, and tests in different layers overlap. I'd scan for interactions automatically, knowing they need about four times the users to detect and need multiple testing corrections.
 
 **Key terms and sources**
 
-Why overlapping tests are usually safe, layers and domains, what an interaction does to your results, and how to detect one.
+Why overlapping tests are usually safe, layers and domains, what an interaction does to your results, and how to detect one. · checked 7 Nov 2026
 
 #### Sources
 
-- Tang, Agarwal, O'Brien and Meyer, Overlapping Experiment Infrastructure (KDD 2010)
+- [Tang, Agarwal, O'Brien and Meyer, Overlapping Experiment Infrastructure (KDD 2010)](https://research.google/pubs/overlapping-experiment-infrastructure-more-better-faster-experimentation/)
 
-- Jeng, A/B Interactions: A Call to Relax (Microsoft, 2023)
+- [Jeng, A/B Interactions: A Call to Relax (Microsoft, 2023)](https://www.microsoft.com/en-us/research/articles/a-b-interactions-a-call-to-relax/)
 
-- Bakshy, Eckles and Bernstein, Designing and Deploying Online Field Experiments (PlanOut, WWW 2014)
+- [Bakshy, Eckles and Bernstein, Designing and Deploying Online Field Experiments (PlanOut, WWW 2014)](https://hci.stanford.edu/publications/2014/planout/planout-www2014.pdf)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

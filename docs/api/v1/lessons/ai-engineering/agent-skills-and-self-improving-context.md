@@ -76,7 +76,7 @@ ACE, at ICLR 2026, treats context as an evolving **playbook**. A generator does 
 
 #### The maths
 
-$$ T_{\text{context}} = n\cdotm + k\cdots $$
+$$ {T_{\text{context}}} = {n}\cdot{m} + {k}\cdot{s} $$
 
 Progressive disclosure. Loading everything instead would cost n × s on every call.
 
@@ -138,24 +138,26 @@ Can an agent safely write its own skills?
 
 Only with review and tests. Self-written instructions can encode mistakes, and scripts can do damage, so treat them like code contributions.
 
+#### The 30-second answer
+
 A skill is a folder with a SKILL.md: name, description and instructions, plus optional scripts and references. The agent keeps only descriptions in context, about 100 tokens each, and loads the full instructions when a task needs them, so 50 skills cost thousands of tokens, not 150,000. AGENTS.md gives coding agents project instructions. Agents can also improve their own context: ACE keeps an itemised playbook of lessons from execution feedback and gained about 10% on agent tasks. The risks are context collapse, when a model rewrites the whole playbook and loses it, and learning wrong lessons without reliable feedback.
 
 **Key terms and sources**
 
-Agent Skills as packaged know-how with progressive disclosure, AGENTS.md project instructions, and agents that improve by editing their own context: ACE playbooks, context collapse, and when self-written lessons help or hurt.
+Agent Skills as packaged know-how with progressive disclosure, AGENTS.md project instructions, and agents that improve by editing their own context: ACE playbooks, context collapse, and when self-written lessons help or hurt. · checked 7 Nov 2026
 
 #### Sources
 
-- Agent Skills specification
+- [Agent Skills specification](https://agentskills.io/specification)
 
-- Anthropic, Equipping agents for the real world with Agent Skills, Oct 2025
+- [Anthropic, Equipping agents for the real world with Agent Skills, Oct 2025](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
-- Zhang et al., Agentic Context Engineering (ACE), ICLR 2026
+- [Zhang et al., Agentic Context Engineering (ACE), ICLR 2026](https://arxiv.org/abs/2510.04618)
 
-- Suzgun et al., Dynamic Cheatsheet
+- [Suzgun et al., Dynamic Cheatsheet](https://arxiv.org/abs/2504.07952)
 
-- AGENTS.md
+- [AGENTS.md](https://agents.md/)
 
-- Hu et al., Memory in the Age of AI Agents (survey)
+- [Hu et al., Memory in the Age of AI Agents (survey)](https://arxiv.org/abs/2512.13564)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

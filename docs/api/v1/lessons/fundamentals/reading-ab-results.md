@@ -75,7 +75,7 @@ The more interesting or unusual a figure looks, the more likely it comes from a 
 
 #### The maths
 
-$$ (\hat p_T - \hat p_C) \pm 1.96 \cdot \sqrt{\frac{\hat p_T(1-\hat p_T)}{n_T} + \frac{\hat p_C(1-\hat p_C)}{n_C}} $$
+$$ {(\hat p_T - \hat p_C)} \pm {1.96} \cdot {\sqrt{\frac{\hat p_T(1-\hat p_T)}{n_T} + \frac{\hat p_C(1-\hat p_C)}{n_C}}} $$
 
 Worked example: 50,000 users per group, 10.0% against 10.4%. The difference is 0.40 points with a standard error of 0.19, so the interval is 0.02 to 0.78 points and p ≈ 0.04. Significant, but the interval also includes lifts too small to matter.
 
@@ -131,17 +131,19 @@ A small button colour change shows a 20% revenue lift. What do you do?
 
 Suspect it first. I'd check the sample ratio, logging, outliers such as one huge purchase, and whether bots were included. If all of it holds, I'd rerun the test, because results this surprising are usually errors.
 
+#### The 30-second answer
+
 First I'd check the test is valid: sample ratio and guardrails. Then I'd read the confidence interval against zero and against the smallest lift worth shipping. If it's entirely above that bar, ship. If it crosses zero and the bar, I need more data. If it's above zero but below the bar, the effect is real but too small to matter. Significance alone isn't enough, because with enough users tiny effects become significant. And if a result looks too good, I'd suspect a bug first.
 
 **Key terms and sources**
 
-Confidence intervals, statistical against practical significance, and a clear rule for ship, don't ship or get more data.
+Confidence intervals, statistical against practical significance, and a clear rule for ship, don't ship or get more data. · checked 7 Nov 2026
 
 #### Sources
 
-- Twyman's law, from Kohavi, Tang and Xu (book excerpt)
+- [Twyman's law, from Kohavi, Tang and Xu (book excerpt)](https://assets.cambridge.org/97811087/24265/excerpt/9781108724265_excerpt.pdf)
 
-- Peeking at A/B tests, a summary that cites the one-in-three figure
+- [Peeking at A/B tests, a summary that cites the one-in-three figure](https://blog.acolyer.org/2017/09/28/peeking-at-ab-tests-continuous-monitoring-without-pain/)
 
 - Hypothesis tests on this site
 

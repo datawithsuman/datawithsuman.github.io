@@ -48,11 +48,11 @@ With a single step, the sampler can only jump to the **average** prediction, so 
 
 #### In one breath
 
-A **diffusion model** learns to generate by learning to **denoise**. The **forward process** adds a little Gaussian noise at each of T steps (e.g. 1,000) until the data becomes pure noise; it has a closed form, so any noise level can be sampled in one shot. A network is trained to look at a noisy sample and **predict the noise** that was added: a simple regression loss. To **generate**, start from pure noise and repeatedly remove the predicted noise, step by step, until a clean sample appears. Training is stable (no adversary), samples are high quality and diverse, and the cost is **many network calls per sample**, reduced by smarter samplers (DDIM), distillation and by running in a compressed **latent space** (Stable Diffusion). **Classifier-free guidance** steers generation towards a text prompt.What you'll be able to do after this: write the forward process and the training loss, explain sampling and why step count matters, and explain guidance and latent diffusion.
+A **diffusion model** learns to generate by learning to **denoise**. The **forward process** adds a little Gaussian noise at each of T steps (e.g. 1,000) until the data becomes pure noise; it has a closed form, so any noise level can be sampled in one shot. A network is trained to look at a noisy sample and **predict the noise** that was added: a simple regression loss. To **generate**, start from pure noise and repeatedly remove the predicted noise, step by step, until a clean sample appears. Training is stable (no adversary), samples are high quality and diverse, and the cost is **many network calls per sample**, reduced by smarter samplers (DDIM), distillation and by running in a compressed **latent space** (Stable Diffusion). **Classifier-free guidance** steers generation towards a text prompt. What you'll be able to do after this: write the forward process and the training loss, explain sampling and why step count matters, and explain guidance and latent diffusion.
 
 #### The forward process: add noise, with a closed form
 
-$$ x_t = \sqrt{\bar{\alpha}_t}\,x_0 + \sqrt{1-\bar{\alpha}_t}\,\varepsilon, \qquad \varepsilon\sim\mathcal{N}(0,I), \qquad \bar{\alpha}_t = \textstyle\prod_{s\le t}(1-\beta_s) $$
+$$ x_t = {\sqrt{\bar{\alpha}_t}\,x_0} + {\sqrt{1-\bar{\alpha}_t}\,\varepsilon}, \qquad \varepsilon\sim\mathcal{N}(0,I), \qquad {\bar{\alpha}_t = \textstyle\prod_{s\le t}(1-\beta_s)} $$
 
 - **signal kept**: √ᾱ_t: how much of the original sample survives at step t. ᾱ_t is the running product of (1 − β), so it shrinks from 1 towards 0.
 
@@ -66,9 +66,9 @@ At t = 200, 81% of the signal remains and the two peaks are still visible; by t 
 
 #### Training: predict the noise
 
-$$ L = \mathbb{E}_{x_0,t,\varepsilon}\Big[\big\lVert \varepsilon - \varepsilon_\theta\big(\sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\,\varepsilon,\; t\big)\big\rVert^2\Big] $$
+$$ {L = \mathbb{E}_{x_0,t,\varepsilon}\Big[\big\lVert {\varepsilon} - {\varepsilon_\theta\big(\sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\,\varepsilon,\; t\big)}\big\rVert^2\Big]} $$
 
-Ho, Jain & Abbeel, NeurIPS 2020 arXiv:2006.11239: with this objective DDPM reached an FID of 3.17 on CIFAR-10 (state of the art at the time). Predicting the noise is equivalent to learning the **score** ∇ log q(xt), the direction towards more likely data (Song et al., ICLR 2021).
+Ho, Jain & Abbeel, NeurIPS 2020 [arXiv:2006.11239](https://arxiv.org/abs/2006.11239): with this objective DDPM reached an FID of 3.17 on CIFAR-10 (state of the art at the time). Predicting the noise is equivalent to learning the **score** ∇ log q(xt), the direction towards more likely data (Song et al., ICLR 2021).
 
 - **true noise**: Sample a clean x₀, a random step t and noise ε; build x_t with the closed form.
 
@@ -94,7 +94,7 @@ Ho, Jain & Abbeel, NeurIPS 2020 arXiv:2006.11239: with this objective DDPM reach
 
 Diffusion's paths from noise to data are curved, so sampling takes many steps. Two newer ideas aim for far fewer.
 
-$$ X_t = tX_1 + (1-t)X_0, \qquad \min_v\ \mathbb{E}\big\|(X_1 - X_0) - v(X_t, t)\big\|^2 $$
+$$ {X_t = tX_1 + (1-t)X_0}, \qquad {\min_v\ \mathbb{E}\big\|{(X_1 - X_0)} - v(X_t, t)\big\|^2} $$
 
 The rectified flow form. Flow matching with optimal-transport paths is closely related.
 
@@ -112,7 +112,7 @@ The rectified flow form. Flow matching with optimal-transport paths is closely r
 
 - **The trade-off:** one-step models are very fast, but several steps usually still improve quality.
 
-Sources: Flow Matching, Rectified Flow and Consistency Models.
+Sources: [Flow Matching](https://arxiv.org/abs/2210.02747), [Rectified Flow](https://arxiv.org/abs/2209.03003) and [Consistency Models](https://arxiv.org/abs/2303.01469).
 
 ### The answer that sounds right
 
@@ -162,14 +162,14 @@ Generating data by learning to reverse a gradual noising process: the forward pr
 
 #### Sources
 
-1. J. Sohl-Dickstein et al., "Deep Unsupervised Learning using Nonequilibrium Thermodynamics", ICML 2015, arXiv:1503.03585.
+1. J. Sohl-Dickstein et al., "Deep Unsupervised Learning using Nonequilibrium Thermodynamics", ICML 2015, [arXiv:1503.03585](https://arxiv.org/abs/1503.03585).
 
-2. J. Ho, A. Jain & P. Abbeel, "Denoising Diffusion Probabilistic Models", NeurIPS 2020, arXiv:2006.11239.
+2. J. Ho, A. Jain & P. Abbeel, "Denoising Diffusion Probabilistic Models", NeurIPS 2020, [arXiv:2006.11239](https://arxiv.org/abs/2006.11239).
 
-3. J. Song, C. Meng & S. Ermon, "Denoising Diffusion Implicit Models", ICLR 2021, arXiv:2010.02502; Y. Song et al., "Score-Based Generative Modeling through Stochastic Differential Equations", ICLR 2021, arXiv:2011.13456.
+3. J. Song, C. Meng & S. Ermon, "Denoising Diffusion Implicit Models", ICLR 2021, [arXiv:2010.02502](https://arxiv.org/abs/2010.02502); Y. Song et al., "Score-Based Generative Modeling through Stochastic Differential Equations", ICLR 2021, [arXiv:2011.13456](https://arxiv.org/abs/2011.13456).
 
-4. J. Ho & T. Salimans, "Classifier-Free Diffusion Guidance", arXiv:2207.12598, 2022.
+4. J. Ho & T. Salimans, "Classifier-Free Diffusion Guidance", [arXiv:2207.12598](https://arxiv.org/abs/2207.12598), 2022.
 
-5. R. Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022, arXiv:2112.10752.
+5. R. Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022, [arXiv:2112.10752](https://arxiv.org/abs/2112.10752).
 
-6. P. Dhariwal & A. Nichol, "Diffusion Models Beat GANs on Image Synthesis", NeurIPS 2021, arXiv:2105.05233.
+6. P. Dhariwal & A. Nichol, "Diffusion Models Beat GANs on Image Synthesis", NeurIPS 2021, [arXiv:2105.05233](https://arxiv.org/abs/2105.05233).

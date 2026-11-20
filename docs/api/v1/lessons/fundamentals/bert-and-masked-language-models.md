@@ -92,7 +92,7 @@ A pair of sentences becomes `[CLS] sentence A [SEP] sentence B [SEP]`. Each toke
 
 #### The maths
 
-$$ E_i = E_{\text{token}} + E_{\text{segment}} + E_{\text{position}}, \qquad L = -\sum_{i \in \text{masked}} \log P(w_i \mid \text{context}), \qquad \text{span} = \arg\max_{j \ge i}\ S\cdot T_i + E\cdot T_j $$
+$$ {E_i = E_{\text{token}} + E_{\text{segment}} + E_{\text{position}}}, \qquad {L = -\sum_{i \in \text{masked}} \log P(w_i \mid \text{context})}, \qquad {\text{span} = \arg\max_{j \ge i}\ S\cdot T_i + E\cdot T_j} $$
 
 From Devlin et al. The loss form is the standard description of masked language modelling.
 
@@ -148,24 +148,26 @@ Why can't BERT generate text the way GPT does?
 
 It's trained with attention in both directions, so it never learned to predict from left context only. You could fill masks repeatedly, but it's slow and works poorly. GPT-style models are trained with a causal mask for exactly this.
 
+#### The 30-second answer
+
 BERT is a Transformer encoder pretrained by masking. It selects 15% of tokens, replaces 80% of those with [MASK], 10% with a random token and leaves 10% unchanged, and predicts the originals. It also originally predicted whether one sentence followed another, though RoBERTa showed this wasn't needed. Each token's input adds token, segment and position embeddings. To use it, I add a head and fine-tune at about 2e-5 to 5e-5, for 2 to 4 epochs: a classifier on [CLS] for classification and entailment, per-token for NER, and start and end scores for QA. It's bidirectional, so it suits understanding rather than generation.
 
 **Key terms and sources**
 
-Masked language modelling, CLS and SEP tokens, segment embeddings, next sentence prediction, task heads for classification, NER, QA and entailment, and later variants.
+Masked language modelling, CLS and SEP tokens, segment embeddings, next sentence prediction, task heads for classification, NER, QA and entailment, and later variants. · checked 7 Nov 2026
 
 #### Sources
 
-- Devlin et al., BERT
+- [Devlin et al., BERT](https://arxiv.org/abs/1810.04805)
 
-- Liu et al., RoBERTa
+- [Liu et al., RoBERTa](https://arxiv.org/abs/1907.11692)
 
-- Sanh et al., DistilBERT
+- [Sanh et al., DistilBERT](https://arxiv.org/abs/1910.01108)
 
-- Bowman et al., SNLI
+- [Bowman et al., SNLI](https://arxiv.org/abs/1508.05326)
 
-- Rajpurkar et al., SQuAD
+- [Rajpurkar et al., SQuAD](https://arxiv.org/abs/1606.05250)
 
-- Jurafsky and Martin, Speech and Language Processing
+- [Jurafsky and Martin, Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

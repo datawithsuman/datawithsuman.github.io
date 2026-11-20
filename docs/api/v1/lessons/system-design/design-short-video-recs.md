@@ -145,8 +145,10 @@ The share event stream breaks and the model starts recommending junk. Why?
 
 Online training kept learning from data with no positives. Monitor label rates and pause training automatically when they shift suddenly.
 
+#### The 30-second answer
+
 I'd clarify the feed format, how fast interests shift, scale and metrics. Serving is retrieve then rank: a few thousand candidates from several sources, ranked by a deep model. The key is learning in real time. Actions and serving-time features stream separately and a joiner pairs them by request ID, holding features for late actions. Training runs online from that stream, and changed embeddings are pushed to serving every few minutes, with dense weights daily. Each user and video ID gets its own embedding in a collisionless table, with frequency filtering and expiry to control memory. New videos get exploration and content features. I'd guard against broken streams by pausing training, snapshot daily, add diversity rules, and judge by watch time, retention and negative feedback.
 
 **Key terms and sources**
 
-Based on a short-video company's published paper: "Monolith: Real Time Recommendation System With Collisionless Embedding Table" (RecSys 2022 workshop). The lab uses the paper's own numbers; the estimate is ours. The paper doesn't say which product runs it. Uses embeddings, classification metrics and training-serving skew.
+Based on a short-video company's published paper: ["Monolith: Real Time Recommendation System With Collisionless Embedding Table"](https://arxiv.org/abs/2209.07663) (RecSys 2022 workshop). The lab uses the paper's own numbers; the estimate is ours. The paper doesn't say which product runs it. Uses embeddings, classification metrics and training-serving skew. · checked 15 Nov 2026

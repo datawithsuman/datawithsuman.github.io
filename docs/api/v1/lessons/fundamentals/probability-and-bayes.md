@@ -47,13 +47,13 @@ Two levers move the answer: the base rate and the false-alarm rate. With a 10% f
 
 #### In one breath
 
-A probability is a number between 0 and 1 for how likely an event is. **Conditional probability** P(A | B) restricts attention to the cases where B happened. **Independence** means knowing B tells you nothing about A. **Bayes' rule** turns P(B | A), which is often easy to measure ("how often does a fraudulent order trigger the alarm?"), into P(A | B), which is what you want ("this order triggered the alarm: is it fraud?"). The key ingredient people forget is the **base rate**, the prior P(A): when the event is rare, even an accurate test produces mostly false alarms. The easiest way to get Bayes right under pressure is to imagine 10,000 cases and count.What you'll be able to do after this: compute conditional probabilities, apply Bayes' rule by counting, explain why base rates dominate for rare events, and connect it to precision, Naive Bayes and Bayesian updating.
+A probability is a number between 0 and 1 for how likely an event is. **Conditional probability** P(A | B) restricts attention to the cases where B happened. **Independence** means knowing B tells you nothing about A. **Bayes' rule** turns P(B | A), which is often easy to measure ("how often does a fraudulent order trigger the alarm?"), into P(A | B), which is what you want ("this order triggered the alarm: is it fraud?"). The key ingredient people forget is the **base rate**, the prior P(A): when the event is rare, even an accurate test produces mostly false alarms. The easiest way to get Bayes right under pressure is to imagine 10,000 cases and count. What you'll be able to do after this: compute conditional probabilities, apply Bayes' rule by counting, explain why base rates dominate for rare events, and connect it to precision, Naive Bayes and Bayesian updating.
 
 #### Joint, conditional, independent
 
-$$ P(A\mid B) = P(A \cap B) \,/\, P(B), \qquad A \perp B \iff P(A\cap B) = P(A)P(B) $$
+$$ {P(A\mid B)} = {P(A \cap B)} \,/\, {P(B)}, \qquad {A \perp B \iff P(A\cap B) = P(A)P(B)} $$
 
-Blitzstein & Hwang, _Introduction to Probability_, ch. 2 (free at stat110).
+Blitzstein & Hwang, _Introduction to Probability_, ch. 2 (free at [stat110](https://projects.iq.harvard.edu/stat110)).
 
 - **conditional probability**: Among the cases where B happened, the share where A also happened.
 
@@ -65,7 +65,7 @@ Blitzstein & Hwang, _Introduction to Probability_, ch. 2 (free at stat110).
 
 #### The law of total probability
 
-$$ P(B) = P(B\mid A)P(A) + P(B\mid \neg A)P(\neg A) $$
+$$ {P(B)} = {P(B\mid A)P(A)} + {P(B\mid \neg A)P(\neg A)} $$
 
 - **overall flag rate**: How often the alarm fires, across everything.
 
@@ -77,7 +77,7 @@ Sum over every way B can happen. Here P(flag) = 0.009 + 0.0495 = 0.0585: the ala
 
 #### Posterior ∝ likelihood × prior
 
-$$ P(A\mid B) = P(B\mid A)\,P(A) \,/\, P(B) $$
+$$ {P(A\mid B)} = {P(B\mid A)}\,{P(A)} \,/\, {P(B)} $$
 
 0.9 × 0.01 / 0.0585 = 0.154. In odds form: posterior odds = prior odds × likelihood ratio = (1/99) × (0.9/0.05) = 18/99 ≈ 0.18, i.e. 15.4%.
 
@@ -167,7 +167,7 @@ Events, joint and conditional probability, independence, the law of total probab
 
 #### Sources
 
-1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., CRC 2019, ch. 1–2, projects.iq.harvard.edu/stat110.
+1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., CRC 2019, ch. 1–2, [projects.iq.harvard.edu/stat110](https://projects.iq.harvard.edu/stat110).
 
 2. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, ch. 6.
 

@@ -48,7 +48,7 @@ At **95%** per step, a **20-step** task succeeds only **35.8%** of the time; 50 
 
 #### In one breath
 
-An **agent** is an LLM that decides its own next step in a loop: **think** about the goal, **act** by calling a tool (search orders, issue a refund, run code), **observe** the result, and repeat until done. That's the **ReAct** pattern (Yao et al. 2023). A **workflow**, by contrast, follows a path you hard-coded (classify → retrieve → answer). Anthropic's guidance: use the simplest thing that works, and reach for agents only when the steps can't be predicted in advance, because autonomy costs money, latency and reliability. The core reliability problem is **compounding**: if each step succeeds 95% of the time, a 20-step task succeeds only 36% of the time, so agents need error recovery, checks and good tools.What you'll be able to do after this: define an agent, choose between a workflow and an agent, and reason about multi-step reliability.
+An **agent** is an LLM that decides its own next step in a loop: **think** about the goal, **act** by calling a tool (search orders, issue a refund, run code), **observe** the result, and repeat until done. That's the **ReAct** pattern (Yao et al. 2023). A **workflow**, by contrast, follows a path you hard-coded (classify → retrieve → answer). Anthropic's guidance: use the simplest thing that works, and reach for agents only when the steps can't be predicted in advance, because autonomy costs money, latency and reliability. The core reliability problem is **compounding**: if each step succeeds 95% of the time, a 20-step task succeeds only 36% of the time, so agents need error recovery, checks and good tools. What you'll be able to do after this: define an agent, choose between a workflow and an agent, and reason about multi-step reliability.
 
 #### Think, act, observe
 
@@ -133,10 +133,10 @@ What makes an LLM system an agent: the loop of reasoning, acting with tools and 
 
 #### Sources
 
-1. S. Yao et al., "ReAct: Synergizing Reasoning and Acting in Language Models", ICLR 2023, arXiv:2210.03629.
+1. S. Yao et al., "ReAct: Synergizing Reasoning and Acting in Language Models", ICLR 2023, [arXiv:2210.03629](https://arxiv.org/abs/2210.03629).
 
-2. Anthropic, "Building Effective Agents", Dec 2024, anthropic.com.
+2. Anthropic, "Building Effective Agents", Dec 2024, [anthropic.com](https://www.anthropic.com/research/building-effective-agents).
 
-3. T. Schick et al., "Toolformer: Language Models Can Teach Themselves to Use Tools", NeurIPS 2023, arXiv:2302.04761.
+3. T. Schick et al., "Toolformer: Language Models Can Teach Themselves to Use Tools", NeurIPS 2023, [arXiv:2302.04761](https://arxiv.org/abs/2302.04761).
 
-4. T. Kwa et al. (METR), "Measuring AI Ability to Complete Long Tasks", 2025, arXiv:2503.14499; S. Yao et al., "τ-bench", ICLR 2025, arXiv:2406.12045.
+4. T. Kwa et al. (METR), "Measuring AI Ability to Complete Long Tasks", 2025, [arXiv:2503.14499](https://arxiv.org/abs/2503.14499); S. Yao et al., "τ-bench", ICLR 2025, [arXiv:2406.12045](https://arxiv.org/abs/2406.12045).

@@ -48,7 +48,7 @@ _From the lab: a memory floor for 1,000 conversations, ignoring activations and 
 
 #### In one breath
 
-Serving at scale has two separate questions. **1. How many GPUs per replica?** Enough to hold the weights plus room for the KV cache. Inside a replica, **tensor parallelism** splits each layer across GPUs in one NVLink node (low latency, chatty), **pipeline parallelism** splits layers across nodes, and **expert parallelism** spreads MoE experts. **2. How many replicas?** Enough to hold every concurrent conversation's KV cache and meet the SLOs. Often the KV cache dominates: halving the weights with FP8 can leave the total GPU count unchanged. Large systems go further: separate prefill and decode clusters with KV transfer between them (DeepSeek-V3, Kimi's Mooncake, NVIDIA Dynamo, llm-d), with routers that send requests to the replica that already holds their prefix.What you'll be able to do after this: size a deployment from model, precision and concurrency, choose parallelism, and explain disaggregated serving, routing and autoscaling.
+Serving at scale has two separate questions. **1. How many GPUs per replica?** Enough to hold the weights plus room for the KV cache. Inside a replica, **tensor parallelism** splits each layer across GPUs in one NVLink node (low latency, chatty), **pipeline parallelism** splits layers across nodes, and **expert parallelism** spreads MoE experts. **2. How many replicas?** Enough to hold every concurrent conversation's KV cache and meet the SLOs. Often the KV cache dominates: halving the weights with FP8 can leave the total GPU count unchanged. Large systems go further: separate prefill and decode clusters with KV transfer between them (DeepSeek-V3, Kimi's Mooncake, NVIDIA Dynamo, llm-d), with routers that send requests to the replica that already holds their prefix. What you'll be able to do after this: size a deployment from model, precision and concurrency, choose parallelism, and explain disaggregated serving, routing and autoscaling.
 
 #### Parallelism for serving
 
@@ -129,10 +129,10 @@ How a model too big for one GPU is served (tensor, pipeline and expert paralleli
 
 #### Sources
 
-1. M. Shoeybi et al., "Megatron-LM", 2019, arXiv:1909.08053.
+1. M. Shoeybi et al., "Megatron-LM", 2019, [arXiv:1909.08053](https://arxiv.org/abs/1909.08053).
 
-2. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, arXiv:2412.19437 (§3.4, inference and deployment).
+2. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, [arXiv:2412.19437](https://arxiv.org/abs/2412.19437) (§3.4, inference and deployment).
 
-3. R. Qin et al., "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving", FAST 2025, arXiv:2407.00079; Y. Zhong et al., "DistServe", OSDI 2024, arXiv:2401.09670.
+3. R. Qin et al., "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving", FAST 2025, [arXiv:2407.00079](https://arxiv.org/abs/2407.00079); Y. Zhong et al., "DistServe", OSDI 2024, [arXiv:2401.09670](https://arxiv.org/abs/2401.09670).
 
-4. NVIDIA Dynamo documentation; llm-d documentation (llm-d.ai); vLLM distributed serving documentation.
+4. NVIDIA Dynamo documentation; llm-d documentation ([llm-d.ai](https://llm-d.ai/)); vLLM distributed serving documentation.

@@ -76,7 +76,7 @@ Calibration measured on the test set can break when the input mix changes. PAPE,
 
 #### The maths
 
-$$ \widehat{\text{acc}} = \frac{1}{n}\sum_{i=1}^{n} \max(p_i,\ 1-p_i) $$
+$$ {\widehat{\text{acc}}} = \frac{1}{n}\sum_{i=1}^{n} {\max(p_i,\ 1-p_i)} $$
 
 This is valid only if the probabilities are calibrated on today's data. Under concept drift, they aren't, and the estimate is too high.
 
@@ -130,20 +130,22 @@ What must be true for CBPE to work?
 
 Calibrated probabilities, and a shift in the input mix only, not in how inputs relate to outcomes. Inputs must also look like ones seen in training.
 
+#### The 30-second answer
+
 Drift scores tell me inputs moved, not whether accuracy fell. If the model's probabilities are calibrated, I can estimate accuracy from them: average the confidence in each predicted class, or estimate the whole confusion matrix, which is CBPE. PAPE re-calibrates for the new input mix and was within about one standard error on census benchmarks. But it assumes only the mix changed. Under concept drift the model stays confident while being wrong, so I'd add proxy labels, a small weekly labelled sample, and reconcile with real labels when they arrive.
 
 **Key terms and sources**
 
-Why drift statistics don't tell you accuracy, how confidence-based estimation (CBPE, PAPE) estimates performance from a model's own probabilities, what it assumes, where it fails, and how to combine it with proxy labels and small labelled samples.
+Why drift statistics don't tell you accuracy, how confidence-based estimation (CBPE, PAPE) estimates performance from a model's own probabilities, what it assumes, where it fails, and how to combine it with proxy labels and small labelled samples. · checked 7 Nov 2026
 
 #### Sources
 
-- Białek, Kivimäki, Kuberski and Perrakis, Estimating Model Performance Under Covariate Shift Without Labels (PAPE), NeurIPS 2025
+- [Białek, Kivimäki, Kuberski and Perrakis, Estimating Model Performance Under Covariate Shift Without Labels (PAPE), NeurIPS 2025](https://arxiv.org/abs/2401.08348)
 
-- Kivimäki et al., Performance Estimation in Binary Classification Using Calibrated Confidence (CBPE)
+- [Kivimäki et al., Performance Estimation in Binary Classification Using Calibrated Confidence (CBPE)](https://arxiv.org/abs/2505.05295)
 
-- Rabanser, Günnemann and Lipton, Failing Loudly: detecting dataset shift
+- [Rabanser, Günnemann and Lipton, Failing Loudly: detecting dataset shift](https://arxiv.org/abs/1810.11953)
 
-- Guo et al., On Calibration of Modern Neural Networks
+- [Guo et al., On Calibration of Modern Neural Networks](https://arxiv.org/abs/1706.04599)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

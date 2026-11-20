@@ -143,8 +143,10 @@ Why did cold-start users gain less on MRR than power users?
 
 They have no history in the category, so the affinities are informed guesses; they help separate good items from bad (AUC) more than they nail the single top item (MRR).
 
+#### The 30-second answer
+
 I'd clarify the verticals, which users are new to them, and what ranker exists today. Most new-category users still have a long history in the main category, so I'd use an LLM to translate restaurant orders and searches into affinities over the new category's taxonomy, coarse levels first to narrow the finer ones. Outputs are strict JSON with exact taxonomy names and a confidence, and I keep only confident ones. Orders give long-term affinities and searches short-term intent. A daily batch writes them to a feature store, so there's no LLM in the request path, and I control cost with a small model, prompt caching and updating only active users. The ranker adds them as embedded, averaged features. I'd check feature quality with people and an LLM judge, then measure AUC and MRR by user group and run an online test.
 
 **Key terms and sources**
 
-Based on a delivery company's published paper: "Mind the Gap: Bridging Behavioral Silos with LLMs in Multi-Vertical Recommendations" (GenAI for E-Commerce workshop, 2025; arXiv 2026). The lab uses the paper's own numbers; the estimate is ours. Uses ranking metrics, LLM as a judge and feature engineering.
+Based on a delivery company's published paper: ["Mind the Gap: Bridging Behavioral Silos with LLMs in Multi-Vertical Recommendations"](https://arxiv.org/abs/2606.06779) (GenAI for E-Commerce workshop, 2025; arXiv 2026). The lab uses the paper's own numbers; the estimate is ours. Uses ranking metrics, LLM as a judge and feature engineering. · checked 15 Nov 2026

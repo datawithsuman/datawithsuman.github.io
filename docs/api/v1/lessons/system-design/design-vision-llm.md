@@ -156,8 +156,10 @@ How do you get enough labelled data for four languages?
 
 Synthetic rendering for reading text, which is unlimited and perfectly labelled, plus an auto-labelling pipeline on real documents with human review for the fields and layouts.
 
+#### The 30-second answer
+
 First I'd clarify the document types, languages, fields, and latency needs, especially p99. I'd try what exists first: OCR, an API model and a small open model, measured on our own documents per language. If the API is too slow at the tail or fails on our scripts, I'd build. I'd pick a small open vision model whose tokenizer handles our languages, that reads native resolution, and that we can fully fine-tune on our GPUs. For data, I'd render text in our languages into synthetic images, and auto-label real documents with a detect, rotate, OCR and extract pipeline, checked by people. Training goes in stages: teach the vision encoder our scripts, then fine-tune on extraction. LoRA may be enough for Latin scripts, but new scripts need full fine-tuning. Then I'd build a smaller model from a vision encoder and a small decoder to cut latency, accepting a small accuracy gap. I'd evaluate per field, document type and language, and roll out in shadow mode, one country at a time.
 
 **Key terms and sources**
 
-Based on a super-app's published post: Grab's "How we built a custom vision LLM to improve document processing" (November 2025). We couldn't read the post's three result tables, so the lab's accuracy and latency numbers are illustrative, shaped by the gaps the post states in its text. Uses vision-language models, LoRA and distillation.
+Based on a super-app's published post: [Grab's "How we built a custom vision LLM to improve document processing"](https://engineering.grab.com/custom-vision-llm-at-grab) (November 2025). We couldn't read the post's three result tables, so the lab's accuracy and latency numbers are illustrative, shaped by the gaps the post states in its text. Uses vision-language models, LoRA and distillation. · checked 5 Nov 2026

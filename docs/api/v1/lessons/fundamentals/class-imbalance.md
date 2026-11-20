@@ -40,7 +40,7 @@ Same trained model, only the cut changes. Try 0.31 (best F1 on validation) and 0
 
 On the test orders, the default 0.5 costs ₹2,44,000 (most fraud slips through), the F1-best 0.31 costs ₹1,96,960, and the cost-optimal 0.02 costs ₹1,03,560 while catching 84% of fraud: the same model, less than half the cost, and no resampling involved.
 
-Elor & Averbuch-Elor (2022) tested this at scale on 73 imbalanced datasets: with a tuned threshold, "balancing the data and optimizing the decision threshold yield comparable prediction performance" except for very weak classifiers, and they recommend tuning the threshold because it is simpler and cheaper to compute. For the strong models (XGBoost, CatBoost), balancing didn't improve AUC at all: "best prediction is achieved by using a strong classifier and balancing the data is not required nor beneficial" arXiv:2201.08528, §4–5. scikit-learn's `TunedThresholdClassifierCV` chooses the threshold by cross-validation.
+Elor & Averbuch-Elor (2022) tested this at scale on 73 imbalanced datasets: with a tuned threshold, "balancing the data and optimizing the decision threshold yield comparable prediction performance" except for very weak classifiers, and they recommend tuning the threshold because it is simpler and cheaper to compute. For the strong models (XGBoost, CatBoost), balancing didn't improve AUC at all: "best prediction is achieved by using a strong classifier and balancing the data is not required nor beneficial" [arXiv:2201.08528, §4–5](https://arxiv.org/pdf/2201.08528#page=5). scikit-learn's `TunedThresholdClassifierCV` chooses the threshold by cross-validation.
 
 **Now say why:** why did this help so much without touching the model or the data?
 
@@ -50,13 +50,13 @@ Elor & Averbuch-Elor (2022) tested this at scale on 73 imbalanced datasets: with
 
 #### In one breath
 
-When 2% of orders are fraud, a model that always says "legit" is 98% accurate and useless. The usual reflex is to "fix the imbalance" by reweighting or resampling the training data. On our data, and in recent large studies, that reflex mostly **doesn't improve ranking** (AUC is unchanged), **breaks the probabilities** (the model now thinks fraud is 10× more common than it is), and only **moves the decision threshold**, something you can do directly. The reliable recipe: use a proper metric (PR-AUC, log loss, cost), train a strong model on the real data, then **choose the threshold** from costs or a validation set. Resampling still helps weak learners and fixed-threshold systems, and only inside the training fold.What you'll be able to do after this: explain why accuracy fails, compare weights/resampling/SMOTE/thresholds with numbers, undo resampling's damage to probabilities, and answer "how would you handle imbalanced data?" without the standard wrong answer.
+When 2% of orders are fraud, a model that always says "legit" is 98% accurate and useless. The usual reflex is to "fix the imbalance" by reweighting or resampling the training data. On our data, and in recent large studies, that reflex mostly **doesn't improve ranking** (AUC is unchanged), **breaks the probabilities** (the model now thinks fraud is 10× more common than it is), and only **moves the decision threshold**, something you can do directly. The reliable recipe: use a proper metric (PR-AUC, log loss, cost), train a strong model on the real data, then **choose the threshold** from costs or a validation set. Resampling still helps weak learners and fixed-threshold systems, and only inside the training fold. What you'll be able to do after this: explain why accuracy fails, compare weights/resampling/SMOTE/thresholds with numbers, undo resampling's damage to probabilities, and answer "how would you handle imbalanced data?" without the standard wrong answer.
 
 #### Probabilities, thresholds and the base rate
 
 A probabilistic classifier outputs p = P(fraud | order). A good one is **calibrated**: among orders it scores 0.3, about 30% are fraud, so its average prediction matches the base rate (here 1.9%). Turning p into a decision needs a **threshold** t: flag if p ≥ t. Ranking quality (AUC) doesn't depend on t; precision, recall and F1 do. The cost-optimal threshold, if a missed fraud costs CFN and a false alarm CFP, is:
 
-$$ t^{*} = C_{FP} \,/\, (C_{FP} + C_{FN}) $$
+$$ {t^{*}} = {C_{FP}} \,/\, ({C_{FP}} + {C_{FN}}) $$
 
 Derived in Thresholds & Costs. Note what this says: the imbalance doesn't need "fixing" to catch fraud; a calibrated model plus the right threshold already accounts for both the base rate and the costs.
 
@@ -74,7 +74,7 @@ A classifier does two jobs: **rank** orders by risk, and **decide** where to cut
 
 Undersampling is sometimes necessary for speed (billions of negatives, as in click prediction). Then correct the predicted probabilities for the sampling rate. If you kept a fraction β of the negatives:
 
-$$ p = \beta\,q \,/\, \bigl(\beta\,q - q + 1\bigr) $$
+$$ {p} = {\beta}\,{q} \,/\, \bigl({\beta}\,{q} - {q} + 1\bigr) $$
 
 Prior-shift correction for undersampling, e.g. Dal Pozzolo et al., "Calibrating probability with undersampling for unbalanced classification" (IEEE SSCI 2015). Applying it is equivalent to subtracting log(1/β) from the model's log-odds.
 
@@ -101,7 +101,7 @@ On our data the correction brings the average prediction from 21.3% back to 2.9%
 | **SMOTE and variants** | Synthesise minority points between minority neighbours | imbalanced-learn |
 | **More minority data / better features** | Address the real bottleneck: few examples | labelling, data collection |
 
-imbalanced-learn describes the problem as the decision function tending "to favour the class with the larger number of samples" imbalanced-learn. Whether that "favouring" is a bug or correct Bayesian behaviour is exactly the question this lesson answers.
+imbalanced-learn describes the problem as the decision function tending "to favour the class with the larger number of samples" [imbalanced-learn](https://imbalanced-learn.org/stable/introduction.html). Whether that "favouring" is a bug or correct Bayesian behaviour is exactly the question this lesson answers.
 
 #### Five ways to handle the same 2% fraud
 
@@ -127,7 +127,7 @@ Every method ranks equally well (AUC 0.934), and every method reaches the same F
 
 4. Repeat until the minority class is as large as you asked for. Unlike duplication, the new points fill the space between real ones.
 
-SMOTE spawned more than 100 variants (Borderline, SVM-SMOTE, ADASYN…). The 2022 evidence is sobering: with a fixed threshold, the sophisticated SMOTE variants were "not more effective than the simple random oversampler" for strong boosted trees, and with a tuned threshold, balancing at all brought them no gain; SMOTE did help weak learners (MLP, SVM, decision trees, AdaBoost) and fixed-threshold setups Elor & Averbuch-Elor 2022. Synthetic points can also land in the majority region and blur the boundary, and on categorical or high-dimensional data, interpolation can create impossible rows.
+SMOTE spawned more than 100 variants (Borderline, SVM-SMOTE, ADASYN…). The 2022 evidence is sobering: with a fixed threshold, the sophisticated SMOTE variants were "not more effective than the simple random oversampler" for strong boosted trees, and with a tuned threshold, balancing at all brought them no gain; SMOTE did help weak learners (MLP, SVM, decision trees, AdaBoost) and fixed-threshold setups [Elor & Averbuch-Elor 2022](https://arxiv.org/pdf/2201.08528#page=6). Synthetic points can also land in the majority region and blur the boundary, and on categorical or high-dimensional data, interpolation can create impossible rows.
 
 #### The whole recipe
 
@@ -159,7 +159,7 @@ Probabilities feed money: calibration is critical. Undersample negatives for spe
 
 #### "Balance the classes to 50/50 and the model will notice fraud"
 
-The standard advice is to oversample fraud, undersample legit orders, or weight fraud 50× in the loss. It does change the output: at threshold 0.5 the model now flags far more orders. But look at what it costs (see Compare the fixes, in the In practice tab): the model now believes 21% of orders are fraud, when the true rate is 1.9%. Its ranking of orders is **exactly as good as before** (AUC 0.934 in every case). All the "fix" did was distort the probabilities so that 0.5 lands where a lower threshold would have landed on the original model. van den Goorbergh et al. (2022) found the same in clinical risk models: all correction methods "led to poor calibration, but not to better discrimination" JAMIA 2022.
+The standard advice is to oversample fraud, undersample legit orders, or weight fraud 50× in the loss. It does change the output: at threshold 0.5 the model now flags far more orders. But look at what it costs (see Compare the fixes, in the In practice tab): the model now believes 21% of orders are fraud, when the true rate is 1.9%. Its ranking of orders is **exactly as good as before** (AUC 0.934 in every case). All the "fix" did was distort the probabilities so that 0.5 lands where a lower threshold would have landed on the original model. van den Goorbergh et al. (2022) found the same in clinical risk models: all correction methods "led to poor calibration, but not to better discrimination" [JAMIA 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/).
 
 #### Caveats
 
@@ -245,11 +245,11 @@ SMOTE
 
 0.529
 
-Mean F1, higher is better; ± about 0.02 p. 5. For a weak MLP the picture flips: baseline 0.303 with a tuned threshold vs 0.411 with SMOTE.
+Mean F1, higher is better; ± about 0.02 [p. 5](https://arxiv.org/pdf/2201.08528#page=5). For a weak MLP the picture flips: baseline 0.303 with a tuned threshold vs 0.411 with SMOTE.
 
 ##### Clinical risk models
 
-van den Goorbergh et al. (JAMIA 2022), logistic regression with random under/oversampling and SMOTE on ovarian-tumour data plus simulations: corrections strongly overestimated the minority-class probability, did not improve AUROC, and the sensitivity/specificity gains were matched by simply shifting the threshold PMC9382395. A 2024 follow-up extended this to machine-learning models with the same conclusion for calibration arXiv:2404.19494.
+van den Goorbergh et al. (JAMIA 2022), logistic regression with random under/oversampling and SMOTE on ovarian-tumour data plus simulations: corrections strongly overestimated the minority-class probability, did not improve AUROC, and the sensitivity/specificity gains were matched by simply shifting the threshold [PMC9382395](https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/). A 2024 follow-up extended this to machine-learning models with the same conclusion for calibration [arXiv:2404.19494](https://arxiv.org/abs/2404.19494).
 
 #### Key terms
 
@@ -265,16 +265,16 @@ van den Goorbergh et al. (JAMIA 2022), logistic regression with random under/ove
 
 #### What this page is built from
 
-1. Y. Elor & H. Averbuch-Elor, "To SMOTE, or not to SMOTE?", arXiv:2201.08528, 2022 (73 datasets, strong vs weak classifiers, threshold tuning, Table 3).
+1. Y. Elor & H. Averbuch-Elor, "To SMOTE, or not to SMOTE?", [arXiv:2201.08528](https://arxiv.org/abs/2201.08528), 2022 (73 datasets, strong vs weak classifiers, threshold tuning, Table 3).
 
-2. R. van den Goorbergh, M. van Smeden, D. Timmerman & B. Van Calster, "The harm of class imbalance corrections for risk prediction models", _JAMIA_ 29(9), 2022, PMC9382395.
+2. R. van den Goorbergh, M. van Smeden, D. Timmerman & B. Van Calster, "The harm of class imbalance corrections for risk prediction models", _JAMIA_ 29(9), 2022, [PMC9382395](https://pmc.ncbi.nlm.nih.gov/articles/PMC9382395/).
 
-3. A. Carriero et al., "The harms of class imbalance corrections for machine learning based prediction models: a simulation study", arXiv:2404.19494, 2024.
+3. A. Carriero et al., "The harms of class imbalance corrections for machine learning based prediction models: a simulation study", [arXiv:2404.19494](https://arxiv.org/abs/2404.19494), 2024.
 
 4. N. Chawla, K. Bowyer, L. Hall & W. Kegelmeyer, "SMOTE: synthetic minority over-sampling technique", _JAIR_ 16, 2002.
 
 5. A. Dal Pozzolo, O. Caelen, R. Johnson & G. Bontempi, "Calibrating probability with undersampling for unbalanced classification", IEEE SSCI 2015 (prior correction).
 
-6. imbalanced-learn and scikit-learn threshold tuning docs.
+6. [imbalanced-learn](https://imbalanced-learn.org/stable/introduction.html) and scikit-learn [threshold tuning](https://scikit-learn.org/stable/modules/classification_threshold.html) docs.
 
 Fraud data is simulated with fixed seeds; all models are trained live in your browser (logistic regression by Newton's method).

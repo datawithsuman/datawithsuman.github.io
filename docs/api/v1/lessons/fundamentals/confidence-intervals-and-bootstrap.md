@@ -48,11 +48,11 @@ With skewed data the t-interval under-covers for small n: about 92.5% at n = 10 
 
 #### In one breath
 
-Any number computed from a sample (a mean, a median, an accuracy) would come out different on another sample. Its spread across samples is the **sampling distribution**; its standard deviation is the **standard error**, σ/√n for a mean. The **central limit theorem** says means are roughly Gaussian for large n, so mean ± 1.96 × SE gives a **95% confidence interval**: a procedure that captures the true value in about 95% of repeated samples (not "95% chance the truth is in this one interval"). With small or skewed samples coverage drops below 95%. The **bootstrap** resamples your own data thousands of times to get intervals for any statistic, no formula needed.What you'll be able to do after this: compute a CI for a mean, state its correct interpretation, explain when it's unreliable, and build a bootstrap CI for a median or a model metric.
+Any number computed from a sample (a mean, a median, an accuracy) would come out different on another sample. Its spread across samples is the **sampling distribution**; its standard deviation is the **standard error**, σ/√n for a mean. The **central limit theorem** says means are roughly Gaussian for large n, so mean ± 1.96 × SE gives a **95% confidence interval**: a procedure that captures the true value in about 95% of repeated samples (not "95% chance the truth is in this one interval"). With small or skewed samples coverage drops below 95%. The **bootstrap** resamples your own data thousands of times to get intervals for any statistic, no formula needed. What you'll be able to do after this: compute a CI for a mean, state its correct interpretation, explain when it's unreliable, and build a bootstrap CI for a median or a model metric.
 
 #### Standard error and the CLT
 
-$$ \mathrm{SE}(\bar x) = s\,/\,\sqrt{n}, \qquad \bar x \pm t_{0.975,\,n-1}\,\mathrm{SE} $$
+$$ {\mathrm{SE}(\bar x)} = {s}\,/\,\sqrt{n}, \qquad {\bar x \pm t_{0.975,\,n-1}\,\mathrm{SE}} $$
 
 Wasserman, _All of Statistics_ §6.3.2, §7; the central limit theorem (Blitzstein & Hwang §10.3) makes x̄ approximately Gaussian for large n whatever the shape of the data.
 
@@ -158,6 +158,6 @@ Sampling distributions, standard error, the central limit theorem, what a 95% co
 
 2. B. Efron, "Bootstrap methods: another look at the jackknife", _Annals of Statistics_ 7(1), 1979; B. Efron & R. Tibshirani, _An Introduction to the Bootstrap_, Chapman & Hall 1993.
 
-3. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, §10.3 (central limit theorem), stat110.
+3. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, §10.3 (central limit theorem), [stat110](https://projects.iq.harvard.edu/stat110).
 
 Delivery times are simulated (log-normal) with fixed seeds; intervals and bootstraps are computed live in your browser.

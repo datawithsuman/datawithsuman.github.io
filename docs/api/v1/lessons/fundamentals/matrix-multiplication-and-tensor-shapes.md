@@ -78,7 +78,7 @@ Libraries stretch dimensions of size 1 automatically. A [B, 1] tensor plus a [1,
 
 #### The maths
 
-$$ \underbrace{A}_{m \times n}\,\underbrace{B}_{n \times p} = \underbrace{C}_{m \times p}, \qquad C_{ij} = \sum_{k=1}^{n} A_{ik}B_{kj}, \qquad \text{cost} \approx mnp $$
+$$ \underbrace{{A}}_{m \times n}\,\underbrace{{B}}_{n \times p} = \underbrace{{C}}_{m \times p}, \qquad {C_{ij}} = \sum_{k=1}^{n} A_{ik}B_{kj}, \qquad {\text{cost} \approx mnp} $$
 
 Example: A is 10 × 100, B is 100 × 5, C is 5 × 50. (AB)C costs 5,000 + 2,500 = 7,500. A(BC) costs 25,000 + 50,000 = 75,000: ten times more for the same answer.
 
@@ -136,19 +136,21 @@ What goes wrong if you subtract a [B] tensor from a [B, 1] tensor?
 
 Broadcasting makes both [B, B], and you get a B × B matrix of all pairs, with no error. If it's a loss, the value looks reasonable, while the model trains badly. Check shapes, or squeeze the extra dimension first.
 
+#### The 30-second answer
+
 For matrices to multiply, the inner sizes must match: m by n times n by p gives m by p, at about m times n times p multiplications. I track shapes through a model with batch first. A linear layer takes B by d to B by k. Attention scores are batch, heads, tokens, tokens, so doubling the tokens quadruples cost. Multiplication is associative, so order doesn't change the result, but it can change the cost hugely. That's why backprop keeps multiplying a vector instead of building whole matrices.
 
 **Key terms and sources**
 
-How to track shapes through a model, what each multiplication costs, how the order matters, and how batches, broadcasting and attention use it.
+How to track shapes through a model, what each multiplication costs, how the order matters, and how batches, broadcasting and attention use it. · checked 6 Nov 2026
 
 #### Sources
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
 - Attention on this site
 

@@ -48,7 +48,7 @@ At small batch, α = 0.8 and γ = 4 give **3.36** tokens per target pass and a *
 
 #### In one breath
 
-Decode is memory-bound: each step reads all the weights to produce one token per sequence, leaving the GPU's compute mostly idle. **Speculative decoding** uses that idle compute: a small, fast **draft** guesses the next γ tokens, and the big **target** model checks all of them in a single forward pass (as cheap as producing one token when memory-bound). Tokens are accepted left to right with a rejection-sampling rule that guarantees the output follows **exactly** the target model's distribution; at the first rejection the target supplies a corrected token, so every step yields at least one token. With acceptance rate α, the expected tokens per step is (1 − αγ+1) / (1 − α): at α = 0.8 and γ = 4, about 3.4. Typical speedups are 2–3× at small batch; EAGLE-3 reports up to 6.5×, but at large batches the GPU is no longer idle and gains shrink.What you'll be able to do after this: explain why speculative decoding is lossless, compute expected speedup, and say when it helps.
+Decode is memory-bound: each step reads all the weights to produce one token per sequence, leaving the GPU's compute mostly idle. **Speculative decoding** uses that idle compute: a small, fast **draft** guesses the next γ tokens, and the big **target** model checks all of them in a single forward pass (as cheap as producing one token when memory-bound). Tokens are accepted left to right with a rejection-sampling rule that guarantees the output follows **exactly** the target model's distribution; at the first rejection the target supplies a corrected token, so every step yields at least one token. With acceptance rate α, the expected tokens per step is (1 − αγ+1) / (1 − α): at α = 0.8 and γ = 4, about 3.4. Typical speedups are 2–3× at small batch; EAGLE-3 reports up to 6.5×, but at large batches the GPU is no longer idle and gains shrink. What you'll be able to do after this: explain why speculative decoding is lossless, compute expected speedup, and say when it helps.
 
 #### Draft, verify, accept
 
@@ -58,9 +58,9 @@ Decode is memory-bound: each step reads all the weights to produce one token per
 
 3. Each draft token x is accepted with probability min(1, ptarget(x) / pdraft(x)), left to right. At the first rejection, a token is sampled from the normalised difference max(0, ptarget − pdraft), and the rest are discarded. If all are accepted, the target's next-position prediction gives a bonus token.
 
-$$ \text{speedup} = \frac{(1-\alpha^{\gamma+1})/(1-\alpha)}{\gamma c + 1} $$
+$$ {\text{speedup}} = \frac{{(1-\alpha^{\gamma+1})/(1-\alpha)}}{{\gamma c + 1}} $$
 
-Leviathan, Kalman & Matias, "Fast Inference from Transformers via Speculative Decoding", ICML 2023, arXiv:2211.17192; Chen et al. (DeepMind), "Accelerating Large Language Model Decoding with Speculative Sampling", 2023, arXiv:2302.01318.
+Leviathan, Kalman & Matias, "Fast Inference from Transformers via Speculative Decoding", ICML 2023, [arXiv:2211.17192](https://arxiv.org/abs/2211.17192); Chen et al. (DeepMind), "Accelerating Large Language Model Decoding with Speculative Sampling", 2023, [arXiv:2302.01318](https://arxiv.org/abs/2302.01318).
 
 - **expected tokens per target pass**: With per-token acceptance rate α and γ draft tokens, the accepted run length is geometric; this sum includes the corrected or bonus token, so it is always at least 1.
 
@@ -137,12 +137,12 @@ How a cheap draft proposes several tokens that the big model verifies in one for
 
 #### Sources
 
-1. Y. Leviathan, M. Kalman & Y. Matias, "Fast Inference from Transformers via Speculative Decoding", ICML 2023, arXiv:2211.17192.
+1. Y. Leviathan, M. Kalman & Y. Matias, "Fast Inference from Transformers via Speculative Decoding", ICML 2023, [arXiv:2211.17192](https://arxiv.org/abs/2211.17192).
 
-2. C. Chen et al., "Accelerating Large Language Model Decoding with Speculative Sampling", 2023, arXiv:2302.01318.
+2. C. Chen et al., "Accelerating Large Language Model Decoding with Speculative Sampling", 2023, [arXiv:2302.01318](https://arxiv.org/abs/2302.01318).
 
-3. T. Cai et al., "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads", ICML 2024, arXiv:2401.10774.
+3. T. Cai et al., "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads", ICML 2024, [arXiv:2401.10774](https://arxiv.org/abs/2401.10774).
 
-4. Y. Li et al., "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test", NeurIPS 2025, arXiv:2503.01840.
+4. Y. Li et al., "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test", NeurIPS 2025, [arXiv:2503.01840](https://arxiv.org/abs/2503.01840).
 
-5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, arXiv:2412.19437 (§5.4.3, multi-token prediction for speculative decoding).
+5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, [arXiv:2412.19437](https://arxiv.org/abs/2412.19437) (§5.4.3, multi-token prediction for speculative decoding).

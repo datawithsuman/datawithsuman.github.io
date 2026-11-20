@@ -46,13 +46,13 @@ Gradient descent with η = 0.01 for 500 steps. Dots show every 20th step.
 
 #### In one breath
 
-A function is **convex** if it's bowl-shaped everywhere: the straight line between any two points on its graph lies above the graph. For convex losses, any point where the gradient is zero is the **global** minimum, so gradient descent (with a sensible step) can't get stuck, and where you start doesn't matter. Linear regression (squared error), logistic regression (log loss), ridge, lasso and SVMs are convex. Neural networks are **not**: their losses have many minima and saddle points, so initialisation, learning rate and randomness affect the answer. In very high dimensions, saddle points are a bigger nuisance than bad local minima.What you'll be able to do after this: define convexity, test it with the second derivative or Hessian, say which classic models are convex, and explain what non-convexity means for training networks.
+A function is **convex** if it's bowl-shaped everywhere: the straight line between any two points on its graph lies above the graph. For convex losses, any point where the gradient is zero is the **global** minimum, so gradient descent (with a sensible step) can't get stuck, and where you start doesn't matter. Linear regression (squared error), logistic regression (log loss), ridge, lasso and SVMs are convex. Neural networks are **not**: their losses have many minima and saddle points, so initialisation, learning rate and randomness affect the answer. In very high dimensions, saddle points are a bigger nuisance than bad local minima. What you'll be able to do after this: define convexity, test it with the second derivative or Hessian, say which classic models are convex, and explain what non-convexity means for training networks.
 
 #### The definition and two tests
 
-$$ f(\lambda\theta + (1-\lambda)\theta^{\prime}) \le \lambda f(\theta) + (1-\lambda) f(\theta^{\prime}) $$
+$$ {f(\lambda\theta + (1-\lambda)\theta^{\prime})} \le {\lambda f(\theta) + (1-\lambda) f(\theta^{\prime})} $$
 
-Boyd & Vandenberghe, _Convex Optimization_, §3.1, free online.
+Boyd & Vandenberghe, _Convex Optimization_, §3.1, [free online](https://web.stanford.edu/~boyd/cvxbook/).
 
 - **the function between two points**: Evaluate f somewhere on the segment between θ and θ′ (λ between 0 and 1).
 
@@ -96,7 +96,7 @@ See the lessons on Logistic Regression, SVMs, k-Means and GMMs.
 
 #### Why deep learning works anyway
 
-- **Saddle points, not bad minima:** in high dimensions a zero-gradient point is far more likely to be a saddle (down in some directions, up in others) than a local minimum. Dauphin et al. (2014) argue that saddle points, not local minima, are the main source of slow training in high-dimensional non-convex problems arXiv:1406.2572. Noise from mini-batches and momentum help escape them.
+- **Saddle points, not bad minima:** in high dimensions a zero-gradient point is far more likely to be a saddle (down in some directions, up in others) than a local minimum. Dauphin et al. (2014) argue that saddle points, not local minima, are the main source of slow training in high-dimensional non-convex problems [arXiv:1406.2572](https://arxiv.org/abs/1406.2572). Noise from mini-batches and momentum help escape them.
 
 - **Many good minima:** in large over-parameterised networks, different runs reach different weights with similar test performance (see double descent).
 
@@ -161,8 +161,8 @@ Convex functions, the second-derivative and Hessian tests, why a local minimum o
 
 #### Sources
 
-1. S. Boyd & L. Vandenberghe, _Convex Optimization_, Cambridge University Press 2004, web.stanford.edu/~boyd/cvxbook (ch. 3).
+1. S. Boyd & L. Vandenberghe, _Convex Optimization_, Cambridge University Press 2004, [web.stanford.edu/~boyd/cvxbook](https://web.stanford.edu/~boyd/cvxbook/) (ch. 3).
 
 2. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, §7.3.
 
-3. Y. Dauphin et al., "Identifying and attacking the saddle point problem in high-dimensional non-convex optimization", NeurIPS 2014, arXiv:1406.2572.
+3. Y. Dauphin et al., "Identifying and attacking the saddle point problem in high-dimensional non-convex optimization", NeurIPS 2014, [arXiv:1406.2572](https://arxiv.org/abs/1406.2572).

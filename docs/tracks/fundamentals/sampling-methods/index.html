@@ -158,12 +158,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">For a simple distribution with a known inverse CDF, I'd use inverse transform. For rare events, I'd use importance sampling: sample from a distribution that hits the region, and reweight by p over q. For hard distributions known only up to a constant, I'd use MCMC. Metropolis-Hastings proposes a move, and accepts with chance min of 1 and the ratio, so the constant cancels. I'd tune the step size, discard burn-in, and check effective sample size, because samples are correlated. Multiple chains help detect stuck ones.</p>
+<h3>The 30-second answer</h3><p class="say30">For a simple distribution with a known inverse CDF, I'd use inverse transform. For rare events, I'd use importance sampling: sample from a distribution that hits the region, and reweight by p over q. For hard distributions known only up to a constant, I'd use MCMC. Metropolis-Hastings proposes a move, and accepts with chance min of 1 and the ratio, so the constant cancels. I'd tune the step size, discard burn-in, and check effective sample size, because samples are correlated. Multiple chains help detect stuck ones.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How computers sample: inverse transform, rejection and importance sampling, Metropolis-Hastings, and how to spot when MCMC is failing.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">How computers sample: inverse transform, rejection and importance sampling, Metropolis-Hastings, and how to spot when MCMC is failing. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://www.oreilly.com/library/view/-/9781466575578/">Blitzstein and Hwang, Introduction to Probability</a></li><li><a href="https://mml-book.github.io/">Deisenroth, Faisal and Ong, Mathematics for Machine Learning</a></li><li><a href="https://probml.github.io/pml-book/book1.html">Murphy, Probabilistic Machine Learning: An Introduction</a></li><li><a href="../integrals-for-ml/">Integrals for ML on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

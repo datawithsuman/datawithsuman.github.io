@@ -83,7 +83,7 @@ The last two come from controlled research settings. They show what's possible, 
 
 #### The maths
 
-$$ \text{refused safe} = P(s > t \mid \text{safe}), \qquad \text{harmful answered} = P(s \le t \mid \text{harmful}) $$
+$$ {\text{refused safe}} = {P(s > t \mid \text{safe})}, \qquad {\text{harmful answered}} = {P(s \le t \mid \text{harmful})} $$
 
 A simple way to frame the trade-off, as in any classifier. Real safety behaviour isn’t a single score, but the same tension applies.
 
@@ -141,34 +141,36 @@ Why not just block the known jailbreak prompts?
 
 They change easily, and automated search can produce new ones. Blocking helps as a patch, but you need defences that don't depend on the wording, such as checking the output, and limiting what the system can do.
 
+#### The 30-second answer
+
 Safety is learned with the same methods as other behaviour: SFT, RLHF and methods like Constitutional AI, with red teaming to find failures. It fails in two main ways. Helpfulness and safety can compete, and the model's abilities can reach further than its safety training, so unusual inputs get past it. It can also be shallow, as fine-tuning on even harmless data can weaken it. There's a trade-off too, since refusing more means blocking more safe requests, so I'd always measure both harmful answers and over-refusal. In a product I'd use layers: model training, input and output classifiers, limited tool permissions and monitoring, and I'd re-run the safety tests after every fine-tune.
 
 **Key terms and sources**
 
-How safety is trained, red teaming, why safety training fails, over-refusal, how fine-tuning weakens safety, and layered defences.
+How safety is trained, red teaming, why safety training fails, over-refusal, how fine-tuning weakens safety, and layered defences. · checked 7 Nov 2026
 
 #### Sources
 
-- Wei et al., Jailbroken
+- [Wei et al., Jailbroken](https://arxiv.org/abs/2307.02483)
 
-- Zou et al., Universal and Transferable Adversarial Attacks
+- [Zou et al., Universal and Transferable Adversarial Attacks](https://arxiv.org/abs/2307.15043)
 
-- Bai et al., Constitutional AI
+- [Bai et al., Constitutional AI](https://arxiv.org/abs/2212.08073)
 
-- Perez et al., Red Teaming Language Models with Language Models
+- [Perez et al., Red Teaming Language Models with Language Models](https://arxiv.org/abs/2202.03286)
 
-- Ganguli et al., Red Teaming Language Models to Reduce Harms
+- [Ganguli et al., Red Teaming Language Models to Reduce Harms](https://arxiv.org/abs/2209.07858)
 
-- Qi et al., Fine-tuning Aligned Language Models Compromises Safety
+- [Qi et al., Fine-tuning Aligned Language Models Compromises Safety](https://arxiv.org/abs/2310.03693)
 
-- Arditi et al., Refusal Is Mediated by a Single Direction
+- [Arditi et al., Refusal Is Mediated by a Single Direction](https://arxiv.org/abs/2406.11717)
 
-- Betley et al., Emergent Misalignment
+- [Betley et al., Emergent Misalignment](https://arxiv.org/abs/2502.17424)
 
-- Hubinger et al., Sleeper Agents
+- [Hubinger et al., Sleeper Agents](https://arxiv.org/abs/2401.05566)
 
-- Röttger et al., XSTest
+- [Röttger et al., XSTest](https://arxiv.org/abs/2308.01263)
 
-- Sharma et al., Constitutional Classifiers
+- [Sharma et al., Constitutional Classifiers](https://arxiv.org/abs/2501.18837)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

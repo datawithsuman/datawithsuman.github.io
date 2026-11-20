@@ -48,7 +48,7 @@ With **static batching**, each group of 8 runs as long as its longest answer: th
 
 #### In one breath
 
-GPUs are efficient only when many requests decode together, but requests arrive at random times and finish at very different lengths. **Static batching** groups requests and runs the group until its _longest_ member finishes, so slots sit idle and new arrivals wait. **Continuous batching** (Orca's iteration-level scheduling) rebuilds the batch at **every decode step**: finished requests leave immediately and waiting ones join. A scheduler enforces a **token budget** per step, admits requests only if their KV blocks fit, mixes chunked prefills with ongoing decodes, and preempts requests when memory runs out. Orca reported 36.9× higher throughput than FasterTransformer at the same latency on GPT-3 175B.What you'll be able to do after this: explain continuous batching, trace a request through an inference engine, and name the scheduling knobs and their trade-offs.
+GPUs are efficient only when many requests decode together, but requests arrive at random times and finish at very different lengths. **Static batching** groups requests and runs the group until its _longest_ member finishes, so slots sit idle and new arrivals wait. **Continuous batching** (Orca's iteration-level scheduling) rebuilds the batch at **every decode step**: finished requests leave immediately and waiting ones join. A scheduler enforces a **token budget** per step, admits requests only if their KV blocks fit, mixes chunked prefills with ongoing decodes, and preempts requests when memory runs out. Orca reported 36.9× higher throughput than FasterTransformer at the same latency on GPT-3 175B. What you'll be able to do after this: explain continuous batching, trace a request through an inference engine, and name the scheduling knobs and their trade-offs.
 
 #### One request's life in a vLLM-style engine
 
@@ -134,8 +134,8 @@ How a serving engine decides, every few milliseconds, which requests run: static
 
 1. G.-I. Yu et al., "Orca: A Distributed Serving System for Transformer-Based Generative Models", OSDI 2022.
 
-2. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, arXiv:2309.06180.
+2. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, [arXiv:2309.06180](https://arxiv.org/abs/2309.06180).
 
-3. A. Agrawal et al., "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve", OSDI 2024, arXiv:2403.02310.
+3. A. Agrawal et al., "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve", OSDI 2024, [arXiv:2403.02310](https://arxiv.org/abs/2403.02310).
 
-4. vLLM documentation: scheduler configuration and optimisation guide, docs.vllm.ai.
+4. vLLM documentation: scheduler configuration and optimisation guide, [docs.vllm.ai](https://docs.vllm.ai/).

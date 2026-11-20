@@ -52,11 +52,11 @@ The 8-token sentence gives **8** training examples from one forward pass. The av
 
 #### In one breath
 
-Pre-training an LLM is one task repeated trillions of times: **predict the next token**. By the chain rule, the probability of a text is the product of each token's probability given the tokens before it, so the model is trained to minimise the average **cross-entropy** (−log p of the true next token) over every position. A **causal mask** stops each position from seeing the future, which means one forward pass over a 4,096-token sequence produces **4,096 training examples** at once. During training the model always conditions on the true previous tokens (**teacher forcing**); at generation time it conditions on its own outputs. The loss of a randomly initialised model starts near ln(vocabulary size), about 11.8 for a 128k vocabulary, and lower is better; exp(loss) is the perplexity.What you'll be able to do after this: write the pre-training loss, explain causal masking and teacher forcing, and read a loss curve.
+Pre-training an LLM is one task repeated trillions of times: **predict the next token**. By the chain rule, the probability of a text is the product of each token's probability given the tokens before it, so the model is trained to minimise the average **cross-entropy** (−log p of the true next token) over every position. A **causal mask** stops each position from seeing the future, which means one forward pass over a 4,096-token sequence produces **4,096 training examples** at once. During training the model always conditions on the true previous tokens (**teacher forcing**); at generation time it conditions on its own outputs. The loss of a randomly initialised model starts near ln(vocabulary size), about 11.8 for a 128k vocabulary, and lower is better; exp(loss) is the perplexity. What you'll be able to do after this: write the pre-training loss, explain causal masking and teacher forcing, and read a loss curve.
 
 #### Cross-entropy over every position
 
-$$ \mathcal{L}(\theta) = -\frac{1}{T}\sum_{t=1}^{T}\log p_\theta(x_t \mid x_{<t}) $$
+$$ \mathcal{L}(\theta) = {-\frac{1}{T}\sum_{t=1}^{T}}{\log p_\theta(x_t \mid }{x_{<t}}{)} $$
 
 The same objective as an n-gram model, with a Transformer instead of a count table (Bengio et al. 2003; Radford et al. 2018).
 
@@ -142,8 +142,8 @@ How LLMs are pre-trained: the autoregressive factorisation, cross-entropy on eve
 
 2. A. Radford et al., "Improving Language Understanding by Generative Pre-Training" (GPT), OpenAI 2018; "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019.
 
-3. T. Brown et al., "Language Models are Few-Shot Learners" (GPT-3), NeurIPS 2020, arXiv:2005.14165.
+3. T. Brown et al., "Language Models are Few-Shot Learners" (GPT-3), NeurIPS 2020, [arXiv:2005.14165](https://arxiv.org/abs/2005.14165).
 
-4. S. Bengio et al., "Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks", NeurIPS 2015, arXiv:1506.03099.
+4. S. Bengio et al., "Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks", NeurIPS 2015, [arXiv:1506.03099](https://arxiv.org/abs/1506.03099).
 
-5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, arXiv:2412.19437 (multi-token prediction).
+5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, [arXiv:2412.19437](https://arxiv.org/abs/2412.19437) (multi-token prediction).

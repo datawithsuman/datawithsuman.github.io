@@ -49,15 +49,15 @@ A sparse autoencoder (SAE) learns a dictionary much wider than the layer and reb
 
 #### Neurons are mixed; we want the features back
 
-Superposition stores more features than neurons as overlapping directions (Features, Polysemanticity and Superposition), so reading neurons gives polysemantic mush. If the activation _h_ is really a sparse sum of feature directions, _h ≈ Σ αi φi_, then the job is to find the φi and, for each input, the few αi that are on p. 32.
+Superposition stores more features than neurons as overlapping directions (Features, Polysemanticity and Superposition), so reading neurons gives polysemantic mush. If the activation _h_ is really a sparse sum of feature directions, _h ≈ Σ αi φi_, then the job is to find the φi and, for each input, the few αi that are on [p. 32](https://arxiv.org/pdf/2611.08438#page=32).
 
-That job has a name and a long history: sparse dictionary learning. Neuroscientists in the 1990s decomposed natural images into sparse basis signals and found they resembled receptive fields in the visual cortex; signal processing learned overcomplete dictionaries for compression p. 32. The SAE is the version that scales to language models.
+That job has a name and a long history: sparse dictionary learning. Neuroscientists in the 1990s decomposed natural images into sparse basis signals and found they resembled receptive fields in the visual cortex; signal processing learned overcomplete dictionaries for compression [p. 32](https://arxiv.org/pdf/2611.08438#page=32). The SAE is the version that scales to language models.
 
 #### Find a dictionary and sparse codes
 
-$$ h \approx D\,z \quad\text{and}\quad \lVert z\rVert_0\ \text{is small} $$
+$$ {h} \approx {D}\,{z} \quad\text{and}\quad {\lVert z\rVert_0}\ \text{is small} $$
 
-Survey Eq. 2 p. 32.
+Survey Eq. 2 [p. 32](https://arxiv.org/pdf/2611.08438#page=32).
 
 - **the activation**: h, one activation vector from the model, e.g. the residual stream at one token.
 
@@ -67,13 +67,13 @@ Survey Eq. 2 p. 32.
 
 - **few active**: ‖z‖₀ counts the non-zero codes. We want it small: each input should use only a handful of directions.
 
-Classical methods solve for _z_ separately for every input, which is far too slow for billions of tokens. An SAE instead trains an **encoder** to predict _z_ in one pass p. 32.
+Classical methods solve for _z_ separately for every input, which is far too slow for billions of tokens. An SAE instead trains an **encoder** to predict _z_ in one pass [p. 32](https://arxiv.org/pdf/2611.08438#page=32).
 
 #### Encoder, decoder, and a loss with two parts
 
-$$ \mathcal{L}_{\text{SAE}} = \mathbb{E}_{h_\ell}\Big[\lVert h_\ell - D(z)\rVert_2^2 + \lambda\,\lVert z\rVert_1\Big],\quad z = E(h_\ell) $$
+$$ {\mathcal{L}_{\text{SAE}}} = \mathbb{E}_{h_\ell}\Big[{\lVert h_\ell - D(z)\rVert_2^2} + {\lambda}\,{\lVert z\rVert_1}\Big],\quad {z = E(h_\ell)} $$
 
-Survey §6.2 p. 32 · hover any symbol.
+Survey §6.2 [p. 32](https://arxiv.org/pdf/2611.08438#page=32) · hover any symbol.
 
 - **the loss**: What training minimises, averaged over many activations from the model.
 
@@ -85,13 +85,13 @@ Survey §6.2 p. 32 · hover any symbol.
 
 - **the encoder**: z = E(hₗ) = ReLU(W_in hₗ + b_in): a wide layer, usually e× the model width (e is the expansion factor).
 
-Two design details matter. **L1, not L0:** the count of active features has zero gradient almost everywhere, so training uses the sum of sizes instead. **Unit-norm decoder columns:** otherwise the SAE could cheat the L1 penalty by making codes tiny and decoder columns huge, which leaves the output unchanged but lowers the penalty without making anything sparser p. 32.
+Two design details matter. **L1, not L0:** the count of active features has zero gradient almost everywhere, so training uses the sum of sizes instead. **Unit-norm decoder columns:** otherwise the SAE could cheat the L1 penalty by making codes tiny and decoder columns huge, which leaves the output unchanged but lowers the penalty without making anything sparser [p. 32](https://arxiv.org/pdf/2611.08438#page=32).
 
 #### A latent is only a vector until someone labels it
 
-An SAE outputs directions, not meanings. To label a latent, you look at the inputs that activate it most and ask what they share; automated pipelines do this with a language model, at the scale of millions of latents p. 33. In practice SAE latents fire on recurring patterns in text: semantic, functional or lexical p. 33.
+An SAE outputs directions, not meanings. To label a latent, you look at the inputs that activate it most and ask what they share; automated pipelines do this with a language model, at the scale of millions of latents [p. 33](https://arxiv.org/pdf/2611.08438#page=33). In practice SAE latents fire on recurring patterns in text: semantic, functional or lexical [p. 33](https://arxiv.org/pdf/2611.08438#page=33).
 
-Scale: the first large demonstration decomposed a 512-neuron MLP layer into tens of thousands of features, with raters finding them more interpretable than neurons Bricken et al. 2023. OpenAI later trained a 16-million-latent Top-k SAE on GPT-4 activations Gao et al. 2025.
+Scale: the first large demonstration decomposed a 512-neuron MLP layer into tens of thousands of features, with raters finding them more interpretable than neurons [Bricken et al. 2023](https://transformer-circuits.pub/2023/monosemantic-features/). OpenAI later trained a 16-million-latent Top-k SAE on GPT-4 activations [Gao et al. 2025](https://arxiv.org/abs/2406.04093).
 
 ##### How SAEs are judged (survey)
 
@@ -101,11 +101,11 @@ Scale: the first large demonstration decomposed a 512-neuron MLP layer into tens
 
 - **Absorption:** how often a general feature fails to fire because a specific one stole its direction (SAE Failures and Alternatives).
 
-p. 33–34
+[p. 33–34](https://arxiv.org/pdf/2611.08438#page=33)
 
 #### The penalty taxes every active feature
 
-L1 charges a cost proportional to how large each code is. So the cheapest solution under-reports strengths: a feature that is clearly present comes out weaker than it really is p. 34. Gao et al. name this directly: L1 is an imperfect approximation of L0 and “introduces a bias of shrinking all positive activations toward zero” Gao et al. §2.3.
+L1 charges a cost proportional to how large each code is. So the cheapest solution under-reports strengths: a feature that is clearly present comes out weaker than it really is [p. 34](https://arxiv.org/pdf/2611.08438#page=34). Gao et al. name this directly: L1 is an imperfect approximation of L0 and “introduces a bias of shrinking all positive activations toward zero” [Gao et al. §2.3](https://arxiv.org/pdf/2406.04093#page=3).
 
 ##### Try it: measure shrinkage
 
@@ -123,11 +123,11 @@ Real training in your browser (m = 8, fixed seed). Strength measured on single-f
 | **Top-k** | keep the k largest codes, zero the rest; no penalty | yes | k |
 | **Batch Top-k** | keep the largest B·k codes across a batch, so busy inputs get more and quiet ones fewer | yes | k |
 
-Survey §6.3 and its trade-off table pp. 34–35. JumpReLU and Top-k are not differentiable everywhere; JumpReLU trains with straight-through estimators.
+Survey §6.3 and its trade-off table [pp. 34–35](https://arxiv.org/pdf/2611.08438#page=35). JumpReLU and Top-k are not differentiable everywhere; JumpReLU trains with straight-through estimators.
 
-$$ z_i = \begin{cases}a_i & \text{if } a_i > \tau_i\\ 0 & \text{otherwise}\end{cases} $$
+$$ {z_i} = \begin{cases}{a_i} & \text{if } {a_i} > {\tau_i}\\ 0 & \text{otherwise}\end{cases} $$
 
-JumpReLU, survey §6.3 p. 34.
+JumpReLU, survey §6.3 [p. 34](https://arxiv.org/pdf/2611.08438#page=34).
 
 - **latent i’s value**: What latent i reports for this input.
 
@@ -141,19 +141,19 @@ JumpReLU, survey §6.3 p. 34.
 
 #### A rule of thumb, not a ranking
 
-- **Tight compute, fast iteration:** Top-k. It removes λ from the search; reported k is commonly 32–150 p. 36–37.
+- **Tight compute, fast iteration:** Top-k. It removes λ from the search; reported k is commonly 32–150 [p. 36–37](https://arxiv.org/pdf/2611.08438#page=36).
 
-- **Moderate tuning budget:** Gated, a better sparsity-vs-reconstruction trade-off than plain L1 p. 37.
+- **Moderate tuning budget:** Gated, a better sparsity-vs-reconstruction trade-off than plain L1 [p. 37](https://arxiv.org/pdf/2611.08438#page=37).
 
-- **Lots of tuning:** JumpReLU gave the strongest reconstruction at matched sparsity p. 37.
+- **Lots of tuning:** JumpReLU gave the strongest reconstruction at matched sparsity [p. 37](https://arxiv.org/pdf/2611.08438#page=37).
 
-- **Open resources:** Gemma Scope (Gemma 2) and Gemma Scope 2 (Gemma 3) use JumpReLU; Llama Scope (Llama-3.1-8B) uses Top-k p. 37. Many can be browsed on Neuronpedia.
+- **Open resources:** Gemma Scope (Gemma 2) and Gemma Scope 2 (Gemma 3) use JumpReLU; Llama Scope (Llama-3.1-8B) uses Top-k [p. 37](https://arxiv.org/pdf/2611.08438#page=37). Many can be browsed on Neuronpedia.
 
 ##### The catch
 
-Better scores on the sparsity-vs-reconstruction trade-off “do not reliably translate into better downstream performance”. Benchmarks such as SAEBench rank variants differently depending on the metric, and seed-to-seed variation can be larger than the gap between variants pp. 37–39, Table 5.
+Better scores on the sparsity-vs-reconstruction trade-off “do not reliably translate into better downstream performance”. Benchmarks such as SAEBench rank variants differently depending on the metric, and seed-to-seed variation can be larger than the gap between variants [pp. 37–39, Table 5](https://arxiv.org/pdf/2611.08438#page=37).
 
-Placement guidance from the survey’s Table 3: residual stream mid-layers are the most studied regime (expansion 4–8×); MLP outputs call for transcoders (Transcoders and Attribution Graphs); attention outputs are the least studied p. 36.
+Placement guidance from the survey’s Table 3: residual stream mid-layers are the most studied regime (expansion 4–8×); MLP outputs call for transcoders (Transcoders and Attribution Graphs); attention outputs are the least studied [p. 36](https://arxiv.org/pdf/2611.08438#page=36).
 
 #### What the field learned in 2025
 
@@ -193,24 +193,26 @@ What is a Matryoshka SAE?
 
 An SAE trained so nested prefixes of its dictionary each reconstruct well on their own. Early latents learn general features, which reduces absorption.
 
+#### The 30-second answer
+
 A sparse autoencoder learns a dictionary much wider than the layer and rebuilds each activation from only a few latents, which undoes superposition. Training trades reconstruction against sparsity. With an L1 penalty, active features come out too weak, which is shrinkage, so newer variants like Top-k, BatchTopK and JumpReLU separate whether a feature is on from how strong it is, and Matryoshka training gives cleaner features. I'd check variance explained, the model's loss with the SAE spliced in, and whether the features help my actual task, because reconstruction alone doesn't predict that.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 5 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 5 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Bricken et al., Towards Monosemanticity (Anthropic, 2023)
+- [Bricken et al., Towards Monosemanticity (Anthropic, 2023)](https://transformer-circuits.pub/2023/monosemantic-features/index.html)
 
-- Gao et al., Scaling and Evaluating Sparse Autoencoders (2024)
+- [Gao et al., Scaling and Evaluating Sparse Autoencoders (2024)](https://arxiv.org/abs/2406.04093)
 
-- Rajamanoharan et al., Jumping Ahead: JumpReLU SAEs (2024)
+- [Rajamanoharan et al., Jumping Ahead: JumpReLU SAEs (2024)](https://arxiv.org/abs/2407.14435)
 
-- Karvonen et al., SAEBench (ICML 2025)
+- [Karvonen et al., SAEBench (ICML 2025)](https://arxiv.org/abs/2503.09532)
 
-- Google DeepMind, Gemma Scope 2 (19 Dec 2025)
+- [Google DeepMind, Gemma Scope 2 (19 Dec 2025)](https://deepmind.google/blog/gemma-scope-2-helping-the-ai-safety-community-deepen-understanding-of-complex-language-model-behavior/)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

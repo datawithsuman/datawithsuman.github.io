@@ -48,11 +48,11 @@ At p = 0.05 (confidently wrong) the cross-entropy gradient is **−0.95** while 
 
 #### In one breath
 
-The loss turns "how wrong was this prediction" into one number, and its **gradient** is what training actually follows. For classification, use **cross-entropy** (log loss): it's the negative log-likelihood, and with a sigmoid or softmax output its gradient with respect to the logit is simply **p − y**, large when confidently wrong. MSE on probabilities has a gradient that **vanishes** exactly when the model is confidently wrong. For regression, **MSE** predicts the mean and punishes outliers quadratically, **MAE** predicts the median and shrugs them off, and **Huber** is quadratic for small errors and linear for big ones. **Focal loss** down-weights easy examples so a rare class gets attention.What you'll be able to do after this: pick a loss for a task, explain why cross-entropy beats MSE for classifiers, and explain what MSE, MAE, Huber and focal loss each optimise.
+The loss turns "how wrong was this prediction" into one number, and its **gradient** is what training actually follows. For classification, use **cross-entropy** (log loss): it's the negative log-likelihood, and with a sigmoid or softmax output its gradient with respect to the logit is simply **p − y**, large when confidently wrong. MSE on probabilities has a gradient that **vanishes** exactly when the model is confidently wrong. For regression, **MSE** predicts the mean and punishes outliers quadratically, **MAE** predicts the median and shrugs them off, and **Huber** is quadratic for small errors and linear for big ones. **Focal loss** down-weights easy examples so a rare class gets attention. What you'll be able to do after this: pick a loss for a task, explain why cross-entropy beats MSE for classifiers, and explain what MSE, MAE, Huber and focal loss each optimise.
 
 #### Cross-entropy: the default for classifiers
 
-$$ L_{\mathrm{CE}} = -\big[y\ln p + (1-y)\ln(1-p)\big], \qquad \frac{\partial L_{\mathrm{CE}}}{\partial z} = p - y $$
+$$ {L_{\mathrm{CE}} = -\big[y\ln p + (1-y)\ln(1-p)\big]}, \qquad {\frac{\partial L_{\mathrm{CE}}}{\partial z} = p - y} $$
 
 For K classes with softmax, L = −ln ptrue and ∂L/∂zk = pk − yk. Minimising it is maximum likelihood (MLE & MAP) and equals minimising KL to the labels (entropy & KL). In PyTorch, pass logits to `BCEWithLogitsLoss` / `CrossEntropyLoss`, which fuse the sigmoid/softmax for numerical stability.
 
@@ -62,9 +62,9 @@ For K classes with softmax, L = −ln ptrue and ∂L/∂zk = pk − yk. Minimisi
 
 #### Focal loss: down-weight what's already easy
 
-$$ L_{\mathrm{focal}} = -\,\alpha\,(1-p_t)^{\gamma}\,\ln p_t $$
+$$ L_{\mathrm{focal}} = -\,{\alpha}\,{(1-p_t)^{\gamma}}\,\ln p_t $$
 
-Lin, Goyal, Girshick, He & Dollár, "Focal Loss for Dense Object Detection" (RetinaNet), ICCV 2017 arXiv:1708.02002: a one-stage detector faces ~100k candidate boxes per image, almost all easy background; focal loss let it match two-stage detectors. For tabular imbalance, also see class imbalance.
+Lin, Goyal, Girshick, He & Dollár, "Focal Loss for Dense Object Detection" (RetinaNet), ICCV 2017 [arXiv:1708.02002](https://arxiv.org/abs/1708.02002): a one-stage detector faces ~100k candidate boxes per image, almost all easy background; focal loss let it match two-stage detectors. For tabular imbalance, also see class imbalance.
 
 - **modulating factor**: (1 − p)^γ is near 0 for easy examples (p close to 1) and near 1 for hard ones, so the loss focuses on mistakes. γ = 0 gives plain cross-entropy; the paper used γ = 2.
 
@@ -141,10 +141,10 @@ Cross-entropy vs MSE for classification, MSE vs MAE vs Huber for regression, foc
 
 #### Sources
 
-1. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.2, deeplearningbook.org.
+1. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.2, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
 2. P. Huber, "Robust estimation of a location parameter", _Annals of Mathematical Statistics_ 35(1), 1964.
 
-3. T.-Y. Lin, P. Goyal, R. Girshick, K. He & P. Dollár, "Focal Loss for Dense Object Detection", ICCV 2017, arXiv:1708.02002.
+3. T.-Y. Lin, P. Goyal, R. Girshick, K. He & P. Dollár, "Focal Loss for Dense Object Detection", ICCV 2017, [arXiv:1708.02002](https://arxiv.org/abs/1708.02002).
 
-4. PyTorch documentation, BCEWithLogitsLoss and HuberLoss.
+4. PyTorch documentation, [BCEWithLogitsLoss](https://docs.pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html) and [HuberLoss](https://docs.pytorch.org/docs/stable/generated/torch.nn.HuberLoss.html).

@@ -94,7 +94,7 @@ PoisonedRAG showed that an attacker who adds just 5 crafted texts for a target q
 
 #### The maths
 
-$$ \text{results} = \min\big(k,\ c \times p\big) $$
+$$ {\text{results}} = \min\big({k},\ {c} \times {p}\big) $$
 
 Simple arithmetic, assuming visible documents are spread evenly among results. Real results may be better or worse.
 
@@ -152,24 +152,26 @@ How would you find out your corpus was poisoned?
 
 Provenance first: which source added the chunks behind a bad answer? Watch for documents that rank highly for many queries, new sources with unusual influence, and answer changes after ingest. Then remove them, and re-test.
 
+#### The 30-second answer
+
 The index and the LLM don't know permissions, so I'd enforce them at retrieval. I could forward the user's identity to a platform that applies its own rules, filter on cached permissions and re-check candidates live, or assign roles at folder level and filter by parent ID. I'd fail closed: if the check breaks, return nothing, and an empty list must never become an unfiltered search. I'd watch revocation delay, and cover caches too. For poisoning, PoisonedRAG reached about 90% attack success with 5 planted texts, so I'd control who can write to the index, keep provenance, treat retrieved text as data rather than instructions, and limit what tools can do.
 
 **Key terms and sources**
 
-Three ways to enforce access control, why to fail closed, revocation delays, corpus poisoning, why attack success rate isn't enough, and layered defences.
+Three ways to enforce access control, why to fail closed, revocation delays, corpus poisoning, why attack success rate isn't enough, and layered defences. · checked 7 Nov 2026
 
 #### Sources
 
-- WorkOS, Authorization for RAG at scale
+- [WorkOS, Authorization for RAG at scale](https://workos.com/blog/authorization-for-rag-at-scale-why-you-shouldnt-sync-every-document)
 
-- WorkOS, RAG access control and document permissions
+- [WorkOS, RAG access control and document permissions](https://workos.com/blog/rag-access-control-document-permissions)
 
-- Zou et al., PoisonedRAG
+- [Zou et al., PoisonedRAG](https://arxiv.org/abs/2402.07867)
 
-- When Poison Fails After Retrieval
+- [When Poison Fails After Retrieval](https://arxiv.org/abs/2606.11265)
 
-- Prevented is Not Protected: What Attack Success Rate Hides about RAG
+- [Prevented is Not Protected: What Attack Success Rate Hides about RAG](https://arxiv.org/abs/2610.40742)
 
-- Retrieved But Not Reliable: A Survey on Attacks and Defenses in RAG
+- [Retrieved But Not Reliable: A Survey on Attacks and Defenses in RAG](https://arxiv.org/abs/2608.24977)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

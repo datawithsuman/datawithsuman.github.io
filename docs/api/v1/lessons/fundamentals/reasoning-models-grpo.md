@@ -59,13 +59,13 @@ With a 40% chance per sample, **self-consistency** (majority voting, Wang et al.
 
 #### In one breath
 
-For maths, code and other checkable tasks we don't need a learned reward model: a program can **verify** the final answer or run the tests. **RL with verifiable rewards (RLVR)** samples many attempts per problem, rewards the correct ones, and reinforces whatever reasoning led there. **GRPO** (DeepSeekMath) makes this cheap: instead of a value model, it compares each attempt with the others in its group, **advantage = (reward − group mean) / group std**. Trained this way from a base model, **DeepSeek-R1-Zero** went from 15.6% to 71.0% on AIME 2024, and learned on its own to write longer chains of thought, re-check and backtrack. The other half of the story is **test-time compute**: thinking longer, sampling several answers and voting, or searching with a verifier often buys more accuracy than a bigger model.What you'll be able to do after this: explain RLVR and GRPO's advantage, what R1-Zero showed, and the pass@k vs majority-vote trade-off at inference.
+For maths, code and other checkable tasks we don't need a learned reward model: a program can **verify** the final answer or run the tests. **RL with verifiable rewards (RLVR)** samples many attempts per problem, rewards the correct ones, and reinforces whatever reasoning led there. **GRPO** (DeepSeekMath) makes this cheap: instead of a value model, it compares each attempt with the others in its group, **advantage = (reward − group mean) / group std**. Trained this way from a base model, **DeepSeek-R1-Zero** went from 15.6% to 71.0% on AIME 2024, and learned on its own to write longer chains of thought, re-check and backtrack. The other half of the story is **test-time compute**: thinking longer, sampling several answers and voting, or searching with a verifier often buys more accuracy than a bigger model. What you'll be able to do after this: explain RLVR and GRPO's advantage, what R1-Zero showed, and the pass@k vs majority-vote trade-off at inference.
 
 #### Verifiable rewards and group-relative advantages
 
-$$ A_i = \frac{r_i - \mathrm{mean}(r_1,\dots,r_G)}{\mathrm{std}(r_1,\dots,r_G)} $$
+$$ A_i = \frac{{r_i} - {\mathrm{mean}(r_1,\dots,r_G)}}{{\mathrm{std}(r_1,\dots,r_G)}} $$
 
-Shao et al., "DeepSeekMath", arXiv:2402.03300. Every token of answer i gets advantage Ai, used in a PPO-style clipped objective with a KL term to the reference. The term RLVR comes from Tülu 3 (Lambert et al. 2024).
+Shao et al., "DeepSeekMath", [arXiv:2402.03300](https://arxiv.org/abs/2402.03300). Every token of answer i gets advantage Ai, used in a PPO-style clipped objective with a KL term to the reference. The term RLVR comes from Tülu 3 (Lambert et al. 2024).
 
 - **verifiable reward**: 1 if the final answer matches (or the code passes the tests), else 0; DeepSeek-R1-Zero also gave a format reward for putting its reasoning inside think tags. No reward model to hack.
 
@@ -145,18 +145,18 @@ How models like OpenAI o1 and DeepSeek-R1 learn to "think" before answering: rei
 
 #### Sources
 
-1. Z. Shao et al., "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models" (GRPO), 2024, arXiv:2402.03300.
+1. Z. Shao et al., "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models" (GRPO), 2024, [arXiv:2402.03300](https://arxiv.org/abs/2402.03300).
 
-2. DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning", 2025, arXiv:2501.12948; OpenAI, "Learning to Reason with LLMs", 2024.
+2. DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning", 2025, [arXiv:2501.12948](https://arxiv.org/abs/2501.12948); OpenAI, "Learning to Reason with LLMs", 2024.
 
-3. N. Lambert et al., "Tülu 3: Pushing Frontiers in Open Language Model Post-Training", 2024, arXiv:2411.15124; Q. Yu et al., "DAPO", 2025, arXiv:2503.14476.
+3. N. Lambert et al., "Tülu 3: Pushing Frontiers in Open Language Model Post-Training", 2024, [arXiv:2411.15124](https://arxiv.org/abs/2411.15124); Q. Yu et al., "DAPO", 2025, [arXiv:2503.14476](https://arxiv.org/abs/2503.14476).
 
-4. X. Wang et al., "Self-Consistency Improves Chain of Thought Reasoning in Language Models", ICLR 2023, arXiv:2203.11171; C. Snell et al., "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters", 2024, arXiv:2408.03314.
+4. X. Wang et al., "Self-Consistency Improves Chain of Thought Reasoning in Language Models", ICLR 2023, [arXiv:2203.11171](https://arxiv.org/abs/2203.11171); C. Snell et al., "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters", 2024, [arXiv:2408.03314](https://arxiv.org/abs/2408.03314).
 
-5. Qwen Team, "Qwen3 Technical Report", 2025, arXiv:2505.09388 (tool use and thinking budgets).
+5. Qwen Team, "Qwen3 Technical Report", 2025, [arXiv:2505.09388](https://arxiv.org/abs/2505.09388) (tool use and thinking budgets).
 
-6. Qwen Team, "Qwen3 Technical Report", 2025, arXiv:2505.09388 (tool use and thinking budgets).
+6. Qwen Team, "Qwen3 Technical Report", 2025, [arXiv:2505.09388](https://arxiv.org/abs/2505.09388) (tool use and thinking budgets).
 
-7. Qwen Team, "Qwen3 Technical Report", 2025, arXiv:2505.09388 (tool use and thinking budgets).
+7. Qwen Team, "Qwen3 Technical Report", 2025, [arXiv:2505.09388](https://arxiv.org/abs/2505.09388) (tool use and thinking budgets).
 
-8. Y. Yue et al., "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?", 2025, arXiv:2504.13837.
+8. Y. Yue et al., "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?", 2025, [arXiv:2504.13837](https://arxiv.org/abs/2504.13837).

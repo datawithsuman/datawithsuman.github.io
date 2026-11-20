@@ -144,12 +144,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I'd use CUPED. Much of a metric's noise is that some users always do more than others, and that's predictable from their behaviour before the test. I subtract the predictable part, using theta equal to the covariance of before and during over the variance of before. Randomisation makes the before-values equal on average across groups, so the effect estimate doesn't change. Variance falls by rho squared, so at a correlation of 0.7, I need about half the users. The covariate must come from before the test.</p>
+<h3>The 30-second answer</h3><p class="say30">I'd use CUPED. Much of a metric's noise is that some users always do more than others, and that's predictable from their behaviour before the test. I subtract the predictable part, using theta equal to the covariance of before and during over the variance of before. Randomisation makes the before-values equal on average across groups, so the effect estimate doesn't change. Variance falls by rho squared, so at a correlation of 0.7, I need about half the users. The covariate must come from before the test.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">CUPED uses each user's data from before the experiment to remove predictable noise, so tests need fewer users.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">CUPED uses each user's data from before the experiment to remove predictable noise, so tests need fewer users. · checked 7 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://exp-platform.com/cuped/">Deng, Xu, Kohavi and Walker, CUPED (WSDM 2013)</a></li><li><a href="https://dpananos.github.io/posts/2025-03-03-cuped">A walkthrough of CUPED and regression</a></li><li><a href="https://docs.statsig.com/stats-engine/variance_reduction">Statsig documentation on variance reduction</a></li><li><a href="https://www.kdd.org/kdd2016/papers/files/adf0653-poyarkovA.pdf">Poyarkov et al., Boosted Decision Tree Regression Adjustment (KDD 2016)</a></li></ul>
   <p class="small">Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.</p>

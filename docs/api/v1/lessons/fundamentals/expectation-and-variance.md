@@ -47,11 +47,11 @@ With ρ = 0.3, averaging 20 models cuts the error spread from 4.0 to about 2.3 m
 
 #### In one breath
 
-The **expectation** E[X] is the long-run average, and it's **linear**: E[aX + bY] = aE[X] + bE[Y] even when X and Y depend on each other, which cracks many interview puzzles. **Variance** measures spread, Var(X) = E[X²] − E[X]². **Covariance** measures whether two quantities move together; **correlation** is covariance rescaled to −1…1. The variance of a sum includes covariance terms, so averaging n independent noisy estimates divides variance by n, but averaging **correlated** ones hits a floor of ρσ². That single formula explains why random forests decorrelate their trees.What you'll be able to do after this: use linearity of expectation, compute variance and covariance, explain correlation vs covariance, and derive the variance of an average of correlated models.
+The **expectation** E[X] is the long-run average, and it's **linear**: E[aX + bY] = aE[X] + bE[Y] even when X and Y depend on each other, which cracks many interview puzzles. **Variance** measures spread, Var(X) = E[X²] − E[X]². **Covariance** measures whether two quantities move together; **correlation** is covariance rescaled to −1…1. The variance of a sum includes covariance terms, so averaging n independent noisy estimates divides variance by n, but averaging **correlated** ones hits a floor of ρσ². That single formula explains why random forests decorrelate their trees. What you'll be able to do after this: use linearity of expectation, compute variance and covariance, explain correlation vs covariance, and derive the variance of an average of correlated models.
 
 #### Expectation and variance
 
-$$ \mathbb{E}[X] = \textstyle\sum_x x\,P(X{=}x), \quad \mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y], \quad \mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2 $$
+$$ {\mathbb{E}[X] = \textstyle\sum_x x\,P(X{=}x)}, \quad {\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]}, \quad {\mathrm{Var}(X) = \mathbb{E}[X^2] - \mathbb{E}[X]^2} $$
 
 Blitzstein & Hwang ch. 4; MML §6.4. Variance rules: Var(aX + b) = a²Var(X); adding a constant doesn't change spread.
 
@@ -63,7 +63,7 @@ Blitzstein & Hwang ch. 4; MML §6.4. Variance rules: Var(aX + b) = a²Var(X); ad
 
 #### Covariance and correlation
 
-$$ \mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mu_X)(Y-\mu_Y)], \quad \rho = \tfrac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}, \quad \mathrm{Var}(X+Y) = \mathrm{Var}X + \mathrm{Var}Y + 2\,\mathrm{Cov}(X,Y) $$
+$$ {\mathrm{Cov}(X,Y) = \mathbb{E}[(X-\mu_X)(Y-\mu_Y)]}, \quad {\rho = \tfrac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}}, \quad {\mathrm{Var}(X+Y) = \mathrm{Var}X + \mathrm{Var}Y + 2\,\mathrm{Cov}(X,Y)} $$
 
 - **covariance**: Positive when X and Y tend to be above their means together; negative when one is up while the other is down; zero when unrelated linearly.
 
@@ -75,7 +75,7 @@ Zero correlation means no _linear_ relationship: Y = X² with X symmetric around
 
 #### The ensemble variance formula
 
-$$ \mathrm{Var}\Bigl(\tfrac{1}{n}\textstyle\sum_{i=1}^{n} X_i\Bigr) = \rho\,\sigma^2 + \tfrac{1-\rho}{n}\,\sigma^2 $$
+$$ {\mathrm{Var}\Bigl(\tfrac{1}{n}\textstyle\sum_{i=1}^{n} X_i\Bigr)} = {\rho\,\sigma^2} + {\tfrac{1-\rho}{n}\,\sigma^2} $$
 
 Hastie, Tibshirani & Friedman, _ESL_ 2nd ed., Eq. 15.1 (§15.2, random forests).
 
@@ -167,7 +167,7 @@ Expected value and its linearity, variance and standard deviation, covariance an
 
 #### Sources
 
-1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, ch. 4 and 7, stat110.
+1. J. Blitzstein & J. Hwang, _Introduction to Probability_, 2nd ed., 2019, ch. 4 and 7, [stat110](https://projects.iq.harvard.edu/stat110).
 
 2. T. Hastie, R. Tibshirani & J. Friedman, _The Elements of Statistical Learning_, 2nd ed., Springer 2009, §15.2 (Eq. 15.1).
 

@@ -224,7 +224,7 @@ window.LESSONS = {
         ],
         lessons: [
           {slug: "modern-llm-architecture",group: "architecture",title: "Anatomy of a Modern LLM",sub: "What changed since 2017, and where do an 8B model's parameters live?",level: "Intermediate",mins: 20},
-          {slug: "attention-variants-mqa-gqa-mla",group: "architecture",title: "Attention Variants: MQA, GQA and MLA",sub: "How many conversations fit on one GPU, and how GQA and MLA raise that?",level: "Intermediate",mins: 25},
+          {slug: "attention-variants-mqa-gqa-mla",group: "architecture",title: "Attention Variants: MQA, GQA and MLA",sub: "How many conversations fit on one GPU, and how do GQA and MLA raise that?",level: "Intermediate",mins: 25},
           {slug: "gpus-tpus-and-memory-bandwidth",group: "architecture",title: "GPUs, TPUs and Memory Bandwidth",sub: "Why is decoding limited by memory, while prefill is limited by compute?",level: "Intermediate",mins: 20},
           {slug: "flashattention",group: "architecture",title: "FlashAttention",sub: "Why is exact attention faster when it does more maths?",level: "Advanced",mins: 25},
           {slug: "long-context",group: "architecture",title: "Long Context: RoPE Scaling, Sliding Windows and Attention Sinks",sub: "Why does a 4k model break at 16k, and how does YaRN fix it?",level: "Advanced",mins: 25},

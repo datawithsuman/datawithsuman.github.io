@@ -48,13 +48,13 @@ With a position bias of 1.0, judging each pair once agrees with the human verdic
 
 #### In one breath
 
-For open-ended tasks (support replies, summaries, advice) there is no answer key, so we ask a judge which answer is better. **Humans** are the gold standard but slow and costly; **Chatbot Arena** crowdsources pairwise votes on anonymous models and fits **Bradley–Terry** ratings. An **LLM judge** is cheap and fast: Zheng et al. (2023) found GPT-4's verdicts agreed with human experts over 80% of the time, about as often as humans agreed with each other. But judges are **biased**: they favour the answer shown first (**position bias**), longer answers (**verbosity bias**), and their own model family (**self-preference**). Standard fixes: evaluate both orders and keep only consistent verdicts, control for length, give a rubric or reference answer, and validate the judge against a few hundred human labels. Arenas can be gamed too, e.g. by testing many private variants and publishing the best.What you'll be able to do after this: set up an LLM judge with bias controls, interpret Arena ratings, and explain why judges must be validated against humans.
+For open-ended tasks (support replies, summaries, advice) there is no answer key, so we ask a judge which answer is better. **Humans** are the gold standard but slow and costly; **Chatbot Arena** crowdsources pairwise votes on anonymous models and fits **Bradley–Terry** ratings. An **LLM judge** is cheap and fast: Zheng et al. (2023) found GPT-4's verdicts agreed with human experts over 80% of the time, about as often as humans agreed with each other. But judges are **biased**: they favour the answer shown first (**position bias**), longer answers (**verbosity bias**), and their own model family (**self-preference**). Standard fixes: evaluate both orders and keep only consistent verdicts, control for length, give a rubric or reference answer, and validate the judge against a few hundred human labels. Arenas can be gamed too, e.g. by testing many private variants and publishing the best. What you'll be able to do after this: set up an LLM judge with bias controls, interpret Arena ratings, and explain why judges must be validated against humans.
 
 #### Human arenas and LLM judges
 
-$$ P(A \succ B) = \frac{1}{1 + 10^{-(R_A - R_B)/400}} $$
+$$ {P(A \succ B)} = \frac{1}{1 + 10^{-{(R_A - R_B)}/400}} $$
 
-Chiang et al., "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference", ICML 2024, arXiv:2403.04132. Ratings come with confidence intervals; overlapping intervals mean no clear ranking.
+Chiang et al., "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference", ICML 2024, [arXiv:2403.04132](https://arxiv.org/abs/2403.04132). Ratings come with confidence intervals; overlapping intervals mean no clear ranking.
 
 - **chance A beats B**: Bradley–Terry, the same model behind reward models: each model has a strength score, and win probability depends only on the difference.
 
@@ -146,12 +146,12 @@ Evaluating open-ended answers when there's no single correct output: human pairw
 
 #### Sources
 
-1. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, arXiv:2306.05685.
+1. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, [arXiv:2306.05685](https://arxiv.org/abs/2306.05685).
 
-2. W.-L. Chiang et al., "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference", ICML 2024, arXiv:2403.04132.
+2. W.-L. Chiang et al., "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference", ICML 2024, [arXiv:2403.04132](https://arxiv.org/abs/2403.04132).
 
-3. P. Wang et al., "Large Language Models are not Fair Evaluators", ACL 2024, arXiv:2305.17926.
+3. P. Wang et al., "Large Language Models are not Fair Evaluators", ACL 2024, [arXiv:2305.17926](https://arxiv.org/abs/2305.17926).
 
-4. Y. Dubois et al., "Length-Controlled AlpacaEval", 2024, arXiv:2404.04475; Y. Liu et al., "G-Eval", EMNLP 2023, arXiv:2303.16634.
+4. Y. Dubois et al., "Length-Controlled AlpacaEval", 2024, [arXiv:2404.04475](https://arxiv.org/abs/2404.04475); Y. Liu et al., "G-Eval", EMNLP 2023, [arXiv:2303.16634](https://arxiv.org/abs/2303.16634).
 
-5. S. Singh et al., "The Leaderboard Illusion", 2025, arXiv:2504.20879.
+5. S. Singh et al., "The Leaderboard Illusion", 2025, [arXiv:2504.20879](https://arxiv.org/abs/2504.20879).

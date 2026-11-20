@@ -48,11 +48,11 @@ With λ = 0.1, **AdamW** shrinks the weight to about **0.34** whether its gradie
 
 #### In one breath
 
-**Weight decay** shrinks every weight a little towards zero on each step, which keeps weights small and the model smoother. With plain SGD, that is exactly the same as adding an **L2 penalty** λ‖w‖²/2 to the loss. With **Adam** it is not: an L2 term gets added to the gradient and then divided by Adam's per-weight scale √v, so weights with large, noisy gradients are barely regularised while weights with small gradients are crushed. **AdamW** (Loshchilov & Hutter) **decouples** the decay: Adam updates from the loss gradient only, then every weight shrinks by the same factor (1 − ηλ). It generalises better and is the default optimiser for training transformers.What you'll be able to do after this: explain the SGD equivalence, show why L2 inside Adam is uneven, and choose AdamW settings.
+**Weight decay** shrinks every weight a little towards zero on each step, which keeps weights small and the model smoother. With plain SGD, that is exactly the same as adding an **L2 penalty** λ‖w‖²/2 to the loss. With **Adam** it is not: an L2 term gets added to the gradient and then divided by Adam's per-weight scale √v, so weights with large, noisy gradients are barely regularised while weights with small gradients are crushed. **AdamW** (Loshchilov & Hutter) **decouples** the decay: Adam updates from the loss gradient only, then every weight shrinks by the same factor (1 − ηλ). It generalises better and is the default optimiser for training transformers. What you'll be able to do after this: explain the SGD equivalence, show why L2 inside Adam is uneven, and choose AdamW settings.
 
 #### L2 penalty vs weight decay
 
-$$ \tilde{L}(w) = L(w) + \tfrac{\lambda}{2}\lVert w\rVert^2, \qquad w \leftarrow (1-\eta\lambda)\,w - \eta\,\nabla L, \qquad \text{SGD: identical} $$
+$$ {\tilde{L}(w) = L(w) + \tfrac{\lambda}{2}\lVert w\rVert^2}, \qquad {w \leftarrow (1-\eta\lambda)\,w - \eta\,\nabla L}, \qquad {\text{SGD: identical}} $$
 
 - **L2 penalty**: Add λ‖w‖²/2 to the loss. Its gradient is λw, so it joins the loss gradient before the optimiser sees it.
 
@@ -79,9 +79,9 @@ Because AdamW's shrink per step is ηλ, the effective decay changes with the le
 
 #### "Adam with weight_decay = L2 is fine"
 
-$$ \text{Adam+L2: } w \leftarrow w - \eta\,\frac{\hat{m}(\nabla L + \lambda w)}{\sqrt{\hat{v}}+\epsilon} \qquad \text{AdamW: } w \leftarrow w - \eta\Big(\frac{\hat{m}(\nabla L)}{\sqrt{\hat{v}}+\epsilon} + \lambda w\Big) $$
+$$ \text{Adam+L2: } w \leftarrow w - \eta\,\frac{\hat{m}({\nabla L + \lambda w})}{{\sqrt{\hat{v}}}+\epsilon} \qquad {\text{AdamW: } w \leftarrow w - \eta\Big(\frac{\hat{m}(\nabla L)}{\sqrt{\hat{v}}+\epsilon} + \lambda w\Big)} $$
 
-Loshchilov & Hutter, "Decoupled Weight Decay Regularization", ICLR 2019 arXiv:1711.05101: L2 and weight decay are equivalent for SGD but not for adaptive methods; with decoupled decay, Adam generalised substantially better (a 15% relative improvement in test error in their image-classification experiments). Watch out: in PyTorch, `torch.optim.Adam(weight_decay=…)` is the L2 version; `torch.optim.AdamW` is decoupled.
+Loshchilov & Hutter, "Decoupled Weight Decay Regularization", ICLR 2019 [arXiv:1711.05101](https://arxiv.org/abs/1711.05101): L2 and weight decay are equivalent for SGD but not for adaptive methods; with decoupled decay, Adam generalised substantially better (a 15% relative improvement in test error in their image-classification experiments). Watch out: in PyTorch, `torch.optim.Adam(weight_decay=…)` is the L2 version; `torch.optim.AdamW` is decoupled.
 
 - **L2 enters the gradient**: With Adam + L2, the decay term λw is mixed into the gradient g.
 
@@ -133,10 +133,10 @@ What weight decay does, why it equals L2 regularisation for plain SGD but not fo
 
 1. A. Krogh & J. Hertz, "A Simple Weight Decay Can Improve Generalization", NeurIPS 1992.
 
-2. I. Loshchilov & F. Hutter, "Decoupled Weight Decay Regularization", ICLR 2019, arXiv:1711.05101.
+2. I. Loshchilov & F. Hutter, "Decoupled Weight Decay Regularization", ICLR 2019, [arXiv:1711.05101](https://arxiv.org/abs/1711.05101).
 
-3. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", arXiv:2302.13971, 2023.
+3. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023.
 
-4. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.1, deeplearningbook.org.
+4. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.1, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-5. PyTorch documentation, torch.optim.AdamW.
+5. PyTorch documentation, [torch.optim.AdamW](https://docs.pytorch.org/docs/stable/generated/torch.optim.AdamW.html).

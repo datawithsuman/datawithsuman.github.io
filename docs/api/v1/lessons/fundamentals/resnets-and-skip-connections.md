@@ -48,11 +48,11 @@ At 5 and 10 layers both networks fit the curve. At **20 layers** the plain netwo
 
 #### In one breath
 
-By 2015, stacking more layers made plain CNNs **worse even on their training data**: not overfitting, but an optimisation failure called the **degradation problem**. ResNet's fix is a **skip connection**: each block outputs x + F(x), so it only has to learn a **residual** correction F, and doing nothing (F = 0) is easy. The identity path also gives gradients a direct route back to early layers. ResNets trained to 152 layers on ImageNet (and over 1,000 on CIFAR-10), won ILSVRC 2015 with 3.57% top-5 error, and the same residual stream now runs through every transformer.What you'll be able to do after this: explain the degradation problem, draw a residual and a bottleneck block, and say why skip connections make deep nets trainable.
+By 2015, stacking more layers made plain CNNs **worse even on their training data**: not overfitting, but an optimisation failure called the **degradation problem**. ResNet's fix is a **skip connection**: each block outputs x + F(x), so it only has to learn a **residual** correction F, and doing nothing (F = 0) is easy. The identity path also gives gradients a direct route back to early layers. ResNets trained to 152 layers on ImageNet (and over 1,000 on CIFAR-10), won ILSVRC 2015 with 3.57% top-5 error, and the same residual stream now runs through every transformer. What you'll be able to do after this: explain the degradation problem, draw a residual and a bottleneck block, and say why skip connections make deep nets trainable.
 
 #### The residual block
 
-$$ y = x + F(x;\,W) \qquad\Rightarrow\qquad \frac{\partial y}{\partial x} = I + \frac{\partial F}{\partial x} $$
+$$ y = {x} + {F(x;\,W)} \qquad\Rightarrow\qquad {\frac{\partial y}{\partial x} = I + \frac{\partial F}{\partial x}} $$
 
 When x and F(x) have different shapes (after a stride-2 block or a channel increase), the shortcut uses a 1×1 convolution, a **projection shortcut**. The deeper ResNets (50/101/152) use a **bottleneck**: 1×1 conv to shrink channels, 3×3 conv, 1×1 conv to expand, so deep blocks stay cheap.
 
@@ -136,12 +136,12 @@ The degradation problem (deeper plain networks train worse), residual blocks tha
 
 #### Sources
 
-1. K. He, X. Zhang, S. Ren & J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, arXiv:1512.03385.
+1. K. He, X. Zhang, S. Ren & J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, [arXiv:1512.03385](https://arxiv.org/abs/1512.03385).
 
-2. K. He, X. Zhang, S. Ren & J. Sun, "Identity Mappings in Deep Residual Networks", ECCV 2016, arXiv:1603.05027.
+2. K. He, X. Zhang, S. Ren & J. Sun, "Identity Mappings in Deep Residual Networks", ECCV 2016, [arXiv:1603.05027](https://arxiv.org/abs/1603.05027).
 
-3. A. Veit, M. Wilber & S. Belongie, "Residual Networks Behave Like Ensembles of Relatively Shallow Networks", NeurIPS 2016, arXiv:1605.06431.
+3. A. Veit, M. Wilber & S. Belongie, "Residual Networks Behave Like Ensembles of Relatively Shallow Networks", NeurIPS 2016, [arXiv:1605.06431](https://arxiv.org/abs/1605.06431).
 
-4. H. Li, Z. Xu, G. Taylor, C. Studer & T. Goldstein, "Visualizing the Loss Landscape of Neural Nets", NeurIPS 2018, arXiv:1712.09913.
+4. H. Li, Z. Xu, G. Taylor, C. Studer & T. Goldstein, "Visualizing the Loss Landscape of Neural Nets", NeurIPS 2018, [arXiv:1712.09913](https://arxiv.org/abs/1712.09913).
 
-5. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+5. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).

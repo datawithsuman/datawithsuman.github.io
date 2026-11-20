@@ -49,11 +49,11 @@ For the covariance matrix, every arrow swings towards the diagonal except two: a
 
 #### In one breath
 
-Most vectors get knocked off their direction when a matrix acts on them. **Eigenvectors** are the special directions that stay on their own line, only stretched or shrunk; the stretch factor is the **eigenvalue** λ, so Av = λv. For a symmetric matrix (like a covariance matrix) the eigenvectors are perpendicular and the eigenvalues real: the matrix is just "stretch along these axes". That is exactly PCA: the eigenvectors of the covariance matrix are the principal components, and the eigenvalues are the variances along them. Repeatedly multiplying by A pulls any vector towards the top eigenvector (**power iteration**), the idea behind PageRank.What you'll be able to do after this: define eigenvectors geometrically, compute them for a 2×2 matrix, explain why covariance eigenvectors are PCA, and describe power iteration.
+Most vectors get knocked off their direction when a matrix acts on them. **Eigenvectors** are the special directions that stay on their own line, only stretched or shrunk; the stretch factor is the **eigenvalue** λ, so Av = λv. For a symmetric matrix (like a covariance matrix) the eigenvectors are perpendicular and the eigenvalues real: the matrix is just "stretch along these axes". That is exactly PCA: the eigenvectors of the covariance matrix are the principal components, and the eigenvalues are the variances along them. Repeatedly multiplying by A pulls any vector towards the top eigenvector (**power iteration**), the idea behind PageRank. What you'll be able to do after this: define eigenvectors geometrically, compute them for a 2×2 matrix, explain why covariance eigenvectors are PCA, and describe power iteration.
 
 #### The eigen-equation
 
-$$ A v = \lambda v, \qquad \det(A - \lambda I) = 0 $$
+$$ {A v} = {\lambda v}, \qquad {\det(A - \lambda I) = 0} $$
 
 MML §4.2; Strang ch. 6. Worked example: A = [[1, 0.5], [0.5, 1]] gives (1 − λ)² − 0.25 = 0, so λ = 1.5 with v = (1, 1)/√2 and λ = 0.5 with v = (1, −1)/√2.
 
@@ -65,7 +65,7 @@ MML §4.2; Strang ch. 6. Worked example: A = [[1, 0.5], [0.5, 1]] gives (1 − �
 
 #### Symmetric matrices: the spectral theorem
 
-$$ A = Q\,\Lambda\,Q^{\top} $$
+$$ {A} = {Q}\,{\Lambda}\,{Q^{\top}} $$
 
 Spectral theorem for real symmetric matrices: real eigenvalues, orthonormal eigenvectors (MML Theorem 4.15). In practice libraries compute eigen-decompositions with QR-type algorithms (`numpy.linalg.eigh` for symmetric matrices).
 
@@ -79,7 +79,7 @@ Spectral theorem for real symmetric matrices: real eigenvalues, orthonormal eige
 
 #### Multiply repeatedly and you find the top eigenvector
 
-Write the start vector as a mix of eigenvectors. Each multiplication scales the λ = 1.5 part by 1.5 and the λ = 0.5 part by 0.5, so the smaller part shrinks by a factor of 3 every step relative to the larger; after normalising, the vector swings onto the top eigenvector. The speed depends on the ratio of the top two eigenvalues. Brin & Page's original PageRank is the principal eigenvector of the web's link matrix, computed exactly this way at scale Brin & Page 1998.
+Write the start vector as a mix of eigenvectors. Each multiplication scales the λ = 1.5 part by 1.5 and the λ = 0.5 part by 0.5, so the smaller part shrinks by a factor of 3 every step relative to the larger; after normalising, the vector swings onto the top eigenvector. The speed depends on the ratio of the top two eigenvalues. Brin & Page's original PageRank is the principal eigenvector of the web's link matrix, computed exactly this way at scale [Brin & Page 1998](http://infolab.stanford.edu/~backrub/google.html).
 
 #### The Rayleigh quotient: why PCA picks the top eigenvector
 
@@ -164,8 +164,8 @@ The directions a matrix only stretches, how to find them, symmetric matrices and
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, mml-book.github.io (ch. 4: eigendecomposition, spectral theorem).
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, [mml-book.github.io](https://mml-book.github.io/) (ch. 4: eigendecomposition, spectral theorem).
 
 2. G. Strang, _Introduction to Linear Algebra_, 5th ed., 2016, ch. 6.
 
-3. S. Brin & L. Page, "The anatomy of a large-scale hypertextual web search engine", WWW 1998, stanford.edu.
+3. S. Brin & L. Page, "The anatomy of a large-scale hypertextual web search engine", WWW 1998, [stanford.edu](http://infolab.stanford.edu/~backrub/google.html).

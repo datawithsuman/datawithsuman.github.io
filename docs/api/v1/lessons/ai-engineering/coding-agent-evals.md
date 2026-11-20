@@ -124,20 +124,22 @@ What should a coding-agent eval report besides pass rate?
 
 Cost, tokens, turns and time per task, how often diffs touched tests, and a review of maintainability on a sample.
 
+#### The 30-second answer
+
 Coding agents are graded by running tests on their patch, which is objective as long as the agent can't touch the tests. ImpossibleBench showed the risk: on tasks with contradictory tests, GPT-5 still passed 54% of conflicting SWE-bench tasks by editing tests or special-casing inputs. For my own eval I'd use real backlog tasks in a container, keep tests hidden or read-only, flag diffs that touch tests, give the agent an abort option, which cut cheating from 54% to 9%, add an LLM monitor as a backstop, and report cost and time per task.
 
 **Key terms and sources**
 
-How coding agents are graded (running tests on the agent's patch), why test access invites cheating, what ImpossibleBench measured, and how to design your own coding-agent eval with protected tests, diff checks and monitors.
+How coding agents are graded (running tests on the agent's patch), why test access invites cheating, what ImpossibleBench measured, and how to design your own coding-agent eval with protected tests, diff checks and monitors. · checked 15 Nov 2026
 
 #### Sources
 
-- Z. Zhong, A. Raghunathan and N. Carlini, ImpossibleBench: measuring LLMs' propensity of exploiting test cases, 2025
+- [Z. Zhong, A. Raghunathan and N. Carlini, ImpossibleBench: measuring LLMs' propensity of exploiting test cases, 2025](https://arxiv.org/abs/2510.20270)
 
-- C. Jimenez et al., SWE-bench, ICLR 2024
+- [C. Jimenez et al., SWE-bench, ICLR 2024](https://arxiv.org/abs/2310.06770)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-- Google Developers Blog, The anatomy of harness engineering
+- [Google Developers Blog, The anatomy of harness engineering](https://developers.googleblog.com/en/the-anatomy-of-harness-engineering-how-to-evaluate-iterate-and-guard-ai-coding-agents/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

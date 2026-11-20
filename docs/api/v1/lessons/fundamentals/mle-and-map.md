@@ -49,11 +49,11 @@ After 3 late orders, MLE says 100% late; MAP with m = 10 says 42%. After 100 ord
 
 #### In one breath
 
-The **likelihood** of a parameter is how probable the observed data would be if that parameter were true. **Maximum likelihood (MLE)** picks the parameter that makes the data most probable; in practice we maximise the **log**-likelihood (sums instead of products). Most ML losses are negative log-likelihoods in disguise: Gaussian noise → squared error, Bernoulli labels → log loss. MLE overfits small samples (one order, one late → "100% late"). **MAP** adds a **prior** belief and maximises likelihood × prior; with a Gaussian prior on weights that is exactly **L2 regularisation**, with a Laplace prior it's **L1**, and for rates it's smoothing towards a global average.What you'll be able to do after this: write a likelihood, derive MSE and log loss from MLE, compute MLE and MAP for a rate, and explain regularisation as a prior.
+The **likelihood** of a parameter is how probable the observed data would be if that parameter were true. **Maximum likelihood (MLE)** picks the parameter that makes the data most probable; in practice we maximise the **log**-likelihood (sums instead of products). Most ML losses are negative log-likelihoods in disguise: Gaussian noise → squared error, Bernoulli labels → log loss. MLE overfits small samples (one order, one late → "100% late"). **MAP** adds a **prior** belief and maximises likelihood × prior; with a Gaussian prior on weights that is exactly **L2 regularisation**, with a Laplace prior it's **L1**, and for rates it's smoothing towards a global average. What you'll be able to do after this: write a likelihood, derive MSE and log loss from MLE, compute MLE and MAP for a rate, and explain regularisation as a prior.
 
 #### Likelihood and log-likelihood
 
-$$ \mathcal{L}(\theta) = \textstyle\prod_{i=1}^{n} \theta^{y_i}(1-\theta)^{1-y_i} = \theta^{k}(1-\theta)^{n-k}, \qquad \ell(\theta) = k\log\theta + (n-k)\log(1-\theta) $$
+$$ {\mathcal{L}(\theta)} = {\textstyle\prod_{i=1}^{n} \theta^{y_i}(1-\theta)^{1-y_i}} = \theta^{k}(1-\theta)^{n-k}, \qquad {\ell(\theta) = k\log\theta + (n-k)\log(1-\theta)} $$
 
 MML §8.3; PRML §2.1. Setting dℓ/dθ = k/θ − (n − k)/(1 − θ) = 0 gives θ̂MLE = k/n.
 
@@ -67,7 +67,7 @@ The likelihood is **not** a probability distribution over θ (it needn't integra
 
 #### Posterior ∝ likelihood × prior
 
-$$ \hat\theta_{\text{MAP}} = \arg\max_\theta\ \bigl[\log p(\text{data}\mid\theta) + \log p(\theta)\bigr] $$
+$$ {\hat\theta_{\text{MAP}}} = \arg\max_\theta\ \bigl[{\log p(\text{data}\mid\theta)} + {\log p(\theta)}\bigr] $$
 
 - **MAP estimate**: The most probable parameter after seeing the data: the peak of the posterior.
 
@@ -79,7 +79,7 @@ For a rate with a Beta prior equivalent to "m imaginary orders at the platform r
 
 #### L2 and L1 come from priors on the weights
 
-$$ \hat w_{\text{MAP}} = \arg\min_w\ -\log p(y\mid X, w) + \lambda \lVert w\rVert_2^2 \quad\text{or}\quad + \lambda \lVert w\rVert_1 $$
+$$ \hat w_{\text{MAP}} = \arg\min_w\ {-\log p(y\mid X, w)} + {\lambda \lVert w\rVert_2^2} \quad\text{or}\quad + {\lambda \lVert w\rVert_1} $$
 
 PRML §3.3 (Gaussian prior and ridge); MML §9.3; see Regularized Linear Models.
 
@@ -172,8 +172,8 @@ Likelihood vs probability, log-likelihood, maximum likelihood estimation, why ML
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, §8.3, §9.3, mml-book.github.io.
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, §8.3, §9.3, [mml-book.github.io](https://mml-book.github.io/).
 
 2. C. Bishop, _Pattern Recognition and Machine Learning_, Springer 2006, ch. 1–4.
 
-3. K. Murphy, _Probabilistic Machine Learning: An Introduction_, MIT Press 2022, ch. 4, probml.github.io.
+3. K. Murphy, _Probabilistic Machine Learning: An Introduction_, MIT Press 2022, ch. 4, [probml.github.io](https://probml.github.io/pml-book/book1.html).

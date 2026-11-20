@@ -50,7 +50,7 @@ A and B differ by one word, so 29 of their 31 distinct 5-grams are shared: Jacca
 
 #### In one breath
 
-The data matters as much as the architecture. Raw web crawls are mostly boilerplate, spam, duplicates and non-text, so a pipeline **extracts** the main text, keeps the right **languages**, applies **heuristic quality filters** (length, symbol ratios, repeated lines), removes **near-duplicates**, and increasingly scores pages with a **model-based quality classifier**. Near-duplicates are found with **MinHash**: compare documents by the overlap of their word n-grams (Jaccard similarity), estimated cheaply from a short signature of minimum hash values, so billions of pages can be compared. Then the team chooses the **mixture**: Llama 3 used about 50% general knowledge, 25% maths and reasoning, 17% code and 8% multilingual tokens. Better data gives better models at the same compute: FineWeb-Edu's classifier filtering raised MMLU from 33% to 37% at equal training tokens.What you'll be able to do after this: describe a pretraining data pipeline, explain how MinHash deduplication works, and discuss data mixtures and contamination.
+The data matters as much as the architecture. Raw web crawls are mostly boilerplate, spam, duplicates and non-text, so a pipeline **extracts** the main text, keeps the right **languages**, applies **heuristic quality filters** (length, symbol ratios, repeated lines), removes **near-duplicates**, and increasingly scores pages with a **model-based quality classifier**. Near-duplicates are found with **MinHash**: compare documents by the overlap of their word n-grams (Jaccard similarity), estimated cheaply from a short signature of minimum hash values, so billions of pages can be compared. Then the team chooses the **mixture**: Llama 3 used about 50% general knowledge, 25% maths and reasoning, 17% code and 8% multilingual tokens. Better data gives better models at the same compute: FineWeb-Edu's classifier filtering raised MMLU from 33% to 37% at equal training tokens. What you'll be able to do after this: describe a pretraining data pipeline, explain how MinHash deduplication works, and discuss data mixtures and contamination.
 
 #### A typical pipeline (FineWeb)
 
@@ -64,7 +64,7 @@ The data matters as much as the architecture. Raw web crawls are mostly boilerpl
 
 5. **PII redaction** (emails, IP addresses) and, for evaluation hygiene, **decontamination**: removing documents that contain benchmark questions.
 
-The result, FineWeb, has 15 trillion tokens from 96 Common Crawl snapshots (Penedo et al. 2024, arXiv:2406.17557). A surprise from the paper: deduplicating globally across all snapshots did _worse_ than deduplicating within each snapshot, because it removed many good older pages and kept low-quality ones.
+The result, FineWeb, has 15 trillion tokens from 96 Common Crawl snapshots (Penedo et al. 2024, [arXiv:2406.17557](https://arxiv.org/abs/2406.17557)). A surprise from the paper: deduplicating globally across all snapshots did _worse_ than deduplicating within each snapshot, because it removed many good older pages and kept low-quality ones.
 
 ## In practice
 
@@ -142,18 +142,18 @@ How trillions of tokens of web text become training data: text extraction, langu
 
 #### Sources
 
-1. G. Penedo et al., "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale", NeurIPS 2024 Datasets & Benchmarks, arXiv:2406.17557.
+1. G. Penedo et al., "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale", NeurIPS 2024 Datasets & Benchmarks, [arXiv:2406.17557](https://arxiv.org/abs/2406.17557).
 
-2. A. Broder, "On the Resemblance and Containment of Documents", 1997; K. Lee et al., "Deduplicating Training Data Makes Language Models Better", ACL 2022, arXiv:2107.06499.
+2. A. Broder, "On the Resemblance and Containment of Documents", 1997; K. Lee et al., "Deduplicating Training Data Makes Language Models Better", ACL 2022, [arXiv:2107.06499](https://arxiv.org/abs/2107.06499).
 
-3. J. Rae et al., "Scaling Language Models: Methods, Analysis & Insights from Training Gopher", 2021, arXiv:2112.11446; C. Raffel et al. (T5 / C4), JMLR 2020, arXiv:1910.10683.
+3. J. Rae et al., "Scaling Language Models: Methods, Analysis & Insights from Training Gopher", 2021, [arXiv:2112.11446](https://arxiv.org/abs/2112.11446); C. Raffel et al. (T5 / C4), JMLR 2020, [arXiv:1910.10683](https://arxiv.org/abs/1910.10683).
 
-4. N. Muennighoff et al., "Scaling Data-Constrained Language Models", NeurIPS 2023, arXiv:2305.16264.
+4. N. Muennighoff et al., "Scaling Data-Constrained Language Models", NeurIPS 2023, [arXiv:2305.16264](https://arxiv.org/abs/2305.16264).
 
-5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783 (§3.1, data mix).
+5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783) (§3.1, data mix).
 
-6. Y. Wang et al., "Self-Instruct", 2022, arXiv:2212.10560; S. Gunasekar et al., "Textbooks Are All You Need", 2023, arXiv:2306.11644.
+6. Y. Wang et al., "Self-Instruct", 2022, [arXiv:2212.10560](https://arxiv.org/abs/2212.10560); S. Gunasekar et al., "Textbooks Are All You Need", 2023, [arXiv:2306.11644](https://arxiv.org/abs/2306.11644).
 
-7. Y. Wang et al., "Self-Instruct", 2022, arXiv:2212.10560; S. Gunasekar et al., "Textbooks Are All You Need", 2023, arXiv:2306.11644.
+7. Y. Wang et al., "Self-Instruct", 2022, [arXiv:2212.10560](https://arxiv.org/abs/2212.10560); S. Gunasekar et al., "Textbooks Are All You Need", 2023, [arXiv:2306.11644](https://arxiv.org/abs/2306.11644).
 
-8. Y. Wang et al., "Self-Instruct", 2022, arXiv:2212.10560; S. Gunasekar et al., "Textbooks Are All You Need", 2023, arXiv:2306.11644.
+8. Y. Wang et al., "Self-Instruct", 2022, [arXiv:2212.10560](https://arxiv.org/abs/2212.10560); S. Gunasekar et al., "Textbooks Are All You Need", 2023, [arXiv:2306.11644](https://arxiv.org/abs/2306.11644).

@@ -171,8 +171,10 @@ Why not use city-level or graph cluster randomisation instead?
 
 Those can work, but dense professional networks connect across cities, and clusters leak. Graph clusters also tend to be very unequal in size. Ego clusters measure a specific one-hop effect with a simple comparison, though they cost more traffic and only analyse the egos.
 
+#### The 30-second answer
+
 A normal A/B test mixes treated and control users who are connected, so both groups get part of the network effect, and the test misses it. I'd use ego clusters. I'd build a graph of who actually affects whom, such as past feed impressions, and sample egos across all degrees. Each ego gets their alters, the connections that influence them, and each person belongs to one cluster. I'd flip a coin per cluster, and give that version to the alters. All egos stay on the same version, and I compare only egos. That's a test between all my connections getting A and all my connections getting B. Some alters will be unavailable, which is the loss rate, and that shrinks the measured effect. It's expensive, because I treat many people for each ego. It also takes engaged users from other tests, goes stale quickly and only covers one hop. So I'd use it when network effects really matter, and weigh direct and network effects together in the launch decision.
 
 **Key terms and sources**
 
-Based on a professional network's published method: LinkedIn's ego-cluster paper, which we read in full, and its later improvement, which we read in part. The volumes and lab numbers are illustrations. Uses interference and randomisation.
+Based on a professional network's published method: [LinkedIn's ego-cluster paper](https://arxiv.org/abs/1903.08755), which we read in full, and [its later improvement](https://arxiv.org/abs/2308.05945), which we read in part. The volumes and lab numbers are illustrations. Uses interference and randomisation. · checked 5 Nov 2026

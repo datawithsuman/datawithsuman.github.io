@@ -46,7 +46,7 @@ Each student's contribution to the loss is drawn as a red bar: the bar is long w
 
 #### In one breath
 
-Logistic regression is a **classifier**. It models the **log-odds** of the positive class as a weighted sum of features and squashes that through a sigmoid to get a probability between 0 and 1. It is trained by maximum likelihood, which is the same as minimising **log-loss** (cross-entropy): a convex problem with one best answer and no closed form. Its decision boundary is a straight line (a hyperplane), its weights read as odds multipliers, and with regularization its probabilities are often well calibrated.What you'll be able to do after this: explain why it's called "regression", why we don't use squared error, derive the gradient, interpret a coefficient as an odds ratio, and handle separable data, thresholds and calibration.
+Logistic regression is a **classifier**. It models the **log-odds** of the positive class as a weighted sum of features and squashes that through a sigmoid to get a probability between 0 and 1. It is trained by maximum likelihood, which is the same as minimising **log-loss** (cross-entropy): a convex problem with one best answer and no closed form. Its decision boundary is a straight line (a hyperplane), its weights read as odds multipliers, and with regularization its probabilities are often well calibrated. What you'll be able to do after this: explain why it's called "regression", why we don't use squared error, derive the gradient, interpret a coefficient as an odds ratio, and handle separable data, thresholds and calibration.
 
 #### Probability, odds and log-odds
 
@@ -56,9 +56,9 @@ That last scale is the key: a weighted sum of features can be any real number, a
 
 #### A linear model for the log-odds, squashed into a probability
 
-$$ h_\theta(x) = g\big(\theta^{\top}x\big) = 1\,/\,\big(1 + e^{-\theta^{\top}x}\big) \qquad \log\!\big(h/(1-h)\big) = \theta^{\top}x $$
+$$ {h_\theta(x)} = {g}\big({\theta^{\top}x}\big) = 1\,/\,\big(1 + e^{-\theta^{\top}x}\big) \qquad {\log\!\big(h/(1-h)\big) = \theta^{\top}x} $$
 
-CS229 §2.1 CS229 notes. The derivative is neat: g′(z) = g(z)(1 − g(z)), which keeps the gradient simple.
+CS229 §2.1 [CS229 notes](https://cs229.stanford.edu/main_notes.pdf). The derivative is neat: g′(z) = g(z)(1 − g(z)), which keeps the gradient simple.
 
 - **the probability**: h(x) = P(y = 1 | x): the model's probability of a pass.
 
@@ -70,9 +70,9 @@ CS229 §2.1 CS229 notes. The derivative is neat: g′(z) = g(z)(1 − g(z)), whi
 
 #### Maximum likelihood gives log-loss, not squared error
 
-Treat each label as a coin flip with probability h(x). The probability of all the observed labels is a product; take its log and you get the log-likelihood CS229 Eq. 2.1. Its negative is **log-loss**, also called binary cross-entropy:
+Treat each label as a coin flip with probability h(x). The probability of all the observed labels is a product; take its log and you get the log-likelihood [CS229 Eq. 2.1](https://cs229.stanford.edu/main_notes.pdf). Its negative is **log-loss**, also called binary cross-entropy:
 
-$$ \ell(\theta) = \sum_{i=1}^{n}\Big[y^{(i)}\log h(x^{(i)}) + (1-y^{(i)})\log\big(1-h(x^{(i)})\big)\Big] $$
+$$ {\ell(\theta)} = {\sum_{i=1}^{n}}\Big[{y^{(i)}\log h(x^{(i)})} + {(1-y^{(i)})\log\big(1-h(x^{(i)})\big)}\Big] $$
 
 - **log-likelihood**: How probable the observed passes and fails are under θ. Maximise it (or minimise its negative, the log-loss).
 
@@ -92,9 +92,9 @@ Both losses on our 20 students as the weight w changes (bias kept so the curve c
 
 #### The gradient is (label − prediction) × feature, again
 
-Differentiate the log-likelihood using g′ = g(1 − g), and nearly everything cancels CS229 Eq. 2.2:
+Differentiate the log-likelihood using g′ = g(1 − g), and nearly everything cancels [CS229 Eq. 2.2](https://cs229.stanford.edu/main_notes.pdf):
 
-$$ \tfrac{\partial}{\partial\theta_j}\ell(\theta) = \big(y - h_\theta(x)\big)\,x_j $$
+$$ {\tfrac{\partial}{\partial\theta_j}\ell(\theta)} = {\big(y - h_\theta(x)\big)}\,{x_j} $$
 
 - **slope for weight j**: How the log-likelihood changes when weight j moves, for one example.
 
@@ -126,11 +126,11 @@ A straight boundary is both the strength and the limit. If the classes are separ
 
 **The perceptron: logistic regression with a hard step**
 
-Replace the sigmoid with a hard threshold (output 1 if θᵀx ≥ 0, else 0) and use the same update θj := θj + α(y − h(x))xj, and you get the perceptron (1950s–60s). It finds a separating line if one exists, but CS229 notes "it is difficult to endow the perceptron's predictions with meaningful probabilistic interpretations" CS229 §2.2. Logistic regression is the smooth, probabilistic version.
+Replace the sigmoid with a hard threshold (output 1 if θᵀx ≥ 0, else 0) and use the same update θj := θj + α(y − h(x))xj, and you get the perceptron (1950s–60s). It finds a separating line if one exists, but CS229 notes "it is difficult to endow the perceptron's predictions with meaningful probabilistic interpretations" [CS229 §2.2](https://cs229.stanford.edu/main_notes.pdf). Logistic regression is the smooth, probabilistic version.
 
 **Generalized linear models: why sigmoid, and why the same gradient**
 
-Linear and logistic regression are both GLMs: pick an exponential-family distribution for y given x, model its natural parameter as θᵀx, and predict its mean. Gaussian y gives linear regression (identity link); Bernoulli y gives logistic regression, and writing the Bernoulli in exponential-family form produces the sigmoid on its own. Poisson y (counts) gives Poisson regression. Every GLM with the canonical link has the gradient (y − prediction)·x, which answers the "coincidence" above CS229 §3.
+Linear and logistic regression are both GLMs: pick an exponential-family distribution for y given x, model its natural parameter as θᵀx, and predict its mean. Gaussian y gives linear regression (identity link); Bernoulli y gives logistic regression, and writing the Bernoulli in exponential-family form produces the sigmoid on its own. Poisson y (counts) gives Poisson regression. Every GLM with the canonical link has the gradient (y − prediction)·x, which answers the "coincidence" above [CS229 §3](https://cs229.stanford.edu/main_notes.pdf).
 
 More than two classes? Give each class its own weight vector and replace the sigmoid with a softmax. That's the next lesson.
 
@@ -142,13 +142,13 @@ GLMs have their own lesson: see Generalised Linear Models.
 
 #### Still a workhorse
 
-Logistic regression is the default baseline for binary classification and still production-grade in credit scoring, medical risk scores, fraud and click-through-rate models, wherever probabilities and explainability matter. In scikit-learn it's `LogisticRegression` (L-BFGS by default, and **L2-regularised by default**, with `C = 1`); statsmodels' `Logit` gives the unregularised fit with standard errors; `SGDClassifier(loss="log_loss")` trains it on streams. scikit-learn notes the default penalty explicitly: "Regularization is applied by default, which is common in machine learning but not in statistics" scikit-learn docs.
+Logistic regression is the default baseline for binary classification and still production-grade in credit scoring, medical risk scores, fraud and click-through-rate models, wherever probabilities and explainability matter. In scikit-learn it's `LogisticRegression` (L-BFGS by default, and **L2-regularised by default**, with `C = 1`); statsmodels' `Logit` gives the unregularised fit with standard errors; `SGDClassifier(loss="log_loss")` trains it on streams. scikit-learn notes the default penalty explicitly: "Regularization is applied by default, which is common in machine learning but not in statistics" [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html).
 
 #### 0.5 is a default, not a law
 
 On our 20 students with the fitted model. Lower the threshold and you catch more passers (recall up) but also more failers (precision down). Pick the threshold from the costs: missing a fraud costs far more than reviewing a false alarm, so fraud models use low thresholds.
 
-**Calibration** means "of all cases predicted at 70%, about 70% are positive." Logistic regression is good at this by construction. scikit-learn: it "is more likely to return well calibrated predictions by itself as it has a canonical link function for its loss," which in the unpenalised case gives the "balance property" scikit-learn calibration docs. The guarantee weakens with strong penalties, a mis-specified model, or resampled training data (e.g. after oversampling the rare class). Check a reliability curve, and recalibrate if needed.
+**Calibration** means "of all cases predicted at 70%, about 70% are positive." Logistic regression is good at this by construction. scikit-learn: it "is more likely to return well calibrated predictions by itself as it has a canonical link function for its loss," which in the unpenalised case gives the "balance property" [scikit-learn calibration docs](https://scikit-learn.org/stable/modules/calibration.html). The guarantee weakens with strong penalties, a mis-specified model, or resampled training data (e.g. after oversampling the rare class). Check a reliability curve, and recalibrate if needed.
 
 #### Shipping a logistic regression
 
@@ -196,7 +196,7 @@ Purple: least-squares line on 0/1 labels. Orange: logistic curve. The extra stud
 
 ##### What breaks
 
-A line predicts values below 0 and above 1, which aren't probabilities. Its squared error punishes being "too right" (predicting 1.4 for a sure pass), so easy points far from the boundary drag the fit. CS229 makes the same point: "it is easy to construct examples where this method performs very poorly" and "it also doesn't make sense for hθ(x) to take values larger than 1 or smaller than 0" CS229 §2.
+A line predicts values below 0 and above 1, which aren't probabilities. Its squared error punishes being "too right" (predicting 1.4 for a sure pass), so easy points far from the boundary drag the fit. CS229 makes the same point: "it is easy to construct examples where this method performs very poorly" and "it also doesn't make sense for hθ(x) to take values larger than 1 or smaller than 0" [CS229 §2](https://cs229.stanford.edu/main_notes.pdf).
 
 #### Perfectly separable data: the weights run to infinity
 
@@ -204,7 +204,7 @@ If a line separates passes from fails perfectly, the likelihood keeps improving 
 
 Same 20 students, but relabelled so everyone with ≥ 3.75 hours passed (perfectly separable). Gradient descent, learning rate 0.5. Without a penalty, w keeps growing and the curve becomes a step with fake 100%/0% certainty. With an L2 penalty (λ = 0.05) it converges to a finite, sensible slope.
 
-This is one big reason scikit-learn regularises by default. The strength is set by `C`, the _inverse_ of the penalty: small C means strong regularization scikit-learn docs. With many features, separable data is common, and the same L1/L2/Elastic Net trade-offs from the last lesson apply.
+This is one big reason scikit-learn regularises by default. The strength is set by `C`, the _inverse_ of the penalty: small C means strong regularization [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html). With many features, separable data is common, and the same L1/L2/Elastic Net trade-offs from the last lesson apply.
 
 #### What to keep
 
@@ -299,14 +299,14 @@ Built from Stanford CS229 notes (§2–3), scikit-learn's linear-model and calib
 
 #### What this page is built from
 
-1. A. Ng, T. Ma et al., Stanford CS229 lecture notes, §2 (logistic regression, perceptron, multi-class) and §3 (GLMs).
+1. A. Ng, T. Ma et al., [Stanford CS229 lecture notes](https://cs229.stanford.edu/main_notes.pdf), §2 (logistic regression, perceptron, multi-class) and §3 (GLMs).
 
-2. scikit-learn, Linear models user guide: LogisticRegression objective, C, default regularization, solvers.
+2. scikit-learn, [Linear models user guide](https://scikit-learn.org/stable/modules/linear_model.html): LogisticRegression objective, C, default regularization, solvers.
 
-3. scikit-learn, Probability calibration: why logistic regression tends to be calibrated.
+3. scikit-learn, [Probability calibration](https://scikit-learn.org/stable/modules/calibration.html): why logistic regression tends to be calibrated.
 
 4. Hastie, Tibshirani & Friedman, _The Elements of Statistical Learning_, §4.4 (logistic regression), background.
 
-5. Interview angle: Analytics Vidhya, 30 logistic regression interview questions; DataLemur ML interview questions.
+5. Interview angle: [Analytics Vidhya, 30 logistic regression interview questions](https://www.analyticsvidhya.com/?p=37752); [DataLemur ML interview questions](https://datalemur.com/blog/machine-learning-interview-questions).
 
 Student data is illustrative; every fit and curve on this page is computed live.

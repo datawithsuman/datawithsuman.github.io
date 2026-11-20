@@ -52,15 +52,15 @@ At **32k tokens** the standard score matrix is **64 GiB for a single layer**, al
 
 #### In one breath
 
-Standard attention writes the full N × N score matrix to GPU main memory (HBM), reads it back for the softmax, writes the probabilities, and reads them again. GPUs compute much faster than they move data, so this traffic, not the FLOPs, dominates the runtime, and the N² matrix also eats memory. **FlashAttention** splits Q, K and V into tiles that fit in fast on-chip SRAM, computes attention tile by tile, and never stores the full matrix. The trick that makes this possible is the **online softmax**: keep a running maximum and running sum per row, and rescale earlier partial results when a bigger score appears. The result is **exact** attention, not an approximation, with memory that grows linearly in sequence length. On GPT-2 medium it cut HBM traffic from 40.3 GB to 4.4 GB and runtime from 41.7 ms to 7.3 ms.What you'll be able to do after this: explain why attention is memory-bound, run the online softmax by hand, and say what each FlashAttention version improved.
+Standard attention writes the full N × N score matrix to GPU main memory (HBM), reads it back for the softmax, writes the probabilities, and reads them again. GPUs compute much faster than they move data, so this traffic, not the FLOPs, dominates the runtime, and the N² matrix also eats memory. **FlashAttention** splits Q, K and V into tiles that fit in fast on-chip SRAM, computes attention tile by tile, and never stores the full matrix. The trick that makes this possible is the **online softmax**: keep a running maximum and running sum per row, and rescale earlier partial results when a bigger score appears. The result is **exact** attention, not an approximation, with memory that grows linearly in sequence length. On GPT-2 medium it cut HBM traffic from 40.3 GB to 4.4 GB and runtime from 41.7 ms to 7.3 ms. What you'll be able to do after this: explain why attention is memory-bound, run the online softmax by hand, and say what each FlashAttention version improved.
 
 #### Softmax without seeing the whole row
 
 Softmax needs the row's maximum (for numerical safety) and its sum, which seems to require the whole row first. The online softmax processes scores in blocks and fixes up the past whenever the maximum changes:
 
-$$ m_{new} = \max(m, \max_j s_j), \quad \ell_{new} = \ell\,e^{m - m_{new}} + \textstyle\sum_j e^{s_j - m_{new}}, \quad o_{new} = o\,e^{m-m_{new}} + \textstyle\sum_j e^{s_j - m_{new}} v_j $$
+$$ {m_{new} = \max(m, \max_j s_j)}, \quad {\ell_{new} = \ell\,}{e^{m - m_{new}}}{ + \textstyle\sum_j e^{s_j - m_{new}}}, \quad {o_{new} = o\,e^{m-m_{new}} + \textstyle\sum_j e^{s_j - m_{new}} v_j} $$
 
-Milakov & Gimelshein, "Online normalizer calculation for softmax", 2018, arXiv:1805.02867. FlashAttention applies this per block of rows and keeps m and ℓ (as one log-sum-exp per row) for the backward pass.
+Milakov & Gimelshein, "Online normalizer calculation for softmax", 2018, [arXiv:1805.02867](https://arxiv.org/abs/1805.02867). FlashAttention applies this per block of rows and keeps m and ℓ (as one log-sum-exp per row) for the backward pass.
 
 - **new running max**: Compare the old maximum with the largest score in the new tile.
 
@@ -142,10 +142,10 @@ Why standard attention is slow because of memory traffic rather than arithmetic,
 
 #### Sources
 
-1. T. Dao, D. Fu, S. Ermon, A. Rudra & C. Ré, "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", NeurIPS 2022, arXiv:2205.14135 (Fig. 2 for the GPT-2 medium numbers).
+1. T. Dao, D. Fu, S. Ermon, A. Rudra & C. Ré, "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness", NeurIPS 2022, [arXiv:2205.14135](https://arxiv.org/abs/2205.14135) (Fig. 2 for the GPT-2 medium numbers).
 
-2. T. Dao, "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning", 2023, arXiv:2307.08691.
+2. T. Dao, "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning", 2023, [arXiv:2307.08691](https://arxiv.org/abs/2307.08691).
 
-3. J. Shah et al., "FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision", NeurIPS 2024, arXiv:2407.08608.
+3. J. Shah et al., "FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision", NeurIPS 2024, [arXiv:2407.08608](https://arxiv.org/abs/2407.08608).
 
-4. M. Milakov & N. Gimelshein, "Online normalizer calculation for softmax", 2018, arXiv:1805.02867; M. Rabe & C. Staats, "Self-attention Does Not Need O(n²) Memory", 2021, arXiv:2112.05682.
+4. M. Milakov & N. Gimelshein, "Online normalizer calculation for softmax", 2018, [arXiv:1805.02867](https://arxiv.org/abs/1805.02867); M. Rabe & C. Staats, "Self-attention Does Not Need O(n²) Memory", 2021, [arXiv:2112.05682](https://arxiv.org/abs/2112.05682).

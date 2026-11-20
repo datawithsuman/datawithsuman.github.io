@@ -48,11 +48,11 @@ Every one of the 13 backprop gradients agrees with the numerical estimate to abo
 
 #### In one breath
 
-Backpropagation is the chain rule applied layer by layer from the loss back to the input, reusing work. The forward pass computes and **stores** each layer's activations. The backward pass starts with the loss's gradient at the output and computes, for each layer, an **error signal δ** = (what the next layer sent back) ⊙ (the activation's slope). The weight gradient is then **δ times the layer's input**, and the signal sent further back is **Wᵀδ**. One backward pass gives the gradient for every weight at about **twice** the cost of the forward pass, compared with one extra forward pass _per weight_ for finite differences. The price is memory: every activation has to be kept until the backward pass uses it.What you'll be able to do after this: write the backward pass of an MLP in matrix form, check gradients numerically, and estimate the compute and memory cost of training.
+Backpropagation is the chain rule applied layer by layer from the loss back to the input, reusing work. The forward pass computes and **stores** each layer's activations. The backward pass starts with the loss's gradient at the output and computes, for each layer, an **error signal δ** = (what the next layer sent back) ⊙ (the activation's slope). The weight gradient is then **δ times the layer's input**, and the signal sent further back is **Wᵀδ**. One backward pass gives the gradient for every weight at about **twice** the cost of the forward pass, compared with one extra forward pass _per weight_ for finite differences. The price is memory: every activation has to be kept until the backward pass uses it. What you'll be able to do after this: write the backward pass of an MLP in matrix form, check gradients numerically, and estimate the compute and memory cost of training.
 
 #### The four backprop equations
 
-$$ \delta^{(L)} = \hat{p} - y, \quad \delta^{(l)} = \big(W^{(l+1)\top}\delta^{(l+1)}\big) \odot \phi'(z^{(l)}), \quad \frac{\partial L}{\partial W^{(l)}} = \delta^{(l)}\, a^{(l-1)\top}, \quad \frac{\partial L}{\partial b^{(l)}} = \delta^{(l)} $$
+$$ {\delta^{(L)} = \hat{p} - y}, \quad {\delta^{(l)} = \big(W^{(l+1)\top}\delta^{(l+1)}\big) \odot \phi'(z^{(l)})}, \quad {\frac{\partial L}{\partial W^{(l)}} = \delta^{(l)}\, a^{(l-1)\top}}, \quad {\frac{\partial L}{\partial b^{(l)}} = \delta^{(l)}} $$
 
 Goodfellow et al. §6.5.4–6.5.6; Rumelhart, Hinton & Williams, _Nature_ 1986. a(l) = φ(z(l)) is layer l's output and a(0) = x.
 
@@ -148,10 +148,10 @@ For what uses these gradients, see Gradient Descent, Momentum and Adam.
 
 1. D. Rumelhart, G. Hinton & R. Williams, "Learning representations by back-propagating errors", _Nature_ 323, 1986.
 
-2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.5, deeplearningbook.org.
+2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.5, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-3. A. Baydin, B. Pearlmutter, A. Radul & J. Siskind, "Automatic differentiation in machine learning: a survey", _JMLR_ 18, 2018, arXiv:1502.05767.
+3. A. Baydin, B. Pearlmutter, A. Radul & J. Siskind, "Automatic differentiation in machine learning: a survey", _JMLR_ 18, 2018, [arXiv:1502.05767](https://arxiv.org/abs/1502.05767).
 
-4. J. Kaplan et al., "Scaling Laws for Neural Language Models", arXiv:2001.08361, 2020 (training compute C ≈ 6N per token).
+4. J. Kaplan et al., "Scaling Laws for Neural Language Models", [arXiv:2001.08361](https://arxiv.org/abs/2001.08361), 2020 (training compute C ≈ 6N per token).
 
-5. T. Chen, B. Xu, C. Zhang & C. Guestrin, "Training Deep Nets with Sublinear Memory Cost", arXiv:1604.06174, 2016.
+5. T. Chen, B. Xu, C. Zhang & C. Guestrin, "Training Deep Nets with Sublinear Memory Cost", [arXiv:1604.06174](https://arxiv.org/abs/1604.06174), 2016.

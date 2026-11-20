@@ -81,7 +81,7 @@ Boosting usually predicts better when there are many interactions, and many libr
 
 #### The maths
 
-$$ y \sim \text{Poisson}(\mu), \qquad \log \mu = w^\top x, \qquad \mu = \exp(w^\top x) $$
+$$ {y \sim \text{Poisson}(\mu)}, \qquad {\log \mu} = {w^\top x}, \qquad {\mu = \exp(w^\top x)} $$
 
 Weights are fitted by maximum likelihood, commonly using iteratively reweighted least squares. With a log link, a weight’s effect is multiplicative.
 
@@ -139,18 +139,20 @@ How do you handle different observation periods?
 
 Add log(exposure) as an offset, with its coefficient fixed at 1. The model then predicts a rate per unit of exposure. Without it, shops observed for longer would simply look busier.
 
+#### The 30-second answer
+
 A GLM has three parts: a distribution for the outcome, a linear score, and a link between them. Linear regression is normal with an identity link, and logistic regression is Bernoulli with a logit. For counts, I'd use Poisson with a log link: predictions stay positive, and each coefficient multiplies the rate by e to the b. I'd add log exposure as an offset if observation time differs, and check for overdispersion, which makes standard errors too small. If there is, I'd use negative binomial.
 
 **Key terms and sources**
 
-One framework for linear, logistic and Poisson regression: a distribution, a link and a linear score, plus exposure and overdispersion.
+One framework for linear, logistic and Poisson regression: a distribution, a link and a linear score, plus exposure and overdispersion. · checked 6 Nov 2026
 
 #### Sources
 
-- ISLR, including Poisson regression
+- [ISLR, including Poisson regression](https://www.statlearning.com/)
 
-- scikit-learn on generalized linear models
+- [scikit-learn on generalized linear models](https://scikit-learn.org/stable/modules/linear_model.html#generalized-linear-models)
 
-- CS229 syllabus
+- [CS229 syllabus](https://cs229.stanford.edu/syllabus-summer2019.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

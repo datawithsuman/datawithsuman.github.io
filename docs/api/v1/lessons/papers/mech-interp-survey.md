@@ -12,7 +12,7 @@
 
 ### The paper
 
-Barez et al. · _Understanding AI from the Inside: The State of Mechanistic Interpretability for AI Safety_ · arXiv 2611.08438 · 2026 · checked 11 Nov 2026
+Barez et al. · _Understanding AI from the Inside: The State of Mechanistic Interpretability for AI Safety_ · arXiv [2611.08438](https://arxiv.org/abs/2611.08438) · 2026 · checked 11 Nov 2026
 
 We can measure what models do, but not how they do it, and that gap matters for safety. Output tests can be gamed, contaminated or fooled by a model that behaves well only when watched. Mechanistic interpretability studies a model's internals and makes causal claims about them. The survey asks whether that actually makes models safer. Its answer: the field has real achievements (features, circuits, targeted interventions) but explains only part of behaviour, so understanding helps safety only when it is faithful and tested causally.
 
@@ -20,9 +20,9 @@ We can measure what models do, but not how they do it, and that gap matters for 
 
 #### We design how models learn, not what they learn
 
-We write the training procedure, so in one sense we built the model. But the procedure only says _how_ to learn, and gradient descent decides _what_ gets learned. The survey names the result the interpretability gap: the distance between what models can do and what we understand about how they do it. As models scale, the gap may widen. Reasoning appears that we cannot trace, deceptive behaviour may go unnoticed, and safety guarantees built on partial understanding can fail without warning p. 9.
+We write the training procedure, so in one sense we built the model. But the procedure only says _how_ to learn, and gradient descent decides _what_ gets learned. The survey names the result the interpretability gap: the distance between what models can do and what we understand about how they do it. As models scale, the gap may widen. Reasoning appears that we cannot trace, deceptive behaviour may go unnoticed, and safety guarantees built on partial understanding can fail without warning [p. 9](https://arxiv.org/pdf/2611.08438#page=9).
 
-Mechanistic interpretability (MI) is one way to close that gap: study a network’s internal mechanisms in relation to its behaviour. The survey keeps returning to one question throughout: **does understanding how models work actually make them safer?** It notes that many interpretability papers assume the answer is yes, and that the assumption is “largely untested” p. 12.
+Mechanistic interpretability (MI) is one way to close that gap: study a network’s internal mechanisms in relation to its behaviour. The survey keeps returning to one question throughout: **does understanding how models work actually make them safer?** It notes that many interpretability papers assume the answer is yes, and that the assumption is “largely untested” [p. 12](https://arxiv.org/pdf/2611.08438#page=12).
 
 ### The idea
 
@@ -66,7 +66,7 @@ Each lesson in AI Engineering › AI Interpretability builds on this survey, wit
 
 #### People have opened up networks for decades
 
-The name “mechanistic interpretability” is recent, but the work is not. The survey counts much older studies as part of the field’s history, even though they predate the term p. 9–10.
+The name “mechanistic interpretability” is recent, but the work is not. The survey counts much older studies as part of the field’s history, even though they predate the term [p. 9–10](https://arxiv.org/pdf/2611.08438#page=10).
 
 1. Minsky and Papert (1969) asked which functions a network can represent at all. Hinton (1986) showed concepts can be spread over many units, and Elman (1991) ran PCA on a recurrent net’s hidden states.
 
@@ -80,11 +80,11 @@ The name “mechanistic interpretability” is recent, but the work is not. The 
 
 6. By mid-2024, sparse autoencoders extracted features from billion-parameter models. Analysis has shifted from manual inspection to automated tools p. 9–11.
 
-The survey stresses two recent shifts. First, from manual to **assisted** analysis: at today’s sizes nobody can inspect neurons by hand, so feature extraction, circuit discovery and feature labelling are increasingly automated. Second, a **divergence of priorities**: some researchers want safety tools that work now without full understanding, others want complete causal understanding even at great cost. Chapter 11 returns to these schools of thought p. 11.
+The survey stresses two recent shifts. First, from manual to **assisted** analysis: at today’s sizes nobody can inspect neurons by hand, so feature extraction, circuit discovery and feature labelling are increasingly automated. Second, a **divergence of priorities**: some researchers want safety tools that work now without full understanding, others want complete causal understanding even at great cost. Chapter 11 returns to these schools of thought [p. 11](https://arxiv.org/pdf/2611.08438#page=11).
 
 #### Four reasons a good test score can mislead
 
-The default way to judge a model is behavioural evaluation: measure its outputs on held-out inputs. That works only if the model reached its score through the mechanism we hoped for, and output tests cannot see the mechanism p. 15.
+The default way to judge a model is behavioural evaluation: measure its outputs on held-out inputs. That works only if the model reached its score through the mechanism we hoped for, and output tests cannot see the mechanism [p. 15](https://arxiv.org/pdf/2611.08438#page=15).
 
 | Problem | What goes wrong |
 |---|---|
@@ -93,7 +93,7 @@ The default way to judge a model is behavioural evaluation: measure its outputs 
 | **Evaluation awareness** | A model may recognise test-like contexts and behave differently there. Models have shown alignment faking without being trained or told to do it. |
 | **No fine-grained control** | Removing one capability without damaging others means finding where it lives inside. Output tests give no handle for that. |
 
-All four from survey §2 p. 15. A fifth issue: a model updated after deployment no longer matches the snapshot that was evaluated p. 16.
+All four from survey §2 [p. 15](https://arxiv.org/pdf/2611.08438#page=15). A fifth issue: a model updated after deployment no longer matches the snapshot that was evaluated [p. 16](https://arxiv.org/pdf/2611.08438#page=16).
 
 ##### The case that made this concrete: sleeper agents
 
@@ -107,7 +107,7 @@ All four from survey §2 p. 15. A fifth issue: a model updated after deployment 
 
 #### From “what does it do” to “how does it do it”
 
-Interpretability is broader than MI. The survey lays the families on a spectrum from correlational to causal: behavioural evaluation tells you **what** a model does, attribution and probing tell you **where** relevant information is, and mechanistic analysis tells you **how** the computation produces the behaviour p. 19.
+Interpretability is broader than MI. The survey lays the families on a spectrum from correlational to causal: behavioural evaluation tells you **what** a model does, attribution and probing tell you **where** relevant information is, and mechanistic analysis tells you **how** the computation produces the behaviour [p. 19](https://arxiv.org/pdf/2611.08438#page=19).
 
 1. **Behavioural methods**: benchmarks and red-teaming. Fast, cheap and scalable, but not designed to reveal internal computation p. 17.
 
@@ -121,7 +121,7 @@ Interpretability is broader than MI. The survey lays the families on a spectrum 
 
 ##### What counts as “mechanistic” in this survey
 
-Two criteria. (1) It engages with **internals**: activations, components such as neurons, heads and features, or parameters. Looking at inputs and outputs alone is not enough. (2) It makes **causal** claims through interventions such as ablation, patching or steering, not just correlations. Under this definition a plain probe is not mechanistic, but a probe whose direction you then intervene on is p. 12–13.
+Two criteria. (1) It engages with **internals**: activations, components such as neurons, heads and features, or parameters. Looking at inputs and outputs alone is not enough. (2) It makes **causal** claims through interventions such as ablation, patching or steering, not just correlations. Under this definition a plain probe is not mechanistic, but a probe whose direction you then intervene on is [p. 12–13](https://arxiv.org/pdf/2611.08438#page=12).
 
 ##### Try it: which tool answers your question?
 
@@ -133,7 +133,7 @@ Pick a question you might ask about a model. The picker shows which family answe
 
 #### When “it passed the test” is not enough
 
-The survey lists four situations where you need to know _how_, not just _that_ p. 19:
+The survey lists four situations where you need to know _how_, not just _that_ [p. 19](https://arxiv.org/pdf/2611.08438#page=19):
 
 1. **Intent hidden from outputs**, such as deception or side quests that never show up in behaviour.
 
@@ -143,23 +143,23 @@ The survey lists four situations where you need to know _how_, not just _that_ p
 
 4. **Guarantees beyond the tested inputs**: safety that must hold outside the evaluated distribution.
 
-Even then the survey frames mechanistic analysis as a complement, not a replacement. Its cost goes beyond compute: researcher time, experimental complexity and slower iteration p. 20.
+Even then the survey frames mechanistic analysis as a complement, not a replacement. Its cost goes beyond compute: researcher time, experimental complexity and slower iteration [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 #### Seven open problems
 
-1. **When is mechanistic understanding necessary?** Sleeper agents were caught from activations, but better training may shrink the failures that need internals. No consensus; in the near term it stays indispensable for diagnosing what behaviour misses pp. 123–124.
+1. **When is mechanistic understanding necessary?** Sleeper agents were caught from activations, but better training may shrink the failures that need internals. No consensus; in the near term it stays indispensable for diagnosing what behaviour misses [pp. 123–124](https://arxiv.org/pdf/2611.08438#page=124).
 
-2. **Evaluation and benchmarks**: turning Ch 7’s five dimensions into shared benchmarks: synthetic tasks with known circuits, toy models, diverse suites. Do explanations even have an objective ground truth? p. 124
+2. **Evaluation and benchmarks**: turning Ch 7’s five dimensions into shared benchmarks: synthetic tasks with known circuits, toy models, diverse suites. Do explanations even have an objective ground truth? [p. 124](https://arxiv.org/pdf/2611.08438#page=124)
 
-3. **Incompleteness, scale, generalisation, robustness**: mapping distributed computation onto a human-level causal model is lossy, and we can’t measure how lossy; cheap tools are coarse and fine tools are costly; and models might learn to resist analysis, an arms race like evaluation awareness pp. 124–125.
+3. **Incompleteness, scale, generalisation, robustness**: mapping distributed computation onto a human-level causal model is lossy, and we can’t measure how lossy; cheap tools are coarse and fine tools are costly; and models might learn to resist analysis, an arms race like evaluation awareness [pp. 124–125](https://arxiv.org/pdf/2611.08438#page=125).
 
-4. **Understanding vs. alignment**: knowing the refusal circuit doesn’t say what the model _should_ value; how interpretability complements RLHF and constitutional AI is open p. 125.
+4. **Understanding vs. alignment**: knowing the refusal circuit doesn’t say what the model _should_ value; how interpretability complements RLHF and constitutional AI is open [p. 125](https://arxiv.org/pdf/2611.08438#page=125).
 
-5. **The ontology question**: “borzoi detector” and “previous-token copier” are human choices; several explanations can fit the same causal facts. Is a unique description even expected? p. 125
+5. **The ontology question**: “borzoi detector” and “previous-token copier” are human choices; several explanations can fit the same causal facts. Is a unique description even expected? [p. 125](https://arxiv.org/pdf/2611.08438#page=125)
 
-6. **Proxy fidelity**: SAEs and CLTs may reproduce behaviour with different internal algorithms, so “no deception circuit in the proxy” means little. Interchange-intervention testing and bounds on how far a proxy can differ are candidate fixes pp. 125–126.
+6. **Proxy fidelity**: SAEs and CLTs may reproduce behaviour with different internal algorithms, so “no deception circuit in the proxy” means little. Interchange-intervention testing and bounds on how far a proxy can differ are candidate fixes [pp. 125–126](https://arxiv.org/pdf/2611.08438#page=126).
 
-7. **Beyond transformers**: CNNs, state-space models (Mamba, RWKV), diffusion models and mixture-of-experts (patching can change downstream expert routing; up to 256+ experts) each break assumptions. Steering, tuned lenses, editing and circuit evaluations have been adapted with varying success pp. 126–127.
+7. **Beyond transformers**: CNNs, state-space models (Mamba, RWKV), diffusion models and mixture-of-experts (patching can change downstream expert routing; up to 256+ experts) each break assumptions. Steering, tuned lenses, editing and circuit evaluations have been adapted with varying success [pp. 126–127](https://arxiv.org/pdf/2611.08438#page=127).
 
 ### Where it falls short
 
@@ -167,17 +167,17 @@ Even then the survey frames mechanistic analysis as a complement, not a replacem
 
 ##### 1 · Explanations are often incomplete
 
-Finding one real causal pathway (say, “this MLP retrieves facts about Paris”) does not tell you whether it is the whole story or one of several mechanisms working together p. 20.
+Finding one real causal pathway (say, “this MLP retrieves facts about Paris”) does not tell you whether it is the whole story or one of several mechanisms working together [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 ##### 2 · It scales poorly
 
-Large models spread computation across many components, and most circuit-discovery methods explain the computation behind one generated token. Behaviour that unfolds over many tokens is still hard to capture p. 20.
+Large models spread computation across many components, and most circuit-discovery methods explain the computation behind one generated token. Behaviour that unfolds over many tokens is still hard to capture [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
 ##### 3 · Explaining is not controlling
 
-Even a causally validated mechanism does not guarantee reliable control. Effects like the hydra effect, where the network compensates when a component is removed, and poor transfer across models or settings get in the way p. 20.
+Even a causally validated mechanism does not guarantee reliable control. Effects like the hydra effect, where the network compensates when a component is removed, and poor transfer across models or settings get in the way [p. 20](https://arxiv.org/pdf/2611.08438#page=20).
 
-The survey calls these open challenges, not fundamental barriers. But they mark “a clear gap between mechanistic explanation and reliable control or safety guarantees” p. 21. Keep this gap in mind: most later chapters are attempts to narrow one of these three limits.
+The survey calls these open challenges, not fundamental barriers. But they mark “a clear gap between mechanistic explanation and reliable control or safety guarantees” [p. 21](https://arxiv.org/pdf/2611.08438#page=21). Keep this gap in mind: most later chapters are attempts to narrow one of these three limits.
 
 ## Why it matters
 
@@ -187,7 +187,7 @@ The survey calls these open challenges, not fundamental barriers. But they mark 
 
 #### One layer of defence in depth
 
-**Achievements**: interpretable features with SAEs, task circuits, targeted interventions, and a changed view of how models compute. **Limits**: much behaviour unexplained, poor generalisation under shift, entangled computation, hard to scale. And the assumption that mechanistic understanding directly makes systems safer is “in fact largely untested” pp. 127–128.
+**Achievements**: interpretable features with SAEs, task circuits, targeted interventions, and a changed view of how models compute. **Limits**: much behaviour unexplained, poor generalisation under shift, entangled computation, hard to scale. And the assumption that mechanistic understanding directly makes systems safer is “in fact largely untested” [pp. 127–128](https://arxiv.org/pdf/2611.08438#page=128).
 
 | Paradigm | What it does | Where |
 |---|---|---|
@@ -195,11 +195,11 @@ The survey calls these open challenges, not fundamental barriers. But they mark 
 | **Learning dynamics** | Understand, predict and intervene as mechanisms form | Ch 10 |
 | **Interpretability by design** | SoLU, weight-sparse transformers, KANs and successors: transparent by construction | Survey §6.10 |
 
-Survey §15.2 p. 128. Progress also needs claims that are falsifiable and reproducible.
+Survey §15.2 [p. 128](https://arxiv.org/pdf/2611.08438#page=128). Progress also needs claims that are falsifiable and reproducible.
 
 ##### The closing question
 
-“Does understanding how models work actually make them safer?” p. 128
+“Does understanding how models work actually make them safer?” [p. 128](https://arxiv.org/pdf/2611.08438#page=128)
 
 #### Why the survey exists
 
@@ -219,6 +219,6 @@ The building blocks: polysemantic neurons, features as representational units, t
 
 ##### Sources for this tab
 
-- Barez, Wu et al. (2026). _Understanding AI from the Inside._ arXiv 2611.08438 · §1 (pp. 9–14), §2 (pp. 15–16), §3 (pp. 16–21), Table 2 (p. 20). The historical works, sleeper agents (Hubinger et al. 2024), linear probe detection (MacDiarmid et al. 2024) and alignment faking (Greenblatt et al. 2024) are cited as the survey reports them.
+- Barez, Wu et al. (2026). _Understanding AI from the Inside._ [arXiv 2611.08438](https://arxiv.org/abs/2611.08438) · §1 (pp. 9–14), §2 (pp. 15–16), §3 (pp. 16–21), Table 2 (p. 20). The historical works, sleeper agents (Hubinger et al. 2024), linear probe detection (MacDiarmid et al. 2024) and alignment faking (Greenblatt et al. 2024) are cited as the survey reports them.
 
 **Key terms and sources**

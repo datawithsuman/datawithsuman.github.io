@@ -48,11 +48,11 @@ With tanh and std 0.01, the activations shrink to about **10⁻¹⁹** by layer 
 
 #### In one breath
 
-Weights must start **random** (to break symmetry) and at the **right scale**. Each layer multiplies its input by a weight matrix; if the weights are a bit too small the signal shrinks layer after layer towards zero, a bit too big and it blows up, and the gradients do the same on the way back. The fix is to pick the weight variance so each layer keeps the signal's variance roughly constant: **Xavier/Glorot** uses Var(w) = 2 / (fan_in + fan_out) (≈ 1/n) for tanh, and **He/Kaiming** uses Var(w) = 2 / fan_in for ReLU, because ReLU zeroes half its inputs. With the right init, a 20-layer network starts with healthy signals in every layer.What you'll be able to do after this: derive why the variance should be about 1/n, choose Xavier vs He for an activation, and diagnose a network whose activations collapse or explode at the start of training.
+Weights must start **random** (to break symmetry) and at the **right scale**. Each layer multiplies its input by a weight matrix; if the weights are a bit too small the signal shrinks layer after layer towards zero, a bit too big and it blows up, and the gradients do the same on the way back. The fix is to pick the weight variance so each layer keeps the signal's variance roughly constant: **Xavier/Glorot** uses Var(w) = 2 / (fan_in + fan_out) (≈ 1/n) for tanh, and **He/Kaiming** uses Var(w) = 2 / fan_in for ReLU, because ReLU zeroes half its inputs. With the right init, a 20-layer network starts with healthy signals in every layer. What you'll be able to do after this: derive why the variance should be about 1/n, choose Xavier vs He for an activation, and diagnose a network whose activations collapse or explode at the start of training.
 
 #### Keep the variance constant from layer to layer
 
-$$ \mathrm{Var}(z_k) = n \cdot \mathrm{Var}(w) \cdot \mathrm{E}[a^2] $$
+$$ \mathrm{Var}({z_k}) = {n \cdot \mathrm{Var}(w)} \cdot {\mathrm{E}[a^2]} $$
 
 Glorot & Bengio (2010) required the variance to be preserved both forward (nin·Var(w) = 1) and backward (nout·Var(w) = 1) and took the compromise Var(w) = 2/(nin + nout). He et al. (2015) derived Var(w) = 2/nin for ReLU.
 
@@ -141,10 +141,10 @@ Why weights must start random, why the scale matters, Xavier/Glorot initialisati
 
 1. X. Glorot & Y. Bengio, "Understanding the difficulty of training deep feedforward neural networks", AISTATS 2010.
 
-2. K. He, X. Zhang, S. Ren & J. Sun, "Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification", ICCV 2015, arXiv:1502.01852.
+2. K. He, X. Zhang, S. Ren & J. Sun, "Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification", ICCV 2015, [arXiv:1502.01852](https://arxiv.org/abs/1502.01852).
 
-3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §8.4, deeplearningbook.org.
+3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §8.4, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
 4. A. Radford et al., "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019.
 
-5. PyTorch documentation, torch.nn.init.
+5. PyTorch documentation, [torch.nn.init](https://docs.pytorch.org/docs/stable/nn.init.html).

@@ -148,12 +148,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">There are three families. Filter methods score each feature alone, which is fast, but misses interactions and redundancy. Wrapper methods try subsets with the model, which is slow and can overfit. Embedded methods like Lasso select during training. The main trap is selecting with all the data, then cross-validating: with many noise features, you can score far above chance on random labels. So I'd make selection a step inside each fold. Accuracy often isn't the main reason to select. Cost and reliability often are.</p>
+<h3>The 30-second answer</h3><p class="say30">There are three families. Filter methods score each feature alone, which is fast, but misses interactions and redundancy. Wrapper methods try subsets with the model, which is slow and can overfit. Embedded methods like Lasso select during training. The main trap is selecting with all the data, then cross-validating: with many noise features, you can score far above chance on random labels. So I'd make selection a step inside each fold. Accuracy often isn't the main reason to select. Cost and reliability often are.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Filter, wrapper and embedded methods, why selection can leak into your evaluation, and when you shouldn't bother.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Filter, wrapper and embedded methods, why selection can leak into your evaluation, and when you shouldn't bother. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://hastie.su.domains/ElemStatLearn/">Hastie, Tibshirani and Friedman, The Elements of Statistical Learning</a></li><li><a href="https://scikit-learn.org/stable/modules/feature_selection.html">scikit-learn on feature selection</a></li><li><a href="https://www.statlearning.com/">ISLR</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

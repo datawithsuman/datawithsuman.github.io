@@ -84,7 +84,7 @@ First ask why it's there. A sensor error should be fixed or removed. A real whal
 
 #### The maths
 
-$$ \bar x = \frac{1}{n}\sum_i x_i, \qquad s = \sqrt{\frac{1}{n-1}\sum_i (x_i - \bar x)^2}, \qquad z_i = \frac{x_i - \bar x}{s}, \qquad \mathrm{IQR} = Q_3 - Q_1 $$
+$$ {\bar x} = \frac{1}{n}\sum_i x_i, \qquad {s} = \sqrt{\frac{1}{n-1}\sum_i (x_i - \bar x)^2}, \qquad {z_i} = \frac{x_i - \bar x}{s}, \qquad {\mathrm{IQR} = Q_3 - Q_1} $$
 
 Worked example: for 1, 2, 3, 4 and 100, the mean is 22, while the median is 3. One value moved the mean by more than seven times the median.
 
@@ -142,17 +142,19 @@ Should you remove outliers before training?
 
 Not automatically. Find out why they exist. Errors should be fixed or removed, while real extremes may be what you most need to predict. Options include a robust loss, capping or a log transform. And apply any rule using training data only, so you don't leak from the test set.
 
+#### The 30-second answer
+
 The mean uses every value, so an outlier can drag it, while the median is the middle value, and barely moves. I'd use the median for a typical case in skewed data, and the mean when totals matter, since mean times count gives the total. For outliers, I'd prefer the IQR rule to z-scores, because an outlier inflates the standard deviation and can mask itself. Then I'd ask why it's there before removing it. For latency, I'd report p99, because averages hide slow requests that many users actually hit.
 
 **Key terms and sources**
 
-Mean, median, percentiles, spread and skew, how outliers distort them, how to detect outliers, and why latency is reported as p99.
+Mean, median, percentiles, spread and skew, how outliers distort them, how to detect outliers, and why latency is reported as p99. · checked 6 Nov 2026
 
 #### Sources
 
-- Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics
+- [Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics](https://www.openintro.org/book/os/)
 
-- Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt
+- [Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt](https://toc.uni.li/FLMF048415.pdf)
 
 - Serving metrics on this site
 

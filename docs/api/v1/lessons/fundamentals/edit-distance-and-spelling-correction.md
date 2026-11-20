@@ -88,7 +88,7 @@ Norvig's short corrector shows why simple versions go a long way, and also where
 
 #### The maths
 
-$$ D(i,j) = \min\begin{cases}D(i-1,j) + 1\\ D(i,j-1) + 1\\ D(i-1,j-1) + \delta(a_i,b_j)\end{cases} \qquad \hat c = \arg\max_c P(c)\,P(w\mid c) $$
+$$ {D(i,j)} = \min\begin{cases}{D(i-1,j) + 1}\\ {D(i,j-1) + 1}\\ {D(i-1,j-1) + \delta(a_i,b_j)}\end{cases} \qquad {\hat c = \arg\max_c P(c)\,P(w\mid c)} $$
 
 The recurrence is the standard Levenshtein form. The noisy channel formula is as in Norvig’s essay, where P(w) is dropped because it’s the same for every candidate.
 
@@ -148,18 +148,20 @@ Why isn't edit distance enough for spelling correction?
 
 Several real words can be equally close, and it ignores how common they are and what's around them. A typo near both "form" and "from" needs a language model to decide. That's what the noisy channel adds.
 
+#### The 30-second answer
+
 Edit distance is the fewest insertions, deletions and substitutions to turn one string into another. I'd use dynamic programming: each cell is the minimum of the cell above plus 1, the cell to the left plus 1, and the diagonal plus 0 or 1, depending on whether the letters match. That's O(mn) time, and O(min(m, n)) memory if I only need the distance. A backtrace recovers the edits. For spelling correction, I'd use the noisy channel model: generate known words nearby, and choose the one that maximises P(word) times P(typo given word), using context where I can.
 
 **Key terms and sources**
 
-Levenshtein distance with dynamic programming, backtrace and alignment, Damerau transpositions, and the noisy channel model for spelling correction.
+Levenshtein distance with dynamic programming, backtrace and alignment, Damerau transpositions, and the noisy channel model for spelling correction. · checked 7 Nov 2026
 
 #### Sources
 
-- Norvig, How to Write a Spelling Corrector
+- [Norvig, How to Write a Spelling Corrector](https://norvig.com/spell-correct.html)
 
-- Levenshtein distance, Wikipedia
+- [Levenshtein distance, Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance)
 
-- Jurafsky and Martin, Speech and Language Processing
+- [Jurafsky and Martin, Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

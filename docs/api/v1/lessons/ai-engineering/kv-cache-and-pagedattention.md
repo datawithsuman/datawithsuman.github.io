@@ -48,7 +48,7 @@ Reserving the full **8k context** per request leaves **84.5%** of KV memory empt
 
 #### In one breath
 
-Every running request needs its own KV cache, which grows by one token per decode step, and nobody knows in advance how long the answer will be. Early servers reserved one **contiguous** chunk per request for the maximum possible length, so most of it sat empty: Kwon et al. found only **20–38%** of KV memory held real tokens. **PagedAttention** (vLLM) borrows the idea of virtual memory: the cache is split into small fixed-size **blocks** (16 tokens by default), allocated on demand anywhere in GPU memory, and a per-request **block table** maps logical positions to physical blocks; the attention kernel follows that table. Waste drops to the last, partly filled block, so far more requests fit in a batch (vLLM reported 2–4× throughput), and blocks can be **shared** (parallel samples, common prefixes) or **evicted** when memory runs out.What you'll be able to do after this: explain KV-cache fragmentation, how block tables work, and what happens when the cache is full.
+Every running request needs its own KV cache, which grows by one token per decode step, and nobody knows in advance how long the answer will be. Early servers reserved one **contiguous** chunk per request for the maximum possible length, so most of it sat empty: Kwon et al. found only **20–38%** of KV memory held real tokens. **PagedAttention** (vLLM) borrows the idea of virtual memory: the cache is split into small fixed-size **blocks** (16 tokens by default), allocated on demand anywhere in GPU memory, and a per-request **block table** maps logical positions to physical blocks; the attention kernel follows that table. Waste drops to the last, partly filled block, so far more requests fit in a batch (vLLM reported 2–4× throughput), and blocks can be **shared** (parallel samples, common prefixes) or **evicted** when memory runs out. What you'll be able to do after this: explain KV-cache fragmentation, how block tables work, and what happens when the cache is full.
 
 #### Blocks and block tables
 
@@ -128,10 +128,10 @@ How serving engines store the KV cache of many concurrent requests: why reservin
 
 #### Sources
 
-1. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, arXiv:2309.06180.
+1. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, [arXiv:2309.06180](https://arxiv.org/abs/2309.06180).
 
-2. vLLM documentation, "Paged Attention" and "Automatic Prefix Caching", docs.vllm.ai.
+2. vLLM documentation, "Paged Attention" and "Automatic Prefix Caching", [docs.vllm.ai](https://docs.vllm.ai/).
 
-3. L. Zheng et al., "SGLang: Efficient Execution of Structured Language Model Programs", NeurIPS 2024, arXiv:2312.07104.
+3. L. Zheng et al., "SGLang: Efficient Execution of Structured Language Model Programs", NeurIPS 2024, [arXiv:2312.07104](https://arxiv.org/abs/2312.07104).
 
-4. R. Prabhu et al., "vAttention: Dynamic Memory Management for Serving LLMs without PagedAttention", 2024, arXiv:2405.04437.
+4. R. Prabhu et al., "vAttention: Dynamic Memory Management for Serving LLMs without PagedAttention", 2024, [arXiv:2405.04437](https://arxiv.org/abs/2405.04437).

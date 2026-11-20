@@ -36,7 +36,7 @@ _Illustrative, for a model with rare positives._
 
 #### Change the class balance, watch which curve cares
 
-The ROC curve (left) doesn't move when you change prevalence, because both of its axes are rates within a class. The PR curve (right) sinks, because precision mixes in how many negatives there are. A random model's PR-AUC equals the prevalence; scikit-learn: "With random predictions, the AP is the fraction of positive samples" docs.
+The ROC curve (left) doesn't move when you change prevalence, because both of its axes are rates within a class. The PR curve (right) sinks, because precision mixes in how many negatives there are. A random model's PR-AUC equals the prevalence; scikit-learn: "With random predictions, the AP is the fraction of positive samples" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 **Now say why:** why does one score hold steady while the other collapses?
 
@@ -46,7 +46,7 @@ The ROC curve (left) doesn't move when you change prevalence, because both of it
 
 #### In one breath
 
-Threshold metrics judge one operating point; curves judge them all. The **ROC curve** plots recall against false positive rate as the threshold sweeps. Its area (**ROC-AUC**) is the probability that a random positive is scored above a random negative, and it **doesn't change with class balance**. The **precision–recall curve** plots precision against recall, and its area (**average precision, PR-AUC**) **drops as positives get rarer**, because precision does. So ROC-AUC measures ranking quality in general, and PR-AUC measures how useful the top of the ranking is when positives are rare. Gini (2·AUC − 1) and KS are the credit-scoring dialects of the same idea.What you'll be able to do after this: read both curves, explain AUC as a probability, say which to report for a given scenario, and explain why a 0.98 ROC-AUC fraud model can still be nearly useless.
+Threshold metrics judge one operating point; curves judge them all. The **ROC curve** plots recall against false positive rate as the threshold sweeps. Its area (**ROC-AUC**) is the probability that a random positive is scored above a random negative, and it **doesn't change with class balance**. The **precision–recall curve** plots precision against recall, and its area (**average precision, PR-AUC**) **drops as positives get rarer**, because precision does. So ROC-AUC measures ranking quality in general, and PR-AUC measures how useful the top of the ranking is when positives are rare. Gini (2·AUC − 1) and KS are the credit-scoring dialects of the same idea. What you'll be able to do after this: read both curves, explain AUC as a probability, say which to report for a given scenario, and explain why a 0.98 ROC-AUC fraud model can still be nearly useless.
 
 #### Sweep the threshold, plot each point
 
@@ -62,9 +62,9 @@ Threshold metrics judge one operating point; curves judge them all. The **ROC cu
 
 #### AUC = the chance a random positive outranks a random negative
 
-$$ \text{AUC} = P\big(s(x^{+}) > s(x^{-})\big) = \tfrac{1}{n_{+}n_{-}}\textstyle\sum_{i\in +}\sum_{j\in -}\mathbb 1[s_i > s_j] $$
+$$ {\text{AUC}} = {P\big(s(x^{+}) > s(x^{-})\big)} = {\tfrac{1}{n_{+}n_{-}}\textstyle\sum_{i\in +}\sum_{j\in -}\mathbb 1[s_i > s_j]} $$
 
-The probability interpretation and its equivalence to the Wilcoxon–Mann–Whitney statistic Fawcett 2006, via the ROC article.
+The probability interpretation and its equivalence to the Wilcoxon–Mann–Whitney statistic [Fawcett 2006, via the ROC article](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
 - **ROC-AUC**: The area under the ROC curve, between 0 and 1. 0.5 = random ordering; 1 = every positive above every negative.
 
@@ -76,9 +76,9 @@ Green: positives' scores; red: negatives'. The overlap is where ranking mistakes
 
 #### PR-AUC: how good is the top of the list?
 
-$$ \text{AP} = \sum_{n}(R_n - R_{n-1})\,P_n $$
+$$ {\text{AP}} = \sum_{n}{(R_n - R_{n-1})}\,{P_n} $$
 
-scikit-learn's definition, which deliberately does not interpolate: linear interpolation of the PR curve "provides an overly-optimistic measure of classifier performance" docs. Davis & Goadrich (2006) showed why straight-line interpolation is wrong in PR space.
+scikit-learn's definition, which deliberately does not interpolate: linear interpolation of the PR curve "provides an overly-optimistic measure of classifier performance" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Davis & Goadrich (2006) showed why straight-line interpolation is wrong in PR space.
 
 - **average precision**: A step-wise area under the precision–recall curve.
 
@@ -86,13 +86,13 @@ scikit-learn's definition, which deliberately does not interpolate: linear inter
 
 - **precision there**: The precision at threshold n: the height of the step. AP is the precision averaged over the points where you catch new positives.
 
-Two facts connect the curves. Davis and Goadrich proved that one curve dominates another in ROC space if and only if it dominates in PR space, so if model A is better everywhere, both views agree. But "an algorithm that optimizes the area under the ROC curve is not guaranteed to optimize the area under the PR curve" Davis & Goadrich, ICML 2006. When curves cross, the two areas can rank models differently, and PR-AUC weights the high-score region your business actually uses.
+Two facts connect the curves. Davis and Goadrich proved that one curve dominates another in ROC space if and only if it dominates in PR space, so if model A is better everywhere, both views agree. But "an algorithm that optimizes the area under the ROC curve is not guaranteed to optimize the area under the PR curve" [Davis & Goadrich, ICML 2006](https://mlanthology.org/icml/2006/davis2006icml-relationship). When curves cross, the two areas can rank models differently, and PR-AUC weights the high-score region your business actually uses.
 
 #### Gini, KS and partial AUC
 
 ##### Gini (credit risk)
 
-Gini = 2·AUC − 1: twice the area between the ROC curve and the diagonal, rescaled so random = 0 and perfect = 1 ROC article. Banks report scorecards in Gini. Not the same as the Gini impurity used in decision trees.
+Gini = 2·AUC − 1: twice the area between the ROC curve and the diagonal, rescaled so random = 0 and perfect = 1 [ROC article](https://en.wikipedia.org/wiki/Receiver_operating_characteristic). Banks report scorecards in Gini. Not the same as the Gini impurity used in decision trees.
 
 ##### KS statistic (credit risk)
 
@@ -100,11 +100,11 @@ The maximum gap between the cumulative score distributions of "goods" and "bads"
 
 ##### Partial AUC: only the region you'll use
 
-If you can only ever tolerate a 1% false positive rate (screening a whole population, fraud alerts), the rest of the ROC curve is irrelevant. Partial AUC integrates only up to that FPR; scikit-learn exposes it as `roc_auc_score(..., max_fpr=0.01)` (standardised) docs.
+If you can only ever tolerate a 1% false positive rate (screening a whole population, fraud alerts), the rest of the ROC curve is irrelevant. Partial AUC integrates only up to that FPR; scikit-learn exposes it as `roc_auc_score(..., max_fpr=0.01)` (standardised) [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 ##### Multi-class AUC
 
-One-vs-rest (each class vs all others, then average) or one-vs-one (every pair of classes, then average; Hand & Till 2001). In scikit-learn: `multi_class='ovr'` or `'ovo'`, with macro or prevalence-weighted averaging docs.
+One-vs-rest (each class vs all others, then average) or one-vs-one (every pair of classes, then average; Hand & Till 2001). In scikit-learn: `multi_class='ovr'` or `'ovo'`, with macro or prevalence-weighted averaging [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 ## In practice
 
@@ -126,7 +126,7 @@ One-vs-rest (each class vs all others, then average) or one-vs-one (every pair o
 
 #### "ROC-AUC is 0.98, ship it"
 
-ROC-AUC uses the false positive _rate_: false alarms divided by all negatives. With 99,800 legitimate transactions, a 1% false positive rate is still 998 false alarms, and against 200 frauds that wrecks precision, yet it barely moves ROC. Saito and Rehmsmeier showed that on imbalanced data "the visual interpretability of ROC plots… can be deceptive with respect to conclusions about the reliability of classification performance" Saito & Rehmsmeier 2015. See it in the Play lab, in the Intuition tab: push prevalence down and ROC-AUC doesn't move, while PR-AUC collapses.
+ROC-AUC uses the false positive _rate_: false alarms divided by all negatives. With 99,800 legitimate transactions, a 1% false positive rate is still 998 false alarms, and against 200 frauds that wrecks precision, yet it barely moves ROC. Saito and Rehmsmeier showed that on imbalanced data "the visual interpretability of ROC plots… can be deceptive with respect to conclusions about the reliability of classification performance" [Saito & Rehmsmeier 2015](https://pmc.ncbi.nlm.nih.gov/articles/PMC4349800/). See it in the Play lab, in the Intuition tab: push prevalence down and ROC-AUC doesn't move, while PR-AUC collapses.
 
 #### What to keep
 
@@ -134,7 +134,7 @@ ROC-AUC uses the false positive _rate_: false alarms divided by all negatives. W
 
 - **AUC hides the operating point.** Two models with equal AUC can differ a lot at the threshold you'll actually use. Report the metric at your operating point too.
 
-- **AUC estimates are noisy, and the measure itself has critics.** Hand (2009) argues AUC implicitly uses different cost assumptions for different classifiers when comparing them, and proposed the H-measure as a coherent alternative Hand 2009, via the ROC article. Bootstrap confidence intervals are cheap; use them.
+- **AUC estimates are noisy, and the measure itself has critics.** Hand (2009) argues AUC implicitly uses different cost assumptions for different classifiers when comparing them, and proposed the H-measure as a coherent alternative [Hand 2009, via the ROC article](https://en.wikipedia.org/wiki/Receiver_operating_characteristic). Bootstrap confidence intervals are cheap; use them.
 
 - **PR-AUC isn't comparable across different prevalences**, so always quote the baseline (the prevalence) next to it.
 
@@ -201,14 +201,14 @@ Built from Fawcett (2006), Davis & Goadrich (2006), Saito & Rehmsmeier (2015), H
 
 #### What this page is built from
 
-1. T. Fawcett, "An introduction to ROC analysis", _Pattern Recognition Letters_ 27 (2006) 861–874; summarised in Receiver operating characteristic (AUC as probability, Mann–Whitney, Gini, partial AUC, Youden).
+1. T. Fawcett, "An introduction to ROC analysis", _Pattern Recognition Letters_ 27 (2006) 861–874; summarised in [Receiver operating characteristic](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) (AUC as probability, Mann–Whitney, Gini, partial AUC, Youden).
 
-2. J. Davis & M. Goadrich, The relationship between Precision-Recall and ROC curves, ICML 2006.
+2. J. Davis & M. Goadrich, [The relationship between Precision-Recall and ROC curves](https://mlanthology.org/icml/2006/davis2006icml-relationship), ICML 2006.
 
-3. T. Saito & M. Rehmsmeier, The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets, PLOS ONE 10(3) (2015).
+3. T. Saito & M. Rehmsmeier, [The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets](https://pmc.ncbi.nlm.nih.gov/articles/PMC4349800/), PLOS ONE 10(3) (2015).
 
 4. D. J. Hand, "Measuring classifier performance: a coherent alternative to the area under the ROC curve", _Machine Learning_ 77 (2009).
 
-5. scikit-learn, Metrics and scoring: average_precision_score, roc_auc_score (max_fpr, ovr/ovo), DET curves.
+5. scikit-learn, [Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html): average_precision_score, roc_auc_score (max_fpr, ovr/ovo), DET curves.
 
-6. Credit-scoring KS and Gini usage: Experian; SHAP stability in credit risk (KS ranges).
+6. Credit-scoring KS and Gini usage: [Experian](https://www.experian.com/blogs/insights/tag/ks); [SHAP stability in credit risk (KS ranges)](https://arxiv.org/pdf/2508.01851).

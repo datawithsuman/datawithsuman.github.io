@@ -76,7 +76,7 @@ People react to change itself. **Novelty**: they try something because it's new,
 
 #### The maths
 
-$$ \tau(t) = \tau_\infty + A\,e^{-t/\lambda} $$
+$$ {\tau(t)} = {\tau_\infty} + {A}\,e^{-{t/\lambda}} $$
 
 An illustrative model, used for the lab. Real effects need not follow a smooth curve, so look at your data.
 
@@ -136,22 +136,24 @@ What's the cost of a long-term holdback?
 
 Those users keep the older experience, so you lose some of the benefit, and the team must maintain both versions for months. It also must be large enough to detect the effect. I'd save it for major launches, not every change.
 
+#### The 30-second answer
+
 Not necessarily. People react to change itself. With novelty, they try it because it's new, and the lift fades. With primacy, they start worse and improve as they learn. So I'd plot the effect by days since first exposure, because a flat line suggests it's stable. I'd compare new and existing users, since new users have no old habit. For important launches, I'd keep a small holdback for months to measure the lasting effect, and size it so it can detect that.
 
 **Key terms and sources**
 
-Why short-term results can mislead, how to spot novelty and primacy effects, and how long-term holdbacks measure what lasts.
+Why short-term results can mislead, how to spot novelty and primacy effects, and how long-term holdbacks measure what lasts. · checked 7 Nov 2026
 
 #### Sources
 
-- A 2021 Microsoft paper on user learning, novelty and primacy
+- [A 2021 Microsoft paper on user learning, novelty and primacy](https://arxiv.org/pdf/2102.12893.pdf)
 
-- Estimating effects of long-term treatments
+- [Estimating effects of long-term treatments](https://arxiv.org/pdf/2308.08152)
 
-- Holdouts for measuring experiment impact, Eppo
+- [Holdouts for measuring experiment impact, Eppo](https://geteppo.com/blog/holdouts-measuring-experiment-impact-accurately)
 
-- Hohnhold, O'Brien and Tang, Focusing on the Long-term (KDD 2015)
+- [Hohnhold, O'Brien and Tang, Focusing on the Long-term (KDD 2015)](https://research.google/pubs/pub43887/)
 
-- Athey, Chetty, Imbens and Kang, Estimating Treatment Effects using Multiple Surrogates
+- [Athey, Chetty, Imbens and Kang, Estimating Treatment Effects using Multiple Surrogates](https://arxiv.org/abs/1603.09326)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

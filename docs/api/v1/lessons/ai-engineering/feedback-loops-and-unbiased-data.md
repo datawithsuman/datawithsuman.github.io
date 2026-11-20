@@ -76,7 +76,7 @@ Jiang et al. at DeepMind simulated recommenders acting on users whose interests 
 
 #### The maths
 
-$$ \hat{V}(\pi) = \frac{1}{n}\sum_{i=1}^{n} r_i\,\frac{\pi(a_i \mid x_i)}{p_i} $$
+$$ {\hat{V}(\pi)} = \frac{1}{n}\sum_{i=1}^{n} {r_i}\,\frac{{\pi(a_i \mid x_i)}}{{p_i}} $$
 
 Inverse propensity scoring. It only works for actions the old system sometimes took, which is why exploration matters: with no exploration, many chances are zero.
 
@@ -134,22 +134,24 @@ A loan model approves fewer people each year, and its defaults look great. What'
 
 You only see repayment for approved applicants, so the model never learns about the ones it rejects. Approve a small, controlled sample near the threshold to get unbiased labels.
 
+#### The 30-second answer
+
 A model that chooses what users see only gets feedback on its own choices, so an item it wrongly rates low never gets shown, and retraining on its logs locks the mistake in. DeepMind's simulations showed greedy recommenders narrow fastest, while exploration and new items slow it down. I'd spend a few percent of traffic on exploration, log the probability of each shown action so I can weight outcomes later, keep a holdout group to measure real impact, and track how many distinct items get shown.
 
 **Key terms and sources**
 
-How models that act on the world shape their own training data, why a greedy system can never learn it was wrong, and the fixes: exploration, holdouts, logging the chance each action was taken, and correcting for it.
+How models that act on the world shape their own training data, why a greedy system can never learn it was wrong, and the fixes: exploration, holdouts, logging the chance each action was taken, and correcting for it. · checked 7 Nov 2026
 
 #### Sources
 
-- Sculley et al., Hidden Technical Debt in Machine Learning Systems, NeurIPS 2015
+- [Sculley et al., Hidden Technical Debt in Machine Learning Systems, NeurIPS 2015](https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems)
 
-- Jiang et al., Degenerate Feedback Loops in Recommender Systems
+- [Jiang et al., Degenerate Feedback Loops in Recommender Systems](https://arxiv.org/abs/1902.10730)
 
-- Bottou et al., Counterfactual Reasoning and Learning Systems
+- [Bottou et al., Counterfactual Reasoning and Learning Systems](https://arxiv.org/abs/1209.2355)
 
-- Ensign et al., Runaway Feedback Loops in Predictive Policing
+- [Ensign et al., Runaway Feedback Loops in Predictive Policing](https://arxiv.org/abs/1706.09847)
 
-- Chaney, Stewart and Engelhardt, How Algorithmic Confounding in Recommendation Systems Increases Homogeneity
+- [Chaney, Stewart and Engelhardt, How Algorithmic Confounding in Recommendation Systems Increases Homogeneity](https://arxiv.org/abs/1710.11214)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

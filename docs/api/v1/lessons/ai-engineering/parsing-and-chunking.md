@@ -87,7 +87,7 @@ ColPali embeds page images directly and skips OCR. In one benchmark on financial
 
 #### The maths
 
-$$ \text{chunks} \approx \frac{D}{s - o}, \qquad \text{context sent} = k \times s $$
+$$ {\text{chunks}} \approx \frac{{D}}{{s - o}}, \qquad {\text{context sent}} = {k} \times {s} $$
 
 Simple arithmetic for fixed-size chunks with overlap. Structure-aware chunks vary in size, so use the average.
 
@@ -149,28 +149,30 @@ A question's answer spans two sections. What do you do?
 
 First check whether the chunks hold together. Try retrieving small pieces and sending their surrounding section, or merging neighbouring chunks at answer time. If the question really needs several facts, query decomposition or a second retrieval step may be the real fix.
 
+#### The 30-second answer
+
 I'd start with parsing, because if a table loses its headers, no retriever can fix it. I'd keep tables whole, preserve headings as metadata, and look at real chunks by hand. For chunking, I'd split on document structure first, then test two or three sizes on labelled questions. Evidence for semantic chunking is weak: one study found its gains inconsistent and not worth the cost. If chunks don't make sense alone, I'd add context, either with an LLM-written sentence, as in contextual retrieval, or with late chunking, which embeds the whole document before pooling each chunk. For visual documents like financial reports, I'd consider embedding page images instead.
 
 **Key terms and sources**
 
-Why parsing often matters more than chunk size, keeping tables and structure intact, what the evidence says about semantic chunking and overlap, contextual and late chunking, and page images.
+Why parsing often matters more than chunk size, keeping tables and structure intact, what the evidence says about semantic chunking and overlap, contextual and late chunking, and page images. · checked 7 Nov 2026
 
 #### Sources
 
-- Uber, Enhanced Agentic-RAG
+- [Uber, Enhanced Agentic-RAG](https://www.uber.com/en-CA/blog/enhanced-agentic-rag/)
 
-- Qu, Bao and Tu, Is Semantic Chunking Worth the Computational Cost?
+- [Qu, Bao and Tu, Is Semantic Chunking Worth the Computational Cost?](https://arxiv.org/abs/2410.13070)
 
-- Günther et al., Late Chunking
+- [Günther et al., Late Chunking](https://arxiv.org/abs/2409.04701)
 
-- Anthropic, Introducing Contextual Retrieval
+- [Anthropic, Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 
-- Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality
+- [Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality](https://arxiv.org/abs/2610.29722)
 
-- Eibich et al., ARAGOG
+- [Eibich et al., ARAGOG](https://arxiv.org/abs/2404.01037)
 
-- Faysse et al., ColPali
+- [Faysse et al., ColPali](https://arxiv.org/abs/2407.01449)
 
-- Kuru and Keskin, Evaluating Modern RAG
+- [Kuru and Keskin, Evaluating Modern RAG](https://arxiv.org/abs/2608.23176)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

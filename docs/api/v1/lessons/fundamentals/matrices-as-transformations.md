@@ -46,11 +46,11 @@ Faint grid: the original space. Coloured grid and square: the same space after W
 
 #### In one breath
 
-A matrix is a **function that moves every vector**: rotate, stretch, shear, squash or flip space, always keeping straight lines straight and the origin fixed. Its **columns** tell you where the two axis arrows land, so you can read a matrix by looking at it. Multiplying matrices = doing one transformation after another. The **determinant** is how much areas get scaled (negative if space is flipped, zero if it's squashed flat). A zero determinant means information is lost: the matrix has **rank** below full and no **inverse**. In ML, every dense layer is a matrix: Wx moves your data into a new space before the non-linearity bends it.What you'll be able to do after this: read a 2×2 matrix as a picture, compute a determinant and say what it means, explain rank and invertibility, and connect W x + b to a layer.
+A matrix is a **function that moves every vector**: rotate, stretch, shear, squash or flip space, always keeping straight lines straight and the origin fixed. Its **columns** tell you where the two axis arrows land, so you can read a matrix by looking at it. Multiplying matrices = doing one transformation after another. The **determinant** is how much areas get scaled (negative if space is flipped, zero if it's squashed flat). A zero determinant means information is lost: the matrix has **rank** below full and no **inverse**. In ML, every dense layer is a matrix: Wx moves your data into a new space before the non-linearity bends it. What you'll be able to do after this: read a 2×2 matrix as a picture, compute a determinant and say what it means, explain rank and invertibility, and connect W x + b to a layer.
 
 #### Matrix times vector
 
-$$ W x = x_1 \begin{pmatrix} w_{11}\\ w_{21}\end{pmatrix} + x_2 \begin{pmatrix} w_{12}\\ w_{22}\end{pmatrix} $$
+$$ {W x} = x_1 {\begin{pmatrix} w_{11}\\ w_{21}\end{pmatrix}} + x_2 {\begin{pmatrix} w_{12}\\ w_{22}\end{pmatrix}} $$
 
 The column view of matrix–vector multiplication: Wx is a combination of W's columns with weights x. Strang, _Introduction to Linear Algebra_, ch. 1–2; MML §2.2.
 
@@ -62,7 +62,7 @@ The column view of matrix–vector multiplication: Wx is a combination of W's co
 
 #### The determinant is the area-scaling factor
 
-$$ \det W = w_{11} w_{22} - w_{12} w_{21} $$
+$$ {\det W} = {w_{11} w_{22}} - {w_{12} w_{21}} $$
 
 - **determinant**: The factor by which W scales every area (volume in higher dimensions).
 
@@ -176,8 +176,8 @@ Matrix–vector multiplication, columns as "where the axes go", composition, the
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, mml-book.github.io (ch. 2, 4.1).
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, [mml-book.github.io](https://mml-book.github.io/) (ch. 2, 4.1).
 
 2. G. Strang, _Introduction to Linear Algebra_, 5th ed., Wellesley-Cambridge Press 2016.
 
-3. G. Sanderson (3Blue1Brown), Essence of Linear Algebra (visual intuition for transformations and determinants).
+3. G. Sanderson (3Blue1Brown), [Essence of Linear Algebra](https://www.3blue1brown.com/topics/linear-algebra) (visual intuition for transformations and determinants).

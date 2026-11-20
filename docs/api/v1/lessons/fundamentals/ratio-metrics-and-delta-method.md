@@ -70,7 +70,7 @@ The **ratio of totals** (all clicks ÷ all views) and the **mean of ratios** (av
 
 #### The maths
 
-$$ \mathrm{Var}\!\left(\frac{\bar Y}{\bar X}\right) \approx \frac{1}{n\,\mu_X^2}\left(\sigma_Y^2 - 2R\,\sigma_{XY} + R^2\sigma_X^2\right), \quad R = \frac{\mu_Y}{\mu_X} $$
+$$ {\mathrm{Var}\!\left(\frac{\bar Y}{\bar X}\right)} \approx \frac{1}{{n}\,\mu_X^2}\left({\sigma_Y^2} - {2R\,\sigma_{XY}} + {R^2\sigma_X^2}\right), \quad R = \frac{\mu_Y}{\mu_X} $$
 
 The delta method approximates a ratio with a straight-line version, then computes the variance of that. It works well with the large samples typical of online tests.
 
@@ -128,18 +128,20 @@ Can you use the delta method for revenue per order?
 
 Yes, it's the same setup. Revenue is the top, orders are the bottom and the user is the unit. Just remember that if treatment changes how many orders people place, the ratio can move for reasons other than order value, so check orders per user too.
 
+#### The 30-second answer
+
 If I randomise by user but measure per page view, those views aren't independent, because one person's behaviour repeats. The standard formula treats them as separate, so the standard error's too small, and false positives rise above 5%. I'd use the delta method, which computes the variance from per-user clicks and views and how they vary together. Or I'd bootstrap whole users. The key is that uncertainty should reflect the number of randomised users, not page views.
 
 **Key terms and sources**
 
-Why ratio metrics break standard A/B test formulas when the analysis unit differs from the randomisation unit, and how the delta method fixes it.
+Why ratio metrics break standard A/B test formulas when the analysis unit differs from the randomisation unit, and how the delta method fixes it. · checked 7 Nov 2026
 
 #### Sources
 
-- Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics (2018), via the deltatest package notes
+- [Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics (2018), via the deltatest package notes](https://ftp.fau.de/cran/web/packages/deltatest/readme/README.html)
 
-- Ratio metrics in A/B testing, DataCamp
+- [Ratio metrics in A/B testing, DataCamp](https://campus.datacamp.com/courses/ab-testing-in-python/practical-considerations-and-making-decisions?ex=8)
 
-- Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics
+- [Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics](https://arxiv.org/abs/1803.06336)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

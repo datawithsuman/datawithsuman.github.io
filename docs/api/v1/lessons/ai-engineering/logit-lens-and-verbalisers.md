@@ -53,13 +53,13 @@ The logit lens pushes a middle layer's residual stream straight through the outp
 
 4. Two catches: middle layers may be organised differently from the last one, and decoding a token doesn’t show the model uses it.
 
-Formally, logitsℓ = WU hℓ p. 67. Because of the mismatch, decoded tokens show “at most information recoverable from the activation, rather than information used in model computation” p. 68. The original idea is nostalgebraist’s 2020 post LessWrong.
+Formally, logitsℓ = WU hℓ [p. 67](https://arxiv.org/pdf/2611.08438#page=67). Because of the mismatch, decoded tokens show “at most information recoverable from the activation, rather than information used in model computation” [p. 68](https://arxiv.org/pdf/2611.08438#page=68). The original idea is nostalgebraist’s 2020 post [LessWrong](https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens).
 
 #### Learn a translator for each layer
 
-$$ \text{logits}^{TL}_\ell = W_U\big(W_\ell\,h_\ell + b_\ell\big),\qquad \min_{W_\ell,b_\ell}\ \mathbb{E}_x\,\mathrm{KL}\big(p_{\text{final}}(x)\,\|\,p^{TL}_\ell(x)\big) $$
+$$ \text{logits}^{TL}_\ell = {W_U}\big({W_\ell}\,{h_\ell} + {b_\ell}\big),\qquad \min_{W_\ell,b_\ell}\ {\mathbb{E}_x\,\mathrm{KL}\big(p_{\text{final}}(x)\,\|\,p^{TL}_\ell(x)\big)} $$
 
-Survey §8.2 p. 68; tuned lens by Belrose et al. arXiv 2303.08112.
+Survey §8.2 [p. 68](https://arxiv.org/pdf/2611.08438#page=68); tuned lens by Belrose et al. [arXiv 2303.08112](https://arxiv.org/abs/2303.08112).
 
 - **the output layer**: The model’s own unembedding, unchanged.
 
@@ -69,13 +69,13 @@ Survey §8.2 p. 68; tuned lens by Belrose et al. arXiv 2303.08112.
 
 - **trained to match the end**: The translator is trained so the lens’s distribution matches the model’s final output. That is the source of its main weakness.
 
-It fixes the language mismatch, but it is still correlational, and because it is trained to predict the final output it answers “what will the model say?” rather than “what is this layer computing?”. It skips intermediate computation even more than the logit lens does p. 68.
+It fixes the language mismatch, but it is still correlational, and because it is trained to predict the final output it answers “what will the model say?” rather than “what is this layer computing?”. It skips intermediate computation even more than the logit lens does [p. 68](https://arxiv.org/pdf/2611.08438#page=68).
 
 #### From “what will it say” to “what is it disposed to cause”
 
-$$ J_\ell = \mathbb{E}_{\text{prompt},\,t,\,t'\ge t}\Big[\tfrac{\partial h^{t'}_{\text{final}}}{\partial h^{t}_{\ell}}\Big],\qquad p^{JL}_\ell = \mathrm{softmax}\big(W_U\,\mathrm{norm}(J_\ell\,h_\ell)\big) $$
+$$ {J_\ell = \mathbb{E}_{\text{prompt},\,t,\,t'\ge t}\Big[\tfrac{\partial h^{t'}_{\text{final}}}{\partial h^{t}_{\ell}}\Big]},\qquad {p^{JL}_\ell} = \mathrm{softmax}\big(W_U\,\mathrm{norm}({J_\ell}\,{h_\ell})\big) $$
 
-Survey §8.3 pp. 68–69 (Gurnee et al. 2026).
+Survey §8.3 [pp. 68–69](https://arxiv.org/pdf/2611.08438#page=68) (Gurnee et al. 2026).
 
 - **average Jacobian**: How a small change to layer ℓ at position t moves the final-layer state at every later position t′, averaged over prompts and positions.
 
@@ -83,13 +83,13 @@ Survey §8.3 pp. 68–69 (Gurnee et al. 2026).
 
 - **decoded disposition**: Push the activation through J, normalise, unembed: which tokens this state is disposed to promote later.
 
-The rows of WUJℓ are **J-lens vectors**, one per token per layer; their dot product with hℓ says how strongly the state will promote that token. They can also be used as **steering vectors**, which the logit and tuned lenses can’t offer. Reported uses: multi-step reasoning and latent planning p. 69.
+The rows of WUJℓ are **J-lens vectors**, one per token per layer; their dot product with hℓ says how strongly the state will promote that token. They can also be used as **steering vectors**, which the logit and tuned lenses can’t offer. Reported uses: multi-step reasoning and latent planning [p. 69](https://arxiv.org/pdf/2611.08438#page=69).
 
 ##### Limits
 
 - Still token-level: if only “photo” shows, is it “photoperiodism” or something else?
 
-- Works best in a middle band of layers, “J-space”: about 38–92% of depth in Claude Sonnet 4.5. Earlier is noisy; later collapses onto the output p. 69.
+- Works best in a middle band of layers, “J-space”: about 38–92% of depth in Claude Sonnet 4.5. Earlier is noisy; later collapses onto the output [p. 69](https://arxiv.org/pdf/2611.08438#page=69).
 
 | Lens | Answers | Main catch |
 |---|---|---|
@@ -103,11 +103,11 @@ Let the model describe its own activations in words: Patchscopes and LatentQA.
 
 ##### Sources for this tab
 
-- Survey §8–8.3, arXiv 2611.08438, pp. 66–69.
+- Survey §8–8.3, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 66–69.
 
-- nostalgebraist (2020). _Interpreting GPT: the logit lens._ LessWrong.
+- nostalgebraist (2020). _Interpreting GPT: the logit lens._ [LessWrong](https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens).
 
-- Belrose et al. _Eliciting Latent Predictions from Transformers with the Tuned Lens._ arXiv 2303.08112.
+- Belrose et al. _Eliciting Latent Predictions from Transformers with the Tuned Lens._ [arXiv 2303.08112](https://arxiv.org/abs/2303.08112).
 
 #### Paste the thought into a “repeat after me” prompt
 
@@ -121,9 +121,9 @@ Let the model describe its own activations in words: Patchscopes and LatentQA.
 
 5. The catch: the decoder is an ordinary model never trained to read pasted activations, so they can push it out of distribution.
 
-$$ e(h^t_\ell) = f_\theta\big(p[h^{t^*}_{\ell^*}\leftarrow h^t_\ell]\big) $$
+$$ {e(h^t_\ell)} = {f_\theta}\big({p}{[h^{t^*}_{\ell^*}\leftarrow h^t_\ell]}\big) $$
 
-Survey §8.4 pp. 69–70; Ghandeharioun et al. 2024 arXiv 2401.06102. A concurrent method, SelfIE, works similarly p. 70.
+Survey §8.4 [pp. 69–70](https://arxiv.org/pdf/2611.08438#page=69); Ghandeharioun et al. 2024 [arXiv 2401.06102](https://arxiv.org/abs/2401.06102). A concurrent method, SelfIE, works similarly [p. 70](https://arxiv.org/pdf/2611.08438#page=70).
 
 - **the explanation**: Text describing the activation from layer ℓ, position t.
 
@@ -133,19 +133,19 @@ Survey §8.4 pp. 69–70; Ghandeharioun et al. 2024 arXiv 2401.06102. A concurre
 
 - **the paste**: Replace the activation at layer ℓ*, position t* of p with our activation.
 
-The logit and tuned lenses are special cases with a fixed (affine) translator; Patchscopes hands the translation to the model’s own text generation, which can express things an affine map can’t pp. 69–70.
+The logit and tuned lenses are special cases with a fixed (affine) translator; Patchscopes hands the translation to the model’s own text generation, which can express things an affine map can’t [pp. 69–70](https://arxiv.org/pdf/2611.08438#page=69).
 
 #### Train a decoder to answer questions about activations
 
-**LatentQA** (Latent Interpretation Tuning, LIT) builds a dataset of triples (h, q, a): an activation from the target model, a question and its answer, and fine-tunes a decoder to answer q from h. To make the activation carry a known attribute, it is read from a **control prompt** such as _“In your next reply, please try to evoke a brief sense of triumphant hubris.”_; then q = “In what way does the assistant craft its responses?” and a = “…a sense of self-assured victory.” A proprietary LLM generates both the control prompts and the QA pairs p. 71.
+**LatentQA** (Latent Interpretation Tuning, LIT) builds a dataset of triples (h, q, a): an activation from the target model, a question and its answer, and fine-tunes a decoder to answer q from h. To make the activation carry a known attribute, it is read from a **control prompt** such as _“In your next reply, please try to evoke a brief sense of triumphant hubris.”_; then q = “In what way does the assistant craft its responses?” and a = “…a sense of self-assured victory.” A proprietary LLM generates both the control prompts and the QA pairs [p. 71](https://arxiv.org/pdf/2611.08438#page=71).
 
-Trained on the task, the decoder no longer sees pasted activations as strange, which fixes Patchscopes’ out-of-distribution problem p. 71.
+Trained on the task, the decoder no longer sees pasted activations as strange, which fixes Patchscopes’ out-of-distribution problem [p. 71](https://arxiv.org/pdf/2611.08438#page=71).
 
 ##### Two new problems
 
-- **Memorising instead of reading**: with too little or too narrow data, the decoder learns surface pairings. Predictive Concept Decoders and Activation Oracles build more diverse data to counter this p. 72.
+- **Memorising instead of reading**: with too little or too narrow data, the decoder learns surface pairings. Predictive Concept Decoders and Activation Oracles build more diverse data to counter this [p. 72](https://arxiv.org/pdf/2611.08438#page=72).
 
-- **Shortcuts**: a decoder can reconstruct the original _input_ from the activation and answer from that, without analysing the representation. Recent studies find this failure “severe and prevalent”, so good verbalisation scores alone don’t show faithful reading p. 72.
+- **Shortcuts**: a decoder can reconstruct the original _input_ from the activation and answer from that, without analysing the representation. Recent studies find this failure “severe and prevalent”, so good verbalisation scores alone don’t show faithful reading [p. 72](https://arxiv.org/pdf/2611.08438#page=72).
 
 A useful sanity check follows from the shortcut: if a plain text model given only the input text answers the question as well as the decoder given the activation, the decoder hasn’t shown it reads anything the input didn’t already say.
 
@@ -155,11 +155,11 @@ The oldest tool of all, probing classifiers, and the traps that make a high accu
 
 ##### Sources for this tab
 
-- Survey §8.4–8.5, arXiv 2611.08438, pp. 69–72.
+- Survey §8.4–8.5, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 69–72.
 
-- Ghandeharioun et al. (2024). _Patchscopes._ arXiv 2401.06102.
+- Ghandeharioun et al. (2024). _Patchscopes._ [arXiv 2401.06102](https://arxiv.org/abs/2401.06102).
 
-- Pan et al. _LatentQA._ arXiv 2412.08686.
+- Pan et al. _LatentQA._ [arXiv 2412.08686](https://arxiv.org/abs/2412.08686).
 
 ## In practice
 
@@ -201,24 +201,26 @@ What did the introspection experiments find?
 
 When concept vectors were injected, Claude Opus 4 and 4.1 sometimes noticed and named them, but only in a minority of trials, so self-reports are a weak signal.
 
+#### The 30-second answer
+
 The logit lens pushes a middle layer's residual stream through the final unembedding to see what the model would predict if it stopped there. It's free, but middle layers don't quite use the output basis, so it's biased early on. The tuned lens learns a small translator per layer and fits much better. For richer questions, Patchscopes pastes the activation into another prompt and lets the model describe it, and LatentQA trains a decoder to answer questions about activations. All of these show what's decodable, so I'd confirm anything important with an intervention.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 5 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 5 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- nostalgebraist, Interpreting GPT: the logit lens (2020)
+- [nostalgebraist, Interpreting GPT: the logit lens (2020)](https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens)
 
-- Belrose et al., Eliciting Latent Predictions with the Tuned Lens (2023)
+- [Belrose et al., Eliciting Latent Predictions with the Tuned Lens (2023)](https://arxiv.org/abs/2303.08112)
 
-- Ghandeharioun et al., Patchscopes (2024)
+- [Ghandeharioun et al., Patchscopes (2024)](https://arxiv.org/abs/2401.06102)
 
-- Pan et al., LatentQA (2024)
+- [Pan et al., LatentQA (2024)](https://arxiv.org/abs/2412.08686)
 
-- Lindsey, Emergent Introspective Awareness in Large Language Models (Anthropic, 2025)
+- [Lindsey, Emergent Introspective Awareness in Large Language Models (Anthropic, 2025)](https://arxiv.org/abs/2601.01828)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

@@ -48,11 +48,11 @@ With **unigrams** both models score about **53%**, barely better than a coin fli
 
 #### In one breath
 
-To classify text (positive or negative review, spam or not, which topic), turn each document into a bag-of-words or TF-IDF vector and train a linear model. **Multinomial Naive Bayes** counts how often each word appears in each class and multiplies the probabilities (with add-1 smoothing so unseen words don't zero everything); **logistic regression** learns one weight per word. Both are fast, interpretable and strong on topic-like tasks. Their weakness is **word order**: with unigrams, "not cold" and "cold" look alike, so negations confuse them. Adding **bigrams** ("not_cold") fixes much of this. Fine-tuned Transformers do better still, at far higher cost.What you'll be able to do after this: build NB and logistic-regression text classifiers, explain smoothing and the independence assumption, and fix negation with n-grams.
+To classify text (positive or negative review, spam or not, which topic), turn each document into a bag-of-words or TF-IDF vector and train a linear model. **Multinomial Naive Bayes** counts how often each word appears in each class and multiplies the probabilities (with add-1 smoothing so unseen words don't zero everything); **logistic regression** learns one weight per word. Both are fast, interpretable and strong on topic-like tasks. Their weakness is **word order**: with unigrams, "not cold" and "cold" look alike, so negations confuse them. Adding **bigrams** ("not_cold") fixes much of this. Fine-tuned Transformers do better still, at far higher cost. What you'll be able to do after this: build NB and logistic-regression text classifiers, explain smoothing and the independence assumption, and fix negation with n-grams.
 
 #### Multinomial Naive Bayes
 
-$$ \hat{c} = \arg\max_c \Big[\log P(c) + \sum_{w\in d}\log P(w\mid c)\Big], \qquad P(w\mid c) = \frac{\mathrm{count}(w,c)+1}{\sum_{w'}\mathrm{count}(w',c) + |V|} $$
+$$ \hat{c} = \arg\max_c \Big[{\log P(c)} + \sum_{w\in d}{\log P(w\mid c)}\Big], \qquad {P(w\mid c) = \frac{\mathrm{count}(w,c)+1}{\sum_{w'}\mathrm{count}(w',c) + |V|}} $$
 
 McCallum & Nigam (1998) compared event models for text; Jurafsky & Martin SLP3 Appendix B. In practice we sum log-probabilities to avoid underflow. Logistic regression (SLP3 ch. 4) instead learns weights directly by minimising log loss: no independence assumption, usually more accurate with enough data (Naive Bayes, logistic regression).
 
@@ -140,6 +140,6 @@ Classic text classifiers on bag-of-words / TF-IDF features: multinomial Naive Ba
 
 3. S. Wang & C. Manning, "Baselines and Bigrams: Simple, Good Sentiment and Topic Classification", ACL 2012.
 
-4. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 4 and Appendix B, web.stanford.edu/~jurafsky/slp3.
+4. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 4 and Appendix B, [web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3/).
 
-5. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, arXiv:1810.04805.
+5. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, [arXiv:1810.04805](https://arxiv.org/abs/1810.04805).

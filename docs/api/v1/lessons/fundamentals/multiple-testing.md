@@ -83,7 +83,7 @@ Comparing several variants with one control is also multiple testing. Dunnett's 
 
 #### The maths
 
-$$ P(\text{at least one false win}) = 1 - (1 - \alpha)^{m}, \qquad \text{Bonferroni threshold} = \alpha/m $$
+$$ {P(\text{at least one false win})} = 1 - (1 - {\alpha})^{{m}}, \qquad \text{Bonferroni threshold} = {\alpha}/{m} $$
 
 Example: 20 metrics at 5% gives 1 − 0.95²⁰ ≈ 64%. Bonferroni then tests each one at 0.05 ÷ 20 = 0.0025.
 
@@ -141,18 +141,20 @@ Is Bonferroni too conservative for correlated metrics?
 
 Yes. It assumes the worst case, so with closely related metrics it's stricter than needed. Holm is uniformly more powerful, and a resampling-based method can account for correlation. For most teams, the bigger gain is simply reducing the metrics that decide the launch.
 
+#### The 30-second answer
+
 Probably not. Twenty tests at 5% with no real effects give at least one false win about 64% of the time. I'd name one primary metric before the test, so this doesn't arise. For a few decision metrics, I'd use Bonferroni, which tests each at alpha over m. For screening many, I'd use Benjamini-Hochberg, which controls the share of wins that are false, and keeps more power. Unplanned segment wins are new hypotheses, so I'd retest them.
 
 **Key terms and sources**
 
-Why testing many metrics, variants or segments creates false wins, and how Bonferroni and Benjamini-Hochberg correct for it.
+Why testing many metrics, variants or segments creates false wins, and how Bonferroni and Benjamini-Hochberg correct for it. · checked 7 Nov 2026
 
 #### Sources
 
-- Statsig, multiple comparison corrections in A/B testing
+- [Statsig, multiple comparison corrections in A/B testing](https://statsig.com/blog/multiple-comparison-corrections-in-a-b)
 
-- Convert, the Bonferroni correction
+- [Convert, the Bonferroni correction](https://www.convert.com/blog/a-b-testing/bonferroni-test/)
 
-- Benjamini and Hochberg, Controlling the False Discovery Rate (1995)
+- [Benjamini and Hochberg, Controlling the False Discovery Rate (1995)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

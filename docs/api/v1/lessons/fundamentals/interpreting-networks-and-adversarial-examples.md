@@ -79,7 +79,7 @@ The idea goes beyond images. Text attacks on LLMs are a related problem, covered
 
 #### The maths
 
-$$ L^c_{\text{Grad-CAM}} = \mathrm{ReLU}\Big(\sum_k \alpha_k^c\, A^k\Big), \qquad \tilde{x} = x + \epsilon\, \mathrm{sign}\big(\nabla_x J(\theta, x, y)\big) $$
+$$ {L^c_{\text{Grad-CAM}}} = \mathrm{ReLU}\Big(\sum_k {\alpha_k^c}\, {A^k}\Big), \qquad {\tilde{x} = x + \epsilon\, \mathrm{sign}\big(\nabla_x J(\theta, x, y)\big)} $$
 
 Grad-CAM from Selvaraju et al., Equations 1 and 2. FGSM from Goodfellow et al., Section 4.
 
@@ -137,22 +137,24 @@ What makes a defence trustworthy?
 
 It should hold against strong attacks designed specifically to beat it, not just FGSM. Be suspicious if gradients seem to vanish, because this can hide the attack rather than stop it. Report robust accuracy, along with clean accuracy.
 
+#### The 30-second answer
+
 Saliency maps use the gradient of a class score for each pixel. Grad-CAM weights the last feature maps by their average gradients, and gives a coarse, class-specific heat map. They help catch a model using the wrong clue, but they show where it looked, not why, and I'd sanity-check by randomising the weights. Adversarial examples use the same gradient. FGSM adds a small change to each input in the sign of the gradient, and with many inputs, these add up, as the score moves by epsilon times the L1 norm. PGD is a stronger, iterative version, and adversarial training is the main defence, at a cost in speed and sometimes clean accuracy.
 
 **Key terms and sources**
 
-Saliency maps, Grad-CAM and their sanity checks, then adversarial examples: FGSM, PGD, why high dimensions make them easy, and adversarial training.
+Saliency maps, Grad-CAM and their sanity checks, then adversarial examples: FGSM, PGD, why high dimensions make them easy, and adversarial training. · checked 6 Nov 2026
 
 #### Sources
 
-- Simonyan et al., Saliency Maps
+- [Simonyan et al., Saliency Maps](https://arxiv.org/abs/1312.6034)
 
-- Selvaraju et al., Grad-CAM
+- [Selvaraju et al., Grad-CAM](https://arxiv.org/abs/1610.02391)
 
-- Adebayo et al., Sanity Checks for Saliency Maps
+- [Adebayo et al., Sanity Checks for Saliency Maps](https://arxiv.org/abs/1810.03292)
 
-- Goodfellow et al., Explaining and Harnessing Adversarial Examples
+- [Goodfellow et al., Explaining and Harnessing Adversarial Examples](https://arxiv.org/abs/1412.6572)
 
-- Madry et al., Towards Deep Learning Models Resistant to Adversarial Attacks
+- [Madry et al., Towards Deep Learning Models Resistant to Adversarial Attacks](https://arxiv.org/abs/1706.06083)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

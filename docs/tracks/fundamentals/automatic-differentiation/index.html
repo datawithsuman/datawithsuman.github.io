@@ -156,12 +156,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">Automatic differentiation breaks a program into simple operations with known derivatives, and applies the chain rule to them. It's exact, unlike numerical differentiation, and avoids the formula growth of symbolic methods. Forward mode gives the effect of one input on all outputs per pass. Reverse mode records the operations, then goes back from the output, giving the effect of all inputs on one output. Training has millions of weights and one loss, so reverse mode gets every gradient in a single backward pass. The cost is memory, as it must store intermediate values.</p>
+<h3>The 30-second answer</h3><p class="say30">Automatic differentiation breaks a program into simple operations with known derivatives, and applies the chain rule to them. It's exact, unlike numerical differentiation, and avoids the formula growth of symbolic methods. Forward mode gives the effect of one input on all outputs per pass. Reverse mode records the operations, then goes back from the output, giving the effect of all inputs on one output. Training has millions of weights and one loss, so reverse mode gets every gradient in a single backward pass. The cost is memory, as it must store intermediate values.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Computational graphs, forward and reverse mode, why training uses reverse mode, how it differs from numerical and symbolic differentiation, and its memory cost.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Computational graphs, forward and reverse mode, why training uses reverse mode, how it differs from numerical and symbolic differentiation, and its memory cost. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://mml-book.github.io/">Deisenroth, Faisal and Ong, Mathematics for Machine Learning</a></li><li><a href="../backpropagation/">Backpropagation on this site</a></li><li><a href="../matrix-calculus/">Matrix calculus on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

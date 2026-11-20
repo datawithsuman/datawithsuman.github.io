@@ -43,9 +43,9 @@ _From the lesson's spam example, with Laplace smoothing._
 
 "lunch" never appeared in our spam, so the raw estimate P(lunch | spam) = 0/80 = 0. Any message containing "lunch" then gets P(spam) = 0, however spammy its other words. The fix is to add α imaginary occurrences of every word:
 
-$$ \hat\theta_{yi} = (N_{yi} + \alpha) \,/\, (N_y + \alpha n) $$
+$$ {\hat\theta_{yi}} = ({N_{yi}} + {\alpha}) \,/\, ({N_y + \alpha n}) $$
 
-scikit-learn: the smoothing priors "account for features not present in the learning samples and prevent zero probabilities" naive Bayes guide.
+scikit-learn: the smoothing priors "account for features not present in the learning samples and prevent zero probabilities" [naive Bayes guide](https://scikit-learn.org/stable/modules/naive_bayes.html).
 
 - **smoothed estimate**: P(word i | class y) used by Multinomial naive Bayes.
 
@@ -67,11 +67,11 @@ With α = 0, "free win lunch" scores P(spam) = **0**, a certain "ham", even thou
 
 #### In one breath
 
-Naive Bayes classifies by asking "which class makes this input most likely?", using Bayes' rule. It makes one big simplification: given the class, every feature is **independent**, so the likelihood is just a product of one-feature probabilities you can count from data. That makes it tiny, instant to train, and good with little data, which is why it was the classic spam filter. Two practical fixes are mandatory: **smoothing** (an unseen word must not zero out a class) and **log space** (products of many small numbers underflow). The independence assumption is almost always false, yet the **ranking** of classes often survives; the **probabilities** don't: they're pushed towards 0 and 1.What you'll be able to do after this: classify a message by hand, explain smoothing with a concrete failure, pick the right variant, and explain why naive Bayes can be accurate but badly calibrated.
+Naive Bayes classifies by asking "which class makes this input most likely?", using Bayes' rule. It makes one big simplification: given the class, every feature is **independent**, so the likelihood is just a product of one-feature probabilities you can count from data. That makes it tiny, instant to train, and good with little data, which is why it was the classic spam filter. Two practical fixes are mandatory: **smoothing** (an unseen word must not zero out a class) and **log space** (products of many small numbers underflow). The independence assumption is almost always false, yet the **ranking** of classes often survives; the **probabilities** don't: they're pushed towards 0 and 1. What you'll be able to do after this: classify a message by hand, explain smoothing with a concrete failure, pick the right variant, and explain why naive Bayes can be accurate but badly calibrated.
 
 #### Bayes' rule, term by term
 
-$$ P(y \mid x) = P(y)\;P(x \mid y) \,/\, P(x) $$
+$$ {P(y \mid x)} = {P(y)}\;{P(x \mid y)} \,/\, {P(x)} $$
 
 - **posterior**: What we want: the probability the message is class y (spam or ham) given its words x.
 
@@ -83,9 +83,9 @@ $$ P(y \mid x) = P(y)\;P(x \mid y) \,/\, P(x) $$
 
 #### Given the class, treat every feature as independent
 
-$$ \hat y = \arg\max_y\ P(y)\ \prod_{i=1}^{n} P(x_i \mid y) $$
+$$ {\hat y} = \arg\max_y\ {P(y)}\ {\prod_{i=1}^{n}} {P(x_i \mid y)} $$
 
-scikit-learn: naive Bayes applies Bayes' theorem "with the 'naive' assumption of conditional independence between every pair of features given the value of the class variable" naive Bayes guide.
+scikit-learn: naive Bayes applies Bayes' theorem "with the 'naive' assumption of conditional independence between every pair of features given the value of the class variable" [naive Bayes guide](https://scikit-learn.org/stable/modules/naive_bayes.html).
 
 - **predicted class**: Pick the class with the biggest score. P(x) is dropped because it's the same for all classes.
 
@@ -109,7 +109,7 @@ scikit-learn: naive Bayes applies Bayes' theorem "with the 'naive' assumption of
 
 A 1,000-word email multiplies 1,000 probabilities, each maybe 0.001. The product, 10−3000, is far below the smallest positive double (about 10−308), so the computer stores 0 for both classes and can't compare them. Taking logs turns the product into a sum, which keeps the comparison exact:
 
-$$ \text{score}(y) = \log P(y) + \sum_{i} \log P(x_i \mid y) $$
+$$ {\text{score}(y)} = {\log P(y)} + {\sum_{i} \log P(x_i \mid y)} $$
 
 - **class score**: A log score per class: compare these, the biggest wins. Exponentiate and normalise (softmax) only if you want probabilities.
 
@@ -121,9 +121,9 @@ Seen this way, Multinomial naive Bayes is a **linear model** in the word counts:
 
 #### Gaussian naive Bayes: one bell curve per feature per class
 
-$$ P(x_i \mid y) = (2\pi\sigma_{y}^2)^{-1/2}\ \exp\!\Bigl(-(x_i - \mu_{y})^2 / (2\sigma_{y}^2)\Bigr) $$
+$$ {P(x_i \mid y)} = {(2\pi\sigma_{y}^2)^{-1/2}}\ \exp\!\Bigl({-(x_i - \mu_{y})^2 / (2\sigma_{y}^2)}\Bigr) $$
 
-scikit-learn's GaussianNB likelihood (σ and μ per class and feature) naive Bayes guide.
+scikit-learn's GaussianNB likelihood (σ and μ per class and feature) [naive Bayes guide](https://scikit-learn.org/stable/modules/naive_bayes.html).
 
 - **one-feature likelihood**: For numeric feature i: how likely its value is under class y.
 
@@ -145,7 +145,7 @@ For shared and full covariances, see LDA and QDA.
 
 #### Generative vs discriminative
 
-There are two ways to build a classifier. **Discriminative** models (logistic regression, SVMs, trees) learn P(y | x) or the boundary directly. **Generative** models learn how each class produces data, P(x | y) and P(y), then use Bayes' rule. Naive Bayes is the simplest generative classifier. Ng & Jordan (2001) compared it with its discriminative twin, logistic regression: logistic regression has the lower error with lots of data, but naive Bayes "may also approach its (higher) asymptotic error much faster" NIPS 2001. With little data naive Bayes often wins; with lots, logistic regression catches up and passes it.
+There are two ways to build a classifier. **Discriminative** models (logistic regression, SVMs, trees) learn P(y | x) or the boundary directly. **Generative** models learn how each class produces data, P(x | y) and P(y), then use Bayes' rule. Naive Bayes is the simplest generative classifier. Ng & Jordan (2001) compared it with its discriminative twin, logistic regression: logistic regression has the lower error with lots of data, but naive Bayes "may also approach its (higher) asymptotic error much faster" [NIPS 2001](https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html). With little data naive Bayes often wins; with lots, logistic regression catches up and passes it.
 
 #### The naive Bayes family
 
@@ -157,7 +157,7 @@ There are two ways to build a classifier. **Discriminative** models (logistic re
 | **ComplementNB** | Counts, imbalanced classes | Uses statistics from the complement of each class; "regularly outperforms MNB (often by a considerable margin) on text classification tasks" (Rennie et al. 2003) |
 | **CategoricalNB** | Categorical (ordinal-encoded) | Its own categorical distribution per feature |
 
-All from scikit-learn's naive Bayes guide docs. Every variant supports `partial_fit`, so it can learn from a stream in batches.
+All from scikit-learn's naive Bayes guide [docs](https://scikit-learn.org/stable/modules/naive_bayes.html). Every variant supports `partial_fit`, so it can learn from a stream in batches.
 
 #### A text classifier, step by step
 
@@ -201,7 +201,7 @@ Suppose a tokenizer produces "free", "FREE" and "free!" as separate features, an
 
 Simulated: one numeric feature, class 0 ~ N(0, 1), class 1 ~ N(1.5, 1), equal priors. Violet: the true probability. Red: naive Bayes after copying the feature k times. Same 0.5 crossing, so the same decisions; a steeper, overconfident curve.
 
-Accuracy stays at **77.4%** for any number of copies, while log loss rises from 0.47 to 1.02 at 5 copies, and the predictions it is "more than 95% sure" about are right only 83.8% of the time. This is Domingos & Pazzani's point: naive Bayes can be optimal under zero–one loss even when the independence assumption is clearly violated, because classification only needs the right class to come out on top, not the right probability Machine Learning 29. scikit-learn: naive Bayes "is known to be a decent classifier, [but] it is known to be a bad estimator, so the probability outputs from predict_proba are not to be taken too seriously" naive Bayes guide.
+Accuracy stays at **77.4%** for any number of copies, while log loss rises from 0.47 to 1.02 at 5 copies, and the predictions it is "more than 95% sure" about are right only 83.8% of the time. This is Domingos & Pazzani's point: naive Bayes can be optimal under zero–one loss even when the independence assumption is clearly violated, because classification only needs the right class to come out on top, not the right probability [Machine Learning 29](https://doi.org/10.1023/A:1007413511361). scikit-learn: naive Bayes "is known to be a decent classifier, [but] it is known to be a bad estimator, so the probability outputs from predict_proba are not to be taken too seriously" [naive Bayes guide](https://scikit-learn.org/stable/modules/naive_bayes.html).
 
 ##### The fix when you need probabilities
 
@@ -293,11 +293,11 @@ Bayes' rule, the independence assumption, Laplace smoothing, log space, Gaussian
 
 ##### Optimal decisions despite violated independence
 
-Domingos & Pazzani (1997) showed that the naive Bayes classifier is optimal under zero–one loss for a far larger set of problems than those where independence holds, because it only needs the true class to get the highest score. Their experiments on UCI datasets found it competitive with decision-tree and rule learners even where features were clearly dependent Machine Learning 29. They also note the corollary: the probability estimates themselves can be far off.
+Domingos & Pazzani (1997) showed that the naive Bayes classifier is optimal under zero–one loss for a far larger set of problems than those where independence holds, because it only needs the true class to get the highest score. Their experiments on UCI datasets found it competitive with decision-tree and rule learners even where features were clearly dependent [Machine Learning 29](https://doi.org/10.1023/A:1007413511361). They also note the corollary: the probability estimates themselves can be far off.
 
 ##### Faster to its (higher) error than logistic regression
 
-Ng & Jordan (2001): discriminative logistic regression has the lower asymptotic error, but generative naive Bayes approaches its own asymptote with far fewer examples; in their analysis, a number that grows only logarithmically with the number of features, versus linearly for logistic regression. On UCI datasets they observed the two regimes: naive Bayes ahead at small training sizes, logistic regression ahead later NIPS 2001.
+Ng & Jordan (2001): discriminative logistic regression has the lower asymptotic error, but generative naive Bayes approaches its own asymptote with far fewer examples; in their analysis, a number that grows only logarithmically with the number of features, versus linearly for logistic regression. On UCI datasets they observed the two regimes: naive Bayes ahead at small training sizes, logistic regression ahead later [NIPS 2001](https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html).
 
 ##### This page's simulations
 
@@ -327,11 +327,11 @@ Accuracy was 77.4% in all three. Lower log loss is better. Illustrative simulati
 
 #### What this page is built from
 
-1. scikit-learn, Naive Bayes user guide (assumption, decision rule, Gaussian/Multinomial/Bernoulli/Complement/Categorical variants, smoothing, "bad estimator" caveat).
+1. scikit-learn, [Naive Bayes user guide](https://scikit-learn.org/stable/modules/naive_bayes.html) (assumption, decision rule, Gaussian/Multinomial/Bernoulli/Complement/Categorical variants, smoothing, "bad estimator" caveat).
 
-2. P. Domingos & M. Pazzani, "On the optimality of the simple Bayesian classifier under zero-one loss", _Machine Learning_ 29, 103–130, 1997, doi:10.1023/A:1007413511361.
+2. P. Domingos & M. Pazzani, "On the optimality of the simple Bayesian classifier under zero-one loss", _Machine Learning_ 29, 103–130, 1997, [doi:10.1023/A:1007413511361](https://doi.org/10.1023/A:1007413511361).
 
-3. A. Ng & M. Jordan, "On discriminative vs. generative classifiers: a comparison of logistic regression and naive Bayes", NIPS 2001.
+3. A. Ng & M. Jordan, "On discriminative vs. generative classifiers: a comparison of logistic regression and naive Bayes", [NIPS 2001](https://papers.nips.cc/paper/2001/hash/7b7a53e239400a13bd6be6c91c4f6c4e-Abstract.html).
 
 4. J. Rennie, L. Shih, J. Teevan & D. Karger, "Tackling the poor assumptions of naive Bayes text classifiers", ICML 2003 (Complement NB; cited by scikit-learn).
 

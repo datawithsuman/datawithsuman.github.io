@@ -49,11 +49,11 @@ For the exact name **"bawarchi biryani"**, BM25 ranks Bawarchi first: the rare w
 
 #### In one breath
 
-Retrieval ranks documents by relevance to a query, and it's the first step of search engines and **RAG**. **Sparse** retrieval matches exact words through an **inverted index**; its standard scoring function, **BM25**, is TF-IDF with two fixes: repeated words **saturate** (k₁) and long documents are **normalised** (b). It's fast, needs no training and is great for exact names, codes and rare terms, but it misses synonyms. **Dense** retrieval embeds queries and documents into vectors and finds nearest neighbours, so "fiery rice dish" can match "spicy biryani", but it can blur exact names. **Hybrid** search combines both, often with **reciprocal rank fusion**, and a **re-ranker** (cross-encoder) can re-score the top results.What you'll be able to do after this: compute a BM25 score, explain k₁ and b, choose between sparse, dense and hybrid retrieval, and evaluate with recall@k and MRR.
+Retrieval ranks documents by relevance to a query, and it's the first step of search engines and **RAG**. **Sparse** retrieval matches exact words through an **inverted index**; its standard scoring function, **BM25**, is TF-IDF with two fixes: repeated words **saturate** (k₁) and long documents are **normalised** (b). It's fast, needs no training and is great for exact names, codes and rare terms, but it misses synonyms. **Dense** retrieval embeds queries and documents into vectors and finds nearest neighbours, so "fiery rice dish" can match "spicy biryani", but it can blur exact names. **Hybrid** search combines both, often with **reciprocal rank fusion**, and a **re-ranker** (cross-encoder) can re-score the top results. What you'll be able to do after this: compute a BM25 score, explain k₁ and b, choose between sparse, dense and hybrid retrieval, and evaluate with recall@k and MRR.
 
 #### BM25: TF-IDF that saturates and normalises
 
-$$ \mathrm{BM25}(q,d) = \sum_{t\in q} \mathrm{IDF}(t)\cdot \frac{f(t,d)\,(k_1+1)}{f(t,d) + k_1\big(1 - b + b\,\frac{|d|}{\mathrm{avgdl}}\big)} $$
+$$ \mathrm{BM25}(q,d) = \sum_{t\in q} {\mathrm{IDF}(t)}\cdot {\frac{f(t,d)\,(k_1+1)}{f(t,d) + k_1\big(1 - b + b\,{\frac{|d|}{\mathrm{avgdl}}}\big)}} $$
 
 Robertson & Zaragoza, "The Probabilistic Relevance Framework: BM25 and Beyond", _Foundations and Trends in IR_ 3(4), 2009. BM25 is the default similarity in Lucene / Elasticsearch / OpenSearch. TF-IDF: TF-IDF lesson.
 
@@ -77,7 +77,7 @@ Robertson & Zaragoza, "The Probabilistic Relevance Framework: BM25 and Beyond", 
 
 #### Hybrid retrieval, re-ranking and metrics
 
-$$ \mathrm{RRF}(d) = \sum_{r\in\text{rankers}} \frac{1}{k + \mathrm{rank}_r(d)} $$
+$$ {\mathrm{RRF}(d) = \sum_{r\in\text{rankers}} \frac{1}{k + \mathrm{rank}_r(d)}} $$
 
 - **reciprocal rank fusion**: Add up 1 / (k + rank) for each document across the rankings being fused. Only ranks are used, so BM25 scores and cosine similarities don’t need to be on the same scale. k = 60 is the usual constant (Cormack et al. 2009).
 
@@ -137,12 +137,12 @@ Finding the right documents for a query: the inverted index, BM25 (TF-IDF with s
 
 1. S. Robertson & H. Zaragoza, "The Probabilistic Relevance Framework: BM25 and Beyond", _Foundations and Trends in Information Retrieval_ 3(4), 2009.
 
-2. V. Karpukhin et al., "Dense Passage Retrieval for Open-Domain Question Answering", EMNLP 2020, arXiv:2004.04906.
+2. V. Karpukhin et al., "Dense Passage Retrieval for Open-Domain Question Answering", EMNLP 2020, [arXiv:2004.04906](https://arxiv.org/abs/2004.04906).
 
-3. N. Thakur et al., "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models", NeurIPS 2021 Datasets & Benchmarks, arXiv:2104.08663.
+3. N. Thakur et al., "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models", NeurIPS 2021 Datasets & Benchmarks, [arXiv:2104.08663](https://arxiv.org/abs/2104.08663).
 
 4. G. Cormack, C. Clarke & S. Büttcher, "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods", SIGIR 2009.
 
-5. R. Nogueira & K. Cho, "Passage Re-ranking with BERT", arXiv:1901.04085, 2019.
+5. R. Nogueira & K. Cho, "Passage Re-ranking with BERT", [arXiv:1901.04085](https://arxiv.org/abs/1901.04085), 2019.
 
-6. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, 2008, ch. 1, 6, 11, nlp.stanford.edu/IR-book.
+6. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, 2008, ch. 1, 6, 11, [nlp.stanford.edu/IR-book](https://nlp.stanford.edu/IR-book/).

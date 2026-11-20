@@ -29,13 +29,13 @@ _The toy model behind this lesson: five features stored in two neurons._
 
 #### Squeeze five numbers into two, spread them back out, clip the small stuff
 
-The toy model is a single equation. The input **x** holds five feature strengths (most are zero at any moment). A 2×5 matrix **W** squeezes them into two neuron activations. Its transpose spreads them back out to five numbers. A bias and a ReLU clean the result TMS p. 10.
+The toy model is a single equation. The input **x** holds five feature strengths (most are zero at any moment). A 2×5 matrix **W** squeezes them into two neuron activations. Its transpose spreads them back out to five numbers. A bias and a ReLU clean the result [TMS p. 10](https://arxiv.org/pdf/2209.10652#page=10).
 
 ##### The equation, piece by piece
 
-$$ x' = \mathrm{ReLU}\big(W^{\top}\,W\,x + b\big) $$
+$$ {x'} = {\mathrm{ReLU}}\big({W^{\top}}\,{W}\,{x} + {b}\big) $$
 
-TMS “ReLU output model” p. 10 · hover any symbol for its meaning.
+TMS “ReLU output model” [p. 10](https://arxiv.org/pdf/2209.10652#page=10) · hover any symbol for its meaning.
 
 - **the readout**: x′, the model’s guess for all five feature strengths. Training pushes it to equal the input x.
 
@@ -53,9 +53,9 @@ TMS “ReLU output model” p. 10 · hover any symbol for its meaning.
 
 Write out the readout for one feature _i_ before the ReLU. It splits into the feature itself plus everyone else’s contribution:
 
-$$ (W^{\top}Wx)_i = \lVert W_i\rVert^2\,x_i + \sum_{j\neq i} (W_i\cdot W_j)\,x_j $$
+$$ {(W^{\top}Wx)_i} = {\lVert W_i\rVert^2\,x_i} + {\sum_{j\neq i} (W_i\cdot W_j)\,x_j} $$
 
-Decomposition behind TMS’s “feature benefit vs interference” discussion p. 13. ReLU makes negative interference free; a negative bias turns small positive interference into negative p. 13.
+Decomposition behind TMS’s “feature benefit vs interference” discussion [p. 13](https://arxiv.org/pdf/2209.10652#page=13). ReLU makes negative interference free; a negative bias turns small positive interference into negative [p. 13](https://arxiv.org/pdf/2209.10652#page=13).
 
 - **readout of i**: What the model reports for feature i, before the threshold.
 
@@ -83,7 +83,7 @@ Neurons in language models often fire for several unrelated concepts, so the uni
 
 #### Many neurons answer to several unrelated things
 
-A neuron is polysemantic if it fires strongly for two distinct concepts on different inputs, and intervening on it affects behaviour tied to both p. 22. The classic example comes from the vision model InceptionV1: neuron 4e:55 seemed to respond to cat faces, the fronts of cars and cat legs Olah et al. 2020.
+A neuron is polysemantic if it fires strongly for two distinct concepts on different inputs, and intervening on it affects behaviour tied to both [p. 22](https://arxiv.org/pdf/2611.08438#page=22). The classic example comes from the vision model InceptionV1: neuron 4e:55 seemed to respond to cat faces, the fronts of cars and cat legs [Olah et al. 2020](https://distill.pub/2020/circuits/zoom-in/).
 
 1. Show the network cat faces: the neuron fires.
 
@@ -95,13 +95,13 @@ A neuron is polysemantic if it fires strongly for two distinct concepts on diffe
 
 ##### Update · my check (11 Nov 2026)
 
-Even this textbook example is being re-argued. One of the original authors has since suggested 4e:55 may respond to a shared “V” shape rather than to cats and cars as concepts (reported in blog coverage, not a peer-reviewed paper; summary). That is the survey’s point about concepts in miniature: what counts as “one concept” can depend on whose vocabulary you use.
+Even this textbook example is being re-argued. One of the original authors has since suggested 4e:55 may respond to a shared “V” shape rather than to cats and cars as concepts (reported in blog coverage, not a peer-reviewed paper; [summary](https://www.implicator.ai/goodfire-cammarata-ai-neurons-easier-to-read/)). That is the survey’s point about concepts in miniature: what counts as “one concept” can depend on whose vocabulary you use.
 
-Why would neurons end up mixed? The survey points to representational limits and superposition: the model stores more concepts than it has neurons p. 22. That gets a full episode of its own (3.2).
+Why would neurons end up mixed? The survey points to representational limits and superposition: the model stores more concepts than it has neurons [p. 22](https://arxiv.org/pdf/2611.08438#page=22). That gets a full episode of its own (3.2).
 
 #### Stop asking “which neuron?” and ask “which direction?”
 
-The survey’s definition: a feature for a concept _c_ is a geometric structure φ in the model’s activation space whose activation is **predictive of** and **causally relevant to** _c_ p. 23. A single neuron is just the special case where φ happens to line up with one axis. Most often in practice, φ is a direction, but the definition deliberately leaves room for other shapes.
+The survey’s definition: a feature for a concept _c_ is a geometric structure φ in the model’s activation space whose activation is **predictive of** and **causally relevant to** _c_ [p. 23](https://arxiv.org/pdf/2611.08438#page=23). A single neuron is just the special case where φ happens to line up with one axis. Most often in practice, φ is a direction, but the definition deliberately leaves room for other shapes.
 
 ##### Try it: one neuron vs. one direction
 
@@ -109,11 +109,11 @@ Two neurons, two concepts. Each dot is an input: teal dots are cat inputs, amber
 
 Illustrative data: 40 cat inputs scattered around 35°, 40 car inputs around −30°, strengths 0.6–1.1 (fixed seed). Computed in your browser.
 
-That is the whole move in one picture. Both concepts push neuron 1 up, so neuron 1 is polysemantic. But there is a direction that responds to cats and ignores cars. The concept is clean; it just isn’t aligned with any neuron. That is why the field analyses the activation space as a whole, not neurons one at a time p. 22.
+That is the whole move in one picture. Both concepts push neuron 1 up, so neuron 1 is polysemantic. But there is a direction that responds to cats and ignores cars. The concept is clean; it just isn’t aligned with any neuron. That is why the field analyses the activation space as a whole, not neurons one at a time [p. 22](https://arxiv.org/pdf/2611.08438#page=22).
 
 #### One neuron, two unrelated jobs
 
-Open up a trained network and you would hope each neuron means one thing: a “cat” neuron, a “code” neuron. Often it doesn’t. The survey calls a neuron polysemantic when it fires strongly for two distinct concepts, and nudging it changes behaviour tied to both survey p. 22. That breaks the simplest plan for understanding a model, which is to read it one neuron at a time.
+Open up a trained network and you would hope each neuron means one thing: a “cat” neuron, a “code” neuron. Often it doesn’t. The survey calls a neuron polysemantic when it fires strongly for two distinct concepts, and nudging it changes behaviour tied to both [survey p. 22](https://arxiv.org/pdf/2611.08438#page=22). That breaks the simplest plan for understanding a model, which is to read it one neuron at a time.
 
 This episode follows one feature, **cat**, through a toy model with just **two neurons** that must hold **five features**: cat, code, French, math and sports. By the end you will see why neuron 1 ends up firing for both cat and sports, even though nothing in the data links them.
 
@@ -127,9 +127,9 @@ This episode follows one feature, **cat**, through a toy model with just **two n
 
 #### Store features as nearly perpendicular directions, then filter the leaks
 
-Packing many signals into fewer dimensions is an old idea (compressed sensing, distributed codes); Elhage et al. (2022) demonstrated it cleanly in tiny ReLU networks where the true features are known TMS p. 2. Everything below uses their toy model.
+Packing many signals into fewer dimensions is an old idea (compressed sensing, distributed codes); Elhage et al. (2022) demonstrated it cleanly in tiny ReLU networks where the true features are known [TMS p. 2](https://arxiv.org/pdf/2209.10652#page=2). Everything below uses their toy model.
 
-The survey’s definition: hidden states encode more features than they have dimensions, _m_ ≫ _d_. Then the features cannot all be perpendicular, only nearly orthogonal, and neurons must be shared, which makes them polysemantic p. 28.
+The survey’s definition: hidden states encode more features than they have dimensions, _m_ ≫ _d_. Then the features cannot all be perpendicular, only nearly orthogonal, and neurons must be shared, which makes them polysemantic [p. 28](https://arxiv.org/pdf/2611.08438#page=28).
 
 Think of a compass. It has two axes, north–south and east–west, yet you can name many headings: north-east, south-west and so on. Here is how the parts line up:
 
@@ -156,7 +156,7 @@ Where the analogy stops: compass headings are perfectly distinct, but feature di
 
 In the playground, turn on cat and French together, which are not neighbours. Their −0.81 leaks cancel each other: cat reads 0.19 and French 0.19, both below the threshold. Meanwhile both leak +0.31 into code, the direction between them, so code reads 0.62 and fires at 0.22. The model reports a feature that was never there and loses the two that were.
 
-So superposition is a bet on sparsity. The toy-model paper finds that sparsity is necessary for superposition and that the switch between strategies is sharp: each feature is either dropped, superposed or given its own dimension, and the boundaries behave like a first-order phase change TMS p. 14–15.
+So superposition is a bet on sparsity. The toy-model paper finds that sparsity is necessary for superposition and that the switch between strategies is sharp: each feature is either dropped, superposed or given its own dimension, and the boundaries behave like a first-order phase change [TMS p. 14–15](https://arxiv.org/pdf/2209.10652#page=14).
 
 ##### Try it: when does sharing pay?
 
@@ -166,21 +166,21 @@ My own simulation of the toy setup, not a figure from either paper: 2,000 random
 
 ##### The shapes superposition takes (3D)
 
-With many equal features, the toy model does not pack them arbitrarily. Features snap into regular shapes, and each shape gives every feature a fixed fraction of a dimension: about ¾ for a tetrahedron, ⅔ for a triangle, ½ for an antipodal pair, ⅖ for a pentagon, ⅜ for a square antiprism TMS p. 19. Drag to rotate.
+With many equal features, the toy model does not pack them arbitrarily. Features snap into regular shapes, and each shape gives every feature a fixed fraction of a dimension: about ¾ for a tetrahedron, ⅔ for a triangle, ½ for an antipodal pair, ⅖ for a pentagon, ⅜ for a square antiprism [TMS p. 19](https://arxiv.org/pdf/2209.10652#page=19). Drag to rotate.
 
 #### In thousands of dimensions, almost every pair of directions is nearly perpendicular
 
-Two dimensions is a cramped place to share: the pentagon’s neighbours leak 0.31 into each other. Real layers have thousands of neurons, and there the geometry is far kinder. Pick random directions in a high-dimensional space and almost every pair lands close to 90° apart, so far more than _d_ features can coexist with only small leaks. This is the intuition behind “nearly orthogonal” in the survey’s definition p. 28.
+Two dimensions is a cramped place to share: the pentagon’s neighbours leak 0.31 into each other. Real layers have thousands of neurons, and there the geometry is far kinder. Pick random directions in a high-dimensional space and almost every pair lands close to 90° apart, so far more than _d_ features can coexist with only small leaks. This is the intuition behind “nearly orthogonal” in the survey’s definition [p. 28](https://arxiv.org/pdf/2611.08438#page=28).
 
 120 random directions per setting (fixed seed), all 7,140 pairs. Measured in your browser.
 
 **Go deeper: why the angles concentrate**
 
-For two random unit vectors in _d_ dimensions, the cosine of their angle has mean 0 and standard deviation about 1/√d. At d = 1000 that is about 0.03, roughly ±2° around 90°. The number of directions you can fit while keeping every pair within a fixed angle of 90° grows exponentially with d (the Johnson–Lindenstrauss intuition used in popular explanations such as 3Blue1Brown’s). Small leaks still add up when many features are active at once, which is why sparsity still matters.
+For two random unit vectors in _d_ dimensions, the cosine of their angle has mean 0 and standard deviation about 1/√d. At d = 1000 that is about 0.03, roughly ±2° around 90°. The number of directions you can fit while keeping every pair within a fixed angle of 90° grows exponentially with d (the Johnson–Lindenstrauss intuition used in popular explanations such as [3Blue1Brown’s](https://3blue1brown.com/lessons/mlp)). Small leaks still add up when many features are active at once, which is why sparsity still matters.
 
 #### Look at the weights row by row and the neurons stop meaning one thing
 
-Our pentagon’s weight matrix has two rows, one per neuron. Each row lists how strongly every feature pushes that neuron. A row with several large entries is a polysemantic neuron. The toy-model paper shows exactly this shift: as features get sparser, neurons move from monosemantic to holding a few features, then more TMS p. 32–34.
+Our pentagon’s weight matrix has two rows, one per neuron. Each row lists how strongly every feature pushes that neuron. A row with several large entries is a polysemantic neuron. The toy-model paper shows exactly this shift: as features get sparser, neurons move from monosemantic to holding a few features, then more [TMS p. 32–34](https://arxiv.org/pdf/2209.10652#page=34).
 
 1. The 2×5 weight matrix of the pentagon. Teal means positive, red negative, darker means smaller.
 
@@ -192,7 +192,7 @@ Our pentagon’s weight matrix has two rows, one per neuron. Each row lists how 
 
 ##### Superposition and polysemanticity are not the same thing
 
-Superposition is about directions: more features than dimensions. Polysemanticity is about neurons: one neuron, many concepts. Superposition implies polysemanticity in a privileged basis, but the reverse does not hold. Section 10 shows polysemanticity arising without superposition survey p. 29.
+Superposition is about directions: more features than dimensions. Polysemanticity is about neurons: one neuron, many concepts. Superposition implies polysemanticity in a privileged basis, but the reverse does not hold. Section 10 shows polysemanticity arising without superposition [survey p. 29](https://arxiv.org/pdf/2611.08438#page=29).
 
 ## In practice
 
@@ -226,31 +226,31 @@ square antiprism
 
 3/8
 
-Fraction of a dimension each feature gets (lower = more packing). Uniform importance and sparsity, n = 400 features, m = 30 dimensions; the curve is “sticky” at 1 and ½ TMS p. 17–19.
+Fraction of a dimension each feature gets (lower = more packing). Uniform importance and sparsity, n = 400 features, m = 30 dimensions; the curve is “sticky” at 1 and ½ [TMS p. 17–19](https://arxiv.org/pdf/2209.10652#page=17).
 
-**Real networks.** Dictionary-learning methods such as sparse autoencoders recover millions of distinct features from shared activation spaces, many more monosemantic than individual neurons, and some causally influence behaviour survey p. 28–29. In the first large demonstration, a one-layer transformer with a 512-neuron MLP was decomposed by autoencoders up to 256× wider (about 131,000 features), and blinded raters scored the features as more interpretable than the neurons Bricken et al. 2023.
+**Real networks.** Dictionary-learning methods such as sparse autoencoders recover millions of distinct features from shared activation spaces, many more monosemantic than individual neurons, and some causally influence behaviour [survey p. 28–29](https://arxiv.org/pdf/2611.08438#page=29). In the first large demonstration, a one-layer transformer with a 512-neuron MLP was decomposed by autoencoders up to 256× wider (about 131,000 features), and blinded raters scored the features as more interpretable than the neurons [Bricken et al. 2023](https://transformer-circuits.pub/2023/monosemantic-features/).
 
-The toy-model paper also shows networks can _compute_ while superposed: a small model learned absolute value for more features than it had neuron pairs, which is why the authors suggest real networks may be “noisily simulating larger, highly sparse networks” TMS p. 2, 34–37.
+The toy-model paper also shows networks can _compute_ while superposed: a small model learned absolute value for more features than it had neuron pairs, which is why the authors suggest real networks may be “noisily simulating larger, highly sparse networks” [TMS p. 2, 34–37](https://arxiv.org/pdf/2209.10652#page=36).
 
 ##### Read the evidence carefully · my check (11 Nov 2026)
 
-Finding many interpretable features with an autoencoder is consistent with superposition but does not prove it: the survey notes dictionary learning can recover interpretable features even without superposition p. 29. The geometric shapes may also be partly specific to the toy model; its authors say so themselves TMS p. 16.
+Finding many interpretable features with an autoencoder is consistent with superposition but does not prove it: the survey notes dictionary learning can recover interpretable features even without superposition [p. 29](https://arxiv.org/pdf/2611.08438#page=29). The geometric shapes may also be partly specific to the toy model; its authors say so themselves [TMS p. 16](https://arxiv.org/pdf/2209.10652#page=16).
 
 #### What the survey actually commits to
 
-**Still a hypothesis.** The survey is explicit: in large language models, superposition “remains a hypothesis, not an established fact”. Polysemantic neurons alone do not show that superposition caused them p. 29.
+**Still a hypothesis.** The survey is explicit: in large language models, superposition “remains a hypothesis, not an established fact”. Polysemantic neurons alone do not show that superposition caused them [p. 29](https://arxiv.org/pdf/2611.08438#page=29).
 
 ##### A second origin story: incidental polysemanticity
 
-Lecomte et al. (2024) show polysemanticity can appear even with _more_ neurons than features. Random initialisation makes two features slightly favour the same neuron by chance, and sparsity pressure (L1 regularisation or certain kinds of noise) amplifies the overlap until that neuron wins both. They predict about n²/(4m) polysemantic neurons for n features and m neurons, and confirm the trend for n ≈ 256, m from 256 to 4,096 2312.03096 p. 2, 5. Adding neurons would not remove this kind.
+Lecomte et al. (2024) show polysemanticity can appear even with _more_ neurons than features. Random initialisation makes two features slightly favour the same neuron by chance, and sparsity pressure (L1 regularisation or certain kinds of noise) amplifies the overlap until that neuron wins both. They predict about n²/(4m) polysemantic neurons for n features and m neurons, and confirm the trend for n ≈ 256, m from 256 to 4,096 [2312.03096 p. 2, 5](https://arxiv.org/pdf/2312.03096#page=5). Adding neurons would not remove this kind.
 
-**Superposition is a design consequence, not a law.** The survey frames it as the result of “architectural permissiveness”: nothing stops gradient descent from packing features. Two responses follow p. 29–30:
+**Superposition is a design consequence, not a law.** The survey frames it as the result of “architectural permissiveness”: nothing stops gradient descent from packing features. Two responses follow [p. 29–30](https://arxiv.org/pdf/2611.08438#page=29):
 
 - **Sparsity constraints** on weights or activations, limiting how many neurons can support any feature (for example weight-sparse transformers).
 
 - **Different computational primitives**, analysing learned transformations instead of static features (MOLT, KANs).
 
-These are not free. An early attempt, the SoLU activation, made more neurons monosemantic, but layer normalisation re-amplified the suppressed neurons and “smuggled” superposition back in p. 50–51. The lesson is that the pressure to compress is strong. Block it in one place and the network finds another.
+These are not free. An early attempt, the SoLU activation, made more neurons monosemantic, but layer normalisation re-amplified the suppressed neurons and “smuggled” superposition back in [p. 50–51](https://arxiv.org/pdf/2611.08438#page=51). The lesson is that the pressure to compress is strong. Block it in one place and the network finds another.
 
 ##### Takeaways
 
@@ -304,20 +304,22 @@ Is every feature a direction?
 
 No. Some concepts, like days of the week, sit on a circle, and others need several dimensions. The linear picture is a default, not a rule.
 
+#### The 30-second answer
+
 A neuron can respond to unrelated things because the model needs more features than it has neurons. So it stores each feature as a direction spread across many neurons, and the directions overlap slightly. That's superposition. It works because most features are rarely active together, so interference is rare, and a ReLU threshold filters what's left. The cost is polysemantic neurons, which is why we analyse directions, with probes or sparse autoencoders, rather than single neurons.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 3 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 3 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Elhage et al., Toy Models of Superposition (2022)
+- [Elhage et al., Toy Models of Superposition (2022)](https://transformer-circuits.pub/2022/toy_model/index.html)
 
-- Templeton et al., Scaling Monosemanticity (2024)
+- [Templeton et al., Scaling Monosemanticity (2024)](https://transformer-circuits.pub/2024/scaling-monosemanticity/)
 
-- Engels et al., Not All Language Model Features Are One-Dimensionally Linear (2024)
+- [Engels et al., Not All Language Model Features Are One-Dimensionally Linear (2024)](https://arxiv.org/abs/2405.14860)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

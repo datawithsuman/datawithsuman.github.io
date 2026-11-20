@@ -76,7 +76,7 @@ A Bayesian test starts from a prior, updates it with the data, and reports thing
 
 #### The maths
 
-$$ |Z_k| > c\,\sqrt{K/k} $$
+$$ {|Z_k|} > {c}\,{\sqrt{K/k}} $$
 
 This is the O’Brien-Fleming shape. For Pocock, the threshold is a constant at every look instead: about 2.41 with 5 looks, compared with the usual 1.96.
 
@@ -132,24 +132,26 @@ You stopped early for a clear win, and the lift was 12%. Is it 12%?
 
 Probably less. Stopping when a result crosses a line selects a moment when noise was pushing it up, so the estimate is biased upward. The decision can be valid while the size is overstated. A holdback or later measurement gives a fairer number.
 
+#### The 30-second answer
+
 A normal p-value is valid at one planned sample size. If we stop at the first p below 0.05, we're catching noise at its peak: with 20 looks, false wins rise to about 25%. To look daily, I'd plan for it. O'Brien-Fleming boundaries are very strict early and close to normal at the end. Always-valid p-values, like mSPRT, allow stopping at any time, for some loss of power. I'd keep stopping for harm separate from stopping for a win, and still cover full weeks.
 
 **Key terms and sources**
 
-Why stopping at the first significant result inflates false positives, and how alpha spending and always-valid methods let you look safely.
+Why stopping at the first significant result inflates false positives, and how alpha spending and always-valid methods let you look safely. · checked 7 Nov 2026
 
 #### Sources
 
-- Johari et al., Peeking at A/B Tests (KDD 2017), summarised by The Morning Paper
+- [Johari et al., Peeking at A/B Tests (KDD 2017), summarised by The Morning Paper](https://blog.acolyer.org/2017/09/28/peeking-at-ab-tests-continuous-monitoring-without-pain/)
 
-- Always-valid p-values at Wish
+- [Always-valid p-values at Wish](https://towardsdatascience.com/wish-tackles-peeking-with-always-valid-p-values-8a0782ac9654)
 
-- Sequential A/B testing notes
+- [Sequential A/B testing notes](https://zhedata.quarto.pub/applied-sequential-analysis-data-science/note/8.%20AB%20Test.html)
 
-- Johari, Pekelis and Walsh, Always Valid Inference
+- [Johari, Pekelis and Walsh, Always Valid Inference](https://arxiv.org/abs/1512.04922)
 
-- Deng, Lu and Chen, Continuous Monitoring of A/B Tests without Pain
+- [Deng, Lu and Chen, Continuous Monitoring of A/B Tests without Pain](https://arxiv.org/abs/1602.05549)
 
-- Stucchio, Bayesian A/B Testing at VWO
+- [Stucchio, Bayesian A/B Testing at VWO](https://vwo.com/downloads/VWO_SmartStats_technical_whitepaper.pdf)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

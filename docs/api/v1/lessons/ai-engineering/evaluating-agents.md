@@ -48,7 +48,7 @@ Both setups have the same **59.4%** single-run score. With a realistic mix of ea
 
 #### In one breath
 
-An agent is judged by **outcomes**: did the refund end up correct in the database, did the code pass the tests? Good agent evals run the agent in a realistic (simulated) environment and check the final **state**, not the wording. Because agents are stochastic and take many steps, a single run says little: **pass@k** (solved in at least one of k tries) flatters them, while **pass^k** (solved in _all_ k tries, from τ-bench) measures the consistency users need. On τ-bench retail, gpt-4o's success fell from about 61% on one try to about 25% when it had to succeed in all 8. Also check **trajectories** (no forbidden actions, no wasted steps) and report **cost and latency per task**; public benchmarks (SWE-bench Verified, τ-bench, WebArena, OSWorld) are useful but move fast and can be gamed, so build your own task set.What you'll be able to do after this: design an agent evaluation, explain pass^k, and read agent benchmarks critically.
+An agent is judged by **outcomes**: did the refund end up correct in the database, did the code pass the tests? Good agent evals run the agent in a realistic (simulated) environment and check the final **state**, not the wording. Because agents are stochastic and take many steps, a single run says little: **pass@k** (solved in at least one of k tries) flatters them, while **pass^k** (solved in _all_ k tries, from τ-bench) measures the consistency users need. On τ-bench retail, gpt-4o's success fell from about 61% on one try to about 25% when it had to succeed in all 8. Also check **trajectories** (no forbidden actions, no wasted steps) and report **cost and latency per task**; public benchmarks (SWE-bench Verified, τ-bench, WebArena, OSWorld) are useful but move fast and can be gamed, so build your own task set. What you'll be able to do after this: design an agent evaluation, explain pass^k, and read agent benchmarks critically.
 
 #### What to measure
 
@@ -80,7 +80,7 @@ An agent is judged by **outcomes**: did the refund end up correct in the databas
 
 - **Your own eval:** see also Simulated Users and Test Environments. 100–300 real cases with expected end states, a sandbox (copies of tools and data), a simulated user where needed, k runs per case, trajectory rules, and cost tracking; run on every prompt, model or tool change.
 
-**Added 7 Nov 2026.** Terminal-Bench 2.0 has 89 hand-checked terminal tasks, and the best agent in its paper solved 63%. Its authors found model choice usually mattered more than the agent scaffold, and more tokens or turns didn't predict success. In practice, a 2025 study of 86 deployed agents found 74% relied mainly on human evaluation and 52% used LLM judges, and 75% of the 20 teams it interviewed had no formal benchmark set.
+Terminal-Bench 2.0 has 89 hand-checked terminal tasks, and the best agent in its paper solved 63%. Its authors found model choice usually mattered more than the agent scaffold, and more tokens or turns didn't predict success. In practice, a 2025 study of 86 deployed agents found 74% relied mainly on human evaluation and 52% used LLM judges, and 75% of the 20 teams it interviewed had no formal benchmark set.
 
 #### Judge outcomes, repeatedly, with the bill attached
 
@@ -130,16 +130,16 @@ I'd evaluate an agent on outcomes: run it in a sandbox with realistic tools, dat
 
 **Key terms and sources**
 
-How to measure agents: outcome-based task success in realistic environments, consistency across repeated trials (pass^k vs pass@k), trajectory and tool-use checks, cost and latency per task, the main benchmarks (SWE-bench Verified, τ-bench, WebArena, OSWorld, GAIA, METR task horizons) and their caveats, and building your own agent eval · built from Yao et al. (τ-bench, ICLR 2025), Jimenez et al. (SWE-bench, ICLR 2024), Zhou et al. (WebArena, ICLR 2024), Xie et al. (OSWorld, NeurIPS 2024), Mialon et al. (GAIA, ICLR 2024), Kwa et al. (METR, 2025) and Kapoor et al. (AI Agents That Matter, 2024) · checked 29 Oct 2026
+How to measure agents: outcome-based task success in realistic environments, consistency across repeated trials (pass^k vs pass@k), trajectory and tool-use checks, cost and latency per task, the main benchmarks (SWE-bench Verified, τ-bench, WebArena, OSWorld, GAIA, METR task horizons) and their caveats, and building your own agent eval · built from Yao et al. (τ-bench, ICLR 2025), Jimenez et al. (SWE-bench, ICLR 2024), Zhou et al. (WebArena, ICLR 2024), Xie et al. (OSWorld, NeurIPS 2024), Mialon et al. (GAIA, ICLR 2024), Kwa et al. (METR, 2025) and Kapoor et al. (AI Agents That Matter, 2024) · checked 7 Nov 2026
 
 #### Sources
 
-1. S. Yao et al., "τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains", ICLR 2025, arXiv:2406.12045.
+1. S. Yao et al., "τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains", ICLR 2025, [arXiv:2406.12045](https://arxiv.org/abs/2406.12045).
 
-2. C. Jimenez et al., "SWE-bench", ICLR 2024, arXiv:2310.06770; S. Zhou et al., "WebArena", ICLR 2024, arXiv:2307.13854; T. Xie et al., "OSWorld", NeurIPS 2024, arXiv:2404.07972.
+2. C. Jimenez et al., "SWE-bench", ICLR 2024, [arXiv:2310.06770](https://arxiv.org/abs/2310.06770); S. Zhou et al., "WebArena", ICLR 2024, [arXiv:2307.13854](https://arxiv.org/abs/2307.13854); T. Xie et al., "OSWorld", NeurIPS 2024, [arXiv:2404.07972](https://arxiv.org/abs/2404.07972).
 
-3. G. Mialon et al., "GAIA", ICLR 2024, arXiv:2311.12983; T. Kwa et al. (METR), "Measuring AI Ability to Complete Long Tasks", 2025, arXiv:2503.14499.
+3. G. Mialon et al., "GAIA", ICLR 2024, [arXiv:2311.12983](https://arxiv.org/abs/2311.12983); T. Kwa et al. (METR), "Measuring AI Ability to Complete Long Tasks", 2025, [arXiv:2503.14499](https://arxiv.org/abs/2503.14499).
 
-4. S. Kapoor et al., "AI Agents That Matter", 2024, arXiv:2407.01502.
+4. S. Kapoor et al., "AI Agents That Matter", 2024, [arXiv:2407.01502](https://arxiv.org/abs/2407.01502).
 
-5. M. Merrill et al., "Terminal-Bench", 2026, arXiv:2601.11868; M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, arXiv:2512.04123.
+5. M. Merrill et al., "Terminal-Bench", 2026, [arXiv:2601.11868](https://arxiv.org/abs/2601.11868); M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, [arXiv:2512.04123](https://arxiv.org/abs/2512.04123).

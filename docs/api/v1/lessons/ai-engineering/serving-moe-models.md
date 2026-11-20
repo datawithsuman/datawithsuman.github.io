@@ -80,7 +80,7 @@ Attention and experts behave differently: attention reads each user's KV cache, 
 
 #### The maths
 
-$$ \mathbb{E}[\text{experts touched}] = E\Big(1 - \big(1 - \tfrac{k}{E}\big)^{B}\Big) $$
+$$ {\mathbb{E}[\text{experts touched}]} = {E}\Big(1 - {\big(1 - \tfrac{k}{E}\big)^{B}}\Big) $$
 
 Assumes tokens pick experts independently and uniformly, which real routing doesn’t. Real routing is skewed, so busy experts are touched even more, and others less.
 
@@ -138,24 +138,26 @@ Would you serve a big MoE for a single internal user?
 
 Probably not. At small batch sizes you pay to hold the whole model, and gain little from sharing reads. A dense model, or a smaller MoE that fits on one GPU, is usually simpler and cheaper.
 
+#### The 30-second answer
+
 An MoE uses only a few experts per token, so maths per token is small, but every expert must be in memory, and a batch of tokens picks different experts. In my example, a 671B model with 37B active reads about 37 GB per step at batch 1, but about 585 GB at batch 64, because most experts get touched. Per token, though, that's only about 9 GB, so MoE pays off at high throughput. At scale I'd use expert parallelism, spreading experts across GPUs with all-to-all communication overlapped with computing, and balance load by replicating busy experts, which SGLang reported gave 2.54 times for decode. I'd also consider separating attention from experts.
 
 **Key terms and sources**
 
-Why MoE models need all their experts in memory, why batching ends up reading most experts, expert parallelism and all-to-all, load balancing with replicated experts, and separating attention from experts.
+Why MoE models need all their experts in memory, why batching ends up reading most experts, expert parallelism and all-to-all, load balancing with replicated experts, and separating attention from experts. · checked 7 Nov 2026
 
 #### Sources
 
-- DeepSeek-AI, DeepSeek-V3 Technical Report
+- [DeepSeek-AI, DeepSeek-V3 Technical Report](https://arxiv.org/abs/2412.19437)
 
-- SGLang team, Deploying DeepSeek with PD Disaggregation and Large-Scale Expert Parallelism
+- [SGLang team, Deploying DeepSeek with PD Disaggregation and Large-Scale Expert Parallelism](https://www.lmsys.org/blog/2025-05-05-large-scale-ep/)
 
-- vLLM, Serving DeepSeek-V4.1-Flash at Scale
+- [vLLM, Serving DeepSeek-V4.1-Flash at Scale](https://vllm.ai/blog/2026-10-23-deepseek-v41-flash-pd-wide-ep)
 
-- Zhu et al., MegaScale-Infer
+- [Zhu et al., MegaScale-Infer](https://arxiv.org/abs/2504.02263)
 
-- SlimWise: expert pruning across prefill and decode
+- [SlimWise: expert pruning across prefill and decode](https://arxiv.org/abs/2609.34117)
 
-- Fedus, Zoph and Shazeer, Switch Transformers
+- [Fedus, Zoph and Shazeer, Switch Transformers](https://arxiv.org/abs/2101.03961)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor results are their own.

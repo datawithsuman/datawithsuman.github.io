@@ -48,11 +48,11 @@ The plain 30-layer sigmoid network delivers a gradient of about **10⁻¹⁹** t
 
 #### In one breath
 
-Backprop multiplies the gradient by one factor per layer (the weights times the activation's slope). Multiply many factors below 1 and the gradient reaching the early layers **vanishes**, so they stop learning; many factors above 1 and it **explodes**, so updates become huge and the loss jumps or turns into NaN. Fixes for vanishing: non-saturating activations (ReLU), variance-preserving initialisation, normalisation, and above all **residual connections**, which give the gradient an identity path around every block (and gated RNNs like LSTM for sequences). The standard fix for exploding is **gradient clipping**: if the gradient's norm exceeds a threshold, scale it down to that threshold.What you'll be able to do after this: explain both problems as a product of per-layer factors, spot them in training logs, and pick the right fix.
+Backprop multiplies the gradient by one factor per layer (the weights times the activation's slope). Multiply many factors below 1 and the gradient reaching the early layers **vanishes**, so they stop learning; many factors above 1 and it **explodes**, so updates become huge and the loss jumps or turns into NaN. Fixes for vanishing: non-saturating activations (ReLU), variance-preserving initialisation, normalisation, and above all **residual connections**, which give the gradient an identity path around every block (and gated RNNs like LSTM for sequences). The standard fix for exploding is **gradient clipping**: if the gradient's norm exceeds a threshold, scale it down to that threshold. What you'll be able to do after this: explain both problems as a product of per-layer factors, spot them in training logs, and pick the right fix.
 
 #### One factor per layer
 
-$$ \frac{\partial L}{\partial a^{(1)}} = \prod_{l=2}^{L} W^{(l)\top}\,\mathrm{diag}\big(\phi'(z^{(l)})\big) \; \frac{\partial L}{\partial a^{(L)}} $$
+$$ {\frac{\partial L}{\partial a^{(1)}}} = {\prod_{l=2}^{L} W^{(l)\top}\,\mathrm{diag}\big(\phi'(z^{(l)})\big)} \; {\frac{\partial L}{\partial a^{(L)}}} $$
 
 For RNNs, Pascanu et al. (2013) show that if the largest eigenvalue of the recurrent weight matrix is below 1, long-term gradient components vanish, and it must be above 1 for them to explode.
 
@@ -64,9 +64,9 @@ For RNNs, Pascanu et al. (2013) show that if the largest eigenvalue of the recur
 
 #### Residual connections: give the gradient a highway
 
-$$ y = x + F(x) \quad\Rightarrow\quad \frac{\partial y}{\partial x} = I + \frac{\partial F}{\partial x} $$
+$$ y = {x} + {F(x)} \quad\Rightarrow\quad {\frac{\partial y}{\partial x} = I + \frac{\partial F}{\partial x}} $$
 
-He, Zhang, Ren & Sun, "Deep Residual Learning for Image Recognition", CVPR 2016 arXiv:1512.03385: plain networks got _worse_ training error going from 18 to 34 layers, while residual networks improved and trained to 152 layers (and over 1000 on CIFAR-10). Every transformer uses the same residual stream.
+He, Zhang, Ren & Sun, "Deep Residual Learning for Image Recognition", CVPR 2016 [arXiv:1512.03385](https://arxiv.org/abs/1512.03385): plain networks got _worse_ training error going from 18 to 34 layers, while residual networks improved and trained to 152 layers (and over 1000 on CIFAR-10). Every transformer uses the same residual stream.
 
 - **identity path**: The block’s input is added straight to its output, so its derivative contributes exactly I (the identity).
 
@@ -76,9 +76,9 @@ He, Zhang, Ren & Sun, "Deep Residual Learning for Image Recognition", CVPR 2016 
 
 #### Gradient norm clipping
 
-$$ \text{if } \lVert g\rVert > c: \quad g \leftarrow c\,\frac{g}{\lVert g\rVert} $$
+$$ {\text{if } \lVert g\rVert > c}: \quad {g \leftarrow c\,\frac{g}{\lVert g\rVert}} $$
 
-Pascanu, Mikolov & Bengio, ICML 2013 arXiv:1211.5063. In PyTorch: `clip_grad_norm_(params, max_norm=1.0)` from `torch.nn.utils`; LLM pre-training commonly clips at 1.0 (e.g. LLaMA, Touvron et al. 2023).
+Pascanu, Mikolov & Bengio, ICML 2013 [arXiv:1211.5063](https://arxiv.org/abs/1211.5063). In PyTorch: `clip_grad_norm_(params, max_norm=1.0)` from `torch.nn.utils`; LLM pre-training commonly clips at 1.0 (e.g. LLaMA, Touvron et al. 2023).
 
 - **the condition**: Compute the norm of the whole gradient (all parameters together) and compare it with a threshold c.
 
@@ -153,10 +153,10 @@ Why gradients shrink or blow up as they travel back through many layers or time 
 
 2. Y. Bengio, P. Simard & P. Frasconi, "Learning long-term dependencies with gradient descent is difficult", _IEEE Trans. Neural Networks_ 5(2), 1994.
 
-3. R. Pascanu, T. Mikolov & Y. Bengio, "On the difficulty of training recurrent neural networks", ICML 2013, arXiv:1211.5063.
+3. R. Pascanu, T. Mikolov & Y. Bengio, "On the difficulty of training recurrent neural networks", ICML 2013, [arXiv:1211.5063](https://arxiv.org/abs/1211.5063).
 
-4. K. He, X. Zhang, S. Ren & J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, arXiv:1512.03385.
+4. K. He, X. Zhang, S. Ren & J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, [arXiv:1512.03385](https://arxiv.org/abs/1512.03385).
 
-5. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", arXiv:2302.13971, 2023.
+5. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023.
 
-6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §8.2.5 and §10.7, deeplearningbook.org.
+6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §8.2.5 and §10.7, [deeplearningbook.org](https://www.deeplearningbook.org/).

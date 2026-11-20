@@ -151,8 +151,10 @@ How do you make screening fair?
 
 Use only job-related criteria, explain every match, audit shortlists across groups, and keep a human deciding who is contacted or rejected.
 
+#### The 30-second answer
+
 I'd clarify the tasks, how long they run, the integrations, and which actions affect candidates. A supervisor plans the workflow and delegates to sub-agents for sourcing, evaluation and outreach, each calling existing services as tools. Because tasks span days, every step is a persisted message with ordered delivery and retries, so work survives failures. Memory has two parts: the current conversation, and learned preferences per recruiter. The agent recommends, and the recruiter approves at key points, always before a message or rejection reaches a candidate; when unsure it asks. Every tool call is authenticated and scoped. To control cost, a cheap filter narrows profiles before the LLM evaluates. I'd trace everything, test on saved traces, check fairness, and roll out to a small beta first.
 
 **Key terms and sources**
 
-Based on a professional network's published material: its engineering post "The LinkedIn Generative AI Application Tech Stack: Extending to Build AI Agents" (Sep 2025), InfoQ's summary (Sep 2025) and an interview with its engineering lead (Oct 2025). The lab is our own illustration; the estimate is ours. Uses multi-agent systems, memory and human-in-the-loop design.
+Based on a professional network's published material: its engineering post ["The LinkedIn Generative AI Application Tech Stack: Extending to Build AI Agents"](https://news.linkedin.com/2025/linkedin-s-ai-stack--expanding-to-build-tomorrow-s-agents) (Sep 2025), [InfoQ's summary](https://www.infoq.com/news/2025/09/linkedin-multi-agent/) (Sep 2025) and an [interview with its engineering lead](https://leaddev.com/ai/how-linkedin-built-ai-hiring-agent) (Oct 2025). The lab is our own illustration; the estimate is ours. Uses multi-agent systems, memory and human-in-the-loop design. · checked 15 Nov 2026

@@ -46,13 +46,13 @@ _Illustrative. A reliability diagram compares what a model says with what really
 
 #### In one breath
 
-When decisions use the probability itself (pricing, bidding, risk scores, the cost thresholds from Thresholds & Costs), you need probabilities that are **right**, not just well ranked. **Calibration** means "of all cases predicted 70%, about 70% happen". **Log-loss** and the **Brier score** are proper scoring rules: they're best only when predicted probabilities equal the true ones, so they reward both sharpness and calibration. A **reliability diagram** and the **expected calibration error (ECE)** isolate calibration. Key insight: you can wreck calibration without changing **AUC at all**. Modern deep networks tend to be overconfident, and a one-parameter fix, **temperature scaling**, usually repairs it.What you'll be able to do after this: read a reliability diagram, explain why AUC can't detect miscalibration, choose between log-loss, Brier and ECE, and calibrate a model properly.
+When decisions use the probability itself (pricing, bidding, risk scores, the cost thresholds from Thresholds & Costs), you need probabilities that are **right**, not just well ranked. **Calibration** means "of all cases predicted 70%, about 70% happen". **Log-loss** and the **Brier score** are proper scoring rules: they're best only when predicted probabilities equal the true ones, so they reward both sharpness and calibration. A **reliability diagram** and the **expected calibration error (ECE)** isolate calibration. Key insight: you can wreck calibration without changing **AUC at all**. Modern deep networks tend to be overconfident, and a one-parameter fix, **temperature scaling**, usually repairs it. What you'll be able to do after this: read a reliability diagram, explain why AUC can't detect miscalibration, choose between log-loss, Brier and ECE, and calibrate a model properly.
 
 #### Calibration and sharpness
 
 ##### Calibration
 
-Predicted probabilities match observed frequencies: P(y = 1 | p̂ = p) = p for every p. Guo et al.: "given 100 predictions, each with confidence of 0.8, we expect that 80 should be correctly classified" Guo et al. 2017, p. 2.
+Predicted probabilities match observed frequencies: P(y = 1 | p̂ = p) = p for every p. Guo et al.: "given 100 predictions, each with confidence of 0.8, we expect that 80 should be correctly classified" [Guo et al. 2017, p. 2](https://arxiv.org/pdf/1706.04599#page=2).
 
 ##### Sharpness (resolution)
 
@@ -60,9 +60,9 @@ Predictions far from the base rate. Always predicting the base rate (say 10%) is
 
 #### Two proper scoring rules and one calibration error
 
-$$ \text{LL} = -\tfrac1n\textstyle\sum\big[y\log\hat p + (1-y)\log(1-\hat p)\big] \quad \text{BS} = \tfrac1n\textstyle\sum(\hat p - y)^2 \quad \text{ECE} = \textstyle\sum_m \tfrac{|B_m|}{n}\,\big|\text{acc}(B_m) - \text{conf}(B_m)\big| $$
+$$ {\text{LL} = -\tfrac1n\textstyle\sum\big[y\log\hat p + (1-y)\log(1-\hat p)\big]} \quad {\text{BS} = \tfrac1n\textstyle\sum(\hat p - y)^2} \quad {\text{ECE} = \textstyle\sum_m \tfrac{|B_m|}{n}\,\big|\text{acc}(B_m) - \text{conf}(B_m)\big|} $$
 
-ECE as defined by Guo et al., Eq. 3 p. 3; Brier score: Brier (1950); scikit-learn calls it "strictly proper", achieving "the best score only when the estimated probabilities equal the true ones" docs.
+ECE as defined by Guo et al., Eq. 3 [p. 3](https://arxiv.org/pdf/1706.04599#page=3); Brier score: Brier (1950); scikit-learn calls it "strictly proper", achieving "the best score only when the estimated probabilities equal the true ones" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 - **log-loss**: Negative log-likelihood: −log of the probability given to what happened. Unbounded: a confident wrong prediction (p = 0.001 for an event that happens) costs 6.9. Strictly proper.
 
@@ -72,9 +72,9 @@ ECE as defined by Guo et al., Eq. 3 p. 3; Brier score: Brier (1950); scikit-lear
 
 #### Murphy's decomposition: reliability − resolution + uncertainty
 
-$$ \text{BS} = \text{REL} - \text{RES} + \text{UNC} $$
+$$ {\text{BS}} = {\text{REL}} - {\text{RES}} + {\text{UNC}} $$
 
-Murphy (1973), via the Brier score article. scikit-learn's warning follows from it: "A lower Brier loss, for instance, does not necessarily mean a better calibrated model" docs; a sharper model can win on resolution while being worse calibrated. The **Brier skill score** 1 − BS / BSbase-rate rescales it so that predicting the base rate scores 0.
+Murphy (1973), via the [Brier score](https://en.wikipedia.org/wiki/Brier_score) article. scikit-learn's warning follows from it: "A lower Brier loss, for instance, does not necessarily mean a better calibrated model" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html); a sharper model can win on resolution while being worse calibrated. The **Brier skill score** 1 − BS / BSbase-rate rescales it so that predicting the base rate scores 0.
 
 - **Brier score**: Lower is better.
 
@@ -86,9 +86,9 @@ Murphy (1973), via the Brier score article. scikit-learn's warning follows from 
 
 #### Platt scaling, isotonic regression, temperature scaling
 
-$$ \hat q_i = \max_k\ \mathrm{softmax}\big(z_i \,/\, T\big)^{(k)} $$
+$$ {\hat q_i} = \max_k\ \mathrm{softmax}\big({z_i} \,/\, {T}\big)^{(k)} $$
 
-Guo et al., Eq. 9: "temperature scaling does not affect the model's accuracy" p. 6.
+Guo et al., Eq. 9: "temperature scaling does not affect the model's accuracy" [p. 6](https://arxiv.org/pdf/1706.04599#page=6).
 
 - **calibrated confidence**: The new probability for input i.
 
@@ -103,7 +103,7 @@ Guo et al., Eq. 9: "temperature scaling does not affect the model's accuracy" p.
 | **Isotonic regression** | Any monotonic step function | Large validation sets and odd-shaped distortions; can overfit small sets |
 | **Histogram binning** | One probability per score bin | Simple, robust; can change class predictions |
 
-In scikit-learn: `CalibratedClassifierCV(method="sigmoid" | "isotonic")`, fitted on data the model wasn't trained on. Logistic regression is often well calibrated already: it "is more likely to return well calibrated predictions by itself" thanks to its canonical link scikit-learn calibration docs.
+In scikit-learn: `CalibratedClassifierCV(method="sigmoid" | "isotonic")`, fitted on data the model wasn't trained on. Logistic regression is often well calibrated already: it "is more likely to return well calibrated predictions by itself" thanks to its canonical link [scikit-learn calibration docs](https://scikit-learn.org/stable/modules/calibration.html).
 
 ## In practice
 
@@ -111,7 +111,7 @@ In scikit-learn: `CalibratedClassifierCV(method="sigmoid" | "isotonic")`, fitted
 
 #### Bigger, more accurate, and worse calibrated
 
-Guo et al. found that "modern neural networks, unlike those from a decade ago, are poorly calibrated": a 110-layer ResNet on CIFAR-100 is more accurate than a 5-layer LeNet, but its average confidence is far above its accuracy. Depth, width, batch normalisation and less weight decay all made calibration worse; their explanation is that networks keep lowering training log-loss by growing more confident after they already classify the training data correctly Guo et al. 2017, §3.
+Guo et al. found that "modern neural networks, unlike those from a decade ago, are poorly calibrated": a 110-layer ResNet on CIFAR-100 is more accurate than a 5-layer LeNet, but its average confidence is far above its accuracy. Depth, width, batch normalisation and less weight decay all made calibration worse; their explanation is that networks keep lowering training log-loss by growing more confident after they already classify the training data correctly [Guo et al. 2017, §3](https://arxiv.org/pdf/1706.04599#page=3).
 
 ##### ECE on CIFAR-100 (ResNet-110), before and after post-hoc calibration (↓ better)
 
@@ -135,7 +135,7 @@ matrix scaling
 
 25.49%
 
-15 bins. Matrix scaling has too many parameters for 100 classes and overfits the validation set Table 1, p. 6. Across vision and NLP datasets, uncalibrated ECE was "typically between 4 to 10%", and temperature scaling was best on the vision tasks p. 7.
+15 bins. Matrix scaling has too many parameters for 100 classes and overfits the validation set [Table 1, p. 6](https://arxiv.org/pdf/1706.04599#page=6). Across vision and NLP datasets, uncalibrated ECE was "typically between 4 to 10%", and temperature scaling was best on the vision tasks [p. 7](https://arxiv.org/pdf/1706.04599#page=7).
 
 #### Which metric, in which situation
 
@@ -227,11 +227,11 @@ Log-loss, Brier score, reliability diagrams, ECE and calibration methods · buil
 
 #### What this page is built from
 
-1. C. Guo, G. Pleiss, Y. Sun & K. Weinberger, On Calibration of Modern Neural Networks, ICML 2017 (ECE, reliability diagrams, temperature scaling, Table 1).
+1. C. Guo, G. Pleiss, Y. Sun & K. Weinberger, [On Calibration of Modern Neural Networks](https://arxiv.org/abs/1706.04599), ICML 2017 (ECE, reliability diagrams, temperature scaling, Table 1).
 
-2. G. W. Brier, "Verification of forecasts expressed in terms of probability", _Monthly Weather Review_ (1950); A. H. Murphy, "A new vector partition of the probability score" (1973); summary in Brier score.
+2. G. W. Brier, "Verification of forecasts expressed in terms of probability", _Monthly Weather Review_ (1950); A. H. Murphy, "A new vector partition of the probability score" (1973); summary in [Brier score](https://en.wikipedia.org/wiki/Brier_score).
 
-3. scikit-learn, Metrics and scoring (log-loss, Brier, strictly proper) and Probability calibration.
+3. scikit-learn, [Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html) (log-loss, Brier, strictly proper) and [Probability calibration](https://scikit-learn.org/stable/modules/calibration.html).
 
 4. A. Niculescu-Mizil & R. Caruana, "Predicting good probabilities with supervised learning", ICML 2005 (Platt vs isotonic; background).
 

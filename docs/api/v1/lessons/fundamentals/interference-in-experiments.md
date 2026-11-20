@@ -71,7 +71,7 @@ It depends on the mechanism. Competing for the same supply usually overstates a 
 
 #### The maths
 
-$$ \text{Global effect} = E[Y \mid \text{all treated}] - E[Y \mid \text{none treated}] \;\neq\; E[Y_T] - E[Y_C] $$
+$$ {\text{Global effect}} = {E[Y \mid \text{all treated}]} - {E[Y \mid \text{none treated}]} \;\neq\; {E[Y_T] - E[Y_C]} $$
 
 With no interference, the two quantities match. With interference, the A/B difference also includes the harm done to control, which isn’t a benefit of the change.
 
@@ -129,22 +129,24 @@ How would you know whether your test has interference?
 
 Think through the mechanism first: what do users share? Then check whether control gets worse during the test. The strongest evidence comes from comparing a user-level test with a cluster-level or switchback version, because the gap estimates the bias.
 
+#### The 30-second answer
+
 The test probably suffered from interference. Riders share a limited supply of cars, so treated riders can win cars from control riders. The A/B difference then counts control's loss as a gain, while the total hardly changes. This breaks the assumption that one user's outcome doesn't depend on others' groups. I'd randomise at a higher level: whole cities in a cluster design, or time windows in a switchback. That reduces bias at the cost of far more variance, and I'd use variance reduction to help.
 
 **Key terms and sources**
 
-Why A/B tests break when users affect each other, as in marketplaces and social networks, and how cluster and switchback designs reduce the bias.
+Why A/B tests break when users affect each other, as in marketplaces and social networks, and how cluster and switchback designs reduce the bias. · checked 7 Nov 2026
 
 #### Sources
 
-- Li, Zhao, Johari and Weintraub, interference and bias in two-sided marketplace experiments
+- [Li, Zhao, Johari and Weintraub, interference and bias in two-sided marketplace experiments](https://arxiv.org/pdf/2104.12222)
 
-- Columbia Business School on A/B testing bias in marketplaces (Hannah Li)
+- [Columbia Business School on A/B testing bias in marketplaces (Hannah Li)](https://business.columbia.edu/research-brief/ab-testing-bias-marketplaces)
 
-- Marketplace experimentation, Statsig
+- [Marketplace experimentation, Statsig](https://statsig.com/perspectives/marketplace-experimentation-platforms)
 
-- Experimental design on two-sided platforms
+- [Experimental design on two-sided platforms](https://par.nsf.gov/biblio/10428500)
 
-- Liu et al., Trustworthy Online Marketplace Experimentation with Budget-split Design
+- [Liu et al., Trustworthy Online Marketplace Experimentation with Budget-split Design](https://arxiv.org/abs/2012.08724)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

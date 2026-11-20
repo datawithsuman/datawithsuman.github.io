@@ -48,7 +48,7 @@ At 60% accuracy, **GPQA Diamond**'s 198 questions give a margin of **±6.8 point
 
 #### In one breath
 
-Benchmarks are fixed test sets that let us compare models on the same questions: **MMLU** (57 subjects, multiple choice), **GPQA** (graduate-level science questions that experts get 65% right and skilled non-experts with web access only 34%), **AIME** (competition maths), **SWE-bench Verified** (500 real GitHub issues the model must fix so the tests pass). Three things make scores misleading. **Noise:** a 198-question benchmark has a 95% margin of about ±7 points, so small leaderboard gaps mean little. **Saturation and label errors:** once models score 90%+, remaining errors are often in the benchmark itself (about 6.5% of MMLU questions have errors). **Contamination:** test questions leak into training data, so scores measure memory; on a fresh GSM8K-style set (GSM1k), some models dropped by up to 13 points. Always pair public benchmarks with your own held-out evaluation.What you'll be able to do after this: describe the main benchmarks, compute a benchmark's error bars, and explain how contamination is detected and avoided.
+Benchmarks are fixed test sets that let us compare models on the same questions: **MMLU** (57 subjects, multiple choice), **GPQA** (graduate-level science questions that experts get 65% right and skilled non-experts with web access only 34%), **AIME** (competition maths), **SWE-bench Verified** (500 real GitHub issues the model must fix so the tests pass). Three things make scores misleading. **Noise:** a 198-question benchmark has a 95% margin of about ±7 points, so small leaderboard gaps mean little. **Saturation and label errors:** once models score 90%+, remaining errors are often in the benchmark itself (about 6.5% of MMLU questions have errors). **Contamination:** test questions leak into training data, so scores measure memory; on a fresh GSM8K-style set (GSM1k), some models dropped by up to 13 points. Always pair public benchmarks with your own held-out evaluation. What you'll be able to do after this: describe the main benchmarks, compute a benchmark's error bars, and explain how contamination is detected and avoided.
 
 #### The benchmarks you'll be asked about
 
@@ -130,12 +130,12 @@ How LLMs are compared: knowledge and reasoning benchmarks (MMLU, GPQA, AIME), ag
 
 #### Sources
 
-1. D. Hendrycks et al., "Measuring Massive Multitask Language Understanding", ICLR 2021, arXiv:2009.03300; A. Gema et al., "Are We Done with MMLU?", NAACL 2025, arXiv:2406.04127.
+1. D. Hendrycks et al., "Measuring Massive Multitask Language Understanding", ICLR 2021, [arXiv:2009.03300](https://arxiv.org/abs/2009.03300); A. Gema et al., "Are We Done with MMLU?", NAACL 2025, [arXiv:2406.04127](https://arxiv.org/abs/2406.04127).
 
-2. D. Rein et al., "GPQA: A Graduate-Level Google-Proof Q&A Benchmark", COLM 2024, arXiv:2311.12022.
+2. D. Rein et al., "GPQA: A Graduate-Level Google-Proof Q&A Benchmark", COLM 2024, [arXiv:2311.12022](https://arxiv.org/abs/2311.12022).
 
-3. C. Jimenez et al., "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", ICLR 2024, arXiv:2310.06770; OpenAI, "Introducing SWE-bench Verified", 2024; OpenAI, "Why we no longer evaluate SWE-bench Verified", 2026, as reported by The Decoder and Gigazine.
+3. C. Jimenez et al., "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", ICLR 2024, [arXiv:2310.06770](https://arxiv.org/abs/2310.06770); OpenAI, "Introducing SWE-bench Verified", 2024; OpenAI, ["Why we no longer evaluate SWE-bench Verified"](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/), 2026, as reported by [The Decoder](https://the-decoder.com/openai-wants-to-retire-the-ai-coding-benchmark-that-everyone-has-been-competing-on/) and [Gigazine](https://gigazine.net/gsc_news/en/20260429-swe-bench-verified).
 
-4. H. Zhang et al., "A Careful Examination of Large Language Model Performance on Grade School Arithmetic" (GSM1k), NeurIPS 2024 Datasets & Benchmarks, arXiv:2405.00332; W. Shi et al., "Detecting Pretraining Data from Large Language Models" (Min-K% Prob), ICLR 2024, arXiv:2310.16789.
+4. H. Zhang et al., "A Careful Examination of Large Language Model Performance on Grade School Arithmetic" (GSM1k), NeurIPS 2024 Datasets & Benchmarks, [arXiv:2405.00332](https://arxiv.org/abs/2405.00332); W. Shi et al., "Detecting Pretraining Data from Large Language Models" (Min-K% Prob), ICLR 2024, [arXiv:2310.16789](https://arxiv.org/abs/2310.16789).
 
-5. E. Miller, "Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations", 2024, arXiv:2411.00640.
+5. E. Miller, "Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations", 2024, [arXiv:2411.00640](https://arxiv.org/abs/2411.00640).

@@ -80,7 +80,7 @@ Factor Σ = LLᵀ using Cholesky, draw z from a standard Gaussian, and take x = 
 
 #### The maths
 
-$$ p(x) = \frac{1}{\sqrt{(2\pi)^d |\Sigma|}} \exp\Big(-\tfrac{1}{2}(x-\mu)^\top \Sigma^{-1} (x-\mu)\Big), \qquad \mu_{y|x} = \mu_y + \rho\frac{\sigma_y}{\sigma_x}(x - \mu_x) $$
+$$ {p(x)} = \frac{1}{{\sqrt{(2\pi)^d |\Sigma|}}} \exp\Big(-\tfrac{1}{2}{(x-\mu)^\top \Sigma^{-1} (x-\mu)}\Big), \qquad {\mu_{y|x} = \mu_y + \rho\frac{\sigma_y}{\sigma_x}(x - \mu_x)} $$
 
 The conditional variance is σ²ᵧ(1 − ρ²), so a stronger correlation leaves less uncertainty about y once you know x.
 
@@ -138,17 +138,19 @@ How would you sample from a Gaussian with covariance Σ?
 
 Factor Σ = LLᵀ with Cholesky, draw z from a standard normal, and return μ + Lz. The covariance of Lz is LLᵀ = Σ. If Σ isn't numerically positive definite, add a small amount to the diagonal first.
 
+#### The 30-second answer
+
 A multivariate Gaussian has a mean for its centre, and a covariance matrix for its shape. Contours are ellipses, whose axes are the covariance's eigenvectors, with widths from the square roots of the eigenvalues, which is what PCA finds. Its marginals and conditionals are Gaussian, linear maps stay Gaussian, and uncorrelated variables are independent. To sample, I'd factor sigma as L L transpose, and take mu plus L z. Separating the noise this way is the reparameterisation trick used in VAEs.
 
 **Key terms and sources**
 
-The Gaussian in many dimensions: the mean and covariance as a shape, marginals and conditionals, sampling, and its links with PCA and generative models.
+The Gaussian in many dimensions: the mean and covariance as a shape, marginals and conditionals, sampling, and its links with PCA and generative models. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
 - Gaussian mixture models on this site
 

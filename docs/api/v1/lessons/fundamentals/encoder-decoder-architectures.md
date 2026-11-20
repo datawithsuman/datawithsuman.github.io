@@ -52,11 +52,11 @@ In the **decoder**, "cold" (token 4) sees only **"the biryani was cold"**: 45 of
 
 #### In one breath
 
-The same block becomes three kinds of model depending on **which tokens may attend to which**. An **encoder** lets every token see every other token (bidirectional); it's trained to fill in masked words and is great for classification and embeddings (BERT). A **decoder** uses a **causal mask**: each token sees only itself and earlier tokens, so it can be trained to predict the next token and then **generate** text (GPT, LLaMA). An **encoder–decoder** encodes the input bidirectionally, then a causal decoder generates the output while attending to the encoder through **cross-attention** (original Transformer, T5). Today's LLMs are almost all decoder-only.What you'll be able to do after this: draw the three attention masks, match each family to its training objective and uses, and explain cross-attention.
+The same block becomes three kinds of model depending on **which tokens may attend to which**. An **encoder** lets every token see every other token (bidirectional); it's trained to fill in masked words and is great for classification and embeddings (BERT). A **decoder** uses a **causal mask**: each token sees only itself and earlier tokens, so it can be trained to predict the next token and then **generate** text (GPT, LLaMA). An **encoder–decoder** encodes the input bidirectionally, then a causal decoder generates the output while attending to the encoder through **cross-attention** (original Transformer, T5). Today's LLMs are almost all decoder-only. What you'll be able to do after this: draw the three attention masks, match each family to its training objective and uses, and explain cross-attention.
 
 #### A mask added to the attention scores
 
-$$ \mathrm{softmax}\Big(\frac{QK^{\top}}{\sqrt{d_k}} + M\Big)V, \qquad M_{ij} = \begin{cases}0 & j \le i\\ -\infty & j > i\end{cases} $$
+$$ \mathrm{softmax}\Big(\frac{QK^{\top}}{\sqrt{d_k}} + {M}\Big)V, \qquad {M_{ij} = \begin{cases}0 & j \le i\\ -\infty & j > i\end{cases}} $$
 
 Vaswani et al. (2017), §3.2.3: masking in the decoder "ensures that the predictions for position i can depend only on the known outputs at positions less than i". Because all positions are still computed in parallel, a decoder trains on every next-token prediction in a sequence at once.
 
@@ -138,14 +138,14 @@ The three Transformer families: bidirectional encoders (BERT) for understanding,
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, arXiv:1810.04805.
+2. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, [arXiv:1810.04805](https://arxiv.org/abs/1810.04805).
 
 3. A. Radford et al., "Improving Language Understanding by Generative Pre-Training" (GPT), OpenAI 2018; "Language Models are Unsupervised Multitask Learners" (GPT-2), 2019.
 
-4. C. Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer" (T5), _JMLR_ 21, 2020, arXiv:1910.10683.
+4. C. Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer" (T5), _JMLR_ 21, 2020, [arXiv:1910.10683](https://arxiv.org/abs/1910.10683).
 
-5. M. Lewis et al., "BART", ACL 2020, arXiv:1910.13461.
+5. M. Lewis et al., "BART", ACL 2020, [arXiv:1910.13461](https://arxiv.org/abs/1910.13461).
 
-6. T. Wang et al., "What Language Model Architecture and Pretraining Objective Work Best for Zero-Shot Generalization?", ICML 2022, arXiv:2204.05832.
+6. T. Wang et al., "What Language Model Architecture and Pretraining Objective Work Best for Zero-Shot Generalization?", ICML 2022, [arXiv:2204.05832](https://arxiv.org/abs/2204.05832).

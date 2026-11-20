@@ -24,7 +24,7 @@ Fit ordinary least squares (OLS) to the 22 flats and something odd happens: it s
 
 Coefficients on standardised features (₹ lakh per standard deviation). The true effects are positive for both. OLS's split between size and bedrooms jumps around, and even goes negative. Ridge (λ = 0.3) keeps both positive and stable from sample to sample.
 
-Two problems at once: **variance** (weights swing with the sample) and **overfitting** (with 10 features and 22 rows, OLS also fits the junk). Tibshirani's diagnosis from 1996 still holds: OLS estimates "often have low bias but large variance; prediction accuracy can sometimes be improved by shrinking or setting to 0 some coefficients" Tibshirani 1996, p. 267.
+Two problems at once: **variance** (weights swing with the sample) and **overfitting** (with 10 features and 22 rows, OLS also fits the junk). Tibshirani's diagnosis from 1996 still holds: OLS estimates "often have low bias but large variance; prediction accuracy can sometimes be improved by shrinking or setting to 0 some coefficients" [Tibshirani 1996, p. 267](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=2).
 
 ### The idea
 
@@ -52,7 +52,7 @@ Things to look for. **Ridge** pulls size and bedrooms toward each other and shri
 
 #### In one breath
 
-Plain least squares trusts every feature completely, so with many or correlated features its weights become huge, unstable and overfit. Regularization adds a price on the size of the weights. **Ridge** (an L2 penalty) shrinks all of them smoothly and fixes collinearity. **Lasso** (an L1 penalty) shrinks and sets some to exactly zero, so it selects features. **Elastic Net** mixes both, so correlated features enter or leave together. One knob, λ, trades bias for variance, and you choose it by cross-validation.What you'll be able to do after this: explain why L1 gives zeros and L2 doesn't (geometrically and algebraically), pick between the three, and tune them properly.
+Plain least squares trusts every feature completely, so with many or correlated features its weights become huge, unstable and overfit. Regularization adds a price on the size of the weights. **Ridge** (an L2 penalty) shrinks all of them smoothly and fixes collinearity. **Lasso** (an L1 penalty) shrinks and sets some to exactly zero, so it selects features. **Elastic Net** mixes both, so correlated features enter or leave together. One knob, λ, trades bias for variance, and you choose it by cross-validation. What you'll be able to do after this: explain why L1 gives zeros and L2 doesn't (geometrically and algebraically), pick between the three, and tune them properly.
 
 #### Three ideas you need first
 
@@ -70,9 +70,9 @@ A penalty on weight size only makes sense if features share a scale. Otherwise "
 
 #### Fit the data, but pay for every unit of weight
 
-$$ \min_{\beta}\ \|\mathbf y - X\beta\|_2^2 + \lambda\,P(\beta) \quad\Longleftrightarrow\quad \min_\beta \|\mathbf y - X\beta\|_2^2 \ \text{ s.t. } P(\beta)\le t $$
+$$ \min_{\beta}\ {\|\mathbf y - X\beta\|_2^2} + {\lambda}\,{P(\beta)} \quad\Longleftrightarrow\quad {\min_\beta \|\mathbf y - X\beta\|_2^2 \ \text{ s.t. } P(\beta)\le t} $$
 
-The penalised and constrained forms are equivalent; Tibshirani defines the lasso in the constrained form p. 268.
+The penalised and constrained forms are equivalent; Tibshirani defines the lasso in the constrained form [p. 268](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=3).
 
 - **fit the data**: The usual least-squares error. Alone, it lets weights grow as large as they like.
 
@@ -84,9 +84,9 @@ The penalised and constrained forms are equivalent; Tibshirani defines the lasso
 
 #### An L2 penalty, and a matrix that's always invertible
 
-$$ \hat\beta_{\text{ridge}} = \big(X^{\top}X + \lambda I\big)^{-1}X^{\top}\mathbf y $$
+$$ {\hat\beta_{\text{ridge}}} = \big({X^{\top}X} + {\lambda I}\big)^{-1}{X^{\top}\mathbf y} $$
 
-Minimiser of ‖y − Xβ‖² + λ‖β‖²; scikit-learn's `Ridge` objective docs.
+Minimiser of ‖y − Xβ‖² + λ‖β‖²; scikit-learn's `Ridge` objective [docs](https://scikit-learn.org/stable/modules/linear_model.html).
 
 - **ridge weights**: The solution has a closed form, just like OLS.
 
@@ -96,15 +96,15 @@ Minimiser of ‖y − Xβ‖² + λ‖β‖²; scikit-learn's `Ridge` objective 
 
 - **feature–target overlap**: Unchanged from OLS.
 
-That's why Ridge fixes the sign flip from the start of this lesson. scikit-learn: with ridge, "the coefficients become more robust to collinearity." Zou and Hastie give a nice reading of it: the ridge operator is "decorrelation followed by direct scaling shrinkage": it shrinks the correlations between features by 1/(1 + λ), then scales Zou & Hastie 2005, p. 308. Correlated features end up sharing the credit roughly equally.
+That's why Ridge fixes the sign flip from the start of this lesson. scikit-learn: with ridge, "the coefficients become more robust to collinearity." Zou and Hastie give a nice reading of it: the ridge operator is "decorrelation followed by direct scaling shrinkage": it shrinks the correlations between features by 1/(1 + λ), then scales [Zou & Hastie 2005, p. 308](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf#page=8). Correlated features end up sharing the credit roughly equally.
 
 ##### What it can't do
 
-Ridge "does not set any coefficients to 0 and hence does not give an easily interpretable model" Tibshirani 1996, p. 267. The five junk features get small weights, but never zero. Try it in the Play lab, in the Intuition tab.
+Ridge "does not set any coefficients to 0 and hence does not give an easily interpretable model" [Tibshirani 1996, p. 267](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=2). The five junk features get small weights, but never zero. Try it in the Play lab, in the Intuition tab.
 
 #### Why L1 lands on exact zeros: the diamond
 
-Swap the squares for absolute values, and Lasso does something Ridge never does: it sets weights to **exactly** zero. Tibshirani's picture explains why §2.3, p. 270:
+Swap the squares for absolute values, and Lasso does something Ridge never does: it sets weights to **exactly** zero. Tibshirani's picture explains why [§2.3, p. 270](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=5):
 
 1. Two weights, β₁ and β₂. On the left the budget is an L1 budget; on the right, an L2 budget.
 
@@ -118,9 +118,9 @@ Swap the squares for absolute values, and Lasso does something Ridge never does:
 
 ##### The same thing algebraically
 
-With uncorrelated (orthonormal) features you can solve both exactly, and the difference is plain. Ridge _scales_ each OLS weight by a constant factor; Lasso _subtracts_ a constant and stops at zero ("soft thresholding") Tibshirani 1996, §2.2:
+With uncorrelated (orthonormal) features you can solve both exactly, and the difference is plain. Ridge _scales_ each OLS weight by a constant factor; Lasso _subtracts_ a constant and stops at zero ("soft thresholding") [Tibshirani 1996, §2.2](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=4):
 
-$$ \hat\beta^{\text{ridge}}_j = \hat\beta_j \,/\, (1+\lambda) \qquad \hat\beta^{\text{lasso}}_j = \operatorname{sign}(\hat\beta_j)\,\big(|\hat\beta_j| - \lambda\big)_{+} $$
+$$ {\hat\beta^{\text{ridge}}_j = \hat\beta_j \,/\, (1+\lambda)} \qquad {\hat\beta^{\text{lasso}}_j = \operatorname{sign}(\hat\beta_j)\,\big(|\hat\beta_j| - \lambda\big)}{_{+}} $$
 
 Orthonormal design (XᵀX = I), with the penalties scaled to give these simple forms · hover any symbol.
 
@@ -134,7 +134,7 @@ x-axis: the OLS weight. y-axis: what each method returns. Dashed: OLS (no shrink
 
 #### Why Lasso alone isn't enough
 
-Zou and Hastie list three situations where Lasso struggles Zou & Hastie 2005, p. 302:
+Zou and Hastie list three situations where Lasso struggles [Zou & Hastie 2005, p. 302](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf#page=2):
 
 1. **More features than rows (p > n):** "the lasso selects at most n variables before it saturates." With 20,000 genes and 70 patients, it can keep at most 70.
 
@@ -142,11 +142,11 @@ Zou and Hastie list three situations where Lasso struggles Zou & Hastie 2005, p.
 
 3. **Correlated features, n > p:** "the prediction performance of the lasso is dominated by ridge regression."
 
-Elastic Net adds a little L2 to the L1. The L1 part still produces zeros; the L2 part makes the problem strictly convex, which produces the grouping effect: "strongly correlated predictors tend to be in or out of the model together" abstract. The authors' image: "like a stretchable fishing net that retains 'all the big fish'".
+Elastic Net adds a little L2 to the L1. The L1 part still produces zeros; the L2 part makes the problem strictly convex, which produces the grouping effect: "strongly correlated predictors tend to be in or out of the model together" [abstract](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf#page=1). The authors' image: "like a stretchable fishing net that retains 'all the big fish'".
 
-$$ \min_{\beta}\ \tfrac{1}{2n}\|\mathbf y - X\beta\|_2^2 + \alpha\rho\,\|\beta\|_1 + \alpha\tfrac{1-\rho}{2}\|\beta\|_2^2 $$
+$$ \min_{\beta}\ {\tfrac{1}{2n}\|\mathbf y - X\beta\|_2^2} + {\alpha}{\rho\,\|\beta\|_1} + {\alpha}{\tfrac{1-\rho}{2}\|\beta\|_2^2} $$
 
-scikit-learn's `ElasticNet` objective, with `l1_ratio` = ρ docs. Zou and Hastie also rescale the naive solution by (1 + λ₂) to undo "double shrinkage" p. 307.
+scikit-learn's `ElasticNet` objective, with `l1_ratio` = ρ [docs](https://scikit-learn.org/stable/modules/linear_model.html). Zou and Hastie also rescale the naive solution by (1 + λ₂) to undo "double shrinkage" [p. 307](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf#page=7).
 
 - **fit, averaged**: Mean squared error with a ½ (scikit-learn's scaling: 1/(2n)).
 
@@ -156,7 +156,7 @@ scikit-learn's `ElasticNet` objective, with `l1_ratio` = ρ docs. Zou and Hastie
 
 - **the L2 share**: The remaining 1 − ρ is ridge: it stabilises the fit and groups correlated features. ρ = 0 is a ridge penalty.
 
-scikit-learn's one-line summary: "Lasso is likely to pick one of these at random, while elastic-net is likely to pick both" docs.
+scikit-learn's one-line summary: "Lasso is likely to pick one of these at random, while elastic-net is likely to pick both" [docs](https://scikit-learn.org/stable/modules/linear_model.html).
 
 ## In practice
 
@@ -170,7 +170,7 @@ scikit-learn's one-line summary: "Lasso is likely to pick one of these at random
 | **Lasso** | λ‖β‖₁ | Tibshirani, 1996 | Shrinks and sets some weights to exactly zero: feature selection |
 | **Elastic Net** | mix of both | Zou & Hastie, 2005 | Sparse like Lasso, but keeps correlated groups together |
 
-In scikit-learn they're `Ridge`, `Lasso` and `ElasticNet`, with `RidgeCV`, `LassoCV` and `ElasticNetCV` to pick the strength by cross-validation. The same penalties appear everywhere else in ML: `LogisticRegression` is L2-regularised by default, and "weight decay" in neural networks is an L2 penalty. scikit-learn docs
+In scikit-learn they're `Ridge`, `Lasso` and `ElasticNet`, with `RidgeCV`, `LassoCV` and `ElasticNetCV` to pick the strength by cross-validation. The same penalties appear everywhere else in ML: `LogisticRegression` is L2-regularised by default, and "weight decay" in neural networks is an L2 penalty. [scikit-learn docs](https://scikit-learn.org/stable/modules/linear_model.html)
 
 #### λ is a hyperparameter: pick it with cross-validation
 
@@ -184,7 +184,7 @@ The training error always prefers λ = 0 (OLS fits the training rows best). So y
 
 - Penalising the intercept: shifts every prediction toward zero for no reason (libraries don't, if you let them fit it).
 
-- Comparing α across libraries or models: scikit-learn's Ridge has no 1/n factor, its Lasso has 1/(2n), and LogisticRegression uses C = 1/strength docs.
+- Comparing α across libraries or models: scikit-learn's Ridge has no 1/n factor, its Lasso has 1/(2n), and LogisticRegression uses C = 1/strength [docs](https://scikit-learn.org/stable/modules/linear_model.html).
 
 **Go deeper: the Bayesian view**
 
@@ -220,7 +220,7 @@ The classic fix is to try subsets of features and keep the best one (forward, ba
 
 ##### What breaks: a discrete choice is a jumpy choice
 
-"Subset selection provides interpretable models but can be extremely variable because it is a discrete process: regressors are either retained or dropped from the model. Small changes in the data can result in very different models being selected and this can reduce its prediction accuracy" Tibshirani 1996, p. 267. Best-subset search also grows as 2p: 10 features means 1,024 models, 40 means about a trillion.
+"Subset selection provides interpretable models but can be extremely variable because it is a discrete process: regressors are either retained or dropped from the model. Small changes in the data can result in very different models being selected and this can reduce its prediction accuracy" [Tibshirani 1996, p. 267](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=2). Best-subset search also grows as 2p: 10 features means 1,024 models, 40 means about a trillion.
 
 Regularization replaces "in or out" with a continuous dial.
 
@@ -304,7 +304,7 @@ Ridge, Lasso and Elastic Net · built from Tibshirani (1996), Zou & Hastie (2005
 
 #### A real benchmark: prostate cancer data
 
-Zou and Hastie compared all the methods on a classic dataset: predicting log prostate-specific antigen from 8 clinical measures, 67 training patients, 30 test patients, tuning by tenfold cross-validation Zou & Hastie 2005, Table 1:
+Zou and Hastie compared all the methods on a classic dataset: predicting log prostate-specific antigen from 8 clinical measures, 67 training patients, 30 test patients, tuning by tenfold cross-validation [Zou & Hastie 2005, Table 1](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf#page=11):
 
 ##### Test mean squared error (↓ better)
 
@@ -326,7 +326,7 @@ Elastic Net · 5 variables
 
 Standard errors are large (0.105–0.188) with a 30-patient test set, so treat the ranking as indicative, not definitive. The authors conclude "the elastic net is the winner among all the competitors in terms of both prediction accuracy and sparsity. OLS is the worst method."
 
-And Tibshirani's original claim for the lasso: simulations "suggest that the lasso enjoys some of the favourable properties of both subset selection and ridge regression. It produces interpretable models like subset selection and exhibits the stability of ridge regression" abstract, p. 267.
+And Tibshirani's original claim for the lasso: simulations "suggest that the lasso enjoys some of the favourable properties of both subset selection and ridge regression. It produces interpretable models like subset selection and exhibits the stability of ridge regression" [abstract, p. 267](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf#page=2).
 
 #### Glossary
 
@@ -344,16 +344,16 @@ And Tibshirani's original claim for the lasso: simulations "suggest that the las
 
 #### What this page is built from
 
-1. R. Tibshirani, Regression Shrinkage and Selection via the Lasso, JRSS-B 58 (1996) 267–288: motivation, orthonormal case, geometry.
+1. R. Tibshirani, [Regression Shrinkage and Selection via the Lasso](https://sites.stat.washington.edu/courses/stat527/s13/readings/j_royal_stat_soc_b1996.pdf), JRSS-B 58 (1996) 267–288: motivation, orthonormal case, geometry.
 
-2. H. Zou & T. Hastie, Regularization and Variable Selection via the Elastic Net, JRSS-B 67 (2005) 301–320: Lasso's limits, grouping effect, prostate benchmark.
+2. H. Zou & T. Hastie, [Regularization and Variable Selection via the Elastic Net](https://sites.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf), JRSS-B 67 (2005) 301–320: Lasso's limits, grouping effect, prostate benchmark.
 
 3. A. Hoerl & R. Kennard, "Ridge Regression: Biased Estimation for Nonorthogonal Problems", _Technometrics_ 12 (1970): origin of ridge (background, not quoted).
 
-4. scikit-learn, Linear models user guide: objectives and α scaling, collinearity, Lasso vs Elastic Net.
+4. scikit-learn, [Linear models user guide](https://scikit-learn.org/stable/modules/linear_model.html): objectives and α scaling, collinearity, Lasso vs Elastic Net.
 
 5. Hastie, Tibshirani & Friedman, _The Elements of Statistical Learning_, ch. 3: shrinkage methods (background).
 
-6. Interview angle: Interview Query, Lasso vs Ridge.
+6. Interview angle: [Interview Query, Lasso vs Ridge](https://interviewquery.com/learning-paths/modeling-and-machine-learning-interview/generalized-linear-models-and-regression/lasso-vs-ridge).
 
 The flats data is simulated with a fixed random seed (known true effects) and fitted live in this page.

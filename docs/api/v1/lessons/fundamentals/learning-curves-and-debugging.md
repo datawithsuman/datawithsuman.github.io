@@ -82,7 +82,7 @@ Large neural networks can fit training data perfectly and still generalise, whic
 
 #### The maths
 
-$$ \text{Validation error} \approx \text{Training error} + \text{Gap}(\text{capacity},\, n), \qquad \text{Error} \geq \text{noise} $$
+$$ {\text{Validation error}} \approx {\text{Training error}} + {\text{Gap}(\text{capacity},\, n)}, \qquad {\text{Error} \geq \text{noise}} $$
 
 This is a way to think about it, not an exact equation. Formal bounds exist, and are often loose in practice.
 
@@ -140,18 +140,20 @@ Training error is lower than the label noise. Is that a problem?
 
 It means the model is fitting noise, at least partly, because noise can't really be predicted. Validation error will tell you how much it matters. Some overfitting like this can be harmless, as with some large models, so judge by validation performance.
 
+#### The 30-second answer
+
 I'd plot training and validation error as the data grows. If both are high and close, it's underfitting, so more rows won't help, and I'd add features or flexibility. If training is low with a large gap, it's overfitting, so more rows or regularisation should help. If both level off near the label noise, I'd improve the labels, or find new information. Before that, I'd check the data and leakage, compare with a baseline, and try overfitting a small sample to rule out bugs. Then I'd look at the errors by segment.
 
 **Key terms and sources**
 
-Reading train and validation curves, what capacity means, when more data helps, and a step-by-step way to debug a model.
+Reading train and validation curves, what capacity means, when more data helps, and a step-by-step way to debug a model. · checked 6 Nov 2026
 
 #### Sources
 
-- scikit-learn on validation and learning curves
+- [scikit-learn on validation and learning curves](https://scikit-learn.org/stable/modules/learning_curve.html)
 
-- CS229 syllabus
+- [CS229 syllabus](https://cs229.stanford.edu/syllabus-summer2019.html)
 
-- ISLR
+- [ISLR](https://www.statlearning.com/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

@@ -152,12 +152,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I'd think in shapes. A scalar loss of n weights has an n-length gradient. For L equals the norm of Xw minus y squared, the gradient is 2 X transpose times Xw minus y. Shapes confirm it: n by m times m gives n. Setting it to zero gives the normal equations, and the Hessian, 2 X transpose X, is semi-definite, so it's a true minimum. For a vector output, you get a Jacobian. Backprop is a chain of Jacobians, multiplied from the output, so you only keep a vector and never form the full matrices.</p>
+<h3>The 30-second answer</h3><p class="say30">I'd think in shapes. A scalar loss of n weights has an n-length gradient. For L equals the norm of Xw minus y squared, the gradient is 2 X transpose times Xw minus y. Shapes confirm it: n by m times m gives n. Setting it to zero gives the normal equations, and the Hessian, 2 X transpose X, is semi-definite, so it's a true minimum. For a vector output, you get a Jacobian. Backprop is a chain of Jacobians, multiplied from the output, so you only keep a vector and never form the full matrices.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Gradients, Jacobians and Hessians, the key identities, layout conventions, deriving least squares and why backpropagation multiplies from the output.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Gradients, Jacobians and Hessians, the key identities, layout conventions, deriving least squares and why backpropagation multiplies from the output. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://cs229.stanford.edu/section/cs229-linalg.pdf">Kolter and Do, CS229 Linear Algebra Review</a></li><li><a href="https://mml-book.github.io/">Deisenroth, Faisal and Ong, Mathematics for Machine Learning</a></li><li><a href="../backpropagation/">Backpropagation on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

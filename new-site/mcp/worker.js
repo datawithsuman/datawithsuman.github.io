@@ -108,10 +108,10 @@ const TOOLS = [
       type: "object",
       properties: {
         query: { type: "string", description: "Keywords or a question, e.g. 'KV cache', 'why does RAG retrieve the wrong chunk'" },
-        track: { type: "string", enum: ["fundamentals", "ai-engineering", "system-design", "papers"] },
+        track: { type: "string", enum: ["fundamentals", "ai-engineering", "system-design", "papers"], description: "Limit to one track: fundamentals, ai-engineering, system-design or papers" },
         type: { type: "string", enum: ["concept", "interview", "design", "paper"], description: "concept = lesson, interview = scenario set, design = system design question, paper = paper explained" },
         section: { type: "string", description: "Part or section name to filter by, e.g. 'RAG', 'LLMs', 'Recommendation Systems'" },
-        limit: { type: "integer", minimum: 1, maximum: 30, default: 8 },
+        limit: { type: "integer", minimum: 1, maximum: 30, default: 8, description: "How many lessons to return (1–30, default 8)" },
       },
       required: ["query"],
     },
@@ -124,7 +124,7 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: {
-        track: { type: "string", enum: ["fundamentals", "ai-engineering", "system-design", "papers"] },
+        track: { type: "string", enum: ["fundamentals", "ai-engineering", "system-design", "papers"], description: "Limit to one track: fundamentals, ai-engineering, system-design or papers" },
         part: { type: "string", description: "Part name within the track, e.g. 'Maths for ML', 'RAG', 'Agentic AI'" },
       },
     },
@@ -166,7 +166,7 @@ const TOOLS = [
       properties: {
         topic: { type: "string", description: "Topic id or name" },
         count: { type: "integer", minimum: 1, maximum: 20, description: "How many questions (default: all)" },
-        reveal_answers: { type: "boolean", default: false },
+        reveal_answers: { type: "boolean", default: false, description: "Include the correct option and its explanation. Keep false while the learner is answering; set true to grade." },
       },
     },
     annotations: { readOnlyHint: true, openWorldHint: false },
@@ -180,7 +180,7 @@ const TOOLS = [
       properties: {
         role: { type: "string", description: "'ai-engineering', 'ml-engineering' or 'data-science'" },
         round: { type: "string", description: "Round id or name" },
-        include_answers: { type: "boolean", default: false },
+        include_answers: { type: "boolean", default: false, description: "Include model answers and what the interviewer listens for. Keep false during the mock; set true to give feedback." },
       },
       required: ["role"],
     },
@@ -194,10 +194,10 @@ const TOOLS = [
       type: "object",
       properties: {
         query: { type: "string", description: "Words in the job title or a skill, e.g. 'machine learning engineer', 'GenAI', 'PyTorch'" },
-        company: { type: "string" },
+        company: { type: "string", description: "Company name or part of it, e.g. 'Walmart', 'Google'" },
         location: { type: "string", description: "City, e.g. 'Bengaluru', 'Hyderabad', 'Remote'. Old names like 'Bangalore' or 'Gurgaon' also work" },
         experience: { type: "string", description: "'0-2', '2-5', '5-8', '8+' or a number of years" },
-        limit: { type: "integer", minimum: 1, maximum: 100, default: 20 },
+        limit: { type: "integer", minimum: 1, maximum: 100, default: 20, description: "How many jobs to return (1–100, default 20)" },
       },
     },
     annotations: { readOnlyHint: true, openWorldHint: false },
@@ -206,7 +206,7 @@ const TOOLS = [
     name: "whats_new",
     title: "What's new",
     description: "Lessons, designs, quizzes and mock rounds added to the site recently, newest first.",
-    inputSchema: { type: "object", properties: { limit: { type: "integer", minimum: 1, maximum: 60, default: 15 } } },
+    inputSchema: { type: "object", properties: { limit: { type: "integer", minimum: 1, maximum: 60, default: 15, description: "How many recent items to return (1–60, default 15)" } } },
     annotations: { readOnlyHint: true, openWorldHint: false },
   },
 ];

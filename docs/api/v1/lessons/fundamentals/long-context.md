@@ -52,13 +52,13 @@ Head size 128 (64 rotary pairs), base 10,000, training length 4,096. A pair coun
 
 #### In one breath
 
-RoPE encodes position by rotating pairs of query/key dimensions, fast for some pairs and very slowly for others. Past the training length, the slow pairs reach angles the model has **never seen**, and quality collapses. **Position interpolation (PI)** squeezes positions back into the trained range, but blurs nearby tokens; **NTK-aware** scaling raises the RoPE base instead; **YaRN** interpolates only the slow pairs, keeps the fast ones untouched and adds an attention temperature, extending Llama 2 to 128k with a short fine-tune. Separately, **sliding-window attention** caps memory by attending only to recent tokens, and **attention sinks** (keeping the first few tokens) stop it from breaking. Long context is only useful if the model uses it: test with tasks harder than needle-in-a-haystack.What you'll be able to do after this: explain why models fail beyond their training length and compare PI, NTK-aware scaling, YaRN, sliding windows and attention sinks.
+RoPE encodes position by rotating pairs of query/key dimensions, fast for some pairs and very slowly for others. Past the training length, the slow pairs reach angles the model has **never seen**, and quality collapses. **Position interpolation (PI)** squeezes positions back into the trained range, but blurs nearby tokens; **NTK-aware** scaling raises the RoPE base instead; **YaRN** interpolates only the slow pairs, keeps the fast ones untouched and adds an attention temperature, extending Llama 2 to 128k with a short fine-tune. Separately, **sliding-window attention** caps memory by attending only to recent tokens, and **attention sinks** (keeping the first few tokens) stop it from breaking. Long context is only useful if the model uses it: test with tasks harder than needle-in-a-haystack. What you'll be able to do after this: explain why models fail beyond their training length and compare PI, NTK-aware scaling, YaRN, sliding windows and attention sinks.
 
 #### Fast pairs and slow pairs
 
-$$ \text{angle}_i(m) = m\cdot\theta_i, \qquad \theta_i = b^{-2i/d} $$
+$$ \text{angle}_i(m) = {m}\cdot{\theta_i}, \qquad {\theta_i = }{b}^{{-2i/d}} $$
 
-Su et al., RoFormer, arXiv:2104.09864. The query–key score then depends only on the difference of positions.
+Su et al., RoFormer, [arXiv:2104.09864](https://arxiv.org/abs/2104.09864). The query–key score then depends only on the difference of positions.
 
 - **position**: Token position m multiplies the rotation speed: the angle grows linearly with position.
 
@@ -136,12 +136,12 @@ Why a model trained on 4k or 8k tokens breaks at 32k, how position interpolation
 
 #### Sources
 
-1. S. Chen et al., "Extending Context Window of Large Language Models via Positional Interpolation", 2023, arXiv:2306.15595.
+1. S. Chen et al., "Extending Context Window of Large Language Models via Positional Interpolation", 2023, [arXiv:2306.15595](https://arxiv.org/abs/2306.15595).
 
-2. B. Peng, J. Quesnelle, H. Fan & E. Shippole, "YaRN: Efficient Context Window Extension of Large Language Models", ICLR 2024, arXiv:2309.00071.
+2. B. Peng, J. Quesnelle, H. Fan & E. Shippole, "YaRN: Efficient Context Window Extension of Large Language Models", ICLR 2024, [arXiv:2309.00071](https://arxiv.org/abs/2309.00071).
 
-3. G. Xiao et al., "Efficient Streaming Language Models with Attention Sinks", ICLR 2024, arXiv:2309.17453.
+3. G. Xiao et al., "Efficient Streaming Language Models with Attention Sinks", ICLR 2024, [arXiv:2309.17453](https://arxiv.org/abs/2309.17453).
 
-4. A. Jiang et al., "Mistral 7B", 2023, arXiv:2310.06825; Gemma Team, "Gemma 3 Technical Report", 2025, arXiv:2503.19786.
+4. A. Jiang et al., "Mistral 7B", 2023, [arXiv:2310.06825](https://arxiv.org/abs/2310.06825); Gemma Team, "Gemma 3 Technical Report", 2025, [arXiv:2503.19786](https://arxiv.org/abs/2503.19786).
 
-5. N. Liu et al., "Lost in the Middle: How Language Models Use Long Contexts", TACL 2024, arXiv:2307.03172; C.-P. Hsieh et al., "RULER: What's the Real Context Size of Your Long-Context Language Models?", 2024, arXiv:2404.06654.
+5. N. Liu et al., "Lost in the Middle: How Language Models Use Long Contexts", TACL 2024, [arXiv:2307.03172](https://arxiv.org/abs/2307.03172); C.-P. Hsieh et al., "RULER: What's the Real Context Size of Your Long-Context Language Models?", 2024, [arXiv:2404.06654](https://arxiv.org/abs/2404.06654).

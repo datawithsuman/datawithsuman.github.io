@@ -48,13 +48,13 @@ The first component explains **55.0%**, the second **24.4%** (79% together), the
 
 #### In one breath
 
-PCA finds new axes for your data, the **principal components**: the first points along the direction where the data varies most, the second along the most-varying direction at right angles to the first, and so on. Keep the first few and you have a smaller set of features that holds most of the information (variance), with the least possible **reconstruction error** for a linear projection. Mathematically the components are the **eigenvectors of the covariance matrix** (computed via SVD), and each eigenvalue is the variance it captures. Choose how many to keep from the **explained-variance** curve. Always **standardise** first when features have different units, and remember PCA only finds **linear** structure, and high variance isn't the same as useful for prediction.What you'll be able to do after this: explain PCA as variance maximisation and as best reconstruction, read a scree plot, interpret loadings, show why scaling matters, and know when to use something else.
+PCA finds new axes for your data, the **principal components**: the first points along the direction where the data varies most, the second along the most-varying direction at right angles to the first, and so on. Keep the first few and you have a smaller set of features that holds most of the information (variance), with the least possible **reconstruction error** for a linear projection. Mathematically the components are the **eigenvectors of the covariance matrix** (computed via SVD), and each eigenvalue is the variance it captures. Choose how many to keep from the **explained-variance** curve. Always **standardise** first when features have different units, and remember PCA only finds **linear** structure, and high variance isn't the same as useful for prediction. What you'll be able to do after this: explain PCA as variance maximisation and as best reconstruction, read a scree plot, interpret loadings, show why scaling matters, and know when to use something else.
 
 #### Variance along a direction
 
 Centre the data (subtract each column's mean). Pick a direction, a unit vector w. Project every customer onto it: their score is w·x, a single number. The variance of those scores says how much of the data's spread that direction captures. If the covariance matrix of the data is Σ, that variance has a compact form:
 
-$$ \operatorname{Var}(w^{\top}x) = w^{\top}\,\Sigma\,w, \qquad \lVert w \rVert = 1 $$
+$$ {\operatorname{Var}(w^{\top}x)} = {w}^{\top}\,{\Sigma}\,{w}, \qquad \lVert w \rVert = 1 $$
 
 - **variance of the projections**: How spread out the customers are along direction w. Big means this direction carries a lot of information.
 
@@ -68,9 +68,9 @@ Rotate the line and watch the two numbers trade off. The direction that captures
 
 #### Components are eigenvectors of the covariance matrix
 
-$$ \Sigma\,w_k = \lambda_k\,w_k, \qquad \lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d \ge 0 $$
+$$ {\Sigma}\,{w_k} = {\lambda_k}\,{w_k}, \qquad \lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d \ge 0 $$
 
-scikit-learn: PCA decomposes data "in a set of successive orthogonal components that explain a maximum amount of the variance" decomposition guide.
+scikit-learn: PCA decomposes data "in a set of successive orthogonal components that explain a maximum amount of the variance" [decomposition guide](https://scikit-learn.org/stable/modules/decomposition.html#pca).
 
 - **covariance matrix**: Computed from the centred data.
 
@@ -104,7 +104,7 @@ Each bar is the weight of one original feature in the component (the components 
 | **t-SNE / UMAP** | Local neighbourhoods, non-linear | 2-D visualisation of clusters (next lesson) |
 | **Autoencoders** | Whatever reconstructs best, non-linear | Large data, images, learned embeddings |
 
-PCA, truncated SVD and kernel PCA are in scikit-learn's decomposition module decomposition guide.
+PCA, truncated SVD and kernel PCA are in scikit-learn's decomposition module [decomposition guide](https://scikit-learn.org/stable/modules/decomposition.html).
 
 #### The whole recipe
 
@@ -118,7 +118,7 @@ PCA, truncated SVD and kernel PCA are in scikit-learn's decomposition module dec
 
 5. **Big data:** `svd_solver="randomized"`, `IncrementalPCA` for data that doesn't fit in memory.
 
-Cost: exact PCA is O(nmax² · nmin); randomised PCA is O(nmax² · ncomponents) decomposition guide. `IncrementalPCA` processes mini-batches for out-of-core data.
+Cost: exact PCA is O(nmax² · nmin); randomised PCA is O(nmax² · ncomponents) [decomposition guide](https://scikit-learn.org/stable/modules/decomposition.html#pca). `IncrementalPCA` processes mini-batches for out-of-core data.
 
 #### When to use it
 
@@ -148,7 +148,7 @@ Keeping "orders per month" and dropping "app sessions" throws away whatever sess
 
 #### Units decide the answer if you let them
 
-Multiply just the basket column by 30 (rupees instead of standardised units) and PC1 explains **99.5%** of the variance with a weight of 1.00 on that single column: PCA has found "the column with the biggest numbers". scikit-learn: PCA "centers but does not scale the input data for each feature before applying the SVD" decomposition guide, so put a `StandardScaler` before it whenever units differ. (If all features share a unit and their scale is meaningful, such as pixel intensities, don't standardise.)
+Multiply just the basket column by 30 (rupees instead of standardised units) and PC1 explains **99.5%** of the variance with a weight of 1.00 on that single column: PCA has found "the column with the biggest numbers". scikit-learn: PCA "centers but does not scale the input data for each feature before applying the SVD" [decomposition guide](https://scikit-learn.org/stable/modules/decomposition.html#pca), so put a `StandardScaler` before it whenever units differ. (If all features share a unit and their scale is meaningful, such as pixel intensities, don't standardise.)
 
 #### Linear only, and variance isn't relevance
 
@@ -160,7 +160,7 @@ Multiply just the basket column by 30 (rupees instead of standardised units) and
 
 - **Interpretability:** each component mixes all original features.
 
-- **For visualising clusters**, PCA often overlaps them: in the UMAP paper's benchmark, a k-NN classifier on a 2-D PCA embedding of MNIST scored about 0.46–0.47 accuracy against about 0.96–0.97 for t-SNE or UMAP UMAP paper, Table 2. PCA is still the standard first step before t-SNE.
+- **For visualising clusters**, PCA often overlaps them: in the UMAP paper's benchmark, a k-NN classifier on a 2-D PCA embedding of MNIST scored about 0.46–0.47 accuracy against about 0.96–0.97 for t-SNE or UMAP [UMAP paper, Table 2](https://arxiv.org/pdf/1802.03426#page=32). PCA is still the standard first step before t-SNE.
 
 #### Caveats
 
@@ -274,7 +274,7 @@ UMAP
 
 0.967
 
-McInnes, Healy & Melville, Table 2, 20-fold cross-validation p. 32. Higher is better: how well local neighbourhoods survive in 2-D. PCA keeps global variance, not neighbourhoods.
+McInnes, Healy & Melville, Table 2, 20-fold cross-validation [p. 32](https://arxiv.org/pdf/1802.03426#page=32). Higher is better: how well local neighbourhoods survive in 2-D. PCA keeps global variance, not neighbourhoods.
 
 #### Key terms
 
@@ -289,11 +289,11 @@ McInnes, Healy & Melville, Table 2, 20-fold cross-validation p. 32. Higher is be
 
 #### What this page is built from
 
-1. scikit-learn, Decomposing signals in components (PCA, IncrementalPCA, randomised SVD, kernel PCA).
+1. scikit-learn, [Decomposing signals in components (PCA, IncrementalPCA, randomised SVD, kernel PCA)](https://scikit-learn.org/stable/modules/decomposition.html).
 
 2. K. Pearson, "On lines and planes of closest fit to systems of points in space", _Philosophical Magazine_, 1901; H. Hotelling, "Analysis of a complex of statistical variables into principal components", _J. Educational Psychology_ 24, 1933 (origins; background).
 
-3. L. McInnes, J. Healy & J. Melville, "UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction", arXiv:1802.03426 (Table 2: k-NN accuracy on PCA, t-SNE, UMAP embeddings).
+3. L. McInnes, J. Healy & J. Melville, "UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction", [arXiv:1802.03426](https://arxiv.org/abs/1802.03426) (Table 2: k-NN accuracy on PCA, t-SNE, UMAP embeddings).
 
 4. C. Eckart & G. Young, "The approximation of one matrix by another of lower rank", _Psychometrika_, 1936 (best low-rank approximation; background).
 

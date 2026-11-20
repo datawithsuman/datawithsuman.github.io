@@ -49,11 +49,11 @@ Small k: low bias, high variance (the boundary jumps with each noisy point). Lar
 
 #### In one breath
 
-k-NN doesn't learn a model at all. It stores the training set, and to classify a new point it finds the **k closest** stored points and takes a **vote** (or an average, for regression). Small k memorises noise; large k blurs the boundary; you pick k by cross-validation. Because everything is a distance, **feature scaling** is not optional, and in **high dimensions** all distances start to look alike, so "nearest" stops meaning much. Prediction is the expensive part (search the whole set), which is why KD-trees, ball trees and, at scale, approximate nearest-neighbour indexes (the engines behind vector search and RAG) exist.What you'll be able to do after this: explain the bias–variance effect of k, show why scaling matters with numbers, state the Cover–Hart bound, explain distance concentration, and connect k-NN to vector databases.
+k-NN doesn't learn a model at all. It stores the training set, and to classify a new point it finds the **k closest** stored points and takes a **vote** (or an average, for regression). Small k memorises noise; large k blurs the boundary; you pick k by cross-validation. Because everything is a distance, **feature scaling** is not optional, and in **high dimensions** all distances start to look alike, so "nearest" stops meaning much. Prediction is the expensive part (search the whole set), which is why KD-trees, ball trees and, at scale, approximate nearest-neighbour indexes (the engines behind vector search and RAG) exist. What you'll be able to do after this: explain the bias–variance effect of k, show why scaling matters with numbers, state the Cover–Hart bound, explain distance concentration, and connect k-NN to vector databases.
 
 #### A distance, a neighbourhood, a vote
 
-$$ d(x, z) = \Bigl(\sum_{j=1}^{D} |x_j - z_j|^{p}\Bigr)^{1/p} $$
+$$ {d(x, z)} = \Bigl({\sum_{j=1}^{D} |x_j - z_j|}^{{p}}\Bigr)^{1/p} $$
 
 - **distance**: How far query x is from stored point z. The whole method depends on this choice.
 
@@ -63,9 +63,9 @@ $$ d(x, z) = \Bigl(\sum_{j=1}^{D} |x_j - z_j|^{p}\Bigr)^{1/p} $$
 
 Then the prediction is a vote among the k nearest stored points. Read as a probability, it's simply a share:
 
-$$ \hat P(y=c \mid x) = \tfrac{1}{k}\,\sum_{i \in N_k(x)} \mathbb{1}[y_i = c] $$
+$$ {\hat P(y=c \mid x)} = \tfrac{1}{k}\,{\sum_{i \in N_k(x)}} {\mathbb{1}[y_i = c]} $$
 
-scikit-learn: neighbours classification "is computed from a simple majority vote of the nearest neighbors of each point" neighbors guide. For regression, average the neighbours' targets instead.
+scikit-learn: neighbours classification "is computed from a simple majority vote of the nearest neighbors of each point" [neighbors guide](https://scikit-learn.org/stable/modules/neighbors.html). For regression, average the neighbours' targets instead.
 
 - **estimated chance of class c**: k-NN’s estimate of how likely the query belongs to class c.
 
@@ -89,11 +89,11 @@ k-NN assumes only one thing: the label changes smoothly enough that nearby point
 
 ##### A guarantee for the simplest version
 
-Cover & Hart (1967): with infinitely many training points, the 1-NN error R is at most twice the best possible (Bayes) error R*. For two classes, R* ≤ R ≤ 2R*(1 − R*). "In this sense, it may be said that half the classification information in an infinite sample set is contained in the nearest neighbor" IEEE Trans. Inf. Theory 13. It's an asymptotic result: with finite data, and especially in high dimensions, it says nothing about how close you are.
+Cover & Hart (1967): with infinitely many training points, the 1-NN error R is at most twice the best possible (Bayes) error R*. For two classes, R* ≤ R ≤ 2R*(1 − R*). "In this sense, it may be said that half the classification information in an infinite sample set is contained in the nearest neighbor" [IEEE Trans. Inf. Theory 13](https://doi.org/10.1109/TIT.1967.1053964). It's an asymptotic result: with finite data, and especially in high dimensions, it says nothing about how close you are.
 
 #### Let closer neighbours count more
 
-scikit-learn's `weights="distance"` "assigns weights proportional to the inverse of the distance from the query point" neighbors guide. Switch it on in the Play lab, in the Intuition tab. Two effects to notice:
+scikit-learn's `weights="distance"` "assigns weights proportional to the inverse of the distance from the query point" [neighbors guide](https://scikit-learn.org/stable/modules/neighbors.html). Switch it on in the Play lab, in the Intuition tab. Two effects to notice:
 
 - **It makes large k forgiving.** At k = 61, test accuracy rises from 79.1% (uniform) to 86.2% (weighted): far neighbours from the other moon count for little.
 
@@ -115,7 +115,7 @@ Take 500 random points in a D-dimensional cube and one random query. In 2-D, the
 
 Histogram for one query: each distance divided by that query's nearest distance. As D grows, the whole histogram squeezes against 1.
 
-Beyer, Goldstein, Ramakrishnan & Shaft (1999) proved this: under broad conditions, as dimensionality grows the distance to the nearest neighbour approaches the distance to the farthest one ICDT 1999. It applies to i.i.d. features like these random cubes. Real data usually lives near a much lower-dimensional surface (images, text embeddings), which is why nearest-neighbour search on **learned embeddings** still works well. The practical moves: reduce dimensions (PCA, embeddings), select features, or use a distance that suits the data (cosine for embeddings). scikit-learn also notes that KD-trees lose their speed advantage as D grows.
+Beyer, Goldstein, Ramakrishnan & Shaft (1999) proved this: under broad conditions, as dimensionality grows the distance to the nearest neighbour approaches the distance to the farthest one [ICDT 1999](https://doi.org/10.1007/3-540-49257-7_15). It applies to i.i.d. features like these random cubes. Real data usually lives near a much lower-dimensional surface (images, text embeddings), which is why nearest-neighbour search on **learned embeddings** still works well. The practical moves: reduce dimensions (PCA, embeddings), select features, or use a distance that suits the data (cosine for embeddings). scikit-learn also notes that KD-trees lose their speed advantage as D grows.
 
 ## In practice
 
@@ -123,7 +123,7 @@ Beyer, Goldstein, Ramakrishnan & Shaft (1999) proved this: under broad condition
 
 #### Lazy learning, and how the search is made fast
 
-scikit-learn calls k-NN "a type of instance-based learning or non-generalizing learning: it does not attempt to construct a general internal model, but simply stores instances of the training data" neighbors guide. So "training" is just indexing, and the work moves to query time:
+scikit-learn calls k-NN "a type of instance-based learning or non-generalizing learning: it does not attempt to construct a general internal model, but simply stores instances of the training data" [neighbors guide](https://scikit-learn.org/stable/modules/neighbors.html). So "training" is just indexing, and the work moves to query time:
 
 | Search method | Cost | When |
 |---|---|---|
@@ -132,7 +132,7 @@ scikit-learn calls k-NN "a type of instance-based learning or non-generalizing l
 | **Ball tree** | About O(D log N) | Nested hyperspheres; "can out-perform a KD-tree in high dimensions", depending on the data |
 | **Approximate NN** (HNSW, IVF, product quantisation; FAISS and vector databases) | Sub-linear, trades a little recall for big speed-ups | Millions to billions of embedding vectors: semantic search, recommendations, RAG retrieval |
 
-First three rows: scikit-learn's neighbors guide docs. Approximate methods: ; see the RAG at scale lesson for how retrieval uses them.
+First three rows: scikit-learn's neighbors guide [docs](https://scikit-learn.org/stable/modules/neighbors.html). Approximate methods: ; see the RAG at scale lesson for how retrieval uses them.
 
 #### k-NN, end to end
 
@@ -168,7 +168,7 @@ First three rows: scikit-learn's neighbors guide docs. Approximate methods: ; se
 
 #### "Use k = 1: the closest example is the best evidence"
 
-With k = 1 every training part is its own nearest neighbour, so training accuracy is always 100%. That number is meaningless. On our noisy moons, 1-NN scores **85.8%** on new parts, while k = 15 scores **89.7%**. The single nearest neighbour is often one of the noisy parts, and 1-NN copies its mistake into a little island of wrong predictions around it. scikit-learn: "a larger k suppresses the effects of noise, but makes the classification boundaries less distinct" neighbors guide.
+With k = 1 every training part is its own nearest neighbour, so training accuracy is always 100%. That number is meaningless. On our noisy moons, 1-NN scores **85.8%** on new parts, while k = 15 scores **89.7%**. The single nearest neighbour is often one of the noisy parts, and 1-NN copies its mistake into a little island of wrong predictions around it. scikit-learn: "a larger k suppresses the effects of noise, but makes the classification boundaries less distinct" [neighbors guide](https://scikit-learn.org/stable/modules/neighbors.html).
 
 #### Caveats
 
@@ -300,14 +300,14 @@ Beyer et al. 1999, as in the curse of dimensionality section. In our cube simula
 
 #### What this page is built from
 
-1. T. Cover & P. Hart, "Nearest neighbor pattern classification", _IEEE Trans. Information Theory_ 13(1), 1967, doi:10.1109/TIT.1967.1053964 (the 2× Bayes bound).
+1. T. Cover & P. Hart, "Nearest neighbor pattern classification", _IEEE Trans. Information Theory_ 13(1), 1967, [doi:10.1109/TIT.1967.1053964](https://doi.org/10.1109/TIT.1967.1053964) (the 2× Bayes bound).
 
-2. K. Beyer, J. Goldstein, R. Ramakrishnan & U. Shaft, "When is 'nearest neighbor' meaningful?", ICDT 1999, doi:10.1007/3-540-49257-7_15 (distance concentration).
+2. K. Beyer, J. Goldstein, R. Ramakrishnan & U. Shaft, "When is 'nearest neighbor' meaningful?", ICDT 1999, [doi:10.1007/3-540-49257-7_15](https://doi.org/10.1007/3-540-49257-7_15) (distance concentration).
 
-3. scikit-learn, Nearest Neighbors user guide (instance-based learning, k, weights, brute/KD/ball tree costs, algorithm choice).
+3. scikit-learn, [Nearest Neighbors user guide](https://scikit-learn.org/stable/modules/neighbors.html) (instance-based learning, k, weights, brute/KD/ball tree costs, algorithm choice).
 
 4. C. Stone, "Consistent nonparametric regression", _Annals of Statistics_, 1977 (k-NN consistency; background).
 
-5. Y. Malkov & D. Yashunin, "Efficient and robust approximate nearest neighbor search using HNSW graphs", arXiv:1603.09320 (approximate search; background).
+5. Y. Malkov & D. Yashunin, "Efficient and robust approximate nearest neighbor search using HNSW graphs", [arXiv:1603.09320](https://arxiv.org/abs/1603.09320) (approximate search; background).
 
 All datasets are simulated with fixed seeds; every result on this page is computed live in your browser.

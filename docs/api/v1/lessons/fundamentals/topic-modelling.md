@@ -86,7 +86,7 @@ LLMs are useful at the end: give one a topic's top words and sample documents, a
 
 #### The maths
 
-$$ P(w \mid d) = \sum_{k} \theta_{d,k}\, \beta_{k,w}, \qquad X \approx WH, \qquad W_{t,c} = \mathrm{tf}_{t,c} \cdot \log\!\Big(1 + \frac{A}{\mathrm{tf}_t}\Big) $$
+$$ {P(w \mid d)} = \sum_{k} {\theta_{d,k}}\, {\beta_{k,w}}, \qquad {X \approx WH}, \qquad {W_{t,c} = \mathrm{tf}_{t,c} \cdot \log\!\Big(1 + \frac{A}{\mathrm{tf}_t}\Big)} $$
 
 LDA as described by scikit-learn and Blei et al. NMF as in scikit-learn. c-TF-IDF from the BERTopic paper.
 
@@ -146,18 +146,20 @@ How is NMF related to LDA?
 
 Both represent documents as mixtures of topics, and topics as mixtures of words, with non-negative values. LDA is a probabilistic model with Dirichlet priors. NMF minimises reconstruction error, and is simpler and usually faster.
 
+#### The 30-second answer
+
 Topic models find themes with no labels. LDA is generative: each document is a mix of topics, and each topic is a distribution over words, fitted with Gibbs sampling or variational inference. NMF factorises a TF-IDF matrix into non-negative parts, and it's a fast baseline. BERTopic embeds documents, reduces dimensions with UMAP, clusters with HDBSCAN, and describes clusters with c-TF-IDF, and it tends to suit short texts. I'd choose the number of topics with coherence plus reading the topics, check stability across seeds, and read sample documents. Then I might use the themes to train a classifier.
 
 **Key terms and sources**
 
-Latent Dirichlet Allocation, non-negative matrix factorisation, BERTopic and c-TF-IDF, how to choose the number of topics, and how to check the results.
+Latent Dirichlet Allocation, non-negative matrix factorisation, BERTopic and c-TF-IDF, how to choose the number of topics, and how to check the results. · checked 7 Nov 2026
 
 #### Sources
 
-- Blei, Ng and Jordan, Latent Dirichlet Allocation (2003)
+- [Blei, Ng and Jordan, Latent Dirichlet Allocation (2003)](https://jmlr.org/papers/v3/blei03a.html)
 
-- Grootendorst, BERTopic
+- [Grootendorst, BERTopic](https://arxiv.org/abs/2203.05794)
 
-- scikit-learn on decomposition: LDA and NMF
+- [scikit-learn on decomposition: LDA and NMF](https://scikit-learn.org/stable/modules/decomposition.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

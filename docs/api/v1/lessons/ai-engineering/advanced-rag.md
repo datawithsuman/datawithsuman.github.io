@@ -48,7 +48,7 @@ Plain embeddings miss the relevant chunk in the top 20 for **5.7%** of queries. 
 
 #### In one breath
 
-When basic RAG misses, the fix is usually one of a few well-tested upgrades. **Hybrid search** combines BM25 (exact words, codes, names) with dense embeddings (meaning). **Re-ranking** runs a slower cross-encoder over the top 20–100 candidates to put the truly relevant ones first. **Contextual chunks** prepend a sentence of context to each chunk before indexing, so "capped at ₹150" knows it's about late refunds. **Query rewriting** turns vague or multi-part questions into better search queries. Together these cut Anthropic's measured top-20 retrieval failure rate from 5.7% to **1.9%** (−67%). For "summarise themes across all 10,000 tickets" questions, **GraphRAG** builds an entity graph with community summaries instead of retrieving a few chunks.What you'll be able to do after this: pick the right upgrade for a RAG failure, explain bi-encoders vs cross-encoders, and say when GraphRAG is worth it.
+When basic RAG misses, the fix is usually one of a few well-tested upgrades. **Hybrid search** combines BM25 (exact words, codes, names) with dense embeddings (meaning). **Re-ranking** runs a slower cross-encoder over the top 20–100 candidates to put the truly relevant ones first. **Contextual chunks** prepend a sentence of context to each chunk before indexing, so "capped at ₹150" knows it's about late refunds. **Query rewriting** turns vague or multi-part questions into better search queries. Together these cut Anthropic's measured top-20 retrieval failure rate from 5.7% to **1.9%** (−67%). For "summarise themes across all 10,000 tickets" questions, **GraphRAG** builds an entity graph with community summaries instead of retrieving a few chunks. What you'll be able to do after this: pick the right upgrade for a RAG failure, explain bi-encoders vs cross-encoders, and say when GraphRAG is worth it.
 
 #### The upgrade toolkit
 
@@ -133,14 +133,14 @@ The techniques that take a basic RAG system from "often finds the right passage"
 
 #### Sources
 
-1. Anthropic, "Introducing Contextual Retrieval", Sept 2024, anthropic.com/news/contextual-retrieval.
+1. Anthropic, "Introducing Contextual Retrieval", Sept 2024, [anthropic.com/news/contextual-retrieval](https://www.anthropic.com/news/contextual-retrieval).
 
-2. R. Nogueira & K. Cho, "Passage Re-ranking with BERT", 2019, arXiv:1901.04085; O. Khattab & M. Zaharia, "ColBERT", SIGIR 2020, arXiv:2004.12832.
+2. R. Nogueira & K. Cho, "Passage Re-ranking with BERT", 2019, [arXiv:1901.04085](https://arxiv.org/abs/1901.04085); O. Khattab & M. Zaharia, "ColBERT", SIGIR 2020, [arXiv:2004.12832](https://arxiv.org/abs/2004.12832).
 
-3. L. Gao et al., "Precise Zero-Shot Dense Retrieval without Relevance Labels" (HyDE), ACL 2023, arXiv:2212.10496; X. Ma et al., "Query Rewriting for Retrieval-Augmented Large Language Models", EMNLP 2023, arXiv:2305.14283.
+3. L. Gao et al., "Precise Zero-Shot Dense Retrieval without Relevance Labels" (HyDE), ACL 2023, [arXiv:2212.10496](https://arxiv.org/abs/2212.10496); X. Ma et al., "Query Rewriting for Retrieval-Augmented Large Language Models", EMNLP 2023, [arXiv:2305.14283](https://arxiv.org/abs/2305.14283).
 
-4. D. Edge et al., "From Local to Global: A Graph RAG Approach to Query-Focused Summarization", 2024, arXiv:2404.16130.
+4. D. Edge et al., "From Local to Global: A Graph RAG Approach to Query-Focused Summarization", 2024, [arXiv:2404.16130](https://arxiv.org/abs/2404.16130).
 
-5. A. Asai et al., "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", ICLR 2024, arXiv:2310.11511.
+5. A. Asai et al., "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", ICLR 2024, [arXiv:2310.11511](https://arxiv.org/abs/2310.11511).
 
-6. I. Levy, S. Shlomov & L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, arXiv:2610.29722; L. Chen et al., "Is GraphRAG Needed?", 2026, arXiv:2606.25656; Microsoft Research, LazyGraphRAG, 2024.
+6. I. Levy, S. Shlomov & L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, [arXiv:2610.29722](https://arxiv.org/abs/2610.29722); L. Chen et al., "Is GraphRAG Needed?", 2026, [arXiv:2606.25656](https://arxiv.org/abs/2606.25656); Microsoft Research, [LazyGraphRAG](https://www.microsoft.com/en-us/research/blog/lazygraphrag-setting-a-new-standard-for-quality-and-cost), 2024.

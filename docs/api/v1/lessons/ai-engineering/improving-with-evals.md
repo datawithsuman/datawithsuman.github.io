@@ -122,20 +122,22 @@ You switched to a cheaper model and the average score held. Are you done?
 
 Not yet. Check per failure mode and per slice: averages can hide a new failure concentrated in one feature. Redo error analysis on a sample.
 
+#### The 30-second answer
+
 I'd fix in order of effort: prompt edits for specification and format problems, structural changes like splitting the task, adding retrieval or a check for multi-step errors, automatic prompt optimisation once I have 50 or more labelled examples, and fine-tuning last for narrow tasks. Each change is kept only if the evals improve. For cost I'd right-size models, trim tokens, put fixed content first for caching, batch what can wait, and use a cascade: a cheap model answers when confident, with the threshold set on held-out data to hit a target agreement with the expensive model.
 
 **Key terms and sources**
 
-Choosing fixes by effort (prompt, structure, automatic prompt optimisation, fine-tuning), cutting cost without losing accuracy (smaller models, fewer tokens, caching, batching), and model cascades that send only uncertain cases to an expensive model.
+Choosing fixes by effort (prompt, structure, automatic prompt optimisation, fine-tuning), cutting cost without losing accuracy (smaller models, fewer tokens, caching, batching), and model cascades that send only uncertain cases to an expensive model. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- L. Chen, M. Zaharia and J. Zou, FrugalGPT: how to use large language models while reducing cost and improving performance, 2023
+- [L. Chen, M. Zaharia and J. Zou, FrugalGPT: how to use large language models while reducing cost and improving performance, 2023](https://arxiv.org/abs/2305.05176)
 
-- O. Khattab et al., DSPy: compiling declarative language model calls into self-improving pipelines, 2023
+- [O. Khattab et al., DSPy: compiling declarative language model calls into self-improving pipelines, 2023](https://arxiv.org/abs/2310.03714)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

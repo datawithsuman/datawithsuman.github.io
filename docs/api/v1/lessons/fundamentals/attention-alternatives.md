@@ -86,7 +86,7 @@ These are the authors' own numbers, on their own hardware and tests. Kimi's pape
 
 #### The maths
 
-$$ S_t = A_t\,S_{t-1} + k_t v_t^{\top}, \qquad o_t = S_t^{\top} q_t $$
+$$ {S_t} = {A_t}\,{S_{t-1}} + {k_t v_t^{\top}}, \qquad {o_t = S_t^{\top} q_t} $$
 
 The general linear attention update, as written in the Kimi Linear paper (Eq. 15). Standard attention would keep every key and value, and compare the query with each one.
 
@@ -146,30 +146,32 @@ Your agent needs 500k tokens of context. How do you choose a model?
 
 Test on your own long-context tasks, rather than its advertised length. Measure retrieval from the middle of the context, prefill time and memory per conversation. Prefill usually dominates for long inputs, so check which phase the model actually speeds up.
 
+#### The 30-second answer
+
 GQA and MLA make each cached token smaller, but the cache still grows with context. Four newer ideas go further. Sparse attention uses a cheap indexer to read only the top-k past tokens, which cuts the main attention from L squared to L times k. Linear attention replaces the cache with a fixed-size state and a learned forget gate, so memory stays constant, but it can't recall details exactly. Compression merges tokens along the sequence, or works in a smaller space, which can also cut prefill and training cost. Sharing reuses keys and values across layers. Most models are hybrids, such as three linear layers per full-attention layer, because some layers still need exact access to earlier tokens.
 
 **Key terms and sources**
 
-Why full attention gets expensive, sparse attention, linear attention with a fixed-size state, compressing keys and values, cross-layer sharing, and why hybrids win.
+Why full attention gets expensive, sparse attention, linear attention with a fixed-size state, compressing keys and values, cross-layer sharing, and why hybrids win. · checked 7 Nov 2026
 
 #### Sources
 
-- Kimi Team, Kimi Linear
+- [Kimi Team, Kimi Linear](https://arxiv.org/abs/2510.26692)
 
-- DeepSeek-AI, DeepSeek-V3.2 (Sparse Attention)
+- [DeepSeek-AI, DeepSeek-V3.2 (Sparse Attention)](https://arxiv.org/abs/2512.02556)
 
-- DeepSeek-AI, DeepSeek-V4
+- [DeepSeek-AI, DeepSeek-V4](https://arxiv.org/abs/2606.19348)
 
-- Qwen3-Next model card
+- [Qwen3-Next model card](https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct)
 
-- Figliolia et al., Compressed Convolutional Attention
+- [Figliolia et al., Compressed Convolutional Attention](https://arxiv.org/abs/2510.04476)
 
-- Brandon et al., Cross-Layer Attention
+- [Brandon et al., Cross-Layer Attention](https://arxiv.org/abs/2405.12981)
 
-- Gu and Dao, Mamba
+- [Gu and Dao, Mamba](https://arxiv.org/abs/2312.00752)
 
-- Raschka, Recent Developments in LLM Architectures
+- [Raschka, Recent Developments in LLM Architectures](https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures)
 
-- Stanford CS336, attention alternatives lecture
+- [Stanford CS336, attention alternatives lecture](https://cs336.stanford.edu/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

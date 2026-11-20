@@ -84,7 +84,7 @@ Group correlated features first, or look at them together.
 
 #### The maths
 
-$$ \phi_i = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|!\,(|F| - |S| - 1)!}{|F|!}\; \big[v(S \cup \{i\}) - v(S)\big], \qquad f(x) = \phi_0 + \sum_i \phi_i $$
+$$ {\phi_i} = \sum_{S \subseteq F \setminus \{i\}} {\frac{|S|!\,(|F| - |S| - 1)!}{|F|!}}\; {\big[v(S \cup \{i\}) - v(S)\big]}, \qquad {f(x) = \phi_0 + \sum_i \phi_i} $$
 
 From Lundberg and Lee (2017), building on Shapley’s work in game theory. SHAP sets absent features using expected values, and independence is a common simplifying assumption.
 
@@ -142,20 +142,22 @@ Why not use a tree model's built-in feature importance?
 
 Impurity importance is computed on training data, so it can reward overfitting, and it favours features with many unique values. A random ID can look important. Permutation importance on held-out data avoids that, though it has its own issue with correlated features.
 
+#### The 30-second answer
+
 It depends on the question. For which features matter overall, I'd use permutation importance on held-out data: shuffle a feature, and measure the score drop. For how a feature moves predictions, I'd use partial dependence, with ICE to reveal interactions. For one prediction, I'd use SHAP, which splits the gap from a baseline fairly among features, and always adds up. I'd watch correlated features, which hide each other or create unrealistic rows. And these explain the model, not the world, so they don't show cause.
 
 **Key terms and sources**
 
-Global and local explanations: permutation importance, partial dependence and ICE, SHAP and LIME, how each can mislead, and why none shows cause.
+Global and local explanations: permutation importance, partial dependence and ICE, SHAP and LIME, how each can mislead, and why none shows cause. · checked 6 Nov 2026
 
 #### Sources
 
-- Lundberg and Lee, A Unified Approach to Interpreting Model Predictions (2017)
+- [Lundberg and Lee, A Unified Approach to Interpreting Model Predictions (2017)](https://arxiv.org/abs/1705.07874)
 
-- scikit-learn on permutation importance
+- [scikit-learn on permutation importance](https://scikit-learn.org/stable/modules/permutation_importance.html)
 
-- scikit-learn on partial dependence and ICE
+- [scikit-learn on partial dependence and ICE](https://scikit-learn.org/stable/modules/partial_dependence.html)
 
-- Molnar, Interpretable Machine Learning: SHAP
+- [Molnar, Interpretable Machine Learning: SHAP](https://christophm.github.io/interpretable-ml-book/shap.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

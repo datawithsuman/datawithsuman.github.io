@@ -116,20 +116,22 @@ Thumbs-down rate is flat but retries are rising. What do you do?
 
 Treat retries as the earlier signal: read retried conversations, look for a new failure mode, and check whether something changed, such as a model or retrieval update.
 
+#### The 30-second answer
+
 I'd log full traces and run five to seven evaluators, one per known failure mode, on a 1 to 5% sample asynchronously, correcting each judge's rate and alerting when its confidence interval crosses a threshold. Inline, only fast and reliable checks act as guardrails, like regex for personal data, schema validation and SQL parsing, with a safe fallback, because a judge on every answer adds seconds. I'd watch implicit signals like retries, rephrasing, abandonment and accepted suggestions, A/B test big changes, and feed every new failure back into error analysis and the golden set.
 
 **Key terms and sources**
 
-Running evaluators on a sample of live traffic with corrected rates and alerts, guardrails that block bad outputs inline, the user signals that work as quality proxies, A/B tests for big changes, and the loop that feeds production failures back into CI.
+Running evaluators on a sample of live traffic with corrected rates and alerts, guardrails that block bad outputs inline, the user signals that work as quality proxies, A/B tests for big changes, and the loop that feeds production failures back into CI. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- A. Ziegler et al., Productivity assessment of neural code completion (GitHub Copilot), 2022
+- [A. Ziegler et al., Productivity assessment of neural code completion (GitHub Copilot), 2022](https://arxiv.org/abs/2205.06537)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

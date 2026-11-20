@@ -161,8 +161,10 @@ New creators never get shown. How do you fix it?
 
 Add exploration: a retrieval source that gives new posts some exposure, and measure creator diversity as a guardrail, so the feedback loop doesn't lock in existing favourites.
 
+#### The 30-second answer
+
 First I'd clarify the surface, scale, latency and what "good" means beyond clicks. I'd build a funnel. Several retrieval sources each return hundreds of candidates: a two-tower model with post embeddings in an ANN index, posts similar to what the user liked or shared, and trending posts, mixed with tunable weights. A light two-tower model, distilled from the heavy one, narrows a few thousand to about a hundred. A heavy multi-task network predicts click, like, share and "see less" using rich interaction features. A value model combines them into one score with weights we tune, subtracting negative actions so clickbait doesn't win. The final step removes harmful content and applies diversity rules. For speed I'd cache embeddings and precompute at peak. Models retrain frequently, new posts get exploration, and changes go through A/B tests with guardrails on negative feedback and integrity.
 
 **Key terms and sources**
 
-Based on a social app's published post: Meta's "Scaling the Instagram Explore recommendations system" (August 2023). The lab's posts and probabilities and the estimate are ours. Uses ranking metrics, embeddings and ANN and feedback loops.
+Based on a social app's published post: [Meta's "Scaling the Instagram Explore recommendations system"](https://engineering.fb.com/2023/08/09/ml-applications/scaling-instagram-explore-recommendations-system/) (August 2023). The lab's posts and probabilities and the estimate are ours. Uses ranking metrics, embeddings and ANN and feedback loops. · checked 5 Nov 2026

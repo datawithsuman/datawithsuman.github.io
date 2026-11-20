@@ -85,7 +85,7 @@ A finite chain with both properties has one stationary distribution, reached fro
 
 #### The maths
 
-$$ P(X_{t+1} \mid X_t, \ldots, X_0) = P(X_{t+1} \mid X_t), \qquad \pi P = \pi, \qquad \pi = \frac{(b,\; a)}{a + b} $$
+$$ {P(X_{t+1} \mid X_t, \ldots, X_0) = P(X_{t+1} \mid X_t)}, \qquad {\pi P = \pi}, \qquad {\pi = \frac{(b,\; a)}{a + b}} $$
 
 Worked example: with a = 0.1 and b = 0.3, π = (0.75, 0.25), so users spend 75% of the time browsing, wherever they started.
 
@@ -139,19 +139,21 @@ How is the stationary distribution related to eigenvectors?
 
 πP = π says π is a left eigenvector of P with eigenvalue 1. A stochastic matrix always has eigenvalue 1, and no eigenvalue larger in size. Repeatedly multiplying by P is power iteration, which is why the distribution converges to this eigenvector, at a rate set by the next eigenvalue.
 
+#### The 30-second answer
+
 A Markov chain moves between states, where the next state depends only on the current one. Transitions form a matrix whose rows sum to one. A stationary distribution satisfies pi P equals pi, so it's a left eigenvector with eigenvalue one. If the chain can reach every state and doesn't cycle on a schedule, it converges to that from any start, at a rate set by the second-largest eigenvalue. PageRank is the stationary distribution of a random surfer. MCMC builds a chain with a chosen stationary distribution.
 
 **Key terms and sources**
 
-States and transitions, the Markov property, stationary distributions and when chains converge, with PageRank, language models, MCMC and reinforcement learning.
+States and transitions, the Markov property, stationary distributions and when chains converge, with PageRank, language models, MCMC and reinforcement learning. · checked 6 Nov 2026
 
 #### Sources
 
-- Blitzstein and Hwang, Introduction to Probability
+- [Blitzstein and Hwang, Introduction to Probability](https://www.oreilly.com/library/view/-/9781466575578/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
-- Brin and Page, The PageRank paper (1998)
+- [Brin and Page, The PageRank paper (1998)](http://infolab.stanford.edu/pub/papers/google.pdf)
 
 - Eigenvalues on this site
 

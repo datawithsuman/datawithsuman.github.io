@@ -80,7 +80,7 @@ A flat sequence loses the image's layout. Qwen2.5-VL gives each token separate t
 
 #### The maths
 
-$$ \text{tokens} = \Big\lceil \frac{W}{p} \Big\rceil\,\Big\lceil \frac{H}{p} \Big\rceil, \qquad \text{KV cache} = \text{tokens} \times \text{cache per token} $$
+$$ {\text{tokens}} = {\Big\lceil \frac{W}{p} \Big\rceil}\,{\Big\lceil \frac{H}{p} \Big\rceil}, \qquad {\text{KV cache} = \text{tokens} \times \text{cache per token}} $$
 
 The adaptive rule. Claude’s documentation states this form, with p = 28, and Qwen2.5-VL’s design implies it. Fixed-size models resize first, so their token count doesn’t change.
 
@@ -138,30 +138,32 @@ Your model misreads amounts on receipts. What do you check first?
 
 The resolution that reaches the model. Work out how many pixels the text has after resizing, then try crops or a higher-detail setting. Test against OCR on the same images, and check the answer against the receipt's total.
 
+#### The 30-second answer
+
 A vision-language model has three parts. A vision encoder, usually a ViT, turns image patches into vectors. A small projector maps them to the LLM's size. The LLM then reads those image tokens along with the text. LLaVA showed that one linear layer can connect the two. The main design choice is the token budget. Gemma 3 uses 256 tokens for every image, which is cheap but can lose small text. Qwen2.5-VL uses about one token per 28 by 28 pixels, which keeps detail but can cost thousands of tokens. Image tokens are ordinary tokens, so they use context and KV cache. I'd also test simple visual tasks, as these models can still fail at counting and spatial reasoning.
 
 **Key terms and sources**
 
-How images become tokens, CLIP's shared space, encoders and projectors, fixed and adaptive image tokens, positions for images and video, and where these models fail.
+How images become tokens, CLIP's shared space, encoders and projectors, fixed and adaptive image tokens, positions for images and video, and where these models fail. · checked 7 Nov 2026
 
 #### Sources
 
-- Radford et al., CLIP
+- [Radford et al., CLIP](https://arxiv.org/abs/2103.00020)
 
-- Liu et al., LLaVA
+- [Liu et al., LLaVA](https://arxiv.org/abs/2304.08485)
 
-- Beyer et al., PaliGemma
+- [Beyer et al., PaliGemma](https://arxiv.org/abs/2407.07726)
 
-- Gemma Team, Gemma 3
+- [Gemma Team, Gemma 3](https://arxiv.org/abs/2503.19786)
 
-- Qwen Team, Qwen2.5-VL
+- [Qwen Team, Qwen2.5-VL](https://arxiv.org/abs/2502.13923)
 
-- Rahmanzadehgervi et al., Vision language models are blind
+- [Rahmanzadehgervi et al., Vision language models are blind](https://arxiv.org/abs/2407.06581)
 
-- OpenAI, Images and vision
+- [OpenAI, Images and vision](https://developers.openai.com/api/docs/guides/images-vision)
 
-- Anthropic, Vision
+- [Anthropic, Vision](https://platform.claude.com/docs/en/build-with-claude/vision)
 
-- Stanford CS336, multimodality lecture
+- [Stanford CS336, multimodality lecture](https://cs336.stanford.edu/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

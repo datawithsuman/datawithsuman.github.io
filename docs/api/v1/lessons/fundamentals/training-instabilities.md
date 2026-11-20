@@ -48,7 +48,7 @@ The exact loss is **0.4496** at every drift: the model's predictions haven't cha
 
 #### In one breath
 
-Big runs are fragile. PaLM 540B saw about **20 loss spikes**; OPT-175B needed dozens of manual restarts. Two well-understood failure modes are **output-logit divergence**, where all logits drift to large values (the softmax doesn't care, but low-precision numbers do), and **attention-logit growth**, where query–key dot products blow up and attention collapses onto one token. **z-loss** adds a small penalty 10−4·(log Z)² that keeps the softmax normaliser near 1; **QK-norm** normalises queries and keys before the dot product. Add learning-rate warm-up, gradient clipping, pre-norm, and data cleaning, and when a spike happens anyway, roll back to a checkpoint and skip the offending batches. At 16,000 GPUs, hardware fails too: Llama 3 405B had 466 job interruptions in 54 days.What you'll be able to do after this: diagnose loss spikes, explain z-loss and QK-norm, and describe how large runs recover.
+Big runs are fragile. PaLM 540B saw about **20 loss spikes**; OPT-175B needed dozens of manual restarts. Two well-understood failure modes are **output-logit divergence**, where all logits drift to large values (the softmax doesn't care, but low-precision numbers do), and **attention-logit growth**, where query–key dot products blow up and attention collapses onto one token. **z-loss** adds a small penalty 10−4·(log Z)² that keeps the softmax normaliser near 1; **QK-norm** normalises queries and keys before the dot product. Add learning-rate warm-up, gradient clipping, pre-norm, and data cleaning, and when a spike happens anyway, roll back to a checkpoint and skip the offending batches. At 16,000 GPUs, hardware fails too: Llama 3 405B had 466 job interruptions in 54 days. What you'll be able to do after this: diagnose loss spikes, explain z-loss and QK-norm, and describe how large runs recover.
 
 #### Two logit problems
 
@@ -56,9 +56,9 @@ Big runs are fragile. PaLM 540B saw about **20 loss spikes**; OPT-175B needed do
 
 - **Attention-logit growth:** query and key norms grow during training; the dot products become huge, the attention softmax becomes one-hot, and gradients through it vanish or explode. Dehghani et al. saw this when scaling ViT to 22B; Wortsman et al. (2024) reproduced both instabilities in small models trained with high learning rates.
 
-$$ \mathcal{L} = \mathcal{L}_{CE} + 10^{-4}\cdot\log^2 Z, \qquad \mathrm{QKNorm:}\;\; s_{ij} = \frac{\mathrm{Norm}(q_i)\cdot \mathrm{Norm}(k_j)}{\sqrt{d}} $$
+$$ \mathcal{L} = {\mathcal{L}_{CE}} + {10^{-4}}\cdot{\log^2 Z}, \qquad \mathrm{QKNorm:}\;\; s_{ij} = \frac{\mathrm{Norm}(q_i)\cdot \mathrm{Norm}(k_j)}{\sqrt{d}} $$
 
-Chowdhery et al., "PaLM", arXiv:2204.02311, §5; QK-norm: Dehghani et al., "Scaling Vision Transformers to 22 Billion Parameters", ICML 2023, arXiv:2302.05442.
+Chowdhery et al., "PaLM", [arXiv:2204.02311](https://arxiv.org/abs/2204.02311), §5; QK-norm: Dehghani et al., "Scaling Vision Transformers to 22 Billion Parameters", ICML 2023, [arXiv:2302.05442](https://arxiv.org/abs/2302.05442).
 
 - **cross-entropy**: The usual next-token loss.
 
@@ -134,12 +134,12 @@ What goes wrong in long LLM training runs: sudden loss spikes and divergence, gr
 
 #### Sources
 
-1. A. Chowdhery et al., "PaLM: Scaling Language Modeling with Pathways", 2022, arXiv:2204.02311.
+1. A. Chowdhery et al., "PaLM: Scaling Language Modeling with Pathways", 2022, [arXiv:2204.02311](https://arxiv.org/abs/2204.02311).
 
-2. S. Zhang et al., "OPT: Open Pre-trained Transformer Language Models", 2022, arXiv:2205.01068.
+2. S. Zhang et al., "OPT: Open Pre-trained Transformer Language Models", 2022, [arXiv:2205.01068](https://arxiv.org/abs/2205.01068).
 
-3. M. Dehghani et al., "Scaling Vision Transformers to 22 Billion Parameters", ICML 2023, arXiv:2302.05442; M. Wortsman et al., "Small-scale proxies for large-scale Transformer training instabilities", ICLR 2024, arXiv:2309.14322.
+3. M. Dehghani et al., "Scaling Vision Transformers to 22 Billion Parameters", ICML 2023, [arXiv:2302.05442](https://arxiv.org/abs/2302.05442); M. Wortsman et al., "Small-scale proxies for large-scale Transformer training instabilities", ICLR 2024, [arXiv:2309.14322](https://arxiv.org/abs/2309.14322).
 
-4. Team OLMo, "2 OLMo 2 Furious", 2024, arXiv:2501.00656.
+4. Team OLMo, "2 OLMo 2 Furious", 2024, [arXiv:2501.00656](https://arxiv.org/abs/2501.00656).
 
-5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783 (§3.3.4, reliability).
+5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783) (§3.3.4, reliability).

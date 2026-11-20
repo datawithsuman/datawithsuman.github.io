@@ -48,7 +48,7 @@ Under **binary grading**, the score is just accuracy, so the best strategy is to
 
 #### In one breath
 
-A **hallucination** is fluent, confident content that isn't supported by the source or by reality: an invented refund policy, a fake citation, a wrong date. It's not a rare bug but a consequence of how models are built: a next-token predictor must produce _something_ plausible even for facts it saw once or never (Kalai et al. 2025 argue that if 20% of some kind of fact appears only once in training, expect at least ~20% errors on it), fine-tuning on facts the model doesn't know encourages confident guessing, and most benchmarks score "I don't know" the same as a wrong answer, so **guessing is rewarded**. Fixes: ground answers in retrieved documents with citations, let the model abstain and reward it for doing so, check answers with tools or a second pass, and measure hallucination rates on your own data.What you'll be able to do after this: explain the main causes of hallucination, design mitigations for a product, and explain why scoring rules matter.
+A **hallucination** is fluent, confident content that isn't supported by the source or by reality: an invented refund policy, a fake citation, a wrong date. It's not a rare bug but a consequence of how models are built: a next-token predictor must produce _something_ plausible even for facts it saw once or never (Kalai et al. 2025 argue that if 20% of some kind of fact appears only once in training, expect at least ~20% errors on it), fine-tuning on facts the model doesn't know encourages confident guessing, and most benchmarks score "I don't know" the same as a wrong answer, so **guessing is rewarded**. Fixes: ground answers in retrieved documents with citations, let the model abstain and reward it for doing so, check answers with tools or a second pass, and measure hallucination rates on your own data. What you'll be able to do after this: explain the main causes of hallucination, design mitigations for a product, and explain why scoring rules matter.
 
 #### Where hallucinations come from
 
@@ -130,12 +130,12 @@ What hallucinations are (unsupported or false content stated fluently), why they
 
 #### Sources
 
-1. A. Kalai, O. Nachum, S. Vempala & E. Zhang, "Why Language Models Hallucinate", 2025, arXiv:2509.04664.
+1. A. Kalai, O. Nachum, S. Vempala & E. Zhang, "Why Language Models Hallucinate", 2025, [arXiv:2509.04664](https://arxiv.org/abs/2509.04664).
 
-2. Z. Ji et al., "Survey of Hallucination in Natural Language Generation", ACM Computing Surveys 2023, arXiv:2202.03629.
+2. Z. Ji et al., "Survey of Hallucination in Natural Language Generation", ACM Computing Surveys 2023, [arXiv:2202.03629](https://arxiv.org/abs/2202.03629).
 
-3. P. Manakul et al., "SelfCheckGPT", EMNLP 2023, arXiv:2303.08896; S. Min et al., "FActScore", EMNLP 2023, arXiv:2305.14251.
+3. P. Manakul et al., "SelfCheckGPT", EMNLP 2023, [arXiv:2303.08896](https://arxiv.org/abs/2303.08896); S. Min et al., "FActScore", EMNLP 2023, [arXiv:2305.14251](https://arxiv.org/abs/2305.14251).
 
-4. S. Dhuliawala et al., "Chain-of-Verification Reduces Hallucination in Large Language Models", 2023, arXiv:2309.11495; Z. Gekhman et al., EMNLP 2024, arXiv:2405.05904.
+4. S. Dhuliawala et al., "Chain-of-Verification Reduces Hallucination in Large Language Models", 2023, [arXiv:2309.11495](https://arxiv.org/abs/2309.11495); Z. Gekhman et al., EMNLP 2024, [arXiv:2405.05904](https://arxiv.org/abs/2405.05904).
 
-5. P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020, arXiv:2005.11401; Moffatt v. Air Canada, 2024 BCCRT 149.
+5. P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020, [arXiv:2005.11401](https://arxiv.org/abs/2005.11401); Moffatt v. Air Canada, 2024 BCCRT 149.

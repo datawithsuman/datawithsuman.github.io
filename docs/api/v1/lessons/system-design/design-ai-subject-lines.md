@@ -163,8 +163,10 @@ How would you personalise this?
 
 It would break the per-post cache, so cost grows towards one call per email. I'd start with a few versions per post, and choose among them by user segment, using a bandit if rewards are quick. I'd test whether the gain justifies the cost before going further.
 
+#### The 30-second answer
+
 First I'd diagnose it: read the losing lines, and split results by post type. A line that reads better isn't always one people click. If the AI wins on some posts, the problem becomes choosing when to use it. So I'd generate by extraction, which also reduces made-up content, and enforce length in code. I'd run small A/B tests across many posts, and label each by real click rates, ignoring posts with too few sends. Then I'd train a reward model to predict the winner, and send the AI line only when it's predicted to win. Otherwise, the rule-based line goes out, and it's also the fallback if the API fails. I'd cache per post, because each post goes to hundreds of people. I'd judge the full system on sessions and weekly actives, with unsubscribes as guardrails. I'd check the reward model daily, retrain when it drops, and keep some random traffic, so I keep learning what it rejects.
 
 **Key terms and sources**
 
-Based on a neighbourhood app's published work: Nextdoor's paper, Let AI Entertain You. We read most of the paper directly and the later sections through a summary. Volumes and the lab's numbers are our own illustrations. Uses reading results, prompts and LLMOps.
+Based on a neighbourhood app's published work: [Nextdoor's paper, Let AI Entertain You](https://arxiv.org/abs/2312.12457). We read most of the paper directly and the later sections through a summary. Volumes and the lab's numbers are our own illustrations. Uses reading results, prompts and LLMOps. · checked 5 Nov 2026

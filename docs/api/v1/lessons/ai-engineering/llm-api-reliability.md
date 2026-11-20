@@ -84,7 +84,7 @@ Providers limit requests and tokens per minute, often separately for input and o
 
 #### The maths
 
-$$ \text{attempts} = (r + 1)^{L} $$
+$$ {\text{attempts}} = ({r} + 1)^{{L}} $$
 
 The worst case, when every attempt fails, as in an outage. It's exactly when the provider can least afford the extra load.
 
@@ -142,22 +142,24 @@ Your fallback model kicked in last night. Is that fine?
 
 Only if it passed your evaluation set for this task. Log every fallback, alert on its rate, and check the quality of answers it gave.
 
+#### The 30-second answer
+
 I'd split errors into retryable ones, like rate limits, overload, server errors and timeouts, and ones I fix, like bad requests or a spend cap. I'd retry at one layer only, with exponential backoff and jitter, honouring retry-after, and cap retries with a budget, because 3 retries at 3 layers turns one action into 64 calls during an outage. Every call gets a deadline, and streams get first-token and stall timeouts. I'd fall back to a second model only if it passed our evaluations, make tool calls idempotent, queue non-urgent work, and show an honest error rather than a made-up answer.
 
 **Key terms and sources**
 
-Rate limits and error types, which errors to retry, exponential backoff with jitter, retry budgets and amplification across layers, timeouts and deadlines for streaming calls, fallbacks to other models, idempotent tool calls, and failing loudly.
+Rate limits and error types, which errors to retry, exponential backoff with jitter, retry budgets and amplification across layers, timeouts and deadlines for streaming calls, fallbacks to other models, idempotent tool calls, and failing loudly. · checked 7 Nov 2026
 
 #### Sources
 
-- Anthropic, API errors and rate limits documentation (checked 7 Nov 2026)
+- [Anthropic, API errors and rate limits documentation (checked 7 Nov 2026)](https://platform.claude.com/docs/en/api/rate-limits)
 
-- OpenAI, Rate limits guide (checked 7 Nov 2026)
+- [OpenAI, Rate limits guide (checked 7 Nov 2026)](https://developers.openai.com/api/docs/guides/rate-limits)
 
-- Google SRE book, Handling Overload
+- [Google SRE book, Handling Overload](https://sre.google/sre-book/handling-overload/)
 
-- Google SRE book, Addressing Cascading Failures
+- [Google SRE book, Addressing Cascading Failures](https://sre.google/sre-book/addressing-cascading-failures/)
 
-- Wu, When Errors Become Narratives: silent failures in a production LLM agent runtime
+- [Wu, When Errors Become Narratives: silent failures in a production LLM agent runtime](https://arxiv.org/abs/2606.14589)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

@@ -84,7 +84,7 @@ InstructGPT used PPO, with the value model initialised from the reward model. GR
 
 #### The maths
 
-$$ \nabla_\theta J = \mathbb{E}\Big[\sum_t \nabla_\theta \log \pi_\theta(a_t \mid s_t)\,\big(R - b\big)\Big], \qquad L = \min\big(r A,\ \mathrm{clip}(r, 1{-}\epsilon, 1{+}\epsilon) A\big) $$
+$$ {\nabla_\theta J} = \mathbb{E}\Big[\sum_t {\nabla_\theta \log \pi_\theta(a_t \mid s_t)}\,{\big(R - b\big)}\Big], \qquad {L = \min\big(r A,\ \mathrm{clip}(r, 1{-}\epsilon, 1{+}\epsilon) A\big)} $$
 
 The policy gradient with a baseline and the PPO clipped objective, in the form given in OpenAI’s Spinning Up. GRPO replaces A with the group-normalised reward.
 
@@ -142,26 +142,28 @@ Why can PPO reuse a batch, when plain policy gradient can't?
 
 The plain gradient only holds for the policy that produced the samples. PPO corrects for the change with a probability ratio, and clips it so that the policy can't gain by moving far from where the samples are reliable.
 
+#### The 30-second answer
+
 We use reinforcement learning when we only get a score for a whole answer, such as from a reward model or a test suite, and can't backpropagate through it. The policy gradient samples an answer and raises its tokens' log-probabilities in proportion to its reward, so the reward itself never needs a gradient. That's noisy, so we subtract a baseline. It doesn't change the expected gradient, but above-average answers go up and below-average ones go down. PPO learns the baseline with a value model, and clips the probability ratio so it can safely reuse samples. GRPO keeps the clipping, but uses the group's mean reward as the baseline, so it doesn't need a critic.
 
 **Key terms and sources**
 
-How reinforcement learning maps onto text, the policy gradient, why baselines reduce noise, PPO's clipping, value models, and how GRPO replaces them.
+How reinforcement learning maps onto text, the policy gradient, why baselines reduce noise, PPO's clipping, value models, and how GRPO replaces them. · checked 7 Nov 2026
 
 #### Sources
 
-- OpenAI Spinning Up, policy gradient and baselines
+- [OpenAI Spinning Up, policy gradient and baselines](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)
 
-- OpenAI Spinning Up, PPO
+- [OpenAI Spinning Up, PPO](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
 
-- Schulman et al., Proximal Policy Optimization
+- [Schulman et al., Proximal Policy Optimization](https://arxiv.org/abs/1707.06347)
 
-- Schulman et al., Generalized Advantage Estimation
+- [Schulman et al., Generalized Advantage Estimation](https://arxiv.org/abs/1506.02438)
 
-- Ouyang et al., InstructGPT
+- [Ouyang et al., InstructGPT](https://arxiv.org/abs/2203.02155)
 
-- Shao et al., DeepSeekMath and GRPO
+- [Shao et al., DeepSeekMath and GRPO](https://arxiv.org/abs/2402.03300)
 
-- Stanford CME295, reinforcement learning with LLMs
+- [Stanford CME295, reinforcement learning with LLMs](https://cme295.stanford.edu/syllabus/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

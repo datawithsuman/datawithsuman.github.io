@@ -84,7 +84,7 @@ If a tumour covers 1% of a scan, predicting "no tumour" everywhere scores 99%. I
 
 #### The maths
 
-$$ \mathrm{Dice} = \frac{2\,|A \cap B|}{|A| + |B|} = \frac{2\,\mathrm{IoU}}{1 + \mathrm{IoU}}, \qquad \mathrm{Dice}_{\text{soft}} = \frac{2\sum_i p_i g_i}{\sum_i p_i^2 + \sum_i g_i^2} $$
+$$ {\mathrm{Dice}} = \frac{2\,{|A \cap B|}}{{|A| + |B|}} = {\frac{2\,\mathrm{IoU}}{1 + \mathrm{IoU}}}, \qquad {\mathrm{Dice}_{\text{soft}} = \frac{2\sum_i p_i g_i}{\sum_i p_i^2 + \sum_i g_i^2}} $$
 
 The soft form is from the V-Net paper. Training usually uses 1 − Dice, often combined with cross-entropy.
 
@@ -144,28 +144,30 @@ Dice is 0.8. What's the IoU?
 
 IoU = Dice / (2 − Dice) = 0.8 / 1.2 ≈ 0.67. They rank a single prediction the same way, but averages over many images can rank models differently.
 
+#### The 30-second answer
+
 Segmentation labels every pixel. Semantic gives classes, instance separates objects, and panoptic does both. Most models use an encoder-decoder. The encoder shrinks the image to understand it, and the decoder enlarges it, with skip connections restoring detail, as in U-Net. Dilated convolutions see more context without losing resolution. Mask R-CNN adds a mask branch to a detector for instances. I wouldn't use pixel accuracy, because small targets make predicting background look great. I'd use IoU or Dice by class, and train with cross-entropy plus Dice.
 
 **Key terms and sources**
 
-Semantic, instance and panoptic segmentation, FCN, U-Net, transposed and dilated convolutions, Mask R-CNN, SAM, and Dice and IoU.
+Semantic, instance and panoptic segmentation, FCN, U-Net, transposed and dilated convolutions, Mask R-CNN, SAM, and Dice and IoU. · checked 6 Nov 2026
 
 #### Sources
 
-- Long et al., FCN
+- [Long et al., FCN](https://arxiv.org/abs/1411.4038)
 
-- Ronneberger et al., U-Net
+- [Ronneberger et al., U-Net](https://arxiv.org/abs/1505.04597)
 
-- Chen et al., DeepLab
+- [Chen et al., DeepLab](https://arxiv.org/abs/1606.00915)
 
-- He et al., Mask R-CNN
+- [He et al., Mask R-CNN](https://arxiv.org/abs/1703.06870)
 
-- Kirillov et al., Panoptic Segmentation
+- [Kirillov et al., Panoptic Segmentation](https://arxiv.org/abs/1801.00868)
 
-- Kirillov et al., Segment Anything
+- [Kirillov et al., Segment Anything](https://arxiv.org/abs/2304.02643)
 
-- Milletari et al., V-Net
+- [Milletari et al., V-Net](https://arxiv.org/abs/1606.04797)
 
-- D2L on transposed convolution
+- [D2L on transposed convolution](https://d2l.ai/chapter_computer-vision/transposed-conv.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

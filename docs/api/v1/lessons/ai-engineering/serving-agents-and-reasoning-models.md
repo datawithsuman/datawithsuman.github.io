@@ -79,7 +79,7 @@ Provider prices show why it matters. As of November 2026, Anthropic bills cache 
 
 #### The maths
 
-$$ \text{input tokens} = \sum_{i=1}^{N} \big(S + (i-1)\,D\big), \qquad \text{cached share} \approx 1 - \frac{S + N\,D}{\text{input tokens}} $$
+$$ {\text{input tokens}} = \sum_{i=1}^{{N}} \big({S} + (i-1)\,{D}\big), \qquad {\text{cached share}} \approx 1 - \frac{{S} + N\,D}{\text{input tokens}} $$
 
 Our own arithmetic for an agent that appends to its history, if every step hits the cache.
 
@@ -141,24 +141,26 @@ How do reasoning models change capacity planning?
 
 They generate far more output per request, so decode dominates time and GPU use. Plan on output tokens per second, and on concurrency held for longer, and consider separate pools or budgets for long thinking.
 
+#### The 30-second answer
+
 Agents and reasoning models change what dominates. A reasoning model writes thousands of hidden tokens, so it's mostly memory-bound decode, and I'd control that with thinking budgets, routing simple steps to cheaper modes, and speculative decoding. An agent resends its growing history at every step, so without caching, input grows with the square of the steps. With prefix caching, each step only processes new tokens, and cache reads are billed at a fraction of the price. To keep caches warm, I'd use longer cache lifetimes or offloading across slow tool calls, route each task back to the replica holding its cache, keep history append-only, and trim tool output. And I'd measure cost and time per task, not per request.
 
 **Key terms and sources**
 
-Why reasoning models are decode-heavy, how agents resend growing histories, caching across turns and tool calls, cache lifetimes, routing back to warm caches, and cost per task.
+Why reasoning models are decode-heavy, how agents resend growing histories, caching across turns and tool calls, cache lifetimes, routing back to warm caches, and cost per task. · checked 7 Nov 2026
 
 #### Sources
 
-- Rethinking KV Cache Eviction for Agentic LLM Serving
+- [Rethinking KV Cache Eviction for Agentic LLM Serving](https://arxiv.org/abs/2611.00391)
 
-- Fairway: Load-Aware KV Cache Reuse for LLM Prefill Scheduling
+- [Fairway: Load-Aware KV Cache Reuse for LLM Prefill Scheduling](https://arxiv.org/abs/2611.02082)
 
-- CacheBridge: Cross-Model KV Transfer for Multi-Model LLM Serving
+- [CacheBridge: Cross-Model KV Transfer for Multi-Model LLM Serving](https://arxiv.org/abs/2609.00891)
 
-- Anthropic, Prompt caching
+- [Anthropic, Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
 
-- OpenAI, Prompt caching
+- [OpenAI, Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
 
-- Liu et al., LMCache
+- [Liu et al., LMCache](https://arxiv.org/abs/2510.09665)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor results are their own.

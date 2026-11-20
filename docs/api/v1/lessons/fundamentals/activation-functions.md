@@ -48,11 +48,11 @@ With z centred at 0 and spread 1, sigmoid's average slope is only **0.21**, and 
 
 #### In one breath
 
-The activation is the non-linearity that makes a network more than a linear model, and its **slope** decides how much gradient flows back through each unit. **Sigmoid** and **tanh** saturate: for large inputs their slope is almost 0, and sigmoid's slope is never above 0.25, so gradients shrink layer after layer. **ReLU** (max(0, z)) has slope exactly 1 for positive inputs, which made deep networks trainable, but a unit whose input is always negative gets zero gradient and **dies**. **Leaky ReLU** keeps a small slope there; **GELU** is a smooth ReLU used in BERT and GPT; and **SwiGLU**, a gated unit, is the feed-forward activation in LLaMA-style LLMs.What you'll be able to do after this: compare activations by output range, slope and failure mode, explain vanishing gradients through saturating units and dead ReLUs, and say which activation goes where.
+The activation is the non-linearity that makes a network more than a linear model, and its **slope** decides how much gradient flows back through each unit. **Sigmoid** and **tanh** saturate: for large inputs their slope is almost 0, and sigmoid's slope is never above 0.25, so gradients shrink layer after layer. **ReLU** (max(0, z)) has slope exactly 1 for positive inputs, which made deep networks trainable, but a unit whose input is always negative gets zero gradient and **dies**. **Leaky ReLU** keeps a small slope there; **GELU** is a smooth ReLU used in BERT and GPT; and **SwiGLU**, a gated unit, is the feed-forward activation in LLaMA-style LLMs. What you'll be able to do after this: compare activations by output range, slope and failure mode, explain vanishing gradients through saturating units and dead ReLUs, and say which activation goes where.
 
 #### Sigmoid and tanh
 
-$$ \sigma(z) = \frac{1}{1+e^{-z}}, \qquad \tanh(z) = 2\sigma(2z) - 1 $$
+$$ {\sigma(z) = \frac{1}{1+e^{-z}}}, \qquad {\tanh(z) = 2\sigma(2z) - 1} $$
 
 Goodfellow et al. §6.3.2: sigmoidal units saturate across most of their domain, which makes gradient-based learning hard; their use as hidden units is now discouraged.
 
@@ -62,7 +62,7 @@ Goodfellow et al. §6.3.2: sigmoidal units saturate across most of their domain,
 
 #### ReLU and its descendants
 
-$$ \mathrm{ReLU}(z)=\max(0,z), \quad \mathrm{Leaky}(z)=\max(\alpha z, z), \quad \mathrm{GELU}(z)= z\,\Phi(z) $$
+$$ {\mathrm{ReLU}(z)=\max(0,z)}, \quad {\mathrm{Leaky}(z)=\max(\alpha z, z)}, \quad {\mathrm{GELU}(z)= z\,\Phi(z)} $$
 
 - **ReLU**: Slope exactly 1 for z > 0, so gradients pass through unchanged; cheap to compute; outputs exact zeros (sparse). Made deep supervised nets trainable without pre-training (Glorot, Bordes & Bengio 2011; Nair & Hinton 2010).
 
@@ -74,9 +74,9 @@ $$ \mathrm{ReLU}(z)=\max(0,z), \quad \mathrm{Leaky}(z)=\max(\alpha z, z), \quad 
 
 #### Gated linear units: SwiGLU
 
-$$ \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = \big(\mathrm{Swish}(xW) \otimes xV\big)W_2 $$
+$$ \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = \big({\mathrm{Swish}(xW)} \otimes {xV}\big){W_2} $$
 
-Shazeer, "GLU Variants Improve Transformer", 2020 arXiv:2002.05202: in T5 experiments GEGLU and SwiGLU gave the best perplexities among feed-forward variants. SwiGLU is used in PaLM and LLaMA. It has three weight matrices instead of two, so the hidden width is usually cut to about ⅔ to keep the parameter count equal. Covered again in the Transformers lessons.
+Shazeer, "GLU Variants Improve Transformer", 2020 [arXiv:2002.05202](https://arxiv.org/abs/2002.05202): in T5 experiments GEGLU and SwiGLU gave the best perplexities among feed-forward variants. SwiGLU is used in PaLM and LLaMA. It has three weight matrices instead of two, so the hidden width is usually cut to about ⅔ to keep the parameter count equal. Covered again in the Transformers lessons.
 
 - **Swish gate**: Swish(z) = z·σ(z) (also called SiLU), computed from one projection xW. It decides how much of each feature passes.
 
@@ -154,8 +154,8 @@ Sigmoid, tanh, ReLU and its variants, GELU and gated units like SwiGLU: what eac
 
 3. A. Maas, A. Hannun & A. Ng, "Rectifier nonlinearities improve neural network acoustic models", ICML Workshop 2013.
 
-4. D. Hendrycks & K. Gimpel, "Gaussian Error Linear Units (GELUs)", arXiv:1606.08415, 2016.
+4. D. Hendrycks & K. Gimpel, "Gaussian Error Linear Units (GELUs)", [arXiv:1606.08415](https://arxiv.org/abs/1606.08415), 2016.
 
-5. N. Shazeer, "GLU Variants Improve Transformer", arXiv:2002.05202, 2020.
+5. N. Shazeer, "GLU Variants Improve Transformer", [arXiv:2002.05202](https://arxiv.org/abs/2002.05202), 2020.
 
-6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.3, deeplearningbook.org.
+6. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §6.3, [deeplearningbook.org](https://www.deeplearningbook.org/).

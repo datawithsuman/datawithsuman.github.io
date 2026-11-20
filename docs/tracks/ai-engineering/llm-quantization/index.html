@@ -401,7 +401,7 @@
     <li><b>Quantize the KV cache too.</b> At high concurrency the KV cache, not the weights, limits batch size; an FP8 KV cache halves it. See <a href="../scaling-inference/">Scaling Inference</a> for why FP8 weights alone may not reduce GPU count.</li>
     <li><b>Evaluate on tasks, not just perplexity.</b> Perplexity can hide drops on reasoning, maths, code and long-context tasks; check your own task metrics before and after quantizing.</li>
   </ul></div>
-  <p class="small" id="dq-note"><b>Added 7 Nov 2026:</b> since prefill and decode want different formats, a 2026 paper from NVIDIA and ISTA proposes quantizing them differently, with low-precision maths for prefill and compact weights for decode. It's early research, but it fits the phase split in <a href="../prefill-vs-decode/">Prefill vs Decode</a>.</p>
+  <p class="small" id="dq-note">Since prefill and decode want different formats, a 2026 paper from NVIDIA and ISTA proposes quantizing them differently, with low-precision maths for prefill and compact weights for decode. It's early research, but it fits the phase split in <a href="../prefill-vs-decode/">Prefill vs Decode</a>.</p>
 </section></div><div class="sec" id="trap"><h2 class="sec-title">The answer that sounds right</h2><section class="ch" id="c3" data-toc="3 · The naive fix">
   <span class="pill bad">The trap</span>
   <h3>Round-to-nearest works… until it falls off a cliff</h3>
@@ -492,7 +492,7 @@
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 docs and the gpt-oss model card · checked 28 Oct 2026 · updated 29 Oct 2026</p><section class="ch" id="c14" data-toc="14 · Key terms">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 docs and the gpt-oss model card · checked 7 Nov 2026 · updated 29 Oct 2026</p><section class="ch" id="c14" data-toc="14 · Key terms">
   <h3>Glossary</h3>
   <div class="tw"><table class="t">
     <tr><td><b>Scale (Δ)</b></td><td>Spacing between quantization levels; one per tensor, channel, token or group.</td></tr>

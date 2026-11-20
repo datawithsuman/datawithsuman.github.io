@@ -170,12 +170,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">A stationary series behaves the same whenever you look at it, so trends and seasons break it, and differencing usually fixes that. ARIMA predicts the differenced series from its past values and past errors. I'd choose d with a test, read p or q from the ACF and PACF if the pattern is clear, and otherwise compare AICc for the same d. Exponential smoothing tracks a level, trend and season with weighted averages. Neither family contains the other, so I'd compare them with a backtest, against seasonal naive, and report intervals, which widen with the horizon.</p>
+<h3>The 30-second answer</h3><p class="say30">A stationary series behaves the same whenever you look at it, so trends and seasons break it, and differencing usually fixes that. ARIMA predicts the differenced series from its past values and past errors. I'd choose d with a test, read p or q from the ACF and PACF if the pattern is clear, and otherwise compare AICc for the same d. Exponential smoothing tracks a level, trend and season with weighted averages. Neither family contains the other, so I'd compare them with a backtest, against seasonal naive, and report intervals, which widen with the horizon.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Stationarity, differencing, ACF and PACF, what AR, MA and ARIMA models do, exponential smoothing from simple to Holt-Winters, and why intervals widen.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Stationarity, differencing, ACF and PACF, what AR, MA and ARIMA models do, exponential smoothing from simple to Holt-Winters, and why intervals widen. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://otexts.com/fpp3/arima.html">Hyndman and Athanasopoulos, Forecasting: Principles and Practice, ARIMA (chapter 9)</a></li><li><a href="https://otexts.com/fpp3/expsmooth.html">Same book, exponential smoothing (chapter 8)</a></li><li><a href="https://otexts.com/fpp3/prediction-intervals.html">Same book, prediction intervals (section 5.5)</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

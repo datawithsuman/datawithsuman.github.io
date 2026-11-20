@@ -146,6 +146,8 @@ I wouldn't touch the prompt or the model first. I'd look at the chunks retrieved
 
 **Key terms and sources**
 
+Sources checked 5 Nov 2026
+
 #### Sources
 
 –

@@ -96,7 +96,7 @@ A predicted box counts as correct if its IoU with an unmatched true box passes a
 
 #### The maths
 
-$$ \mathrm{IoU}(A,B) = \frac{|A \cap B|}{|A \cup B|}, \qquad \mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t $$
+$$ {\mathrm{IoU}(A,B)} = \frac{{|A \cap B|}}{{|A \cup B|}}, \qquad {\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t} $$
 
 IoU is the Jaccard index, as in D2L. Focal loss is from Lin et al., Equation 4.
 
@@ -154,28 +154,30 @@ Why is a one-stage detector harder to train than a two-stage one?
 
 It scores every candidate location, and most are easy background, so they dominate the loss. A two-stage detector filters most of them first. Focal loss fixes this by reducing the weight of easy examples.
 
+#### The 30-second answer
+
 A detector outputs boxes, labels and scores, and IoU measures how well two boxes agree. Two-stage models like Faster R-CNN propose regions, then classify them, and tend to favour accuracy. One-stage models like YOLO and SSD predict in one pass, which favours speed. They face extreme background imbalance, so RetinaNet introduced focal loss. Most remove duplicates with non-max suppression, which can fail in crowded scenes. DETR predicts a set with one-to-one matching, so it needs no NMS. I'd measure with mAP, check small objects separately, and choose the operating point from the costs of errors.
 
 **Key terms and sources**
 
-IoU, anchors, non-max suppression, two-stage and one-stage detectors, focal loss, DETR's set prediction, and what mAP measures.
+IoU, anchors, non-max suppression, two-stage and one-stage detectors, focal loss, DETR's set prediction, and what mAP measures. · checked 6 Nov 2026
 
 #### Sources
 
-- Girshick et al., R-CNN
+- [Girshick et al., R-CNN](https://arxiv.org/abs/1311.2524)
 
-- Girshick, Fast R-CNN
+- [Girshick, Fast R-CNN](https://arxiv.org/abs/1504.08083)
 
-- Ren et al., Faster R-CNN
+- [Ren et al., Faster R-CNN](https://arxiv.org/abs/1506.01497)
 
-- Redmon et al., YOLO
+- [Redmon et al., YOLO](https://arxiv.org/abs/1506.02640)
 
-- Liu et al., SSD
+- [Liu et al., SSD](https://arxiv.org/abs/1512.02325)
 
-- Lin et al., Focal Loss (RetinaNet)
+- [Lin et al., Focal Loss (RetinaNet)](https://arxiv.org/abs/1708.02002)
 
-- Carion et al., DETR
+- [Carion et al., DETR](https://arxiv.org/abs/2005.12872)
 
-- D2L on anchor boxes, IoU and NMS
+- [D2L on anchor boxes, IoU and NMS](https://d2l.ai/chapter_computer-vision/anchor.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

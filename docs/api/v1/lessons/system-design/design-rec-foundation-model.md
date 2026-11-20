@@ -141,8 +141,10 @@ How does this help new items?
 
 Not through ID embeddings, which need history. Use content features or semantic IDs, so a new item starts near similar items.
 
+#### The 30-second answer
+
 I'd clarify how many surfaces and models exist, the data available and each surface's latency. I'd train one large transformer on long, time-stamped event sequences across all surfaces, predicting the next item with a sampled softmax and hard negatives, plus interaction layers for non-sequence features. It's too expensive to serve on every request, so its value comes through transfer: it labels data and shares embeddings to distil into the small per-surface models, directly for big surfaces and via domain models for small ones. A small adapter corrects stale teacher outputs with fresh data. It can also act as one more retriever in an ensemble. I'd roll out surface by surface, measure each surface's own metric, and handle new items with content-based features or semantic IDs.
 
 **Key terms and sources**
 
-Based on published posts: a social network's generative ads model (Nov 2025) and a commerce platform's generative recommendations (Feb 2026). The lab uses the posts' reported results; the estimate is ours. Uses distillation, transformers and next-token prediction.
+Based on published posts: a social network's [generative ads model](https://engineering.fb.com/2025/11/10/ml-applications/metas-generative-ads-model-gem-the-central-brain-accelerating-ads-recommendation-ai-innovation/) (Nov 2025) and a commerce platform's [generative recommendations](https://shopify.engineering/generative-recommendations) (Feb 2026). The lab uses the posts' reported results; the estimate is ours. Uses distillation, transformers and next-token prediction. · checked 15 Nov 2026

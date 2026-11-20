@@ -38,7 +38,7 @@ _Illustrative. If only one setting really matters, random search tests far more 
 
 Background shading: validation loss, which depends only on the horizontal setting (the vertical one is irrelevant). The tick marks on the bottom axis show which values of the important setting each method actually tested.
 
-Over 2,000 simulated problems with a random optimum, the average best loss with 9 trials was 0.075 for the grid and **0.049** for random search; with 25 trials, 0.027 vs **0.006**. Bergstra & Bengio (2012) showed the same on real models: random search found models "as good or better within a small fraction of the computation time", because the score functions have "low effective dimensionality" JMLR 13.
+Over 2,000 simulated problems with a random optimum, the average best loss with 9 trials was 0.075 for the grid and **0.049** for random search; with 25 trials, 0.027 vs **0.006**. Bergstra & Bengio (2012) showed the same on real models: random search found models "as good or better within a small fraction of the computation time", because the score functions have "low effective dimensionality" [JMLR 13](https://jmlr.org/papers/v13/bergstra12a.html).
 
 **Now say why:** why does the same budget go further when the trials aren't lined up in a grid?
 
@@ -48,7 +48,7 @@ Over 2,000 simulated problems with a random optimum, the average best loss with 
 
 #### In one breath
 
-Hyperparameters (learning rate, depth, regularisation strength…) are set before training, so you choose them by trying settings and scoring each with cross-validation. **Grid search** tries every combination, which wastes trials when only one or two parameters matter. **Random search** samples settings and, for the same budget, explores many more distinct values of the parameters that matter. **Bayesian optimisation** fits a cheap model of "score as a function of settings" and picks the next trial where improvement looks most likely. **Successive halving / Hyperband** start many settings on a small budget and only keep training the promising ones. Whatever you use, tune on validation folds and judge the winner on data the search never saw.What you'll be able to do after this: explain why random beats grid, describe the BO loop and expected improvement, explain successive halving's budget trick, and set up tuning without fooling yourself.
+Hyperparameters (learning rate, depth, regularisation strength…) are set before training, so you choose them by trying settings and scoring each with cross-validation. **Grid search** tries every combination, which wastes trials when only one or two parameters matter. **Random search** samples settings and, for the same budget, explores many more distinct values of the parameters that matter. **Bayesian optimisation** fits a cheap model of "score as a function of settings" and picks the next trial where improvement looks most likely. **Successive halving / Hyperband** start many settings on a small budget and only keep training the promising ones. Whatever you use, tune on validation folds and judge the winner on data the search never saw. What you'll be able to do after this: explain why random beats grid, describe the BO loop and expected improvement, explain successive halving's budget trick, and set up tuning without fooling yourself.
 
 #### Parameters, hyperparameters, search spaces
 
@@ -62,9 +62,9 @@ Hyperparameters (learning rate, depth, regularisation strength…) are set befor
 
 Random search ignores what earlier trials revealed. Bayesian optimisation (BO) fits a **surrogate model** to the trials so far, usually a Gaussian process (GP) that gives, for every untried setting, a predicted loss and an uncertainty. An **acquisition function** then trades off "predicted to be good" (exploit) against "we know little here" (explore). The classic choice is expected improvement:
 
-$$ \mathrm{EI}(x) = (y^{*} - \mu(x))\,\Phi(z) + \sigma(x)\,\varphi(z), \qquad z = (y^{*} - \mu(x))/\sigma(x) $$
+$$ {\mathrm{EI}(x)} = {(y^{*} - \mu(x))}\,{\Phi(z)} + {\sigma(x)\,\varphi(z)}, \qquad z = (y^{*} - \mu(x))/\sigma(x) $$
 
-Expected improvement for minimisation with a GP surrogate (μ mean, σ standard deviation, y* best observed), as used by Snoek, Larochelle & Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012 arXiv:1206.2944.
+Expected improvement for minimisation with a GP surrogate (μ mean, σ standard deviation, y* best observed), as used by Snoek, Larochelle & Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012 [arXiv:1206.2944](https://arxiv.org/abs/1206.2944).
 
 - **expected improvement**: How much better than the current best we expect setting x to be, averaging over the surrogate’s uncertainty. Run the next trial where this is largest.
 
@@ -80,11 +80,11 @@ Averaged over 100 runs from random starts, BO's distance from the best possible 
 
 #### Successive halving and Hyperband
 
-Many trials are hopeless after a few epochs. Successive halving starts many settings with a small budget, keeps the best fraction, and multiplies their budget: scikit-learn calls it "a tournament among candidate parameter combinations", where in each round "the number of resources per candidate is multiplied by `factor` and the number of candidates is divided by the same factor" docs.
+Many trials are hopeless after a few epochs. Successive halving starts many settings with a small budget, keeps the best fraction, and multiplies their budget: scikit-learn calls it "a tournament among candidate parameter combinations", where in each round "the number of resources per candidate is multiplied by `factor` and the number of candidates is divided by the same factor" [docs](https://scikit-learn.org/stable/modules/grid_search.html#successive-halving-user-guide).
 
 81 settings; rounds of 81 × 1 epoch, 27 × 3, 9 × 9, 3 × 27, 1 × 81 (factor 3). Grey: curves of settings that were dropped; green: survivors.
 
-Averaged over 500 simulated problems, successive halving used 405 epochs (6% of training all 81 to completion) and picked a setting with final loss 0.217, against 0.205 for the true best; random search with the same 405 epochs (5 full runs) picked 0.268. On any single problem either can win (in problem C above, one of random search's five full runs happened to be the best setting); the average is what matters. The risk: a slow starter (low learning rate, strong regularisation) gets cut early. **Hyperband** (Li et al.) hedges by running several successive-halving "brackets" with different aggressiveness, and reported "over an order-of-magnitude speedup" over Bayesian optimisation on deep-learning and kernel problems JMLR 18, arXiv:1603.06560.
+Averaged over 500 simulated problems, successive halving used 405 epochs (6% of training all 81 to completion) and picked a setting with final loss 0.217, against 0.205 for the true best; random search with the same 405 epochs (5 full runs) picked 0.268. On any single problem either can win (in problem C above, one of random search's five full runs happened to be the best setting); the average is what matters. The risk: a slow starter (low learning rate, strong regularisation) gets cut early. **Hyperband** (Li et al.) hedges by running several successive-halving "brackets" with different aggressiveness, and reported "over an order-of-magnitude speedup" over Bayesian optimisation on deep-learning and kernel problems [JMLR 18, arXiv:1603.06560](https://arxiv.org/abs/1603.06560).
 
 ## In practice
 
@@ -99,11 +99,11 @@ Averaged over 500 simulated problems, successive halving used 405 epochs (6% of 
 | **Bayesian optimisation** | Model score vs settings, pick the most promising next trial | Optuna (TPE), scikit-optimize, SMAC, Ax |
 | **Successive halving / Hyperband** | Many settings on small budgets, keep the best, give them more | `HalvingRandomSearchCV`, Optuna pruners, Ray Tune |
 
-scikit-learn lists two advantages of random search: "A budget can be chosen independent of the number of parameters and possible values" and "Adding parameters that do not influence the performance does not decrease efficiency" model-selection guide.
+scikit-learn lists two advantages of random search: "A budget can be chosen independent of the number of parameters and possible values" and "Adding parameters that do not influence the performance does not decrease efficiency" [model-selection guide](https://scikit-learn.org/stable/modules/grid_search.html).
 
 #### The tuned score is optimistic
 
-The best CV score among many trials is biased upward: some of its lead is luck on those folds (the Cross-Validation lesson shows 1,000 coin-flip models reaching 70% on a validation set). scikit-learn: "it is recommended to split the data into a development set (to be fed to the GridSearchCV instance) and an evaluation set to compute performance metrics" docs. With small data, use nested CV. And watch the leaderboard of trials: if the top 20 settings score within noise of each other, pick the simplest or most regularised one.
+The best CV score among many trials is biased upward: some of its lead is luck on those folds (the Cross-Validation lesson shows 1,000 coin-flip models reaching 70% on a validation set). scikit-learn: "it is recommended to split the data into a development set (to be fed to the GridSearchCV instance) and an evaluation set to compute performance metrics" [docs](https://scikit-learn.org/stable/modules/grid_search.html). With small data, use nested CV. And watch the leaderboard of trials: if the top 20 settings score within noise of each other, pick the simplest or most regularised one.
 
 #### The whole recipe
 
@@ -195,7 +195,7 @@ Grid vs random search, Bayesian optimisation with a Gaussian process and expecte
 
 ##### Kernel classifier on CIFAR-10 (Li et al., Hyperband paper)
 
-In the time Bayesian optimisers evaluated about 3 configurations, Hyperband's first bracket evaluated over 250 and found a good one in about 20 minutes; the paper reports it "over 30× faster than Bayesian optimization methods and 70× faster than random search" on this task, and around 6× faster on a random-features task pp. 18–19. The authors also note their most aggressive bracket alone often beat full Hyperband.
+In the time Bayesian optimisers evaluated about 3 configurations, Hyperband's first bracket evaluated over 250 and found a good one in about 20 minutes; the paper reports it "over 30× faster than Bayesian optimization methods and 70× faster than random search" on this task, and around 6× faster on a random-features task [pp. 18–19](https://arxiv.org/pdf/1603.06560#page=18). The authors also note their most aggressive bracket alone often beat full Hyperband.
 
 ##### This page's simulations
 
@@ -230,13 +230,13 @@ Lower is better; one important and one irrelevant hyperparameter. Illustrative.
 
 #### What this page is built from
 
-1. J. Bergstra & Y. Bengio, "Random search for hyper-parameter optimization", _JMLR_ 13, 2012, jmlr.org.
+1. J. Bergstra & Y. Bengio, "Random search for hyper-parameter optimization", _JMLR_ 13, 2012, [jmlr.org](https://jmlr.org/papers/v13/bergstra12a.html).
 
-2. J. Snoek, H. Larochelle & R. Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012, arXiv:1206.2944.
+2. J. Snoek, H. Larochelle & R. Adams, "Practical Bayesian optimization of machine learning algorithms", NeurIPS 2012, [arXiv:1206.2944](https://arxiv.org/abs/1206.2944).
 
-3. L. Li, K. Jamieson, G. DeSalvo, A. Rostamizadeh & A. Talwalkar, "Hyperband: a novel bandit-based approach to hyperparameter optimization", _JMLR_ 18, 2018, arXiv:1603.06560.
+3. L. Li, K. Jamieson, G. DeSalvo, A. Rostamizadeh & A. Talwalkar, "Hyperband: a novel bandit-based approach to hyperparameter optimization", _JMLR_ 18, 2018, [arXiv:1603.06560](https://arxiv.org/abs/1603.06560).
 
-4. scikit-learn, Tuning the hyper-parameters of an estimator (random search, successive halving, development/evaluation split).
+4. scikit-learn, [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html) (random search, successive halving, development/evaluation split).
 
 5. J. Bergstra, R. Bardenet, Y. Bengio & B. Kégl, "Algorithms for hyper-parameter optimization", NeurIPS 2011 (TPE; background); T. Akiba et al., "Optuna", KDD 2019 (background).
 

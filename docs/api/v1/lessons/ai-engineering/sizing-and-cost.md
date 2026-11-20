@@ -48,13 +48,13 @@ One request at a time (**batch 1**), the 8B model streams a fast 144 tokens/s, b
 
 #### In one breath
 
-Self-hosting cost is simple arithmetic: **$ per million tokens = GPUs × $/GPU-hour ÷ (tokens per second × 3,600) × 106**. The hard part is tokens per second. In decode, each step reads the weights once for the whole batch plus every sequence's KV cache, so step time ≈ bytes read ÷ memory bandwidth. A batch of 1 wastes almost all of it; a batch of 128 shares the weight reads across 128 users, cutting cost per token ~40× while each user's stream slows down. Then multiply by real **utilisation**: a GPU that's busy half the day costs twice as much per token. Self-hosting beats an API only with steady, high-volume traffic (or privacy and control needs); for spiky or small workloads, paying per token is usually cheaper.What you'll be able to do after this: estimate throughput and $/M tokens on a napkin, explain the batch-size and utilisation effects, and argue self-host vs API and engine choice.
+Self-hosting cost is simple arithmetic: **$ per million tokens = GPUs × $/GPU-hour ÷ (tokens per second × 3,600) × 106**. The hard part is tokens per second. In decode, each step reads the weights once for the whole batch plus every sequence's KV cache, so step time ≈ bytes read ÷ memory bandwidth. A batch of 1 wastes almost all of it; a batch of 128 shares the weight reads across 128 users, cutting cost per token ~40× while each user's stream slows down. Then multiply by real **utilisation**: a GPU that's busy half the day costs twice as much per token. Self-hosting beats an API only with steady, high-volume traffic (or privacy and control needs); for spiky or small workloads, paying per token is usually cheaper. What you'll be able to do after this: estimate throughput and $/M tokens on a napkin, explain the batch-size and utilisation effects, and argue self-host vs API and engine choice.
 
 #### A napkin model of decode throughput
 
-$$ t_{step} \approx \frac{W + B \cdot L \cdot kv}{\text{bandwidth}}, \qquad \text{tokens/s} = B / t_{step} $$
+$$ t_{step} \approx \frac{{W} + {B \cdot L \cdot kv}}{{\text{bandwidth}}}, \qquad {\text{tokens/s} = B / t_{step}} $$
 
-Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, arXiv:2211.05102, analyse these memory and compute bounds in detail.
+Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, [arXiv:2211.05102](https://arxiv.org/abs/2211.05102), analyse these memory and compute bounds in detail.
 
 - **weights, read once per step**: All sequences in the batch share one read of the weights: 16 GB for an 8B model in bf16.
 
@@ -133,12 +133,12 @@ How to estimate what serving an LLM costs: throughput from first principles (mem
 
 #### Sources
 
-1. R. Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, arXiv:2211.05102.
+1. R. Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, [arXiv:2211.05102](https://arxiv.org/abs/2211.05102).
 
-2. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, arXiv:2309.06180.
+2. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention", SOSP 2023, [arXiv:2309.06180](https://arxiv.org/abs/2309.06180).
 
 3. NVIDIA H100 Tensor Core GPU datasheet (3.35 TB/s HBM3, 989 TFLOPS dense BF16, SXM).
 
-4. GPU rental price surveys, Nov 2026: GetDeploying price trends (H100 median about $3.87, up 30% over 12 months) and the Ornn compute price index (H100 SXM $3.13, B200 $9.46 on 5 Nov). Indices differ by provider mix.
+4. GPU rental price surveys, Nov 2026: [GetDeploying price trends](https://getdeploying.com/gpu-price-trends) (H100 median about $3.87, up 30% over 12 months) and the [Ornn compute price index](https://data.ornn.com/) (H100 SXM $3.13, B200 $9.46 on 5 Nov). Indices differ by provider mix.
 
 5. vLLM, SGLang, TensorRT-LLM and llama.cpp documentation.

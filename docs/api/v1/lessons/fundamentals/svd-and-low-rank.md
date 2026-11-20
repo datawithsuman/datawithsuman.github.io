@@ -48,11 +48,11 @@ The first singular value alone carries 74% of the energy; five carry 96%. Error 
 
 #### In one breath
 
-**Every** matrix, any shape, can be written as A = UΣVᵀ: a rotation, a stretch along perpendicular axes, and another rotation. The stretches, the **singular values** σ₁ ≥ σ₂ ≥ …, say how important each direction is. Keep only the top k and you get the **best possible rank-k approximation** of A (Eckart–Young), stored in k(m + n + 1) numbers instead of m × n. Real data is often nearly low-rank, so a small k captures most of it and drops noise. That idea is PCA (SVD of centred data), matrix-factorisation recommenders (users × items ≈ low-rank), and LoRA (fine-tune a huge weight matrix by learning a rank-r update BA).What you'll be able to do after this: describe the three factors of the SVD, explain rank-k truncation and its error, compute the storage saving, and connect it to PCA, recommenders and LoRA.
+**Every** matrix, any shape, can be written as A = UΣVᵀ: a rotation, a stretch along perpendicular axes, and another rotation. The stretches, the **singular values** σ₁ ≥ σ₂ ≥ …, say how important each direction is. Keep only the top k and you get the **best possible rank-k approximation** of A (Eckart–Young), stored in k(m + n + 1) numbers instead of m × n. Real data is often nearly low-rank, so a small k captures most of it and drops noise. That idea is PCA (SVD of centred data), matrix-factorisation recommenders (users × items ≈ low-rank), and LoRA (fine-tune a huge weight matrix by learning a rank-r update BA). What you'll be able to do after this: describe the three factors of the SVD, explain rank-k truncation and its error, compute the storage saving, and connect it to PCA, recommenders and LoRA.
 
 #### The decomposition
 
-$$ A = U\,\Sigma\,V^{\top} = \textstyle\sum_{i} \sigma_i\, u_i v_i^{\top} $$
+$$ {A} = {U}\,{\Sigma}\,{V^{\top}} = {\textstyle\sum_{i} \sigma_i\, u_i v_i^{\top}} $$
 
 MML §4.5. The singular values are the square roots of the eigenvalues of AᵀA, and V's columns are its eigenvectors (Eigenvalues).
 
@@ -68,7 +68,7 @@ MML §4.5. The singular values are the square roots of the eigenvalues of AᵀA,
 
 #### The best rank-k approximation
 
-$$ A_k = \textstyle\sum_{i=1}^{k} \sigma_i u_i v_i^{\top}, \qquad \lVert A - A_k\rVert_F = \sqrt{\textstyle\sum_{i>k} \sigma_i^2}, \qquad k(m + n + 1) $$
+$$ {A_k = \textstyle\sum_{i=1}^{k} \sigma_i u_i v_i^{\top}}, \qquad {\lVert A - A_k\rVert_F = \sqrt{\textstyle\sum_{i>k} \sigma_i^2}}, \qquad {k(m + n + 1)} $$
 
 C. Eckart & G. Young, "The approximation of one matrix by another of lower rank", _Psychometrika_, 1936; MML Theorem 4.25.
 
@@ -80,9 +80,9 @@ C. Eckart & G. Young, "The approximation of one matrix by another of lower rank"
 
 #### LoRA: fine-tune with a rank-r update
 
-$$ h = W_0\,x + B\,A\,x $$
+$$ h = {W_0}\,x + {B}\,{A}\,x $$
 
-Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", Eq. 3 p. 4.
+Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", Eq. 3 [p. 4](https://arxiv.org/pdf/2106.09685#page=4).
 
 - **frozen pretrained weights**: A d × k matrix, never updated.
 
@@ -90,7 +90,7 @@ Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", Eq. 3 p. 4.
 
 - **r × k**: Trainable, random Gaussian initialisation. With r ≪ d, B and A together have r(d + k) parameters instead of d·k.
 
-The authors hypothesise that the change in weights during fine-tuning has a low "intrinsic rank". On GPT-3 175B, LoRA "can reduce the number of trainable parameters by 10,000 times and the GPU memory requirement by 3 times" compared with full fine-tuning with Adam abstract, and "a very low rank (i.e., r in Figure 1 can be one or two) suffices even when the full rank (i.e., d) is as high as 12,288" p. 2. Because BA has the same shape as W₀, it can be merged after training: no extra inference latency.
+The authors hypothesise that the change in weights during fine-tuning has a low "intrinsic rank". On GPT-3 175B, LoRA "can reduce the number of trainable parameters by 10,000 times and the GPU memory requirement by 3 times" compared with full fine-tuning with Adam [abstract](https://arxiv.org/abs/2106.09685), and "a very low rank (i.e., r in Figure 1 can be one or two) suffices even when the full rank (i.e., d) is as high as 12,288" [p. 2](https://arxiv.org/pdf/2106.09685#page=2). Because BA has the same shape as W₀, it can be merged after training: no extra inference latency.
 
 #### SVD and eigendecomposition, and very large matrices
 
@@ -192,10 +192,10 @@ The singular value decomposition, rank-k truncation and the Eckart–Young theor
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, mml-book.github.io (ch. 4.5–4.6).
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, [mml-book.github.io](https://mml-book.github.io/) (ch. 4.5–4.6).
 
 2. C. Eckart & G. Young, "The approximation of one matrix by another of lower rank", _Psychometrika_ 1, 1936.
 
-3. E. Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, arXiv:2106.09685.
+3. E. Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, [arXiv:2106.09685](https://arxiv.org/abs/2106.09685).
 
 The icon is generated procedurally with fixed-seed noise; the SVD is computed live in your browser (Jacobi eigen-decomposition of AᵀA).

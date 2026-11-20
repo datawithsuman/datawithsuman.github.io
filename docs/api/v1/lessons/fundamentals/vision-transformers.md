@@ -87,7 +87,7 @@ The ViT paper found that these models "do not generalize well when trained on in
 
 #### The maths
 
-$$ N = \frac{HW}{P^2}, \qquad z_0 = [x_{\text{class}};\; x_1 E;\; \dots;\; x_N E] + E_{\text{pos}} $$
+$$ {N = \frac{HW}{P^2}}, \qquad {z_0 = [x_{\text{class}};\; x_1 E;\; \dots;\; x_N E]} + {E_{\text{pos}}} $$
 
 From Dosovitskiy et al., Equation 1. After this, it’s a standard Transformer encoder.
 
@@ -143,20 +143,22 @@ What's the role of the class token?
 
 It's a learned vector added to the sequence. Through attention, it collects information from all patches, and its final state goes to the classifier. Averaging all the patch outputs is a common alternative.
 
+#### The 30-second answer
+
 A Vision Transformer cuts an image into patches, flattens them, and projects each to a vector. It adds a class token and learned position embeddings, then runs a standard encoder. A 224 image with 16-pixel patches gives 196 patches. Unlike a CNN, it has little built-in knowledge of locality, so it needs more data, or strong augmentation and pretraining. Every patch can attend to all others from the first layer, but plain attention is quadratic in tokens. Swin uses shifted windows to make that linear. With limited data, I'd start from pretrained weights, and compare against a modern CNN.
 
 **Key terms and sources**
 
-Patches as tokens, class tokens, position embeddings, why ViT needs more data than a CNN, and how DeiT, Swin and self-supervised training responded.
+Patches as tokens, class tokens, position embeddings, why ViT needs more data than a CNN, and how DeiT, Swin and self-supervised training responded. · checked 6 Nov 2026
 
 #### Sources
 
-- Dosovitskiy et al., An Image is Worth 16x16 Words
+- [Dosovitskiy et al., An Image is Worth 16x16 Words](https://arxiv.org/abs/2010.11929)
 
-- Touvron et al., DeiT
+- [Touvron et al., DeiT](https://arxiv.org/abs/2012.12877)
 
-- Liu et al., Swin Transformer
+- [Liu et al., Swin Transformer](https://arxiv.org/abs/2103.14030)
 
-- Liu et al., ConvNeXt
+- [Liu et al., ConvNeXt](https://arxiv.org/abs/2201.03545)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

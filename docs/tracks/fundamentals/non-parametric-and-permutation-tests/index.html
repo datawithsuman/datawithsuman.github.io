@@ -156,12 +156,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">When data is small, skewed or has outliers, I'd consider Mann-Whitney, which ranks the pooled values, so one extreme value can't dominate. It tests whether one group tends to beat the other, and U over n1 n2 is the same as AUC. A permutation test shuffles the group labels thousands of times to build the null, then asks how often a shuffle is at least as extreme as the real result. It needs few assumptions, and works for any statistic. But a rank test ignores size, so if totals matter, such as revenue, I'd keep looking at the mean.</p>
+<h3>The 30-second answer</h3><p class="say30">When data is small, skewed or has outliers, I'd consider Mann-Whitney, which ranks the pooled values, so one extreme value can't dominate. It tests whether one group tends to beat the other, and U over n1 n2 is the same as AUC. A permutation test shuffles the group labels thousands of times to build the null, then asks how often a shuffle is at least as extreme as the real result. It needs few assumptions, and works for any statistic. But a rank test ignores size, so if totals matter, such as revenue, I'd keep looking at the mean.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Rank tests like Mann-Whitney, the link with AUC, permutation tests, and when these are better than a t-test.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Rank tests like Mann-Whitney, the link with AUC, permutation tests, and when these are better than a t-test. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://www.datacamp.com/blog/statistics-interview-questions">DataCamp statistics interview questions</a></li><li><a href="https://www.stat.cmu.edu/~larry/all-of-statistics/">Wasserman, All of Statistics</a></li><li><a href="../roc-auc-vs-pr-auc/">ROC and PR AUC on this site</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

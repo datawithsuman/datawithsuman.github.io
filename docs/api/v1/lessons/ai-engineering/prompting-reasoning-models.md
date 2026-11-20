@@ -76,7 +76,7 @@ These guides change with each model release, so check the current one for your m
 
 #### The maths
 
-$$ \text{cost} = p_{\text{in}}\,T_{\text{in}} + p_{\text{out}}\,(T_{\text{think}} + T_{\text{answer}}) $$
+$$ {\text{cost}} = {p_{\text{in}}\,T_{\text{in}}} + {p_{\text{out}}}\,({T_{\text{think}}} + {T_{\text{answer}}}) $$
 
 Reasoning tokens are billed as output tokens, so effort settings change cost and latency far more than prompt wording does.
 
@@ -138,24 +138,26 @@ The new model got worse on one task after migration. What do you check first?
 
 Old instructions written for the previous model: fixed step lists, prefills, and conflicting rules. Then try a different effort level, and compare both models on the same evaluation set.
 
+#### The 30-second answer
+
 Reasoning models already think before answering, so old tricks like 'think step by step' add little. A Wharton study found about 3% or less for reasoning models, at up to 80% more time, against 12 to 14% for some older models. I'd give the model a clear goal, the constraints and the exact output I need, and add step-by-step guidance only where evaluations show failures. I'd control thinking with the reasoning effort setting, starting low or medium, since hidden tokens are billed as output. And I'd remove contradictory rules, which the GPT-5 guide says hurt these models more.
 
 **Key terms and sources**
 
-Why reasoning models want goals, constraints and an output contract rather than steps, what chain-of-thought prompting still adds, reasoning effort settings, and what to stop doing.
+Why reasoning models want goals, constraints and an output contract rather than steps, what chain-of-thought prompting still adds, reasoning effort settings, and what to stop doing. · checked 7 Nov 2026
 
 #### Sources
 
-- Meincke, Mollick, Mollick and Shapiro, Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting (Wharton, 2025)
+- [Meincke, Mollick, Mollick and Shapiro, Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting (Wharton, 2025)](https://gail.wharton.upenn.edu/research-and-insights/tech-report-chain-of-thought/)
 
-- OpenAI, Reasoning models guide
+- [OpenAI, Reasoning models guide](https://developers.openai.com/api/docs/guides/reasoning)
 
-- OpenAI, GPT-5 prompting guide (archived cookbook)
+- [OpenAI, GPT-5 prompting guide (archived cookbook)](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)
 
-- Google Cloud, Prompting guide for thinking models
+- [Google Cloud, Prompting guide for thinking models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/thinking/prompting-guide)
 
-- Anthropic, Prompting best practices
+- [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
-- Wei et al., Chain-of-Thought Prompting
+- [Wei et al., Chain-of-Thought Prompting](https://arxiv.org/abs/2201.11903)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor guides change with each model.

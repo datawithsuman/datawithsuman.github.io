@@ -48,7 +48,7 @@ Asking for the answer straight away forces the model to compute it inside a sing
 
 #### In one breath
 
-**In-context learning (ICL)** means an LLM performs a new task from instructions and examples placed in the prompt, with **no weight updates**. GPT-3 (Brown et al. 2020) showed this improves sharply with scale. Demonstrations mainly teach the **format, label space and input distribution**: Min et al. (2022) found that even random labels in the examples cost surprisingly little. **Chain-of-thought (CoT)** prompting asks the model to write intermediate steps before the answer, which gives it room to compute: with text-davinci-002, adding "Let's think step by step" lifted MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7%; eight worked examples reached 93.0% and 48.7%. Sampling several chains and voting (**self-consistency**) helps further. Reasoning models now do this internally, so prompts for them should state the goal, not the steps.What you'll be able to do after this: choose between zero-shot, few-shot and CoT prompts, explain why CoT works, and avoid common ICL pitfalls.
+**In-context learning (ICL)** means an LLM performs a new task from instructions and examples placed in the prompt, with **no weight updates**. GPT-3 (Brown et al. 2020) showed this improves sharply with scale. Demonstrations mainly teach the **format, label space and input distribution**: Min et al. (2022) found that even random labels in the examples cost surprisingly little. **Chain-of-thought (CoT)** prompting asks the model to write intermediate steps before the answer, which gives it room to compute: with text-davinci-002, adding "Let's think step by step" lifted MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7%; eight worked examples reached 93.0% and 48.7%. Sampling several chains and voting (**self-consistency**) helps further. Reasoning models now do this internally, so prompts for them should state the goal, not the steps. What you'll be able to do after this: choose between zero-shot, few-shot and CoT prompts, explain why CoT works, and avoid common ICL pitfalls.
 
 #### Zero-shot, few-shot, and what examples teach
 
@@ -126,12 +126,12 @@ How LLMs learn tasks from the prompt alone: zero-shot and few-shot prompting, wh
 
 #### Sources
 
-1. T. Brown et al., "Language Models are Few-Shot Learners", NeurIPS 2020, arXiv:2005.14165; S. Min et al., "Rethinking the Role of Demonstrations", EMNLP 2022, arXiv:2202.12837.
+1. T. Brown et al., "Language Models are Few-Shot Learners", NeurIPS 2020, [arXiv:2005.14165](https://arxiv.org/abs/2005.14165); S. Min et al., "Rethinking the Role of Demonstrations", EMNLP 2022, [arXiv:2202.12837](https://arxiv.org/abs/2202.12837).
 
-2. J. Wei et al., "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models", NeurIPS 2022, arXiv:2201.11903.
+2. J. Wei et al., "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models", NeurIPS 2022, [arXiv:2201.11903](https://arxiv.org/abs/2201.11903).
 
-3. T. Kojima et al., "Large Language Models are Zero-Shot Reasoners", NeurIPS 2022, arXiv:2205.11916 (Table 2).
+3. T. Kojima et al., "Large Language Models are Zero-Shot Reasoners", NeurIPS 2022, [arXiv:2205.11916](https://arxiv.org/abs/2205.11916) (Table 2).
 
-4. X. Wang et al., "Self-Consistency", ICLR 2023, arXiv:2203.11171; Z. Zhao et al., "Calibrate Before Use", ICML 2021, arXiv:2102.09690.
+4. X. Wang et al., "Self-Consistency", ICLR 2023, [arXiv:2203.11171](https://arxiv.org/abs/2203.11171); Z. Zhao et al., "Calibrate Before Use", ICML 2021, [arXiv:2102.09690](https://arxiv.org/abs/2102.09690).
 
-5. M. Turpin et al., "Language Models Don't Always Say What They Think", NeurIPS 2023, arXiv:2305.04388; N. Liu et al., "Lost in the Middle", TACL 2024, arXiv:2307.03172.
+5. M. Turpin et al., "Language Models Don't Always Say What They Think", NeurIPS 2023, [arXiv:2305.04388](https://arxiv.org/abs/2305.04388); N. Liu et al., "Lost in the Middle", TACL 2024, [arXiv:2307.03172](https://arxiv.org/abs/2307.03172).

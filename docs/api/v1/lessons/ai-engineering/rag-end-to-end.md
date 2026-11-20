@@ -50,7 +50,7 @@ Overlap rescues this small example, as answers sit right next to each other. Lar
 
 #### In one breath
 
-An LLM doesn't know your refund policy, and it was trained months ago. **RAG** fetches the relevant text at question time and puts it in the prompt, so answers are grounded, current and citable. The pipeline: **ingest** documents (parse PDFs, HTML, tables) → **chunk** them into passages → **embed** each chunk into a vector → store in a **vector index** (HNSW or IVF for approximate nearest-neighbour search) → at query time, embed the question, **retrieve** the top-k chunks (often hybrid with BM25), and **generate** an answer from them with citations. Most quality problems are retrieval problems, and chunking is the first knob: chunks too small split answers across pieces; too large and you send lots of irrelevant text.What you'll be able to do after this: draw the RAG pipeline, choose chunking and index settings, and say where RAG systems fail.
+An LLM doesn't know your refund policy, and it was trained months ago. **RAG** fetches the relevant text at question time and puts it in the prompt, so answers are grounded, current and citable. The pipeline: **ingest** documents (parse PDFs, HTML, tables) → **chunk** them into passages → **embed** each chunk into a vector → store in a **vector index** (HNSW or IVF for approximate nearest-neighbour search) → at query time, embed the question, **retrieve** the top-k chunks (often hybrid with BM25), and **generate** an answer from them with citations. Most quality problems are retrieval problems, and chunking is the first knob: chunks too small split answers across pieces; too large and you send lots of irrelevant text. What you'll be able to do after this: draw the RAG pipeline, choose chunking and index settings, and say where RAG systems fail.
 
 #### The pipeline, stage by stage
 
@@ -135,10 +135,10 @@ How a retrieval-augmented generation system is built: ingestion and parsing, chu
 
 #### Sources
 
-1. P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020, arXiv:2005.11401; V. Karpukhin et al., "Dense Passage Retrieval", EMNLP 2020, arXiv:2004.04906.
+1. P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020, [arXiv:2005.11401](https://arxiv.org/abs/2005.11401); V. Karpukhin et al., "Dense Passage Retrieval", EMNLP 2020, [arXiv:2004.04906](https://arxiv.org/abs/2004.04906).
 
-2. Y. Malkov & D. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs", TPAMI 2018, arXiv:1603.09320; J. Johnson, M. Douze & H. Jégou, "Billion-scale similarity search with GPUs" (FAISS), 2019, arXiv:1702.08734.
+2. Y. Malkov & D. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs", TPAMI 2018, [arXiv:1603.09320](https://arxiv.org/abs/1603.09320); J. Johnson, M. Douze & H. Jégou, "Billion-scale similarity search with GPUs" (FAISS), 2019, [arXiv:1702.08734](https://arxiv.org/abs/1702.08734).
 
-3. N. Muennighoff et al., "MTEB: Massive Text Embedding Benchmark", EACL 2023, arXiv:2210.07316.
+3. N. Muennighoff et al., "MTEB: Massive Text Embedding Benchmark", EACL 2023, [arXiv:2210.07316](https://arxiv.org/abs/2210.07316).
 
-4. S. Barnett et al., "Seven Failure Points When Engineering a Retrieval Augmented Generation System", CAIN 2024, arXiv:2401.05856; N. Liu et al., "Lost in the Middle", TACL 2024, arXiv:2307.03172.
+4. S. Barnett et al., "Seven Failure Points When Engineering a Retrieval Augmented Generation System", CAIN 2024, [arXiv:2401.05856](https://arxiv.org/abs/2401.05856); N. Liu et al., "Lost in the Middle", TACL 2024, [arXiv:2307.03172](https://arxiv.org/abs/2307.03172).

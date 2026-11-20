@@ -86,7 +86,7 @@ Training has millions of inputs and one loss, so reverse mode wins by a huge mar
 
 #### The maths
 
-$$ \frac{\partial L}{\partial \theta} = v^\top J_k J_{k-1} \cdots J_1, \qquad \text{reverse: } (v^\top J_k) J_{k-1} \cdots, \qquad \text{forward: } J_k \cdots (J_1 u) $$
+$$ {\frac{\partial L}{\partial \theta}} = {v^\top} J_k J_{k-1} \cdots J_1, \qquad {\text{reverse: } (v^\top J_k) J_{k-1} \cdots}, \qquad {\text{forward: } J_k \cdots (J_1 u)} $$
 
 Same product, different order. With many inputs and one output, multiplying from the output keeps things small. See the shapes lesson on why order changes cost.
 
@@ -144,15 +144,17 @@ When is forward mode better?
 
 When there are few inputs and many outputs, such as measuring how one hyperparameter affects many values. Also for a Jacobian-vector product, where you only need one direction. Forward mode uses little extra memory, as it doesn't store a record for a backward pass.
 
+#### The 30-second answer
+
 Automatic differentiation breaks a program into simple operations with known derivatives, and applies the chain rule to them. It's exact, unlike numerical differentiation, and avoids the formula growth of symbolic methods. Forward mode gives the effect of one input on all outputs per pass. Reverse mode records the operations, then goes back from the output, giving the effect of all inputs on one output. Training has millions of weights and one loss, so reverse mode gets every gradient in a single backward pass. The cost is memory, as it must store intermediate values.
 
 **Key terms and sources**
 
-Computational graphs, forward and reverse mode, why training uses reverse mode, how it differs from numerical and symbolic differentiation, and its memory cost.
+Computational graphs, forward and reverse mode, why training uses reverse mode, how it differs from numerical and symbolic differentiation, and its memory cost. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
 - Backpropagation on this site
 

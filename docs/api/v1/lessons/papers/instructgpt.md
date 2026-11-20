@@ -12,7 +12,7 @@
 
 ### The paper
 
-Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin and others · OpenAI · NeurIPS 2022 · arXiv 2203.02155 · 10 sources, checked 11 Nov 2026
+Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin and others · OpenAI · NeurIPS 2022 · arXiv [2203.02155](https://arxiv.org/abs/2203.02155) · 10 sources, checked 11 Nov 2026
 
 GPT-3 was trained to predict the next word on the internet, not to help you, so it often ignored instructions, made things up or rambled. OpenAI fixed this in three steps. **Step 1, SFT:** people wrote ideal answers to real prompts, and GPT-3 was fine-tuned on them. **Step 2, reward model:** people ranked several model answers from best to worst, and a model learned to predict which answer they'd prefer. **Step 3, RL:** PPO pushed the model towards answers the reward model scores highly, while a KL penalty kept it close to the SFT model. The result, **InstructGPT**, was preferred to GPT-3 85% of the time, and even the 1.3B version beat the 175B GPT-3, at under 2% of GPT-3's training compute. It's the recipe behind ChatGPT.
 
@@ -24,11 +24,11 @@ the prompt in the paper's method figure
 
 "Explain the moon landing to a 6 year old in a few sentences."
 
-A model trained only to continue internet text might treat this as the start of a list of homework questions and add more questions, rather than answer it. We'll follow this prompt through all three steps: a person writes a good answer, people rank several model answers, and reinforcement learning makes the model produce answers like the top-ranked ones Fig. 2.
+A model trained only to continue internet text might treat this as the start of a list of homework questions and add more questions, rather than answer it. We'll follow this prompt through all three steps: a person writes a good answer, people rank several model answers, and reinforcement learning makes the model produce answers like the top-ranked ones [Fig. 2](https://arxiv.org/abs/2203.02155).
 
 #### The training goal and the user's goal don't match
 
-The paper's first sentence: "Making language models bigger does not inherently make them better at following a user's intent." GPT-3 was trained to predict the next token on a webpage, which is "different from the objective 'follow the user's instructions helpfully and safely'". The authors call the language-modelling objective **misaligned** §1.
+The paper's first sentence: "Making language models bigger does not inherently make them better at following a user's intent." GPT-3 was trained to predict the next token on a webpage, which is "different from the objective 'follow the user's instructions helpfully and safely'". The authors call the language-modelling objective **misaligned** [§1](https://arxiv.org/abs/2203.02155).
 
 ##### What went wrong
 
@@ -68,11 +68,11 @@ Illustrative curves, shaped like those measured by Gao et al. (2022): the reward
 | **Instruction tuning on NLP datasets** (FLAN, T0) | Fine-tune on many public tasks rewritten as instructions | Public datasets are mostly classification and QA; real users mostly ask for open-ended writing |
 | **RLHF** (Christiano 2017; Stiennon 2020) | Learn a reward from human comparisons, then optimise it with RL | Shown on games and summarisation, not on a general assistant |
 
-InstructGPT takes the RLHF method from "Learning to summarize from human feedback" and applies it to the full, messy range of prompts real customers sent to the OpenAI API §3.1.
+InstructGPT takes the RLHF method from "Learning to summarize from human feedback" and applies it to the full, messy range of prompts real customers sent to the OpenAI API [§3.1](https://arxiv.org/abs/2203.02155).
 
 #### Show the model good answers
 
-Labellers wrote the answer they'd want for each prompt, such as a few simple sentences about astronauts flying to the moon for our example. GPT-3 was then fine-tuned on these demonstrations with ordinary next-token loss §3.5. See the SFT lesson for the mechanics.
+Labellers wrote the answer they'd want for each prompt, such as a few simple sentences about astronauts flying to the moon for our example. GPT-3 was then fine-tuned on these demonstrations with ordinary next-token loss [§3.5](https://arxiv.org/abs/2203.02155). See the SFT lesson for the mechanics.
 
 - **Data:** about 13,000 training prompts, from the API and written by labellers.
 
@@ -86,11 +86,11 @@ Writing a great answer is slow and hard; judging which of two answers is better 
 
 #### Learn to predict which answer people prefer
 
-For each prompt, the model produced between K = 4 and K = 9 answers, and a labeller ranked them all. A ranking of K answers gives K(K−1)/2 pairs: 6 pairs for 4 answers, 36 for 9. A 6-billion-parameter copy of the SFT model, with its output layer replaced by a single score, was trained on these pairs §3.5.
+For each prompt, the model produced between K = 4 and K = 9 answers, and a labeller ranked them all. A ranking of K answers gives K(K−1)/2 pairs: 6 pairs for 4 answers, 36 for 9. A 6-billion-parameter copy of the SFT model, with its output layer replaced by a single score, was trained on these pairs [§3.5](https://arxiv.org/abs/2203.02155).
 
-$$ \text{loss}(\theta) = -\tfrac{1}{\binom{K}{2}}\,\mathbb{E}\Big[\log \sigma\big(r_\theta(x, y_w) - r_\theta(x, y_l)\big)\Big] $$
+$$ \text{loss}(\theta) = -{\tfrac{1}{\binom{K}{2}}\,\mathbb{E}}\Big[\log {\sigma}\big({r_\theta(x, y_w)} - {r_\theta(x, y_l)}\big)\Big] $$
 
-Equation 1 §3.5 · hover a term.
+Equation 1 [§3.5](https://arxiv.org/abs/2203.02155) · hover a term.
 
 - **the preferred answer’s score**: r_θ(x, y_w): the reward model’s score for the answer the labeller ranked higher.
 
@@ -110,11 +110,11 @@ Training all pairs from one ranking in a single batch mattered: shuffling them a
 
 #### Optimise the reward, but don't drift too far
 
-The SFT model becomes the policy. For each prompt it writes an answer, the reward model scores it, and PPO updates the policy to make high-scoring answers more likely. Each prompt is one episode with one reward at the end §3.5.
+The SFT model becomes the policy. For each prompt it writes an answer, the reward model scores it, and PPO updates the policy to make high-scoring answers more likely. Each prompt is one episode with one reward at the end [§3.5](https://arxiv.org/abs/2203.02155).
 
-$$ \text{objective}(\phi) = \mathbb{E}\Big[r_\theta(x,y) - \beta \log \tfrac{\pi^{RL}_\phi(y|x)}{\pi^{SFT}(y|x)}\Big] + \gamma\,\mathbb{E}\big[\log \pi^{RL}_\phi(x_{pre})\big] $$
+$$ \text{objective}(\phi) = \mathbb{E}\Big[{r_\theta(x,y)} - {\beta \log \tfrac{\pi^{RL}_\phi(y|x)}{\pi^{SFT}(y|x)}}\Big] + {\gamma\,\mathbb{E}\big[\log \pi^{RL}_\phi(x_{pre})\big]} $$
 
-Equation 2, slightly simplified §3.5, App. C · hover a term.
+Equation 2, slightly simplified [§3.5, App. C](https://arxiv.org/abs/2203.02155) · hover a term.
 
 - **the reward model’s score**: r_θ(x, y): how much people are predicted to like answer y to prompt x.
 
@@ -146,7 +146,7 @@ About 40 contractors, hired through Upwork and Scale AI after a screening test o
 | Closed QA | 2.6% |
 | Extraction | 1.9% |
 
-Table 1 §3.2, plus 3.5% other. Dataset sizes: about 13k prompts for SFT, 33k for the reward model, 31k for RL.
+Table 1 [§3.2](https://arxiv.org/abs/2203.02155), plus 3.5% other. Dataset sizes: about 13k prompts for SFT, 33k for the reward model, 31k for RL.
 
 This table explains a key result: classification and QA, which public NLP datasets cover, are only about 18% of real use, while open-ended generation and brainstorming are about 57%.
 
@@ -172,7 +172,7 @@ This table explains a key result: classification and QA, which public NLP datase
 
 #### PPO made some benchmarks worse, and PPO-ptx fixed most of it
 
-Plain PPO lowered scores on several public benchmarks: SQuAD, DROP, HellaSwag and French-to-English translation. The authors call this an **alignment tax**: a cost paid in capability for being better aligned. A technique with a high tax may not get adopted §4.2, §5.1.
+Plain PPO lowered scores on several public benchmarks: SQuAD, DROP, HellaSwag and French-to-English translation. The authors call this an **alignment tax**: a cost paid in capability for being better aligned. A technique with a high tax may not get adopted [§4.2, §5.1](https://arxiv.org/abs/2203.02155).
 
 ##### Mixing in pretraining updates (PPO-ptx)
 
@@ -188,7 +188,7 @@ A stronger β cut the validation reward significantly and never fully recovered 
 
 Log scale: each step is 10×.
 
-Training the 175B SFT model took 4.9 petaflop/s-days and the 175B PPO-ptx model 60, against 3,640 for pretraining GPT-3 itself. Yet RLHF improved helpfulness more than a 100× increase in model size did. The authors' conclusion: "increasing investments in alignment of existing language models is more cost-effective than training larger models", at least for their customers' tasks §5.1.
+Training the 175B SFT model took 4.9 petaflop/s-days and the 175B PPO-ptx model 60, against 3,640 for pretraining GPT-3 itself. Yet RLHF improved helpfulness more than a 100× increase in model size did. The authors' conclusion: "increasing investments in alignment of existing language models is more cost-effective than training larger models", at least for their customers' tasks [§5.1](https://arxiv.org/abs/2203.02155).
 
 ### Where it falls short
 
@@ -196,7 +196,7 @@ Training the 175B SFT model took 4.9 petaflop/s-days and the 175B PPO-ptx model 
 
 ##### Who the model is aligned to
 
-The authors are blunt: the model is aligned to "a set of labelers' preferences", shaped by the instructions OpenAI wrote, not to "human values" in general. The labellers were mostly English-speaking people in the US or Southeast Asia, and most comparisons were labelled by only one person §5.2–5.3.
+The authors are blunt: the model is aligned to "a set of labelers' preferences", shaped by the instructions OpenAI wrote, not to "human values" in general. The labellers were mostly English-speaking people in the US or Southeast Asia, and most comparisons were labelled by only one person [§5.2–5.3](https://arxiv.org/abs/2203.02155).
 
 ##### Failures they show
 
@@ -210,7 +210,7 @@ The authors are blunt: the model is aligned to "a set of labelers' preferences",
 
 ##### Problems later work made clear
 
-- **Reward over-optimisation.** Pushing too hard against a learned reward model makes true quality fall even as the reward rises; Gao et al. measured how this scales arXiv 2210.10760.
+- **Reward over-optimisation.** Pushing too hard against a learned reward model makes true quality fall even as the reward rises; Gao et al. measured how this scales [arXiv 2210.10760](https://arxiv.org/abs/2210.10760).
 
 - **Complexity and cost.** Four models in memory during RL (policy, reference, reward and value) and a finicky PPO setup motivated simpler methods.
 
@@ -284,24 +284,24 @@ The policy finds answers the reward model scores highly but people don't actuall
 
 #### Everything on this page comes from these
 
-1. Ouyang et al. (2022). Training language models to follow instructions with human feedback. arXiv 2203.02155 (main text read in full, plus appendix C)
+1. Ouyang et al. (2022). Training language models to follow instructions with human feedback. [arXiv 2203.02155](https://arxiv.org/abs/2203.02155) (main text read in full, plus appendix C)
 
-2. Christiano et al. (2017). Deep reinforcement learning from human preferences. arXiv 1706.03741
+2. Christiano et al. (2017). Deep reinforcement learning from human preferences. [arXiv 1706.03741](https://arxiv.org/abs/1706.03741)
 
-3. Stiennon et al. (2020). Learning to summarize from human feedback. arXiv 2009.01325
+3. Stiennon et al. (2020). Learning to summarize from human feedback. [arXiv 2009.01325](https://arxiv.org/abs/2009.01325)
 
-4. Schulman et al. (2017). Proximal Policy Optimization Algorithms. arXiv 1707.06347
+4. Schulman et al. (2017). Proximal Policy Optimization Algorithms. [arXiv 1707.06347](https://arxiv.org/abs/1707.06347)
 
-5. Lin et al. (2021). TruthfulQA. arXiv 2109.07958
+5. Lin et al. (2021). TruthfulQA. [arXiv 2109.07958](https://arxiv.org/abs/2109.07958)
 
-6. Gao et al. (2022). Scaling Laws for Reward Model Overoptimization. arXiv 2210.10760
+6. Gao et al. (2022). Scaling Laws for Reward Model Overoptimization. [arXiv 2210.10760](https://arxiv.org/abs/2210.10760)
 
-7. Bai et al. (2022). Constitutional AI: Harmlessness from AI Feedback. arXiv 2212.08073
+7. Bai et al. (2022). Constitutional AI: Harmlessness from AI Feedback. [arXiv 2212.08073](https://arxiv.org/abs/2212.08073)
 
-8. Touvron et al. (2023). Llama 2: Open Foundation and Fine-Tuned Chat Models. arXiv 2307.09288
+8. Touvron et al. (2023). Llama 2: Open Foundation and Fine-Tuned Chat Models. [arXiv 2307.09288](https://arxiv.org/abs/2307.09288)
 
-9. Rafailov et al. (2023). Direct Preference Optimization. arXiv 2305.18290
+9. Rafailov et al. (2023). Direct Preference Optimization. [arXiv 2305.18290](https://arxiv.org/abs/2305.18290)
 
-10. DeepSeek-AI (2025). DeepSeek-R1. arXiv 2501.12948
+10. DeepSeek-AI (2025). DeepSeek-R1. [arXiv 2501.12948](https://arxiv.org/abs/2501.12948)
 
 The KL lab's curves are illustrative. All other numbers come from the paper. @datawithsuman

@@ -54,7 +54,7 @@ At **10,000** conversations a day and **6** LLM steps each, that's 60,000 calls,
 
 #### In one breath
 
-"Design an agent that resolves refund requests for a food-delivery app." A strong answer starts with **requirements and risk** (volume, refund limits, what must never happen), keeps the **predictable parts as a workflow** (authenticate, fetch order, classify) and uses an **agent loop** only for the investigation and decision, gives it a **few narrow tools** that act with the customer's permissions, grounds decisions in the **policy via retrieval** and computes amounts with a **tool, not the model**, gates high-value refunds behind **human approval**, runs as a **durable async job**, and is evaluated with a **sandboxed test set** on end states, pass^k and cost per resolved ticket.What you'll be able to do after this: walk through an agent design end to end, with the trade-offs an interviewer probes.
+"Design an agent that resolves refund requests for a food-delivery app." A strong answer starts with **requirements and risk** (volume, refund limits, what must never happen), keeps the **predictable parts as a workflow** (authenticate, fetch order, classify) and uses an **agent loop** only for the investigation and decision, gives it a **few narrow tools** that act with the customer's permissions, grounds decisions in the **policy via retrieval** and computes amounts with a **tool, not the model**, gates high-value refunds behind **human approval**, runs as a **durable async job**, and is evaluated with a **sandboxed test set** on end states, pass^k and cost per resolved ticket. What you'll be able to do after this: walk through an agent design end to end, with the trade-offs an interviewer probes.
 
 #### Workflow shell, agentic core
 
@@ -124,6 +124,8 @@ Follow-up 2 of 2
 How do you know the agent is better than the old rule-based system?
 
 Run both on the same sandboxed case set and in shadow mode on live traffic; compare policy-correct resolution, escalations, time and cost per resolved ticket.
+
+#### The 30-second answer
 
 First I'd clarify volume, refund limits, what the agent may do alone and the success metrics. Then I'd keep the predictable parts as code: authentication, loading orders, classifying the request. The agent loop handles investigation: it calls narrow, read-only tools scoped to the authenticated customer, retrieves policy clauses, and computes the amount with a deterministic calculator rather than doing arithmetic. Its proposal goes through a code-enforced gate: small refunds auto-execute via an idempotent tool; larger or risky ones go to a human. It runs as a durable async job with retries and budgets. I'd evaluate in a sandbox on real cases with end-state checks, pass^k and cost per ticket, roll out in shadow mode first, and monitor resolution, escalations, refund amounts and cost.
 

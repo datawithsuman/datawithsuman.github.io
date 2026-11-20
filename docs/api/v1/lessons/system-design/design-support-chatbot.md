@@ -191,8 +191,10 @@ How would you evaluate the evaluator?
 
 Using an LLM to judge an LLM can share the same blind spots. So keep a labelled set of good and bad replies, measure how many bad ones it catches and how many good ones it blocks, and keep comparing it with human reviewers on random samples.
 
+#### The 30-second answer
+
 First I'd clarify scope, volume, languages, whether the bot can act and what must never happen. For each message, I'd condense the conversation into one issue, retrieve the right help articles using that summary, and generate a reply from them. Before it's shown, the reply goes through a guardrail. A cheap similarity check handles every reply, and an LLM evaluator reads only the flagged ones, because running it on everything adds a full LLM call to each reply. If a reply fails, I'd retry once and then hand over to a human with the summary. I'd size the human queue from the handover rate, since it peaks at dinner too. Offline, a judge and human reviewers score real transcripts on retrieval, accuracy, language, coherence and relevance. Each problem becomes a fix and a test, and prompt changes must pass those tests to ship. For reliability I'd use timeouts and a backup model. For safety, I'd treat messages as untrusted and scope all data to the signed-in partner in code. I'd roll out in shadow mode first.
 
 **Key terms and sources**
 
-Based on a food-delivery company's published design for its delivery-partner support: DoorDash's post. We read it through ZenML's summary. Volumes, sample replies and handover triggers here are our own illustrations. Uses RAG, guardrails and evaluating LLM apps.
+Based on a food-delivery company's published design for its delivery-partner support: [DoorDash's post](https://careersatdoordash.com/blog/large-language-modules-based-dasher-support-automation/). We read it through [ZenML's summary](https://www.zenml.io/llmops-database/llm-based-dasher-support-automation-with-rag-and-quality-controls). Volumes, sample replies and handover triggers here are our own illustrations. Uses RAG, guardrails and evaluating LLM apps. · checked 5 Nov 2026

@@ -78,7 +78,7 @@ Each round of reflection tends to add rules and caveats. A 2026 study, ESPO, fou
 
 #### The maths
 
-$$ \Pi^{*} = \arg\max_{\Pi} \; \mathbb{E}_{(x,m)}\big[\mu(\Phi(x;\Pi), m)\big] \quad \text{s.t.} \quad \#\text{runs} \le B $$
+$$ {\Pi^{*}} = \arg\max_{{\Pi}} \; {\mathbb{E}_{(x,m)}}\big[{\mu}(\Phi(x;\Pi), m)\big] \quad \text{s.t.} \quad {\#\text{runs} \le B} $$
 
 The objective as the GEPA paper writes it. The catch is the expectation: you only see a small validation set, so the winner's score is an estimate, and choosing the best of many estimates flatters it.
 
@@ -140,24 +140,26 @@ Why might an optimiser beat fine-tuning with little data?
 
 It learns from rich feedback, such as error messages and reasoning traces, rather than a single score per run, and a few rules in a prompt can fix a whole class of errors.
 
+#### The 30-second answer
+
 An optimiser treats prompts as parameters. I give it the pipeline, a metric and labelled data, and it proposes, scores and keeps better prompts. DSPy and MIPROv2 search over instructions and few-shot examples. GEPA reflects on full traces in plain language, and reported about 14 points of gain against 7 for MIPROv2, with far fewer runs than reinforcement learning. I watch two risks. Choosing the best of many prompts on a small validation set inflates the winner's score, so I confirm on held-out data. And prompts can bloat with rules, so I track length and cost too.
 
 **Key terms and sources**
 
-How prompt optimisers such as APE, OPRO, DSPy, MIPROv2 and GEPA search for better prompts against a metric, what they need, and the risks: overfitting to small validation sets and prompts that keep growing.
+How prompt optimisers such as APE, OPRO, DSPy, MIPROv2 and GEPA search for better prompts against a metric, what they need, and the risks: overfitting to small validation sets and prompts that keep growing. · checked 7 Nov 2026
 
 #### Sources
 
-- Zhou et al., Large Language Models Are Human-Level Prompt Engineers (APE)
+- [Zhou et al., Large Language Models Are Human-Level Prompt Engineers (APE)](https://arxiv.org/abs/2211.01910)
 
-- Yang et al., Large Language Models as Optimizers (OPRO)
+- [Yang et al., Large Language Models as Optimizers (OPRO)](https://arxiv.org/abs/2309.03409)
 
-- Khattab et al., DSPy
+- [Khattab et al., DSPy](https://arxiv.org/abs/2310.03714)
 
-- Opsahl-Ong et al., Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs (MIPROv2)
+- [Opsahl-Ong et al., Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs (MIPROv2)](https://arxiv.org/abs/2406.11695)
 
-- Agrawal et al., GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning
+- [Agrawal et al., GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](https://arxiv.org/abs/2507.19457)
 
-- Liu et al., ESPO: Error-Structured Prompt Optimization
+- [Liu et al., ESPO: Error-Structured Prompt Optimization](https://arxiv.org/abs/2609.04197)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor guides change with each model.

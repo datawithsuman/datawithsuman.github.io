@@ -86,7 +86,7 @@ For minimising f, subject to h(x) ≤ 0:
 
 #### The maths
 
-$$ \mathcal{L}(x,\lambda) = f(x) - \lambda\,(g(x) - c), \qquad \nabla f = \lambda \nabla g, \qquad \lambda = \frac{d f^*}{d c} $$
+$$ {\mathcal{L}(x,\lambda)} = {f(x)} - {\lambda}\,{(g(x) - c)}, \qquad {\nabla f = \lambda \nabla g}, \qquad {\lambda = \frac{d f^*}{d c}} $$
 
 Worked example: minimise x² + y², with x + y = c. Then 2x = λ and 2y = λ, so x = y = c/2, λ = c and f* = c²/2. Check: df*/dc = c = λ.
 
@@ -146,19 +146,21 @@ How is ridge regression a constrained problem?
 
 Minimising the loss, with ‖w‖² ≤ t, has the Lagrangian loss + λ(‖w‖² − t). For a given t, there's a matching λ, and the −λt term doesn't affect the weights. So the penalty form and the budget form are the same problem, for convex losses, and a smaller budget means a larger λ.
 
+#### The 30-second answer
+
 At the best point under a constraint, the objective's gradient must be parallel to the constraint's. Otherwise you could slide along the constraint and improve. So I set grad f equal to lambda grad g, and solve with the constraint. Lambda is the shadow price: how much the best value changes if I loosen the constraint. For inequalities, the KKT conditions add complementary slackness: either the constraint's tight, or its multiplier is zero. That gives PCA as an eigenvector problem, and it's why only support vectors matter in an SVM.
 
 **Key terms and sources**
 
-Optimising under constraints: the Lagrangian, what multipliers mean, the KKT conditions and complementary slackness, with PCA, SVM and regularisation as examples.
+Optimising under constraints: the Lagrangian, what multipliers mean, the KKT conditions and complementary slackness, with PCA, SVM and regularisation as examples. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Goodfellow et al., Deep Learning, slides for chapter 4
+- [Goodfellow et al., Deep Learning, slides for chapter 4](https://mnassar.github.io/deeplearninghandbook/slides/04_numerical.pdf)
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
 - PCA on this site
 

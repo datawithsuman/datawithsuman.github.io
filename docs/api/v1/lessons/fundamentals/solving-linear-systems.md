@@ -85,7 +85,7 @@ It also connects to ridge: as λ shrinks to zero, the ridge solution approaches 
 
 #### The maths
 
-$$ A^{+} = V\,\Sigma^{+}\,U^\top, \qquad \kappa(A) = \frac{\sigma_{\max}}{\sigma_{\min}}, \qquad \frac{\|\delta x\|}{\|x\|} \le \kappa(A)\,\frac{\|\delta b\|}{\|b\|} $$
+$$ {A^{+}} = V\,{\Sigma^{+}}\,U^\top, \qquad {\kappa(A)} = \frac{\sigma_{\max}}{\sigma_{\min}}, \qquad {\frac{\|\delta x\|}{\|x\|} \le \kappa(A)\,\frac{\|\delta b\|}{\|b\|}} $$
 
 Example: if κ = 1,000 and your data has 0.1% noise, the answer could be wrong by up to 100%.
 
@@ -143,20 +143,22 @@ When would you use gradient descent instead of a direct solve?
 
 When n is so large that n³ or even storing the matrix is too expensive, or when the data is sparse or arrives in batches. Direct methods are exact and can be better for small dense problems. Conditioning still matters, since badly conditioned problems also slow gradient descent.
 
+#### The 30-second answer
+
 I wouldn't invert. Computing the inverse costs about three times an LU solve, and it's less accurate. I'd factor A into easy pieces: LU for general matrices, Cholesky for positive definite ones at half the cost, QR for least squares and SVD if the rank is in doubt. The condition number, largest over smallest singular value, says how much errors get amplified, and normal equations square it, which is why libraries use QR or SVD. The pseudoinverse inverts only the non-zero singular values, giving the least-squares answer with the smallest norm.
 
 **Key terms and sources**
 
-How computers actually solve linear systems: LU, QR, Cholesky and SVD, the condition number, and the Moore-Penrose pseudoinverse.
+How computers actually solve linear systems: LU, QR, Cholesky and SVD, the condition number, and the Moore-Penrose pseudoinverse. · checked 6 Nov 2026
 
 #### Sources
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

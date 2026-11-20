@@ -83,7 +83,7 @@ Take the second-order Taylor approximation, and jump straight to its minimum by 
 
 #### The maths
 
-$$ w_{t+1} = w_t - H^{-1}\,g, \qquad w_{t+1} = w_t - (H + \lambda I)^{-1} g $$
+$$ {w_{t+1}} = w_t - {H^{-1}}\,{g}, \qquad {w_{t+1}} = w_t - (H + \lambda I)^{-1} g $$
 
 Example: f(x) = x² − 4x. At x = 10, g = 16 and H = 2, so the step is 8, and you land on the minimum at x = 2 in one go.
 
@@ -141,21 +141,23 @@ How does XGBoost use second derivatives?
 
 It approximates the loss with a second-order Taylor expansion around current predictions. Each example gives a gradient and a Hessian, and these determine leaf values and how good a split is. It makes the same procedure work for many losses, and it's cheap because the Hessian is per example, not per weight.
 
+#### The 30-second answer
+
 Newton's method jumps to the minimum of the local quadratic, using w minus H inverse g. It accounts for curvature, so it needs no learning rate, and converges very quickly near a solution. It's not used for deep networks for three reasons. With n weights, the Hessian takes n squared memory and n cubed to solve. It can move towards saddle points, since it finds any flat point. And mini-batch curvature is noisy. So we use first-order methods. L-BFGS approximates it using recent gradients, and it works well on convex problems. XGBoost also uses second derivatives per example.
 
 **Key terms and sources**
 
-Newton's step, why it handles ill-conditioning, its cost, quasi-Newton methods like L-BFGS, and where second-order ideas are used in ML, such as XGBoost.
+Newton's step, why it handles ill-conditioning, its cost, quasi-Newton methods like L-BFGS, and where second-order ideas are used in ML, such as XGBoost. · checked 6 Nov 2026
 
 #### Sources
 
-- Goodfellow et al., Deep Learning, slides for chapter 8
+- [Goodfellow et al., Deep Learning, slides for chapter 8](https://mnassar.github.io/deeplearninghandbook/slides/08_optimization.pdf)
 
-- CS231n, Neural Networks Part 3
+- [CS231n, Neural Networks Part 3](https://cs231n.github.io/neural-networks-3/)
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
-- XGBoost paper, Chen and Guestrin (2016)
+- [XGBoost paper, Chen and Guestrin (2016)](https://arxiv.org/abs/1603.02754)
 
 - Taylor series on this site
 

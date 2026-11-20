@@ -83,7 +83,7 @@ Künzel et al. found the X-learner performed well in simulations, but none of th
 
 #### The maths
 
-$$ \tau(x) = E[Y(1) - Y(0) \mid X = x], \qquad \hat\tau_T(x) = \hat\mu_1(x) - \hat\mu_0(x) $$
+$$ {\tau(x)} = {E[Y(1) - Y(0) \mid X = x]}, \qquad {\hat\tau_T(x) = \hat\mu_1(x) - \hat\mu_0(x)} $$
 
 Notation as in Künzel et al. These estimates need randomised data, or strong assumptions when treatment wasn’t random.
 
@@ -139,22 +139,24 @@ A test is flat overall, but a model finds a segment with a big lift. Do you ship
 
 Not yet, because searching for a segment finds false winners. Check that the segment holds on held-out data and makes sense, then run a new test on that segment alone.
 
+#### The 30-second answer
+
 An average can hide who benefits. If I can only treat some users, I want those whose behaviour changes, not those likely to buy anyway, because sure things give away margin and sleeping dogs can be harmed. So I'd run a randomised test, then train an uplift model to estimate each user's effect. A T-learner fits one model per group and subtracts them, an S-learner uses one model with treatment as a feature, and an X-learner and causal forests are more advanced. You can't observe one person's effect, so I'd evaluate on a held-out randomised set: rank by predicted uplift, and check that top slices show larger gaps between treatment and control, using an uplift or Qini curve. Then I'd test the targeting policy live.
 
 **Key terms and sources**
 
-Why an average can hide who benefits, targeting uplift rather than response, T, S and X learners, causal forests, and how to evaluate uplift without seeing it directly.
+Why an average can hide who benefits, targeting uplift rather than response, T, S and X learners, causal forests, and how to evaluate uplift without seeing it directly. · checked 7 Nov 2026
 
 #### Sources
 
-- Künzel, Sekhon, Bickel and Yu, Metalearners for Estimating Heterogeneous Treatment Effects
+- [Künzel, Sekhon, Bickel and Yu, Metalearners for Estimating Heterogeneous Treatment Effects](https://arxiv.org/abs/1706.03461)
 
-- Wager and Athey, Estimation and Inference of Heterogeneous Treatment Effects using Random Forests
+- [Wager and Athey, Estimation and Inference of Heterogeneous Treatment Effects using Random Forests](https://arxiv.org/abs/1510.04342)
 
-- Athey and Imbens, Recursive Partitioning for Heterogeneous Causal Effects
+- [Athey and Imbens, Recursive Partitioning for Heterogeneous Causal Effects](https://arxiv.org/abs/1504.01132)
 
-- Gutierrez and Gérardy, Causal Inference and Uplift Modeling: A Review (2017)
+- [Gutierrez and Gérardy, Causal Inference and Uplift Modeling: A Review (2017)](https://proceedings.mlr.press/v67/gutierrez17a.html)
 
-- Diemert et al., A Large Scale Benchmark for Uplift Modeling
+- [Diemert et al., A Large Scale Benchmark for Uplift Modeling](https://arxiv.org/abs/2111.10106)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

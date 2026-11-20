@@ -48,7 +48,7 @@ For **5 independent cities**, a single agent takes **5 minutes** and 100k tokens
 
 #### In one breath
 
-A **multi-agent** system splits work across several LLM agents, usually an **orchestrator** that plans and delegates to **worker** sub-agents, each with its own context and tools, then combines their results. It shines for **broad, parallelisable, read-heavy** work: Anthropic's research system (lead agent + parallel sub-agents) beat a single agent by **90.2%** on an internal research eval, at about **15×** the tokens of a chat (single agents use about 4×). It struggles when sub-tasks are **tightly coupled**: parallel workers with partial context make conflicting decisions (Cognition's argument for coding). So: one agent by default; sub-agents for independent, parallel sub-tasks; **handoffs** for routing a conversation to a specialist.What you'll be able to do after this: choose between a single agent, orchestrator–workers and handoffs, and estimate the time and token trade-off.
+A **multi-agent** system splits work across several LLM agents, usually an **orchestrator** that plans and delegates to **worker** sub-agents, each with its own context and tools, then combines their results. It shines for **broad, parallelisable, read-heavy** work: Anthropic's research system (lead agent + parallel sub-agents) beat a single agent by **90.2%** on an internal research eval, at about **15×** the tokens of a chat (single agents use about 4×). It struggles when sub-tasks are **tightly coupled**: parallel workers with partial context make conflicting decisions (Cognition's argument for coding). So: one agent by default; sub-agents for independent, parallel sub-tasks; **handoffs** for routing a conversation to a specialist. What you'll be able to do after this: choose between a single agent, orchestrator–workers and handoffs, and estimate the time and token trade-off.
 
 #### Patterns
 
@@ -73,7 +73,7 @@ A **multi-agent** system splits work across several LLM agents, usually an **orc
 
 - **Budget and observe:** cap sub-agent count and tokens; trace every agent's steps; evaluate the end-to-end outcome.
 
-**Added 7 Nov 2026.** A2A reached version 1.0 and joined the Agentic AI Foundation in Aug 2026. Agents publish Agent Cards, and work runs as tasks with states such as working, input required and completed. See Agent Protocols.
+A2A reached version 1.0 and joined the Agentic AI Foundation in Aug 2026. Agents publish Agent Cards, and work runs as tasks with states such as working, input required and completed. See Agent Protocols.
 
 #### Parallelise what's independent, keep coupled decisions together
 
@@ -123,7 +123,7 @@ The main pattern is orchestrator–workers: a lead agent plans, spawns sub-agent
 
 **Key terms and sources**
 
-When several agents beat one: orchestrator–worker (sub-agents), handoffs between specialists, parallel exploration, debate; what they cost in tokens and coordination; why parallel agents that share a task can make conflicting decisions; and the evidence on both sides (Anthropic's research system vs Cognition's "don't build multi-agents") · built from Anthropic (How we built our multi-agent research system, June 2025), Cognition (Don't Build Multi-Agents, June 2025), Wu et al. (AutoGen, 2023), Du et al. (multi-agent debate, ICML 2024), Cemri et al. (Why Do Multi-Agent LLM Systems Fail?, 2025), the OpenAI Agents SDK handoffs docs and Google's A2A protocol · checked 29 Oct 2026
+When several agents beat one: orchestrator–worker (sub-agents), handoffs between specialists, parallel exploration, debate; what they cost in tokens and coordination; why parallel agents that share a task can make conflicting decisions; and the evidence on both sides (Anthropic's research system vs Cognition's "don't build multi-agents") · built from Anthropic (How we built our multi-agent research system, June 2025), Cognition (Don't Build Multi-Agents, June 2025), Wu et al. (AutoGen, 2023), Du et al. (multi-agent debate, ICML 2024), Cemri et al. (Why Do Multi-Agent LLM Systems Fail?, 2025), the OpenAI Agents SDK handoffs docs and Google's A2A protocol · checked 7 Nov 2026
 
 #### Sources
 
@@ -131,8 +131,8 @@ When several agents beat one: orchestrator–worker (sub-agents), handoffs betwe
 
 2. Cognition, "Don't Build Multi-Agents", June 2025.
 
-3. Q. Wu et al., "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation", 2023, arXiv:2308.08155; Y. Du et al., "Improving Factuality and Reasoning in Language Models through Multiagent Debate", ICML 2024, arXiv:2305.14325.
+3. Q. Wu et al., "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation", 2023, [arXiv:2308.08155](https://arxiv.org/abs/2308.08155); Y. Du et al., "Improving Factuality and Reasoning in Language Models through Multiagent Debate", ICML 2024, [arXiv:2305.14325](https://arxiv.org/abs/2305.14325).
 
-4. M. Cemri et al., "Why Do Multi-Agent LLM Systems Fail?", 2025, arXiv:2503.13657; OpenAI Agents SDK documentation (handoffs); Google, Agent2Agent (A2A) protocol.
+4. M. Cemri et al., "Why Do Multi-Agent LLM Systems Fail?", 2025, [arXiv:2503.13657](https://arxiv.org/abs/2503.13657); OpenAI Agents SDK documentation (handoffs); Google, Agent2Agent (A2A) protocol.
 
-5. A2A protocol specification, version 1.0, a2a-protocol.org.
+5. A2A protocol specification, version 1.0, [a2a-protocol.org](https://a2a-protocol.org/latest/specification/).

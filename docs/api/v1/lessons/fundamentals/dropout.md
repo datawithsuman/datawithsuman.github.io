@@ -48,11 +48,11 @@ Without dropout the network reaches **100%** training accuracy and a test log lo
 
 #### In one breath
 
-A big network can memorise a small dataset, including its mistakes. **Dropout** fights this by randomly setting each hidden unit's output to zero with probability p on every training step, so the network can't rely on any one unit or on fragile combinations of units (**co-adaptation**). Each step trains a different "thinned" sub-network, and the full network at test time behaves roughly like an **average of all of them**. Modern code uses **inverted dropout**: surviving units are scaled up by 1/(1 − p) during training, so nothing changes at test time; you just switch dropout off with `model.eval()`. Typical p is 0.1–0.5.What you'll be able to do after this: explain why dropout regularises, implement inverted dropout, pick a rate, and avoid the train/eval-mode bug.
+A big network can memorise a small dataset, including its mistakes. **Dropout** fights this by randomly setting each hidden unit's output to zero with probability p on every training step, so the network can't rely on any one unit or on fragile combinations of units (**co-adaptation**). Each step trains a different "thinned" sub-network, and the full network at test time behaves roughly like an **average of all of them**. Modern code uses **inverted dropout**: surviving units are scaled up by 1/(1 − p) during training, so nothing changes at test time; you just switch dropout off with `model.eval()`. Typical p is 0.1–0.5. What you'll be able to do after this: explain why dropout regularises, implement inverted dropout, pick a rate, and avoid the train/eval-mode bug.
 
 #### Drop units at random, scale the survivors
 
-$$ \tilde{h}_k = \frac{m_k}{1-p}\, h_k, \qquad m_k \sim \mathrm{Bernoulli}(1-p) $$
+$$ {\tilde{h}_k} = \frac{{m_k}}{{1-p}}\, h_k, \qquad {m_k \sim \mathrm{Bernoulli}(1-p)} $$
 
 Srivastava et al. (2014) describe the equivalent original form: keep units with probability p during training and multiply the outgoing weights by p at test time. Their experiments used a retention probability of 0.5 for hidden units and 0.8 for inputs. Frameworks today use the inverted form above; note PyTorch's `p` is the _drop_ probability.
 
@@ -136,10 +136,10 @@ Randomly switching off units during training, why that stops co-adaptation and a
 
 #### Sources
 
-1. G. Hinton, N. Srivastava, A. Krizhevsky, I. Sutskever & R. Salakhutdinov, "Improving neural networks by preventing co-adaptation of feature detectors", arXiv:1207.0580, 2012.
+1. G. Hinton, N. Srivastava, A. Krizhevsky, I. Sutskever & R. Salakhutdinov, "Improving neural networks by preventing co-adaptation of feature detectors", [arXiv:1207.0580](https://arxiv.org/abs/1207.0580), 2012.
 
-2. N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever & R. Salakhutdinov, "Dropout: A Simple Way to Prevent Neural Networks from Overfitting", _JMLR_ 15, 2014, jmlr.org.
+2. N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever & R. Salakhutdinov, "Dropout: A Simple Way to Prevent Neural Networks from Overfitting", _JMLR_ 15, 2014, [jmlr.org](https://jmlr.org/papers/v15/srivastava14a.html).
 
-3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.12, deeplearningbook.org.
+3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §7.12, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-4. PyTorch documentation, torch.nn.Dropout.
+4. PyTorch documentation, [torch.nn.Dropout](https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html).

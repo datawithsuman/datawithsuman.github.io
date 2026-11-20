@@ -29,9 +29,9 @@ _SAE features are one useful approximation, not the model's true parts._
 
 #### Latents that never fire, and features learned twice
 
-Dead features never (or almost never) activate. In a poorly tuned SAE they can be 10–50% of the dictionary. Causes: bad initialisation, a sparsity penalty that is too strong too early, or common patterns being claimed first so the rest find no role. Fixes include resampling dead latents and warming up λ p. 37. At scale, Gao et al. saw up to 90% dead latents without mitigations; with an encoder initialised as the decoder transpose and an auxiliary loss, their 16M-latent SAE had only 7% dead Gao et al. §2.4.
+Dead features never (or almost never) activate. In a poorly tuned SAE they can be 10–50% of the dictionary. Causes: bad initialisation, a sparsity penalty that is too strong too early, or common patterns being claimed first so the rest find no role. Fixes include resampling dead latents and warming up λ [p. 37](https://arxiv.org/pdf/2611.08438#page=37). At scale, Gao et al. saw up to 90% dead latents without mitigations; with an encoder initialised as the decoder transpose and an auxiliary loss, their 16M-latent SAE had only 7% dead [Gao et al. §2.4](https://arxiv.org/pdf/2406.04093#page=3).
 
-Duplication: several latents encode the same concept. You can spot it by high cosine similarity between decoder columns, plus latents that fire together p. 37–38.
+Duplication: several latents encode the same concept. You can spot it by high cosine similarity between decoder columns, plus latents that fire together [p. 37–38](https://arxiv.org/pdf/2611.08438#page=38).
 
 ##### Try it: too big a dictionary, and a different seed
 
@@ -59,9 +59,9 @@ SAEs can waste latents that never fire, learn the same feature twice, let a spec
 
 4. Why: “short” always comes with “starts with S”. Firing one latent instead of two is sparser and rebuilds the same thing, so the sparsity penalty rewards absorption.
 
-Example and mechanism from Chanin et al. (NeurIPS 2025), arXiv 2409.14507: absorption appeared in every LLM SAE they tested, and was worse for wider and sparser SAEs. The survey describes how to detect it: compare the latent with a linear probe for the same concept p. 39.
+Example and mechanism from Chanin et al. (NeurIPS 2025), [arXiv 2409.14507](https://arxiv.org/abs/2409.14507): absorption appeared in every LLM SAE they tested, and was worse for wider and sparser SAEs. The survey describes how to detect it: compare the latent with a linear probe for the same concept [p. 39](https://arxiv.org/pdf/2611.08438#page=39).
 
-Feature splitting is the related, sometimes harmless case: as the dictionary grows, one feature splits into finer ones. Helpful when “bank” splits into “investment bank” and “river bank”; less useful when the result is just a lexical “the token bank” detector p. 39.
+Feature splitting is the related, sometimes harmless case: as the dictionary grows, one feature splits into finer ones. Helpful when “bank” splits into “investment bank” and “river bank”; less useful when the result is just a lexical “the token bank” detector [p. 39](https://arxiv.org/pdf/2611.08438#page=39).
 
 ##### Why absorption matters for safety
 
@@ -69,9 +69,9 @@ A latent that looks like a clean “deception” or “bias” detector can have
 
 #### Different seeds, different dictionaries
 
-SAEs with the same architecture and data but different random seeds can learn substantially different dictionaries. Frequent, clear features tend to be stable; rare or context-specific ones vary. Often **fewer than 50%** of features are shared across seeds. So report seed stability alongside reconstruction p. 39 Paulo & Belrose.
+SAEs with the same architecture and data but different random seeds can learn substantially different dictionaries. Frequent, clear features tend to be stable; rare or context-specific ones vary. Often **fewer than 50%** of features are shared across seeds. So report seed stability alongside reconstruction [p. 39](https://arxiv.org/pdf/2611.08438#page=39) [Paulo & Belrose](https://arxiv.org/abs/2501.16615).
 
-The deeper issue is identifiability. If activations really are _h = D*z* + ε_, does training recover the true D* (up to reordering and rescaling)? Classical theory says yes when dictionary elements are close to orthogonal (low coherence). In language models, high coherence is likely unavoidable, so several different sparse decompositions can fit equally well p. 40. One proposed fix is to fine-tune the model together with an SAE whose decoder is forced to be orthogonal, which imposes low coherence by construction p. 40.
+The deeper issue is identifiability. If activations really are _h = D*z* + ε_, does training recover the true D* (up to reordering and rescaling)? Classical theory says yes when dictionary elements are close to orthogonal (low coherence). In language models, high coherence is likely unavoidable, so several different sparse decompositions can fit equally well [p. 40](https://arxiv.org/pdf/2611.08438#page=40). One proposed fix is to fine-tune the model together with an SAE whose decoder is forced to be orthogonal, which imposes low coherence by construction [p. 40](https://arxiv.org/pdf/2611.08438#page=40).
 
 ##### Three tests before trusting an SAE feature (survey)
 
@@ -81,15 +81,15 @@ The deeper issue is identifiability. If activations really are _h = D*z* + ε_, 
 
 - **Specificity:** does its effect match only its concept?
 
-p. 40
+[p. 40](https://arxiv.org/pdf/2611.08438#page=40)
 
 #### PCA finds orthogonal directions of high variance, and superposition isn’t that
 
-PCA finds an orthonormal basis ordered by explained variance. It is fast and stable, but its assumptions clash with superposition: it can only return as many directions as there are dimensions, they must be perpendicular, and variance is not the same as meaning p. 49.
+PCA finds an orthonormal basis ordered by explained variance. It is fast and stable, but its assumptions clash with superposition: it can only return as many directions as there are dimensions, they must be perpendicular, and variance is not the same as meaning [p. 49](https://arxiv.org/pdf/2611.08438#page=49).
 
 Same data as Sparse Autoencoders. PCA via the 2×2 covariance matrix; a PCA direction counts as matching a feature at |cosine| above 0.95. Computed in your browser.
 
-That matches large-scale results: on the AxBench benchmark, PCA came last among representation methods for detecting concepts (mean AUROC 0.65) Wu et al. Table 1. The survey notes PCA can still beat SAEs in some localisation settings p. 49.
+That matches large-scale results: on the AxBench benchmark, PCA came last among representation methods for detecting concepts (mean AUROC 0.65) [Wu et al. Table 1](https://arxiv.org/pdf/2501.17148#page=7). The survey notes PCA can still beat SAEs in some localisation settings [p. 49](https://arxiv.org/pdf/2611.08438#page=49).
 
 #### The alternatives
 
@@ -102,7 +102,7 @@ That matches large-scale results: on the AxBench benchmark, PCA came last among 
 | **Supervised (probe, DAS, SMDS)** | labelled concepts | targeted concepts | needs labels; discovers nothing new |
 | **K-SVD** | sparse, linear features | solves sparse coding directly; a baseline | slow; no encoder |
 
-Survey Table 6 p. 48. Recent updates: semi-NMF matched SAEs on small-scale evaluations; ICA reached SAE-level performance once implemented for this scale (Liu & Han 2026), so whether ICA is just a baseline is now open p. 49. Classical dictionary learning can still produce better dictionaries; the SAE’s main advantage is speed p. 50.
+Survey Table 6 [p. 48](https://arxiv.org/pdf/2611.08438#page=48). Recent updates: semi-NMF matched SAEs on small-scale evaluations; ICA reached SAE-level performance once implemented for this scale (Liu & Han 2026), so whether ICA is just a baseline is now open [p. 49](https://arxiv.org/pdf/2611.08438#page=49). Classical dictionary learning can still produce better dictionaries; the SAE’s main advantage is speed [p. 50](https://arxiv.org/pdf/2611.08438#page=50).
 
 ## In practice
 
@@ -110,7 +110,7 @@ Survey Table 6 p. 48. Recent updates: semi-NMF matched SAEs on small-scale evalu
 
 #### A difference of means can beat a 16k-latent SAE
 
-AxBench compared methods on 500 concepts in Gemma-2 models Wu et al. 2025:
+AxBench compared methods on 500 concepts in Gemma-2 models [Wu et al. 2025](https://arxiv.org/abs/2501.17148):
 
 ##### Concept detection, mean AUROC (higher is better)
 
@@ -138,9 +138,9 @@ PCA
 
 0.652
 
-Average over Gemma-2-2B and 9B, two layers each Table 1. For _steering_, prompting beat every representation method, and difference of means beat SAEs Table 2.
+Average over Gemma-2-2B and 9B, two layers each [Table 1](https://arxiv.org/pdf/2501.17148#page=7). For _steering_, prompting beat every representation method, and difference of means beat SAEs [Table 2](https://arxiv.org/pdf/2501.17148#page=8).
 
-The survey draws the same line: when labelled data exists, supervised directions often outperform SAEs at detection and steering, and they don’t need a dictionary size or sparsity penalty. But they need labels for every concept and cannot find anything you didn’t already name p. 50.
+The survey draws the same line: when labelled data exists, supervised directions often outperform SAEs at detection and steering, and they don’t need a dictionary size or sparsity penalty. But they need labels for every concept and cannot find anything you didn’t already name [p. 50](https://arxiv.org/pdf/2611.08438#page=50).
 
 #### Recommendations
 
@@ -156,7 +156,7 @@ The survey draws the same line: when labelled data exists, supervised directions
 
 6. **For known concepts, consider supervised methods** (probes, DAS), which can be more reliable (this lesson).
 
-pp. 40–41
+[pp. 40–41](https://arxiv.org/pdf/2611.08438#page=40)
 
 ##### Next · 4.4
 
@@ -164,13 +164,13 @@ Alternatives to SAEs, and when a simple supervised direction beats them.
 
 ##### Sources for this tab
 
-- Survey §6.5, arXiv 2611.08438, pp. 37–41.
+- Survey §6.5, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 37–41.
 
-- Chanin et al. (2025). _A is for Absorption._ NeurIPS 2025, arXiv 2409.14507.
+- Chanin et al. (2025). _A is for Absorption._ NeurIPS 2025, [arXiv 2409.14507](https://arxiv.org/abs/2409.14507).
 
-- Gao et al. (2025). arXiv 2406.04093 (dead latents).
+- Gao et al. (2025). [arXiv 2406.04093](https://arxiv.org/abs/2406.04093) (dead latents).
 
-- Paulo & Belrose. _Sparse Autoencoders Trained on the Same Data Learn Different Features._ arXiv 2501.16615.
+- Paulo & Belrose. _Sparse Autoencoders Trained on the Same Data Learn Different Features._ [arXiv 2501.16615](https://arxiv.org/abs/2501.16615).
 
 #### Negative results, and where SAEs still help
 
@@ -208,22 +208,24 @@ Why did DeepMind deprioritise SAE research?
 
 In their tests, SAE-based probes did worse than plain linear probes at detecting harmful intent on unfamiliar prompts, the downstream task they cared about.
 
+#### The 30-second answer
+
 SAEs fail in known ways: latents that never fire, duplicate features, absorption where a specific latent takes a general one's job, and different results from different seeds, partly because overlapping features can be decomposed many ways. So I'd treat SAE features as an approximation and test the ones I rely on. If I know the concept and have labels, I'd use a linear probe or a difference-of-means direction, which in recent tests beat SAE-based probes on unfamiliar data. SAEs are best for discovering what I didn't know to look for.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 4 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 4 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Chanin et al., A is for Absorption (2024)
+- [Chanin et al., A is for Absorption (2024)](https://arxiv.org/abs/2409.14507)
 
-- Kantamneni et al., Are Sparse Autoencoders Useful? A Case Study in Sparse Probing (2025)
+- [Kantamneni et al., Are Sparse Autoencoders Useful? A Case Study in Sparse Probing (2025)](https://arxiv.org/abs/2502.16681)
 
-- Smith, Rajamanoharan, Nanda et al. (Google DeepMind), Negative Results for SAEs on Downstream Tasks and Deprioritising SAE Research (Mar 2025)
+- [Smith, Rajamanoharan, Nanda et al. (Google DeepMind), Negative Results for SAEs on Downstream Tasks and Deprioritising SAE Research (Mar 2025)](https://www.lesswrong.com/posts/4uXCAJNuPKtKBsi28)
 
-- Wang et al., Persona Features Control Emergent Misalignment (OpenAI, 2025)
+- [Wang et al., Persona Features Control Emergent Misalignment (OpenAI, 2025)](https://arxiv.org/abs/2506.19823)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

@@ -159,8 +159,10 @@ Users keep finding new spellings to evade the filter. How do you keep up?
 
 Use AI-assisted red teaming to generate variants, mine user reports and overturned appeals for new patterns, retrain regularly, and add context-aware checks that look at the conversation, not just the word.
 
+#### The 30-second answer
+
 First I'd clarify the content types, policies, languages, volume and speed limits. I'd tier the system by speed. Every text message passes through small specialised classifiers, one per policy, distilled and quantized so they answer in milliseconds before delivery. Voice is classified within seconds; since speech can't be un-heard, the response is a warning, then short suspensions. A slower tier with larger models and conversation context reviews flagged items and patterns across messages. People handle ambiguous and severe cases, investigations and appeals, with the riskiest first. Policy experts maintain golden sets that define each policy and are used for training and evaluation, and low moderator agreement tells me a policy is unclear. Thresholds are set per policy, leaning towards fewer misses for severe harm. Red teaming generates evasion attempts, recall is reported per language, and overturned appeals become training data. New models run in shadow mode before going live, one policy and language at a time.
 
 **Key terms and sources**
 
-Based on a gaming platform's published posts: Roblox's "How Roblox Uses AI to Moderate Content on a Massive Scale" (July 2025) and its voice safety classifier update (June 2026). The lab's numbers and the estimate are ours. Uses guardrails, quantization and human-in-the-loop design.
+Based on a gaming platform's published posts: [Roblox's "How Roblox Uses AI to Moderate Content on a Massive Scale"](https://about.roblox.com/newsroom/2025/07/roblox-ai-moderation-massive-scale) (July 2025) and its [voice safety classifier update](https://about.roblox.com/newsroom/2026/06/upgrading-voice-safety-classifier-22-languages-sharper-detection-capabilities) (June 2026). The lab's numbers and the estimate are ours. Uses guardrails, quantization and human-in-the-loop design. · checked 5 Nov 2026

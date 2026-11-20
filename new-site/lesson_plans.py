@@ -412,3 +412,23 @@ PLANS["ai-engineering/rag-evals"] = PLANS.pop("ai-engineering/evaluating-llm-app
 PLANS["ai-engineering/llm-as-a-judge"] = PLANS.pop("fundamentals/llm-as-a-judge")
 PLANS["ai-engineering/llm-as-a-judge"]["how"] = PLANS["ai-engineering/llm-as-a-judge"]["how"] + ["c4b"]
 PLANS["ai-engineering/agent-and-tool-evaluation-metrics"]["practice"] = ["c4b"] + PLANS["ai-engineering/agent-and-tool-evaluation-metrics"]["practice"]
+
+# When each lesson's sources were last checked, for pages whose own text doesn't say. It's the date the lesson
+# was written or reviewed in its area's audit (Nov 2026); where an area spanned days, the earliest day is used,
+# so the date never claims a later check than happened. Older imported pages keep their own "checked" date.
+CHECKED_ON = {}
+for _plans, _date in [
+    (PLANS, "5 Nov 2026"),  # the first lesson plans and AI/system-design plans, from the 5 Nov site rebuild
+    (DESIGN_PLANS, "5 Nov 2026"),
+    (MATHS_PLANS, "6 Nov 2026"), (LA_PLANS, "6 Nov 2026"), (CALC_PLANS, "6 Nov 2026"), (PROB_PLANS, "6 Nov 2026"),
+    (STAT_PLANS, "6 Nov 2026"), (INFO_PLANS, "6 Nov 2026"), (ML_PLANS, "6 Nov 2026"), (ML2_PLANS, "6 Nov 2026"),
+    (DL_PLANS, "6 Nov 2026"), (DL2_PLANS, "6 Nov 2026"),
+    (NLP_PLANS, "7 Nov 2026"), (NLP2_PLANS, "7 Nov 2026"), (LLM_PLANS, "7 Nov 2026"), (LLM2_PLANS, "7 Nov 2026"),
+    (AB_PLANS, "7 Nov 2026"), (AB2_PLANS, "7 Nov 2026"), (RAG2_PLANS, "7 Nov 2026"), (INF2_PLANS, "7 Nov 2026"),
+    (PE2_PLANS, "7 Nov 2026"), (OPS2_PLANS, "7 Nov 2026"), (AG2_PLANS, "7 Nov 2026"),
+    (MI_PLANS, "13 Nov 2026"), (EV_PLANS, "15 Nov 2026"),
+]:
+    for _k in _plans:
+        CHECKED_ON[_k] = _date
+# keys renamed when the Applied Evals part moved pages in (15 Nov)
+CHECKED_ON["ai-engineering/rag-evals"] = CHECKED_ON["ai-engineering/llm-as-a-judge"] = "15 Nov 2026"

@@ -72,7 +72,7 @@ If several things matter, agree on how to trade them off before the test, so nob
 
 #### The maths
 
-$$ CI_{low}(\Delta) > -m $$
+$$ {CI_{low}(\Delta)} > {-m} $$
 
 A guardrail is a non-inferiority check. “No significant change” isn’t enough, because a small test can miss real harm. For a metric where higher is worse, flip the sign. A 95% two-sided interval is the stricter choice. A one-sided test at 5%, as in the launch decision rule, matches a 90% interval, so agree on one before the test. A 95% two-sided interval is the stricter choice. A one-sided test at 5%, as in the launch decision rule, matches a 90% interval, so agree on one before the test. A 95% two-sided interval is the stricter choice. A one-sided test at 5%, as in the launch decision rule, matches a 90% interval, so agree on one before the test. A 95% two-sided interval is the stricter choice. A one-sided test at 5%, as in the launch decision rule, matches a 90% interval, so agree on one before the test.
 
@@ -126,18 +126,20 @@ Your OEC is flat, but one driver metric rose a lot. Do you ship?
 
 No, not on that alone. Either the driver doesn't lead to the outcome you care about, or users shifted activity without gaining anything. Ask why it didn't flow through, and treat it as a lead for a new test.
 
+#### The 30-second answer
+
 I'd fix three kinds of metric before launch. One overall evaluation criterion decides success: it must move within the test, predict long-term value and be hard to game. Driver metrics explain why it moved. Guardrails set limits on what mustn't get worse, like latency and cancellations, plus trust checks like sample ratio mismatch. For a guardrail I'd check the confidence interval against an agreed margin, because no significant change doesn't prove no harm.
 
 **Key terms and sources**
 
-The overall evaluation criterion, driver metrics and guardrails: what to decide on, what explains it and what must not break.
+The overall evaluation criterion, driver metrics and guardrails: what to decide on, what explains it and what must not break. · checked 7 Nov 2026
 
 #### Sources
 
-- Kohavi et al., Trustworthy Online Controlled Experiments Explained: Five Puzzling Outcomes (KDD 2012)
+- [Kohavi et al., Trustworthy Online Controlled Experiments Explained: Five Puzzling Outcomes (KDD 2012)](https://draft.epsy5221.education.uconn.edu/wp-content/uploads/sites/2358/2019/04/Kohavi-et-al-2012-Trustworthyness-of-research.pdf)
 
-- Book chapter on metrics and the OEC
+- [Book chapter on metrics and the OEC](https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/metrics-for-experimentation-and-the-overall-evaluation-criterion/4EA73D169EC43B58991D6824717E8FD3)
 
-- Book chapter on guardrail metrics
+- [Book chapter on guardrail metrics](https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/sample-ratio-mismatch-and-other-trustrelated-guardrail-metrics/8DBB0F59AC7729D7BC6B94690DB9CCD5)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

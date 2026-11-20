@@ -52,13 +52,13 @@ Without balancing, top-2 routing sends expert 1 **2.37×** its fair share while 
 
 #### In one breath
 
-Since most parameters sit in the feed-forward layers, an MoE layer replaces the one FFN with many **experts** (separate FFNs) and a small **router** that sends each token to only the top-k of them. Total parameters grow, but compute per token only depends on the k active experts: **Mixtral 8x7B** has 47B parameters but uses about 13B per token; **DeepSeek-V3** has 671B and activates 37B. The hard part is **load balancing**: routers tend to favour a few experts, which wastes the rest and, with fixed expert **capacity**, drops tokens. Classic fixes add an auxiliary balancing loss; DeepSeek-V3 instead nudges a per-expert bias. MoE saves compute, not memory: every expert must still be loaded.What you'll be able to do after this: explain top-k routing, total vs active parameters, and how load balancing and capacity work.
+Since most parameters sit in the feed-forward layers, an MoE layer replaces the one FFN with many **experts** (separate FFNs) and a small **router** that sends each token to only the top-k of them. Total parameters grow, but compute per token only depends on the k active experts: **Mixtral 8x7B** has 47B parameters but uses about 13B per token; **DeepSeek-V3** has 671B and activates 37B. The hard part is **load balancing**: routers tend to favour a few experts, which wastes the rest and, with fixed expert **capacity**, drops tokens. Classic fixes add an auxiliary balancing loss; DeepSeek-V3 instead nudges a per-expert bias. MoE saves compute, not memory: every expert must still be loaded. What you'll be able to do after this: explain top-k routing, total vs active parameters, and how load balancing and capacity work.
 
 #### Router and top-k gating
 
-$$ y = \sum_{i\,\in\,\mathrm{TopK}(xW_r,\,k)} g_i(x)\;E_i(x) $$
+$$ y = \sum_{i\,\in\,{\mathrm{TopK}(}{xW_r}{,\,k)}} {g_i(x)}\;{E_i(x)} $$
 
-Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer", ICLR 2017; Jiang et al., "Mixtral of Experts", arXiv:2401.04088.
+Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer", ICLR 2017; Jiang et al., "Mixtral of Experts", [arXiv:2401.04088](https://arxiv.org/abs/2401.04088).
 
 - **router scores**: A single linear layer W_r gives one score per expert for this token.
 
@@ -140,12 +140,12 @@ How MoE layers give a model many more parameters without more compute per token:
 
 #### Sources
 
-1. N. Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer", ICLR 2017, arXiv:1701.06538; D. Lepikhin et al., "GShard", 2020, arXiv:2006.16668.
+1. N. Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer", ICLR 2017, [arXiv:1701.06538](https://arxiv.org/abs/1701.06538); D. Lepikhin et al., "GShard", 2020, [arXiv:2006.16668](https://arxiv.org/abs/2006.16668).
 
-2. W. Fedus, B. Zoph & N. Shazeer, "Switch Transformers", JMLR 2022, arXiv:2101.03961.
+2. W. Fedus, B. Zoph & N. Shazeer, "Switch Transformers", JMLR 2022, [arXiv:2101.03961](https://arxiv.org/abs/2101.03961).
 
-3. A. Jiang et al., "Mixtral of Experts", 2024, arXiv:2401.04088.
+3. A. Jiang et al., "Mixtral of Experts", 2024, [arXiv:2401.04088](https://arxiv.org/abs/2401.04088).
 
-4. D. Dai et al., "DeepSeekMoE", 2024, arXiv:2401.06066; L. Wang et al., "Auxiliary-Loss-Free Load Balancing Strategy for Mixture-of-Experts", 2024, arXiv:2408.15664.
+4. D. Dai et al., "DeepSeekMoE", 2024, [arXiv:2401.06066](https://arxiv.org/abs/2401.06066); L. Wang et al., "Auxiliary-Loss-Free Load Balancing Strategy for Mixture-of-Experts", 2024, [arXiv:2408.15664](https://arxiv.org/abs/2408.15664).
 
-5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, arXiv:2412.19437.
+5. DeepSeek-AI, "DeepSeek-V3 Technical Report", 2024, [arXiv:2412.19437](https://arxiv.org/abs/2412.19437).

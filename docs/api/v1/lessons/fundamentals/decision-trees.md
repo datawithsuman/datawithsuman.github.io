@@ -35,7 +35,7 @@ _Illustrative, based on the lesson's loan officer rules._
 
 #### Move the threshold, watch the impurity
 
-The algorithm does exactly this for every feature, sorts the values once, and sweeps the threshold, which costs about O(features × n log n) per level docs. Then it recurses on each child.
+The algorithm does exactly this for every feature, sorts the values once, and sweeps the threshold, which costs about O(features × n log n) per level [docs](https://scikit-learn.org/stable/modules/tree.html). Then it recurses on each child.
 
 Information gain is mutual information between a split and the label.
 
@@ -47,15 +47,15 @@ Information gain is mutual information between a split and the label.
 
 #### In one breath
 
-A decision tree asks a sequence of yes/no questions ("credit score > 690?", "income > ₹6 lakh?") and predicts the majority class (or the mean value) of whatever ends up in each leaf. It's built **greedily**: at every node, try every feature and threshold and keep the split that most reduces **impurity** (Gini, entropy, or squared error). Grown fully, a tree memorises the training data, so you limit depth, require minimum leaf sizes, or **prune**. Trees are readable, need almost no preprocessing, and handle non-linear patterns; they're also unstable and blocky, and those weaknesses are exactly what Random Forest and Gradient Boosting fix.What you'll be able to do after this: compute a split by hand, explain Gini vs entropy, show why a deep tree overfits, describe pruning, and say what trees are bad at.
+A decision tree asks a sequence of yes/no questions ("credit score > 690?", "income > ₹6 lakh?") and predicts the majority class (or the mean value) of whatever ends up in each leaf. It's built **greedily**: at every node, try every feature and threshold and keep the split that most reduces **impurity** (Gini, entropy, or squared error). Grown fully, a tree memorises the training data, so you limit depth, require minimum leaf sizes, or **prune**. Trees are readable, need almost no preprocessing, and handle non-linear patterns; they're also unstable and blocky, and those weaknesses are exactly what Random Forest and Gradient Boosting fix. What you'll be able to do after this: compute a split by hand, explain Gini vs entropy, show why a deep tree overfits, describe pruning, and say what trees are bad at.
 
 #### Nodes, splits, leaves, and impurity
 
 A **node** holds some borrowers and asks one question about one feature: xj ≤ t? Yes goes left, no goes right. A **leaf** stops asking and predicts the share of repayers there (classification) or the mean target (regression). To choose questions, we need a number for how mixed a node is, its impurity. For a node where a share p repaid:
 
-$$ H_{\text{Gini}} = \textstyle\sum_k p_k(1-p_k) \qquad H_{\text{ent}} = -\textstyle\sum_k p_k\log p_k \qquad H_{\text{MSE}} = \tfrac{1}{n}\textstyle\sum (y-\bar y)^2 $$
+$$ {H_{\text{Gini}} = \textstyle\sum_k p_k(1-p_k)} \qquad {H_{\text{ent}} = -\textstyle\sum_k p_k\log p_k} \qquad {H_{\text{MSE}} = \tfrac{1}{n}\textstyle\sum (y-\bar y)^2} $$
 
-scikit-learn's impurity definitions tree guide.
+scikit-learn's impurity definitions [tree guide](https://scikit-learn.org/stable/modules/tree.html).
 
 - **Gini impurity**: Σ p_k(1 − p_k) over classes. The chance two randomly drawn borrowers from this node have different labels. 0 when pure; 0.5 at a 50/50 mix (two classes).
 
@@ -67,9 +67,9 @@ All three are 0 for a pure node and peak at 50/50. Gini and entropy are curved (
 
 #### Greedily pick the split that reduces impurity the most
 
-$$ G(\theta) = \tfrac{n_{L}}{n}\,H(Q_L) + \tfrac{n_{R}}{n}\,H(Q_R), \qquad \theta^{*} = \arg\min_{\theta=(j,t)} G(\theta) $$
+$$ {G(\theta)} = {\tfrac{n_{L}}{n}}\,{H(Q_L)} + {\tfrac{n_{R}}{n}}\,{H(Q_R)}, \qquad {\theta^{*} = \arg\min_{\theta=(j,t)} G(\theta)} $$
 
-scikit-learn's formulation tree guide. Greedy because finding the globally best tree "is known to be NP-complete", so practical algorithms choose the locally best split at each node.
+scikit-learn's formulation [tree guide](https://scikit-learn.org/stable/modules/tree.html). Greedy because finding the globally best tree "is known to be NP-complete", so practical algorithms choose the locally best split at each node.
 
 - **split quality**: The impurity after the split: the children's impurities, weighted by how many borrowers go to each. Lower is better.
 
@@ -87,9 +87,9 @@ scikit-learn's formulation tree guide. Greedy because finding the globally best 
 
 Stopping rules (max depth, min leaf size) decide early and can miss a useful split hiding behind a weak one. CART's alternative: grow a large tree, then prune it with **minimal cost-complexity pruning**:
 
-$$ R_\alpha(T) = R(T) + \alpha\,|\widetilde{T}| $$
+$$ {R_\alpha(T)} = {R(T)} + {\alpha}\,{|\widetilde{T}|} $$
 
-scikit-learn: "A non-terminal node with the smallest value of αeff is the weakest link and will be pruned" tree guide. Choose α by cross-validation (scikit-learn's `cost_complexity_pruning_path` lists the candidate α values).
+scikit-learn: "A non-terminal node with the smallest value of αeff is the weakest link and will be pruned" [tree guide](https://scikit-learn.org/stable/modules/tree.html). Choose α by cross-validation (scikit-learn's `cost_complexity_pruning_path` lists the candidate α values).
 
 - **penalised risk**: What pruning minimises: the tree's error plus a price per leaf.
 
@@ -101,7 +101,7 @@ scikit-learn: "A non-terminal node with the smallest value of αeff is the weake
 
 #### Predict numbers with a staircase
 
-Delivery time vs distance with a rush-hour bump around 6 km (simulated). Split by squared error; each leaf predicts the mean of its points, so the fit is a step function. Depth 3–4 follows the bump; depth 10 chases noise. Beyond 10 km the tree just repeats its last step: trees "are not good at extrapolation" docs.
+Delivery time vs distance with a rush-hour bump around 6 km (simulated). Split by squared error; each leaf predicts the mean of its points, so the fit is a step function. Depth 3–4 follows the bump; depth 10 chases noise. Beyond 10 km the tree just repeats its last step: trees "are not good at extrapolation" [docs](https://scikit-learn.org/stable/modules/tree.html).
 
 ## In practice
 
@@ -115,13 +115,13 @@ Delivery time vs distance with a rush-hour bump around 6 km (simulated). Split b
 | **C4.5 / C5.0** (Quinlan) | Multi-way; discretises continuous features | Gain ratio; converts trees to if–then rule sets |
 | **CART** (Breiman et al., 1984) | Always binary | Gini or entropy for classification, squared error for regression; cost-complexity pruning. scikit-learn "uses an optimized version of the CART algorithm" |
 
-Summary from scikit-learn's tree guide docs. Every modern tree ensemble (Random Forest, XGBoost, LightGBM, CatBoost) is built on CART-style binary trees.
+Summary from scikit-learn's tree guide [docs](https://scikit-learn.org/stable/modules/tree.html). Every modern tree ensemble (Random Forest, XGBoost, LightGBM, CatBoost) is built on CART-style binary trees.
 
 #### Scaling, categories, missing values, importance
 
 ##### No scaling needed
 
-Splits compare a feature with a threshold, so any monotonic transform (log, standardise) gives the same tree. Trees "require little data preparation" docs.
+Splits compare a feature with a threshold, so any monotonic transform (log, standardise) gives the same tree. Trees "require little data preparation" [docs](https://scikit-learn.org/stable/modules/tree.html).
 
 ##### Categorical features
 
@@ -129,7 +129,7 @@ CART can split a category set into two groups; scikit-learn's trees currently ne
 
 ##### Missing values
 
-scikit-learn trees support NaN with `splitter='best'`: the training split decides which side missing values go to; if none were seen, they go "to the child with the most samples" docs.
+scikit-learn trees support NaN with `splitter='best'`: the training split decides which side missing values go to; if none were seen, they go "to the child with the most samples" [docs](https://scikit-learn.org/stable/modules/tree.html).
 
 ##### Feature importance
 
@@ -169,17 +169,17 @@ Impurity-based importance (total impurity decrease per feature) is free but bias
 
 #### "Keep splitting until every leaf is pure"
 
-With enough questions you can isolate every borrower in their own leaf: 100% training accuracy. But 10% of the labels are noise, so a tree that fits every point has memorised the noise. In the lab below, training accuracy climbs to 100% as depth grows, while test accuracy peaks at depth 4 (≈ 84.5%) and then falls. scikit-learn: decision trees "can create over-complex trees that do not generalize the data well. This is called overfitting" tree guide.
+With enough questions you can isolate every borrower in their own leaf: 100% training accuracy. But 10% of the labels are noise, so a tree that fits every point has memorised the noise. In the lab below, training accuracy climbs to 100% as depth grows, while test accuracy peaks at depth 4 (≈ 84.5%) and then falls. scikit-learn: decision trees "can create over-complex trees that do not generalize the data well. This is called overfitting" [tree guide](https://scikit-learn.org/stable/modules/tree.html).
 
 #### Each split adds a rectangle
 
-Every boundary is horizontal or vertical: each split looks at one feature. Deep trees carve tiny boxes around single noisy borrowers. Raising min_samples_leaf (no leaf may hold fewer than m borrowers) is a gentler brake than capping depth; scikit-learn suggests "min_samples_leaf=5 as an initial value" docs.
+Every boundary is horizontal or vertical: each split looks at one feature. Deep trees carve tiny boxes around single noisy borrowers. Raising min_samples_leaf (no leaf may hold fewer than m borrowers) is a gentler brake than capping depth; scikit-learn suggests "min_samples_leaf=5 as an initial value" [docs](https://scikit-learn.org/stable/modules/tree.html).
 
 #### A slightly different sample, a different tree
 
 –
 
-Four samples of 160 borrowers from the same population, a depth-4 tree on each. The top split stays near a credit score of 690, but the lower boxes move around a lot. scikit-learn: "small variations in the data might result in a completely different tree being generated. This problem is mitigated by using decision trees within an ensemble" docs. High variance is the price of flexibility, and averaging many trees (Random Forest) is the cure.
+Four samples of 160 borrowers from the same population, a depth-4 tree on each. The top split stays near a credit score of 690, but the lower boxes move around a lot. scikit-learn: "small variations in the data might result in a completely different tree being generated. This problem is mitigated by using decision trees within an ensemble" [docs](https://scikit-learn.org/stable/modules/tree.html). High variance is the price of flexibility, and averaging many trees (Random Forest) is the cure.
 
 #### Strengths and weaknesses, side by side
 
@@ -270,7 +270,7 @@ CART, Gini and entropy, pruning, regression trees · built from scikit-learn's t
 
 #### What this page is built from
 
-1. scikit-learn, Decision Trees user guide (formulation, criteria, pruning, complexity, missing values, ID3/C4.5/CART, practical tips).
+1. scikit-learn, [Decision Trees user guide](https://scikit-learn.org/stable/modules/tree.html) (formulation, criteria, pruning, complexity, missing values, ID3/C4.5/CART, practical tips).
 
 2. L. Breiman, J. Friedman, R. Olshen & C. Stone, _Classification and Regression Trees_, Wadsworth, 1984 (CART, cost-complexity pruning; background).
 

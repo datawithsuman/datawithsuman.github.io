@@ -83,7 +83,7 @@ The **law of large numbers** says a sample average gets close to the true mean a
 
 #### The maths
 
-$$ \bar X_n \to \mu, \qquad \bar X_n \;\approx\; \mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right), \qquad SE = \frac{\sigma}{\sqrt{n}} $$
+$$ {\bar X_n} \to {\mu}, \qquad {\bar X_n \;\approx\; \mathcal{N}\!\left(\mu,\; \frac{\sigma^2}{n}\right)}, \qquad {SE = \frac{\sigma}{\sqrt{n}}} $$
 
 Example: for daily order values with σ = 200 and n = 400, the standard error is 200 ÷ 20 = 10. To get it to 5, you need 1,600 orders.
 
@@ -139,17 +139,19 @@ After ten heads in a row with a fair coin, is tails due?
 
 No, it's still 50/50, as flips are independent. The law of large numbers doesn't work by correcting past results. The early streak simply becomes a smaller share of a growing total. Believing otherwise is the gambler's fallacy.
 
+#### The 30-second answer
+
 The law of large numbers says the sample average approaches the true mean as the sample grows. The central limit theorem describes the error: averages are approximately Normal, with a spread of sigma over root n, whatever the data's original shape, if variance is finite. So four times the data halves the error. It's about averages, not the data, which keeps its shape. Thirty samples isn't a universal rule, as very skewed data needs more. And it can fail with heavy tails or strong dependence.
 
 **Key terms and sources**
 
-Why sample averages settle down, why averages look Normal whatever the data's shape, the square-root rule, and where these results fail.
+Why sample averages settle down, why averages look Normal whatever the data's shape, the square-root rule, and where these results fail. · checked 6 Nov 2026
 
 #### Sources
 
-- Blitzstein and Hwang, Introduction to Probability
+- [Blitzstein and Hwang, Introduction to Probability](https://www.oreilly.com/library/view/-/9781466575578/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
 - Hypothesis tests on this site
 

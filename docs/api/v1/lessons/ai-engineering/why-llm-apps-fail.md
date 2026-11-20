@@ -120,20 +120,22 @@ Which apps need the most rigorous evals?
 
 Ones where users can't easily spot mistakes, like medical, legal or financial answers, and ones where a mistake is costly or irreversible.
 
+#### The 30-second answer
+
 I'd split failures into three kinds. Comprehension: we haven't looked at enough real inputs and outputs. Specification: the prompt doesn't say what we want, so the model guesses. Generalization: the prompt is clear and the model still fails on some inputs. I'd fix specification problems by editing the prompt, and build evals only for what remains, since those never fully go away. The work is a loop: analyze real traces, measure the failures that matter, improve the cheapest way, and repeat, because every fix changes what fails next.
 
 **Key terms and sources**
 
-The three places LLM apps break: not knowing your data, not saying what you want, and the model applying clear instructions inconsistently. How to tell them apart, and the Analyze-Measure-Improve loop that the rest of Applied Evals follows.
+The three places LLM apps break: not knowing your data, not saying what you want, and the model applying clear instructions inconsistently. How to tell them apart, and the Analyze-Measure-Improve loop that the rest of Applied Evals follows. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- S. Shankar et al., Steering semantic data processing with DocWrangler (the three gulfs), UIST 2025
+- [S. Shankar et al., Steering semantic data processing with DocWrangler (the three gulfs), UIST 2025](https://arxiv.org/abs/2504.14764)
 
-- Moffatt v. Air Canada, 2024 BCCRT 149
+- [Moffatt v. Air Canada, 2024 BCCRT 149](https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.html)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

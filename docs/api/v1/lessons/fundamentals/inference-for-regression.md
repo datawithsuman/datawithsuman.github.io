@@ -85,7 +85,7 @@ Residuals should look like shapeless noise. Plot them against predictions.
 
 #### The maths
 
-$$ \hat\beta \pm t^* \cdot SE(\hat\beta), \qquad SE(\hat\beta) = \frac{\hat\sigma}{\sqrt{\sum_i (x_i - \bar x)^2}}, \qquad R^2 = 1 - \frac{\sum_i (y_i - \hat y_i)^2}{\sum_i (y_i - \bar y)^2} $$
+$$ {\hat\beta} \pm t^* \cdot {SE(\hat\beta)}, \qquad {SE(\hat\beta)} = \frac{{\hat\sigma}}{{\sqrt{\sum_i (x_i - \bar x)^2}}}, \qquad {R^2 = 1 - \frac{\sum_i (y_i - \hat y_i)^2}{\sum_i (y_i - \bar y)^2}} $$
 
 This is for a single feature. With many, the standard error also grows with collinearity, by the variance inflation factor.
 
@@ -145,17 +145,19 @@ A feature's p-value is high. Should you drop it?
 
 Not automatically. It could be collinear with another feature, which inflates its standard error, so together they may matter. Or it may have a real but small effect, with too little data. Check VIF, look at the interval, and compare models on validation data.
 
+#### The 30-second answer
+
 A coefficient is the expected change in the outcome per unit of that feature, holding the others fixed. Its standard error gives a t-test and an interval: about plus or minus two standard errors. R squared is the share of variance explained, not proof that the model's right. So I'd check residual plots: a curve means a straight line doesn't fit, and a funnel means noise varies, so standard errors are off. Collinearity inflates standard errors. And I'd say a feature's linked to the outcome, not that it causes it, unless the design supports that.
 
 **Key terms and sources**
 
-Reading coefficients and their standard errors, confidence intervals, what R² does and doesn't say, residual plots, and common traps.
+Reading coefficients and their standard errors, confidence intervals, what R² does and doesn't say, residual plots, and common traps. · checked 6 Nov 2026
 
 #### Sources
 
-- Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics
+- [Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics](https://www.openintro.org/book/os/)
 
-- Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt
+- [Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt](https://toc.uni.li/FLMF048415.pdf)
 
 - Linear regression on this site
 

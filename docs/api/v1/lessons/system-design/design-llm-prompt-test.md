@@ -166,8 +166,10 @@ How do you know the judge isn't favouring one model?
 
 I'd have experts label a fresh sample from each version, with the version hidden, then compare judge accuracy per version. If the judge is much less accurate for one, the comparison isn't fair, and I'd fix the judge before trusting the result.
 
+#### The 30-second answer
+
 First I'd clarify what good means, because students can enjoy a tutor that gives away answers. I'd pick a metric tied to learning, like cognitive engagement, and have experts label real chats against a rubric, checking they agree with each other. Then I'd tune an LLM judge until it matches them on unseen data, and score a sample of production chats nightly. New prompts first run offline against those labels, as a filter. Live, I'd randomise by chat thread if quality is about one conversation, or by user for long-term learning, and analyse with that in mind. The primary metric is the judge's score plus a real outcome like skills learned. Guardrails are giving away answers, wordiness, latency, cost and safety. A noisy judge shrinks the visible effect by two times accuracy minus one, so judge quality directly sets the runtime. I'd keep validating the judge, hide which version wrote each chat, watch for novelty, and roll out from a small share.
 
 **Key terms and sources**
 
-Based on an education company's approach, from a vendor's account of Khan Academy's webinar, not from the team's own paper. The volumes, assumed judge accuracy and lab are our own illustrations. Uses randomisation, sample size and LLM as a judge.
+Based on an education company's approach, from [a vendor's account of Khan Academy's webinar](https://www.growthbook.io/blog/what-i-learned-from-khan-academy-about-a-b-testing-ai), not from the team's own paper. The volumes, assumed judge accuracy and lab are our own illustrations. Uses randomisation, sample size and LLM as a judge. · checked 5 Nov 2026

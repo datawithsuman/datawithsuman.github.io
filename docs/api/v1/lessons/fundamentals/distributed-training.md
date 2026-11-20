@@ -54,7 +54,7 @@ With **4 stages** and only **4 micro-batches**, GPUs sit idle **42.9%** of the t
 
 #### In one breath
 
-With **mixed precision** and the Adam optimiser, training needs about **16 bytes per parameter** before any activations: 2 for bf16 weights, 2 for bf16 gradients, and 12 for the fp32 master weights plus Adam's two moments. A 70B model needs 1.1 TB, far beyond one 80 GB GPU. **Data parallelism** copies the model to every GPU and averages gradients, but doesn't save memory. **ZeRO** (and PyTorch **FSDP**) shards the optimizer state, then gradients, then the weights themselves across the data-parallel GPUs, gathering pieces only when needed. **Tensor parallelism** splits each matrix multiply across GPUs in a fast NVLink node; **pipeline parallelism** puts different layers on different GPUs and uses micro-batches to shrink idle "bubbles". Llama 3 405B combined four kinds of parallelism on 16,000 H100s.What you'll be able to do after this: compute training memory per GPU, and explain DP, ZeRO stages, TP, PP and when to use each.
+With **mixed precision** and the Adam optimiser, training needs about **16 bytes per parameter** before any activations: 2 for bf16 weights, 2 for bf16 gradients, and 12 for the fp32 master weights plus Adam's two moments. A 70B model needs 1.1 TB, far beyond one 80 GB GPU. **Data parallelism** copies the model to every GPU and averages gradients, but doesn't save memory. **ZeRO** (and PyTorch **FSDP**) shards the optimizer state, then gradients, then the weights themselves across the data-parallel GPUs, gathering pieces only when needed. **Tensor parallelism** splits each matrix multiply across GPUs in a fast NVLink node; **pipeline parallelism** puts different layers on different GPUs and uses micro-batches to shrink idle "bubbles". Llama 3 405B combined four kinds of parallelism on 16,000 H100s. What you'll be able to do after this: compute training memory per GPU, and explain DP, ZeRO stages, TP, PP and when to use each.
 
 #### Where 16 bytes per parameter come from
 
@@ -136,12 +136,12 @@ Why a 70B model can't be trained on one GPU, where the memory goes (16 bytes per
 
 #### Sources
 
-1. P. Micikevicius et al., "Mixed Precision Training", ICLR 2018, arXiv:1710.03740.
+1. P. Micikevicius et al., "Mixed Precision Training", ICLR 2018, [arXiv:1710.03740](https://arxiv.org/abs/1710.03740).
 
-2. S. Rajbhandari et al., "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models", SC 2020, arXiv:1910.02054; Y. Zhao et al., "PyTorch FSDP", VLDB 2023, arXiv:2304.11277.
+2. S. Rajbhandari et al., "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models", SC 2020, [arXiv:1910.02054](https://arxiv.org/abs/1910.02054); Y. Zhao et al., "PyTorch FSDP", VLDB 2023, [arXiv:2304.11277](https://arxiv.org/abs/2304.11277).
 
-3. M. Shoeybi et al., "Megatron-LM", 2019, arXiv:1909.08053; D. Narayanan et al., "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM", SC 2021, arXiv:2104.04473.
+3. M. Shoeybi et al., "Megatron-LM", 2019, [arXiv:1909.08053](https://arxiv.org/abs/1909.08053); D. Narayanan et al., "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM", SC 2021, [arXiv:2104.04473](https://arxiv.org/abs/2104.04473).
 
-4. Y. Huang et al., "GPipe", NeurIPS 2019, arXiv:1811.06965.
+4. Y. Huang et al., "GPipe", NeurIPS 2019, [arXiv:1811.06965](https://arxiv.org/abs/1811.06965).
 
-5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783 (§3.3).
+5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783) (§3.3).

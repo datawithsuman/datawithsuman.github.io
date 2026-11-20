@@ -74,7 +74,7 @@ If 90% of answers are fine, two people who both say "pass" to almost everything 
 
 #### The maths
 
-$$ \kappa = \frac{p_o - p_e}{1 - p_e} $$
+$$ {\kappa} = \frac{{p_o} - {p_e}}{1 - {p_e}} $$
 
 When almost everything passes, chance agreement is high, so the same percent agreement means much less.
 
@@ -132,22 +132,24 @@ Should the judge's agreement with humans beat human-human agreement?
 
 It can't reliably exceed the humans' own agreement, so human-human kappa is the ceiling to compare against.
 
+#### The 30-second answer
+
 If one trusted expert can define quality, I'd let them decide, because it's fastest. For subjective or high-stakes criteria I'd use several annotators: draft a rubric per criterion, have everyone label the same 20 to 50 traces independently, and measure agreement per criterion with Cohen's kappa rather than percent agreement, since chance agreement is high when most answers pass. Then I'd run alignment sessions on the disagreements, sharpen the rubric and relabel until kappa is good, keeping the gold labels to validate judges later.
 
 **Key terms and sources**
 
-Who decides what "good" means, how to run a labelling round with several people, why percent agreement misleads, how Cohen's kappa corrects for chance, and how alignment sessions turn disagreements into a sharper rubric.
+Who decides what "good" means, how to run a labelling round with several people, why percent agreement misleads, how Cohen's kappa corrects for chance, and how alignment sessions turn disagreements into a sharper rubric. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- J. Cohen, A coefficient of agreement for nominal scales, 1960
+- [J. Cohen, A coefficient of agreement for nominal scales, 1960](https://doi.org/10.1177/001316446002000104)
 
-- J. R. Landis and G. G. Koch, The measurement of observer agreement for categorical data, Biometrics, 1977
+- [J. R. Landis and G. G. Koch, The measurement of observer agreement for categorical data, Biometrics, 1977](https://doi.org/10.2307/2529310)
 
-- M. Cemri, M. Z. Pan et al., Why do multi-agent LLM systems fail? (MAST)
+- [M. Cemri, M. Z. Pan et al., Why do multi-agent LLM systems fail? (MAST)](https://arxiv.org/abs/2503.13657)
 
-- E. Yan, Product evals in three simple steps
+- [E. Yan, Product evals in three simple steps](https://eugeneyan.com/writing/product-evals/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

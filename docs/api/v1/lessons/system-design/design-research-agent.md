@@ -187,8 +187,10 @@ Would you use this design for a coding agent?
 
 Probably not as the default. Code changes depend on each other, and agents need shared context, while most coding tasks have less parallel work than research. I'd use one agent, and maybe send separate subagents for read-only exploration, where they can return a summary without touching the code.
 
+#### The 30-second answer
+
 First I'd clarify sources, citations, volume and the budget per run. I'd use a lead agent and parallel subagents, because research can't follow a fixed path and it splits well. The lead plans and saves the plan outside its context. It starts subagents with a clear task, format, tools and limits. Each has its own context, searches broad then narrow, and returns a short report. The lead combines them and decides whether to continue. A final step attaches citations. Effort should match the question, so a simple fact gets one agent, and hard limits stop runaway runs. Each run is a durable job with checkpoints, so a failure resumes instead of restarting. Tools are read-only and web content is untrusted. For evaluation, I'd start with about 20 real queries and a judge scoring accuracy, citations, completeness and source quality, plus human testers. The main trade-off is cost: this uses far more tokens than chat, so I'd save it for broad questions worth the money, and use one agent otherwise.
 
 **Key terms and sources**
 
-Based on an AI company's published design: Anthropic's post on its multi-agent research system. Volumes and the lab's numbers are our own illustrations. Uses multi-agent systems, agent infrastructure, memory and context and evaluating agents.
+Based on an AI company's published design: [Anthropic's post on its multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system). Volumes and the lab's numbers are our own illustrations. Uses multi-agent systems, agent infrastructure, memory and context and evaluating agents. · checked 5 Nov 2026

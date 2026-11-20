@@ -48,7 +48,7 @@ With only **15** city-B orders, a model from scratch reaches **69%**; reusing ci
 
 #### In one breath
 
-Features learned on a big dataset (ImageNet photos, web text) are useful far beyond it: early layers learn general things like edges and colours, later layers more task-specific ones. So instead of training from scratch, start from a **pre-trained** model. With little data, **freeze** it and train only a new output layer (**feature extraction**). With more data, **fine-tune** all layers with a **small learning rate**, often unfreezing from the top down. Transfer works best when the new task resembles the original, and it is how almost every vision, language and speech model is built today.What you'll be able to do after this: choose between from-scratch, frozen features and full fine-tuning for a given dataset size, and describe a safe fine-tuning recipe.
+Features learned on a big dataset (ImageNet photos, web text) are useful far beyond it: early layers learn general things like edges and colours, later layers more task-specific ones. So instead of training from scratch, start from a **pre-trained** model. With little data, **freeze** it and train only a new output layer (**feature extraction**). With more data, **fine-tune** all layers with a **small learning rate**, often unfreezing from the top down. Transfer works best when the new task resembles the original, and it is how almost every vision, language and speech model is built today. What you'll be able to do after this: choose between from-scratch, frozen features and full fine-tuning for a given dataset size, and describe a safe fine-tuning recipe.
 
 #### Three ways to use a pre-trained network
 
@@ -63,7 +63,7 @@ Razavian et al. (2014) showed that off-the-shelf CNN features plus a linear clas
 
 #### Which layers transfer?
 
-- Yosinski et al. (NeurIPS 2014) arXiv:1411.1792: first-layer features (Gabor-like edges, colour blobs) are **general**; higher layers become **specific** to the original task. Transferability drops as the tasks become less similar, yet transferred features beat random ones even for distant tasks, and fine-tuning transferred weights improved generalisation.
+- Yosinski et al. (NeurIPS 2014) [arXiv:1411.1792](https://arxiv.org/abs/1411.1792): first-layer features (Gabor-like edges, colour blobs) are **general**; higher layers become **specific** to the original task. Transferability drops as the tasks become less similar, yet transferred features beat random ones even for distant tasks, and fine-tuning transferred weights improved generalisation.
 
 - So: freeze more layers when data is scarce and the domain is close; unfreeze more (from the top down) as data grows or the domain drifts.
 
@@ -131,12 +131,12 @@ Reusing a network trained on a big dataset for a new task: feature extraction (f
 
 #### Sources
 
-1. J. Yosinski, J. Clune, Y. Bengio & H. Lipson, "How transferable are features in deep neural networks?", NeurIPS 2014, arXiv:1411.1792.
+1. J. Yosinski, J. Clune, Y. Bengio & H. Lipson, "How transferable are features in deep neural networks?", NeurIPS 2014, [arXiv:1411.1792](https://arxiv.org/abs/1411.1792).
 
-2. A. Razavian, H. Azizpour, J. Sullivan & S. Carlsson, "CNN Features off-the-shelf: an Astounding Baseline for Recognition", CVPR Workshops 2014, arXiv:1403.6382.
+2. A. Razavian, H. Azizpour, J. Sullivan & S. Carlsson, "CNN Features off-the-shelf: an Astounding Baseline for Recognition", CVPR Workshops 2014, [arXiv:1403.6382](https://arxiv.org/abs/1403.6382).
 
-3. S. Kornblith, J. Shlens & Q. Le, "Do Better ImageNet Models Transfer Better?", CVPR 2019, arXiv:1805.08974.
+3. S. Kornblith, J. Shlens & Q. Le, "Do Better ImageNet Models Transfer Better?", CVPR 2019, [arXiv:1805.08974](https://arxiv.org/abs/1805.08974).
 
-4. J. Howard & S. Ruder, "Universal Language Model Fine-tuning for Text Classification" (ULMFiT), ACL 2018, arXiv:1801.06146.
+4. J. Howard & S. Ruder, "Universal Language Model Fine-tuning for Text Classification" (ULMFiT), ACL 2018, [arXiv:1801.06146](https://arxiv.org/abs/1801.06146).
 
-5. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, arXiv:1810.04805.
+5. J. Devlin, M.-W. Chang, K. Lee & K. Toutanova, "BERT", NAACL 2019, [arXiv:1810.04805](https://arxiv.org/abs/1810.04805).

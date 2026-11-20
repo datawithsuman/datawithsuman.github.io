@@ -48,13 +48,13 @@ Curve: predicted loss for every model size if all models got this same compute (
 
 #### In one breath
 
-LLM loss follows smooth **power laws**: it drops predictably as you add parameters N, training tokens D and compute C, so teams fit these laws on small runs and extrapolate before spending millions. Training compute is about **C ≈ 6·N·D** FLOPs. For a fixed C, a bigger model sees fewer tokens; the question is the best split. **Kaplan et al. (2020)** said grow the model much faster than the data, which led to GPT-3's 175B parameters on 300B tokens. **Chinchilla (2022)** redid the experiments and found parameters and tokens should grow equally, about **20 tokens per parameter**: their 70B model on 1.4T tokens beat the 280B Gopher at the same compute. Today models are deliberately **over-trained** beyond that (Llama 3 8B saw 15T tokens, ~1,900 per parameter), because a smaller model is much cheaper to serve.What you'll be able to do after this: estimate training FLOPs, explain compute-optimal scaling, and argue when to train past it.
+LLM loss follows smooth **power laws**: it drops predictably as you add parameters N, training tokens D and compute C, so teams fit these laws on small runs and extrapolate before spending millions. Training compute is about **C ≈ 6·N·D** FLOPs. For a fixed C, a bigger model sees fewer tokens; the question is the best split. **Kaplan et al. (2020)** said grow the model much faster than the data, which led to GPT-3's 175B parameters on 300B tokens. **Chinchilla (2022)** redid the experiments and found parameters and tokens should grow equally, about **20 tokens per parameter**: their 70B model on 1.4T tokens beat the 280B Gopher at the same compute. Today models are deliberately **over-trained** beyond that (Llama 3 8B saw 15T tokens, ~1,900 per parameter), because a smaller model is much cheaper to serve. What you'll be able to do after this: estimate training FLOPs, explain compute-optimal scaling, and argue when to train past it.
 
 #### Compute and the Chinchilla loss law
 
-$$ C \approx 6ND, \qquad L(N,D) = E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}} $$
+$$ {C \approx 6ND}, \qquad L(N,D) = {E} + {\frac{A}{N^{\alpha}}} + {\frac{B}{D^{\beta}}} $$
 
-Hoffmann et al., "Training Compute-Optimal Large Language Models", arXiv:2203.15556 (approach 3). Besiroglu et al. (2024, arXiv:2404.10102) found the published fit inconsistent with the paper's other methods and refit it: E = 1.82, A = 482, B = 2,085, α = 0.348, β = 0.366, which gives about 20 tokens per parameter, matching Chinchilla's other two approaches. The lab uses this refit.
+Hoffmann et al., "Training Compute-Optimal Large Language Models", [arXiv:2203.15556](https://arxiv.org/abs/2203.15556) (approach 3). Besiroglu et al. (2024, [arXiv:2404.10102](https://arxiv.org/abs/2404.10102)) found the published fit inconsistent with the paper's other methods and refit it: E = 1.82, A = 482, B = 2,085, α = 0.348, β = 0.366, which gives about 20 tokens per parameter, matching Chinchilla's other two approaches. The lab uses this refit.
 
 - **training FLOPs**: About 2 FLOPs per parameter per token for the forward pass and 4 for the backward pass: 6·N·D. Llama 3 405B: 6 × 405e9 × 15.6e12 ≈ 3.8 × 10²⁵.
 
@@ -130,12 +130,12 @@ How loss falls predictably with model size, data and compute; the C ≈ 6ND esti
 
 #### Sources
 
-1. J. Kaplan et al., "Scaling Laws for Neural Language Models", 2020, arXiv:2001.08361.
+1. J. Kaplan et al., "Scaling Laws for Neural Language Models", 2020, [arXiv:2001.08361](https://arxiv.org/abs/2001.08361).
 
-2. J. Hoffmann et al., "Training Compute-Optimal Large Language Models" (Chinchilla), NeurIPS 2022, arXiv:2203.15556.
+2. J. Hoffmann et al., "Training Compute-Optimal Large Language Models" (Chinchilla), NeurIPS 2022, [arXiv:2203.15556](https://arxiv.org/abs/2203.15556).
 
-3. T. Besiroglu, E. Erdil, M. Barnett & J. You, "Chinchilla Scaling: A replication attempt", Epoch AI, 2024, arXiv:2404.10102.
+3. T. Besiroglu, E. Erdil, M. Barnett & J. You, "Chinchilla Scaling: A replication attempt", Epoch AI, 2024, [arXiv:2404.10102](https://arxiv.org/abs/2404.10102).
 
-4. N. Sardana et al., "Beyond Chinchilla-Optimal: Accounting for Inference in Language Model Scaling Laws", ICML 2024, arXiv:2401.00448.
+4. N. Sardana et al., "Beyond Chinchilla-Optimal: Accounting for Inference in Language Model Scaling Laws", ICML 2024, [arXiv:2401.00448](https://arxiv.org/abs/2401.00448).
 
-5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783.
+5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783).

@@ -106,4 +106,4 @@ Answer: **BatchNorm's running statistics don't match the batch statistics used i
 
 Keep practising
 
-Based on common failure modes collected in Andrej Karpathy, “A Recipe for Training Neural Networks” (2019) and Goodfellow et al., _Deep Learning_, §11.5 (debugging strategies). Related lessons: Vanishing & Exploding Gradients, Weight Initialisation. Part 2: It Trains, But Something's Off.
+Based on common failure modes collected in Andrej Karpathy, [“A Recipe for Training Neural Networks”](https://karpathy.github.io/2019/04/25/recipe/) (2019) and Goodfellow et al., _Deep Learning_, §11.5 (debugging strategies). Related lessons: Vanishing & Exploding Gradients, Weight Initialisation. Part 2: It Trains, But Something's Off.

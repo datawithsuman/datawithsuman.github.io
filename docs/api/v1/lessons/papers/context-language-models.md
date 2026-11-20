@@ -14,7 +14,7 @@
 
 Rulin Shao, Shannon Zejiang Shen, Junjie Oscar Yin, Yuetai Li, Minheng Wang, Hamish Ivison, Radha Poovendran, Nathan Lambert, Teng Xiao, Mike Lewis, Wen-tau Yih, Luke Zettlemoyer, Pang Wei Koh
  University of Washington · Meta Superintelligence Labs · MIT · Trillium Labs
- arXiv 2609.37725 · 29 Sep 2026 · alphaXiv · code
+ arXiv 2609.37725 · 29 Sep 2026 · [alphaXiv](https://www.alphaxiv.org/abs/2609.37725) · [code](https://github.com/facebookresearch/context-language-models)
 
 Today an agent's memory is managed by outside code that decides when to summarize or delete. This paper lets the model itself edit its own context, like editing a text file, and shows that this beats the fixed approaches on long tasks while using less compute.
 
@@ -176,7 +176,7 @@ The paper describes a ladder where the model gets more control at each step but 
 | Context as a REPL variable | Recursive Language Models | Controls how input is read, but live context is read-only and keeps growing |
 | Optimize the harness itself | Meta-Harness, AutoMem, Meta Context Engineering | Improves reusable procedures but the model does not directly edit its live context |
 
-Found via alphaXivOther recent work on the same problem includes CompactionRL (RL with context compaction), Context as an Environment (programmatic context management), ContextPilot (fine-grained RL for proactive context management) and TokenPilot (cache-efficient context management). I only read their abstracts, so I have not compared their results to CLMs.
+Found via alphaXivOther recent work on the same problem includes [CompactionRL](https://www.alphaxiv.org/abs/2607.05378) (RL with context compaction), [Context as an Environment](https://www.alphaxiv.org/abs/2608.21690) (programmatic context management), [ContextPilot](https://www.alphaxiv.org/abs/2608.28476) (fine-grained RL for proactive context management) and [TokenPilot](https://www.alphaxiv.org/abs/2606.17016) (cache-efficient context management). I only read their abstracts, so I have not compared their results to CLMs.
 
 #### Key terms
 

@@ -122,7 +122,7 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I&#x27;d diff the two models&#x27; internals. The simplest version keeps an SAE trained on the base model as a fixed yardstick and checks which features change after fine-tuning. A crosscoder trained on both models gives shared features plus ones specific to each. Then I&#x27;d steer with any suspicious feature to confirm it causes the behaviour. OpenAI used this kind of SAE diffing to find a misaligned persona feature behind emergent misalignment. The trap is that a rotated old feature can look new, so I&#x27;d check its similarity to base-model features.</p>
+<h3>The 30-second answer</h3><p class="say30">I&#x27;d diff the two models&#x27; internals. The simplest version keeps an SAE trained on the base model as a fixed yardstick and checks which features change after fine-tuning. A crosscoder trained on both models gives shared features plus ones specific to each. Then I&#x27;d steer with any suspicious feature to confirm it causes the behaviour. OpenAI used this kind of SAE diffing to find a misaligned persona feature behind emergent misalignment. The trap is that a rotated old feature can look new, so I&#x27;d check its similarity to base-model features.</p>
 
 </div>
 </div>

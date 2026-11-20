@@ -79,7 +79,7 @@ A sample is only useful if it represents the population you care about. **Random
 
 #### The maths
 
-$$ \text{Error}^2 = \text{Bias}^2 + \frac{\sigma^2}{n}, \qquad SE_{\text{strat}} = \sqrt{\frac{\sigma_{\text{within}}^2}{n}}, \qquad SE_{\text{random}} = \sqrt{\frac{\sigma_{\text{within}}^2 + \sigma_{\text{between}}^2}{n}} $$
+$$ {\text{Error}^2} = {\text{Bias}^2} + {\frac{\sigma^2}{n}}, \qquad {SE_{\text{strat}}} = \sqrt{\frac{\sigma_{\text{within}}^2}{n}}, \qquad {SE_{\text{random}}} = \sqrt{\frac{\sigma_{\text{within}}^2 + \sigma_{\text{between}}^2}{n}} $$
 
 This is why a survey of a million biased responses can be worse than one of a thousand random ones.
 
@@ -139,18 +139,20 @@ You have a million ratings. Why might they still be misleading?
 
 Those who rate aren't typical, often being very happy or unhappy, and the system only shows some items. So a big sample shrinks noise, but not that bias. I'd compare against a random survey, and model who's likely to respond, or weight by exposure.
 
+#### The 30-second answer
+
 I'd start with who the population is, and who might be missing. Random error shrinks with more data, but bias doesn't. Simple random sampling suits most cases. Stratified sampling guarantees rare groups appear and removes between-group noise. Cluster sampling is cheaper, but noisier. The main risk is selection bias, where being in the data depends on something related to the outcome. For example, a loan model only sees outcomes for approved people. I'd use some random exploration, reweighting and checks against known totals.
 
 **Key terms and sources**
 
-Random, stratified and cluster sampling, how selection, survivorship and non-response bias arise, and why training data so often differs from the real world.
+Random, stratified and cluster sampling, how selection, survivorship and non-response bias arise, and why training data so often differs from the real world. · checked 6 Nov 2026
 
 #### Sources
 
-- Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics
+- [Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics](https://www.openintro.org/book/os/)
 
-- Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt
+- [Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt](https://toc.uni.li/FLMF048415.pdf)
 
-- DataCamp statistics interview questions
+- [DataCamp statistics interview questions](https://www.datacamp.com/blog/statistics-interview-questions)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

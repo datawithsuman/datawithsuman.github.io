@@ -171,8 +171,10 @@ Replay looks great, but the A/B test is flat. Why?
 
 Replay assumes one image's effect can be judged in isolation. Live, images interact with the page, with what the person has seen before and with changes between visits. Replay can also have high variance with few matches. So treat replay as a filter, and trust the A/B test.
 
+#### The 30-second answer
+
 An A/B test finds the best image overall, but I want the best one per person, so I'd use a contextual bandit. For each title, a model per image predicts the reward from the user's history, device and page. Mostly it shows the best image, and it explores with epsilon-greedy or Thompson sampling. I'd reward actual watching, not clicks, or it will learn clickbait. I'd log the image shown, its probability, the candidates and the features at that moment, as all later evaluation depends on this. To compare models offline, I'd use replay: keep logged sessions where a new model's choice matches the image shown, and compute the take fraction. It's real data, but few sessions match. At this scale, I'd precompute choices and serve by lookup, with fallback images. To prove it works, I'd A/B test personalised bandits against unpersonalised ones. That shows what personalisation adds, not what any bandit would give.
 
 **Key terms and sources**
 
-Based on a streaming company's published work: Netflix's QCon 2018 talk, which we read from its slides, and a summary of its blog post, as the post itself was blocked for us. The volumes and lab numbers are illustrations. Uses bandits and LLMOps.
+Based on a streaming company's published work: [Netflix's QCon 2018 talk](https://qconsf.com/sf2018/system/files/presentation-slides/2018-11_-_qcon_artwork_personalization_talk.pdf), which we read from its slides, and [a summary of its blog post](https://www.reforge.com/blog/brief-netflix-artwork-personalization-through-multi-armed-bandit-testing), as the post itself was blocked for us. The volumes and lab numbers are illustrations. Uses bandits and LLMOps. · checked 5 Nov 2026

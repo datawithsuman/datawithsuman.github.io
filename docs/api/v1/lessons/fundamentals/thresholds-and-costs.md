@@ -48,7 +48,7 @@ Two patterns to notice. First, the cost curve's minimum lands exactly on CFP/(CF
 
 #### In one breath
 
-A model gives scores; a **threshold** turns them into decisions, and the right threshold depends on what each mistake **costs**. If the probabilities are calibrated and you can price the errors, the cost-optimal rule is simple: flag when p ≥ CFP / (CFP + CFN). **Youden's J** (sensitivity + specificity − 1) picks a threshold as if a miss and a false alarm were equally bad _per class_; **F-beta** lets you say recall is β times as important as precision. When you need one fair number on imbalanced data, **MCC** and **balanced accuracy** use all four cells of the confusion matrix. And reweighting classes during training is just threshold moving in disguise.What you'll be able to do after this: turn business costs into a threshold, explain why "0.5" is arbitrary, and choose between Youden, F-beta, MCC, kappa, G-mean and expected cost for a scenario.
+A model gives scores; a **threshold** turns them into decisions, and the right threshold depends on what each mistake **costs**. If the probabilities are calibrated and you can price the errors, the cost-optimal rule is simple: flag when p ≥ CFP / (CFP + CFN). **Youden's J** (sensitivity + specificity − 1) picks a threshold as if a miss and a false alarm were equally bad _per class_; **F-beta** lets you say recall is β times as important as precision. When you need one fair number on imbalanced data, **MCC** and **balanced accuracy** use all four cells of the confusion matrix. And reweighting classes during training is just threshold moving in disguise. What you'll be able to do after this: turn business costs into a threshold, explain why "0.5" is arbitrary, and choose between Youden, F-beta, MCC, kappa, G-mean and expected cost for a scenario.
 
 #### A cost matrix: put a price on each cell
 
@@ -57,15 +57,15 @@ A model gives scores; a **threshold** turns them into decisions, and the right t
 | actually positive | CTP (often 0) | CFN: the miss |
 | actually negative | CFP: the false alarm | CTN (often 0) |
 
-Elkan's observation: from a decision-making point of view, a 2×2 cost matrix has essentially **one** degree of freedom, the ratio of the two error costs Elkan, IJCAI 2001. You don't need exact rupee values; you need a defensible ratio ("a missed fraud costs about 100 reviews").
+Elkan's observation: from a decision-making point of view, a 2×2 cost matrix has essentially **one** degree of freedom, the ratio of the two error costs [Elkan, IJCAI 2001](https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations). You don't need exact rupee values; you need a defensible ratio ("a missed fraud costs about 100 reviews").
 
 #### Flag when the expected cost of flagging is lower
 
 For one case with calibrated probability p of being positive: flagging costs (1 − p)·CFP in expectation (it might be a false alarm); not flagging costs p·CFN (it might be a miss). Flag when the first is smaller:
 
-$$ \text{flag if }\ (1-p)\,C_{FP} \le p\,C_{FN} \iff p \ge C_{FP} \,/\, (C_{FP} + C_{FN}) $$
+$$ \text{flag if }\ {(1-p)\,C_{FP}} \le {p\,C_{FN}} \iff {p \ge C_{FP} \,/\, (C_{FP} + C_{FN})} $$
 
-Bayes-optimal decision with zero cost for correct decisions; the threshold result is Elkan's (2001) IJCAI 2001. It only holds if p is a calibrated probability (see Probability Metrics).
+Bayes-optimal decision with zero cost for correct decisions; the threshold result is Elkan's (2001) [IJCAI 2001](https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations). It only holds if p is a calibrated probability (see Probability Metrics).
 
 - **expected cost of flagging**: If you flag, you pay C_FP only when it is actually negative, with probability 1 − p.
 
@@ -75,9 +75,9 @@ Bayes-optimal decision with zero cost for correct decisions; the threshold resul
 
 #### Sensitivity + specificity − 1
 
-$$ J = \text{sensitivity} + \text{specificity} - 1 = \text{TPR} - \text{FPR} $$
+$$ {J} = {\text{sensitivity}} + {\text{specificity}} - 1 = {\text{TPR} - \text{FPR}} $$
 
-Youden (1950). scikit-learn: balanced accuracy with `adjusted=True` "in the binary case… is also known as Youden's J statistic, or informedness" docs.
+Youden (1950). scikit-learn: balanced accuracy with `adjusted=True` "in the binary case… is also known as Youden's J statistic, or informedness" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 - **Youden's J (informedness)**: From 0 (no better than chance) to 1 (perfect). Also called informedness or bookmaker informedness.
 
@@ -93,9 +93,9 @@ Maximising J is equivalent to minimising cost when CFN × prevalence = CFP × (1
 
 #### "Recall is β times as important as precision"
 
-$$ F_\beta = (1+\beta^{2})\,PR \,/\, (\beta^{2}P + R) = (1+\beta^2)TP \,/\, \big((1+\beta^2)TP + FP + \beta^2 FN\big) $$
+$$ {F_\beta} = (1+{\beta^{2}})\,PR \,/\, (\beta^{2}P + R) = {(1+\beta^2)TP \,/\, \big((1+\beta^2)TP + FP + \beta^2 FN\big)} $$
 
-scikit-learn's formula docs.
+scikit-learn's formula [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 - **F-beta**: A weighted harmonic mean of precision and recall.
 
@@ -105,9 +105,9 @@ scikit-learn's formula docs.
 
 #### MCC, balanced accuracy, G-mean and Cohen's kappa
 
-$$ \text{MCC} = (TP\cdot TN - FP\cdot FN) \,/\, \sqrt{(TP{+}FP)(TP{+}FN)(TN{+}FP)(TN{+}FN)} $$
+$$ {\text{MCC}} = {(TP\cdot TN - FP\cdot FN)} \,/\, {\sqrt{(TP{+}FP)(TP{+}FN)(TN{+}FP)(TN{+}FN)}} $$
 
-Matthews (1975). Chicco & Jurman: MCC "produces a high score only if the prediction obtained good results in all of the four confusion matrix categories", and should be preferred to accuracy and F1 for binary evaluation BMC Genomics 2020.
+Matthews (1975). Chicco & Jurman: MCC "produces a high score only if the prediction obtained good results in all of the four confusion matrix categories", and should be preferred to accuracy and F1 for binary evaluation [BMC Genomics 2020](https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312).
 
 - **Matthews correlation**: The correlation between predictions and truth, from −1 (inverse) through 0 (random) to +1 (perfect). Uses all four cells.
 
@@ -124,7 +124,7 @@ Green = best in each row. "Never flag" scores 99.8% accuracy, beating model A, y
 | **Balanced accuracy** | (sensitivity + specificity) / 2; macro-averaged recall | You want "accuracy" that isn't fooled by imbalance; equals Youden's J rescaled |
 | **MCC** | Correlation between prediction and truth | One honest summary of a binary confusion matrix; symmetric in the classes |
 | **G-mean** | √(sensitivity × specificity) | Imbalanced-learning papers; punishes neglecting either class |
-| **Cohen's kappa** | (accuracy − chance agreement) / (1 − chance agreement) | Originally for agreement between human annotators; scikit-learn notes it's designed for "comparing labelings by different human annotators, not a classifier versus a ground truth" docs |
+| **Cohen's kappa** | (accuracy − chance agreement) / (1 − chance agreement) | Originally for agreement between human annotators; scikit-learn notes it's designed for "comparing labelings by different human annotators, not a classifier versus a ground truth" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html) |
 
 ## In practice
 
@@ -264,14 +264,14 @@ Youden's J, cost matrices, F-beta, MCC, balanced accuracy, G-mean and Cohen's ka
 
 #### What this page is built from
 
-1. C. Elkan, The Foundations of Cost-Sensitive Learning, IJCAI 2001 (cost matrix, one degree of freedom, optimal threshold); summary in Cost-sensitive machine learning.
+1. C. Elkan, [The Foundations of Cost-Sensitive Learning](https://mlanthology.org/ijcai/2001/elkan2001ijcai-foundations), IJCAI 2001 (cost matrix, one degree of freedom, optimal threshold); summary in [Cost-sensitive machine learning](https://en.wikipedia.org/wiki/Cost-sensitive_machine_learning).
 
-2. W. J. Youden, "Index for rating diagnostic tests", _Cancer_ 3 (1950); J as informedness in the ROC article.
+2. W. J. Youden, "Index for rating diagnostic tests", _Cancer_ 3 (1950); J as informedness in the [ROC article](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
-3. D. Chicco & G. Jurman, MCC vs F1 and accuracy, BMC Genomics 2020.
+3. D. Chicco & G. Jurman, [MCC vs F1 and accuracy](https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312), BMC Genomics 2020.
 
-4. scikit-learn, Metrics and scoring: balanced accuracy (adjusted = Youden's J), MCC, Cohen's kappa, F-beta.
+4. scikit-learn, [Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html): balanced accuracy (adjusted = Youden's J), MCC, Cohen's kappa, F-beta.
 
-5. Interview angle: DataLemur.
+5. Interview angle: [DataLemur](https://datalemur.com/blog/machine-learning-interview-questions).
 
 Costs are illustrative round numbers; expected counts and costs are computed exactly from a calibrated two-bell-curve score model.

@@ -86,7 +86,7 @@ Weller et al. show that a fixed number of dimensions can't represent every possi
 
 #### The maths
 
-$$ \text{bytes per vector} \approx d \times b + 8M $$
+$$ {\text{bytes per vector}} \approx {d \times b} + {8M} $$
 
 The FAISS guideline for HNSW memory. Real systems also store IDs, metadata and the chunk text, and upper graph layers add a little.
 
@@ -142,28 +142,30 @@ Should you truncate a 1,536-dimensional vector to 256 to save money?
 
 Only if the model was trained for it, as in Matryoshka models. Then test recall on your data. Truncating other models usually hurts a lot. If you plan to use binary too, be careful, as very few dimensions leave very few bits.
 
+#### The 30-second answer
+
 I'd shortlist embedding models from a benchmark like MTEB, then pick by recall on a few hundred of my own labelled queries. For memory, 100 million 1,024-dimensional float32 vectors need about 410 GB. int8 is 4 times smaller at about 99% quality, and binary is 32 times smaller at up to 96% with rescoring, though that varies a lot by model. I'd use HNSW for high recall at low latency, or IVF-PQ at very large scale. Filters are the main trap, as they cut the graph's paths: in one benchmark a plain graph fell to 20% recall on a 10% filter. So I'd use a filter-aware index and measure recall per filter. Single vectors also have limits, so I'd keep BM25 and a re-ranker.
 
 **Key terms and sources**
 
-Choosing an embedding model, shortening vectors with Matryoshka, scalar and binary quantization, HNSW and IVF memory, why filters break graph search, and the limits of a single vector.
+Choosing an embedding model, shortening vectors with Matryoshka, scalar and binary quantization, HNSW and IVF memory, why filters break graph search, and the limits of a single vector. · checked 7 Nov 2026
 
 #### Sources
 
-- Kusupati et al., Matryoshka Representation Learning
+- [Kusupati et al., Matryoshka Representation Learning](https://arxiv.org/abs/2205.13147)
 
-- Hugging Face, Binary and Scalar Embedding Quantization
+- [Hugging Face, Binary and Scalar Embedding Quantization](https://huggingface.co/blog/embedding-quantization)
 
-- Qdrant, Filtered Vector Search and ACORN
+- [Qdrant, Filtered Vector Search and ACORN](https://qdrant.tech/articles/filtered-vector-search-acorn/)
 
-- Amanbayev et al., Filtered Approximate Nearest Neighbor Search in Vector Databases
+- [Amanbayev et al., Filtered Approximate Nearest Neighbor Search in Vector Databases](https://arxiv.org/abs/2602.11443)
 
-- Weller et al., On the Theoretical Limitations of Embedding-Based Retrieval
+- [Weller et al., On the Theoretical Limitations of Embedding-Based Retrieval](https://arxiv.org/abs/2508.21038)
 
-- Malkov and Yashunin, HNSW
+- [Malkov and Yashunin, HNSW](https://arxiv.org/abs/1603.09320)
 
-- FAISS, Guidelines to choose an index
+- [FAISS, Guidelines to choose an index](https://github.com/facebookresearch/faiss/wiki/Guidelines-to-choose-an-index)
 
-- Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality
+- [Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality](https://arxiv.org/abs/2610.29722)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

@@ -81,7 +81,7 @@ Chen et al. found that simply adding related facts to each document beat a more 
 
 #### The maths
 
-$$ \text{input tokens} = \sum_{i=0}^{R} \big(S + i\,C\big) = (R+1)\,S + \frac{R(R+1)}{2}\,C $$
+$$ {\text{input tokens}} = \sum_{i=0}^{{R}} \big({S} + i\,{C}\big) = (R+1)\,S + \frac{R(R+1)}{2}\,C $$
 
 Our own arithmetic for a simple loop that keeps its full history. Chen et al. saw the same effect: a 5-call session used about 250K tokens, while a 3-call session used only 36K.
 
@@ -139,30 +139,32 @@ Grep or embeddings for a code assistant?
 
 Both. Text search handles exact names and is always fresh. Semantic search finds code when you don't know the words, and Cursor saw more benefit in large repositories. Give the agent both tools, and test on real tasks.
 
+#### The 30-second answer
+
 I'd start from the simplest thing that works. A small knowledge base can go straight in the prompt, and exact lookups can use text search. For large corpora I'd use static RAG with re-ranking as the baseline. I'd add an agentic loop only for questions needing several steps, because each round resends the history, so tokens grow with the square of the rounds. Evidence is mixed: agents won in one study and added nothing on a strong retrieval stack in another. For code, some agents use only grep, while Cursor measured clear gains from adding semantic search, especially in large repositories. So I'd route by question, cap the rounds, and make the agent beat the baseline on my own test set.
 
 **Key terms and sources**
 
-Static against agentic retrieval, why each search round costs more, conflicting evidence on agents, grep against semantic search, whole-document prompts and simple baselines.
+Static against agentic retrieval, why each search round costs more, conflicting evidence on agents, grep against semantic search, whole-document prompts and simple baselines. · checked 7 Nov 2026
 
 #### Sources
 
-- Cursor, Improving agent with semantic search
+- [Cursor, Improving agent with semantic search](https://cursor.com/blog/semsearch)
 
-- Uber, Enhanced Agentic-RAG
+- [Uber, Enhanced Agentic-RAG](https://www.uber.com/en-CA/blog/enhanced-agentic-rag/)
 
-- Chen et al., Is GraphRAG Needed?
+- [Chen et al., Is GraphRAG Needed?](https://arxiv.org/abs/2606.25656)
 
-- Rathi, Chawla and Andreopoulos, A Controlled Comparison of RAG Strategies
+- [Rathi, Chawla and Andreopoulos, A Controlled Comparison of RAG Strategies](https://arxiv.org/abs/2609.38473)
 
-- Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality
+- [Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality](https://arxiv.org/abs/2610.29722)
 
-- Bao et al., Is Complex Agentic Memory Always Needed?
+- [Bao et al., Is Complex Agentic Memory Always Needed?](https://arxiv.org/abs/2610.30755)
 
-- Gandhi et al., GRASP
+- [Gandhi et al., GRASP](https://arxiv.org/abs/2607.10463)
 
-- Anthropic, Introducing Contextual Retrieval
+- [Anthropic, Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 
-- Microsoft Research, LazyGraphRAG
+- [Microsoft Research, LazyGraphRAG](https://www.microsoft.com/en-us/research/blog/lazygraphrag-setting-a-new-standard-for-quality-and-cost)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

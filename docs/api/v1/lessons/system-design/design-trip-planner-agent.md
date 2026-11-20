@@ -143,8 +143,10 @@ Why not use the largest model for every step?
 
 Cost and latency multiply by the number of steps. Narrow steps like classification and matching work well with small tuned models, so save the large model for reasoning and the reply.
 
+#### The 30-second answer
+
 I'd clarify the kinds of questions, the data, whether we book or only advise, and latency and cost targets. A small model classifies each request and extracts dates, places and filters. Then entity matching maps every hotel or place mentioned to a real ID, asking when it's ambiguous. The agent chooses tools: listing details, reviews, live availability and prices, and distance and travel time. All facts come from tool results, and the answer may only use those. Routine steps run on small tuned models; planning and the final reply use a large model, which cuts cost and latency a lot. Session memory holds the trip details. Booking, later, needs explicit confirmation and retry-safe tools. I'd evaluate with real questions whose facts can be checked against tools.
 
 **Key terms and sources**
 
-Based on a travel company's published work, reported by the trade press: an internal platform for modular agents and a podcast summary on small and large models (Dec 2025). The company's own post couldn't be fetched, so details come from these reports. The lab is illustrative; the estimate is ours. Uses tool calling, what an agent is and grounded answers.
+Based on a travel company's published work, reported by the trade press: [an internal platform for modular agents](https://www.phocuswire.com/news/technology/booking-develops-internal-platform-build-modular-ai-agents) and a [podcast summary on small and large models](https://www.hospitalitynet.org/external/4130183/bookingcom-built-agentic-ai-before-agents-existed-heres-how-it-scaled-with-small-models-for-speed-big-models-for-trust) (Dec 2025). The company's own post couldn't be fetched, so details come from these reports. The lab is illustrative; the estimate is ours. Uses tool calling, what an agent is and grounded answers. · checked 15 Nov 2026

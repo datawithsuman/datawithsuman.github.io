@@ -48,7 +48,7 @@ A **10%** increase in distances over **5,000** orders gives PSI **0.029**, comfo
 
 #### In one breath
 
-Models degrade silently because the world changes. **Data drift** (covariate shift): the inputs change, e.g. longer delivery distances after expanding to suburbs. **Concept drift**: the same inputs now mean different outcomes, e.g. the same distance takes longer during monsoon traffic. The best signal is **performance** on fresh labels, but labels often arrive late (an ETA's truth is known within an hour; fraud's, after weeks of chargebacks), so you also watch **proxies**: data quality, input and prediction distributions. Drift statistics need judgement: **PSI** measures how much a distribution moved (rules of thumb: under 0.1 stable, 0.1–0.25 moderate, above 0.25 large); a **KS test** asks whether there's _any_ difference, and with large samples it flags changes too small to matter. Alert on what affects the business, by slice, with owners and runbooks.What you'll be able to do after this: design a monitoring plan, explain data vs concept drift, and interpret PSI and KS sensibly.
+Models degrade silently because the world changes. **Data drift** (covariate shift): the inputs change, e.g. longer delivery distances after expanding to suburbs. **Concept drift**: the same inputs now mean different outcomes, e.g. the same distance takes longer during monsoon traffic. The best signal is **performance** on fresh labels, but labels often arrive late (an ETA's truth is known within an hour; fraud's, after weeks of chargebacks), so you also watch **proxies**: data quality, input and prediction distributions. Drift statistics need judgement: **PSI** measures how much a distribution moved (rules of thumb: under 0.1 stable, 0.1–0.25 moderate, above 0.25 large); a **KS test** asks whether there's _any_ difference, and with large samples it flags changes too small to matter. Alert on what affects the business, by slice, with owners and runbooks. What you'll be able to do after this: design a monitoring plan, explain data vs concept drift, and interpret PSI and KS sensibly.
 
 #### Layers of monitoring
 
@@ -137,10 +137,10 @@ How to know a production model is degrading: data drift (inputs change), concept
 
 #### Sources
 
-1. J. Lu et al., "Learning under Concept Drift: A Review", IEEE TKDE 2019, arXiv:2004.05785; J. Gama et al., "A Survey on Concept Drift Adaptation", ACM CSUR 2014.
+1. J. Lu et al., "Learning under Concept Drift: A Review", IEEE TKDE 2019, [arXiv:2004.05785](https://arxiv.org/abs/2004.05785); J. Gama et al., "A Survey on Concept Drift Adaptation", ACM CSUR 2014.
 
-2. S. Rabanser, S. Günnemann & Z. Lipton, "Failing Loudly: An Empirical Study of Methods for Detecting Dataset Shift", NeurIPS 2019, arXiv:1810.11953.
+2. S. Rabanser, S. Günnemann & Z. Lipton, "Failing Loudly: An Empirical Study of Methods for Detecting Dataset Shift", NeurIPS 2019, [arXiv:1810.11953](https://arxiv.org/abs/1810.11953).
 
-3. E. Breck et al., "The ML Test Score", IEEE Big Data 2017; S. Shankar et al., "Operationalizing Machine Learning: An Interview Study", 2022, arXiv:2209.09125.
+3. E. Breck et al., "The ML Test Score", IEEE Big Data 2017; S. Shankar et al., "Operationalizing Machine Learning: An Interview Study", 2022, [arXiv:2209.09125](https://arxiv.org/abs/2209.09125).
 
 4. C. Huyen, _Designing Machine Learning Systems_, O'Reilly 2022 (ch. 8, data distribution shifts and monitoring).

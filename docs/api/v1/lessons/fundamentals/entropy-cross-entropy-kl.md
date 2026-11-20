@@ -49,11 +49,11 @@ The "close" prediction costs only about 0.03 extra bits. "Uniform" costs about 0
 
 #### In one breath
 
-The **surprise** of an outcome with probability p is −log p: rare events are surprising. **Entropy** H(p) is the average surprise, a measure of uncertainty (bits with log₂). **Cross-entropy** H(p, q) is the average surprise when reality follows p but you predicted q; it's always ≥ H(p), and with a one-hot true label it is exactly the **log loss** used to train classifiers and language models. The gap is the **KL divergence**, KL(p ‖ q) = H(p, q) − H(p) ≥ 0: the extra cost of using the wrong distribution. KL is **asymmetric**, which matters: it's the penalty in knowledge distillation, the regulariser in VAEs, and the leash that keeps an RLHF-tuned model close to its starting point.What you'll be able to do after this: compute entropy, cross-entropy and KL for small distributions, explain why cross-entropy is the classification loss, and explain KL's asymmetry and its uses.
+The **surprise** of an outcome with probability p is −log p: rare events are surprising. **Entropy** H(p) is the average surprise, a measure of uncertainty (bits with log₂). **Cross-entropy** H(p, q) is the average surprise when reality follows p but you predicted q; it's always ≥ H(p), and with a one-hot true label it is exactly the **log loss** used to train classifiers and language models. The gap is the **KL divergence**, KL(p ‖ q) = H(p, q) − H(p) ≥ 0: the extra cost of using the wrong distribution. KL is **asymmetric**, which matters: it's the penalty in knowledge distillation, the regulariser in VAEs, and the leash that keeps an RLHF-tuned model close to its starting point. What you'll be able to do after this: compute entropy, cross-entropy and KL for small distributions, explain why cross-entropy is the classification loss, and explain KL's asymmetry and its uses.
 
 #### Surprise and entropy
 
-$$ I(x) = -\log_2 p(x), \qquad H(p) = -\textstyle\sum_x p(x)\log_2 p(x) $$
+$$ {I(x) = -\log_2 p(x)}, \qquad {H(p) = -\textstyle\sum_x p(x)\log_2 p(x)} $$
 
 Shannon, "A mathematical theory of communication", 1948; Cover & Thomas ch. 2. Entropy is also the minimum average number of bits per symbol for a lossless code. For p = (0.5, 0.25, 0.15, 0.1), H ≈ 1.74 bits (a uniform choice of 4 would be 2 bits).
 
@@ -63,7 +63,7 @@ Shannon, "A mathematical theory of communication", 1948; Cover & Thomas ch. 2. E
 
 #### Cross-entropy and KL divergence
 
-$$ H(p,q) = -\textstyle\sum_x p(x)\log q(x), \quad \mathrm{KL}(p\,\Vert\,q) = \textstyle\sum_x p(x)\log\tfrac{p(x)}{q(x)}, \quad H(p,q) = H(p) + \mathrm{KL}(p\,\Vert\,q) $$
+$$ {H(p,q) = -\textstyle\sum_x p(x)\log q(x)}, \quad {\mathrm{KL}(p\,\Vert\,q) = \textstyle\sum_x p(x)\log\tfrac{p(x)}{q(x)}}, \quad {H(p,q) = H(p) + \mathrm{KL}(p\,\Vert\,q)} $$
 
 Goodfellow et al. §3.13; Cover & Thomas §2.3. Minimising cross-entropy over the training labels is maximum likelihood (MLE & MAP).
 
@@ -95,9 +95,9 @@ Next: compression and perplexity shows what these numbers mean in practice, mutu
 
 - **Classification and language modelling:** the loss is cross-entropy with the one-hot label; for an LLM, the next-token cross-entropy; perplexity = 2cross-entropy in bits.
 
-- **Knowledge distillation:** a small student matches a large teacher's softened output distribution by minimising cross-entropy / KL to the teacher's "soft targets", which carry more information than one-hot labels (Hinton, Vinyals & Dean, 2015) arXiv:1503.02531.
+- **Knowledge distillation:** a small student matches a large teacher's softened output distribution by minimising cross-entropy / KL to the teacher's "soft targets", which carry more information than one-hot labels (Hinton, Vinyals & Dean, 2015) [arXiv:1503.02531](https://arxiv.org/abs/1503.02531).
 
-- **RLHF:** InstructGPT optimises a reward model's score with a per-token KL penalty from the supervised fine-tuned model, to stop the policy drifting into reward hacking (Ouyang et al., 2022) arXiv:2203.02155.
+- **RLHF:** InstructGPT optimises a reward model's score with a per-token KL penalty from the supervised fine-tuned model, to stop the policy drifting into reward hacking (Ouyang et al., 2022) [arXiv:2203.02155](https://arxiv.org/abs/2203.02155).
 
 - **Variational autoencoders:** the loss includes KL(q(z | x) ‖ p(z)), keeping the latent code close to the prior.
 
@@ -167,8 +167,8 @@ Information as surprise, entropy, cross-entropy and why it is the classification
 
 2. T. Cover & J. Thomas, _Elements of Information Theory_, 2nd ed., Wiley 2006, ch. 2.
 
-3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §3.13, deeplearningbook.org.
+3. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §3.13, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-4. G. Hinton, O. Vinyals & J. Dean, "Distilling the knowledge in a neural network", arXiv:1503.02531, 2015.
+4. G. Hinton, O. Vinyals & J. Dean, "Distilling the knowledge in a neural network", [arXiv:1503.02531](https://arxiv.org/abs/1503.02531), 2015.
 
-5. L. Ouyang et al., "Training language models to follow instructions with human feedback", NeurIPS 2022, arXiv:2203.02155.
+5. L. Ouyang et al., "Training language models to follow instructions with human feedback", NeurIPS 2022, [arXiv:2203.02155](https://arxiv.org/abs/2203.02155).

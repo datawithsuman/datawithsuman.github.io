@@ -48,7 +48,7 @@ With a **reliable check** (unit tests, the policy calculator, a tool error), a 6
 
 #### In one breath
 
-Agents plan in two broad ways. **ReAct** decides one step at a time based on the latest observation: flexible, but it can wander. **Plan-and-execute** writes a plan up front (often with a strong model), executes steps (often with a cheaper model) and **re-plans** when something fails: more structured and cheaper, but brittle if the plan is wrong. **Reflection** asks the agent to critique its own attempt and try again; Reflexion lifted GPT-4 on HumanEval from 80% to 91% by reflecting on failed unit tests. The catch: reflection works when there's an **external signal** (tests, tool errors, a checker). Without one, models often can't tell they're wrong, and "self-correction" can even make reasoning worse (Huang et al. 2024).What you'll be able to do after this: choose between ReAct and plan-and-execute, and design reflection loops that actually improve results.
+Agents plan in two broad ways. **ReAct** decides one step at a time based on the latest observation: flexible, but it can wander. **Plan-and-execute** writes a plan up front (often with a strong model), executes steps (often with a cheaper model) and **re-plans** when something fails: more structured and cheaper, but brittle if the plan is wrong. **Reflection** asks the agent to critique its own attempt and try again; Reflexion lifted GPT-4 on HumanEval from 80% to 91% by reflecting on failed unit tests. The catch: reflection works when there's an **external signal** (tests, tool errors, a checker). Without one, models often can't tell they're wrong, and "self-correction" can even make reasoning worse (Huang et al. 2024). What you'll be able to do after this: choose between ReAct and plan-and-execute, and design reflection loops that actually improve results.
 
 #### Planning and reflection patterns
 
@@ -126,10 +126,10 @@ How agents organise multi-step work and recover from mistakes: ReAct's step-by-s
 
 #### Sources
 
-1. N. Shinn et al., "Reflexion: Language Agents with Verbal Reinforcement Learning", NeurIPS 2023, arXiv:2303.11366; A. Madaan et al., "Self-Refine", NeurIPS 2023, arXiv:2303.17651.
+1. N. Shinn et al., "Reflexion: Language Agents with Verbal Reinforcement Learning", NeurIPS 2023, [arXiv:2303.11366](https://arxiv.org/abs/2303.11366); A. Madaan et al., "Self-Refine", NeurIPS 2023, [arXiv:2303.17651](https://arxiv.org/abs/2303.17651).
 
-2. J. Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet", ICLR 2024, arXiv:2310.01798.
+2. J. Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet", ICLR 2024, [arXiv:2310.01798](https://arxiv.org/abs/2310.01798).
 
-3. L. Wang et al., "Plan-and-Solve Prompting", ACL 2023, arXiv:2305.04091; S. Yao et al., "Tree of Thoughts", NeurIPS 2023, arXiv:2305.10601.
+3. L. Wang et al., "Plan-and-Solve Prompting", ACL 2023, [arXiv:2305.04091](https://arxiv.org/abs/2305.04091); S. Yao et al., "Tree of Thoughts", NeurIPS 2023, [arXiv:2305.10601](https://arxiv.org/abs/2305.10601).
 
-4. S. Yao et al., "ReAct", ICLR 2023, arXiv:2210.03629; Anthropic, "Building Effective Agents", 2024.
+4. S. Yao et al., "ReAct", ICLR 2023, [arXiv:2210.03629](https://arxiv.org/abs/2210.03629); Anthropic, "Building Effective Agents", 2024.

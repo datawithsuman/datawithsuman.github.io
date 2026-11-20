@@ -48,7 +48,7 @@ With Ward linkage on these 36 customers, the last merges happen at heights 2.07,
 
 #### In one breath
 
-Start with every customer as its own cluster, then repeatedly **merge the two closest clusters** until one is left. Record each merge and its height (how far apart the merged clusters were) and you get a **dendrogram**, a tree of every possible grouping. You choose the number of clusters afterwards by **cutting** the tree, ideally where there's a big jump in merge height. What "closest clusters" means is the **linkage**: single (nearest pair) follows chains and odd shapes but snowballs; complete (farthest pair) and average are in between; **Ward** (smallest increase in variance) gives even, round clusters like k-means. The cost is O(n²) memory and up to O(n³) time.What you'll be able to do after this: read a dendrogram, choose a cut, explain the four linkages and when each fails, and compare hierarchical clustering with k-means.
+Start with every customer as its own cluster, then repeatedly **merge the two closest clusters** until one is left. Record each merge and its height (how far apart the merged clusters were) and you get a **dendrogram**, a tree of every possible grouping. You choose the number of clusters afterwards by **cutting** the tree, ideally where there's a big jump in merge height. What "closest clusters" means is the **linkage**: single (nearest pair) follows chains and odd shapes but snowballs; complete (farthest pair) and average are in between; **Ward** (smallest increase in variance) gives even, round clusters like k-means. The cost is O(n²) memory and up to O(n³) time. What you'll be able to do after this: read a dendrogram, choose a cut, explain the four linkages and when each fails, and compare hierarchical clustering with k-means.
 
 #### Merges, heights and the dendrogram
 
@@ -68,9 +68,9 @@ Start with every customer as its own cluster, then repeatedly **merge the two cl
 
 Agglomerative clustering is greedy: each merge is the best one available now and is never undone. Everything about the result follows from one choice: how to measure the distance between two clusters A and B. The four standard linkages:
 
-$$ \min_{a,b} d(a,b) \qquad \max_{a,b} d(a,b) \qquad \tfrac{1}{|A||B|}\textstyle\sum_{a,b} d(a,b) \qquad \tfrac{|A||B|}{|A|+|B|}\lVert \mu_A - \mu_B\rVert^2 $$
+$$ {\min_{a,b} d(a,b)} \qquad {\max_{a,b} d(a,b)} \qquad {\tfrac{1}{|A||B|}\textstyle\sum_{a,b} d(a,b)} \qquad {\tfrac{|A||B|}{|A|+|B|}\lVert \mu_A - \mu_B\rVert^2} $$
 
-scikit-learn: Ward "minimizes the sum of squared differences within all clusters. It is a variance-minimizing approach"; complete "minimizes the maximum distance between observations of pairs of clusters"; average uses "the average of the distances between all observations of pairs of clusters"; single uses "the distance between the closest observations of pairs of clusters" clustering guide. Ward (1963) introduced the variance criterion.
+scikit-learn: Ward "minimizes the sum of squared differences within all clusters. It is a variance-minimizing approach"; complete "minimizes the maximum distance between observations of pairs of clusters"; average uses "the average of the distances between all observations of pairs of clusters"; single uses "the distance between the closest observations of pairs of clusters" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering). Ward (1963) introduced the variance criterion.
 
 - **single: closest pair**: Distance between the two nearest members. Follows chains and curved shapes; snowballs through bridges and noise.
 
@@ -101,7 +101,7 @@ Hierarchical clustering can be **agglomerative** (start with singletons, merge) 
 
 #### O(n²) memory, up to O(n³) time
 
-The straightforward algorithm keeps an n × n distance matrix (O(n²) memory: 100,000 points means 1010 distances, about 80 GB as doubles) and searches it at each of n − 1 merges. Faster algorithms exist for specific linkages (O(n²) time for single linkage via a minimum spanning tree, for example), but the memory still limits plain hierarchical clustering to tens of thousands of points. scikit-learn: agglomerative clustering "is computationally expensive when no connectivity constraints are added between samples: it considers at each step all the possible merges"; with a connectivity matrix (only merge neighbours, e.g. a k-nearest-neighbour graph or adjacent pixels) it "can also scale to large number of samples" clustering guide. For very large data: cluster a sample, or run k-means into a few hundred micro-clusters first and build the hierarchy on their centroids.
+The straightforward algorithm keeps an n × n distance matrix (O(n²) memory: 100,000 points means 1010 distances, about 80 GB as doubles) and searches it at each of n − 1 merges. Faster algorithms exist for specific linkages (O(n²) time for single linkage via a minimum spanning tree, for example), but the memory still limits plain hierarchical clustering to tens of thousands of points. scikit-learn: agglomerative clustering "is computationally expensive when no connectivity constraints are added between samples: it considers at each step all the possible merges"; with a connectivity matrix (only merge neighbours, e.g. a k-nearest-neighbour graph or adjacent pixels) it "can also scale to large number of samples" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering). For very large data: cluster a sample, or run k-means into a few hundred micro-clusters first and build the hierarchy on their centroids.
 
 #### The whole recipe
 
@@ -137,7 +137,7 @@ The straightforward algorithm keeps an n × n distance matrix (O(n²) memory: 10
 
 #### "Merge the two closest points, always"
 
-The simplest definition of distance between clusters is the distance between their two closest members (single linkage). It sounds natural, and it can follow curved shapes. But one stray customer sitting between two segments is enough to bridge them: once the bridge merges, the two segments become one. On all 180 customers, single linkage cut at 3 clusters gives sizes **60 / 119 / 1**: one real segment, two segments chained together, and a lone outlier as the "third cluster" (ARI 0.57). scikit-learn calls single linkage "the most brittle linkage option" for this "rich getting richer" effect clustering guide.
+The simplest definition of distance between clusters is the distance between their two closest members (single linkage). It sounds natural, and it can follow curved shapes. But one stray customer sitting between two segments is enough to bridge them: once the bridge merges, the two segments become one. On all 180 customers, single linkage cut at 3 clusters gives sizes **60 / 119 / 1**: one real segment, two segments chained together, and a lone outlier as the "third cluster" (ARI 0.57). scikit-learn calls single linkage "the most brittle linkage option" for this "rich getting richer" effect [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering).
 
 #### Caveats
 
@@ -225,7 +225,7 @@ single: smallest cluster
 
 1
 
-True segments: 60 each. Illustrative simulation; matches scikit-learn's description: "single linkage is the worst strategy, and Ward gives the most regular sizes" clustering guide.
+True segments: 60 each. Illustrative simulation; matches scikit-learn's description: "single linkage is the worst strategy, and Ward gives the most regular sizes" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering).
 
 #### Key terms
 
@@ -239,9 +239,9 @@ True segments: 60 each. Illustrative simulation; matches scikit-learn's descript
 
 #### What this page is built from
 
-1. scikit-learn, Clustering user guide: hierarchical clustering (linkage definitions, rich-get-richer behaviour, connectivity constraints, cost).
+1. scikit-learn, [Clustering user guide: hierarchical clustering](https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering) (linkage definitions, rich-get-richer behaviour, connectivity constraints, cost).
 
-2. SciPy, scipy.cluster.hierarchy (linkage matrix format, dendrogram, fcluster).
+2. SciPy, [scipy.cluster.hierarchy](https://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html) (linkage matrix format, dendrogram, fcluster).
 
 3. J. H. Ward, "Hierarchical grouping to optimize an objective function", _JASA_ 58, 1963 (Ward's criterion; background).
 

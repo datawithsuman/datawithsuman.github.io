@@ -155,8 +155,10 @@ The scoring service goes down. What happens to sign-ups?
 
 It depends on risk: for sign-ups, let them through but re-score asynchronously and restrict new accounts until scored; for payments, fail closed or fall back to stricter rules.
 
+#### The 30-second answer
+
 First I'd clarify the abuse types, the scale and the latency budget. I'd build a funnel. Every sign-up is scored: low risk passes, high risk is blocked, and medium risk gets a challenge to prove it's a person. Next, cluster detection groups new accounts by shared attributes and scores whole clusters, catching bulk fakes before they act. Activity models catch slower fakes by behaviour, such as scraping sequences or mass messaging. Member reports and investigators find what slips through and feed new signals back. Everywhere, a fast counter store tracks velocities per user and IP for thresholds and models. Synchronous checks stay around a millisecond, with heavy work done nearline, and each endpoint has a defined failure strategy. Shared protections at the edge and a common content filter make abuse defence the default. I'd retrain often as attackers adapt, and roll out new models in shadow first.
 
 **Key terms and sources**
 
-Based on a professional network's published posts: LinkedIn's "Automated Fake Account Detection" and "Defending Against Abuse at LinkedIn's Scale" (both 2018). The lab's numbers and the estimate are ours. Uses anomaly detection, thresholds and costs and class imbalance.
+Based on a professional network's published posts: [LinkedIn's "Automated Fake Account Detection"](https://www.linkedin.com/blog/engineering/trust-and-safety/automated-fake-account-detection-at-linkedin) and ["Defending Against Abuse at LinkedIn's Scale"](https://www.linkedin.com/blog/engineering/trust-and-safety/defending-against-abuse-at-linkedins-scale) (both 2018). The lab's numbers and the estimate are ours. Uses anomaly detection, thresholds and costs and class imbalance. · checked 5 Nov 2026

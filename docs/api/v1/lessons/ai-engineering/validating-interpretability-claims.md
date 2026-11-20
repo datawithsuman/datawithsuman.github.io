@@ -29,7 +29,7 @@ _A convincing figure is not a faithful explanation._
 
 #### Remove it, or keep only it
 
-A circuit is necessary if ablating it degrades the behaviour, and sufficient if patching everything _outside_ it with corrupted values still reproduces the behaviour. A circuit that is both is called faithful p. 57.
+A circuit is necessary if ablating it degrades the behaviour, and sufficient if patching everything _outside_ it with corrupted values still reproduces the behaviour. A circuit that is both is called faithful [p. 57](https://arxiv.org/pdf/2611.08438#page=57).
 
 ##### Try it: test candidate circuits
 
@@ -37,7 +37,7 @@ The toy circuit from Activation Patching and Circuit Discovery (duplicate detect
 
 Necessity = (clean − ablate circuit) / (clean − corrupted). Sufficiency = (ablate everything else − corrupted) / (clean − corrupted). Ablation = corrupted value; downstream parts recompute. Same toy equations as Activation Patching and Circuit Discovery.
 
-Each quirk in the lab has a real counterpart. Redundancy makes necessity weak; removing negative components makes sufficiency exceed 100% (recovery metrics can leave [0, 1], which is why bounded versions have been proposed pp. 60–61); and a backup path can be sufficient on its own. The survey: in practice a circuit is rarely sparse, necessary and sufficient at once, and typically explains 60–80% of behavioural variance p. 57.
+Each quirk in the lab has a real counterpart. Redundancy makes necessity weak; removing negative components makes sufficiency exceed 100% (recovery metrics can leave [0, 1], which is why bounded versions have been proposed [pp. 60–61](https://arxiv.org/pdf/2611.08438#page=61)); and a backup path can be sufficient on its own. The survey: in practice a circuit is rarely sparse, necessary and sufficient at once, and typically explains 60–80% of behavioural variance [p. 57](https://arxiv.org/pdf/2611.08438#page=57).
 
 **Notice:** a circuit can recover more than 100% of the behaviour when it drops parts that were pushing the other way. Report both tests, and say exactly what you removed.
 
@@ -55,7 +55,7 @@ A discovered circuit is a hypothesis. Test necessity (knock it out and the behav
 
 - **Interchange interventions**: swap activations between inputs that differ in a high-level variable (say, which name is the subject), and check whether the output changes the way that variable predicts.
 
-Both give stronger evidence than observation alone, because they test the circuit’s claimed computation, not just whether its parts matter p. 57. Benchmarks such as **MIB** now score circuit-discovery methods by faithfulness across tasks p. 57.
+Both give stronger evidence than observation alone, because they test the circuit’s claimed computation, not just whether its parts matter [p. 57](https://arxiv.org/pdf/2611.08438#page=57). Benchmarks such as **MIB** now score circuit-discovery methods by faithfulness across tasks [p. 57](https://arxiv.org/pdf/2611.08438#page=57).
 
 #### Five questions, each with its own metrics
 
@@ -67,11 +67,11 @@ Both give stronger evidence than observation alone, because they test the circui
 | **4 · Causal validity** | Necessary, sufficient and specific? | necessity, sufficiency, specificity scores |
 | **5 · Human interpretability** | Can people understand and use it? | explanation utility, debugging utility, inter-rater agreement |
 
-Survey Table 9 p. 60. All metrics build on the intervention effect s(S, x) from Activation Patching and Circuit Discovery, averaged over prompts of the behaviour p. 59.
+Survey Table 9 [p. 60](https://arxiv.org/pdf/2611.08438#page=60). All metrics build on the intervention effect s(S, x) from Activation Patching and Circuit Discovery, averaged over prompts of the behaviour [p. 59](https://arxiv.org/pdf/2611.08438#page=59).
 
 #### Agreement and error measure different things
 
-**Effect agreement** is the correlation (Pearson or Spearman) between a method’s scores a(S, x) and the real intervention effects s(S, x). **Effect-size error** is the average gap |a − s|. A method can rank components perfectly and still get their sizes badly wrong p. 60.
+**Effect agreement** is the correlation (Pearson or Spearman) between a method’s scores a(S, x) and the real intervention effects s(S, x). **Effect-size error** is the average gap |a − s|. A method can rank components perfectly and still get their sizes badly wrong [p. 60](https://arxiv.org/pdf/2611.08438#page=60).
 
 ##### Try it: EAP scores vs. true patching effects
 
@@ -81,9 +81,9 @@ True effect = 3·tanh(h); EAP score = 3·(1 − tanh²h)·h; Spearman = Pearson 
 
 **Counterfactual recovery** patches S from an input showing behaviour B into one showing a reference behaviour B′ and asks what fraction of the difference moves:
 
-$$ \text{CFRecovery} = \mathbb{E}_{x_1,x_2}\left[\frac{M\big(f_\theta(x_{1,[S\leftarrow h_S(x_2)]})\big) - M\big(f_\theta(x_1)\big)}{M\big(f_\theta(x_2)\big) - M\big(f_\theta(x_1)\big)}\right] $$
+$$ \text{CFRecovery} = {\mathbb{E}_{x_1,x_2}}\left[\frac{{M\big(f_\theta(x_{1,[S\leftarrow h_S(x_2)]})\big) - M\big(f_\theta(x_1)\big)}}{{M\big(f_\theta(x_2)\big) - M\big(f_\theta(x_1)\big)}}\right] $$
 
-Survey §7.5.2 p. 60.
+Survey §7.5.2 [p. 60](https://arxiv.org/pdf/2611.08438#page=60).
 
 - **what patching moved**: Run the reference input x₁, but with S’s activations taken from x₂. How far did the metric move from x₁’s own value?
 
@@ -93,21 +93,21 @@ Survey §7.5.2 p. 60.
 
 Illustrative: 12 input pairs; patching truly recovers 80% of each pair’s gap, plus a little noise (±0.1 on the metric). Gaps vary ±50% around the slider value.
 
-The survey flags exactly this: the denominator can be near zero and patched values can overshoot, so the metric can land far above 1 or below 0; a bounded alternative has been proposed (Wu & Barez 2026) p. 61. Loss recovery for SAEs and CLTs has the same problem p. 61.
+The survey flags exactly this: the denominator can be near zero and patched values can overshoot, so the metric can land far above 1 or below 0; a bounded alternative has been proposed (Wu & Barez 2026) [p. 61](https://arxiv.org/pdf/2611.08438#page=61). Loss recovery for SAEs and CLTs has the same problem [p. 61](https://arxiv.org/pdf/2611.08438#page=61).
 
 #### How much is explained, and does it survive a re-run?
 
-- **Loss recovery** (SAEs, CLTs): of the loss lost by ablating a layer, how much does the reconstruction win back? **Unexplained variance**: the fraction of activation variance the reconstruction misses (the FVU of Sparse Autoencoders). **Behavioural coverage**: the fraction of prompts where S has an effect bigger than a threshold τ, so a mechanism that works on 3 of 40 prompts can’t pass as general pp. 61–62.
+- **Loss recovery** (SAEs, CLTs): of the loss lost by ablating a layer, how much does the reconstruction win back? **Unexplained variance**: the fraction of activation variance the reconstruction misses (the FVU of Sparse Autoencoders). **Behavioural coverage**: the fraction of prompts where S has an effect bigger than a threshold τ, so a mechanism that works on 3 of 40 prompts can’t pass as general [pp. 61–62](https://arxiv.org/pdf/2611.08438#page=61).
 
-- **Cross-seed agreement**: train K times and average the pairwise match between discovered feature sets (e.g. Hungarian matching on cosine similarity, as in SAE Failures and Alternatives). **Hyperparameter sensitivity**: (max − min) / mean of a result across reasonable settings. **Paraphrase consistency**: does S’s effect stay the same when the prompt is reworded? p. 62
+- **Cross-seed agreement**: train K times and average the pairwise match between discovered feature sets (e.g. Hungarian matching on cosine similarity, as in SAE Failures and Alternatives). **Hyperparameter sensitivity**: (max − min) / mean of a result across reasonable settings. **Paraphrase consistency**: does S’s effect stay the same when the prompt is reworded? [p. 62](https://arxiv.org/pdf/2611.08438#page=62)
 
-The protocol asks you to report robust and fragile findings separately p. 63.
+The protocol asks you to report robust and fragile findings separately [p. 63](https://arxiv.org/pdf/2611.08438#page=63).
 
 #### Is it the cause, and does it help a person?
 
-**Causal validity** uses necessity and sufficiency as in this lesson, with two additions: compare against _random component sets of the same size_, and test **specificity**, the share of S’s effect that falls on the target behaviour rather than on control behaviours: |s(S, B)| / ΣB′ |s(S, B′)| p. 63. (The survey normalises necessity and sufficiency by the clean metric, not by the clean–corrupted gap used in this lesson; the idea is the same.) Benchmarks: **MIB** (circuits and causal variables), **AxBench** (steering), **RAVEL** (localising concepts with interchange interventions), **SAEBench** (SAEs on reconstruction plus downstream tasks) p. 64.
+**Causal validity** uses necessity and sufficiency as in this lesson, with two additions: compare against _random component sets of the same size_, and test **specificity**, the share of S’s effect that falls on the target behaviour rather than on control behaviours: |s(S, B)| / ΣB′ |s(S, B′)| [p. 63](https://arxiv.org/pdf/2611.08438#page=63). (The survey normalises necessity and sufficiency by the clean metric, not by the clean–corrupted gap used in this lesson; the idea is the same.) Benchmarks: **MIB** (circuits and causal variables), **AxBench** (steering), **RAVEL** (localising concepts with interchange interventions), **SAEBench** (SAEs on reconstruction plus downstream tasks) [p. 64](https://arxiv.org/pdf/2611.08438#page=64).
 
-**Human interpretability** is measured as a difference with and without the explanation: do people predict held-out behaviour more accurately, find and fix errors more often, and do two raters agree (Cohen’s κ)? These studies are expensive, and expertise confounds them: what is clear to an interpretability researcher may be opaque to a domain expert p. 64.
+**Human interpretability** is measured as a difference with and without the explanation: do people predict held-out behaviour more accurately, find and fix errors more often, and do two raters agree (Cohen’s κ)? These studies are expensive, and expertise confounds them: what is clear to an interpretability researcher may be opaque to a domain expert [p. 64](https://arxiv.org/pdf/2611.08438#page=64).
 
 ## In practice
 
@@ -123,7 +123,7 @@ The protocol asks you to report robust and fragile findings separately p. 63.
 | **Reproducibility gaps** | Many hyperparameters, heavy training, results that change with seeds (SAE Failures and Alternatives), and reproducibility rarely reported. |
 | **Faithfulness–understandability gap** | Outputs are shown to be readable, less often shown to match the model’s real mechanism, which rewards persuasive stories. |
 
-Survey §7.5.1 pp. 58–59.
+Survey §7.5.1 [pp. 58–59](https://arxiv.org/pdf/2611.08438#page=58).
 
 #### Cherry-picking and missing baselines in one plot
 
@@ -131,7 +131,7 @@ A made-up method scored on 40 prompts (score = how much of the behaviour its exp
 
 Illustrative scores, generated with a fixed seed in your browser.
 
-The survey’s fix is to report coverage across a diverse input set with uncertainty, include failures, and always compare against baselines such as random directions, PCA, single neurons and supervised probes pp. 61, 65. Shared platforms for tracking and auditing claims across papers have also been proposed p. 59.
+The survey’s fix is to report coverage across a diverse input set with uncertainty, include failures, and always compare against baselines such as random directions, PCA, single neurons and supervised probes [pp. 61, 65](https://arxiv.org/pdf/2611.08438#page=65). Shared platforms for tracking and auditing claims across papers have also been proposed [p. 59](https://arxiv.org/pdf/2611.08438#page=59).
 
 ##### Next · 7.2
 
@@ -139,7 +139,7 @@ The survey’s answer: five dimensions every method should be scored on.
 
 ##### Sources for this tab
 
-- Survey §7.5–7.5.1, arXiv 2611.08438, pp. 58–59.
+- Survey §7.5–7.5.1, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 58–59.
 
 #### A five-step protocol, and what it can’t fix
 
@@ -153,7 +153,7 @@ The survey’s answer: five dimensions every method should be scored on.
 
 5. **Report everything**, including failures, unexplained behaviour and baseline comparisons.
 
-Survey §7.5.3 pp. 65–66. Table 10 tailors the priorities: for SAEs, cross-seed feature alignment and loss recovery; for circuits, counterfactual recovery and interchange tests; for probes and steering vectors, a search for confounds in the fitting set and side-effect analysis p. 65.
+Survey §7.5.3 [pp. 65–66](https://arxiv.org/pdf/2611.08438#page=65). Table 10 tailors the priorities: for SAEs, cross-seed feature alignment and loss recovery; for circuits, counterfactual recovery and interchange tests; for probes and steering vectors, a search for confounds in the fitting set and side-effect analysis [p. 65](https://arxiv.org/pdf/2611.08438#page=65).
 
 ##### The framework’s own limits (survey §7.5.4)
 
@@ -163,7 +163,7 @@ Survey §7.5.3 pp. 65–66. Table 10 tailors the priorities: for SAEs, cross-see
 
 - Scores depend on the task: good at factual recall doesn’t mean good at reasoning.
 
-The authors call it “a starting point for standardisation, not a final answer” p. 66.
+The authors call it “a starting point for standardisation, not a final answer” [p. 66](https://arxiv.org/pdf/2611.08438#page=66).
 
 ##### Next · Probing Classifiers
 
@@ -171,7 +171,7 @@ Reading activations directly: describing in plain language what a hidden activat
 
 ##### Sources for this tab
 
-- Survey §7.5.2–7.5.4, Tables 9–10, arXiv 2611.08438, pp. 59–66.
+- Survey §7.5.2–7.5.4, Tables 9–10, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 59–66.
 
 #### Toward shared standards
 
@@ -209,22 +209,24 @@ Faithful versus plausible?
 
 Plausible explanations convince people. Faithful ones match what interventions on the model show. Only faithful ones are safe to build on.
 
+#### The 30-second answer
+
 I'd treat the circuit as a hypothesis and test it two ways: knock it out and check the behaviour breaks, which is necessity, and knock out everything else and check it still works, which is sufficiency. Real circuits usually explain only part of a behaviour, and recovery can exceed 100% if components pushing the other way are removed, so I'd report both. Then I'd check that importance scores match real interventions, that results hold across seeds and paraphrases, how it compares to a random baseline, and whether it actually helps people predict or fix the model.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 4 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 4 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Chan et al., Causal Scrubbing (Redwood Research, 2022)
+- [Chan et al., Causal Scrubbing (Redwood Research, 2022)](https://www.lesswrong.com/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing)
 
-- Geiger et al., Causal Abstractions of Neural Networks (2021)
+- [Geiger et al., Causal Abstractions of Neural Networks (2021)](https://arxiv.org/abs/2106.02997)
 
-- Sharkey et al., Open Problems in Mechanistic Interpretability (2025)
+- [Sharkey et al., Open Problems in Mechanistic Interpretability (2025)](https://arxiv.org/abs/2501.16496)
 
-- Karvonen et al., SAEBench (ICML 2025)
+- [Karvonen et al., SAEBench (ICML 2025)](https://arxiv.org/abs/2503.09532)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

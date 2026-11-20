@@ -42,9 +42,9 @@ _Illustrative. Each pair sits the same angle apart, because each pair's gap is t
 
 #### RoPE: rotate queries and keys by position
 
-$$ \big(R_{m\theta}\, q\big)^{\!\top}\big(R_{n\theta}\, k\big) = q^{\top} R_{(n-m)\theta}\, k $$
+$$ {\big(R_{{m\theta}}\, q\big)^{\!\top}\big(R_{n\theta}\, k\big)} = {q^{\top} R_{(n-m)\theta}\, k} $$
 
-Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding", 2021 arXiv:2104.09864: RoPE encodes absolute position with a rotation matrix and makes the attention score depend on relative position. Used in LLaMA (Touvron et al. 2023), PaLM, Mistral, Qwen and most open LLMs.
+Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding", 2021 [arXiv:2104.09864](https://arxiv.org/abs/2104.09864): RoPE encodes absolute position with a rotation matrix and makes the attention score depend on relative position. Used in LLaMA (Touvron et al. 2023), PaLM, Mistral, Qwen and most open LLMs.
 
 - **rotation by position**: Split the query (and key) into 2-D pairs; rotate pair i by angle m·θ_i for a token at position m, with θ_i = 10000^(−2i/d) as in the sinusoids.
 
@@ -64,11 +64,11 @@ Shift both positions by 40 and the score is identical: only m − n matters. Cha
 
 #### In one breath
 
-Attention compares every token with every other but has no idea of **order**: shuffle the words and each token gets the same weights. So position must be injected. The original Transformer **added** fixed **sinusoidal** vectors to the embeddings; BERT and GPT-2 **learned** one vector per position. Most modern LLMs use **RoPE**: rotate each pair of query and key dimensions by an angle proportional to the token's position. Then the attention score depends only on the **relative distance** between two tokens, which is what language mostly cares about. Extending a model to longer contexts usually means adjusting these position schemes. Newer models also rotate only part of each head, skip RoPE in some layers, or add a learned distance bias instead.What you'll be able to do after this: explain why position is needed, compare absolute, learned, relative, RoPE and ALiBi, and show why RoPE gives relative positions, and say what recent models use instead of full RoPE.
+Attention compares every token with every other but has no idea of **order**: shuffle the words and each token gets the same weights. So position must be injected. The original Transformer **added** fixed **sinusoidal** vectors to the embeddings; BERT and GPT-2 **learned** one vector per position. Most modern LLMs use **RoPE**: rotate each pair of query and key dimensions by an angle proportional to the token's position. Then the attention score depends only on the **relative distance** between two tokens, which is what language mostly cares about. Extending a model to longer contexts usually means adjusting these position schemes. Newer models also rotate only part of each head, skip RoPE in some layers, or add a learned distance bias instead. What you'll be able to do after this: explain why position is needed, compare absolute, learned, relative, RoPE and ALiBi, and show why RoPE gives relative positions, and say what recent models use instead of full RoPE.
 
 #### Sinusoidal positional encoding
 
-$$ PE_{(pos,\,2i)} = \sin\!\Big(\frac{pos}{10000^{2i/d}}\Big),\qquad PE_{(pos,\,2i+1)} = \cos\!\Big(\frac{pos}{10000^{2i/d}}\Big) $$
+$$ {PE_{({pos},\,2i)} = \sin\!\Big(\frac{pos}{{10000^{2i/d}}}\Big),\qquad PE_{(pos,\,2i+1)} = \cos\!\Big(\frac{pos}{10000^{2i/d}}\Big)} $$
 
 Vaswani et al. (2017), §3.5: chosen because PE(pos + k) is a linear function (a rotation) of PE(pos), which may let the model attend by relative position; learned embeddings performed nearly identically in their tests. A small detail: the paper also multiplies the token embeddings by √dmodel before adding the encoding, most likely so the two are on a similar scale and position doesn't swamp meaning.
 
@@ -184,28 +184,28 @@ Why attention needs position information, sinusoidal encodings, learned absolute
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. P. Shaw, J. Uszkoreit & A. Vaswani, "Self-Attention with Relative Position Representations", NAACL 2018, arXiv:1803.02155.
+2. P. Shaw, J. Uszkoreit & A. Vaswani, "Self-Attention with Relative Position Representations", NAACL 2018, [arXiv:1803.02155](https://arxiv.org/abs/1803.02155).
 
-3. J. Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding", arXiv:2104.09864, 2021.
+3. J. Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding", [arXiv:2104.09864](https://arxiv.org/abs/2104.09864), 2021.
 
-4. O. Press, N. Smith & M. Lewis, "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (ALiBi), ICLR 2022, arXiv:2108.12409.
+4. O. Press, N. Smith & M. Lewis, "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (ALiBi), ICLR 2022, [arXiv:2108.12409](https://arxiv.org/abs/2108.12409).
 
-5. S. Chen, S. Wong, L. Chen & Y. Tian, "Extending Context Window of Large Language Models via Positional Interpolation", arXiv:2306.15595, 2023.
+5. S. Chen, S. Wong, L. Chen & Y. Tian, "Extending Context Window of Large Language Models via Positional Interpolation", [arXiv:2306.15595](https://arxiv.org/abs/2306.15595), 2023.
 
-6. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", arXiv:2302.13971, 2023.
+6. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023.
 
-7. C. Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer" (T5), JMLR 2020, arXiv:1910.10683.
+7. C. Raffel et al., "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer" (T5), JMLR 2020, [arXiv:1910.10683](https://arxiv.org/abs/1910.10683).
 
-8. A. Kazemnejad et al., "The Impact of Positional Encoding on Length Generalization in Transformers" (NoPE), NeurIPS 2023, arXiv:2305.19466.
+8. A. Kazemnejad et al., "The Impact of Positional Encoding on Length Generalization in Transformers" (NoPE), NeurIPS 2023, [arXiv:2305.19466](https://arxiv.org/abs/2305.19466).
 
-9. Hugging Face, "SmolLM3: smol, multilingual, long-context reasoner", 2025, huggingface.co/blog/smollm3.
+9. Hugging Face, "SmolLM3: smol, multilingual, long-context reasoner", 2025, [huggingface.co/blog/smollm3](https://huggingface.co/blog/smollm3).
 
-10. M. A. Khan, K. P. Gummadi, M. Gupta & A. Ravichander, "Fractional Rotation, Full Potential? Investigating Performance and Convergence of Partial RoPE", EMNLP 2026, arXiv:2603.11611.
+10. M. A. Khan, K. P. Gummadi, M. Gupta & A. Ravichander, "Fractional Rotation, Full Potential? Investigating Performance and Convergence of Partial RoPE", EMNLP 2026, [arXiv:2603.11611](https://arxiv.org/abs/2603.11611).
 
-11. Hugging Face Transformers, "MiniMax-M3-VL" model docs (rotary_dim = 64 of head_dim 128), huggingface.co.
+11. Hugging Face Transformers, "MiniMax-M3-VL" model docs (rotary_dim = 64 of head_dim 128), [huggingface.co](https://huggingface.co/docs/transformers/model_doc/minimax_m3_vl).
 
-12. S. Raschka, "Inkling Architecture and Benchmark Notes", 2026, sebastianraschka.com.
+12. S. Raschka, "Inkling Architecture and Benchmark Notes", 2026, [sebastianraschka.com](https://sebastianraschka.com/blog/2026/inkling-architecture-benchmark-notes.html).
 
-13. S. Raschka, "Understanding Positional Embeddings in Modern LLMs", Ahead of AI, Nov 2026, magazine.sebastianraschka.com.
+13. S. Raschka, "Understanding Positional Embeddings in Modern LLMs", Ahead of AI, Nov 2026, [magazine.sebastianraschka.com](https://magazine.sebastianraschka.com/p/understanding-positional-embeddings).

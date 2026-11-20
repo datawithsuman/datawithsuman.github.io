@@ -48,13 +48,13 @@ With W = 7, K = 3, stride 2 and no padding, the window lands at 3 places: output
 
 #### In one breath
 
-Three knobs set a conv layer's output size: the **kernel size** K, the **stride** S (how far the window jumps) and the **padding** P (zeros added around the border). The output width is **⌊(W + 2P − K) / S⌋ + 1**. "Same" padding (P = (K − 1)/2 with stride 1) keeps the size; "valid" (P = 0) shrinks it by K − 1. **Pooling** downsamples with a fixed rule instead of learned weights: **max pooling** keeps the strongest response in each window, **average pooling** keeps the mean. Downsampling cuts compute and grows the receptive field; **global average pooling** collapses each channel to one number before the classifier.What you'll be able to do after this: compute any conv or pooling output shape, choose padding, and count a layer's parameters and FLOPs.
+Three knobs set a conv layer's output size: the **kernel size** K, the **stride** S (how far the window jumps) and the **padding** P (zeros added around the border). The output width is **⌊(W + 2P − K) / S⌋ + 1**. "Same" padding (P = (K − 1)/2 with stride 1) keeps the size; "valid" (P = 0) shrinks it by K − 1. **Pooling** downsamples with a fixed rule instead of learned weights: **max pooling** keeps the strongest response in each window, **average pooling** keeps the mean. Downsampling cuts compute and grows the receptive field; **global average pooling** collapses each channel to one number before the classifier. What you'll be able to do after this: compute any conv or pooling output shape, choose padding, and count a layer's parameters and FLOPs.
 
 #### The output-size formula
 
-$$ W_{\text{out}} = \left\lfloor \frac{W + 2P - K}{S} \right\rfloor + 1 $$
+$$ W_{\text{out}} = \left\lfloor \frac{{W} + {2P} - {K}}{{S}} \right\rfloor + 1 $$
 
-CS231n; Dumoulin & Visin, "A guide to convolution arithmetic for deep learning", 2016 arXiv:1603.07285. Check: AlexNet's first layer, W = 227, K = 11, S = 4, P = 0 → (227 − 11)/4 + 1 = 55.
+CS231n; Dumoulin & Visin, "A guide to convolution arithmetic for deep learning", 2016 [arXiv:1603.07285](https://arxiv.org/abs/1603.07285). Check: AlexNet's first layer, W = 227, K = 11, S = 4, P = 0 → (227 − 11)/4 + 1 = 55.
 
 - **input size**: Width (or height) of the input feature map, W.
 
@@ -66,7 +66,7 @@ CS231n; Dumoulin & Visin, "A guide to convolution arithmetic for deep learning",
 
 #### Parameters and FLOPs of a conv layer
 
-$$ \text{params} = K^2 C_{\text{in}} C_{\text{out}} + C_{\text{out}}, \qquad \text{MACs} = K^2 C_{\text{in}} C_{\text{out}}\, H_{\text{out}} W_{\text{out}} $$
+$$ {\text{params} = K^2 C_{\text{in}} C_{\text{out}} + C_{\text{out}}}, \qquad {\text{MACs} = K^2 C_{\text{in}} C_{\text{out}}\, H_{\text{out}} W_{\text{out}}} $$
 
 Example: 3×3, 64 → 64 channels on 224×224 with same padding: 36,928 parameters and 64·64·9·224·224 ≈ 1.85 billion multiply-adds. FLOPs are often quoted as 2 × MACs.
 
@@ -150,12 +150,12 @@ How stride and padding control a conv layer's output size, the output-shape form
 
 #### Sources
 
-1. Stanford CS231n, Convolutional Neural Networks for Visual Recognition, course notes.
+1. Stanford CS231n, [Convolutional Neural Networks for Visual Recognition, course notes](https://cs231n.github.io/convolutional-networks/).
 
-2. V. Dumoulin & F. Visin, "A guide to convolution arithmetic for deep learning", arXiv:1603.07285, 2016.
+2. V. Dumoulin & F. Visin, "A guide to convolution arithmetic for deep learning", [arXiv:1603.07285](https://arxiv.org/abs/1603.07285), 2016.
 
-3. M. Lin, Q. Chen & S. Yan, "Network In Network", ICLR 2014, arXiv:1312.4400.
+3. M. Lin, Q. Chen & S. Yan, "Network In Network", ICLR 2014, [arXiv:1312.4400](https://arxiv.org/abs/1312.4400).
 
-4. J. Springenberg, A. Dosovitskiy, T. Brox & M. Riedmiller, "Striving for Simplicity: The All Convolutional Net", ICLR Workshop 2015, arXiv:1412.6806.
+4. J. Springenberg, A. Dosovitskiy, T. Brox & M. Riedmiller, "Striving for Simplicity: The All Convolutional Net", ICLR Workshop 2015, [arXiv:1412.6806](https://arxiv.org/abs/1412.6806).
 
-5. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §9.3, deeplearningbook.org.
+5. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, §9.3, [deeplearningbook.org](https://www.deeplearningbook.org/).

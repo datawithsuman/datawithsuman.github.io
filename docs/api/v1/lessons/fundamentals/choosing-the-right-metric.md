@@ -52,7 +52,7 @@ Normal approximation, treating the two accuracies as independent (conservative).
 
 #### In one breath
 
-Pick the metric from **what the model's output is used for**: a decision with asymmetric costs, a ranked list, a number, or a probability that feeds another calculation. Pair one **headline model metric** with the **business metric** it's meant to move and a few **guardrails** that must not get worse. Always compare against a baseline, and check whether a difference is bigger than the noise: on 1,000 test examples, 91% vs 90% accuracy is not a real win.What you'll be able to do after this: answer "which metric would you use for X?" for any scenario in under a minute, with a reason, and challenge a claimed improvement that's within noise.
+Pick the metric from **what the model's output is used for**: a decision with asymmetric costs, a ranked list, a number, or a probability that feeds another calculation. Pair one **headline model metric** with the **business metric** it's meant to move and a few **guardrails** that must not get worse. Always compare against a baseline, and check whether a difference is bigger than the noise: on 1,000 test examples, 91% vs 90% accuracy is not a real win. What you'll be able to do after this: answer "which metric would you use for X?" for any scenario in under a minute, with a reason, and challenge a claimed improvement that's within noise.
 
 #### Model metric, business metric, guardrails
 

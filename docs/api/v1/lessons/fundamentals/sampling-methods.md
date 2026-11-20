@@ -87,7 +87,7 @@ Uphill moves are always accepted. Downhill moves sometimes are, so it explores t
 
 #### The maths
 
-$$ \mathbb{E}_p[f(x)] = \mathbb{E}_q\!\left[f(x)\,\frac{p(x)}{q(x)}\right], \qquad A(x \to x') = \min\!\left(1,\; \frac{\tilde p(x')\,q(x \mid x')}{\tilde p(x)\,q(x' \mid x)}\right) $$
+$$ {\mathbb{E}_p[f(x)]} = \mathbb{E}_q\!\left[f(x)\,{\frac{p(x)}{q(x)}}\right], \qquad {A(x \to x') = \min\!\left(1,\; \frac{\tilde p(x')\,q(x \mid x')}{\tilde p(x)\,q(x' \mid x)}\right)} $$
 
 Worked example: for a Normal variable, P(X > 4) is about 0.00003. Plain sampling needs millions of draws to see it often. Sampling near 4 and reweighting takes far fewer.
 
@@ -141,19 +141,21 @@ What's the best acceptance rate for Metropolis?
 
 It isn't 100%. Very high acceptance usually means tiny steps, and a walk that explores slowly. A known rule of thumb for many-dimensional Gaussian targets is about 23%, and somewhat higher for low dimensions. In practice, look at effective sample size rather than acceptance alone.
 
+#### The 30-second answer
+
 For a simple distribution with a known inverse CDF, I'd use inverse transform. For rare events, I'd use importance sampling: sample from a distribution that hits the region, and reweight by p over q. For hard distributions known only up to a constant, I'd use MCMC. Metropolis-Hastings proposes a move, and accepts with chance min of 1 and the ratio, so the constant cancels. I'd tune the step size, discard burn-in, and check effective sample size, because samples are correlated. Multiple chains help detect stuck ones.
 
 **Key terms and sources**
 
-How computers sample: inverse transform, rejection and importance sampling, Metropolis-Hastings, and how to spot when MCMC is failing.
+How computers sample: inverse transform, rejection and importance sampling, Metropolis-Hastings, and how to spot when MCMC is failing. · checked 6 Nov 2026
 
 #### Sources
 
-- Blitzstein and Hwang, Introduction to Probability
+- [Blitzstein and Hwang, Introduction to Probability](https://www.oreilly.com/library/view/-/9781466575578/)
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
 - Integrals for ML on this site
 

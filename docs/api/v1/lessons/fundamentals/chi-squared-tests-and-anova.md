@@ -76,7 +76,7 @@ ANOVA doesn't say which group differs. Follow up with pairwise tests, corrected 
 
 #### The maths
 
-$$ \chi^2 = \sum_{\text{cells}} \frac{(O - E)^2}{E}, \qquad F = \frac{\text{variance between groups}}{\text{variance within groups}} $$
+$$ {\chi^2} = \sum_{\text{cells}} \frac{({O} - {E})^2}{{E}}, \qquad {F} = \frac{{\text{variance between groups}}}{{\text{variance within groups}}} $$
 
 Worked example: A converts 40 of 100, and B converts 60 of 100. Expected is 50 in each cell. χ² = 4 × 10²/50 = 8, with 1 degree of freedom, so p ≈ 0.005.
 
@@ -136,18 +136,20 @@ ANOVA is significant, but no pairwise test is. What's going on?
 
 It can happen. ANOVA pools evidence across all groups, while corrected pairwise tests are stricter, each with less power. It suggests something differs, without enough data to say which. You could look at a planned contrast, such as a trend across ordered groups, or collect more data.
 
+#### The 30-second answer
+
 I'd use chi-squared for categories: it compares observed counts with those expected if the variables were unrelated. I'd use ANOVA to compare a number's mean across three or more groups: it compares variation between groups with variation within them. Running all the pairwise t-tests instead inflates false positives. With five groups, that's ten tests, and up to a 40% chance of a false win. A significant ANOVA only says some group differs, so I'd follow up with corrected pairwise tests, like Tukey's.
 
 **Key terms and sources**
 
-Chi-squared tests for categories, ANOVA for comparing many group means, why repeated t-tests inflate false positives, and how to follow up.
+Chi-squared tests for categories, ANOVA for comparing many group means, why repeated t-tests inflate false positives, and how to follow up. · checked 6 Nov 2026
 
 #### Sources
 
-- Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics
+- [Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics](https://www.openintro.org/book/os/)
 
-- Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt
+- [Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt](https://toc.uni.li/FLMF048415.pdf)
 
-- KDnuggets on statistical concepts for interviews
+- [KDnuggets on statistical concepts for interviews](https://www.kdnuggets.com/2021/02/10-statistical-concepts-data-science-interviews.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

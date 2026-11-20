@@ -145,8 +145,10 @@ How do you test a new prompt before shipping?
 
 Run the golden set through the new version, and have an LLM judge score each answer against the expert reference. Compare with the current version, then watch live feedback after release.
 
+#### The 30-second answer
+
 I'd clarify where engineers ask, the volume, the sources and access rules. The bot lives in the existing chat channels and answers in the thread. A batch pipeline pulls a curated set of widely readable sources, chunks and embeds them. At query time I retrieve the closest chunks, put each in the prompt with its URL, and require the answer to use only those and cite them. Buttons collect resolved, helpful or not helpful, and offer a human. For policy documents with big tables I'd keep tables whole and summarised, add summaries and keywords to chunks, rewrite the query, pick likely documents first, then search with vectors plus keywords and put chunks back in order. I'd measure with an expert-written golden set scored by an LLM judge, plus live feedback, and use bad answers to fix the docs.
 
 **Key terms and sources**
 
-Based on a ride-hailing company's posts: "Genie: Uber's Gen AI On-Call Copilot" (Oct 2024) and "Enhanced Agentic-RAG" (May 2025). The lab's baseline is illustrative; the relative gains are the post's. Uses RAG end to end, parsing and chunking and agentic RAG.
+Based on a ride-hailing company's posts: ["Genie: Uber's Gen AI On-Call Copilot"](https://www.uber.com/blog/genie-ubers-gen-ai-on-call-copilot/) (Oct 2024) and ["Enhanced Agentic-RAG"](https://www.uber.com/blog/enhanced-agentic-rag/) (May 2025). The lab's baseline is illustrative; the relative gains are the post's. Uses RAG end to end, parsing and chunking and agentic RAG. · checked 15 Nov 2026

@@ -147,8 +147,10 @@ How would you prove it helps the business?
 
 Randomly assign agents to use the tool or not, and compare resolution times; offline metrics alone don't show time saved.
 
+#### The 30-second answer
+
 I'd clarify who uses it, what fields tickets have and how tickets link to each other. Plain chunking would split a ticket's problem from its fix, so I'd parse each ticket into a tree of sections, using rules for fixed fields and an LLM with a template for the rest. I'd link tickets by their explicit references and by very similar titles. Each section is embedded. For a new question, an LLM extracts entities and the intent; I match each entity against the same section across tickets, sum per ticket, and keep the top few. Then an LLM writes a graph query for the section needed, like the fix, with plain text retrieval as a fallback. I'd evaluate with MRR and recall against a golden set, then run a randomised trial on resolution time.
 
 **Key terms and sources**
 
-Based on a professional network's published paper: "Retrieval-Augmented Generation with Knowledge Graphs for Customer Service Question Answering" (SIGIR 2024). The lab uses the paper's own numbers; the estimate is ours. Uses RAG end to end, embeddings and vector indexes and ranking metrics.
+Based on a professional network's published paper: ["Retrieval-Augmented Generation with Knowledge Graphs for Customer Service Question Answering"](https://arxiv.org/abs/2404.17723) (SIGIR 2024). The lab uses the paper's own numbers; the estimate is ours. Uses RAG end to end, embeddings and vector indexes and ranking metrics. · checked 15 Nov 2026

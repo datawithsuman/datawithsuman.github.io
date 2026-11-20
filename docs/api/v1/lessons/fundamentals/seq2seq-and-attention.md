@@ -48,7 +48,7 @@ Producing **froid**, the decoder puts most of its weight on **cold**, and produc
 
 #### In one breath
 
-**Seq2seq** models handle tasks where both the input and output are sequences of different lengths, like translation or summarisation: an **encoder** RNN reads the input, a **decoder** RNN writes the output one token at a time. The original design squeezed the whole input into **one fixed-size vector**, a bottleneck that hurt long sentences. **Bahdanau attention** removed it: at each output step the decoder scores every encoder state, turns the scores into weights with a softmax, and reads a weighted average (the **context vector**). The weights form a soft **alignment** between output and input words, learned without any alignment labels. This idea, with the RNNs removed, became the Transformer.What you'll be able to do after this: describe an encoder–decoder, explain the bottleneck, and compute attention weights and a context vector.
+**Seq2seq** models handle tasks where both the input and output are sequences of different lengths, like translation or summarisation: an **encoder** RNN reads the input, a **decoder** RNN writes the output one token at a time. The original design squeezed the whole input into **one fixed-size vector**, a bottleneck that hurt long sentences. **Bahdanau attention** removed it: at each output step the decoder scores every encoder state, turns the scores into weights with a softmax, and reads a weighted average (the **context vector**). The weights form a soft **alignment** between output and input words, learned without any alignment labels. This idea, with the RNNs removed, became the Transformer. What you'll be able to do after this: describe an encoder–decoder, explain the bottleneck, and compute attention weights and a context vector.
 
 #### Encoder–decoder (seq2seq)
 
@@ -60,9 +60,9 @@ Producing **froid**, the decoder puts most of its weight on **cold**, and produc
 
 #### Bahdanau attention: look back at every word
 
-$$ e_{ij} = \mathrm{score}(s_{i-1}, h_j), \qquad \alpha_{ij} = \frac{\exp(e_{ij})}{\sum_k \exp(e_{ik})}, \qquad c_i = \sum_j \alpha_{ij}\, h_j $$
+$$ {e_{ij} = \mathrm{score}(s_{i-1}, h_j)}, \qquad {\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_k \exp(e_{ik})}}, \qquad {c_i = \sum_j \alpha_{ij}\, h_j} $$
 
-Bahdanau, Cho & Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015 arXiv:1409.0473: with a bidirectional encoder and attention, English→French quality was comparable to the phrase-based system of the time and, unlike the plain encoder–decoder, held up on long sentences. Luong et al. (EMNLP 2015) introduced simpler dot-product variants.
+Bahdanau, Cho & Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015 [arXiv:1409.0473](https://arxiv.org/abs/1409.0473): with a bidirectional encoder and attention, English→French quality was comparable to the phrase-based system of the time and, unlike the plain encoder–decoder, held up on long sentences. Luong et al. (EMNLP 2015) introduced simpler dot-product variants.
 
 - **score**: How relevant is source word j for producing output word i? Bahdanau used a small neural net on the decoder state and encoder state (additive attention); Luong et al. used a dot product.
 
@@ -132,12 +132,12 @@ Encoder–decoder models for sequence-to-sequence tasks, the fixed-length bottle
 
 #### Sources
 
-1. I. Sutskever, O. Vinyals & Q. Le, "Sequence to Sequence Learning with Neural Networks", NeurIPS 2014, arXiv:1409.3215.
+1. I. Sutskever, O. Vinyals & Q. Le, "Sequence to Sequence Learning with Neural Networks", NeurIPS 2014, [arXiv:1409.3215](https://arxiv.org/abs/1409.3215).
 
-2. K. Cho et al., "Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation", EMNLP 2014, arXiv:1406.1078.
+2. K. Cho et al., "Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation", EMNLP 2014, [arXiv:1406.1078](https://arxiv.org/abs/1406.1078).
 
-3. D. Bahdanau, K. Cho & Y. Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015, arXiv:1409.0473.
+3. D. Bahdanau, K. Cho & Y. Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015, [arXiv:1409.0473](https://arxiv.org/abs/1409.0473).
 
-4. M.-T. Luong, H. Pham & C. Manning, "Effective Approaches to Attention-based Neural Machine Translation", EMNLP 2015, arXiv:1508.04025.
+4. M.-T. Luong, H. Pham & C. Manning, "Effective Approaches to Attention-based Neural Machine Translation", EMNLP 2015, [arXiv:1508.04025](https://arxiv.org/abs/1508.04025).
 
-5. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+5. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).

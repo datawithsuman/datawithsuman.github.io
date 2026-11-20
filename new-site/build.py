@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Builds the static site into dist/. Run: python3 build.py"""
+import datetime as dt
 import json
 import random
 import re
@@ -15,7 +16,7 @@ import ai_engineering
 import maths_for_ml
 import ab_testing
 import ml_import
-from lesson_plans import PAPER_PLANS, PLANS
+from lesson_plans import CHECKED_ON, PAPER_PLANS, PLANS
 from content import BODIES, TOKENS, TRACKS, WEIGHTS
 
 HERE = Path(__file__).parent
@@ -528,6 +529,23 @@ def imported_lesson(l, root):
     return center, toc, extra_head, "\n".join(src["scripts"]) + "\n"
 
 
+def with_checked(key, built_from):
+    """Every lesson says when its sources were last checked. Older imported pages carry the date; for the rest
+    it's the date the lesson was written in its area's audit (CHECKED_ON in lesson_plans)."""
+    if re.search(r"checked \d{1,2} \w{3,9} 20\d\d", built_from or "", re.I) or key not in CHECKED_ON:
+        return built_from
+    date = CHECKED_ON[key]
+    try:  # a lesson first published after its area's audit was checked when it was written
+        first = json.loads(UPDATES_FILE.read_text())["seen"].get(f"tracks/{key}/", "")
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", first):
+            d = dt.date.fromisoformat(first)
+            if d > dt.datetime.strptime(date, "%d %b %Y").date():
+                date = f"{d.day} {d:%b %Y}"
+    except (OSError, ValueError, KeyError):
+        pass
+    return f"{built_from.rstrip()} · checked {date}" if (built_from or "").strip() else f"Sources checked {date}"
+
+
 def say_it_html(plan, followups, answer):
     """The interview block for seven-section lessons. Without JavaScript every step simply shows."""
     n = len(followups)
@@ -549,6 +567,8 @@ def say_it_html(plan, followups, answer):
     parts = re.split(r"(?=<h3>)", answer.strip())
     parts = [x for x in parts if x.strip()]
     lead, more = parts[0], "".join(parts[1:])
+    if not lead.lstrip().startswith("<h3"):
+        lead = "<h3>The 30-second answer</h3>" + lead  # newer lessons left the label out; every lesson shows it
     more_html = f'<details class="say-more"><summary>Go further</summary>{more}</details>' if more else ""
     return f"""<section class="say-card" id="interview">
 <header class="say-head"><p class="eyebrow">Say it</p><h2>{esc(plan['q'])}</h2></header>
@@ -607,7 +627,7 @@ def plan_lesson(l, root):
                 raise ValueError(f'{l["key"]}: script edit does not match: {old}')
             scripts = scripts.replace(old, new)
         chapters = {c["id"]: c["html"] for c in src["chapters"]}
-        built_from, preamble = src["built_from"], src["preamble"]
+        built_from, preamble = with_checked(l["key"], src["built_from"]), src["preamble"]
         summary = f'<section class="ch" id="summary"><h3>In one breath</h3>{src["idea"]}{src["legend"]}</section>'
         followups = re.findall(r'<details class="qa"><summary>(.*?)</summary>(?:<p>)?(.*?)(?:</p>)?</details>', src["answer"], re.S)
         answer = re.sub(r'<h3>Likely follow-ups</h3>|<details class="qa">.*?</details>', "", src["answer"], flags=re.S)

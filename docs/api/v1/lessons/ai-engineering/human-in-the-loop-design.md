@@ -90,7 +90,7 @@ In a study of 36 people overseeing a coding agent, silent defects were caught on
 
 #### The maths
 
-$$ \text{harm per day} = \sum_{\text{tiers}} n_t\,b_t\,\big(1 - c_t\big) $$
+$$ {\text{harm per day}} = \sum_{\text{tiers}} {n_t}\,{b_t}\,\big(1 - {c_t}\big) $$
 
 The design question is where to spend scarce human attention: on the tier where catching a harmful action matters most.
 
@@ -150,30 +150,32 @@ What should an approval screen show?
 
 The complete action and its arguments, its effect, who it reaches, whether it can be undone, and what's unusual compared with normal behaviour.
 
+#### The 30-second answer
+
 Approval only helps if people look, and they mostly don't: users accepted about 93% of prompts in Anthropic's data. So I'd require approval by stakes, reversibility and external visibility, enforced in the harness, because models ask far less when acting than when judging. I'd cut prompts with containment, like sandboxes and scoped credentials, which removed 84% of prompts in one case, and use a checked classifier for the middle ground. Each prompt shows the complete action, the approval is bound to exactly that action and re-checked before it runs, and review fails closed if nobody answers.
 
 **Key terms and sources**
 
-Deciding which agent actions need a person, approval patterns (approve, edit, reject), levels of autonomy, approval fatigue, containment instead of prompts, tying each approval to the exact action, and what makes a reviewer actually catch mistakes.
+Deciding which agent actions need a person, approval patterns (approve, edit, reject), levels of autonomy, approval fatigue, containment instead of prompts, tying each approval to the exact action, and what makes a reviewer actually catch mistakes. · checked 7 Nov 2026
 
 #### Sources
 
-- Anthropic, Beyond permission prompts: Claude Code sandboxing, Oct 2025
+- [Anthropic, Beyond permission prompts: Claude Code sandboxing, Oct 2025](https://www.anthropic.com/engineering/claude-code-sandboxing)
 
-- Anthropic, How we built Claude Code auto mode, Mar 2026
+- [Anthropic, How we built Claude Code auto mode, Mar 2026](https://www.anthropic.com/engineering/claude-code-auto-mode)
 
-- Anthropic, How we contain Claude across products, May 2026
+- [Anthropic, How we contain Claude across products, May 2026](https://www.anthropic.com/engineering/how-we-contain-claude)
 
-- OpenAI Agents SDK, guardrails and human review
+- [OpenAI Agents SDK, guardrails and human review](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)
 
-- LangChain, human-in-the-loop middleware
+- [LangChain, human-in-the-loop middleware](https://docs.langchain.com/oss/python/langchain/human-in-the-loop)
 
-- Google ADK, action confirmations
+- [Google ADK, action confirmations](https://adk.dev/tools-custom/confirmation/)
 
-- Pochampally, DelegationBench: when AI agents should ask before acting
+- [Pochampally, DelegationBench: when AI agents should ask before acting](https://arxiv.org/abs/2610.05532)
 
-- Arun Kumar, Loopjacking: hijacking human-in-the-loop approval
+- [Arun Kumar, Loopjacking: hijacking human-in-the-loop approval](https://arxiv.org/abs/2609.21081)
 
-- Dissanayake et al., Looks Fine to Me: understanding oversight in agentic interactions
+- [Dissanayake et al., Looks Fine to Me: understanding oversight in agentic interactions](https://arxiv.org/abs/2610.27801)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

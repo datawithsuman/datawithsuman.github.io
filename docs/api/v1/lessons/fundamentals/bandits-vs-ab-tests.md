@@ -82,7 +82,7 @@ At first, the beliefs are wide, and traffic is mixed. As one arm pulls ahead, it
 
 #### The maths
 
-$$ \text{Regret} = \sum_{t=1}^{N} \left(\mu^* - \mu_{a_t}\right), \qquad p_i \sim \mathrm{Beta}(1 + s_i,\; 1 + f_i) $$
+$$ {\text{Regret}} = \sum_{t=1}^{N} \left({\mu^*} - {\mu_{a_t}}\right), \qquad {p_i} \sim \mathrm{Beta}(1 + s_i,\; 1 + f_i) $$
 
 The Beta distribution suits yes or no outcomes. It starts flat, and narrows with more data.
 
@@ -140,14 +140,16 @@ Why can't you read a bandit's result with a normal A/B test formula?
 
 Because traffic share depended on earlier results. An arm that got lucky early receives more traffic, so simple averages can be biased, and the samples aren't independent. You need methods that account for the allocation, using the logged probabilities.
 
+#### The 30-second answer
+
 A bandit shifts traffic to the better option as it learns, so fewer users see the worse one. Thompson sampling does this by showing each arm according to the chance it's best. But you pay in measurement: the weaker arm gets little traffic, so the effect estimate is noisier, and guardrails and segments are harder. It also needs quick feedback. I'd use a bandit for short-lived choices like headlines, and an A/B test for lasting decisions where I need to know the size of the effect.
 
 **Key terms and sources**
 
-How multi-armed bandits and Thompson sampling trade clean measurement for lower regret, and when to choose each.
+How multi-armed bandits and Thompson sampling trade clean measurement for lower regret, and when to choose each. · checked 7 Nov 2026
 
 #### Sources
 
-- Feit and Berman, Test and Roll: Profit-Maximizing A/B Tests
+- [Feit and Berman, Test and Roll: Profit-Maximizing A/B Tests](https://arxiv.org/abs/1811.00457)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

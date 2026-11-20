@@ -76,7 +76,7 @@ Wallace et al. proposed training models to rank instructions: the system prompt 
 
 #### The maths
 
-$$ P(\text{all followed}) \approx p^{\,N} $$
+$$ {P(\text{all followed})} \approx {p}^{\,{N}} $$
 
 A simple model that assumes rules fail independently. Real models fell faster than this in the stress test, as rules compete for attention. It still shows why 20 rules that each work 95% of the time aren't reliable together.
 
@@ -134,22 +134,24 @@ How do you know which rules to delete?
 
 Run your rule tests without each rule. If the model still behaves correctly, the rule may be redundant for this model. Keep rules that protect against real incidents.
 
+#### The 30-second answer
+
 Rules compete, so the chance of keeping all of them falls as the list grows. In one stress test, pass rates fell towards zero by 20 rules, and real system prompts average about 5. Models learn to rank the system prompt above users and tools, but that's trained, not guaranteed. So I keep the prompt short and free of conflicts, explain why each rule exists, and enforce hard limits in code, like refund caps in the tool itself. Then I test every rule with a trigger message on each change, including in long conversations, and keep the prompt and schema generated from one source.
 
 **Key terms and sources**
 
-Why models break rules as system prompts grow, the instruction hierarchy, conflicts between the system prompt, users, tools and schemas, and how to write, test and enforce many rules.
+Why models break rules as system prompts grow, the instruction hierarchy, conflicts between the system prompt, users, tools and schemas, and how to write, test and enforce many rules. · checked 7 Nov 2026
 
 #### Sources
 
-- Mu, Lu, Lavery and Wagner, A Closer Look at System Prompt Robustness
+- [Mu, Lu, Lavery and Wagner, A Closer Look at System Prompt Robustness](https://arxiv.org/abs/2502.12197)
 
-- Wallace et al., The Instruction Hierarchy
+- [Wallace et al., The Instruction Hierarchy](https://arxiv.org/abs/2404.13208)
 
-- Lin, Your Prompt Is Not the Only Prompt: schema descriptions as instructions
+- [Lin, Your Prompt Is Not the Only Prompt: schema descriptions as instructions](https://arxiv.org/abs/2608.08254)
 
-- Anthropic, Effective context engineering for AI agents
+- [Anthropic, Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 
-- OpenAI, GPT-5 prompting guide (archived cookbook)
+- [OpenAI, GPT-5 prompting guide (archived cookbook)](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor guides change with each model.

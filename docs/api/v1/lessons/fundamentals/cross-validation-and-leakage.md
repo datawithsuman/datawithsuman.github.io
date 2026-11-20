@@ -20,7 +20,7 @@ Your cross-validation says 0.92 AUC, and production says 0.70. Nothing in the co
 
 #### The score you report is a prediction too
 
-"Validation accuracy 86%" is a claim about data the model hasn't seen. If any information about that data leaked into training, the claim is wrong, and nothing in the code will tell you. scikit-learn: testing on the training data "is a methodological mistake: a model that would just repeat the labels of the samples that it has just seen would have a perfect score but would fail to predict anything useful on yet-unseen data" cross-validation guide. Every technique on this page exists to keep the scoring data genuinely unseen.
+"Validation accuracy 86%" is a claim about data the model hasn't seen. If any information about that data leaked into training, the claim is wrong, and nothing in the code will tell you. scikit-learn: testing on the training data "is a methodological mistake: a model that would just repeat the labels of the samples that it has just seen would have a perfect score but would fail to predict anything useful on yet-unseen data" [cross-validation guide](https://scikit-learn.org/stable/modules/cross_validation.html). Every technique on this page exists to keep the scoring data genuinely unseen.
 
 ### The idea
 
@@ -38,7 +38,7 @@ _5-fold cross-validation: each block gets one turn being held out._
 
 200 customers, 10,000 random features, random churn labels. Pick the 25 features whose class means differ most, then classify with nearest centroid. Generated in your browser (takes a second).
 
-Selecting on all rows: CV accuracy **86.5%** on data with no signal at all. Selecting inside each training fold: **51%**, the truth. With 10,000 random features, some will separate the two classes in these 200 rows by pure chance; selecting them with the validation rows included bakes that chance into the "test". scikit-learn's own version of this experiment: 0.76 accuracy when selecting on all data vs 0.5 when splitting first common pitfalls. The same leak, smaller, happens with scaling, imputation, target encoding and SMOTE fitted before the split.
+Selecting on all rows: CV accuracy **86.5%** on data with no signal at all. Selecting inside each training fold: **51%**, the truth. With 10,000 random features, some will separate the two classes in these 200 rows by pure chance; selecting them with the validation rows included bakes that chance into the "test". scikit-learn's own version of this experiment: 0.76 accuracy when selecting on all data vs 0.5 when splitting first [common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage). The same leak, smaller, happens with scaling, imputation, target encoding and SMOTE fitted before the split.
 
 **Now say why:** how did pure noise score so well, when no line of code looks wrong?
 
@@ -48,7 +48,7 @@ Selecting on all rows: CV accuracy **86.5%** on data with no signal at all. Sele
 
 #### In one breath
 
-An evaluation is only honest if the data used to score the model played **no part** in building it. **k-fold cross-validation** rotates which slice is held out, so every row is tested once and the estimate is less noisy than a single split. The split must copy how the model will meet new data in production: **stratify** rare classes, keep each **group** (patient, customer, device) on one side, and never let a model see the **future**. **Leakage** is any information at training time that won't exist at prediction time: preprocessing or feature selection fitted on all rows, tuning on the test set, duplicated or related rows across the split, or features that are recorded after the outcome. Leaks don't crash anything; they just give you a great score that vanishes in production.What you'll be able to do after this: choose the right splitter for a dataset, explain nested CV, spot the five common leaks, and reproduce three of them with numbers.
+An evaluation is only honest if the data used to score the model played **no part** in building it. **k-fold cross-validation** rotates which slice is held out, so every row is tested once and the estimate is less noisy than a single split. The split must copy how the model will meet new data in production: **stratify** rare classes, keep each **group** (patient, customer, device) on one side, and never let a model see the **future**. **Leakage** is any information at training time that won't exist at prediction time: preprocessing or feature selection fitted on all rows, tuning on the test set, duplicated or related rows across the split, or features that are recorded after the outcome. Leaks don't crash anything; they just give you a great score that vanishes in production. What you'll be able to do after this: choose the right splitter for a dataset, explain nested CV, spot the five common leaks, and reproduce three of them with numbers.
 
 #### Train, validation, test, and k-fold
 
@@ -62,9 +62,9 @@ An evaluation is only honest if the data used to score the model played **no par
 
 5. Use the CV score to choose models and settings; report the test score once, for the final choice.
 
-$$ \mathrm{CV}_k = \frac1k\sum_{j=1}^{k} \mathrm{Score}\bigl(\hat f^{(-j)},\ \text{fold}_j\bigr) $$
+$$ {\mathrm{CV}_k} = {\frac1k\sum_{j=1}^{k}} {\mathrm{Score}\bigl(}{\hat f^{(-j)}}{,\ \text{fold}_j\bigr)} $$
 
-scikit-learn also notes leave-one-out "often results in high variance as an estimator for the test error" and costs n fits cross-validation guide.
+scikit-learn also notes leave-one-out "often results in high variance as an estimator for the test error" and costs n fits [cross-validation guide](https://scikit-learn.org/stable/modules/cross_validation.html).
 
 - **the CV estimate**: Estimated performance of the whole training procedure on unseen data.
 
@@ -82,15 +82,15 @@ Two rules cover almost everything:
 
 2. **The validation fold must look like the future.** If production sees new customers, validation must contain customers the model never saw; if production sees next month, validation must be later than training.
 
-Kaufman, Rosset, Perlich & Stitelman define leakage as "the introduction of information about the data mining target that should not be legitimately available to mine from", and recommend a strict "learn-predict separation" ACM TKDD 2012.
+Kaufman, Rosset, Perlich & Stitelman define leakage as "the introduction of information about the data mining target that should not be legitimately available to mine from", and recommend a strict "learn-predict separation" [ACM TKDD 2012](https://doi.org/10.1145/2382577.2382579).
 
 #### Tune inside, score outside
 
-If you choose hyperparameters with the same CV loop that produces the score you report, the score is optimistic (the same leak as tuning on test, in a milder form). **Nested CV** wraps the whole tuning procedure (e.g. a `GridSearchCV`) inside an outer loop: each outer fold is scored by a model whose settings were chosen using only the other folds. Varma & Simon (2006) showed that tuning and estimating in one CV loop gives a biased error estimate, and that the nested procedure "gives an estimate of the error that is very close to that obtained on the independent testing set" BMC Bioinformatics 7. It costs kouter × kinner × grid fits; with plenty of data, a single untouched test set does the same job.
+If you choose hyperparameters with the same CV loop that produces the score you report, the score is optimistic (the same leak as tuning on test, in a milder form). **Nested CV** wraps the whole tuning procedure (e.g. a `GridSearchCV`) inside an outer loop: each outer fold is scored by a model whose settings were chosen using only the other folds. Varma & Simon (2006) showed that tuning and estimating in one CV loop gives a biased error estimate, and that the nested procedure "gives an estimate of the error that is very close to that obtained on the independent testing set" [BMC Bioinformatics 7](https://doi.org/10.1186/1471-2105-7-91). It costs kouter × kinner × grid fits; with plenty of data, a single untouched test set does the same job.
 
 ##### Target leakage: features that encode the answer
 
-A feature recorded _after_ or _because of_ the outcome: "refund issued" when predicting fraud, "account closed date" when predicting churn, "treatment given" when predicting diagnosis. CV can't catch it (it's present in every fold); only asking "would I have this value at prediction time?" does. Leaks like these are a recurring theme in data-mining competitions; Kaufman et al. survey several, including KDD Cup cases TKDD 2012. A warning sign: a single feature with suspiciously high importance, or validation accuracy far above what domain experts manage.
+A feature recorded _after_ or _because of_ the outcome: "refund issued" when predicting fraud, "account closed date" when predicting churn, "treatment given" when predicting diagnosis. CV can't catch it (it's present in every fold); only asking "would I have this value at prediction time?" does. Leaks like these are a recurring theme in data-mining competitions; Kaufman et al. survey several, including KDD Cup cases [TKDD 2012](https://doi.org/10.1145/2382577.2382579). A warning sign: a single feature with suspiciously high importance, or validation accuracy far above what domain experts manage.
 
 Choosing features is a common way to leak: see feature selection.
 
@@ -108,7 +108,7 @@ Choosing features is a common way to leak: see feature selection.
 | Time-ordered data | `TimeSeriesSplit` (or a date cut-off) | Train on the past, test on the future; shuffled CV on time series gives "poor estimates of generalization error" |
 | Tuning + honest estimate | Nested CV | Inner loop tunes, outer loop scores (see the Maths tab) |
 
-Quotes from scikit-learn's cross-validation guide docs, which adds: "While i.i.d. data is a common assumption in machine learning theory, it rarely holds in practice."
+Quotes from scikit-learn's cross-validation guide [docs](https://scikit-learn.org/stable/modules/cross_validation.html), which adds: "While i.i.d. data is a common assumption in machine learning theory, it rarely holds in practice."
 
 #### The whole recipe
 
@@ -136,23 +136,23 @@ Time-based split (train on earlier months, validate on later) and keep each cust
 
 #### "Prepare the data first, then cross-validate"
 
-The most common leak looks like good hygiene: scale, impute, select features or balance classes on the full dataset, then run CV on the result. But every one of those steps learned something from the rows that will later be the validation folds. scikit-learn: "Data leakage occurs when information that would not be available at prediction time is used when building the model … The general rule is to never call `fit` on the test data" common pitfalls. How big can it get? The Leak 1 section shows a model scoring 86% on pure noise.
+The most common leak looks like good hygiene: scale, impute, select features or balance classes on the full dataset, then run CV on the result. But every one of those steps learned something from the rows that will later be the validation folds. scikit-learn: "Data leakage occurs when information that would not be available at prediction time is used when building the model … The general rule is to never call `fit` on the test data" [common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage). How big can it get? The Leak 1 section shows a model scoring 86% on pure noise.
 
 #### Try enough models and one will look good
 
 Every variant is a coin-flip model (true accuracy 50%). Each dot is one variant's validation accuracy on the same 50 rows.
 
-With 50 validation rows, a single coin-flip model already scored 58% here by luck; the best of 10 scored 62%, of 100 68%, and of 1,000 **70%**. On 10,000 fresh rows, the "winner" scores 50%: it was never better, just luckier on that sample. Hyperparameter searches, feature experiments and "let me try one more thing" all do this. scikit-learn: tuning against the test set means "knowledge about the test set can 'leak' into the model and evaluation metrics no longer report on generalization performance" cross-validation guide. The cure: choose on validation/CV, and report a test set used once. With small data and heavy tuning, use nested CV.
+With 50 validation rows, a single coin-flip model already scored 58% here by luck; the best of 10 scored 62%, of 100 68%, and of 1,000 **70%**. On 10,000 fresh rows, the "winner" scores 50%: it was never better, just luckier on that sample. Hyperparameter searches, feature experiments and "let me try one more thing" all do this. scikit-learn: tuning against the test set means "knowledge about the test set can 'leak' into the model and evaluation metrics no longer report on generalization performance" [cross-validation guide](https://scikit-learn.org/stable/modules/cross_validation.html). The cure: choose on validation/CV, and report a test set used once. With small data and heavy tuning, use nested CV.
 
 #### The same rider in train and test
 
 40 riders × 8 trips. Each rider's trips share a personal "signature" (phone, route, riding style) but the badge is random: trip features carry no real signal about it. Strip: each square is a rider; split = trips of that rider on both sides.
 
-Random K-fold: **92.5%**. The model just recognises the rider from their other trips in the training folds. GroupKFold: **47%**, the honest coin flip. scikit-learn's example is the same: a model "flexible enough to learn from highly person specific features … could fail to generalize to new subjects. GroupKFold makes it possible to detect this kind of overfitting" docs. Same story for medical images (several scans per patient), sessions per user, near-duplicate documents, and augmented copies of one image.
+Random K-fold: **92.5%**. The model just recognises the rider from their other trips in the training folds. GroupKFold: **47%**, the honest coin flip. scikit-learn's example is the same: a model "flexible enough to learn from highly person specific features … could fail to generalize to new subjects. GroupKFold makes it possible to detect this kind of overfitting" [docs](https://scikit-learn.org/stable/modules/cross_validation.html#group-k-fold). Same story for medical images (several scans per patient), sessions per user, near-duplicate documents, and augmented copies of one image.
 
 ##### Time leaks
 
-If production predicts next week, validation must be later than training. Shuffled CV on time-ordered data tests on rows "artificially similar (close in time) to training samples" docs. Also watch features computed with future data: a 30-day rolling average that includes days after the prediction, "total orders this month" used on day 3, or a customer's lifetime value as of today.
+If production predicts next week, validation must be later than training. Shuffled CV on time-ordered data tests on rows "artificially similar (close in time) to training samples" [docs](https://scikit-learn.org/stable/modules/cross_validation.html). Also watch features computed with future data: a 30-day rolling average that includes days after the prediction, "total orders this month" used on day 3, or a customer's lifetime value as of today.
 
 #### Caveats
 
@@ -238,7 +238,7 @@ riders split randomly
 
 47.2%
 
-Illustrative simulations with no real signal. scikit-learn's own feature-selection example: 0.76 leaked vs 0.5 honest common pitfalls.
+Illustrative simulations with no real signal. scikit-learn's own feature-selection example: 0.76 leaked vs 0.5 honest [common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage).
 
 #### Key terms
 
@@ -253,13 +253,13 @@ Illustrative simulations with no real signal. scikit-learn's own feature-selecti
 
 #### What this page is built from
 
-1. scikit-learn, Cross-validation: evaluating estimator performance (k-fold, LOO, stratified, group, time-series splits, i.i.d. caveats, test-set leakage).
+1. scikit-learn, [Cross-validation: evaluating estimator performance](https://scikit-learn.org/stable/modules/cross_validation.html) (k-fold, LOO, stratified, group, time-series splits, i.i.d. caveats, test-set leakage).
 
-2. scikit-learn, Common pitfalls and recommended practices (data leakage definition, feature-selection example, pipelines).
+2. scikit-learn, [Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html) (data leakage definition, feature-selection example, pipelines).
 
-3. S. Varma & R. Simon, "Bias in error estimation when using cross-validation for model selection", _BMC Bioinformatics_ 7:91, 2006, doi (nested CV).
+3. S. Varma & R. Simon, "Bias in error estimation when using cross-validation for model selection", _BMC Bioinformatics_ 7:91, 2006, [doi](https://doi.org/10.1186/1471-2105-7-91) (nested CV).
 
-4. S. Kaufman, S. Rosset, C. Perlich & O. Stitelman, "Leakage in data mining: formulation, detection, and avoidance", _ACM TKDD_ 6(4), 2012, doi.
+4. S. Kaufman, S. Rosset, C. Perlich & O. Stitelman, "Leakage in data mining: formulation, detection, and avoidance", _ACM TKDD_ 6(4), 2012, [doi](https://doi.org/10.1145/2382577.2382579).
 
 5. J. Wainer & G. Cawley, "Nested cross-validation when selecting classifiers is overzealous for most practical applications", _Expert Systems with Applications_, 2021 (critique; background).
 

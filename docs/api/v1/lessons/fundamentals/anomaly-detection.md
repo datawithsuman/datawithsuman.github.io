@@ -38,9 +38,9 @@ _Illustrative. Short average paths across many random trees mean a high anomaly 
 
 Each split picks a random feature and a random cut between that feature's min and max among the points still in the box. The shaded box is the region still containing the chosen point.
 
-Liu, Ting & Zhou (2008) built Isolation Forest on this: a point far from the crowd ends up alone after a few random cuts, while a point in the middle needs many. scikit-learn: "Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies" docs. Here, over 100 trees, the anomaly needs **4.8** splits on average and the normal order **11.4**.
+Liu, Ting & Zhou (2008) built Isolation Forest on this: a point far from the crowd ends up alone after a few random cuts, while a point in the middle needs many. scikit-learn: "Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies" [docs](https://scikit-learn.org/stable/modules/outlier_detection.html#isolation-forest). Here, over 100 trees, the anomaly needs **4.8** splits on average and the normal order **11.4**.
 
-$$ s(x) = 2^{-\,\mathbb{E}[h(x)] \,/\, c(\psi)} $$
+$$ {s(x)} = 2^{-\,{\mathbb{E}[h(x)]} \,/\, {c(\psi)}} $$
 
 Liu, Ting & Zhou, "Isolation forest", ICDM 2008. Each tree is grown on a random subsample of ψ = 256 points (scikit-learn's default `max_samples`), to depth ⌈log₂ ψ⌉; 100 trees by default. Subsampling helps: fewer normal points crowd around the anomalies. On day 1: s = 0.72 for the anomaly, 0.46 for the normal order.
 
@@ -58,7 +58,7 @@ Liu, Ting & Zhou, "Isolation forest", ICDM 2008. Each tree is grown on a random 
 
 #### In one breath
 
-Anomaly detection finds the few points that don't look like the rest, usually without labels. **Isolation Forest** builds random trees with random splits: odd points get isolated after very few splits, so a short average path means "anomaly"; it's fast and a strong default. **Local Outlier Factor (LOF)** compares each point's density with its neighbours' and catches points that are odd _for their neighbourhood_, even next to a dense cluster. **One-Class SVM** learns a boundary around normal data (good for novelty detection on clean training data, sensitive to outliers and tuning). A Gaussian / **Mahalanobis** score works only when normal data is one elliptical blob. Every method gives a score; the threshold (contamination) is a business decision, and evaluation needs at least a few labelled anomalies.What you'll be able to do after this: explain why isolation works, when LOF beats Isolation Forest, choose a threshold, and design an evaluation for a detector with almost no labels.
+Anomaly detection finds the few points that don't look like the rest, usually without labels. **Isolation Forest** builds random trees with random splits: odd points get isolated after very few splits, so a short average path means "anomaly"; it's fast and a strong default. **Local Outlier Factor (LOF)** compares each point's density with its neighbours' and catches points that are odd _for their neighbourhood_, even next to a dense cluster. **One-Class SVM** learns a boundary around normal data (good for novelty detection on clean training data, sensitive to outliers and tuning). A Gaussian / **Mahalanobis** score works only when normal data is one elliptical blob. Every method gives a score; the threshold (contamination) is a business decision, and evaluation needs at least a few labelled anomalies. What you'll be able to do after this: explain why isolation works, when LOF beats Isolation Forest, choose a threshold, and design an evaluation for a detector with almost no labels.
 
 #### Outlier detection vs novelty detection
 
@@ -70,15 +70,15 @@ Anomaly detection finds the few points that don't look like the rest, usually wi
 
 "The training data is not polluted by outliers and we are interested in detecting whether a new observation is an outlier." Example: learn from a week of verified-clean orders, then score each new order.
 
-Definitions from scikit-learn's outlier-detection guide docs. All its detectors share an API: `score_samples` gives a continuous score; `predict` returns −1 for outliers using a threshold set by `contamination`.
+Definitions from scikit-learn's outlier-detection guide [docs](https://scikit-learn.org/stable/modules/outlier_detection.html). All its detectors share an API: `score_samples` gives a continuous score; `predict` returns −1 for outliers using a threshold set by `contamination`.
 
 #### Unusual compared with its neighbours
 
-LOF (Breunig, Kriegel, Ng & Sander, SIGMOD 2000) estimates each point's local density from the distances to its k nearest neighbours, then divides the neighbours' average density by the point's own. A point inside any cluster, dense or sparse, has density similar to its neighbours (LOF ≈ 1). A point just outside a dense cluster has much lower density than its dense neighbours (LOF ≫ 1), even if it's closer to them than suburban points are to each other. scikit-learn: "The question is not, how isolated the sample is, but how isolated it is with respect to the surrounding neighborhood", and "taking n_neighbors=20 appears to work well in general" docs. The cost: O(n²) distances without an index, and it's mainly an outlier (not novelty) detector unless you set `novelty=True`.
+LOF (Breunig, Kriegel, Ng & Sander, SIGMOD 2000) estimates each point's local density from the distances to its k nearest neighbours, then divides the neighbours' average density by the point's own. A point inside any cluster, dense or sparse, has density similar to its neighbours (LOF ≈ 1). A point just outside a dense cluster has much lower density than its dense neighbours (LOF ≫ 1), even if it's closer to them than suburban points are to each other. scikit-learn: "The question is not, how isolated the sample is, but how isolated it is with respect to the surrounding neighborhood", and "taking n_neighbors=20 appears to work well in general" [docs](https://scikit-learn.org/stable/modules/outlier_detection.html#local-outlier-factor). The cost: O(n²) distances without an index, and it's mainly an outlier (not novelty) detector unless you set `novelty=True`.
 
 #### A boundary around normal
 
-Schölkopf et al. (2001) adapted the SVM to one class: in kernel feature space, separate the data from the origin with maximum margin, which in input space becomes a closed boundary around the bulk of the data. The `nu` parameter "corresponds to the probability of finding a new, but regular, observation outside the frontier", and the RBF kernel's γ sets how tight the boundary hugs the data, with "no exact formula or algorithm to set its bandwidth parameter" docs. It's best for novelty detection with clean training data; it scales poorly (kernel SVM cost), so scikit-learn points to `SGDOneClassSVM` with kernel approximation for large data. See the SVM lesson for kernels and γ.
+Schölkopf et al. (2001) adapted the SVM to one class: in kernel feature space, separate the data from the origin with maximum margin, which in input space becomes a closed boundary around the bulk of the data. The `nu` parameter "corresponds to the probability of finding a new, but regular, observation outside the frontier", and the RBF kernel's γ sets how tight the boundary hugs the data, with "no exact formula or algorithm to set its bandwidth parameter" [docs](https://scikit-learn.org/stable/modules/outlier_detection.html#novelty-detection). It's best for novelty detection with clean training data; it scales poorly (kernel SVM cost), so scikit-learn points to `SGDOneClassSVM` with kernel approximation for large data. See the SVM lesson for kernels and γ.
 
 ## In practice
 
@@ -94,7 +94,7 @@ Schölkopf et al. (2001) adapted the SVM to one class: in kernel feature space, 
 | **One-Class SVM** | Boundary around normal data (kernel) | Novelty detection with clean training data |
 | **Reconstruction** (PCA, autoencoders) | Normal data reconstructs well; anomalies don't | High-dimensional signals, images, logs |
 
-scikit-learn's own comparison: Isolation Forest and LOF "perform reasonably well on the data sets considered"; One-Class SVM "is known to be sensitive to outliers and thus does not perform very well for outlier detection" docs. Density-based ideas from DBSCAN and GMMs (low p(x)) also work as detectors.
+scikit-learn's own comparison: Isolation Forest and LOF "perform reasonably well on the data sets considered"; One-Class SVM "is known to be sensitive to outliers and thus does not perform very well for outlier detection" [docs](https://scikit-learn.org/stable/modules/outlier_detection.html). Density-based ideas from DBSCAN and GMMs (low p(x)) also work as detectors.
 
 #### Contamination, thresholds and evaluation
 
@@ -241,6 +241,6 @@ Higher is better; 500 orders, 10 anomalies. Illustrative: on other data, Isolati
 
 3. B. Schölkopf, J. Platt, J. Shawe-Taylor, A. Smola & R. Williamson, "Estimating the support of a high-dimensional distribution", _Neural Computation_ 13, 2001 (One-Class SVM).
 
-4. scikit-learn, Novelty and outlier detection (definitions, API, Isolation Forest, LOF, One-Class SVM, contamination, comparison).
+4. scikit-learn, [Novelty and outlier detection](https://scikit-learn.org/stable/modules/outlier_detection.html) (definitions, API, Isolation Forest, LOF, One-Class SVM, contamination, comparison).
 
 Order data is simulated with fixed seeds; every detector runs live in your browser.

@@ -48,11 +48,11 @@ The **correct paraphrase** gets BLEU **0.29** and ROUGE-L 0.46: it uses differen
 
 #### In one breath
 
-Classic NLP metrics compare a model's output with one or more human **references** by counting overlapping words. **BLEU** (machine translation) is a precision: what fraction of the output's 1- to 4-grams appear in the reference, clipped so repeating a word doesn't help, times a **brevity penalty** for outputs that are too short. **ROUGE** (summarisation) leans on recall: ROUGE-1/2 count unigram/bigram overlap, **ROUGE-L** uses the longest common subsequence. Extractive QA uses **exact match** and **token F1**; language models use perplexity. All overlap metrics share one weakness: they reward the **same words**, not the **same meaning**. A correct paraphrase can score lower than word salad, which is why embedding-based scores, LLM judges and human evaluation are used alongside them.What you'll be able to do after this: compute BLEU, ROUGE and token F1, pick a metric per task, and explain what overlap metrics can't measure.
+Classic NLP metrics compare a model's output with one or more human **references** by counting overlapping words. **BLEU** (machine translation) is a precision: what fraction of the output's 1- to 4-grams appear in the reference, clipped so repeating a word doesn't help, times a **brevity penalty** for outputs that are too short. **ROUGE** (summarisation) leans on recall: ROUGE-1/2 count unigram/bigram overlap, **ROUGE-L** uses the longest common subsequence. Extractive QA uses **exact match** and **token F1**; language models use perplexity. All overlap metrics share one weakness: they reward the **same words**, not the **same meaning**. A correct paraphrase can score lower than word salad, which is why embedding-based scores, LLM judges and human evaluation are used alongside them. What you'll be able to do after this: compute BLEU, ROUGE and token F1, pick a metric per task, and explain what overlap metrics can't measure.
 
 #### BLEU: clipped n-gram precision with a brevity penalty
 
-$$ \mathrm{BLEU} = \mathrm{BP}\cdot \exp\Big(\textstyle\sum_{n=1}^{4}\tfrac14 \logp_n\Big), \qquad \mathrm{BP} = \begin{cases}1 & c > r\\ e^{1-r/c} & c \le r\end{cases} $$
+$$ \mathrm{BLEU} = {\mathrm{BP}}\cdot {\exp\Big(\textstyle\sum_{n=1}^{4}\tfrac14 \log}{p_n}{\Big)}, \qquad \mathrm{BP} = \begin{cases}1 & c > r\\ e^{1-r/c} & c \le r\end{cases} $$
 
 Papineni, Roukos, Ward & Zhu, ACL 2002. BLEU was designed for corpus-level scoring with multiple references; sentence-level scores are noisy. Use SacreBLEU for comparable, reproducible numbers (Post 2018).
 
@@ -145,10 +145,10 @@ How generated or extracted text is scored against references: BLEU for translati
 
 2. C.-Y. Lin, "ROUGE: A Package for Automatic Evaluation of Summaries", ACL Workshop 2004.
 
-3. P. Rajpurkar, J. Zhang, K. Lopyrev & P. Liang, "SQuAD: 100,000+ Questions for Machine Comprehension of Text", EMNLP 2016, arXiv:1606.05250.
+3. P. Rajpurkar, J. Zhang, K. Lopyrev & P. Liang, "SQuAD: 100,000+ Questions for Machine Comprehension of Text", EMNLP 2016, [arXiv:1606.05250](https://arxiv.org/abs/1606.05250).
 
 4. C. Callison-Burch, M. Osborne & P. Koehn, "Re-evaluating the Role of BLEU in Machine Translation Research", EACL 2006.
 
-5. T. Zhang et al., "BERTScore: Evaluating Text Generation with BERT", ICLR 2020, arXiv:1904.09675; M. Post, "A Call for Clarity in Reporting BLEU Scores", WMT 2018, arXiv:1804.08771.
+5. T. Zhang et al., "BERTScore: Evaluating Text Generation with BERT", ICLR 2020, [arXiv:1904.09675](https://arxiv.org/abs/1904.09675); M. Post, "A Call for Clarity in Reporting BLEU Scores", WMT 2018, [arXiv:1804.08771](https://arxiv.org/abs/1804.08771).
 
-6. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, arXiv:2306.05685.
+6. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, [arXiv:2306.05685](https://arxiv.org/abs/2306.05685).

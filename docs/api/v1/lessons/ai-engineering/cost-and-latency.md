@@ -48,7 +48,7 @@ The baseline is **$9,000** a month. **Prompt caching** alone cuts it to $4,950 (
 
 #### In one breath
 
-An LLM app's bill is (requests) × (input tokens × input price + output tokens × output price), and its latency is mostly output tokens × time per token. The big levers: **route** easy requests to a small, cheap model and only hard ones to the big model (RouteLLM cut cost by over 85% on MT-Bench while keeping 95% of GPT-4's quality); **cache** the stable prompt prefix (prompt caching) and, carefully, whole answers to near-identical questions (**semantic caching**); use **batch APIs** (typically 50% off) for anything non-interactive; and keep outputs short, since output tokens are the slow, expensive part. Every saving must be checked on the eval set, because a router or cache that's wrong 5% of the time is a quality regression.What you'll be able to do after this: estimate an LLM app's monthly cost, and apply routing, caching and batching with quality checks.
+An LLM app's bill is (requests) × (input tokens × input price + output tokens × output price), and its latency is mostly output tokens × time per token. The big levers: **route** easy requests to a small, cheap model and only hard ones to the big model (RouteLLM cut cost by over 85% on MT-Bench while keeping 95% of GPT-4's quality); **cache** the stable prompt prefix (prompt caching) and, carefully, whole answers to near-identical questions (**semantic caching**); use **batch APIs** (typically 50% off) for anything non-interactive; and keep outputs short, since output tokens are the slow, expensive part. Every saving must be checked on the eval set, because a router or cache that's wrong 5% of the time is a quality regression. What you'll be able to do after this: estimate an LLM app's monthly cost, and apply routing, caching and batching with quality checks.
 
 #### The levers
 
@@ -131,9 +131,9 @@ How to make an LLM application cheaper and faster without losing quality: where 
 
 #### Sources
 
-1. I. Ong et al., "RouteLLM: Learning to Route LLMs with Preference Data", ICLR 2025, arXiv:2406.18665.
+1. I. Ong et al., "RouteLLM: Learning to Route LLMs with Preference Data", ICLR 2025, [arXiv:2406.18665](https://arxiv.org/abs/2406.18665).
 
-2. L. Chen, M. Zaharia & J. Zou, "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance", TMLR 2024, arXiv:2305.05176.
+2. L. Chen, M. Zaharia & J. Zou, "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance", TMLR 2024, [arXiv:2305.05176](https://arxiv.org/abs/2305.05176).
 
 3. F. Bang, "GPTCache: An Open-Source Semantic Cache for LLM Applications", NLP-OSS 2023.
 

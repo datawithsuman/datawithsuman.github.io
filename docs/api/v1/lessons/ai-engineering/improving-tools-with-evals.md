@@ -133,17 +133,19 @@ What's a sign you're overfitting tool descriptions?
 
 The tuning score rises while the held-out score is flat or falls, often after edits that mention specific phrases or cases from failing tasks.
 
+#### The 30-second answer
+
 I'd write realistic, multi-step tasks with verifiable outcomes, phrased like users and without scripting the expected calls, and split them into a tuning set and a held-out set. I'd run each in a simple agent loop and collect accuracy, calls, tokens, runtime and errors, and read the transcripts. Then I'd change one thing at a time, like namespaced names, consolidated tools, concise responses or actionable errors, and keep a change only if the held-out score holds or improves, because a tuning-only gain means I've fitted the tools to my test.
 
 **Key terms and sources**
 
-The eval loop Anthropic uses to improve tools: realistic tasks with verifiable outcomes, a held-out split, metrics beyond accuracy, transcript reading, and the tool changes that tend to help (namespacing, concise responses, actionable errors).
+The eval loop Anthropic uses to improve tools: realistic tasks with verifiable outcomes, a held-out split, metrics beyond accuracy, transcript reading, and the tool changes that tend to help (namespacing, concise responses, actionable errors). · checked 15 Nov 2026
 
 #### Sources
 
-- Anthropic, Writing effective tools for agents, with agents, Sep 2025
+- [Anthropic, Writing effective tools for agents, with agents, Sep 2025](https://www.anthropic.com/engineering/writing-tools-for-agents)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 

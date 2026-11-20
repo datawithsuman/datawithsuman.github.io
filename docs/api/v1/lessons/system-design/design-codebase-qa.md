@@ -151,8 +151,10 @@ How big should chunks be?
 
 It depends on the context budget. With small budgets, 32 to 64 lines worked best in a benchmark; with about 16,000 tokens, whole files became competitive. Very small chunks of 8 to 16 lines did worse.
 
+#### The 30-second answer
+
 First I'd clarify the users, the number of repositories, how fresh answers must be and access rules. With thousands of repositories, I'd route first: pick the top 5 to 10 likely repositories from metadata and summaries, then search inside them. I'd chunk code along functions and classes, keeping class definitions and imports with each chunk, and add a short English description to help plain-English questions match. Retrieval depends on the query: BM25 is strong and cheap for code queries, while code embeddings win for English questions, so I'd run both and merge them. A reranker picks the best, and I pack chunks into the token budget in rank order. Access filtering happens in the search. The index updates continuously on every merge. Answers must cite files and lines, and I'd evaluate with real questions and their known answer files.
 
 **Key terms and sources**
 
-Based on published write-ups: a code search company's post "How Cody understands your codebase" (Feb 2024), a code review company's post "RAG for a Codebase with 10k Repos" (Jul 2024), and the benchmark paper "Practical Code RAG at Scale" (arXiv 2510.20609, Oct 2025). The lab uses the paper's numbers; the estimate is ours. Uses chunking, hybrid retrieval and keeping an index current.
+Based on published write-ups: a code search company's post ["How Cody understands your codebase"](https://sourcegraph.com/blog/how-cody-understands-your-codebase) (Feb 2024), a code review company's post ["RAG for a Codebase with 10k Repos"](https://www.qodo.ai/blog/rag-for-large-scale-code-repos/) (Jul 2024), and the benchmark paper ["Practical Code RAG at Scale"](https://arxiv.org/abs/2510.20609) (arXiv 2510.20609, Oct 2025). The lab uses the paper's numbers; the estimate is ours. Uses chunking, hybrid retrieval and keeping an index current. · checked 15 Nov 2026

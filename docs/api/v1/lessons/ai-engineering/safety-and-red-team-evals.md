@@ -127,20 +127,22 @@ Why might a stronger model be more vulnerable to tool poisoning?
 
 It follows instructions more faithfully, including malicious ones in a tool description. MCPTox found more capable models were often more susceptible.
 
+#### The 30-second answer
+
 I'd build an attack suite covering jailbreaks, direct and indirect prompt injection planted in emails, pages and tool results, data exfiltration, unsafe tool use and poisoned MCP tool descriptions, with outcomes checked by code on the environment state. I'd report attack success and normal-task utility together, because defences trade them off: in AgentDojo an injection detector cut attack success to about 8% but normal task success from 69% to 41%. MCPTox showed poisoned descriptions alone succeed about a third of the time, more on capable models. The suite runs on every change, and every attack seen in the wild becomes a permanent test.
 
 **Key terms and sources**
 
-Turning attacks into an eval suite: what to test (jailbreaks, direct and indirect prompt injection, data exfiltration, unsafe tool use, poisoned MCP tool descriptions), how to measure both attack success and lost usefulness, and what AgentDojo and MCPTox found.
+Turning attacks into an eval suite: what to test (jailbreaks, direct and indirect prompt injection, data exfiltration, unsafe tool use, poisoned MCP tool descriptions), how to measure both attack success and lost usefulness, and what AgentDojo and MCPTox found. · checked 15 Nov 2026
 
 #### Sources
 
-- E. Debenedetti et al., AgentDojo: a dynamic environment to evaluate prompt injection attacks and defenses for LLM agents, NeurIPS 2024
+- [E. Debenedetti et al., AgentDojo: a dynamic environment to evaluate prompt injection attacks and defenses for LLM agents, NeurIPS 2024](https://arxiv.org/abs/2406.13352)
 
-- Z. Wang et al., MCPTox: a benchmark for tool poisoning attack on real-world MCP servers, 2025
+- [Z. Wang et al., MCPTox: a benchmark for tool poisoning attack on real-world MCP servers, 2025](https://arxiv.org/abs/2508.14925)
 
-- K. Greshake et al., Not what you've signed up for: indirect prompt injection, 2023
+- [K. Greshake et al., Not what you've signed up for: indirect prompt injection, 2023](https://arxiv.org/abs/2302.12173)
 
-- OWASP, Top 10 for LLM applications
+- [OWASP, Top 10 for LLM applications](https://genai.owasp.org/llm-top-10/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

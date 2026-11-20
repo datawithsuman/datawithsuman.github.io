@@ -12,7 +12,7 @@
 
 ### The paper
 
-DeepSeek-AI · arXiv 2501.12948 (January 2025; v2, January 2026) · also published in Nature (2025) · 9 sources, checked 11 Nov 2026
+DeepSeek-AI · arXiv [2501.12948](https://arxiv.org/abs/2501.12948) (January 2025; v2, January 2026) · also published in [Nature](https://www.nature.com/articles/s41586-025-09422-z) (2025) · 9 sources, checked 11 Nov 2026
 
 Before R1, models learned to reason mostly by copying reasoning that people wrote out step by step, which is expensive and caps the model at human examples. DeepSeek skipped that step. They took their base model, gave it hard maths, code and logic problems with answers a program can check, and trained it with **reinforcement learning**: right answers get rewarded, wrong ones don't, and nothing tells it _how_ to think. The result, **R1-Zero**, taught itself to think longer, check its work and backtrack, and went from 15.6% to 77.9% on the AIME 2024 maths exam. A four-stage pipeline then made it readable and helpful (**R1**, on par with OpenAI's o1 on maths), and its outputs were used to train small models that beat GPT-4o at maths. The RL algorithm, **GRPO**, drops PPO's value model and compares answers within a group instead.
 
@@ -24,11 +24,11 @@ from the paper's own example
 
 "If a > 1, then the sum of the real solutions of √(a − √(a + x)) = x is equal to …"
 
-During training the model sees a question like this and writes **16 different attempts**. A program checks each final answer against the known one. Nobody grades the reasoning, only the answer. Partway through training, one attempt stops mid-solution and writes: _"Wait, wait. Wait. That's an aha moment I can flag here. Let's reevaluate this step-by-step"_ Table 2. Nobody taught it to say that. We'll follow this question through the training loop.
+During training the model sees a question like this and writes **16 different attempts**. A program checks each final answer against the known one. Nobody grades the reasoning, only the answer. Partway through training, one attempt stops mid-solution and writes: _"Wait, wait. Wait. That's an aha moment I can flag here. Let's reevaluate this step-by-step"_ [Table 2](https://arxiv.org/abs/2501.12948). Nobody taught it to say that. We'll follow this question through the training loop.
 
 #### Good reasoning needed people to write it out first
 
-By 2024, two things made models reason better. **Chain-of-thought prompting** asked the model to "think step by step". **Training on reasoning traces** fine-tuned it on worked solutions, written or checked by people. The paper names the cost of the second: dependence on human-written traces "hinders scalability and introduces cognitive biases", and copying human reasoning means performance is "inherently capped by the human-provided exemplars" §1.
+By 2024, two things made models reason better. **Chain-of-thought prompting** asked the model to "think step by step". **Training on reasoning traces** fine-tuned it on worked solutions, written or checked by people. The paper names the cost of the second: dependence on human-written traces "hinders scalability and introduces cognitive biases", and copying human reasoning means performance is "inherently capped by the human-provided exemplars" [§1](https://arxiv.org/abs/2501.12948).
 
 ##### Expensive to scale
 
@@ -71,15 +71,15 @@ Rewards are 1 for right and 0 for wrong; the standard deviation is the populatio
 | **Process reward models** (Lightman et al. 2023) | A model grades each step, not just the answer | Hard to define a "step", hard to label, and easy to game |
 | **Tree search** (MCTS, as in AlphaGo) | Explore many partial solutions guided by a value model | The space of token sequences is enormous, and the value model is hard to train |
 
-Standard post-training ran SFT first, then RL with a learned reward model (RLHF). R1's bet was to drop the SFT step for reasoning, and to drop learned rewards too: only rewards a program can check Supp. A.2.
+Standard post-training ran SFT first, then RL with a learned reward model (RLHF). R1's bet was to drop the SFT step for reasoning, and to drop learned rewards too: only rewards a program can check [Supp. A.2](https://arxiv.org/abs/2501.12948).
 
 #### R1-Zero: reward right answers, don't teach the reasoning
 
-DeepSeek started from **DeepSeek-V3-Base**, a pretrained 671-billion-parameter mixture-of-experts model with 37 billion parameters active per token, which had never been fine-tuned to chat. They skipped SFT entirely, on the hypothesis that "human-defined reasoning patterns may limit model exploration" §1. The only structure imposed is a prompt template:
+DeepSeek started from **DeepSeek-V3-Base**, a pretrained 671-billion-parameter mixture-of-experts model with 37 billion parameters active per token, which had never been fine-tuned to chat. They skipped SFT entirely, on the hypothesis that "human-defined reasoning patterns may limit model exploration" [§1](https://arxiv.org/abs/2501.12948). The only structure imposed is a prompt template:
 
 A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think>...</think> and <answer>...</answer> tags … User: _prompt_. Assistant:
 
-Table 1 §2.3. The authors kept it this bare on purpose, "avoiding any content-specific biases", so they could watch what the model learns by itself.
+Table 1 [§2.3](https://arxiv.org/abs/2501.12948). The authors kept it this bare on purpose, "avoiding any content-specific biases", so they could watch what the model learns by itself.
 
 The training loop, for our running example:
 
@@ -93,17 +93,17 @@ The training loop, for our running example:
 
 ##### What made this possible
 
-The paper's conclusion names three ingredients: "hard reasoning questions, a reliable verifier, and sufficient computational resources" §6. And a large enough base model: small ones failed (chapter 11).
+The paper's conclusion names three ingredients: "hard reasoning questions, a reliable verifier, and sufficient computational resources" [§6](https://arxiv.org/abs/2501.12948). And a large enough base model: small ones failed (chapter 11).
 
 #### Judge each answer against its siblings, not against a critic
 
-GRPO comes from DeepSeek's earlier DeepSeekMath paper. It's PPO with one big change: instead of training a separate value model to estimate how good an answer is likely to be, it samples a **group** of answers to the same question and uses the group's own rewards as the baseline §2.1.
+GRPO comes from DeepSeek's earlier DeepSeekMath paper. It's PPO with one big change: instead of training a separate value model to estimate how good an answer is likely to be, it samples a **group** of answers to the same question and uses the group's own rewards as the baseline [§2.1](https://arxiv.org/abs/2501.12948).
 
 ##### Step 1: the advantage
 
-$$ A_i = \frac{r_i - \text{mean}(\{r_1,\dots,r_G\})}{\text{std}(\{r_1,\dots,r_G\})} $$
+$$ A_i = \frac{{r_i} - {\text{mean}(\{r_1,\dots,r_G\})}}{{\text{std}(\{r_1,\dots,r_G\})}} $$
 
-Equation 3 §2.1 · hover a term.
+Equation 3 [§2.1](https://arxiv.org/abs/2501.12948) · hover a term.
 
 - **this answer’s reward**: r_i: the reward for answer i, here 1 if the final answer is right and 0 if not (plus the format reward).
 
@@ -113,9 +113,9 @@ Equation 3 §2.1 · hover a term.
 
 ##### Step 2: the objective
 
-$$ \mathcal{J}(\theta) = \frac{1}{G}\sum_{i=1}^{G}\Big(\min\big(\rho_iA_i,\ \text{clip}(\rho_i,1\pm\varepsilon)A_i\big) - \beta\,\mathbb{D}_{KL}\Big) $$
+$$ \mathcal{J}(\theta) = {\frac{1}{G}\sum_{i=1}^{G}}\Big(\min\big({\rho_i}{A_i},\ {\text{clip}(\rho_i,1\pm\varepsilon)}{A_i}\big) - {\beta\,\mathbb{D}_{KL}}\Big) $$
 
-Equation 1, simplified by dropping the expectation over questions §2.1 · hover a term.
+Equation 1, simplified by dropping the expectation over questions [§2.1](https://arxiv.org/abs/2501.12948) · hover a term.
 
 - **average over the group**: Average the update over all G answers to the question (G = 16 in R1).
 
@@ -138,19 +138,19 @@ Two things to notice. A rare success on a hard question gets a big push: 4 right
 | KL to the reference | A per-token penalty added to the reward, which also penalises long answers | Added directly to the loss, so length isn't penalised |
 | Tuning | Sensitive to the GAE λ: at the default 0.95 it did much worse; at λ = 1.0 it nearly matched GRPO | Fewer knobs |
 
-Supplementary A.3 Fig. 3–4. The value model also struggles with long reasoning: predicting the final reward from half a solution is hard when the model may later revise what it wrote.
+Supplementary A.3 [Fig. 3–4](https://arxiv.org/abs/2501.12948). The value model also struggles with long reasoning: predicting the final reward from half a solution is hard when the model may later revise what it wrote.
 
 #### Two simple rewards, and no reward model
 
 ##### Accuracy reward
 
-Maths answers must be in a set format (for example in a box) and are matched with the reference. Code is compiled and run against test cases. Right is 1, wrong is 0 §2.2.
+Maths answers must be in a set format (for example in a box) and are matched with the reference. Code is compiled and run against test cases. Right is 1, wrong is 0 [§2.2](https://arxiv.org/abs/2501.12948).
 
 ##### Format reward
 
 The thinking must sit inside <think> and </think>. The two rewards are added with equal weight.
 
-The authors deliberately avoided neural reward models, whether they grade the final answer or each step, for reasoning tasks. Their reason: neural reward models "are susceptible to reward hacking during large-scale reinforcement learning", and retraining them adds cost and complexity §2.2. A rule can't be flattered.
+The authors deliberately avoided neural reward models, whether they grade the final answer or each step, for reasoning tasks. Their reason: neural reward models "are susceptible to reward hacking during large-scale reinforcement learning", and retraining them adds cost and complexity [§2.2](https://arxiv.org/abs/2501.12948). A rule can't be flattered.
 
 | RL data (reasoning) | Size | How it's checked |
 |---|---|---|
@@ -159,11 +159,11 @@ The authors deliberately avoided neural reward models, whether they grade the fi
 | STEM: multiple-choice physics, chemistry, biology | 22k | Correct option |
 | Logic: puzzles and code-to-reasoning problems | 15k | Automatic checking |
 
-Supplementary B.3.1 Table 4. Proofs were left out because a program can't easily check them.
+Supplementary B.3.1 [Table 4](https://arxiv.org/abs/2501.12948). Proofs were left out because a program can't easily check them.
 
 #### Making the reasoning readable and the model helpful
 
-R1-Zero reasoned well but was hard to use: poor readability, and **language mixing**, switching between English and Chinese inside one chain of thought, because the base model was trained mostly on both. Its RL also covered only reasoning tasks, so it was weak at writing and open questions §3. R1 fixes this with four stages, each starting from the last one's model:
+R1-Zero reasoned well but was hard to use: poor readability, and **language mixing**, switching between English and Chinese inside one chain of thought, because the base model was trained mostly on both. Its RL also covered only reasoning tasks, so it was weak at writing and open questions [§3](https://arxiv.org/abs/2501.12948). R1 fixes this with four stages, each starting from the last one's model:
 
 | Stage | What happens | Model after |
 |---|---|---|
@@ -172,13 +172,13 @@ R1-Zero reasoned well but was hard to use: poor readability, and **language mixi
 | **3 · Rejection sampling + SFT** | Sample many answers from the RL model, keep only correct, clean ones: **~600k** reasoning samples. Add **~200k** non-reasoning samples (writing, factual QA, translation, software engineering). Fine-tune **V3-Base again** on these 800k | Dev3 |
 | **4 · RL for everything** | Rule rewards for reasoning; reward models for helpfulness and safety on general prompts; 1,700 steps at temperature 0.7, with preference rewards only in the last 400 | R1 |
 
-Figure 2 and Supplementary B.3 §3, Supp. B.3.
+Figure 2 and Supplementary B.3 [§3, Supp. B.3](https://arxiv.org/abs/2501.12948).
 
 ##### The final reward
 
-$$ Reward = Reward_{reasoning} + Reward_{general} + \frac{Num(Words_{target})}{Num(Words)} $$
+$$ Reward = {Reward_{reasoning}} + {Reward_{general}} + {\frac{Num(Words_{target})}{Num(Words)}} $$
 
-Equations 7–10 §3.1–3.2 · hover a term.
+Equations 7–10 [§3.1–3.2](https://arxiv.org/abs/2501.12948) · hover a term.
 
 - **reasoning prompts**: Rule-based: accuracy plus format, exactly as in R1-Zero.
 
@@ -190,13 +190,13 @@ Equations 7–10 §3.1–3.2 · hover a term.
 
 —
 
-Table 3 §4. Codeforces is shown as a percentile.
+Table 3 [§4](https://arxiv.org/abs/2501.12948). Codeforces is shown as a percentile.
 
 The table shows a trade-off. The small cold-start set made the model readable but cost reasoning (AIME fell from 77.9 to 59.0), and reasoning RL won it back. The general data and the final RL barely moved maths, but lifted instruction following and helpfulness sharply (AlpacaEval 2.0 from 62.1 to 87.6).
 
 ##### Why preference rewards only ran for 400 steps
 
-With the helpfulness reward model, longer training led to reward hacking: the reward kept rising while Codeforces accuracy fell Supp. B.5, Fig. 6. The language consistency reward also cost a little benchmark accuracy, and they kept it anyway because people found the output easier to read Supp. B.6.
+With the helpfulness reward model, longer training led to reward hacking: the reward kept rising while Codeforces accuracy fell [Supp. B.5, Fig. 6](https://arxiv.org/abs/2501.12948). The language consistency reward also cost a little benchmark accuracy, and they kept it anyway because people found the output easier to read [Supp. B.6](https://arxiv.org/abs/2501.12948).
 
 #### 512 GPUs, about 12 days in total
 
@@ -209,7 +209,7 @@ With the helpfulness reward model, longer training led to reward hacking: the re
 | Clip ratio ε (R1, stage 2) | Reported as 10, far looser than PPO's usual 0.2; the paper says lower values cut off the gradient for too many tokens, while higher values made training unstable |
 | Hardware | 64 × 8 = 512 NVIDIA H800 GPUs |
 
-§2.1, §3.2 and Supplementary B.4 Table 7.
+§2.1, §3.2 and Supplementary B.4 [Table 7](https://arxiv.org/abs/2501.12948).
 
 | Part | H800 GPU-hours | At $2 per GPU-hour |
 |---|---|---|
@@ -220,9 +220,9 @@ With the helpfulness reward model, longer training led to reward hacking: the re
 
 ##### Put the number in context
 
-This is the cost of the RL work only. The base model, DeepSeek-V3, took about 2.788 million H800 GPU-hours to train, about $5.6 million at the same rate V3 report, which itself excludes research and failed runs. So R1's reasoning training added roughly 5% on top. It's cheap relative to pretraining, not cheap in absolute terms. The paper also calls R1's run "about 4 days, or roughly 80 hours", which don't quite match; the GPU-hours fit 80 hours.
+This is the cost of the RL work only. The base model, DeepSeek-V3, took about 2.788 million H800 GPU-hours to train, about $5.6 million at the same rate [V3 report](https://arxiv.org/abs/2412.19437), which itself excludes research and failed runs. So R1's reasoning training added roughly 5% on top. It's cheap relative to pretraining, not cheap in absolute terms. The paper also calls R1's run "about 4 days, or roughly 80 hours", which don't quite match; the GPU-hours fit 80 hours.
 
-The RL system runs in four modules: rollout on vLLM workers (with the MoE experts spread across nodes and the model's multi-token prediction used to speed up decoding), a forward pass for reward and reference models, rule-based rewards such as code execution run asynchronously, and training. Each module's models are moved out of GPU memory when it finishes Supp. B.1.
+The RL system runs in four modules: rollout on vLLM workers (with the MoE experts spread across nodes and the model's multi-token prediction used to speed up decoding), a forward pass for reward and reference models, rule-based rewards such as code execution run asynchronously, and training. Each module's models are moved out of GPU memory when it finishes [Supp. B.1](https://arxiv.org/abs/2501.12948).
 
 ## Results
 
@@ -232,7 +232,7 @@ The RL system runs in four modules: rollout on vLLM workers (with the MoE expert
 
 ##### R1-Zero on AIME 2024 during training (Figure 1)
 
-- **Accuracy:** average single-try accuracy (pass@1) on AIME 2024 rose from 15.6% to 77.9%. Taking a majority vote over 16 samples (cons@16) gave 86.7%, above the average human competitor §2.3.
+- **Accuracy:** average single-try accuracy (pass@1) on AIME 2024 rose from 15.6% to 77.9%. Taking a majority vote over 16 samples (cons@16) gave 86.7%, above the average human competitor [§2.3](https://arxiv.org/abs/2501.12948).
 
 - **Longer answers:** the average response grew steadily through training to many thousands of tokens. Nothing in the reward asked for length; longer thinking simply got more answers right.
 
@@ -262,7 +262,7 @@ Voting helps most when the model is right more often than any single wrong answe
 | SimpleQA (facts) | 38.2 | 28.4 | 24.9 | 7.0 | **47.0** | 30.1 |
 | AlpacaEval 2.0 (LC win rate) | 51.1 | 52.0 | 70.0 | 57.8 | – | **87.6** |
 
-Table 8 Supp. D.2. Model versions: GPT-4o-0513, Claude-3.5-Sonnet-1022, o1-1217.
+Table 8 [Supp. D.2](https://arxiv.org/abs/2501.12948). Model versions: GPT-4o-0513, Claude-3.5-Sonnet-1022, o1-1217.
 
 - **Maths and code:** level with o1 on AIME, MATH-500 and Codeforces, far ahead of non-reasoning models including its own base, V3.
 
@@ -272,7 +272,7 @@ Table 8 Supp. D.2. Model versions: GPT-4o-0513, Claude-3.5-Sonnet-1022, o1-1217.
 
 #### A 1.5B model that beats GPT-4o at competition maths
 
-DeepSeek fine-tuned open Qwen2.5 and Llama models on the same **800,000** samples generated by R1, with SFT only, no RL Supp. F. This is distillation through the teacher's outputs.
+DeepSeek fine-tuned open Qwen2.5 and Llama models on the same **800,000** samples generated by R1, with SFT only, no RL [Supp. F](https://arxiv.org/abs/2501.12948). This is distillation through the teacher's outputs.
 
 ##### Distil, or run RL on the small model?
 
@@ -281,7 +281,7 @@ DeepSeek fine-tuned open Qwen2.5 and Llama models on the same **800,000** sample
 | Qwen2.5-32B + large-scale RL (10k+ steps) | 47.0 | 91.6 | 55.0 | 40.2 |
 | Distilled from R1 (SFT only) | **72.6** | **94.3** | **62.1** | **57.2** |
 
-Table 16 Supp. F.1.
+Table 16 [Supp. F.1](https://arxiv.org/abs/2501.12948).
 
 The paper's two conclusions: distilling a strong model into a small one works far better than running the same RL on the small model, and it's much cheaper. But "advancing beyond the boundaries of human intelligence may still require more powerful base models and larger-scale reinforcement learning". Distillation copies reasoning; RL on a big model discovers it.
 
@@ -289,11 +289,11 @@ The paper's two conclusions: distilling a strong model into a small one works fa
 
 ##### Small base models
 
-RL on a 7B dense and a 16B MoE model failed to improve AIME: as answers got longer, they started repeating themselves. It worked once they moved to 32B dense, 230B MoE and 671B MoE models Supp. G.1.
+RL on a 7B dense and a 16B MoE model failed to improve AIME: as answers got longer, they started repeating themselves. It worked once they moved to 32B dense, 230B MoE and 671B MoE models [Supp. G.1](https://arxiv.org/abs/2501.12948).
 
 ##### Process reward models
 
-Grading each step sounds better than grading the answer, but a "step" is hard to define, step labels are hard to get right, and a model-based grader invites reward hacking. Useful for re-ranking answers, not worth the cost in large-scale RL Supp. G.2.
+Grading each step sounds better than grading the answer, but a "step" is hard to define, step labels are hard to get right, and a model-based grader invites reward hacking. Useful for re-ranking answers, not worth the cost in large-scale RL [Supp. G.2](https://arxiv.org/abs/2501.12948).
 
 ##### Monte Carlo tree search
 
@@ -309,7 +309,7 @@ The helpfulness reward model was hacked within a few hundred steps (chapter 7). 
 
 ##### Limits the authors list
 
-- **Only verifiable tasks.** Pure RL needs a reliable reward. For writing and other open-ended tasks, there's no checker, and learned rewards get hacked §6.
+- **Only verifiable tasks.** Pure RL needs a reliable reward. For writing and other open-ended tasks, there's no checker, and learned rewards get hacked [§6](https://arxiv.org/abs/2501.12948).
 
 - **No tools, weak structured output.** R1 can't call a search engine or calculator while reasoning.
 
@@ -323,13 +323,13 @@ The helpfulness reward model was hacked within a few hundred steps (chapter 7). 
 
 ##### Critiques from later work
 
-- **The "aha moment" may not be new.** Liu et al. found that some base models, including DeepSeek-V3-Base, already show self-reflection before any RL, so RL may amplify a behaviour rather than create it arXiv 2503.20783.
+- **The "aha moment" may not be new.** Liu et al. found that some base models, including DeepSeek-V3-Base, already show self-reflection before any RL, so RL may amplify a behaviour rather than create it [arXiv 2503.20783](https://arxiv.org/abs/2503.20783).
 
 - **GRPO has biases.** The same paper argues that GRPO's normalisation (by answer length in the original DeepSeekMath form, and by the group's standard deviation) can make wrong answers grow longer and over-weight very easy or very hard questions. Their fix, Dr. GRPO, removes both.
 
-- **Benchmarks.** AIME 2024 problems are public, so contamination is a fair question for any model. The paper checks this on AIME 2025, released after training: R1 solved 75% (pass@1) against o1's 80%, close to its AIME 2024 level Supp. E.2.
+- **Benchmarks.** AIME 2024 problems are public, so contamination is a fair question for any model. The paper checks this on AIME 2025, released after training: R1 solved 75% (pass@1) against o1's 80%, close to its AIME 2024 level [Supp. E.2](https://arxiv.org/abs/2501.12948).
 
-- **Anthropomorphism.** The paper itself warns that the vivid first-person style is "DeepSeek-engineered" through the cold-start data, not a sign of human-like thought Supp. B.3.2.
+- **Anthropomorphism.** The paper itself warns that the vivid first-person style is "DeepSeek-engineered" through the cold-start data, not a sign of human-like thought [Supp. B.3.2](https://arxiv.org/abs/2501.12948).
 
 ## Why it matters
 
@@ -348,7 +348,7 @@ R1 was the first openly released model to match OpenAI's o1 on maths and code, w
 | 2025 | "RL with verifiable rewards" became a standard post-training stage for maths and code | The R1-Zero recipe |
 | Sept 2025 | Published in Nature, with the supplementary detail (training cost, data, safety) used on this page | The v2 paper |
 
-DAPO arXiv 2503.14476. Note how DAPO's "dynamic sampling" fixes exactly what the GRPO lab shows: groups where every answer scores the same give no gradient.
+DAPO [arXiv 2503.14476](https://arxiv.org/abs/2503.14476). Note how DAPO's "dynamic sampling" fixes exactly what the GRPO lab shows: groups where every answer scores the same give no gradient.
 
 Related lessons: reasoning models and GRPO, mixture of experts (R1's architecture), serving reasoning models and prompting reasoning models.
 
@@ -404,22 +404,22 @@ Training a smaller model on a larger model's outputs.
 
 #### Everything on this page comes from these
 
-1. DeepSeek-AI (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv 2501.12948 (read in full, v2 of January 2026, including the supplementary material)
+1. DeepSeek-AI (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. [arXiv 2501.12948](https://arxiv.org/abs/2501.12948) (read in full, v2 of January 2026, including the supplementary material)
 
-2. DeepSeek-AI (2025). DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. Nature
+2. DeepSeek-AI (2025). DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. [Nature](https://www.nature.com/articles/s41586-025-09422-z)
 
-3. Shao et al. (2024). DeepSeekMath, where GRPO was introduced. arXiv 2402.03300
+3. Shao et al. (2024). DeepSeekMath, where GRPO was introduced. [arXiv 2402.03300](https://arxiv.org/abs/2402.03300)
 
-4. DeepSeek-AI (2024). DeepSeek-V3 Technical Report. arXiv 2412.19437
+4. DeepSeek-AI (2024). DeepSeek-V3 Technical Report. [arXiv 2412.19437](https://arxiv.org/abs/2412.19437)
 
-5. Schulman et al. (2017). Proximal Policy Optimization Algorithms. arXiv 1707.06347
+5. Schulman et al. (2017). Proximal Policy Optimization Algorithms. [arXiv 1707.06347](https://arxiv.org/abs/1707.06347)
 
-6. Lightman et al. (2023). Let's Verify Step by Step. arXiv 2305.20050
+6. Lightman et al. (2023). Let's Verify Step by Step. [arXiv 2305.20050](https://arxiv.org/abs/2305.20050)
 
-7. Wang et al. (2022). Self-Consistency Improves Chain of Thought Reasoning. arXiv 2203.11171
+7. Wang et al. (2022). Self-Consistency Improves Chain of Thought Reasoning. [arXiv 2203.11171](https://arxiv.org/abs/2203.11171)
 
-8. Liu et al. (2025). Understanding R1-Zero-Like Training: A Critical Perspective. arXiv 2503.20783
+8. Liu et al. (2025). Understanding R1-Zero-Like Training: A Critical Perspective. [arXiv 2503.20783](https://arxiv.org/abs/2503.20783)
 
-9. Yu et al. (2025). DAPO: An Open-Source LLM Reinforcement Learning System at Scale. arXiv 2503.14476
+9. Yu et al. (2025). DAPO: An Open-Source LLM Reinforcement Learning System at Scale. [arXiv 2503.14476](https://arxiv.org/abs/2503.14476)
 
 The voting lab is illustrative. All other numbers come from the papers above. @datawithsuman

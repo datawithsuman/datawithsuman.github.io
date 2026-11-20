@@ -45,15 +45,15 @@ k = 3, random starting centroids (three random customers). Grey points: not assi
 
 #### In one breath
 
-k-means splits data into k groups by placing k **centroids** and repeating two steps: assign every point to its nearest centroid, then move each centroid to the mean of its points. Each step lowers the **inertia** (total squared distance to centroids), so it always converges, but only to a **local** minimum that depends on where you started, which is why **k-means++** seeding and several restarts matter. You must choose k yourself (elbow, silhouette, or business sense), and because it measures squared Euclidean distance to a centre, it assumes round, similar-sized clusters: elongated, curved or uneven groups break it.What you'll be able to do after this: run Lloyd's algorithm by hand, explain why it converges and why it gets stuck, pick k with two methods, and name the shapes k-means can't handle.
+k-means splits data into k groups by placing k **centroids** and repeating two steps: assign every point to its nearest centroid, then move each centroid to the mean of its points. Each step lowers the **inertia** (total squared distance to centroids), so it always converges, but only to a **local** minimum that depends on where you started, which is why **k-means++** seeding and several restarts matter. You must choose k yourself (elbow, silhouette, or business sense), and because it measures squared Euclidean distance to a centre, it assumes round, similar-sized clusters: elongated, curved or uneven groups break it. What you'll be able to do after this: run Lloyd's algorithm by hand, explain why it converges and why it gets stuck, pick k with two methods, and name the shapes k-means can't handle.
 
 #### Centroids and inertia
 
 Describe each group by its **centroid**, the average customer in it. A good grouping keeps every customer close to their own group's centroid. k-means measures this with the inertia, the within-cluster sum of squares:
 
-$$ J = \sum_{j=1}^{k}\ \sum_{x_i \in C_j}\ \lVert x_i - \mu_j \rVert^2 $$
+$$ {J} = {\sum_{j=1}^{k}}\ {\sum_{x_i \in C_j}}\ {\lVert x_i - \mu_j \rVert^2} $$
 
-scikit-learn: k-means works by "minimizing a criterion known as the inertia or within-cluster sum-of-squares" clustering guide.
+scikit-learn: k-means works by "minimizing a criterion known as the inertia or within-cluster sum-of-squares" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#k-means).
 
 - **inertia**: One number for the whole clustering. Lower is better; 0 only if every point sits exactly on its centroid.
 
@@ -77,7 +77,7 @@ Minimising inertia over groupings and centroids together is hard. But each half 
 
 5. Neither step can increase inertia, and there are finitely many groupings, so this always stops. That's Lloyd's algorithm.
 
-scikit-learn: "Given enough time, K-means will always converge, however this may be to a local minimum. This is highly dependent on the initialization of the centroids" clustering guide. The algorithm is from Lloyd (1957 report, published 1982).
+scikit-learn: "Given enough time, K-means will always converge, however this may be to a local minimum. This is highly dependent on the initialization of the centroids" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#k-means). The algorithm is from Lloyd (1957 report, published 1982).
 
 #### Local minima, and k-means++
 
@@ -85,7 +85,7 @@ A bad start can trap Lloyd's algorithm: two centroids share one true group while
 
 Five well-separated groups of 40 customers each, k = 5, a single run per seed. Try seeds until you find a stuck run: one big group split in two and two groups merged.
 
-On this data, a single run with random starts got stuck in **15 of 50** seeds; with k-means++, in **6 of 50**. The worst random run had inertia 697, against 53.4 for the right answer. The fix that always works is cheap: run several starts and keep the lowest inertia (scikit-learn's `n_init`). Arthur & Vassilvitskii proved k-means++ seeding alone is expected to be within a factor of 8(ln k + 2), i.e. O(log k), of the optimal inertia SODA 2007.
+On this data, a single run with random starts got stuck in **15 of 50** seeds; with k-means++, in **6 of 50**. The worst random run had inertia 697, against 53.4 for the right answer. The fix that always works is cheap: run several starts and keep the lowest inertia (scikit-learn's `n_init`). Arthur & Vassilvitskii proved k-means++ seeding alone is expected to be within a factor of 8(ln k + 2), i.e. O(log k), of the optimal inertia [SODA 2007](https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf).
 
 #### Elbow and silhouette
 
@@ -110,7 +110,7 @@ On the customers, inertia drops from 583 (k = 1) to 314 (k = 2) to **97** (k = 3
 | **DBSCAN / HDBSCAN** | Any shape; marks noise | density (eps, min_samples) | DBSCAN |
 | **Gaussian mixtures** | Elliptical groups, soft membership | k, covariance type | lesson 4 |
 
-scikit-learn ships all of these with the same fit/predict interface clustering guide.
+scikit-learn ships all of these with the same fit/predict interface [clustering guide](https://scikit-learn.org/stable/modules/clustering.html).
 
 #### The whole recipe
 
@@ -124,7 +124,7 @@ scikit-learn ships all of these with the same fit/predict interface clustering g
 
 5. **Check stability:** refit on a resample; clusters that change a lot aren't real.
 
-Cost: each Lloyd iteration is O(n·k·d). For millions of rows, `MiniBatchKMeans` updates centroids from small random batches, trading a little inertia for big speed-ups clustering guide.
+Cost: each Lloyd iteration is O(n·k·d). For millions of rows, `MiniBatchKMeans` updates centroids from small random batches, trading a little inertia for big speed-ups [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#mini-batch-k-means).
 
 #### When to use it
 
@@ -152,7 +152,7 @@ The number of ways to split 180 customers into 3 non-empty groups is about 3180 
 
 #### Round, similar-sized clusters only
 
-Assigning each point to the nearest centre draws straight boundaries halfway between centroids (a Voronoi diagram). scikit-learn: "Inertia makes the assumption that clusters are convex and isotropic, which is not always the case. It responds poorly to elongated clusters, or manifolds with irregular shapes" clustering guide.
+Assigning each point to the nearest centre draws straight boundaries halfway between centroids (a Voronoi diagram). scikit-learn: "Inertia makes the assumption that clusters are convex and isotropic, which is not always the case. It responds poorly to elongated clusters, or manifolds with irregular shapes" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#k-means).
 
 Same algorithm, best of 10 starts, true k given. Round groups: perfect. Moons: k-means cuts straight across both (ARI 0.21). Tilted groups: it slices them crosswise (ARI 0.62).
 
@@ -278,7 +278,7 @@ Five-group data, single runs per seed. The last row picks the lowest-inertia run
 
 ##### A guarantee for the seeding
 
-k-means++ is O(log k)-competitive in expectation: the expected inertia after seeding alone is at most 8(ln k + 2) times the optimum Arthur & Vassilvitskii 2007. Lloyd iterations then only improve it. It's the default initialisation in scikit-learn.
+k-means++ is O(log k)-competitive in expectation: the expected inertia after seeding alone is at most 8(ln k + 2) times the optimum [Arthur & Vassilvitskii 2007](https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf). Lloyd iterations then only improve it. It's the default initialisation in scikit-learn.
 
 #### Key terms
 
@@ -293,9 +293,9 @@ k-means++ is O(log k)-competitive in expectation: the expected inertia after see
 
 #### What this page is built from
 
-1. scikit-learn, Clustering user guide (inertia, Lloyd steps, local minima, k-means++, assumptions, mini-batch, silhouette, adjusted Rand index).
+1. scikit-learn, [Clustering user guide](https://scikit-learn.org/stable/modules/clustering.html) (inertia, Lloyd steps, local minima, k-means++, assumptions, mini-batch, silhouette, adjusted Rand index).
 
-2. D. Arthur & S. Vassilvitskii, "k-means++: the advantages of careful seeding", SODA 2007, PDF (8(ln k + 2) bound).
+2. D. Arthur & S. Vassilvitskii, "k-means++: the advantages of careful seeding", SODA 2007, [PDF](https://theory.stanford.edu/~sergei/papers/kMeansPP-soda.pdf) (8(ln k + 2) bound).
 
 3. S. Lloyd, "Least squares quantization in PCM", _IEEE Trans. Information Theory_ 28(2), 1982 (the algorithm; background).
 

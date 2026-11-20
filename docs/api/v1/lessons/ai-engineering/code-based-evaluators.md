@@ -116,18 +116,20 @@ How do you compare generated SQL with a reference?
 
 Run both on a test database and compare the result sets, rather than the query text, since many different queries are correct.
 
+#### The 30-second answer
+
 I'd use code for every failure mode with an objective rule: output parses, the schema matches, the SQL runs and returns the reference rows, tool names and arguments are valid, the recipient exists, cited documents were actually retrieved. Code is fast, free and repeatable, so it runs in CI, as guardrails and on all traffic. The risk is the grader itself: too strict fails right answers, like a model held at 42% on CORE-Bench until grading was fixed, and too loose passes wrong ones. So I'd normalise before comparing, execute where possible, and test the grader on known right and wrong answers.
 
 **Key terms and sources**
 
-What code-based evaluators can check (schemas, values, execution results, references), why they come first, and the grading bugs that make a strong agent look weak: overly strict matching, and checks loose enough to pass wrong answers.
+What code-based evaluators can check (schemas, values, execution results, references), why they come first, and the grading bugs that make a strong agent look weak: overly strict matching, and checks loose enough to pass wrong answers. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

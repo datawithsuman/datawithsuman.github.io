@@ -48,11 +48,11 @@ Without smoothing, "the paneer was crispy" gets **infinite** perplexity: "paneer
 
 #### In one breath
 
-A **language model** assigns a probability to a sequence of words, or equivalently predicts the **next word**. By the chain rule, P(sentence) is the product of P(each word | all previous words). An **n-gram model** simplifies this with the **Markov assumption**: only the last n − 1 words matter, and the probabilities come from **counting** in a corpus. Any word pair never seen in training gets probability 0, which zeroes the whole sentence, so we **smooth**: add-k, backoff, or the best classic method, **Kneser–Ney**. Models are compared by **perplexity**, the exponentiated average negative log-probability on held-out text: lower is better, and it reads as "how many words the model is effectively choosing between". LLMs are next-word predictors too, with a neural network instead of a count table.What you'll be able to do after this: compute bigram probabilities and perplexity, explain why smoothing is needed, and connect n-gram models to modern LLMs.
+A **language model** assigns a probability to a sequence of words, or equivalently predicts the **next word**. By the chain rule, P(sentence) is the product of P(each word | all previous words). An **n-gram model** simplifies this with the **Markov assumption**: only the last n − 1 words matter, and the probabilities come from **counting** in a corpus. Any word pair never seen in training gets probability 0, which zeroes the whole sentence, so we **smooth**: add-k, backoff, or the best classic method, **Kneser–Ney**. Models are compared by **perplexity**, the exponentiated average negative log-probability on held-out text: lower is better, and it reads as "how many words the model is effectively choosing between". LLMs are next-word predictors too, with a neural network instead of a count table. What you'll be able to do after this: compute bigram probabilities and perplexity, explain why smoothing is needed, and connect n-gram models to modern LLMs.
 
 #### Chain rule, Markov assumption, counts
 
-$$ P(w_1,\dots,w_n) = \prod_i P(w_i \mid w_1,\dots,w_{i-1}) \;\approx\; \prod_i P(w_i \mid w_{i-1}), \qquad P(w_i\mid w_{i-1}) = \frac{C(w_{i-1}\,w_i)}{C(w_{i-1})} $$
+$$ {P(w_1,\dots,w_n) = \prod_i P(w_i \mid w_1,\dots,w_{i-1})} \;\approx\; {\prod_i P(w_i \mid w_{i-1})}, \qquad {P(w_i\mid w_{i-1}) = \frac{C(w_{i-1}\,w_i)}{C(w_{i-1})}} $$
 
 Shannon (1948) used n-gram approximations of English; Jurafsky & Martin, SLP3 ch. 3. Sentences are padded with start and end tokens <s> and </s>.
 
@@ -68,7 +68,7 @@ Shannon (1948) used n-gram approximations of English; Jurafsky & Martin, SLP3 ch
 
 #### Perplexity, and the road to LLMs
 
-$$ \mathrm{PP}(W) = \exp\!\Big(-\frac{1}{N}\sum_{i=1}^{N}\log P(w_i \mid w_{<i})\Big) $$
+$$ \mathrm{PP}(W) = {\exp\!\Big(}-{\frac{1}{N}\sum_{i=1}^{N}\log P(w_i \mid w_{<i})}{\Big)} $$
 
 Perplexity = exp(cross-entropy) on the test set (entropy & cross-entropy). Only compare perplexities computed with the same tokenisation and vocabulary.
 
@@ -146,4 +146,4 @@ Predicting the next word from counts: the chain rule, the Markov assumption, big
 
 4. Y. Bengio, R. Ducharme, P. Vincent & C. Jauvin, "A Neural Probabilistic Language Model", _JMLR_ 3, 2003.
 
-5. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 3, web.stanford.edu/~jurafsky/slp3.
+5. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 3, [web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3/).

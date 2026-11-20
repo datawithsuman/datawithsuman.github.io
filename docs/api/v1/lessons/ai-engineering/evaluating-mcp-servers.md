@@ -120,22 +120,24 @@ How do you test that your tool isn't over-used?
 
 Include tasks where it shouldn't be called, and count calls to it there.
 
+#### The 30-second answer
+
 With MCP, the agent chooses among tools it didn't come with, guided only by names, descriptions and schemas, often next to many other servers. I'd evaluate two layers: rule checks on every call, meaning a real tool name, a valid schema and a successful execution, and outcome checks on realistic tasks that don't name the tools, run with distractor servers connected, and verified by executing a check. Benchmarks show format is nearly solved, over 98% schema compliance, while planning isn't: the best model completed about 44% of MCP-Universe tasks. I'd version tool descriptions like prompts and test them across models.
 
 **Key terms and sources**
 
-What changes when tools come from MCP servers (descriptions act as prompts, many servers crowd the context), the checks to run on calls and outcomes, what MCP-Bench, MCP-Universe, MCPMark and MCP-Atlas found, and how to build your own server eval.
+What changes when tools come from MCP servers (descriptions act as prompts, many servers crowd the context), the checks to run on calls and outcomes, what MCP-Bench, MCP-Universe, MCPMark and MCP-Atlas found, and how to build your own server eval. · checked 15 Nov 2026
 
 #### Sources
 
-- Z. Wang et al., MCP-Bench: benchmarking tool-using LLM agents with complex real-world tasks via MCP servers, 2025
+- [Z. Wang et al., MCP-Bench: benchmarking tool-using LLM agents with complex real-world tasks via MCP servers, 2025](https://arxiv.org/abs/2508.20453)
 
-- Z. Luo et al., MCP-Universe: benchmarking LLMs with real-world MCP servers, 2025
+- [Z. Luo et al., MCP-Universe: benchmarking LLMs with real-world MCP servers, 2025](https://arxiv.org/abs/2508.14704)
 
-- Z. Wu et al., MCPMark: a benchmark for stress-testing realistic and comprehensive MCP use, 2025
+- [Z. Wu et al., MCPMark: a benchmark for stress-testing realistic and comprehensive MCP use, 2025](https://arxiv.org/abs/2509.24002)
 
-- Scale AI, MCP-Atlas, 2026
+- [Scale AI, MCP-Atlas, 2026](https://arxiv.org/abs/2602.00933)
 
-- Anthropic, Writing effective tools for agents, with agents, Sep 2025
+- [Anthropic, Writing effective tools for agents, with agents, Sep 2025](https://www.anthropic.com/engineering/writing-tools-for-agents)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

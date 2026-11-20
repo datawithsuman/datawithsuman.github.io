@@ -124,20 +124,22 @@ The bot answers the last message well but forgets constraints from turn 2. What'
 
 Over-reliance on the latest turn, or context truncation. Test with N−1 replays and coherence checks, and consider restating key constraints in a running summary.
 
+#### The 30-second answer
+
 I'd start with one pass or fail per conversation against the user's goal, and only for failed sessions go turn by turn to find the first mistake, plus check memory of earlier facts. I'd try to reproduce each failure as a single-turn test, since many aren't really multi-turn. To scale, I'd simulate users with personas and hidden goals, report success by conversation length, and perturb passing conversations by changing the goal or pushing back. Research shows models get much less reliable over turns, so I'd run each conversation several times and watch the spread.
 
 **Key terms and sources**
 
-Evaluating conversations at the session, turn and memory levels; reproducing failures as single-turn tests; simulated users and perturbation tests; and why reliability, not ability, is what drops across turns.
+Evaluating conversations at the session, turn and memory levels; reproducing failures as single-turn tests; simulated users and perturbation tests; and why reliability, not ability, is what drops across turns. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- P. Laban, H. Hayashi, Y. Zhou and J. Neville, LLMs get lost in multi-turn conversation, 2025
+- [P. Laban, H. Hayashi, Y. Zhou and J. Neville, LLMs get lost in multi-turn conversation, 2025](https://arxiv.org/abs/2505.06120)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

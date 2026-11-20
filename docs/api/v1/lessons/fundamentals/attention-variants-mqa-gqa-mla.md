@@ -1,6 +1,6 @@
 # Attention Variants: MQA, GQA and MLA
 
-> How many conversations fit on one GPU, and how GQA and MLA raise that?
+> How many conversations fit on one GPU, and how do GQA and MLA raise that?
 
 - Track: Fundamentals › LLMs › Modern architecture
 - Type: Concept · 25 min
@@ -52,11 +52,11 @@ With full **MHA**, each token costs 512 KiB, so one 8k conversation needs **4 Gi
 
 #### In one breath
 
-During generation an LLM stores the keys and values of every previous token, the **KV cache**, so it doesn't recompute them. With standard multi-head attention (MHA) every head has its own K and V, and the cache grows with layers × heads × head size × context × batch. **MQA** shares one K/V head across all query heads (smallest cache, some quality loss); **GQA** shares one K/V head per group of query heads (Llama 3: 32 query heads, 8 KV heads, 4× smaller cache, near-MHA quality); **MLA** (DeepSeek-V2/V3) caches one small compressed latent vector per token and rebuilds K and V from it. Because decoding is limited by memory bandwidth, a smaller cache means more users per GPU, longer contexts and faster tokens.What you'll be able to do after this: compute a model's KV cache size and explain the MHA → GQA → MQA → MLA trade-off.
+During generation an LLM stores the keys and values of every previous token, the **KV cache**, so it doesn't recompute them. With standard multi-head attention (MHA) every head has its own K and V, and the cache grows with layers × heads × head size × context × batch. **MQA** shares one K/V head across all query heads (smallest cache, some quality loss); **GQA** shares one K/V head per group of query heads (Llama 3: 32 query heads, 8 KV heads, 4× smaller cache, near-MHA quality); **MLA** (DeepSeek-V2/V3) caches one small compressed latent vector per token and rebuilds K and V from it. Because decoding is limited by memory bandwidth, a smaller cache means more users per GPU, longer contexts and faster tokens. What you'll be able to do after this: compute a model's KV cache size and explain the MHA → GQA → MQA → MLA trade-off.
 
 #### The KV-cache formula
 
-$$ \text{KV cache} = 2\timesL\timesn_{kv}\times d_{head}\times(\text{context}\times\text{batch})\times\text{bytes} $$
+$$ \text{KV cache} = {2}\times{L}\times{n_{kv}\times d_{head}}\times{(\text{context}\times\text{batch})}\times{\text{bytes}} $$
 
 For the Llama 3 8B shape (32 layers, head size 128, 8 KV heads, bf16): 2 × 32 × 8 × 128 × 2 bytes = 128 KiB per token.
 
@@ -142,12 +142,12 @@ Why the KV cache, not the weights, limits how many users an LLM can serve at lon
 
 #### Sources
 
-1. N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need", 2019, arXiv:1911.02150.
+1. N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need", 2019, [arXiv:1911.02150](https://arxiv.org/abs/1911.02150).
 
-2. J. Ainslie et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints", EMNLP 2023, arXiv:2305.13245.
+2. J. Ainslie et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints", EMNLP 2023, [arXiv:2305.13245](https://arxiv.org/abs/2305.13245).
 
-3. DeepSeek-AI, "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model", 2024, arXiv:2405.04434.
+3. DeepSeek-AI, "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model", 2024, [arXiv:2405.04434](https://arxiv.org/abs/2405.04434).
 
-4. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783.
+4. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783).
 
-5. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention" (vLLM), SOSP 2023, arXiv:2309.06180.
+5. W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention" (vLLM), SOSP 2023, [arXiv:2309.06180](https://arxiv.org/abs/2309.06180).

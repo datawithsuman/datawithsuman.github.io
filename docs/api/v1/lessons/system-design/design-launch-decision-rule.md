@@ -171,8 +171,10 @@ How do you choose a margin?
 
 Work from what the harm would cost compared with the expected benefit, such as how much retention you'd give up for a given revenue gain. It's a business decision, set before the test. Note the trade-off: a tighter margin needs many more users, and halving it needs four times as many.
 
+#### The 30-second answer
+
 I'd agree the rule before the test. Ship if and only if at least one success metric significantly wins, all guardrails are significantly non-inferior, no metric shows evidence of harm, and quality checks like sample ratio mismatch pass. For guardrails, slightly worse isn't the question. I'd look at the confidence interval against the margin we agreed. If it stays above the margin, it passes. If it crosses the margin, we can't rule out unacceptable harm, so it hasn't passed, even if nothing's significant. Corrections are the subtle part. For success metrics, you need at least one to win, so more metrics mean more false wins, and I'd divide alpha by the number. For guardrails, you need all to pass, so I wouldn't correct alpha. Instead, power falls, so I'd plan with beta over guardrails plus one. With five guardrails, that needs about twice as many users. Each metric has a cost, so I'd keep the list short and allow documented overrides for factors outside the test.
 
 **Key terms and sources**
 
-Based on a music streaming company's published framework: Spotify's post, read in full, and its paper, read in part. The lab's sample sizes are our own calculations. Uses choosing metrics, multiple testing and sample size.
+Based on a music streaming company's published framework: [Spotify's post](https://engineering.atspotify.com/2024/3/risk-aware-product-decisions-in-a-b-tests-with-multiple-metrics), read in full, and [its paper](https://arxiv.org/abs/2402.11609), read in part. The lab's sample sizes are our own calculations. Uses choosing metrics, multiple testing and sample size. · checked 5 Nov 2026

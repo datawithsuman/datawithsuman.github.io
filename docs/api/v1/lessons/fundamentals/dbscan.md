@@ -38,7 +38,7 @@ _Illustrative, based on the lesson's two roads and stray GPS pings._
 
 Big dots: core points. Small dots: border points. Grey: noise. The circle (top left) shows eps to scale.
 
-With min_samples = 10: eps = 0.30 finds both roads exactly (ARI 1.0) and flags 4 stray pings as noise; the other 16 strays lie close enough to a road to be absorbed as border points. eps = 0.25 breaks a road into pieces (3 clusters); eps = 0.35 merges both roads into one. A 20% change in eps flips the answer. scikit-learn: eps "is crucial to choose appropriately for the data set and distance function and usually cannot be left at the default value" clustering guide.
+With min_samples = 10: eps = 0.30 finds both roads exactly (ARI 1.0) and flags 4 stray pings as noise; the other 16 strays lie close enough to a road to be absorbed as border points. eps = 0.25 breaks a road into pieces (3 clusters); eps = 0.35 merges both roads into one. A 20% change in eps flips the answer. scikit-learn: eps "is crucial to choose appropriately for the data set and distance function and usually cannot be left at the default value" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#dbscan).
 
 **Now say why:** why does such a small change in eps swing the result from fragments, to two roads, to one blob?
 
@@ -48,7 +48,7 @@ With min_samples = 10: eps = 0.30 finds both roads exactly (ARI 1.0) and flags 4
 
 #### In one breath
 
-DBSCAN says a cluster is a region where points are packed densely, separated from other clusters by sparse space. A point with at least **min_samples** neighbours within radius **eps** is a **core** point; core points within eps of each other join the same cluster, points near a core point join it as **border** points, and everything else is **noise**. So it finds clusters of **any shape**, figures out how many there are, and flags outliers, none of which k-means can do. Its weakness is one global density: **eps** is hard to set, and when clusters have different densities, no single eps works. **HDBSCAN** fixes that by trying all densities and keeping the most stable clusters.What you'll be able to do after this: classify points as core/border/noise by hand, pick eps with a k-distance plot, explain why DBSCAN finds curved clusters, and say when to switch to HDBSCAN.
+DBSCAN says a cluster is a region where points are packed densely, separated from other clusters by sparse space. A point with at least **min_samples** neighbours within radius **eps** is a **core** point; core points within eps of each other join the same cluster, points near a core point join it as **border** points, and everything else is **noise**. So it finds clusters of **any shape**, figures out how many there are, and flags outliers, none of which k-means can do. Its weakness is one global density: **eps** is hard to set, and when clusters have different densities, no single eps works. **HDBSCAN** fixes that by trying all densities and keeping the most stable clusters. What you'll be able to do after this: classify points as core/border/noise by hand, pick eps with a k-distance plot, explain why DBSCAN finds curved clusters, and say when to switch to HDBSCAN.
 
 #### Core, border and noise
 
@@ -62,11 +62,11 @@ DBSCAN says a cluster is a region where points are packed densely, separated fro
 
 5. The lone point has no core within eps. It's **noise** (label −1 in scikit-learn): DBSCAN refuses to force it into a cluster.
 
-Definitions from scikit-learn: a core sample has "min_samples other samples within a distance of eps"; "Any sample that is not a core sample, and is at least eps in distance from any core sample, is considered an outlier by the algorithm" clustering guide. (scikit-learn's min_samples counts the point itself.) Original algorithm: Ester, Kriegel, Sander & Xu, KDD 1996.
+Definitions from scikit-learn: a core sample has "min_samples other samples within a distance of eps"; "Any sample that is not a core sample, and is at least eps in distance from any core sample, is considered an outlier by the algorithm" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#dbscan). (scikit-learn's min_samples counts the point itself.) Original algorithm: Ester, Kriegel, Sander & Xu, KDD 1996.
 
 #### A cluster is a connected dense region
 
-$$ N_\varepsilon(p) = \{\,q : d(p,q) \le \varepsilon\,\} \qquad |N_\varepsilon(p)| \ge \text{min\_samples} \qquad p \to p_1 \to \dots \to q $$
+$$ {N_\varepsilon(p) = \{\,q : d(p,q) \le \varepsilon\,\}} \qquad {|N_\varepsilon(p)| \ge \text{min\_samples}} \qquad {p \to p_1 \to \dots \to q} $$
 
 - **eps-neighbourhood**: All points within distance eps of p, including p itself.
 
@@ -96,17 +96,17 @@ For k = 9 the curve is nearly flat up to about the 85th percentile (0.25), then 
 | **OPTICS** (1999) | Orders points by reachability; extract clusters at many eps | min_samples (max eps) |
 | **HDBSCAN** (2013) | Hierarchy over all densities; keeps the most stable clusters | min_cluster_size, min_samples |
 
-All three are in scikit-learn (`DBSCAN`, `OPTICS`, `HDBSCAN`) clustering guide. Typical uses: geospatial data (pickup hotspots, store locations), anomaly detection (noise points are the anomalies), and clustering embeddings after UMAP (see t-SNE & UMAP).
+All three are in scikit-learn (`DBSCAN`, `OPTICS`, `HDBSCAN`) [clustering guide](https://scikit-learn.org/stable/modules/clustering.html). Typical uses: geospatial data (pickup hotspots, store locations), anomaly detection (noise points are the anomalies), and clustering embeddings after UMAP (see t-SNE & UMAP).
 
 #### Speed, scaling and determinism
 
-- **Cost:** one neighbourhood query per point. With a KD-tree or ball tree in low dimensions that's roughly O(n log n); otherwise O(n²). scikit-learn's implementation can build a full pairwise matrix that "will consume n² floats" when trees can't be used clustering guide.
+- **Cost:** one neighbourhood query per point. With a KD-tree or ball tree in low dimensions that's roughly O(n log n); otherwise O(n²). scikit-learn's implementation can build a full pairwise matrix that "will consume n² floats" when trees can't be used [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#dbscan).
 
 - **Scale features:** eps is one radius in every direction, so unscaled features make it meaningless. For GPS, use haversine distance in metres.
 
 - **High dimensions:** distances concentrate (see k-NN), so density is hard to define; reduce dimensions first.
 
-- **Order:** core points and noise are deterministic, but a border point within eps of two clusters goes to whichever reaches it first, so "results can differ when data is provided in a different order" clustering guide.
+- **Order:** core points and noise are deterministic, but a border point within eps of two clusters goes to whichever reaches it first, so "results can differ when data is provided in a different order" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#dbscan).
 
 #### The whole recipe
 
@@ -148,11 +148,11 @@ Linking any two points within distance eps (single linkage cut at eps) follows c
 
 120 deliveries packed in the city centre, 60 spread across a suburb next to it. min_samples = 5.
 
-eps = 0.15 finds the centre but throws away **54 of the 60** suburb deliveries as noise. eps = 0.4 keeps the suburb but merges it with the centre into one cluster. The compromise, eps = 0.3, keeps them apart but hands 11 suburb deliveries to the centre and drops 7 as noise. scikit-learn: "DBSCAN assumes that the clustering criterion (i.e. density requirement) is globally homogeneous" and "may struggle to successfully capture clusters with different densities" clustering guide.
+eps = 0.15 finds the centre but throws away **54 of the 60** suburb deliveries as noise. eps = 0.4 keeps the suburb but merges it with the centre into one cluster. The compromise, eps = 0.3, keeps them apart but hands 11 suburb deliveries to the centre and drops 7 as noise. scikit-learn: "DBSCAN assumes that the clustering criterion (i.e. density requirement) is globally homogeneous" and "may struggle to successfully capture clusters with different densities" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hdbscan).
 
 **Go deeper: how HDBSCAN removes eps**
 
-HDBSCAN (Campello, Moulavi & Sander, PAKDD 2013) "explores all possible density scales": it replaces raw distance with a **mutual reachability distance** (the larger of the two points' core distances and their actual distance, which pushes sparse points apart), builds a single-linkage tree on it (via a minimum spanning tree), and condenses the tree, dropping splits smaller than `min_cluster_size`. It then keeps the clusters that persist longest as density changes (their **stability**). Each cluster effectively gets its own eps. scikit-learn: it "relies solely on the choice of min_samples, which tends to be a more robust hyperparameter" clustering guide. In practice it's the better default; use plain DBSCAN when you know the density scale (e.g. "a hotspot is ≥ 10 orders within 200 m").
+HDBSCAN (Campello, Moulavi & Sander, PAKDD 2013) "explores all possible density scales": it replaces raw distance with a **mutual reachability distance** (the larger of the two points' core distances and their actual distance, which pushes sparse points apart), builds a single-linkage tree on it (via a minimum spanning tree), and condenses the tree, dropping splits smaller than `min_cluster_size`. It then keeps the clusters that persist longest as density changes (their **stability**). Each cluster effectively gets its own eps. scikit-learn: it "relies solely on the choice of min_samples, which tends to be a more robust hyperparameter" [clustering guide](https://scikit-learn.org/stable/modules/clustering.html#hdbscan). In practice it's the better default; use plain DBSCAN when you know the density scale (e.g. "a hotspot is ≥ 10 orders within 200 m").
 
 #### Caveats
 
@@ -273,7 +273,7 @@ The DBSCAN paper (Ester, Kriegel, Sander & Xu, KDD 1996) received the SIGKDD Tes
 
 1. M. Ester, H.-P. Kriegel, J. Sander & X. Xu, "A density-based algorithm for discovering clusters in large spatial databases with noise", KDD 1996, pp. 226–231 (DBSCAN, k-distance heuristic).
 
-2. scikit-learn, Clustering user guide: DBSCAN, HDBSCAN, OPTICS (definitions, eps sensitivity, memory, ordering, global density assumption).
+2. scikit-learn, [Clustering user guide: DBSCAN, HDBSCAN, OPTICS](https://scikit-learn.org/stable/modules/clustering.html#dbscan) (definitions, eps sensitivity, memory, ordering, global density assumption).
 
 3. R. Campello, D. Moulavi & J. Sander, "Density-based clustering based on hierarchical density estimates", PAKDD 2013 (HDBSCAN).
 

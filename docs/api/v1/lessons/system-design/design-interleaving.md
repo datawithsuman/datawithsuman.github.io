@@ -181,8 +181,10 @@ Why does a coin flip per search matter?
 
 Whoever goes first gets the higher position in each pair, and higher positions get more clicks. The coin gives each ranker the better position equally often, so position bias averages out across searches, and a ranker can't win just by being placed first.
 
+#### The 30-second answer
+
 An A/B test gives each user one ranker, so most of the variance is between users. I'd use interleaving as a filter. For each search, a coin picks which ranker goes first, then we take each ranker's top unused item. If they agree, it goes in once with no credit. If they differ, we add a competitive pair, tagged by ranker. When a user clicks or books a tagged item, that ranker wins the pair, and each user votes for whichever won more. I'd test user votes against an even split with a proportion test. Because the same user sees both rankers, and only disagreements count, it can need far less traffic. It only tells me which is preferred, though, not the business effect. It doesn't suit layouts, set-level ranking like diversity, or marketplace effects. So offline shortlists, interleaving filters, and an A/B test confirms the winner. I'd run both on some pairs to measure agreement, and log which ranker owns each position.
 
 **Key terms and sources**
 
-Based on published work: Airbnb's KDD 2025 paper (part read directly and part through a summary), Walmart's post and DoorDash's post, which was blocked for us, so we used search excerpts. Uses sample size and ranking metrics.
+Based on published work: [Airbnb's KDD 2025 paper](https://arxiv.org/html/2508.00751v1) (part read directly and part through a summary), [Walmart's post](https://tech.walmart.com/content/walmart-global-tech/en_us/blog/post/driving-faster-experimentation-through-interleaving-in-walmart-search.html) and [DoorDash's post](https://careers.doordash.com/blog/doordash-experimentation-with-interleaving-designs), which was blocked for us, so we used search excerpts. Uses sample size and ranking metrics. · checked 5 Nov 2026

@@ -86,7 +86,7 @@ For provider retirement notices and rollout mechanics, see Model Upgrades and Re
 
 #### The maths
 
-$$ z = \frac{\hat p_{old} - \hat p_{new}}{\sqrt{\bar p(1-\bar p)\left(\frac{2}{n}\right)}} $$
+$$ {z} = \frac{{\hat p_{old}} - {\hat p_{new}}}{\sqrt{\bar p(1-\bar p)\left(\frac{2}{{n}}\right)}} $$
 
 This treats the runs as independent samples, which is conservative for the same cases; a paired view (which cases flipped) is sharper. Either way, a critical case that fails every time is a regression regardless of z.
 
@@ -146,20 +146,22 @@ A new model passes CI. Can you ship it?
 
 Not yet: CI covers known cases only. Simplify prompts where you can, redo error analysis on a sample of its outputs, and roll out gradually with monitoring.
 
+#### The 30-second answer
+
 I'd keep a golden set of 100 to 200 purpose-built cases, covering core features, every serious past failure and edge cases, with code checks where possible and pinned judge models elsewhere, and run it on every prompt, model or tool change. A drop doesn't automatically mean a regression on a small set, so I'd read which cases flipped, treat any critical case that fails as blocking, and use a significance check on the average. Passing CI only means known cases still work, so production monitoring is separate. Model upgrades go through CI too, then I'd try removing old workaround instructions and redo error analysis.
 
 **Key terms and sources**
 
-What goes in a golden dataset, how CI checks it on every change, how to tell a real regression from noise, why passing CI doesn't mean production is fine, and how to handle model upgrades.
+What goes in a golden dataset, how CI checks it on every change, how to tell a real regression from noise, why passing CI doesn't mean production is fine, and how to handle model upgrades. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- L. Chen, M. Zaharia and J. Zou, How is ChatGPT's behavior changing over time?, 2023
+- [L. Chen, M. Zaharia and J. Zou, How is ChatGPT's behavior changing over time?, 2023](https://arxiv.org/abs/2307.09009)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

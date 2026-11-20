@@ -48,11 +48,11 @@ With **k = 1** every reconstruction is a blur of all three shapes (84% of the pi
 
 #### In one breath
 
-An **autoencoder** squeezes each input through a narrow **bottleneck** (the encoder) and rebuilds it (the decoder), trained only to make the output match the input. To succeed it must keep the most important structure in a few numbers: a learned compression. A **linear** autoencoder learns exactly the same subspace as PCA. But a plain autoencoder's latent space has gaps, so picking a random code rarely decodes to anything sensible. A **VAE** fixes that: the encoder outputs a **mean and variance**, a code is **sampled** from it (via the **reparameterisation trick**), and a **KL penalty** pulls every code distribution towards a standard normal. The latent space becomes smooth and filled, so sampling z ~ N(0, I) and decoding generates new data.What you'll be able to do after this: explain the bottleneck, connect linear autoencoders to PCA, and write and interpret the VAE loss.
+An **autoencoder** squeezes each input through a narrow **bottleneck** (the encoder) and rebuilds it (the decoder), trained only to make the output match the input. To succeed it must keep the most important structure in a few numbers: a learned compression. A **linear** autoencoder learns exactly the same subspace as PCA. But a plain autoencoder's latent space has gaps, so picking a random code rarely decodes to anything sensible. A **VAE** fixes that: the encoder outputs a **mean and variance**, a code is **sampled** from it (via the **reparameterisation trick**), and a **KL penalty** pulls every code distribution towards a standard normal. The latent space becomes smooth and filled, so sampling z ~ N(0, I) and decoding generates new data. What you'll be able to do after this: explain the bottleneck, connect linear autoencoders to PCA, and write and interpret the VAE loss.
 
 #### Encode, squeeze, decode
 
-$$ z = f_{\text{enc}}(x) \in \mathbb{R}^{k}, \qquad \hat{x} = f_{\text{dec}}(z), \qquad L = \lVert x - \hat{x}\rVert^2 $$
+$$ z = {f_{\text{enc}}(x)} \in \mathbb{R}^{k}, \qquad \hat{x} = {f_{\text{dec}}(z)}, \qquad {L = \lVert x - \hat{x}\rVert^2} $$
 
 Baldi & Hornik (1989): a linear autoencoder with squared error learns the same subspace as PCA (PCA; SVD). Hinton & Salakhutdinov (_Science_ 2006) showed deep non-linear autoencoders compress far better than PCA. Denoising autoencoders (Vincent et al. 2008) corrupt the input and learn to recover the clean version.
 
@@ -64,9 +64,9 @@ Baldi & Hornik (1989): a linear autoencoder with squared error learns the same s
 
 #### The variational autoencoder
 
-$$ \mathcal{L} = \mathbb{E}_{q(z\mid x)}\big[\log p(x\mid z)\big] - \mathrm{KL}\big(q(z\mid x)\,\Vert\,\mathcal{N}(0,I)\big), \qquad z = \mu + \sigma\odot\varepsilon $$
+$$ \mathcal{L} = {\mathbb{E}_{{q(z\mid x)}}\big[\log p(x\mid z)\big]} - {\mathrm{KL}\big(q(z\mid x)\,\Vert\,\mathcal{N}(0,I)\big)}, \qquad {z = \mu + \sigma\odot\varepsilon} $$
 
-Kingma & Welling, "Auto-Encoding Variational Bayes", ICLR 2014 arXiv:1312.6114; Rezende, Mohamed & Wierstra (2014). The objective is the evidence lower bound (ELBO) on log p(x); training maximises it. For Gaussians the KL term has a closed form (below). KL itself: entropy & KL.
+Kingma & Welling, "Auto-Encoding Variational Bayes", ICLR 2014 [arXiv:1312.6114](https://arxiv.org/abs/1312.6114); Rezende, Mohamed & Wierstra (2014). The objective is the evidence lower bound (ELBO) on log p(x); training maximises it. For Gaussians the KL term has a closed form (below). KL itself: entropy & KL.
 
 - **encoder outputs a distribution**: For each input, a mean μ and a standard deviation σ for every latent dimension: a little Gaussian cloud instead of a single point.
 
@@ -148,8 +148,8 @@ Compressing data through a bottleneck and reconstructing it; what a linear autoe
 
 3. P. Vincent, H. Larochelle, Y. Bengio & P.-A. Manzagol, "Extracting and composing robust features with denoising autoencoders", ICML 2008.
 
-4. D. Kingma & M. Welling, "Auto-Encoding Variational Bayes", ICLR 2014, arXiv:1312.6114.
+4. D. Kingma & M. Welling, "Auto-Encoding Variational Bayes", ICLR 2014, [arXiv:1312.6114](https://arxiv.org/abs/1312.6114).
 
 5. I. Higgins et al., "β-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework", ICLR 2017.
 
-6. R. Rombach, A. Blattmann, D. Lorenz, P. Esser & B. Ommer, "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022, arXiv:2112.10752.
+6. R. Rombach, A. Blattmann, D. Lorenz, P. Esser & B. Ommer, "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022, [arXiv:2112.10752](https://arxiv.org/abs/2112.10752).

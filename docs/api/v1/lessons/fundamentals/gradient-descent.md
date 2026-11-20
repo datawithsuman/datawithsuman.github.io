@@ -54,11 +54,11 @@ Steps to reach loss < 0.0001. Plain gradient descent is fastest at a well-chosen
 
 #### In one breath
 
-**Gradient descent** repeats one step: θ ← θ − η∇L(θ), walking downhill on the loss. The **learning rate** η is everything: too small crawls, too large overshoots and **diverges** (for a quadratic, beyond 2/λmax, where λmax is the steepest curvature). When the loss is a long, narrow valley (**ill-conditioned**), plain gradient descent zig-zags across it. **Momentum** keeps a running velocity so consistent directions build up speed and oscillations cancel. **Adam** also divides each parameter's step by a running estimate of its gradient size, so every direction moves at a similar pace, which makes it robust to the learning rate. In practice gradients come from small random **mini-batches** (SGD), which adds noise.What you'll be able to do after this: write the update rules for GD, momentum and Adam, explain divergence and the 2/λ rule, explain why momentum and Adam help on narrow valleys, and pick a learning rate sensibly.
+**Gradient descent** repeats one step: θ ← θ − η∇L(θ), walking downhill on the loss. The **learning rate** η is everything: too small crawls, too large overshoots and **diverges** (for a quadratic, beyond 2/λmax, where λmax is the steepest curvature). When the loss is a long, narrow valley (**ill-conditioned**), plain gradient descent zig-zags across it. **Momentum** keeps a running velocity so consistent directions build up speed and oscillations cancel. **Adam** also divides each parameter's step by a running estimate of its gradient size, so every direction moves at a similar pace, which makes it robust to the learning rate. In practice gradients come from small random **mini-batches** (SGD), which adds noise. What you'll be able to do after this: write the update rules for GD, momentum and Adam, explain divergence and the 2/λ rule, explain why momentum and Adam help on narrow valleys, and pick a learning rate sensibly.
 
 #### The update rule
 
-$$ \theta_{t+1} = \theta_t - \eta\,\nabla L(\theta_t) $$
+$$ {\theta_{t+1}} = {\theta_t} - {\eta}\,{\nabla L(\theta_t)} $$
 
 Goodfellow et al. §4.3; MML §7.1.
 
@@ -78,7 +78,7 @@ Goodfellow et al. §4.3; MML §7.1.
 | **Momentum** | v ← β v + g; θ ← θ − η v | Velocity accumulates consistent directions, damps oscillation (β ≈ 0.9) |
 | **Adam** | m ← β₁m + (1 − β₁)g; v ← β₂v + (1 − β₂)g²; θ ← θ − η m̂ / (√v̂ + ε) | Momentum plus per-parameter step scaling by recent gradient size; bias-corrected |
 
-Adam's update and defaults (η = 0.001, β₁ = 0.9, β₂ = 0.999, ε = 10⁻⁸) are from Kingma & Ba, Algorithm 1 p. 2, who describe the effective step as "approximately bounded by the stepsize hyperparameter" and invariant to rescaling the gradient.
+Adam's update and defaults (η = 0.001, β₁ = 0.9, β₂ = 0.999, ε = 10⁻⁸) are from Kingma & Ba, Algorithm 1 [p. 2](https://arxiv.org/pdf/1412.6980#page=2), who describe the effective step as "approximately bounded by the stepsize hyperparameter" and invariant to rescaling the gradient.
 
 #### Why plain gradient descent zig-zags
 
@@ -181,12 +181,12 @@ The update rule, the learning rate and when it diverges, ill-conditioning and zi
 
 #### Sources
 
-1. D. Kingma & J. Ba, "Adam: a method for stochastic optimization", ICLR 2015, arXiv:1412.6980.
+1. D. Kingma & J. Ba, "Adam: a method for stochastic optimization", ICLR 2015, [arXiv:1412.6980](https://arxiv.org/abs/1412.6980).
 
-2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 4 and 8, deeplearningbook.org.
+2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 4 and 8, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
 3. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, CUP 2020, ch. 7.
 
-4. I. Loshchilov & F. Hutter, "Decoupled weight decay regularization", ICLR 2019, arXiv:1711.05101.
+4. I. Loshchilov & F. Hutter, "Decoupled weight decay regularization", ICLR 2019, [arXiv:1711.05101](https://arxiv.org/abs/1711.05101).
 
 The optimisers run live in your browser on the quadratic above.

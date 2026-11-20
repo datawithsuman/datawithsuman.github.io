@@ -81,7 +81,7 @@ With plenty of data and weak priors, they often agree closely, so team habits an
 
 #### The maths
 
-$$ p = P(\text{data this extreme} \mid H_0), \qquad P(B > A \mid \text{data}) = \iint_{\theta_B > \theta_A} p(\theta_A, \theta_B \mid \text{data})\, d\theta_A\, d\theta_B $$
+$$ {p = P(\text{data this extreme} \mid H_0)}, \qquad {P(B > A \mid \text{data}) = \iint_{\theta_B > \theta_A} p(\theta_A, \theta_B \mid \text{data})\, d\theta_A\, d\theta_B} $$
 
 They’re conditioned opposite ways round, and confusing them is the most common error in statistics.
 
@@ -135,17 +135,19 @@ When do the two approaches disagree most?
 
 With little data, a strong prior or stopping rules that matter to one and not the other. For example, a rate from a handful of users gets pulled towards the prior under Bayesian methods, and with sensible priors, this is often more accurate than taking the raw rate at face value.
 
+#### The 30-second answer
+
 Frequentists treat the true value as fixed, and ask how often a procedure would produce a result like this across repeated samples, so p-values are about the data, assuming no effect. Bayesians treat the unknown as a distribution, update it with data and report things like the chance that B beats A, using a prior. With lots of data and weak priors, they tend to agree. They differ most with little data or strong priors. I'd use frequentist tests as a clear default, and Bayesian when data is scarce, or decisions need direct probabilities.
 
 **Key terms and sources**
 
-What each school means by probability, how they answer the same A/B test, when they agree and when they differ, and how to choose.
+What each school means by probability, how they answer the same A/B test, when they agree and when they differ, and how to choose. · checked 6 Nov 2026
 
 #### Sources
 
-- TensorTonic maths topics
+- [TensorTonic maths topics](https://www.tensortonic.com/ml-math)
 
-- Wasserman, All of Statistics
+- [Wasserman, All of Statistics](https://www.stat.cmu.edu/~larry/all-of-statistics/)
 
 - Bayesian inference on this site
 

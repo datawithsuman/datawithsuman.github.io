@@ -80,7 +80,7 @@ Think of each distribution as a pile of earth. Wasserstein is the least work to 
 
 #### The maths
 
-$$ D_{KL}(p \| q) = \sum_x p(x) \log \frac{p(x)}{q(x)}, \qquad JS(p, q) = \tfrac{1}{2} D_{KL}(p \| m) + \tfrac{1}{2} D_{KL}(q \| m), \qquad W_1(p, q) = \int |F_p(x) - F_q(x)|\, dx $$
+$$ {D_{KL}(p \| q)} = \sum_x p(x) \log \frac{p(x)}{q(x)}, \qquad {JS(p, q)} = \tfrac{1}{2} D_{KL}(p \| m) + \tfrac{1}{2} D_{KL}(q \| m), \qquad {W_1(p, q)} = \int |F_p(x) - F_q(x)|\, dx $$
 
 Worked example: two Gaussians with the same spread of 1, and 2 apart. KL = 2 nats, or about 2.89 bits, JS ≈ 0.49 bits and Wasserstein = 2.
 
@@ -136,19 +136,21 @@ Why did Wasserstein help GAN training?
 
 Early on, real and generated data can barely overlap. JS then sits near its maximum, so it barely changes as the generator improves, and gradients are unhelpful. Wasserstein still reflects how far apart they are. It needs the critic to be limited, which WGAN first did by clipping weights, and then with a gradient penalty.
 
+#### The 30-second answer
+
 KL divergence is asymmetric, and goes to infinity if q has no mass where p does, so it isn't a true distance. Forward KL makes q cover all of p, as in MLE. Reverse KL makes q stay within p, as in VAEs. Jensen-Shannon compares both to their midpoint, so it's symmetric and bounded at one bit, but it saturates when distributions don't overlap. Wasserstein measures how far mass must move, so it keeps growing, which gives WGANs useful gradients. PSI, used for drift, is the two KLs added together.
 
 **Key terms and sources**
 
-Forward and reverse KL, Jensen-Shannon, Wasserstein distance and PSI, what each does when distributions don't overlap, and where they appear in VAEs, GANs and drift monitoring.
+Forward and reverse KL, Jensen-Shannon, Wasserstein distance and PSI, what each does when distributions don't overlap, and where they appear in VAEs, GANs and drift monitoring. · checked 6 Nov 2026
 
 #### Sources
 
-- Murphy, Probabilistic Machine Learning: An Introduction, chapter 6
+- [Murphy, Probabilistic Machine Learning: An Introduction, chapter 6](https://probml.github.io/pml-book/book1.html)
 
-- Arjovsky, Chintala and Bottou, Wasserstein GAN (2017)
+- [Arjovsky, Chintala and Bottou, Wasserstein GAN (2017)](https://arxiv.org/abs/1701.07875)
 
-- Goodfellow et al., Generative Adversarial Nets (2014)
+- [Goodfellow et al., Generative Adversarial Nets (2014)](https://arxiv.org/abs/1406.2661)
 
 - GANs on this site
 

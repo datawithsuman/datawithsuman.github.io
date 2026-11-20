@@ -48,13 +48,13 @@ Degree 1: all twenty lines agree with each other (variance 1.06) and all miss th
 
 #### In one breath
 
-A model's expected error on new data splits into three parts: **bias²** (how far its _average_ prediction is from the truth: too simple a model is wrong the same way every time), **variance** (how much its predictions jump around when you train it on a different sample: too flexible a model chases noise), and **irreducible noise** (no model can remove it). Making a model more flexible lowers bias and raises variance, so test error is U-shaped in complexity. You move along the U with model size, regularisation and features, and you **shrink variance** with more data, averaging (bagging) or stronger regularisation. Modern over-parameterised models add a twist: past the point where they fit the training data exactly, test error can fall again (**double descent**).What you'll be able to do after this: state and read the decomposition, diagnose underfitting vs overfitting from train/validation curves, pick the right fix for each, and explain double descent without overclaiming.
+A model's expected error on new data splits into three parts: **bias²** (how far its _average_ prediction is from the truth: too simple a model is wrong the same way every time), **variance** (how much its predictions jump around when you train it on a different sample: too flexible a model chases noise), and **irreducible noise** (no model can remove it). Making a model more flexible lowers bias and raises variance, so test error is U-shaped in complexity. You move along the U with model size, regularisation and features, and you **shrink variance** with more data, averaging (bagging) or stronger regularisation. Modern over-parameterised models add a twist: past the point where they fit the training data exactly, test error can fall again (**double descent**). What you'll be able to do after this: state and read the decomposition, diagnose underfitting vs overfitting from train/validation curves, pick the right fix for each, and explain double descent without overclaiming.
 
 #### The decomposition
 
 Imagine training the same kind of model on many different training sets drawn from the same world. At a test input x, look at the prediction f̂(x) across all those models. For squared error:
 
-$$ \mathbb{E}\bigl[(y - \hat f(x))^2\bigr] = \bigl(\mathbb{E}[\hat f(x)] - f(x)\bigr)^2 + \mathbb{E}\bigl[(\hat f(x) - \mathbb{E}[\hat f(x)])^2\bigr] + \sigma^2 $$
+$$ {\mathbb{E}\bigl[(y - \hat f(x))^2\bigr]} = {\bigl(\mathbb{E}[\hat f(x)] - f(x)\bigr)^2} + {\mathbb{E}\bigl[(\hat f(x) - \mathbb{E}[\hat f(x)])^2\bigr]} + {\sigma^2} $$
 
 The standard decomposition for squared loss, e.g. Hastie, Tibshirani & Friedman, _The Elements of Statistical Learning_ §7.3; named and analysed for neural networks by Geman, Bienenstock & Doursat (1992). It's an identity: the cross terms vanish because the new label's noise is independent of the training set.
 
@@ -106,7 +106,7 @@ Deep networks have far more parameters than training points and fit the training
 
 4. The classical picture isn't wrong; it describes the left part of a longer curve.
 
-Their evidence: random-feature models on 10,000 MNIST images peak at exactly N = n = 10,000 features, then improve "dramatically" past it, beating the classical sweet spot; two-layer networks, random forests and boosting show similar shapes Belkin et al. 2019, pp. 4–8. Their explanation: past the threshold, the minimum-norm interpolating solution acts as a strong implicit regulariser (smoothness). Caveats from the same paper: regularisation and early stopping hide the peak, which is why practitioners rarely see it. And it doesn't license dropping validation: you still pick models by held-out error.
+Their evidence: random-feature models on 10,000 MNIST images peak at exactly N = n = 10,000 features, then improve "dramatically" past it, beating the classical sweet spot; two-layer networks, random forests and boosting show similar shapes [Belkin et al. 2019, pp. 4–8](https://arxiv.org/pdf/1812.11118#page=4). Their explanation: past the threshold, the minimum-norm interpolating solution acts as a strong implicit regulariser (smoothness). Caveats from the same paper: regularisation and early stopping hide the peak, which is why practitioners rarely see it. And it doesn't license dropping validation: you still pick models by held-out error.
 
 ## In practice
 
@@ -257,8 +257,8 @@ Mean squared error in minutes², 25 training deliveries, 60 simulated training s
 
 2. S. Geman, E. Bienenstock & R. Doursat, "Neural networks and the bias/variance dilemma", _Neural Computation_ 4, 1992.
 
-3. M. Belkin, D. Hsu, S. Ma & S. Mandal, "Reconciling modern machine-learning practice and the classical bias–variance trade-off", _PNAS_ 2019, arXiv:1812.11118.
+3. M. Belkin, D. Hsu, S. Ma & S. Mandal, "Reconciling modern machine-learning practice and the classical bias–variance trade-off", _PNAS_ 2019, [arXiv:1812.11118](https://arxiv.org/abs/1812.11118).
 
-4. scikit-learn, Validation curves and learning curves (tools for diagnosis).
+4. scikit-learn, [Validation curves and learning curves](https://scikit-learn.org/stable/modules/learning_curve.html) (tools for diagnosis).
 
 Delivery data is simulated with a known true curve; every fit and decomposition is computed live in your browser.

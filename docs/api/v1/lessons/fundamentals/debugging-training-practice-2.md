@@ -110,4 +110,4 @@ Answer: **Both are right: the model is getting more answers right but becoming o
 
 Keep practising
 
-Based on Andrej Karpathy, “A Recipe for Training Neural Networks” (2019), Devlin et al., BERT (NAACL 2019) fine-tuning settings, and Sculley et al., “Hidden Technical Debt in Machine Learning Systems” (NeurIPS 2015) on training–serving skew. Part 1: Loss Won't Go Down.
+Based on Andrej Karpathy, [“A Recipe for Training Neural Networks”](https://karpathy.github.io/2019/04/25/recipe/) (2019), Devlin et al., BERT (NAACL 2019) fine-tuning settings, and Sculley et al., “Hidden Technical Debt in Machine Learning Systems” (NeurIPS 2015) on training–serving skew. Part 1: Loss Won't Go Down.

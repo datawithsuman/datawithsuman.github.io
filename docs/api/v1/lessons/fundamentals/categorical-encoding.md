@@ -47,7 +47,7 @@ Naive encoding makes the model **worse than ignoring pincode altogether**: test 
 
 #### In one breath
 
-Models need numbers, but "cuisine" and "pincode" are labels. **One-hot** encoding gives each category its own 0/1 column: safe, no fake order, but it explodes with thousands of categories. **Ordinal** encoding (1, 2, 3…) is compact but tells a linear model that "Biryani" is 4× "Chinese", so use it only for truly ordered categories or for tree models. **Target encoding** replaces each category with the average target for that category; it handles thousands of pincodes in one column, but it is a leak waiting to happen: compute it with **cross-fitting** (out-of-fold) and **smoothing** towards the global mean, or the model learns noise. Plan for categories you've never seen.What you'll be able to do after this: choose an encoder for a column by its cardinality and the model, explain why naive target encoding overfits, write the smoothing formula, and handle unseen and rare categories.
+Models need numbers, but "cuisine" and "pincode" are labels. **One-hot** encoding gives each category its own 0/1 column: safe, no fake order, but it explodes with thousands of categories. **Ordinal** encoding (1, 2, 3…) is compact but tells a linear model that "Biryani" is 4× "Chinese", so use it only for truly ordered categories or for tree models. **Target encoding** replaces each category with the average target for that category; it handles thousands of pincodes in one column, but it is a leak waiting to happen: compute it with **cross-fitting** (out-of-fold) and **smoothing** towards the global mean, or the model learns noise. Plan for categories you've never seen. What you'll be able to do after this: choose an encoder for a column by its cardinality and the model, explain why naive target encoding overfits, write the smoothing formula, and handle unseen and rare categories.
 
 #### Three basic encoders
 
@@ -59,15 +59,15 @@ Models need numbers, but "cuisine" and "pincode" are labels. **One-hot** encodin
 
 4. **Target encoding:** replace each category with the average target (here, average delay) for that category. One column regardless of cardinality, and it carries exactly the information the model wants, which is also why it can leak.
 
-Quote from scikit-learn's preprocessing guide docs.
+Quote from scikit-learn's preprocessing guide [docs](https://scikit-learn.org/stable/modules/preprocessing.html#encoding-categorical-features).
 
 #### Target encoding, done safely
 
 For 400 pincodes, one-hot means 400 sparse columns with ~7 examples each. Target encoding compresses each pincode to one number: its late rate. But a pincode with 3 orders, 2 of them late, gets 0.67, mostly noise. The fix is **shrinkage** towards the global rate:
 
-$$ S_i = \lambda_i\,\tfrac{n_{iY}}{n_i} + (1 - \lambda_i)\,\tfrac{n_Y}{n}, \qquad \lambda_i = \tfrac{n_i}{m + n_i} $$
+$$ {S_i} = {\lambda_i}\,{\tfrac{n_{iY}}{n_i}} + (1 - {\lambda_i})\,{\tfrac{n_Y}{n}}, \qquad {\lambda_i} = \tfrac{n_i}{{m} + n_i} $$
 
-scikit-learn's `TargetEncoder` formula for binary targets docs; the blending idea is from Micci-Barreca (2001).
+scikit-learn's `TargetEncoder` formula for binary targets [docs](https://scikit-learn.org/stable/modules/preprocessing.html#target-encoder); the blending idea is from Micci-Barreca (2001).
 
 - **encoded value**: The number that replaces pincode i.
 
@@ -79,7 +79,7 @@ scikit-learn's `TargetEncoder` formula for binary targets docs; the blending ide
 
 - **smoothing strength**: m acts like m imaginary orders at the global rate. scikit-learn’s smooth='auto' sets it from the within- and between-category variance (empirical Bayes).
 
-Shrinkage alone is not enough. If a training row's own label is part of its pincode's average, the feature contains that row's answer. The model learns to trust the feature far too much, and the trust doesn't transfer to new orders. **Cross-fitting** fixes this: split training data into k folds and encode each fold with statistics computed from the other k − 1. scikit-learn's `fit_transform` does exactly this, which is why "`fit(X, y).transform(X)` does not equal `fit_transform(X, y)`" and why "training data should always be trained and transformed with `fit_transform(X_train, y_train)`" docs.
+Shrinkage alone is not enough. If a training row's own label is part of its pincode's average, the feature contains that row's answer. The model learns to trust the feature far too much, and the trust doesn't transfer to new orders. **Cross-fitting** fixes this: split training data into k folds and encode each fold with statistics computed from the other k − 1. scikit-learn's `fit_transform` does exactly this, which is why "`fit(X, y).transform(X)` does not equal `fit_transform(X, y)`" and why "training data should always be trained and transformed with `fit_transform(X_train, y_train)`" [docs](https://scikit-learn.org/stable/modules/preprocessing.html#target-encoder).
 
 ## In practice
 
@@ -96,11 +96,11 @@ Shrinkage alone is not enough. If a training row's own label is part of its pinc
 | Huge or open-ended vocabularies (user agents, search terms) | Feature hashing; frequency encoding |
 | Rare categories | Group into "other" (`min_frequency`, `max_categories`) |
 
-A benchmark of encoders across 24 datasets (Pargent, Pfisterer, Thomas & Bischl, _Computational Statistics_, 2022) found that regularised target encoding (with 5-fold cross-fitting) "consistently provided the best results" across lasso, random forests, boosting, k-NN and SVMs; traditional encodings could compete only on datasets with fewer levels, and integer encoding did poorly even with gradient boosting. arXiv:2104.00629
+A benchmark of encoders across 24 datasets (Pargent, Pfisterer, Thomas & Bischl, _Computational Statistics_, 2022) found that regularised target encoding (with 5-fold cross-fitting) "consistently provided the best results" across lasso, random forests, boosting, k-NN and SVMs; traditional encodings could compete only on datasets with fewer levels, and integer encoding did poorly even with gradient boosting. [arXiv:2104.00629](https://arxiv.org/abs/2104.00629)
 
 #### New, rare and missing categories
 
-- **Unseen at prediction time:** a new restaurant opens. One-hot with `handle_unknown="ignore"` (or `"infrequent_if_exist"`) gives an all-zero row; target encoding returns the global mean; scikit-learn's `TargetEncoder` does this automatically docs.
+- **Unseen at prediction time:** a new restaurant opens. One-hot with `handle_unknown="ignore"` (or `"infrequent_if_exist"`) gives an all-zero row; target encoding returns the global mean; scikit-learn's `TargetEncoder` does this automatically [docs](https://scikit-learn.org/stable/modules/preprocessing.html#target-encoder).
 
 - **Rare categories:** group them into one "infrequent" level (`min_frequency`, `max_categories`), so the model doesn't memorise them.
 
@@ -247,12 +247,12 @@ Illustrative simulation: 400 pincodes, 3,000 training orders.
 
 #### What this page is built from
 
-1. scikit-learn, Preprocessing: encoding categorical features (OneHotEncoder unknown/infrequent handling, OrdinalEncoder caveat, TargetEncoder formula and cross-fitting).
+1. scikit-learn, [Preprocessing: encoding categorical features](https://scikit-learn.org/stable/modules/preprocessing.html#encoding-categorical-features) (OneHotEncoder unknown/infrequent handling, OrdinalEncoder caveat, TargetEncoder formula and cross-fitting).
 
 2. D. Micci-Barreca, "A preprocessing scheme for high-cardinality categorical attributes in classification and prediction problems", _SIGKDD Explorations_ 3(1), 2001.
 
-3. F. Pargent, F. Pfisterer, J. Thomas & B. Bischl, "Regularized target encoding outperforms traditional methods in supervised machine learning with high cardinality features", _Computational Statistics_, 2022, arXiv:2104.00629.
+3. F. Pargent, F. Pfisterer, J. Thomas & B. Bischl, "Regularized target encoding outperforms traditional methods in supervised machine learning with high cardinality features", _Computational Statistics_, 2022, [arXiv:2104.00629](https://arxiv.org/abs/2104.00629).
 
-4. L. Prokhorenkova et al., "CatBoost: unbiased boosting with categorical features", NeurIPS 2018, arXiv:1706.09516 (ordered target statistics).
+4. L. Prokhorenkova et al., "CatBoost: unbiased boosting with categorical features", NeurIPS 2018, [arXiv:1706.09516](https://arxiv.org/abs/1706.09516) (ordered target statistics).
 
 Order data is simulated with fixed seeds; every model is fitted live in your browser.

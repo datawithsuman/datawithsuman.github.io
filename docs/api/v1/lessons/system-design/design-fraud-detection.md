@@ -160,8 +160,10 @@ A new card-testing attack starts today. What happens?
 
 Real-time counters on cards per IP and rapid small payments catch it quickly; rules can block the pattern immediately, and fast retraining folds it into the model within hours.
 
+#### The 30-second answer
+
 First I'd clarify the volume, the latency budget, the actions available and the cost of each mistake. Each payment arrives at checkout; I'd fetch hundreds of features in milliseconds from an online store fed by streaming counters, including network-wide signals like how many cards an IP has used today. The model scores it within the budget, and thresholds plus merchant rules decide: allow, block, or send the uncertain middle to extra verification. Everything is logged, so outcomes can be joined later. Labels like chargebacks arrive weeks late, so I'd train on matured data, use early signals for faster feedback, and let a small random share of borderline payments through to avoid a feedback loop. I'd start with a simple model and move to deeper ones as data grows, keeping retraining fast. I'd measure fraud caught, good payments blocked and losses, explain declines to merchants, and fail safe if the scorer goes down. New models run in shadow mode first.
 
 **Key terms and sources**
 
-Based on a payments company's published post: Stripe's "How we built it: Stripe Radar" (March 2023). The post doesn't cover label delay, retraining cadence or thresholds, so those parts, the lab's numbers and the estimate are ours. Uses class imbalance, thresholds and costs and feature stores.
+Based on a payments company's published post: [Stripe's "How we built it: Stripe Radar"](https://stripe.dev/blog/how-we-built-it-stripe-radar) (March 2023). The post doesn't cover label delay, retraining cadence or thresholds, so those parts, the lab's numbers and the estimate are ours. Uses class imbalance, thresholds and costs and feature stores. · checked 5 Nov 2026

@@ -48,7 +48,7 @@ Without mixup, the test log loss is **1.26**: the model is confidently wrong. Wi
 
 #### In one breath
 
-The best regulariser is more data. **Data augmentation** creates new training examples by applying transformations that don't change the label: flip, crop, rotate or recolour an image; paraphrase or back-translate a sentence; add noise to audio. The model learns that those changes don't matter (invariance), and it can't memorise exact pixels. **Mixup** goes further: it trains on **blends** of two random examples, x = λxi + (1 − λ)xj, with the label blended the same way, λ drawn from a Beta(α, α) distribution. That teaches the model to behave linearly between examples, which gives smoother boundaries and **better-calibrated** confidence.What you'll be able to do after this: choose label-preserving augmentations for a data type, explain mixup and CutMix, and say what α controls.
+The best regulariser is more data. **Data augmentation** creates new training examples by applying transformations that don't change the label: flip, crop, rotate or recolour an image; paraphrase or back-translate a sentence; add noise to audio. The model learns that those changes don't matter (invariance), and it can't memorise exact pixels. **Mixup** goes further: it trains on **blends** of two random examples, x = λxi + (1 − λ)xj, with the label blended the same way, λ drawn from a Beta(α, α) distribution. That teaches the model to behave linearly between examples, which gives smoother boundaries and **better-calibrated** confidence. What you'll be able to do after this: choose label-preserving augmentations for a data type, explain mixup and CutMix, and say what α controls.
 
 #### Label-preserving transforms
 
@@ -63,9 +63,9 @@ AlexNet (Krizhevsky et al. 2012) used random 224×224 crops, flips and PCA colou
 
 #### Mixup: train on blends
 
-$$ \lambda \sim \mathrm{Beta}(\alpha,\alpha), \qquad \tilde{x} = \lambda x_i + (1-\lambda)x_j, \qquad \tilde{y} = \lambda y_i + (1-\lambda)y_j $$
+$$ {\lambda \sim \mathrm{Beta}(\alpha,\alpha)}, \qquad {\tilde{x} = \lambda x_i + (1-\lambda)x_j}, \qquad {\tilde{y} = \lambda y_i + (1-\lambda)y_j} $$
 
-Zhang, Cissé, Dauphin & Lopez-Paz, "mixup: Beyond Empirical Risk Minimization", ICLR 2018 arXiv:1710.09412: on ImageNet, α in [0.1, 0.4] improved on standard training while large α underfit; mixup also reduced memorisation of corrupt labels and improved robustness. **CutMix** (Yun et al. 2019) pastes a patch of one image into another and mixes labels by area.
+Zhang, Cissé, Dauphin & Lopez-Paz, "mixup: Beyond Empirical Risk Minimization", ICLR 2018 [arXiv:1710.09412](https://arxiv.org/abs/1710.09412): on ImageNet, α in [0.1, 0.4] improved on standard training while large α underfit; mixup also reduced memorisation of corrupt labels and improved robustness. **CutMix** (Yun et al. 2019) pastes a patch of one image into another and mixes labels by area.
 
 - **mixing weight**: λ is drawn from Beta(α, α). Small α (0.1–0.4) gives λ near 0 or 1 most of the time: mostly one example with a bit of the other. α = 1 gives uniform λ.
 
@@ -139,10 +139,10 @@ Making more training data from the data you have: label-preserving transforms fo
 
 2. C. Shorten & T. Khoshgoftaar, "A survey on Image Data Augmentation for Deep Learning", _Journal of Big Data_ 6, 2019.
 
-3. H. Zhang, M. Cissé, Y. Dauphin & D. Lopez-Paz, "mixup: Beyond Empirical Risk Minimization", ICLR 2018, arXiv:1710.09412.
+3. H. Zhang, M. Cissé, Y. Dauphin & D. Lopez-Paz, "mixup: Beyond Empirical Risk Minimization", ICLR 2018, [arXiv:1710.09412](https://arxiv.org/abs/1710.09412).
 
-4. S. Yun et al., "CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features", ICCV 2019, arXiv:1905.04899.
+4. S. Yun et al., "CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features", ICCV 2019, [arXiv:1905.04899](https://arxiv.org/abs/1905.04899).
 
-5. E. Cubuk, B. Zoph, J. Shlens & Q. Le, "RandAugment", CVPR Workshops 2020, arXiv:1909.13719.
+5. E. Cubuk, B. Zoph, J. Shlens & Q. Le, "RandAugment", CVPR Workshops 2020, [arXiv:1909.13719](https://arxiv.org/abs/1909.13719).
 
-6. D. Park et al., "SpecAugment", Interspeech 2019, arXiv:1904.08779.
+6. D. Park et al., "SpecAugment", Interspeech 2019, [arXiv:1904.08779](https://arxiv.org/abs/1904.08779).

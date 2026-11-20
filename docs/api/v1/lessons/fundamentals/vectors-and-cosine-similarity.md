@@ -16,7 +16,7 @@ Your food app recommends the same popular restaurant to almost everyone, even pe
 
 > What is the difference between a dot product and cosine similarity, and which would you use here?
 
-**Running example:** the food-delivery app describes each customer and each restaurant with two taste numbers: how much they lean towards **spicy** food and towards **healthy** food. A customer who loves spicy, healthy food is the vector (4, 3). Real systems use hundreds of dimensions learned by a model (embeddings), but the maths is identical and 2-D lets us draw it.
+**Running example:** the food-delivery app describes each customer and each restaurant with two taste numbers: how much they lean towards **spicy** food and towards **healthy** food. A customer who likes both equally is (1, 1); one who loves spicy, healthy food is (4, 3). Real systems use hundreds of dimensions learned by a model (embeddings), but the maths is identical and 2-D lets us draw it.
 
 #### "How similar are these two things?" as a number
 
@@ -46,13 +46,13 @@ Make the restaurant longer without changing its angle: the dot product grows, th
 
 #### In one breath
 
-In ML every item (a customer, a restaurant, a sentence) becomes a **vector**: a list of numbers. The **dot product** a·b multiplies matching entries and adds them; geometrically it is |a| |b| cos θ, so it grows when vectors point the same way _and_ when they are long. **Cosine similarity** divides out the lengths and keeps only the direction (−1 to 1). **Euclidean distance** measures the straight-line gap. Which one you use changes what "similar" means: dot product favours big, popular items; cosine compares taste regardless of size. Every linear model, attention layer and vector search is built on these three operations.What you'll be able to do after this: compute a dot product, norm and cosine by hand, explain the geometry, and choose between dot product, cosine and Euclidean for a similarity search.
+In ML every item (a customer, a restaurant, a sentence) becomes a **vector**: a list of numbers. The **dot product** a·b multiplies matching entries and adds them; geometrically it is |a| |b| cos θ, so it grows when vectors point the same way _and_ when they are long. **Cosine similarity** divides out the lengths and keeps only the direction (−1 to 1). **Euclidean distance** measures the straight-line gap. Which one you use changes what "similar" means: dot product favours big, popular items; cosine compares taste regardless of size. Every linear model, attention layer and vector search is built on these three operations. What you'll be able to do after this: compute a dot product, norm and cosine by hand, explain the geometry, and choose between dot product, cosine and Euclidean for a similarity search.
 
 #### Vectors, length and the dot product
 
-$$ a\cdot b = \textstyle\sum_i a_i b_i = \lVert a\rVert\,\lVert b\rVert\cos\theta, \qquad \lVert a\rVert = \sqrt{a\cdot a} $$
+$$ {a\cdot b = \textstyle\sum_i a_i b_i} = {\lVert a\rVert\,\lVert b\rVert\cos\theta}, \qquad {\lVert a\rVert = \sqrt{a\cdot a}} $$
 
-Mathematics for Machine Learning §3.1–3.4 (norms, inner products, angles) mml-book.github.io.
+Mathematics for Machine Learning §3.1–3.4 (norms, inner products, angles) [mml-book.github.io](https://mml-book.github.io/).
 
 - **dot product**: Multiply matching entries and add: (4, 3)·(2, 1) = 4×2 + 3×1 = 11. One number from two vectors.
 
@@ -70,7 +70,7 @@ Mathematics for Machine Learning §3.1–3.4 (norms, inner products, angles) mml
 
 #### Cosine = dot product of unit vectors
 
-$$ \cos\theta = a\cdot b \,/\, (\lVert a\rVert\,\lVert b\rVert) $$
+$$ {\cos\theta} = {a\cdot b} \,/\, {(\lVert a\rVert\,\lVert b\rVert)} $$
 
 - **cosine similarity**: How aligned two vectors are, from −1 to 1, ignoring how long they are.
 
@@ -184,8 +184,8 @@ Vectors as lists of features, length (norm), the dot product, cosine similarity,
 
 #### Sources
 
-1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, Cambridge University Press 2020, free at mml-book.github.io (ch. 2–3).
+1. M. P. Deisenroth, A. A. Faisal & C. S. Ong, _Mathematics for Machine Learning_, Cambridge University Press 2020, free at [mml-book.github.io](https://mml-book.github.io/) (ch. 2–3).
 
-2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 2, deeplearningbook.org.
+2. I. Goodfellow, Y. Bengio & A. Courville, _Deep Learning_, MIT Press 2016, ch. 2, [deeplearningbook.org](https://www.deeplearningbook.org/).
 
-3. A. Vaswani et al., "Attention is all you need", NeurIPS 2017, arXiv:1706.03762 (scaled dot-product attention).
+3. A. Vaswani et al., "Attention is all you need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) (scaled dot-product attention).

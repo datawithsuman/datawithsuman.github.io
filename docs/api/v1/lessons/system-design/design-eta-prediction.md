@@ -154,8 +154,10 @@ Fares need an average ETA, but customers prefer not to be surprised. Two models?
 
 Not necessarily. An asymmetric loss lets one architecture produce a mean-like estimate or a cautious quantile; you can train or tune per use case and keep the rest shared.
 
+#### The 30-second answer
+
 First I'd clarify the uses, like pickup, trip, delivery and fares, the scale and the latency budget of a few milliseconds. I'd keep the routing engine, which sums segment travel times along the best path with live traffic, and train a model to predict its error, since that's easier to change than routing itself. For speed, every feature becomes an embedding lookup: categorical features embedded, continuous ones bucketised into quantile bins, and locations mapped to grid cells at several resolutions with multiple hashes. The model treats features as tokens with self-attention, but uses linear attention so cost grows with the number of features rather than its square. It's shallow, with most parameters in embedding tables, so each prediction touches only a small slice. I'd train with an asymmetric Huber loss, since being late is worse than being early, and pass the request type so one model serves all products. I'd retrain regularly, monitor error by city and product, and roll out city by city.
 
 **Key terms and sources**
 
-Based on a ride-hailing company's published post: Uber's "DeepETA: How Uber Predicts Arrival Times Using Deep Learning" (February 2022). The post gives no accuracy or latency figures; the lab computes the cost formulas from the post, and the estimate is ours. Uses self-attention, regression metrics and online inference.
+Based on a ride-hailing company's published post: [Uber's "DeepETA: How Uber Predicts Arrival Times Using Deep Learning"](https://www.uber.com/blog/deepeta-how-uber-predicts-arrival-times/) (February 2022). The post gives no accuracy or latency figures; the lab computes the cost formulas from the post, and the estimate is ours. Uses self-attention, regression metrics and online inference. · checked 5 Nov 2026

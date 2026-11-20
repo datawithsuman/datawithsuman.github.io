@@ -169,8 +169,10 @@ Doesn't the redactor make answers worse? Would you remove it?
 
 It can, because the model loses context, and placeholders can confuse it. I wouldn't remove it across the board. I'd measure quality with and without it on safe test data, then use a stricter contract or an in-house model for cases that need real values. Requests to an in-house model may not need redaction, depending on policy.
 
+#### The 30-second answer
+
 First I'd clarify the number of teams, which models they need, what data may go where and the volume. I'd build a gateway between all teams and all models. Teams call one API in a widely used format, so existing tools work and switching models is easy. For each request, the gateway signs in the team, checks that the use case was approved, applies rate limits and budgets, and redacts personal data if it's going to an outside vendor. It routes to a vendor or our own serving stack, restores the placeholders in the reply and logs team, model, tokens and cost. Vendor keys live only in the gateway. Redaction costs latency and some quality, so I'd review where it's needed, and refuse to send if the redactor fails. Because every product now depends on it, I'd run it across zones with gradual deploys, plus opt-in fallbacks that respect data rules. Vendor quotas are the real limit, so I'd share them fairly by priority. Quality stays with each team, and the platform gives them logs and replay tools.
 
 **Key terms and sources**
 
-Based on a ride-hailing company's published design: Uber's post on its LLM gateway. We could read only part of the post, up to the start of its section on challenges. Budgets, fallback, caching and the lab's numbers come from our own knowledge and are not from the post. Uses LLMOps, guardrails and cost and latency.
+Based on a ride-hailing company's published design: [Uber's post on its LLM gateway](https://www.uber.com/blog/genai-gateway). We could read only part of the post, up to the start of its section on challenges. Budgets, fallback, caching and the lab's numbers come from our own knowledge and are not from the post. Uses LLMOps, guardrails and cost and latency. · checked 5 Nov 2026

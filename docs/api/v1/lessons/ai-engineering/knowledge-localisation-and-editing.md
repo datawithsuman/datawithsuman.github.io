@@ -37,9 +37,9 @@ _Where a fact matters and where to edit it are different questions._
 
 4. The share of the correct answer’s probability that returns is that state’s indirect effect. Repeat for every layer and token to get a map.
 
-Illustrative map drawn to follow the qualitative pattern Meng et al. report for GPT-2 XL, not their measured values arXiv 2202.05262.
+Illustrative map drawn to follow the qualitative pattern Meng et al. report for GPT-2 XL, not their measured values [arXiv 2202.05262](https://arxiv.org/abs/2202.05262).
 
-Causal tracing (Meng et al. 2022) underlies editing methods ROME, MEMIT and AlphaEdit, which rewrite the MLP weights it points to p. 80. Editing itself returns in Interpretability for AI Safety.
+Causal tracing (Meng et al. 2022) underlies editing methods ROME, MEMIT and AlphaEdit, which rewrite the MLP weights it points to [p. 80](https://arxiv.org/pdf/2611.08438#page=80). Editing itself returns in Interpretability for AI Safety.
 
 **Notice:** restoring middle-layer MLP states at the subject's last token brings the answer back. That inspired ROME, but where a fact matters isn't always the best place to edit it.
 
@@ -53,9 +53,9 @@ Causal tracing corrupts the subject of a prompt, then restores one hidden state 
 
 #### MLPs as key–value memories
 
-Geva et al. proposed that feed-forward layers act as key–value memories (Features, Polysemanticity and Superposition’s reading of MLP neurons); Dai et al. found factual associations stored there; and Sharma et al. found those associations flow mainly through the top singular directions of late-layer MLP weights. That motivated tools for finding where a fact sits p. 80.
+Geva et al. proposed that feed-forward layers act as key–value memories (Features, Polysemanticity and Superposition’s reading of MLP neurons); Dai et al. found factual associations stored there; and Sharma et al. found those associations flow mainly through the top singular directions of late-layer MLP weights. That motivated tools for finding where a fact sits [p. 80](https://arxiv.org/pdf/2611.08438#page=80).
 
-Localisation is the usual first step before other interventions: choosing the layer and token position for a **probe** (Probing Classifiers), for a **steering vector** (Steering Vectors; e.g. Arditi et al. searched layers and positions for the best refusal direction), or the MLP to change in **knowledge editing** p. 80.
+Localisation is the usual first step before other interventions: choosing the layer and token position for a **probe** (Probing Classifiers), for a **steering vector** (Steering Vectors; e.g. Arditi et al. searched layers and positions for the best refusal direction), or the MLP to change in **knowledge editing** [p. 80](https://arxiv.org/pdf/2611.08438#page=80).
 
 #### PISCES: edit the vectors that write a concept
 
@@ -67,15 +67,15 @@ Localisation is the usual first step before other interventions: choosing the la
 
 4. The concept is removed from the weights themselves, not just blocked at the output.
 
-Survey §13.2.1, the survey’s own worked example pp. 114–115. Reported result: accuracy on the prohibited concept near chance while general ability is kept, with higher specificity than baselines p. 115.
+Survey §13.2.1, the survey’s own worked example [pp. 114–115](https://arxiv.org/pdf/2611.08438#page=115). Reported result: accuracy on the prohibited concept near chance while general ability is kept, with higher specificity than baselines [p. 115](https://arxiv.org/pdf/2611.08438#page=115).
 
 ##### ROME: rewrite one association with a rank-one update
 
-Causal tracing (this lesson) finds the MLP layer and token where a fact is retrieved; ROME then adds a rank-one matrix ΔW to that MLP’s output projection so the fact’s _key_ now maps to a new _value_. The survey’s example removes a backdoor that leaks an admin password after a trigger token: after the edit, the model outputs end-of-sequence instead p. 116. Try a simplified version:
+Causal tracing (this lesson) finds the MLP layer and token where a fact is retrieved; ROME then adds a rank-one matrix ΔW to that MLP’s output projection so the fact’s _key_ now maps to a new _value_. The survey’s example removes a backdoor that leaks an admin password after a trigger token: after the edit, the model outputs end-of-sequence instead [p. 116](https://arxiv.org/pdf/2611.08438#page=116). Try a simplified version:
 
 Simplified ROME on a toy 32-dimensional linear memory W, with ΔW = (v* − W k*) k*ᵀ for a unit key k*. Real ROME also weights the update by the inverse covariance of keys to reduce interference.
 
-Early ROME and MEMIT did cause substantial side effects; newer methods (AlphaEdit, CrispEdit) reduce them by using low-rank structure in activation space. And editing is double-edged: the more precise it is, the easier it is to inject misinformation undetected, which is why access control and auditability matter p. 116.
+Early ROME and MEMIT did cause substantial side effects; newer methods (AlphaEdit, CrispEdit) reduce them by using low-rank structure in activation space. And editing is double-edged: the more precise it is, the easier it is to inject misinformation undetected, which is why access control and auditability matter [p. 116](https://arxiv.org/pdf/2611.08438#page=116).
 
 ## In practice
 
@@ -85,11 +85,11 @@ Early ROME and MEMIT did cause substantial side effects; newer methods (AlphaEdi
 
 ##### Why localisation is only a first step
 
-- Transformers are overparameterised; information can be stored and processed redundantly across many components, differently for different inputs. A component with a strong causal effect may be a small part of the mechanism p. 80.
+- Transformers are overparameterised; information can be stored and processed redundantly across many components, differently for different inputs. A component with a strong causal effect may be a small part of the mechanism [p. 80](https://arxiv.org/pdf/2611.08438#page=80).
 
-- Knowing the module, layer or subspace doesn’t explain how it works; that takes finer analyses like circuit discovery (Activation Patching and Circuit Discovery) p. 80.
+- Knowing the module, layer or subspace doesn’t explain how it works; that takes finer analyses like circuit discovery (Activation Patching and Circuit Discovery) [p. 80](https://arxiv.org/pdf/2611.08438#page=80).
 
-- Outside the survey: Hase et al. found that where causal tracing localises a fact barely predicts which layer is best to edit it arXiv 2301.04213.
+- Outside the survey: Hase et al. found that where causal tracing localises a fact barely predicts which layer is best to edit it [arXiv 2301.04213](https://arxiv.org/abs/2301.04213).
 
 ##### Next · 9.3
 
@@ -97,11 +97,11 @@ Not just finding, but changing: steering vectors and the refusal direction.
 
 ##### Sources for this tab
 
-- Survey §9.2, arXiv 2611.08438, p. 80.
+- Survey §9.2, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), p. 80.
 
-- Meng et al. (2022). _Locating and Editing Factual Associations in GPT._ arXiv 2202.05262.
+- Meng et al. (2022). _Locating and Editing Factual Associations in GPT._ [arXiv 2202.05262](https://arxiv.org/abs/2202.05262).
 
-- Hase et al. (2023). _Does Localization Inform Editing?_ arXiv 2301.04213.
+- Hase et al. (2023). _Does Localization Inform Editing?_ [arXiv 2301.04213](https://arxiv.org/abs/2301.04213).
 
 #### What later work found
 
@@ -139,22 +139,24 @@ Why might an edit not stick?
 
 The model may store the fact in more than one place or recompute it through other paths, and paraphrases can route around the edited key.
 
+#### The 30-second answer
+
 Causal tracing corrupts the subject in a prompt, then restores one hidden state at a time to see which brings the answer back. For facts, the effect concentrates in middle-layer MLPs at the subject's last token, which inspired ROME, a rank-one update to one MLP, and MEMIT for many facts at once. But later work showed localisation doesn't predict where editing works best, and edits can over-generalise or miss paraphrases. So I'd test any edit on paraphrases, related facts and unrelated facts. For a fact that changes in production, I'd usually prefer retrieval over editing weights.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 4 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 4 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Meng et al., Locating and Editing Factual Associations in GPT (ROME, 2022)
+- [Meng et al., Locating and Editing Factual Associations in GPT (ROME, 2022)](https://arxiv.org/abs/2202.05262)
 
-- Meng et al., Mass-Editing Memory in a Transformer (MEMIT, 2022)
+- [Meng et al., Mass-Editing Memory in a Transformer (MEMIT, 2022)](https://arxiv.org/abs/2210.07229)
 
-- Hase et al., Does Localization Inform Editing? (NeurIPS 2023)
+- [Hase et al., Does Localization Inform Editing? (NeurIPS 2023)](https://arxiv.org/abs/2301.04213)
 
-- Pan et al., Precise Localization of Memories: FiNE (2025)
+- [Pan et al., Precise Localization of Memories: FiNE (2025)](https://arxiv.org/abs/2503.01090)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

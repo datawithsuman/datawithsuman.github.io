@@ -129,7 +129,7 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">I&#x27;d build a steering vector by taking mean activations on examples with the behaviour minus examples with its opposite, at one layer, and add a multiple of it during inference. It needs no retraining, and it&#x27;s also a causal test that the direction matters. The best-known case is refusal: one direction controls it across many chat models. The risks are that too much strength hurts quality and the effect can spread to other behaviours, so I&#x27;d choose the layer and strength on held-out data and check general benchmarks too. For a lasting fix, I&#x27;d look at steering during fine-tuning or fixing the training data.</p>
+<h3>The 30-second answer</h3><p class="say30">I&#x27;d build a steering vector by taking mean activations on examples with the behaviour minus examples with its opposite, at one layer, and add a multiple of it during inference. It needs no retraining, and it&#x27;s also a causal test that the direction matters. The best-known case is refusal: one direction controls it across many chat models. The risks are that too much strength hurts quality and the effect can spread to other behaviours, so I&#x27;d choose the layer and strength on held-out data and check general benchmarks too. For a lasting fix, I&#x27;d look at steering during fine-tuning or fixing the training data.</p>
 
 </div>
 </div>

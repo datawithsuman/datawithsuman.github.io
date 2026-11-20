@@ -128,17 +128,19 @@ Can an LLM label multi-agent failures reliably?
 
 With few-shot examples, MAST's judge reached kappa 0.77 against experts, versus 0.58 zero-shot. Validate it on your own traces before trusting it.
 
+#### The 30-second answer
+
 I'd grade the end result first, then label failed traces with a taxonomy like MAST, which groups multi-agent failures into system design, misalignment between agents, and task verification, with failure rates of 41 to 87% across seven frameworks. I'd score each hand-off separately from the sub-agent's work, test the verifier on outputs I know are wrong since a verifier that passes everything gives false confidence, and watch for loops and premature stopping. A few-shot LLM judge can label these modes at kappa 0.77 against experts, so labelling can scale once validated.
 
 **Key terms and sources**
 
-How multi-agent systems fail (the MAST taxonomy of 14 failure modes in 3 groups), how to label traces with it, scoring both the delegation and each sub-agent's work, and why verification is the weakest link.
+How multi-agent systems fail (the MAST taxonomy of 14 failure modes in 3 groups), how to label traces with it, scoring both the delegation and each sub-agent's work, and why verification is the weakest link. · checked 15 Nov 2026
 
 #### Sources
 
-- M. Cemri, M. Z. Pan et al., Why do multi-agent LLM systems fail? (MAST), 2025
+- [M. Cemri, M. Z. Pan et al., Why do multi-agent LLM systems fail? (MAST), 2025](https://arxiv.org/abs/2503.13657)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 

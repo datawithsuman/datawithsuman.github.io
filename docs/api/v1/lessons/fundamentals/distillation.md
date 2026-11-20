@@ -48,13 +48,13 @@ A one-hot label says only "delicious". The teacher at **T = 1** also puts **34.7
 
 #### In one breath
 
-A large **teacher** model knows more than its top answer: when it says "delicious", it also believes "tasty" is nearly as good and "purple" is absurd. **Knowledge distillation** trains a small **student** to match the teacher's whole probability distribution (**soft targets**), not just the correct token, which carries far more information per example. A **temperature** T > 1 softens the distribution so this "dark knowledge" is visible. For LLMs there are three main forms: **logit distillation** (match the teacher's next-token distribution at every position; Gemma 2 and Llama 3.2 1B/3B), **sequence-level distillation** (just fine-tune on text the teacher generates; DeepSeek's R1-Distill models, trained on about 800k R1 samples), and **on-policy distillation** (the student writes, the teacher grades each token). Distilling R1 into Qwen2.5-32B reached 72.6% on AIME 2024, versus 47.0% for running large-scale RL on the same 32B model directly.What you'll be able to do after this: explain soft targets and temperature, compare the three kinds of LLM distillation, and say when to distil instead of training directly.
+A large **teacher** model knows more than its top answer: when it says "delicious", it also believes "tasty" is nearly as good and "purple" is absurd. **Knowledge distillation** trains a small **student** to match the teacher's whole probability distribution (**soft targets**), not just the correct token, which carries far more information per example. A **temperature** T > 1 softens the distribution so this "dark knowledge" is visible. For LLMs there are three main forms: **logit distillation** (match the teacher's next-token distribution at every position; Gemma 2 and Llama 3.2 1B/3B), **sequence-level distillation** (just fine-tune on text the teacher generates; DeepSeek's R1-Distill models, trained on about 800k R1 samples), and **on-policy distillation** (the student writes, the teacher grades each token). Distilling R1 into Qwen2.5-32B reached 72.6% on AIME 2024, versus 47.0% for running large-scale RL on the same 32B model directly. What you'll be able to do after this: explain soft targets and temperature, compare the three kinds of LLM distillation, and say when to distil instead of training directly.
 
 #### Soft targets and temperature
 
-$$ \mathcal{L}_{KD} = \alpha\,T^2\;\mathrm{KL}\Big(\mathrm{softmax}\big(\tfrac{z_{teacher}}{T}\big)\,\Big\|\,\mathrm{softmax}\big(\tfrac{z_{student}}{T}\big)\Big) + (1-\alpha)\,\mathcal{L}_{CE} $$
+$$ \mathcal{L}_{KD} = \alpha\,{T^2}\;{\mathrm{KL}\Big(\mathrm{softmax}\big(\tfrac{z_{teacher}}{{T}}\big)\,\Big\|\,\mathrm{softmax}\big(\tfrac{z_{student}}{{T}}\big)\Big)} + (1-\alpha)\,{\mathcal{L}_{CE}} $$
 
-Hinton, Vinyals & Dean, "Distilling the Knowledge in a Neural Network", 2015, arXiv:1503.02531. DistilBERT (Sanh et al. 2019) used it to make a BERT 40% smaller and 60% faster that kept 97% of its language-understanding performance.
+Hinton, Vinyals & Dean, "Distilling the Knowledge in a Neural Network", 2015, [arXiv:1503.02531](https://arxiv.org/abs/1503.02531). DistilBERT (Sanh et al. 2019) used it to make a BERT 40% smaller and 60% faster that kept 97% of its language-understanding performance.
 
 - **temperature**: Divide the teacher’s logits by T before the softmax. T = 1 is the normal distribution; larger T flattens it so small probabilities become visible.
 
@@ -132,12 +132,12 @@ Knowledge distillation from Hinton's soft targets to today's LLM practice: tempe
 
 #### Sources
 
-1. G. Hinton, O. Vinyals & J. Dean, "Distilling the Knowledge in a Neural Network", 2015, arXiv:1503.02531; Y. Kim & A. Rush, "Sequence-Level Knowledge Distillation", EMNLP 2016, arXiv:1606.07947.
+1. G. Hinton, O. Vinyals & J. Dean, "Distilling the Knowledge in a Neural Network", 2015, [arXiv:1503.02531](https://arxiv.org/abs/1503.02531); Y. Kim & A. Rush, "Sequence-Level Knowledge Distillation", EMNLP 2016, [arXiv:1606.07947](https://arxiv.org/abs/1606.07947).
 
-2. V. Sanh et al., "DistilBERT", 2019, arXiv:1910.01108.
+2. V. Sanh et al., "DistilBERT", 2019, [arXiv:1910.01108](https://arxiv.org/abs/1910.01108).
 
-3. R. Agarwal et al., "On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes" (GKD), ICLR 2024, arXiv:2306.13649; Y. Gu et al., "MiniLLM", ICLR 2024, arXiv:2306.08543.
+3. R. Agarwal et al., "On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes" (GKD), ICLR 2024, [arXiv:2306.13649](https://arxiv.org/abs/2306.13649); Y. Gu et al., "MiniLLM", ICLR 2024, [arXiv:2306.08543](https://arxiv.org/abs/2306.08543).
 
-4. Gemma Team, "Gemma 2: Improving Open Language Models at a Practical Size", 2024, arXiv:2408.00118; Meta, "Llama 3.2: Revolutionizing edge AI and vision with open, customizable models", 2024 (blog).
+4. Gemma Team, "Gemma 2: Improving Open Language Models at a Practical Size", 2024, [arXiv:2408.00118](https://arxiv.org/abs/2408.00118); Meta, "Llama 3.2: Revolutionizing edge AI and vision with open, customizable models", 2024 (blog).
 
-5. DeepSeek-AI, "DeepSeek-R1", 2025, arXiv:2501.12948 (§2.4 and §4.1, distillation vs RL).
+5. DeepSeek-AI, "DeepSeek-R1", 2025, [arXiv:2501.12948](https://arxiv.org/abs/2501.12948) (§2.4 and §4.1, distillation vs RL).

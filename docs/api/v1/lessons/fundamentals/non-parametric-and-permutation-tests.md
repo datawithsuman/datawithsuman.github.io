@@ -93,7 +93,7 @@ The logic is direct: if the groups really don't differ, the labels are arbitrary
 
 #### The maths
 
-$$ U = \sum_{i}\sum_{j} \mathbb{1}[x_i > y_j] + \tfrac12\mathbb{1}[x_i = y_j], \qquad \mathrm{AUC} = \frac{U}{n_1 n_2}, \qquad p \approx \frac{\#\{|T_{\text{shuffled}}| \ge |T_{\text{real}}|\} + 1}{R + 1} $$
+$$ {U} = \sum_{i}\sum_{j} \mathbb{1}[{x_i > y_j}] + \tfrac12\mathbb{1}[x_i = y_j], \qquad {\mathrm{AUC} = \frac{U}{n_1 n_2}}, \qquad {p \approx \frac{\#\{|T_{\text{shuffled}}| \ge |T_{\text{real}}|\} + 1}{R + 1}} $$
 
 Worked example: with 10 and 15 items and U = 75, AUC = 75 ÷ 150 = 0.5, so neither group tends to beat the other.
 
@@ -149,17 +149,19 @@ What's the difference between a permutation test and the bootstrap?
 
 A permutation test shuffles labels without replacement, assuming no group difference, to get a p-value. The bootstrap resamples with replacement from the data as it is, to estimate uncertainty, like a confidence interval. They answer related but different questions.
 
+#### The 30-second answer
+
 When data is small, skewed or has outliers, I'd consider Mann-Whitney, which ranks the pooled values, so one extreme value can't dominate. It tests whether one group tends to beat the other, and U over n1 n2 is the same as AUC. A permutation test shuffles the group labels thousands of times to build the null, then asks how often a shuffle is at least as extreme as the real result. It needs few assumptions, and works for any statistic. But a rank test ignores size, so if totals matter, such as revenue, I'd keep looking at the mean.
 
 **Key terms and sources**
 
-Rank tests like Mann-Whitney, the link with AUC, permutation tests, and when these are better than a t-test.
+Rank tests like Mann-Whitney, the link with AUC, permutation tests, and when these are better than a t-test. · checked 6 Nov 2026
 
 #### Sources
 
-- DataCamp statistics interview questions
+- [DataCamp statistics interview questions](https://www.datacamp.com/blog/statistics-interview-questions)
 
-- Wasserman, All of Statistics
+- [Wasserman, All of Statistics](https://www.stat.cmu.edu/~larry/all-of-statistics/)
 
 - ROC and PR AUC on this site
 

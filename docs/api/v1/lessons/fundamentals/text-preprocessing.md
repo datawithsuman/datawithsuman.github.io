@@ -47,7 +47,7 @@ On 400 reviews, the raw vocabulary is **62** distinct words. Stemming alone brin
 
 #### In one breath
 
-Before a classic NLP model can use text, the text has to become a list of tokens. Typical steps: **lowercase** ("Biryani" = "biryani"), strip **punctuation**, split into **tokens**, optionally drop **stop words** (very common words like "the", "and"), and collapse word forms with **stemming** (chop suffixes by rules: "ordered" → "order") or **lemmatisation** (map to the dictionary form using vocabulary and grammar: "was" → "be", "better" → "good"). Each step **shrinks the vocabulary** so counts are less sparse, but each can also **destroy meaning**: removing "not" turns "not good" into "good". Modern Transformer pipelines skip most of this and use subword tokenisers on nearly raw text.What you'll be able to do after this: design a preprocessing pipeline, explain stemming vs lemmatisation, and say which steps to skip for which models.
+Before a classic NLP model can use text, the text has to become a list of tokens. Typical steps: **lowercase** ("Biryani" = "biryani"), strip **punctuation**, split into **tokens**, optionally drop **stop words** (very common words like "the", "and"), and collapse word forms with **stemming** (chop suffixes by rules: "ordered" → "order") or **lemmatisation** (map to the dictionary form using vocabulary and grammar: "was" → "be", "better" → "good"). Each step **shrinks the vocabulary** so counts are less sparse, but each can also **destroy meaning**: removing "not" turns "not good" into "good". Modern Transformer pipelines skip most of this and use subword tokenisers on nearly raw text. What you'll be able to do after this: design a preprocessing pipeline, explain stemming vs lemmatisation, and say which steps to skip for which models.
 
 #### A classic pipeline
 
@@ -124,9 +124,9 @@ Turning raw text into tokens a model can count: lowercasing, punctuation, word t
 
 #### Sources
 
-1. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 2 (regular expressions, tokenisation, normalisation), web.stanford.edu/~jurafsky/slp3.
+1. D. Jurafsky & J. Martin, _Speech and Language Processing_, 3rd ed. draft, ch. 2 (regular expressions, tokenisation, normalisation), [web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3/).
 
-2. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, Cambridge University Press 2008, ch. 2, nlp.stanford.edu/IR-book.
+2. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, Cambridge University Press 2008, ch. 2, [nlp.stanford.edu/IR-book](https://nlp.stanford.edu/IR-book/).
 
 3. M. Porter, "An algorithm for suffix stripping", _Program_ 14(3), 1980.
 

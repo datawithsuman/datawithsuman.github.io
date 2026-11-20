@@ -48,7 +48,7 @@ With two **boundary errors** (the model tags "biryani" but not "chicken", and "P
 
 #### In one breath
 
-Many NLP tasks need a label for **every token**, not one for the whole text. **Part-of-speech tagging** labels nouns, verbs and so on; **named entity recognition (NER)** finds spans like dish names, restaurants, cities and times. Spans are turned into per-token labels with the **BIO** scheme: B- marks the beginning of an entity, I- the inside, O outside, so adjacent entities stay separate. Models went from HMMs and **CRFs** (which score whole label sequences, so "I-" can't follow "O") to **BiLSTM-CRF** and now fine-tuned **Transformers** with a classifier per token. NER is evaluated with **entity-level precision, recall and F1**: a span counts only if both its boundaries and type are exactly right.What you'll be able to do after this: convert spans to BIO tags, explain why a CRF layer helps, and compute entity-level F1.
+Many NLP tasks need a label for **every token**, not one for the whole text. **Part-of-speech tagging** labels nouns, verbs and so on; **named entity recognition (NER)** finds spans like dish names, restaurants, cities and times. Spans are turned into per-token labels with the **BIO** scheme: B- marks the beginning of an entity, I- the inside, O outside, so adjacent entities stay separate. Models went from HMMs and **CRFs** (which score whole label sequences, so "I-" can't follow "O") to **BiLSTM-CRF** and now fine-tuned **Transformers** with a classifier per token. NER is evaluated with **entity-level precision, recall and F1**: a span counts only if both its boundaries and type are exactly right. What you'll be able to do after this: convert spans to BIO tags, explain why a CRF layer helps, and compute entity-level F1.
 
 #### The BIO scheme
 
@@ -144,6 +144,6 @@ Assigning a label to every token: part-of-speech tagging and named entity recogn
 
 3. E. Tjong Kim Sang & F. De Meulder, "Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition", CoNLL 2003.
 
-4. G. Lample et al., "Neural Architectures for Named Entity Recognition", NAACL 2016, arXiv:1603.01360.
+4. G. Lample et al., "Neural Architectures for Named Entity Recognition", NAACL 2016, [arXiv:1603.01360](https://arxiv.org/abs/1603.01360).
 
-5. J. Devlin et al., "BERT", NAACL 2019, arXiv:1810.04805; D. Jurafsky & J. Martin, SLP3 ch. 18, web.stanford.edu/~jurafsky/slp3.
+5. J. Devlin et al., "BERT", NAACL 2019, [arXiv:1810.04805](https://arxiv.org/abs/1810.04805); D. Jurafsky & J. Martin, SLP3 ch. 18, [web.stanford.edu/~jurafsky/slp3](https://web.stanford.edu/~jurafsky/slp3/).

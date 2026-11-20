@@ -85,7 +85,7 @@ The chain rule multiplies Jacobians: J₃J₂J₁. Each may be enormous. Startin
 
 #### The maths
 
-$$ L(w) = \|Xw - y\|^2 \;\Rightarrow\; \nabla L = 2X^\top(Xw - y), \qquad \nabla^2 L = 2X^\top X $$
+$$ {L(w)} = \|Xw - y\|^2 \;\Rightarrow\; {\nabla L} = 2X^\top{(Xw - y)}, \qquad {\nabla^2 L} = 2X^\top X $$
 
 Layout warning: books differ on whether a gradient is a row or a column. This site uses columns, which is the common convention in ML. Let shapes guide you.
 
@@ -143,17 +143,19 @@ How would you find a bug in a gradient?
 
 Run a gradient check: nudge each weight by a small amount in each direction, compute the loss change, and compare with the gradient. Use a small random model and a few weights, as it's slow. Differences usually come from a wrong transpose, a missing factor of two, or a non-smooth function.
 
+#### The 30-second answer
+
 I'd think in shapes. A scalar loss of n weights has an n-length gradient. For L equals the norm of Xw minus y squared, the gradient is 2 X transpose times Xw minus y. Shapes confirm it: n by m times m gives n. Setting it to zero gives the normal equations, and the Hessian, 2 X transpose X, is semi-definite, so it's a true minimum. For a vector output, you get a Jacobian. Backprop is a chain of Jacobians, multiplied from the output, so you only keep a vector and never form the full matrices.
 
 **Key terms and sources**
 
-Gradients, Jacobians and Hessians, the key identities, layout conventions, deriving least squares and why backpropagation multiplies from the output.
+Gradients, Jacobians and Hessians, the key identities, layout conventions, deriving least squares and why backpropagation multiplies from the output. · checked 6 Nov 2026
 
 #### Sources
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
 - Backpropagation on this site
 

@@ -39,7 +39,7 @@ _Illustrative. The p-value assumes no real difference, so it isn't the chance th
 
 A/A tests: both arms are identical (10% conversion, 500 users per arm per day, 20 days). Lines show the z-statistic over time for 30 of the tests; the band is ±1.96.
 
-With no real difference at all, a single check at the planned end gives about **5%** false positives, as designed. Checking every day and stopping at the first p < 0.05 gives about **25%**: the z-statistic wanders, and with 20 looks it will often cross 1.96 at some point. Johari, Pekelis & Walsh show that with continuous monitoring and an unlimited horizon a false positive is eventually guaranteed, and propose "always valid" p-values that allow stopping at any time arXiv:1512.04922. Fixes: pre-commit to a sample size, use sequential tests (alpha-spending, mSPRT), or Bayesian methods with care.
+With no real difference at all, a single check at the planned end gives about **5%** false positives, as designed. Checking every day and stopping at the first p < 0.05 gives about **25%**: the z-statistic wanders, and with 20 looks it will often cross 1.96 at some point. Johari, Pekelis & Walsh show that with continuous monitoring and an unlimited horizon a false positive is eventually guaranteed, and propose "always valid" p-values that allow stopping at any time [arXiv:1512.04922](https://arxiv.org/abs/1512.04922). Fixes: pre-commit to a sample size, use sequential tests (alpha-spending, mSPRT), or Bayesian methods with care.
 
 **Now say why:** why does looking more often create false wins when nothing changed?
 
@@ -49,11 +49,11 @@ With no real difference at all, a single check at the planned end gives about **
 
 #### In one breath
 
-An A/B test randomly splits users between the old version (A) and a new one (B) and asks whether the difference in a metric is real or noise. Assume **no difference** (the null), compute how surprising the observed difference would be under that assumption: that's the **p-value**. If p < 0.05 you call it significant, accepting a 5% false-positive rate (type I error). **Power** is the chance of detecting a real effect; it depends on effect size, variance and sample size, so small lifts need big samples, decided **before** the test. The classic mistake is **peeking**: checking daily and stopping at the first p < 0.05 inflates false positives from 5% to about 25%.What you'll be able to do after this: run a two-proportion test, interpret a p-value correctly, compute the sample size for a target lift, and explain why peeking, multiple metrics and novelty effects mislead.
+An A/B test randomly splits users between the old version (A) and a new one (B) and asks whether the difference in a metric is real or noise. Assume **no difference** (the null), compute how surprising the observed difference would be under that assumption: that's the **p-value**. If p < 0.05 you call it significant, accepting a 5% false-positive rate (type I error). **Power** is the chance of detecting a real effect; it depends on effect size, variance and sample size, so small lifts need big samples, decided **before** the test. The classic mistake is **peeking**: checking daily and stopping at the first p < 0.05 inflates false positives from 5% to about 25%. What you'll be able to do after this: run a two-proportion test, interpret a p-value correctly, compute the sample size for a target lift, and explain why peeking, multiple metrics and novelty effects mislead.
 
 #### Null, test statistic, p-value
 
-$$ z = (\hat p_B - \hat p_A) \,/\, \sqrt{\bar p(1-\bar p)\,(1/n_A + 1/n_B)}, \qquad p = 2\,(1 - \Phi(|z|)) $$
+$$ {z} = {(\hat p_B - \hat p_A)} \,/\, {\sqrt{\bar p(1-\bar p)\,(1/n_A + 1/n_B)}}, \qquad {p = 2\,(1 - \Phi(|z|))} $$
 
 The two-proportion z-test (Wasserman §10.1–10.2). With 5,000 users per arm, 10.4% vs 10.0% gives z ≈ 0.66 and p ≈ 0.51: not distinguishable from noise.
 
@@ -72,7 +72,7 @@ The two-proportion z-test (Wasserman §10.1–10.2). With 5,000 users per arm, 1
 | **Declare a win (p < α)** | Type I error (false positive), rate α = 5% | Correct: probability = power |
 | **No win** | Correct | Type II error (false negative), rate β = 1 − power |
 
-$$ n \approx (z_{1-\alpha/2} + z_{1-\beta})^2\,\bigl[p_A(1-p_A) + p_B(1-p_B)\bigr] \,/\, (p_B - p_A)^2 $$
+$$ {n} \approx {(z_{1-\alpha/2} + z_{1-\beta})^2}\,{\bigl[p_A(1-p_A) + p_B(1-p_B)\bigr]} \,/\, {(p_B - p_A)^2} $$
 
 Standard normal-approximation sample size for two proportions; see Kohavi, Tang & Xu (2020). For 10% → 11%: n ≈ 14,750 users per arm.
 
@@ -125,7 +125,7 @@ Kohavi, Tang & Xu, _Trustworthy Online Controlled Experiments_, Cambridge Univer
 
 #### "p = 0.03 means a 97% chance B is better"
 
-The p-value is computed _assuming_ there's no difference; it can't be the probability that there is one. The American Statistical Association's statement lists the correct reading and the common misreadings: "P-values can indicate how incompatible the data are with a specified statistical model"; they do not measure "the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone"; and "a p-value, or statistical significance, does not measure the size of an effect or the importance of a result" ASA 2016. Report the effect size with a confidence interval alongside the p-value.
+The p-value is computed _assuming_ there's no difference; it can't be the probability that there is one. The American Statistical Association's statement lists the correct reading and the common misreadings: "P-values can indicate how incompatible the data are with a specified statistical model"; they do not measure "the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone"; and "a p-value, or statistical significance, does not measure the size of an effect or the importance of a result" [ASA 2016](https://doi.org/10.1080/00031305.2016.1154108). Report the effect size with a confidence interval alongside the p-value.
 
 ## Say it
 
@@ -182,11 +182,11 @@ Null and alternative hypotheses, test statistics and p-values, significance, typ
 
 #### Sources
 
-1. R. Wasserstein & N. Lazar, "The ASA statement on p-values: context, process, and purpose", _The American Statistician_ 70(2), 2016, doi.
+1. R. Wasserstein & N. Lazar, "The ASA statement on p-values: context, process, and purpose", _The American Statistician_ 70(2), 2016, [doi](https://doi.org/10.1080/00031305.2016.1154108).
 
 2. R. Kohavi, D. Tang & Y. Xu, _Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing_, Cambridge University Press 2020.
 
-3. R. Johari, L. Pekelis & D. Walsh, "Always valid inference: bringing sequential analysis to A/B testing", arXiv:1512.04922; "Peeking at A/B tests", KDD 2017.
+3. R. Johari, L. Pekelis & D. Walsh, "Always valid inference: bringing sequential analysis to A/B testing", [arXiv:1512.04922](https://arxiv.org/abs/1512.04922); "Peeking at A/B tests", KDD 2017.
 
 4. L. Wasserman, _All of Statistics_, Springer 2004, ch. 10.
 

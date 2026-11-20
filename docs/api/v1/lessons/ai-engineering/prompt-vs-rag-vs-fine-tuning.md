@@ -48,7 +48,7 @@ The refund-policy request is **missing, changing knowledge → RAG**: re-index w
 
 #### In one breath
 
-Ask **what is missing**. If the model lacks **knowledge** (your policies, products, latest data) → **RAG**: it's updatable, citable, and beats fine-tuning for injecting facts (Ovadia et al. found retrieval consistently outperformed unsupervised fine-tuning on knowledge tasks). If it lacks **behaviour** (tone, format, a narrow skill done consistently) → **prompting** first, then **fine-tuning** once you have hundreds to thousands of good examples, or when long prompts become too slow or costly at volume. They combine: many production systems fine-tune a small model to follow the format and use RAG for the facts. The standard order is: prompt a capable model → add RAG → evaluate → fine-tune (and distil) only where data and volume justify it.What you'll be able to do after this: pick the right approach for a requirement and defend the choice with evidence and cost.
+Ask **what is missing**. If the model lacks **knowledge** (your policies, products, latest data) → **RAG**: it's updatable, citable, and beats fine-tuning for injecting facts (Ovadia et al. found retrieval consistently outperformed unsupervised fine-tuning on knowledge tasks). If it lacks **behaviour** (tone, format, a narrow skill done consistently) → **prompting** first, then **fine-tuning** once you have hundreds to thousands of good examples, or when long prompts become too slow or costly at volume. They combine: many production systems fine-tune a small model to follow the format and use RAG for the facts. The standard order is: prompt a capable model → add RAG → evaluate → fine-tune (and distil) only where data and volume justify it. What you'll be able to do after this: pick the right approach for a requirement and defend the choice with evidence and cost.
 
 #### What each approach changes
 
@@ -130,14 +130,14 @@ A practical decision framework for adapting an LLM to a product: what each appro
 
 #### Sources
 
-1. O. Ovadia et al., "Fine-Tuning or Retrieval? Comparing Knowledge Injection in LLMs", EMNLP 2024, arXiv:2312.05934.
+1. O. Ovadia et al., "Fine-Tuning or Retrieval? Comparing Knowledge Injection in LLMs", EMNLP 2024, [arXiv:2312.05934](https://arxiv.org/abs/2312.05934).
 
-2. Z. Gekhman et al., "Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?", EMNLP 2024, arXiv:2405.05904.
+2. Z. Gekhman et al., "Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?", EMNLP 2024, [arXiv:2405.05904](https://arxiv.org/abs/2405.05904).
 
-3. T. Zhang et al., "RAFT: Adapting Language Model to Domain Specific RAG", 2024, arXiv:2403.10131.
+3. T. Zhang et al., "RAFT: Adapting Language Model to Domain Specific RAG", 2024, [arXiv:2403.10131](https://arxiv.org/abs/2403.10131).
 
-4. P. Lewis et al. (RAG), NeurIPS 2020, arXiv:2005.11401; E. Hu et al. (LoRA), ICLR 2022, arXiv:2106.09685.
+4. P. Lewis et al. (RAG), NeurIPS 2020, [arXiv:2005.11401](https://arxiv.org/abs/2005.11401); E. Hu et al. (LoRA), ICLR 2022, [arXiv:2106.09685](https://arxiv.org/abs/2106.09685).
 
 5. OpenAI, "Optimizing LLM accuracy" guide; Anthropic, model customisation and prompt engineering documentation.
 
-6. L. A. Agrawal et al., "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning", 2025, arXiv:2507.19457.
+6. L. A. Agrawal et al., "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning", 2025, [arXiv:2507.19457](https://arxiv.org/abs/2507.19457).

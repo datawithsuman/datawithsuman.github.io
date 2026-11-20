@@ -95,7 +95,7 @@ def clean_tex(tex):
             if depth == 0:
                 break
             m += 1
-        out += clean_tex(tex[k + 1:m])
+        out += "{" + clean_tex(tex[k + 1:m]) + "}"  # keep the group, or "\\times\\class{..}{L}" would become "\\timesL"
         i = m + 1
 
 
@@ -111,6 +111,10 @@ def inline(node):
     if node.tag == "br":
         return "\n"
     s = "".join(inline(k) for k in node.kids)
+    if "small" in node.cls().split() and node.tag == "span":
+        return " " + s  # a block-styled note on the page, e.g. "What you'll be able to do after this"
+    if node.tag == "a" and s.strip() and re.match(r"https?://", node.attrs.get("href") or ""):
+        return f"[{s.strip()}]({node.attrs['href']})"  # keep source links; site-internal links stay plain text
     if node.tag in ("b", "strong") and s.strip():
         return f"**{s.strip()}** " if s.endswith(" ") else f"**{s.strip()}**"
     if node.tag in ("i", "em") and s.strip():

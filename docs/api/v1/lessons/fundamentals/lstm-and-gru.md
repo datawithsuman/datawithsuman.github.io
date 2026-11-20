@@ -48,11 +48,11 @@ With bf = 4 the forget gate averages about 0.98, and the LSTM keeps about **40%*
 
 #### In one breath
 
-A plain RNN overwrites its memory at every step and its gradients fade within tens of steps. An **LSTM** adds a separate **cell state** ct, a memory conveyor belt that is changed only by **addition** and by a multiplicative **forget gate**. Learned **gates** (sigmoids between 0 and 1) decide what to forget, what to write and what to reveal. When the forget gate stays near 1, information and gradients pass through hundreds of steps almost unchanged, like a residual connection through time. The **GRU** merges the gates into an update gate and a reset gate, with no separate cell: fewer parameters, usually similar accuracy.What you'll be able to do after this: write the LSTM and GRU equations, explain each gate, and explain why gating fixes vanishing gradients.
+A plain RNN overwrites its memory at every step and its gradients fade within tens of steps. An **LSTM** adds a separate **cell state** ct, a memory conveyor belt that is changed only by **addition** and by a multiplicative **forget gate**. Learned **gates** (sigmoids between 0 and 1) decide what to forget, what to write and what to reveal. When the forget gate stays near 1, information and gradients pass through hundreds of steps almost unchanged, like a residual connection through time. The **GRU** merges the gates into an update gate and a reset gate, with no separate cell: fewer parameters, usually similar accuracy. What you'll be able to do after this: write the LSTM and GRU equations, explain each gate, and explain why gating fixes vanishing gradients.
 
 #### The LSTM cell
 
-$$ f_t = \sigma(W_f[h_{t-1},x_t]+b_f),\;\; i_t = \sigma(W_i[\cdot]+b_i),\;\; \tilde{c}_t = \tanh(W_c[\cdot]+b_c) \\[6pt] c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t, \qquad h_t = o_t \odot \tanh(c_t),\;\; o_t = \sigma(W_o[\cdot]+b_o) $$
+$$ {f_t = \sigma(W_f[h_{t-1},x_t]+b_f)},\;\; {i_t = \sigma(W_i[\cdot]+b_i)},\;\; {\tilde{c}_t = \tanh(W_c[\cdot]+b_c)} \\[6pt] {c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t}, \qquad {h_t = o_t \odot \tanh(c_t),\;\; o_t = \sigma(W_o[\cdot]+b_o)} $$
 
 Hochreiter & Schmidhuber, _Neural Computation_ 1997 (with the forget gate from Gers et al. 2000). An LSTM layer has 4 weight matrices: about 4× the parameters of a plain RNN of the same size. Olah's "Understanding LSTM Networks" (2015) is the classic visual walkthrough.
 
@@ -76,7 +76,7 @@ Along the cell state, ∂ct/∂ct−1 = ft (element-wise). There's no weight mat
 
 #### The GRU: fewer gates, similar results
 
-$$ z_t = \sigma(W_z[h_{t-1},x_t]),\;\; r_t = \sigma(W_r[h_{t-1},x_t]),\;\; \tilde{h}_t = \tanh(W[r_t\odot h_{t-1}, x_t]),\;\; h_t = (1-z_t)\odot h_{t-1} + z_t \odot \tilde{h}_t $$
+$$ {z_t = \sigma(W_z[h_{t-1},x_t])},\;\; {r_t = \sigma(W_r[h_{t-1},x_t])},\;\; \tilde{h}_t = \tanh(W[r_t\odot h_{t-1}, x_t]),\;\; {h_t = (1-z_t)\odot h_{t-1} + z_t \odot \tilde{h}_t} $$
 
 Cho et al., EMNLP 2014. Chung et al. (2014) found GRUs comparable to LSTMs on music and speech modelling; Jozefowicz et al. (2015) found neither consistently better across many tasks. GRUs have 3 weight matrices instead of 4.
 
@@ -138,10 +138,10 @@ Gated recurrent cells: the LSTM's cell state and its forget, input and output ga
 
 2. F. Gers, J. Schmidhuber & F. Cummins, "Learning to Forget: Continual Prediction with LSTM", _Neural Computation_ 12(10), 2000.
 
-3. K. Cho et al., "Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation", EMNLP 2014, arXiv:1406.1078.
+3. K. Cho et al., "Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation", EMNLP 2014, [arXiv:1406.1078](https://arxiv.org/abs/1406.1078).
 
-4. J. Chung, C. Gulcehre, K. Cho & Y. Bengio, "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling", arXiv:1412.3555, 2014.
+4. J. Chung, C. Gulcehre, K. Cho & Y. Bengio, "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling", [arXiv:1412.3555](https://arxiv.org/abs/1412.3555), 2014.
 
 5. R. Jozefowicz, W. Zaremba & I. Sutskever, "An Empirical Exploration of Recurrent Network Architectures", ICML 2015.
 
-6. C. Olah, "Understanding LSTM Networks", 2015.
+6. C. Olah, ["Understanding LSTM Networks"](https://colah.github.io/posts/2015-08-Understanding-LSTMs/), 2015.

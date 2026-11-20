@@ -54,7 +54,7 @@ The Llama 3 8B shape comes out at **8.03 B**: the feed-forward layers hold **70%
 
 #### In one breath
 
-A modern LLM is still a stack of Transformer blocks, but **decoder-only** and with a handful of upgrades that became standard after Llama (2023): **pre-norm** with **RMSNorm** (cheaper, more stable training), a **SwiGLU** feed-forward layer (a gated FFN that trains better), **RoPE** rotary positions inside attention, **grouped-query attention** to shrink the KV cache, no bias terms, and a vocabulary of 100k+ tokens. In an 8B model about **70% of the parameters are in the feed-forward layers**, about 17% in attention and 13% in the embedding tables; at 70B the feed-forward share rises to about 80%.What you'll be able to do after this: list the modern changes and why each was made, and count an LLM's parameters from its config.
+A modern LLM is still a stack of Transformer blocks, but **decoder-only** and with a handful of upgrades that became standard after Llama (2023): **pre-norm** with **RMSNorm** (cheaper, more stable training), a **SwiGLU** feed-forward layer (a gated FFN that trains better), **RoPE** rotary positions inside attention, **grouped-query attention** to shrink the KV cache, no bias terms, and a vocabulary of 100k+ tokens. In an 8B model about **70% of the parameters are in the feed-forward layers**, about 17% in attention and 13% in the embedding tables; at 70B the feed-forward share rises to about 80%. What you'll be able to do after this: list the modern changes and why each was made, and count an LLM's parameters from its config.
 
 #### 2017 Transformer vs a 2024 LLM block
 
@@ -69,9 +69,9 @@ A modern LLM is still a stack of Transformer blocks, but **decoder-only** and wi
 | Biases | yes | none in linear layers | no quality loss, slightly more stable |
 | Vocabulary | 37k shared BPE | 128k (Llama 3), 150k+ (Qwen) | fewer tokens per text, better multilingual coverage (tokenisation) |
 
-$$ \mathrm{RMSNorm}(x) = \frac{x}{\sqrt{\tfrac1d\sum_i x_i^2 + \epsilon}}\odot g, \qquad \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = \big(\mathrm{SiLU}(xW_1)\odot xW_3\big)W_2 $$
+$$ {\mathrm{RMSNorm}(x) = \frac{x}{\sqrt{\tfrac1d\sum_i x_i^2 + \epsilon}}\odot g}, \qquad \mathrm{FFN}_{\mathrm{SwiGLU}}(x) = {\big(}{\mathrm{SiLU}(xW_1)}\odot {xW_3}{\big)W_2} $$
 
-Zhang & Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019; Shazeer, "GLU Variants Improve Transformer", arXiv:2002.05202. SiLU(z) = z·σ(z).
+Zhang & Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019; Shazeer, "GLU Variants Improve Transformer", [arXiv:2002.05202](https://arxiv.org/abs/2002.05202). SiLU(z) = z·σ(z).
 
 - **RMSNorm**: Divide each vector by its root-mean-square and multiply by a learned gain g. No mean subtraction and no bias, unlike LayerNorm.
 
@@ -115,7 +115,7 @@ Llama 3 is still a good model to learn from, and it's our running example. Newer
 
 - **MoE keeps getting sparser.** Qwen3-Next has 80B parameters with 3B active, and DeepSeek-V4-Pro has 1.6T with 49B active.
 
-From the models' technical reports and model cards, and Raschka's Recent Developments in LLM Architectures. Gemma 4's KV sharing is as Raschka describes it.
+From the models' technical reports and model cards, and Raschka's [Recent Developments in LLM Architectures](https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures). Gemma 4's KV sharing is as Raschka describes it.
 
 ### The answer that sounds right
 
@@ -165,12 +165,12 @@ What changed between the 2017 Transformer and today's decoder-only LLMs (Llama, 
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. B. Zhang & R. Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019, arXiv:1910.07467; R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, arXiv:2002.04745.
+2. B. Zhang & R. Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019, [arXiv:1910.07467](https://arxiv.org/abs/1910.07467); R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, [arXiv:2002.04745](https://arxiv.org/abs/2002.04745).
 
-3. N. Shazeer, "GLU Variants Improve Transformer", 2020, arXiv:2002.05202; J. Su et al., "RoFormer", 2021, arXiv:2104.09864.
+3. N. Shazeer, "GLU Variants Improve Transformer", 2020, [arXiv:2002.05202](https://arxiv.org/abs/2002.05202); J. Su et al., "RoFormer", 2021, [arXiv:2104.09864](https://arxiv.org/abs/2104.09864).
 
-4. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", 2023, arXiv:2302.13971.
+4. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", 2023, [arXiv:2302.13971](https://arxiv.org/abs/2302.13971).
 
-5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783, and the Llama 3 8B / 70B model configs on Hugging Face.
+5. Llama Team, Meta, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783), and the Llama 3 8B / 70B model configs on Hugging Face.

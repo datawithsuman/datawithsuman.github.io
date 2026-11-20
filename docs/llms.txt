@@ -171,7 +171,7 @@ Every lesson is also available as Markdown under https://aimlrounds.com/api/v1/l
 - [NLP Evaluation: BLEU, ROUGE, EM/F1](https://aimlrounds.com/api/v1/lessons/fundamentals/nlp-evaluation-metrics.md): Why can word salad beat a correct paraphrase on BLEU?
 - [NLP Fundamentals Practice](https://aimlrounds.com/api/v1/lessons/fundamentals/nlp-practice.md): 10 interview questions: TF-IDF, perplexity, BPE, BLEU, NER F1 and hybrid search.
 - [Anatomy of a Modern LLM](https://aimlrounds.com/api/v1/lessons/fundamentals/modern-llm-architecture.md): What changed since 2017, and where do an 8B model's parameters live?
-- [Attention Variants: MQA, GQA and MLA](https://aimlrounds.com/api/v1/lessons/fundamentals/attention-variants-mqa-gqa-mla.md): How many conversations fit on one GPU, and how GQA and MLA raise that?
+- [Attention Variants: MQA, GQA and MLA](https://aimlrounds.com/api/v1/lessons/fundamentals/attention-variants-mqa-gqa-mla.md): How many conversations fit on one GPU, and how do GQA and MLA raise that?
 - [GPUs, TPUs and Memory Bandwidth](https://aimlrounds.com/api/v1/lessons/fundamentals/gpus-tpus-and-memory-bandwidth.md): Why is decoding limited by memory, while prefill is limited by compute?
 - [FlashAttention](https://aimlrounds.com/api/v1/lessons/fundamentals/flashattention.md): Why is exact attention faster when it does more maths?
 - [Long Context: RoPE Scaling, Sliding Windows and Attention Sinks](https://aimlrounds.com/api/v1/lessons/fundamentals/long-context.md): Why does a 4k model break at 16k, and how does YaRN fix it?

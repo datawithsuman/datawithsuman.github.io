@@ -48,7 +48,7 @@ As designed, the refund agent has **all three legs**: an injected email can make
 
 #### In one breath
 
-A chatbot that's tricked says something wrong; an **agent** that's tricked _does_ something wrong: refunds money, emails data, deletes files. Prompt injection can't be reliably filtered out, so safety comes from **design**. Simon Willison's **lethal trifecta**: if an agent has (1) access to **private data**, (2) exposure to **untrusted content** (emails, web pages, reviews, tool outputs) and (3) a way to **communicate externally** (send email, make web requests, render links), an attacker can make it leak data. Remove one leg, or gate it: least-privilege tools and credentials, **sandboxed** execution, **human approval** for outbound and high-impact actions, allow-listed destinations, and patterns that keep untrusted text away from decisions about actions.What you'll be able to do after this: threat-model an agent with the trifecta, and choose permissions, sandboxing and approval gates.
+A chatbot that's tricked says something wrong; an **agent** that's tricked _does_ something wrong: refunds money, emails data, deletes files. Prompt injection can't be reliably filtered out, so safety comes from **design**. Simon Willison's **lethal trifecta**: if an agent has (1) access to **private data**, (2) exposure to **untrusted content** (emails, web pages, reviews, tool outputs) and (3) a way to **communicate externally** (send email, make web requests, render links), an attacker can make it leak data. Remove one leg, or gate it: least-privilege tools and credentials, **sandboxed** execution, **human approval** for outbound and high-impact actions, allow-listed destinations, and patterns that keep untrusted text away from decisions about actions. What you'll be able to do after this: threat-model an agent with the trifecta, and choose permissions, sandboxing and approval gates.
 
 #### Threats and controls
 
@@ -77,7 +77,7 @@ A chatbot that's tricked says something wrong; an **agent** that's tricked _does
 
 - **Test and monitor:** red-team with injected content (AgentDojo-style), log every tool call with its triggering input, alert on unusual data access or destinations.
 
-**Added 7 Nov 2026.** Meta's **Agents Rule of Two** (Oct 2025) restates the trifecta: in one session, an agent should have at most two of untrusted input, access to sensitive data or systems, and the ability to change state or communicate externally, unless a person or reliable check approves. The OWASP Top 10 for Agentic Applications (Dec 2025) lists risks such as goal hijack, tool misuse, privilege abuse, memory poisoning and cascading failures. And filters alone don't hold: attacks tuned to each defence beat 12 published defences, most with over 90% success.
+Meta's **Agents Rule of Two** (Oct 2025) restates the trifecta: in one session, an agent should have at most two of untrusted input, access to sensitive data or systems, and the ability to change state or communicate externally, unless a person or reliable check approves. The OWASP Top 10 for Agentic Applications (Dec 2025) lists risks such as goal hijack, tool misuse, privilege abuse, memory poisoning and cascading failures. And filters alone don't hold: attacks tuned to each defence beat 12 published defences, most with over 90% success.
 
 #### Assume the agent will be fooled; make it harmless when it is
 
@@ -127,16 +127,16 @@ Agents act, so prompt injection becomes a real security issue, and it can't be f
 
 **Key terms and sources**
 
-Why agents raise the stakes of prompt injection (they act, not just talk), the "lethal trifecta" of private data + untrusted content + external communication, excessive agency, sandboxing code execution, least-privilege credentials, human approval gates, and design patterns that make injection harmless · built from Willison ("The lethal trifecta", 2025), OWASP (Top 10 for LLM Applications 2025: LLM01, LLM06), Greshake et al. (AISec 2023), Debenedetti et al. (AgentDojo, NeurIPS 2024; CaMeL, 2025), Beurer-Kellner et al. (Design Patterns for Securing LLM Agents against Prompt Injections, 2025) and Invariant Labs (MCP tool poisoning, 2025) · checked 29 Oct 2026
+Why agents raise the stakes of prompt injection (they act, not just talk), the "lethal trifecta" of private data + untrusted content + external communication, excessive agency, sandboxing code execution, least-privilege credentials, human approval gates, and design patterns that make injection harmless · built from Willison ("The lethal trifecta", 2025), OWASP (Top 10 for LLM Applications 2025: LLM01, LLM06), Greshake et al. (AISec 2023), Debenedetti et al. (AgentDojo, NeurIPS 2024; CaMeL, 2025), Beurer-Kellner et al. (Design Patterns for Securing LLM Agents against Prompt Injections, 2025) and Invariant Labs (MCP tool poisoning, 2025) · checked 7 Nov 2026
 
 #### Sources
 
-1. S. Willison, "The lethal trifecta for AI agents: private data, untrusted content, and external communication", 2025, simonwillison.net.
+1. S. Willison, "The lethal trifecta for AI agents: private data, untrusted content, and external communication", 2025, [simonwillison.net](https://simonwillison.net/).
 
 2. OWASP, "Top 10 for LLM Applications 2025" (LLM01 Prompt Injection, LLM06 Excessive Agency).
 
-3. E. Debenedetti et al., "AgentDojo", NeurIPS 2024 Datasets & Benchmarks, arXiv:2406.13352; "Defeating Prompt Injections by Design" (CaMeL), 2025, arXiv:2503.18813.
+3. E. Debenedetti et al., "AgentDojo", NeurIPS 2024 Datasets & Benchmarks, [arXiv:2406.13352](https://arxiv.org/abs/2406.13352); "Defeating Prompt Injections by Design" (CaMeL), 2025, [arXiv:2503.18813](https://arxiv.org/abs/2503.18813).
 
-4. L. Beurer-Kellner et al., "Design Patterns for Securing LLM Agents against Prompt Injections", 2025, arXiv:2506.08837; K. Greshake et al., AISec 2023, arXiv:2302.12173.
+4. L. Beurer-Kellner et al., "Design Patterns for Securing LLM Agents against Prompt Injections", 2025, [arXiv:2506.08837](https://arxiv.org/abs/2506.08837); K. Greshake et al., AISec 2023, [arXiv:2302.12173](https://arxiv.org/abs/2302.12173).
 
-5. Meta, "Agents Rule of Two", Oct 2025; OWASP, Top 10 for Agentic Applications 2026; M. Nasr et al., "The Attacker Moves Second", 2025, arXiv:2510.09023.
+5. Meta, ["Agents Rule of Two"](https://ai.meta.com/blog/practical-ai-agent-security/), Oct 2025; OWASP, Top 10 for Agentic Applications 2026; M. Nasr et al., "The Attacker Moves Second", 2025, [arXiv:2510.09023](https://arxiv.org/abs/2510.09023).

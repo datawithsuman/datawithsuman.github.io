@@ -86,7 +86,7 @@ These protocols change monthly. Check the current versions before quoting detail
 
 #### The maths
 
-$$ \text{custom links} = \frac{K(K-1)}{2}, \qquad \text{with a protocol} = K $$
+$$ {\text{custom links}} = \frac{{K}({K}-1)}{2}, \qquad {\text{with a protocol}} = {K} $$
 
 The same argument as MCP's N × M to N + M, applied to agents talking to each other.
 
@@ -142,30 +142,32 @@ Why does a payment protocol need mandates?
 
 A merchant and payment network must check that a human authorised this purchase, within limits. A mandate is signed proof of that, rather than trusting the agent's word.
 
+#### The 30-second answer
+
 They solve different connections. MCP connects an agent to tools and data. A2A lets an agent delegate a task to another agent, possibly another company's: it finds it through an Agent Card, sends messages, and tracks a task through states like working, input required and completed, over JSON-RPC, gRPC or HTTP. AG-UI streams an agent's progress to a user interface as events. AP2, ACP and UCP handle shopping and payments with signed proof of what the user approved. MCP and A2A are now both under the Linux Foundation's Agentic AI Foundation. I'd start with MCP, add A2A for cross-boundary delegation, and treat every remote agent's output as untrusted.
 
 **Key terms and sources**
 
-A map of the open agent protocols in late 2026: MCP for tools and data, A2A for agent-to-agent tasks, AG-UI for agent-to-user interfaces, AP2, ACP and UCP for payments and shopping, plus Agent Skills and AGENTS.md, and who governs them.
+A map of the open agent protocols in late 2026: MCP for tools and data, A2A for agent-to-agent tasks, AG-UI for agent-to-user interfaces, AP2, ACP and UCP for payments and shopping, plus Agent Skills and AGENTS.md, and who governs them. · checked 7 Nov 2026
 
 #### Sources
 
-- Model Context Protocol specification, 2026-07-28
+- [Model Context Protocol specification, 2026-07-28](https://modelcontextprotocol.io/specification/latest)
 
-- A2A protocol specification, version 1.0
+- [A2A protocol specification, version 1.0](https://a2a-protocol.org/latest/specification/)
 
-- A2A joins the Agentic AI Foundation, Aug 2026
+- [A2A joins the Agentic AI Foundation, Aug 2026](https://a2a-protocol.org/latest/blog/2026/08/27/a-new-chapter-for-a2a-joining-the-agentic-ai-foundation/)
 
-- AG-UI documentation
+- [AG-UI documentation](https://docs.ag-ui.com/)
 
-- Agent Payments Protocol (AP2)
+- [Agent Payments Protocol (AP2)](https://ap2-protocol.org/)
 
-- Agentic Commerce Protocol (ACP)
+- [Agentic Commerce Protocol (ACP)](https://agenticcommerce.dev/)
 
-- Universal Commerce Protocol (UCP)
+- [Universal Commerce Protocol (UCP)](https://ucp.dev/)
 
-- Agentic AI Foundation
+- [Agentic AI Foundation](https://aaif.io/)
 
-- Ehtesham et al., A survey of agent interoperability protocols
+- [Ehtesham et al., A survey of agent interoperability protocols](https://arxiv.org/abs/2505.02279)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

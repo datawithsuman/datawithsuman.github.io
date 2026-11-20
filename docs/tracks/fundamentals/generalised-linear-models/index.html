@@ -148,12 +148,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">A GLM has three parts: a distribution for the outcome, a linear score, and a link between them. Linear regression is normal with an identity link, and logistic regression is Bernoulli with a logit. For counts, I'd use Poisson with a log link: predictions stay positive, and each coefficient multiplies the rate by e to the b. I'd add log exposure as an offset if observation time differs, and check for overdispersion, which makes standard errors too small. If there is, I'd use negative binomial.</p>
+<h3>The 30-second answer</h3><p class="say30">A GLM has three parts: a distribution for the outcome, a linear score, and a link between them. Linear regression is normal with an identity link, and logistic regression is Bernoulli with a logit. For counts, I'd use Poisson with a log link: predictions stay positive, and each coefficient multiplies the rate by e to the b. I'd add log exposure as an offset if observation time differs, and check for overdispersion, which makes standard errors too small. If there is, I'd use negative binomial.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">One framework for linear, logistic and Poisson regression: a distribution, a link and a linear score, plus exposure and overdispersion.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">One framework for linear, logistic and Poisson regression: a distribution, a link and a linear score, plus exposure and overdispersion. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://www.statlearning.com/">ISLR, including Poisson regression</a></li><li><a href="https://scikit-learn.org/stable/modules/linear_model.html#generalized-linear-models">scikit-learn on generalized linear models</a></li><li><a href="https://cs229.stanford.edu/syllabus-summer2019.html">CS229 syllabus</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

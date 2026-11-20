@@ -155,8 +155,10 @@ How do you handle a brand-new ad with no history?
 
 Lean on contextual and advertiser-level features, give it some exploration traffic, and let historical features build up quickly with fresh retraining.
 
+#### The 30-second answer
+
 First I'd clarify how ads are selected, the scale, the latency budget, and that the auction needs calibrated probabilities. I'd use a cascade: targeting and cheap models narrow to a few hundred ads, and the final model predicts click probability. Features are contextual, like device and time, and historical, like past click rates for the ad and user; historical ones carry most signal. A strong design uses boosted trees to turn raw features into leaf indices, with a logistic regression on top that's updated online from an impression–click joiner, because fresher data clearly helps. I'd measure normalised cross-entropy and calibration, not just AUC. To save compute I'd keep all clicks and a small share of non-clicks, then recalibrate the probabilities. Online training needs guards, so a broken click stream can't teach the model to predict zero. New models are compared offline on next-day data, then tested online on revenue and calibration.
 
 **Key terms and sources**
 
-Based on a social network's published paper: "Practical Lessons from Predicting Clicks on Ads at Facebook" (ADKDD 2014). The lab uses the paper's own numbers; the estimate is ours. The paper is from 2014, so treat the model as a strong baseline rather than today's state of the art. Uses logistic regression, gradient boosting and probability metrics.
+Based on a social network's published paper: ["Practical Lessons from Predicting Clicks on Ads at Facebook"](https://quinonero.net/Publications/predicting-clicks-facebook.pdf) (ADKDD 2014). The lab uses the paper's own numbers; the estimate is ours. The paper is from 2014, so treat the model as a strong baseline rather than today's state of the art. Uses logistic regression, gradient boosting and probability metrics. · checked 5 Nov 2026

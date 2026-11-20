@@ -52,11 +52,11 @@ Head 1 ties adjectives and verbs to the food they describe: "cold" → biryani, 
 
 #### In one breath
 
-One attention head produces one weighted average per token, so it can only follow one kind of relationship at a time. **Multi-head attention** splits the model width d into h heads of size d/h, runs attention separately in each (with its own WQ, WK, WV), **concatenates** the results and mixes them with an output matrix WO. Different heads learn different jobs (one links adjectives to nouns, another looks at the previous word, another follows syntax), at the **same cost** as a single full-width head: the parameter count stays 4d². The expensive part at long context is the n × n score matrix per head and the cached keys and values, which is why LLMs share keys and values across heads (**MQA/GQA**).What you'll be able to do after this: write multi-head attention, explain why multiple heads help, and compute the parameters, score-matrix size and KV-cache memory.
+One attention head produces one weighted average per token, so it can only follow one kind of relationship at a time. **Multi-head attention** splits the model width d into h heads of size d/h, runs attention separately in each (with its own WQ, WK, WV), **concatenates** the results and mixes them with an output matrix WO. Different heads learn different jobs (one links adjectives to nouns, another looks at the previous word, another follows syntax), at the **same cost** as a single full-width head: the parameter count stays 4d². The expensive part at long context is the n × n score matrix per head and the cached keys and values, which is why LLMs share keys and values across heads (**MQA/GQA**). What you'll be able to do after this: write multi-head attention, explain why multiple heads help, and compute the parameters, score-matrix size and KV-cache memory.
 
 #### Split, attend, concatenate, mix
 
-$$ \mathrm{MHA}(X) = \mathrm{Concat}(\mathrm{head}_1,\dots,\mathrm{head}_h)\,W_O, \qquad \mathrm{head}_i = \mathrm{Attention}(XW_Q^{(i)},\, XW_K^{(i)},\, XW_V^{(i)}) $$
+$$ \mathrm{MHA}(X) = {\mathrm{Concat}(\mathrm{head}_1,\dots,\mathrm{head}_h)}\,{W_O}, \qquad {\mathrm{head}_i = \mathrm{Attention}(XW_Q^{(i)},\, XW_K^{(i)},\, XW_V^{(i)})} $$
 
 Vaswani et al. (2017) used h = 8 heads of size 64 with d = 512: "multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions". In code, all heads are computed in one batched matrix multiply.
 
@@ -132,14 +132,14 @@ Running several attention operations in parallel, each in its own smaller subspa
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
-2. K. Clark, U. Khandelwal, O. Levy & C. Manning, "What Does BERT Look At? An Analysis of BERT's Attention", BlackboxNLP 2019, arXiv:1906.04341.
+2. K. Clark, U. Khandelwal, O. Levy & C. Manning, "What Does BERT Look At? An Analysis of BERT's Attention", BlackboxNLP 2019, [arXiv:1906.04341](https://arxiv.org/abs/1906.04341).
 
-3. E. Voita et al., "Analyzing Multi-Head Self-Attention: Specialized Heads Do the Heavy Lifting, the Rest Can Be Pruned", ACL 2019, arXiv:1905.09418.
+3. E. Voita et al., "Analyzing Multi-Head Self-Attention: Specialized Heads Do the Heavy Lifting, the Rest Can Be Pruned", ACL 2019, [arXiv:1905.09418](https://arxiv.org/abs/1905.09418).
 
-4. P. Michel, O. Levy & G. Neubig, "Are Sixteen Heads Really Better than One?", NeurIPS 2019, arXiv:1905.10650.
+4. P. Michel, O. Levy & G. Neubig, "Are Sixteen Heads Really Better than One?", NeurIPS 2019, [arXiv:1905.10650](https://arxiv.org/abs/1905.10650).
 
-5. N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need", arXiv:1911.02150, 2019.
+5. N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need", [arXiv:1911.02150](https://arxiv.org/abs/1911.02150), 2019.
 
-6. J. Ainslie et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints", EMNLP 2023, arXiv:2305.13245.
+6. J. Ainslie et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints", EMNLP 2023, [arXiv:2305.13245](https://arxiv.org/abs/2305.13245).

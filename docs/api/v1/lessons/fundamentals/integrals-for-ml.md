@@ -79,7 +79,7 @@ Mini-batch SGD is Monte Carlo. The true gradient is an expectation over all data
 
 #### The maths
 
-$$ \mathbb{E}_{p}[f(x)] = \int f(x)\,p(x)\,dx \approx \frac{1}{N}\sum_{i=1}^{N} f(x_i), \quad x_i \sim p, \qquad \text{error} \propto \frac{1}{\sqrt{N}} $$
+$$ {\mathbb{E}_{p}[f(x)]} = {\int f(x)\,p(x)\,dx} \approx {\frac{1}{N}\sum_{i=1}^{N} f(x_i)}, \quad x_i \sim p, \qquad {\text{error} \propto \frac{1}{\sqrt{N}}} $$
 
 Worked example: AUC also equals the chance a random positive scores above a random negative. So you can estimate it by sampling pairs, without doing the integral at all.
 
@@ -137,15 +137,17 @@ Monte Carlo or variational inference: which would you choose?
 
 Monte Carlo, like MCMC, can get arbitrarily close to the truth with more samples, but it can be slow. Variational methods are faster, and use ordinary optimisers, but they're limited by the approximation chosen. So use sampling when accuracy matters most, and variational methods for scale.
 
+#### The 30-second answer
+
 Integrals give probabilities from densities, expectations, and marginals, where you sum out a hidden variable. AUC is one too. Most real ones can't be solved exactly, and grid methods fail, because they need n to the d points. So I'd use Monte Carlo: sample from the distribution, and average. Its error shrinks as one over root N, whatever the dimension. Mini-batch SGD is Monte Carlo on the expected gradient. Or I'd use variational methods, which replace the integral with an optimisation over a bound, as in VAEs.
 
 **Key terms and sources**
 
-Integrals as area and as weighted averages: continuous probability, expectations, marginalising, AUC, and why intractable integrals lead to sampling and variational methods.
+Integrals as area and as weighted averages: continuous probability, expectations, marginalising, AUC, and why intractable integrals lead to sampling and variational methods. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
 - Autoencoders and VAEs on this site
 

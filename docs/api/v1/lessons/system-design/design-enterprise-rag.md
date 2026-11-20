@@ -179,8 +179,10 @@ Quality dropped after adding 3 million documents. What do you check?
 
 Look for new near-duplicates and stale versions first, then recall on the golden set by source. Check whether filters and index settings still hold recall at this size. Results measured at a smaller scale may not carry over, so a setup may need re-tuning.
 
+#### The 30-second answer
+
 I'd clarify scale, sources, permissions and freshness first. Offline, connectors pull content and permissions. I'd parse carefully, keep tables whole, chunk on structure, and store text, vectors and metadata, including permission parents. Online, I'd resolve the user's access first, and if that fails, return nothing. Then hybrid search with that filter applied during search, a re-ranker from about 100 candidates to about 10, and generation from numbered chunks with citations, or saying it can't find the answer. At 500 million chunks, float32 vectors alone need about 2 TB, so I'd consider int8 or binary with rescoring, and I'd measure recall under real filters. For freshness, I'd use change events and re-embed only what changed, and for a new embedding model, a second index with dual writes and an alias. I'd keep a golden set with no-answer and access tests, score retrieval and faithfulness separately, and run it on every change. I'd start with a fixed pipeline, and add an agent loop only for the questions that need it.
 
 **Key terms and sources**
 
-Built from published work: Uber's agentic RAG post, Anthropic's Contextual Retrieval, a 450-setup study and WorkOS on access control. It isn't any one company's design, and the volumes and lab numbers are our own illustrations. Uses parsing, permissions and keeping an index current.
+Built from published work: [Uber's agentic RAG post](https://www.uber.com/en-CA/blog/enhanced-agentic-rag/), [Anthropic's Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval), [a 450-setup study](https://arxiv.org/abs/2610.29722) and [WorkOS on access control](https://workos.com/blog/rag-access-control-document-permissions). It isn't any one company's design, and the volumes and lab numbers are our own illustrations. Uses parsing, permissions and keeping an index current. · checked 7 Nov 2026

@@ -81,7 +81,7 @@ A full joint over 30 yes-or-no variables needs over a billion numbers. Assuming 
 
 #### The maths
 
-$$ p(x) = \sum_y p(x, y), \qquad p(y \mid x) = \frac{p(x, y)}{p(x)}, \qquad p(x, y \mid z) = p(x \mid z)\,p(y \mid z) $$
+$$ {p(x)} = \sum_y {p(x, y)}, \qquad {p(y \mid x)} = \frac{p(x, y)}{p(x)}, \qquad {p(x, y \mid z) = p(x \mid z)\,p(y \mid z)} $$
 
 These three rules, sum, product and Bayes, handle nearly every manipulation in probabilistic ML.
 
@@ -137,19 +137,21 @@ Why does Naive Bayes work well even though its assumption is wrong?
 
 Classification only needs the right class to score highest, not accurate probabilities. Errors in the probability estimates may not change the ranking. So it can classify well while being badly overconfident, and that's why you'd calibrate it if you need real probabilities.
 
+#### The 30-second answer
+
 The joint gives the chance of each combination. Summing over a variable gives a marginal, and fixing one and rescaling gives a conditional. Those are the sum and product rules, and Bayes' rule follows from them. Conditional independence means that once you know z, x tells you nothing more about y. It's different from plain independence: two late orders are linked through rain, but independent given the weather. It matters because a full joint grows exponentially, and assuming conditional independence, as in Naive Bayes, makes it workable.
 
 **Key terms and sources**
 
-How to describe several random variables together, how to move between joint, marginal and conditional distributions, and why conditional independence powers Naive Bayes.
+How to describe several random variables together, how to move between joint, marginal and conditional distributions, and why conditional independence powers Naive Bayes. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
-- Blitzstein and Hwang, Introduction to Probability
+- [Blitzstein and Hwang, Introduction to Probability](https://www.oreilly.com/library/view/-/9781466575578/)
 
 - Naive Bayes on this site
 

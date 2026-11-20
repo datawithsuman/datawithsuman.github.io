@@ -42,7 +42,7 @@ _From the lesson's simulation: engagement drives both tracking use and reorderin
 | Large stones | 73% (192/263) | 69% (55/80) |
 | All patients | 78% (273/350) | 83% (289/350) |
 
-A was better for small stones _and_ for large stones, yet worse overall. The confounder is stone size: doctors gave the riskier open surgery mostly to large, harder cases, so A's overall rate is dragged down by case mix. The study was observational, not randomised, so even the subgroup comparison isn't proof Charig et al., BMJ 1986. Which table to trust depends on the causal story, not on the numbers: here stone size affects both treatment choice and outcome, so compare within size.
+A was better for small stones _and_ for large stones, yet worse overall. The confounder is stone size: doctors gave the riskier open surgery mostly to large, harder cases, so A's overall rate is dragged down by case mix. The study was observational, not randomised, so even the subgroup comparison isn't proof [Charig et al., BMJ 1986](https://pmc.ncbi.nlm.nih.gov/articles/PMC1339981/). Which table to trust depends on the causal story, not on the numbers: here stone size affects both treatment choice and outcome, so compare within size.
 
 **Now say why:** how can one treatment win in both groups and still lose overall?
 
@@ -52,7 +52,7 @@ A was better for small stones _and_ for large stones, yet worse overall. The con
 
 #### In one breath
 
-Two things moving together doesn't mean one causes the other. A hidden **confounder** can drive both (engaged customers both use live tracking _and_ reorder more), the arrow can point the other way (**reverse causation**), or the data may only include a skewed subset (**selection bias**). Confounding can even flip a comparison: in **Simpson's paradox** a treatment wins in every subgroup and loses overall. **Randomisation** (A/B tests) breaks every hidden link and is the gold standard; without it you must adjust for the confounders you can measure and argue there are no others. ML models learn correlations, so they predict well but don't tell you what will happen if you _intervene_.What you'll be able to do after this: name the ways correlation misleads, explain Simpson's paradox with real numbers, say why randomisation works, and keep "predictive" and "causal" claims apart in interviews.
+Two things moving together doesn't mean one causes the other. A hidden **confounder** can drive both (engaged customers both use live tracking _and_ reorder more), the arrow can point the other way (**reverse causation**), or the data may only include a skewed subset (**selection bias**). Confounding can even flip a comparison: in **Simpson's paradox** a treatment wins in every subgroup and loses overall. **Randomisation** (A/B tests) breaks every hidden link and is the gold standard; without it you must adjust for the confounders you can measure and argue there are no others. ML models learn correlations, so they predict well but don't tell you what will happen if you _intervene_. What you'll be able to do after this: name the ways correlation misleads, explain Simpson's paradox with real numbers, say why randomisation works, and keep "predictive" and "causal" claims apart in interviews.
 
 #### Four ways a correlation can mislead
 
@@ -162,11 +162,11 @@ Confounders, Simpson's paradox, selection bias and reverse causation, randomisat
 
 #### Sources
 
-1. C. Charig, D. Webb, S. Payne & J. Wickham, "Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy", _BMJ_ 292, 1986, PMC1339981.
+1. C. Charig, D. Webb, S. Payne & J. Wickham, "Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy", _BMJ_ 292, 1986, [PMC1339981](https://pmc.ncbi.nlm.nih.gov/articles/PMC1339981/).
 
 2. J. Pearl & D. Mackenzie, _The Book of Why_, Basic Books 2018.
 
-3. M. Hernán & J. Robins, _Causal Inference: What If_, Chapman & Hall/CRC 2020, free online.
+3. M. Hernán & J. Robins, _Causal Inference: What If_, Chapman & Hall/CRC 2020, [free online](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/).
 
 4. R. Kohavi, D. Tang & Y. Xu, _Trustworthy Online Controlled Experiments_, CUP 2020.
 

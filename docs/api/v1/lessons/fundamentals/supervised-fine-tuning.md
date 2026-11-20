@@ -48,11 +48,11 @@ Training on **all tokens** spends **72.4%** of the loss on predicting the system
 
 #### In one breath
 
-A base model trained on next-token prediction will happily continue "My biryani is late" with another complaint. **Supervised fine-tuning (SFT)** trains it further, with the same cross-entropy loss, on example conversations written or curated to show the desired behaviour. Conversations are serialised with a **chat template**: special tokens mark the system, user and assistant turns, and the same template must be used at inference. The loss is usually **masked to the assistant's tokens**, so the model learns to write answers, not to imitate users. A few thousand high-quality examples go a long way (LIMA used 1,000; Llama 2's SFT stage used 27,540) because SFT mostly teaches **format and behaviour**, while knowledge comes from pre-training. SFT is the first post-training step, before preference tuning with RLHF or DPO.What you'll be able to do after this: explain what SFT does, set up a chat template and loss mask, and argue about data quality vs quantity.
+A base model trained on next-token prediction will happily continue "My biryani is late" with another complaint. **Supervised fine-tuning (SFT)** trains it further, with the same cross-entropy loss, on example conversations written or curated to show the desired behaviour. Conversations are serialised with a **chat template**: special tokens mark the system, user and assistant turns, and the same template must be used at inference. The loss is usually **masked to the assistant's tokens**, so the model learns to write answers, not to imitate users. A few thousand high-quality examples go a long way (LIMA used 1,000; Llama 2's SFT stage used 27,540) because SFT mostly teaches **format and behaviour**, while knowledge comes from pre-training. SFT is the first post-training step, before preference tuning with RLHF or DPO. What you'll be able to do after this: explain what SFT does, set up a chat template and loss mask, and argue about data quality vs quantity.
 
 #### Chat templates and the SFT loss
 
-$$ \mathcal{L}_{SFT} = -\frac{1}{\sum_t m_t}\sum_t m_t\,\log p_\theta(x_t \mid x_{<t}) $$
+$$ \mathcal{L}_{SFT} = -{\frac{1}{\sum_t m_t}}\sum_t {m_t}\,{\log p_\theta(x_t \mid x_{<t})} $$
 
 "Completion-only" or "assistant-only" loss in libraries such as Hugging Face TRL. The model still _reads_ the prompt; it just isn't trained to predict it.
 
@@ -134,12 +134,12 @@ How a pre-trained base model that only continues text becomes an assistant that 
 
 #### Sources
 
-1. L. Ouyang et al., "Training language models to follow instructions with human feedback" (InstructGPT), NeurIPS 2022, arXiv:2203.02155.
+1. L. Ouyang et al., "Training language models to follow instructions with human feedback" (InstructGPT), NeurIPS 2022, [arXiv:2203.02155](https://arxiv.org/abs/2203.02155).
 
-2. J. Wei et al., "Finetuned Language Models Are Zero-Shot Learners" (FLAN), ICLR 2022, arXiv:2109.01652.
+2. J. Wei et al., "Finetuned Language Models Are Zero-Shot Learners" (FLAN), ICLR 2022, [arXiv:2109.01652](https://arxiv.org/abs/2109.01652).
 
-3. C. Zhou et al., "LIMA: Less Is More for Alignment", NeurIPS 2023, arXiv:2305.11206.
+3. C. Zhou et al., "LIMA: Less Is More for Alignment", NeurIPS 2023, [arXiv:2305.11206](https://arxiv.org/abs/2305.11206).
 
-4. H. Touvron et al., "Llama 2: Open Foundation and Fine-Tuned Chat Models", 2023, arXiv:2307.09288; Llama Team, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783.
+4. H. Touvron et al., "Llama 2: Open Foundation and Fine-Tuned Chat Models", 2023, [arXiv:2307.09288](https://arxiv.org/abs/2307.09288); Llama Team, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783).
 
-5. Z. Gekhman et al., "Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?", EMNLP 2024, arXiv:2405.05904; Hugging Face TRL, SFTTrainer documentation.
+5. Z. Gekhman et al., "Does Fine-Tuning LLMs on New Knowledge Encourage Hallucinations?", EMNLP 2024, [arXiv:2405.05904](https://arxiv.org/abs/2405.05904); Hugging Face TRL, SFTTrainer documentation.

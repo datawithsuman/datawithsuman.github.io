@@ -48,7 +48,7 @@ Illustrative golden-set results. Gate rules: no quality metric may drop more tha
 
 #### In one breath
 
-In classic MLOps you retrain and redeploy a model; in LLM apps the **model is usually someone else's** and rarely changes, while the things you change weekly are **prompts, retrieval indexes, tools and model versions**. So the unit of release is a **configuration** (prompt + model ID + parameters + index snapshot + tools), and each needs versioning and a **release gate**: run the golden set through code checks and validated LLM judges, compare every metric with production (accuracy, faithfulness, format, safety, cost, latency), and ship only if nothing regresses beyond its limit, then canary it. In production, **trace** every request (prompt version, retrieved documents, tool calls, tokens, cost), monitor sampled quality scores and user signals, and watch for **silent upstream changes**: hosted model versions change behaviour (Chen et al. measured large shifts between versions of the same API model).What you'll be able to do after this: explain how LLMOps differs from MLOps, design a release gate for prompt changes, and say what to trace and monitor.
+In classic MLOps you retrain and redeploy a model; in LLM apps the **model is usually someone else's** and rarely changes, while the things you change weekly are **prompts, retrieval indexes, tools and model versions**. So the unit of release is a **configuration** (prompt + model ID + parameters + index snapshot + tools), and each needs versioning and a **release gate**: run the golden set through code checks and validated LLM judges, compare every metric with production (accuracy, faithfulness, format, safety, cost, latency), and ship only if nothing regresses beyond its limit, then canary it. In production, **trace** every request (prompt version, retrieved documents, tool calls, tokens, cost), monitor sampled quality scores and user signals, and watch for **silent upstream changes**: hosted model versions change behaviour (Chen et al. measured large shifts between versions of the same API model). What you'll be able to do after this: explain how LLMOps differs from MLOps, design a release gate for prompt changes, and say what to trace and monitor.
 
 #### MLOps vs LLMOps
 
@@ -79,7 +79,7 @@ In classic MLOps you retrain and redeploy a model; in LLM apps the **model is us
 
 - **Same rollout discipline** as models: shadow or canary, instant rollback to the previous configuration.
 
-**Added 7 Nov 2026.** Averages hide regressions: in a 2026 study, one model upgrade gained 7.3 points on maths while 6% of items got reliably worse, and a single run per item couldn't detect any of the changes. So compare old and new configurations case by case, with several runs. Practice also leans on people: in a 2025 study of 86 deployed agents, 74% relied mainly on human evaluation and 52% used LLM judges. See Tracing and Observability, Model Upgrades and Retirements and LLM API Reliability.
+Averages hide regressions: in a 2026 study, one model upgrade gained 7.3 points on maths while 6% of items got reliably worse, and a single run per item couldn't detect any of the changes. So compare old and new configurations case by case, with several runs. Practice also leans on people: in a 2025 study of 86 deployed agents, 74% relied mainly on human evaluation and 52% used LLM judges. See Tracing and Observability, Model Upgrades and Retirements and LLM API Reliability.
 
 #### Treat the whole configuration as the model
 
@@ -129,16 +129,16 @@ In LLM apps the model weights rarely change; what changes is the prompt, the pro
 
 **Key terms and sources**
 
-How operating LLM applications differs from classic MLOps: the model is usually fixed and the prompt, retrieval index and tools change instead; versioning prompts and configs; evaluation gates on golden sets instead of single accuracy numbers; tracing every request; monitoring output quality, safety and token cost; and staged rollout of prompt changes · built from Shankar et al. (Who Validates the Validators?, UIST 2024), Zheng et al. (LLM-as-a-Judge, NeurIPS 2023), Liang et al. (HELM, 2022), Chen, Zaharia & Zou (How Is ChatGPT's Behavior Changing over Time?, 2023), Sculley et al. (NeurIPS 2015) and the OpenTelemetry GenAI semantic conventions · checked 29 Oct 2026 (this page is updated as practice evolves)
+How operating LLM applications differs from classic MLOps: the model is usually fixed and the prompt, retrieval index and tools change instead; versioning prompts and configs; evaluation gates on golden sets instead of single accuracy numbers; tracing every request; monitoring output quality, safety and token cost; and staged rollout of prompt changes · built from Shankar et al. (Who Validates the Validators?, UIST 2024), Zheng et al. (LLM-as-a-Judge, NeurIPS 2023), Liang et al. (HELM, 2022), Chen, Zaharia & Zou (How Is ChatGPT's Behavior Changing over Time?, 2023), Sculley et al. (NeurIPS 2015) and the OpenTelemetry GenAI semantic conventions · checked 7 Nov 2026 (this page is updated as practice evolves)
 
 #### Sources
 
-1. S. Shankar et al., "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences", UIST 2024, arXiv:2404.12272.
+1. S. Shankar et al., "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences", UIST 2024, [arXiv:2404.12272](https://arxiv.org/abs/2404.12272).
 
-2. L. Chen, M. Zaharia & J. Zou, "How Is ChatGPT's Behavior Changing over Time?", 2023, arXiv:2307.09009.
+2. L. Chen, M. Zaharia & J. Zou, "How Is ChatGPT's Behavior Changing over Time?", 2023, [arXiv:2307.09009](https://arxiv.org/abs/2307.09009).
 
-3. L. Zheng et al., "Judging LLM-as-a-Judge", NeurIPS 2023, arXiv:2306.05685; P. Liang et al., "HELM", 2022, arXiv:2211.09110.
+3. L. Zheng et al., "Judging LLM-as-a-Judge", NeurIPS 2023, [arXiv:2306.05685](https://arxiv.org/abs/2306.05685); P. Liang et al., "HELM", 2022, [arXiv:2211.09110](https://arxiv.org/abs/2211.09110).
 
 4. OpenTelemetry, semantic conventions for generative AI systems; D. Sculley et al., NeurIPS 2015.
 
-5. X. Xu & W. Wu, "What Aggregate Scores Miss: Measuring Item-Level Regressions in Commercial LLM API Migrations", 2026, arXiv:2608.17719; M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, arXiv:2512.04123.
+5. X. Xu & W. Wu, "What Aggregate Scores Miss: Measuring Item-Level Regressions in Commercial LLM API Migrations", 2026, [arXiv:2608.17719](https://arxiv.org/abs/2608.17719); M. Z. Pan et al., "Measuring Agents in Production", ICML 2026, [arXiv:2512.04123](https://arxiv.org/abs/2512.04123).

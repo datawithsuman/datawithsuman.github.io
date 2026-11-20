@@ -78,7 +78,7 @@ A smaller unit gives more samples, and so more power, but only if the experience
 
 #### The maths
 
-$$ \hat\tau = \bar Y_T - \bar Y_C, \qquad SE(\hat\tau) = \sqrt{\frac{s_T^2}{n_T} + \frac{s_C^2}{n_C}} $$
+$$ {\hat\tau} = {\bar Y_T} - {\bar Y_C}, \qquad {SE(\hat\tau)} = \sqrt{\frac{s_T^2}{n_T} + \frac{s_C^2}{n_C}} $$
 
 Because assignment is random, the difference in means is an unbiased estimate of the average effect. This assumes one user’s outcome doesn’t depend on another user’s group.
 
@@ -138,15 +138,17 @@ You can't randomise, because the feature launched everywhere. What now?
 
 You can't get the same strength of evidence. Look for a natural experiment, such as a staggered rollout by city, and use a method like difference-in-differences. Then state its assumptions plainly, because hidden causes can remain.
 
+#### The 30-second answer
+
 Randomising makes the groups alike on everything, measured or not, so the only systematic difference is my change, and the difference in means estimates its causal effect. Before and after mixes in trends, and opt-in mixes in who chose it. I'd assign by hashing the user ID with an experiment ID, so it's consistent for a user and independent across tests. I'd default to the user as the unit, go smaller only for changes people can't notice, and use clusters if users affect each other.
 
 **Key terms and sources**
 
-Why random assignment gives a causal answer, how users are hashed into groups, and how to choose between user, session and page-level assignment.
+Why random assignment gives a causal answer, how users are hashed into groups, and how to choose between user, session and page-level assignment. · checked 7 Nov 2026
 
 #### Sources
 
-- Kohavi, Tang and Xu, Trustworthy Online Controlled Experiments (2020), excerpt
+- [Kohavi, Tang and Xu, Trustworthy Online Controlled Experiments (2020), excerpt](https://assets.cambridge.org/97811087/24265/excerpt/9781108724265_excerpt.pdf)
 
 - Correlation vs causation on this site
 

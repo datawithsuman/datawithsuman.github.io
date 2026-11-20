@@ -80,7 +80,7 @@ A symmetric matrix is **positive definite** if xᵀAx is above zero for every no
 
 #### The maths
 
-$$ x^\top A x > 0 \;\; \forall x \neq 0 \;\iff\; \lambda_i(A) > 0 \;\iff\; A = LL^\top $$
+$$ {x^\top A x} > 0 \;\; \forall x \neq 0 \;\iff\; {\lambda_i(A) > 0} \;\iff\; {A = LL^\top} $$
 
 These three statements are equivalent for symmetric matrices. Example: [[2, 1], [1, 2]] has eigenvalues 3 and 1, so it’s positive definite. [[1, 2], [2, 1]] has eigenvalues 3 and −1, so it’s indefinite.
 
@@ -136,19 +136,21 @@ Your Gaussian process fails with a Cholesky error. What do you check?
 
 First, duplicate or almost-duplicate points, since those make rows nearly identical. Then the kernel's length scale, as very long scales make everything look alike. Adding a small jitter to the diagonal fixes pure rounding problems, but check the data first.
 
+#### The 30-second answer
+
 A symmetric matrix is positive definite if x transpose A x is positive for every non-zero x, which is the same as all eigenvalues being positive. Geometrically, it's a bowl with one minimum. Semi-definite allows flat directions, and indefinite is a saddle. It appears in many places. A positive definite Hessian means a true local minimum. Covariance matrices are always semi-definite, because variance can't be negative. Ridge's lambda I makes X transpose X positive definite. The practical test is Cholesky, which succeeds only for positive definite matrices.
 
 **Key terms and sources**
 
-Quadratic forms, positive definite and semi-definite matrices, how to test for them, and their role in covariance, convexity, kernels and sampling.
+Quadratic forms, positive definite and semi-definite matrices, how to test for them, and their role in covariance, convexity, kernels and sampling. · checked 6 Nov 2026
 
 #### Sources
 
-- Kolter and Do, CS229 Linear Algebra Review
+- [Kolter and Do, CS229 Linear Algebra Review](https://cs229.stanford.edu/section/cs229-linalg.pdf)
 
-- Strang, Linear Algebra and Learning from Data
+- [Strang, Linear Algebra and Learning from Data](https://math.mit.edu/~gs/learningfromdata/)
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
 - Convexity on this site
 

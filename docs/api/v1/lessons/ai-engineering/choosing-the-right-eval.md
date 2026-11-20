@@ -120,20 +120,22 @@ When do you need a comparative eval rather than an absolute one?
 
 When choosing between two versions, prompts or models. Pairwise judging or an A/B test answers "which is better" more reliably than two separate scores.
 
+#### The 30-second answer
+
 I'd give each eval a job. Capability evals start low and show progress. Regression evals should pass almost 100% and run in CI on every prompt, model or tool change. Monitors run judges on a small sample of live traffic, asynchronously. Guardrails run inline on every answer, so they must take milliseconds and rarely fire wrongly, which usually means code like regex and schema checks. LLM judges take seconds and cost money, so they belong in CI and sampled monitoring, and humans find new failures and label data for the judges.
 
 **Key terms and sources**
 
-The different jobs an eval can do (capability, regression, monitoring, guardrail, model migration), the kinds of check (code, LLM judge, human), and how latency and cost decide where each one can run.
+The different jobs an eval can do (capability, regression, monitoring, guardrail, model migration), the kinds of check (code, LLM judge, human), and how latency and cost decide where each one can run. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- OpenAI, Evaluation best practices
+- [OpenAI, Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

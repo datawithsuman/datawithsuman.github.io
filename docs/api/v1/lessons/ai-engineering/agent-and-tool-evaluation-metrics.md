@@ -107,7 +107,7 @@ An audit of BFCL v4, τ²-Bench, LiveMCPBench and MCP-Atlas found 92 of 496 verd
 
 #### The maths
 
-$$ \text{precision} = \frac{m}{|\text{agent calls}|} \qquad \text{recall} = \frac{m}{|\text{expected calls}|} $$
+$$ {\text{precision}} = \frac{{m}}{{|\text{agent calls}|}} \qquad {\text{recall}} = \frac{{m}}{{|\text{expected calls}|}} $$
 
 Whether a call matches depends on how you compare arguments: exactly, after normalising, or not at all.
 
@@ -200,28 +200,30 @@ How do you know your evaluator is right?
 
 Compare a sample of its verdicts with human judgement, read failed transcripts, rerun LLM-judged scores to see their spread, and fix checks that reject valid answers.
 
+#### The 30-second answer
+
 I'd measure the agent at four levels. For tool calls: selection accuracy, argument accuracy after normalising, invalid-call rate, and whether it avoids calling or asks when it should. For trajectories: tool-call precision and recall against a reference, with a match mode chosen on purpose, plus counts of extra destructive calls, duplicate writes and recovery after errors. For tasks: final-state success, pass^k over repeated runs, progress rate for partial credit, policy violations and cost per successful task. In production: resolution without escalation, cost per resolved task and sampled trace review. Code checks first, a calibrated LLM judge only where needed, and I'd audit the grader against human labels.
 
 **Key terms and sources**
 
-An applied guide to agent metrics at four levels: tool calls (selection, arguments, invalid calls, knowing when not to call), trajectories (match modes, tool-call precision and recall, extra and destructive calls, recovery), tasks (final state, pass^k, progress rate, policy violations, cost) and production (resolution, escalation, cost per resolved task), plus how to check the evaluator itself.
+An applied guide to agent metrics at four levels: tool calls (selection, arguments, invalid calls, knowing when not to call), trajectories (match modes, tool-call precision and recall, extra and destructive calls, recovery), tasks (final state, pass^k, progress rate, policy violations, cost) and production (resolution, escalation, cost per resolved task), plus how to check the evaluator itself. · checked 7 Nov 2026
 
 #### Sources
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
-- LangChain, agentevals: trajectory evaluators
+- [LangChain, agentevals: trajectory evaluators](https://github.com/langchain-ai/agentevals)
 
-- Google ADK, evaluation criteria
+- [Google ADK, evaluation criteria](https://adk.dev/evaluate/)
 
-- Berkeley Function Calling Leaderboard blog: AST and executable evaluation
+- [Berkeley Function Calling Leaderboard blog: AST and executable evaluation](https://gorilla.cs.berkeley.edu/blogs/8_berkeley_function_calling_leaderboard.html)
 
-- Ma et al., AgentBoard: an analytical evaluation board of multi-turn LLM agents, NeurIPS 2024
+- [Ma et al., AgentBoard: an analytical evaluation board of multi-turn LLM agents, NeurIPS 2024](https://arxiv.org/abs/2401.13178)
 
-- Kovalenko and Redchych, CAREFUL-Bench: effect-aware evaluation of multi-turn function calling
+- [Kovalenko and Redchych, CAREFUL-Bench: effect-aware evaluation of multi-turn function calling](https://arxiv.org/abs/2611.02978)
 
-- Vaghasiya et al., Benchmarking the benchmarks: a validity audit of tool-calling evaluation
+- [Vaghasiya et al., Benchmarking the benchmarks: a validity audit of tool-calling evaluation](https://arxiv.org/abs/2607.02577)
 
-- Yao et al., τ-bench, ICLR 2025
+- [Yao et al., τ-bench, ICLR 2025](https://arxiv.org/abs/2406.12045)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

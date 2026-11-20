@@ -161,8 +161,10 @@ A new supplier sends a layout you've never seen. What happens?
 
 The LLM handles new layouts better than templates, but I'd send that supplier's first invoices to review regardless of confidence, use the corrections as examples, and only auto-approve once their accuracy has been proven.
 
+#### The 30-second answer
+
 First I'd clarify the document types, senders, languages, fields, volume and the cost of a wrong field. Invoices come in by email and upload into storage, tracked by a workflow engine so none are lost. I'd convert every file to a standard format, run OCR, and ask an LLM to fill a fixed schema with structured output. I wouldn't trust it directly: a validation layer checks that totals add up and that the supplier, purchase order and bank details match our records. Uncertain or failed invoices go to a person, who sees the document and fields side by side with warnings. I'd measure accuracy per field against data people already entered, exact match for amounts and fuzzy match for text, and track it per supplier. Labelling starts with high-volume suppliers and weak fields. I'd choose the model by per-field accuracy on our own invoices, especially line items. Rollout runs in parallel with the manual process first, then pre-fills for reviewers, and only auto-approves cases with a proven record.
 
 **Key terms and sources**
 
-Based on a ride-hailing company's published system: Uber's "Advancing Invoice Document Processing using GenAI" (April 2025). We couldn't read the post's diagrams or its model comparison table. The lab's numbers, apart from the share of near-perfect invoices, and the estimate are ours. Uses parsing, structured output and human-in-the-loop design.
+Based on a ride-hailing company's published system: [Uber's "Advancing Invoice Document Processing using GenAI"](https://www.uber.com/blog/advancing-invoice-document-processing-using-genai/) (April 2025). We couldn't read the post's diagrams or its model comparison table. The lab's numbers, apart from the share of near-perfect invoices, and the estimate are ours. Uses parsing, structured output and human-in-the-loop design. · checked 5 Nov 2026

@@ -48,7 +48,7 @@ _From the lab, at turn 200. Long contexts are used least reliably in the middle.
 
 #### In one breath
 
-The model only knows what's in its **context window** right now. In an agent, that window fills with the system prompt, tool definitions, the conversation and, above all, **tool results**, and it grows every step. Long contexts cost more (every call re-reads them), get slower, and models use them less reliably ("lost in the middle", and accuracy decaying as inputs grow, sometimes called context rot). **Context engineering** is deciding what goes in: keep a **window** of recent turns, **summarise or compact** older ones, store durable facts in **long-term memory** (a database or vector store) and retrieve them when relevant, write large intermediate results to files, and give sub-agents their own clean contexts. The aim is the smallest set of high-signal tokens for the next step.What you'll be able to do after this: design an agent's memory, estimate context growth and cost, and choose between windowing, summaries and retrieval.
+The model only knows what's in its **context window** right now. In an agent, that window fills with the system prompt, tool definitions, the conversation and, above all, **tool results**, and it grows every step. Long contexts cost more (every call re-reads them), get slower, and models use them less reliably ("lost in the middle", and accuracy decaying as inputs grow, sometimes called context rot). **Context engineering** is deciding what goes in: keep a **window** of recent turns, **summarise or compact** older ones, store durable facts in **long-term memory** (a database or vector store) and retrieve them when relevant, write large intermediate results to files, and give sub-agents their own clean contexts. The aim is the smallest set of high-signal tokens for the next step. What you'll be able to do after this: design an agent's memory, estimate context growth and cost, and choose between windowing, summaries and retrieval.
 
 #### Kinds of memory
 
@@ -80,9 +80,9 @@ MemGPT (Packer et al.) framed this like an operating system: the model pages inf
 
 - **Cache the stable prefix** (system prompt, tools) with prompt caching, and keep it unchanged between turns.
 
-**Added 7 Nov 2026.** Frameworks now separate per-conversation memory, saved as checkpoints under a thread ID, from a long-term **store** shared across conversations. Agents can also keep a playbook of lessons from past runs: ACE gained 10.6% on agent tasks with small, itemised updates. Rewriting the whole playbook at once risks **context collapse**: in one case, 18,282 tokens shrank to 122 and accuracy fell below having no playbook. See Agent Skills and Self-Improving Context.
+Frameworks now separate per-conversation memory, saved as checkpoints under a thread ID, from a long-term **store** shared across conversations. Agents can also keep a playbook of lessons from past runs: ACE gained 10.6% on agent tasks with small, itemised updates. Rewriting the whole playbook at once risks **context collapse**: in one case, 18,282 tokens shrank to 122 and accuracy fell below having no playbook. See Agent Skills and Self-Improving Context.
 
-**Added 8 Nov 2026: effective context is shorter than the window.** In NVIDIA's RULER, all 17 models claimed 32K tokens or more and nearly all passed simple needle tests, yet only about half kept a good score at 32K on harder tasks. NoLiMa found 11 of 13 models fell below half their short-context score at 32K when the question and answer shared no words. Even with perfect retrieval, accuracy fell 13.9–85% as inputs grew. So keep context small: clear stale tool results (Anthropic reported 29% better agentic search from this alone, and 84% fewer tokens in a 100-turn test), keep references to reload content, write notes outside the context, and use sub-agents that return short summaries. See Agent Scenarios: Context and Memory.
+**Effective context is shorter than the window.** In NVIDIA's RULER, all 17 models claimed 32K tokens or more and nearly all passed simple needle tests, yet only about half kept a good score at 32K on harder tasks. NoLiMa found 11 of 13 models fell below half their short-context score at 32K when the question and answer shared no words. Even with perfect retrieval, accuracy fell 13.9–85% as inputs grew. So keep context small: clear stale tool results (Anthropic reported 29% better agentic search from this alone, and 84% fewer tokens in a 100-turn test), keep references to reload content, write notes outside the context, and use sub-agents that return short summaries. See Agent Scenarios: Context and Memory.
 
 #### The smallest high-signal context for each step
 
@@ -132,18 +132,18 @@ An agent only knows what's in its context, which grows every step with tool resu
 
 **Key terms and sources**
 
-What goes into an agent's context window at each step and why it matters: short-term memory (conversation and tool results), context growth and "context rot", sliding windows, summarisation and compaction, long-term memory stores (episodic and semantic, retrieved like RAG), offloading to files, and sub-agents for context isolation · built from Packer et al. (MemGPT, 2023), Park et al. (Generative Agents, UIST 2023), Liu et al. (Lost in the Middle, TACL 2024), Hong et al. (Chroma, Context Rot, 2025), Anthropic (Effective context engineering for AI agents, 2025) and LangChain / LangGraph memory documentation · checked 29 Oct 2026
+What goes into an agent's context window at each step and why it matters: short-term memory (conversation and tool results), context growth and "context rot", sliding windows, summarisation and compaction, long-term memory stores (episodic and semantic, retrieved like RAG), offloading to files, and sub-agents for context isolation · built from Packer et al. (MemGPT, 2023), Park et al. (Generative Agents, UIST 2023), Liu et al. (Lost in the Middle, TACL 2024), Hong et al. (Chroma, Context Rot, 2025), Anthropic (Effective context engineering for AI agents, 2025) and LangChain / LangGraph memory documentation · checked 8 Nov 2026
 
 #### Sources
 
-1. C. Packer et al., "MemGPT: Towards LLMs as Operating Systems", 2023, arXiv:2310.08560.
+1. C. Packer et al., "MemGPT: Towards LLMs as Operating Systems", 2023, [arXiv:2310.08560](https://arxiv.org/abs/2310.08560).
 
-2. J. S. Park et al., "Generative Agents: Interactive Simulacra of Human Behavior", UIST 2023, arXiv:2304.03442.
+2. J. S. Park et al., "Generative Agents: Interactive Simulacra of Human Behavior", UIST 2023, [arXiv:2304.03442](https://arxiv.org/abs/2304.03442).
 
-3. N. Liu et al., "Lost in the Middle", TACL 2024, arXiv:2307.03172; K. Hong et al. (Chroma), "Context Rot: How Increasing Input Tokens Impacts LLM Performance", 2025.
+3. N. Liu et al., "Lost in the Middle", TACL 2024, [arXiv:2307.03172](https://arxiv.org/abs/2307.03172); K. Hong et al. (Chroma), "Context Rot: How Increasing Input Tokens Impacts LLM Performance", 2025.
 
 4. Anthropic, "Effective context engineering for AI agents", 2025; LangChain / LangGraph memory documentation.
 
-5. Q. Zhang et al., "Agentic Context Engineering", ICLR 2026, arXiv:2510.04618; LangGraph memory documentation (checkpointers and stores).
+5. Q. Zhang et al., "Agentic Context Engineering", ICLR 2026, [arXiv:2510.04618](https://arxiv.org/abs/2510.04618); LangGraph memory documentation (checkpointers and stores).
 
-6. C.-P. Hsieh et al., "RULER: What's the Real Context Size of Your Long-Context Language Models?", COLM 2024, arXiv:2404.06654; A. Modarressi et al., "NoLiMa", ICML 2025, arXiv:2502.05167; Y. Du et al., "Context Length Alone Hurts LLM Performance Despite Perfect Retrieval", 2025, arXiv:2510.05381; Anthropic, "Effective context engineering for AI agents" and "Managing context", Sep 2025.
+6. C.-P. Hsieh et al., "RULER: What's the Real Context Size of Your Long-Context Language Models?", COLM 2024, [arXiv:2404.06654](https://arxiv.org/abs/2404.06654); A. Modarressi et al., "NoLiMa", ICML 2025, [arXiv:2502.05167](https://arxiv.org/abs/2502.05167); Y. Du et al., "Context Length Alone Hurts LLM Performance Despite Perfect Retrieval", 2025, [arXiv:2510.05381](https://arxiv.org/abs/2510.05381); Anthropic, ["Effective context engineering for AI agents"](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) and ["Managing context"](https://claude.com/blog/context-management), Sep 2025.

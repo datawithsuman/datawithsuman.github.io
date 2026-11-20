@@ -124,19 +124,21 @@ The agent passes alone but fails with a user. What do you work on?
 
 Communication: clearer step-by-step instructions, confirming what the user did, and recovering from user mistakes, rather than reasoning about the task.
 
+#### The 30-second answer
+
 I'd build a sandbox with copies of the agent's tools over test data, reset for every run, and grade the end state with code, like whether the line was re-activated. An LLM plays the user with a persona and a hidden goal, and if real users act, the simulated user gets tools too, as in τ²-bench's dual control. That's where agents struggle: letting the agent act alone raised pass rates by 18 to 25 points. So I'd run that no-user ablation to separate reasoning from coordination failures, audit the simulator because its errors look like agent failures, and report pass^k and cost per task.
 
 **Key terms and sources**
 
-Building a sandbox where an agent's actions really change state, checking the end state with code, simulating users who also act (τ²-bench's dual control), separating reasoning failures from coordination failures, and checking the simulator itself.
+Building a sandbox where an agent's actions really change state, checking the end state with code, simulating users who also act (τ²-bench's dual control), separating reasoning failures from coordination failures, and checking the simulator itself. · checked 15 Nov 2026
 
 #### Sources
 
-- V. Barres, H. Dong, S. Ray, X. Si and K. Narasimhan, τ²-Bench: evaluating conversational agents in a dual-control environment, 2025
+- [V. Barres, H. Dong, S. Ray, X. Si and K. Narasimhan, τ²-Bench: evaluating conversational agents in a dual-control environment, 2025](https://arxiv.org/abs/2506.07982)
 
-- S. Yao et al., τ-bench, ICLR 2025
+- [S. Yao et al., τ-bench, ICLR 2025](https://arxiv.org/abs/2406.12045)
 
-- Anthropic, Demystifying evals for AI agents, Jan 2026
+- [Anthropic, Demystifying evals for AI agents, Jan 2026](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 

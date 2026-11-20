@@ -153,8 +153,10 @@ How do you know the bandit is still helping months later?
 
 Keep a small holdout that chooses at random, and compare its reward with the bandit's rounds. It also catches bugs that quietly break the bandit.
 
+#### The 30-second answer
+
 First I'd clarify the goal, the templates and their eligibility rules, and the volume. I'd treat templates as bandit arms. The reward is a lesson within two hours of the reminder. Each template's score is its relative lift when sent compared with when it was eligible but another was sent, using importance weights from the logged probabilities, which removes the bias from eligibility rules. Noisy scores are shrunk with a Bayesian prior. Because fresh messages work better, I'd subtract a recency penalty that fades exponentially with days since this user last saw the template, and choose with a softmax so there's some exploration. Every decision is logged with all the probabilities; a daily batch job recomputes scores. I'd score template-and-language pairs, keep a small random holdout to monitor the bandit, evaluate offline with importance-weighted replay, then A/B test online on daily active users and retention.
 
 **Key terms and sources**
 
-Based on a language-learning app's published paper: "A Sleeping, Recovering Bandit Algorithm for Optimizing Recurring Notifications" (Duolingo, KDD 2020). The lab uses the paper's chosen settings; the template scores in it and the estimate are ours. Uses bandits vs A/B tests, Bayesian estimates and feedback loops.
+Based on a language-learning app's published paper: ["A Sleeping, Recovering Bandit Algorithm for Optimizing Recurring Notifications"](https://research.duolingo.com/papers/yancey.kdd20.pdf) (Duolingo, KDD 2020). The lab uses the paper's chosen settings; the template scores in it and the estimate are ours. Uses bandits vs A/B tests, Bayesian estimates and feedback loops. · checked 5 Nov 2026

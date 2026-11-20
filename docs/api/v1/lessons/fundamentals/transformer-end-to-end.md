@@ -45,7 +45,7 @@ For one 8-token sentence in GPT-2 small, every hidden tensor is 1 × 8 × 768 an
 
 #### In one breath
 
-Text is split into **tokens**, each token id is looked up in an **embedding** table (n × d), **position** information is added (or applied as RoPE), and the vectors pass through **N identical blocks**: each lets tokens exchange information with **causal multi-head attention**, then processes each token with a **feed-forward network**, both as residual updates with normalisation. A final norm and a **linear layer to the vocabulary** turn each position's vector into **logits**; a **softmax** on the last position gives the next-token probabilities. Pick a token, append it, repeat, reusing cached keys and values. Every arrow in that pipeline is one of the lessons in this track.What you'll be able to do after this: walk through a Transformer forward pass with shapes, explain generation with a KV cache, and compare the decoder-only design with the 2017 encoder–decoder.
+Text is split into **tokens**, each token id is looked up in an **embedding** table (n × d), **position** information is added (or applied as RoPE), and the vectors pass through **N identical blocks**: each lets tokens exchange information with **causal multi-head attention**, then processes each token with a **feed-forward network**, both as residual updates with normalisation. A final norm and a **linear layer to the vocabulary** turn each position's vector into **logits**; a **softmax** on the last position gives the next-token probabilities. Pick a token, append it, repeat, reusing cached keys and values. Every arrow in that pipeline is one of the lessons in this track. What you'll be able to do after this: walk through a Transformer forward pass with shapes, explain generation with a KV cache, and compare the decoder-only design with the 2017 encoder–decoder.
 
 #### A decoder-only Transformer, bottom to top
 
@@ -73,7 +73,7 @@ Text is split into **tokens**, each token id is looked up in an **embedding** ta
 
 4. The base model: d = 512, 8 heads, dff = 2,048, sinusoidal positions. It reached 28.4 BLEU on WMT 2014 English–German, beating previous results including ensembles, at a fraction of the training cost.
 
-Vaswani et al., NeurIPS 2017 arXiv:1706.03762. GPT kept only the decoder (dropping cross-attention); BERT kept only the encoder (encoder vs decoder).
+Vaswani et al., NeurIPS 2017 [arXiv:1706.03762](https://arxiv.org/abs/1706.03762). GPT kept only the decoder (dropping cross-attention); BERT kept only the encoder (encoder vs decoder).
 
 ## In practice
 
@@ -140,14 +140,14 @@ One sentence followed through a whole GPT-style decoder: tokens, embeddings, pos
 
 #### Sources
 
-1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, arXiv:1706.03762.
+1. A. Vaswani et al., "Attention Is All You Need", NeurIPS 2017, [arXiv:1706.03762](https://arxiv.org/abs/1706.03762).
 
 2. A. Radford et al., "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019.
 
-3. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", arXiv:2302.13971, 2023.
+3. H. Touvron et al., "LLaMA: Open and Efficient Foundation Language Models", [arXiv:2302.13971](https://arxiv.org/abs/2302.13971), 2023.
 
-4. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, arXiv:2002.04745.
+4. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, [arXiv:2002.04745](https://arxiv.org/abs/2002.04745).
 
-5. R. Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, arXiv:2211.05102.
+5. R. Pope et al., "Efficiently Scaling Transformer Inference", MLSys 2023, [arXiv:2211.05102](https://arxiv.org/abs/2211.05102).
 
-6. J. Alammar, "The Illustrated Transformer", 2018.
+6. J. Alammar, ["The Illustrated Transformer"](https://jalammar.github.io/illustrated-transformer/), 2018.

@@ -48,13 +48,13 @@ Llama 3 8B shape (32 layers, d = 4,096, 8 KV heads, FFN 14,336). Full: 16 bytes/
 
 #### In one breath
 
-Full fine-tuning updates every weight and needs about 16 bytes per parameter of GPU memory with Adam: ~128 GB for an 8B model. **LoRA** freezes the pretrained weights and learns a small **low-rank update** for chosen matrices: W + (α/r)·B·A, where B and A have rank r (8–64). Only A and B are trained, often well under 1% of the parameters, so optimizer state shrinks to almost nothing and the adapter file is megabytes. **QLoRA** also stores the frozen base in 4-bit NF4, so an 8B model fine-tunes in a few GB and a 65B model on a single 48 GB GPU. Adapters can be merged into the weights (no inference cost) or swapped per customer on one base model. The trade-off: LoRA typically learns somewhat less than full fine-tuning on hard new skills (code, maths), but also forgets less of what the base model knew.What you'll be able to do after this: explain LoRA's maths, size LoRA and QLoRA runs, and choose rank and target modules.
+Full fine-tuning updates every weight and needs about 16 bytes per parameter of GPU memory with Adam: ~128 GB for an 8B model. **LoRA** freezes the pretrained weights and learns a small **low-rank update** for chosen matrices: W + (α/r)·B·A, where B and A have rank r (8–64). Only A and B are trained, often well under 1% of the parameters, so optimizer state shrinks to almost nothing and the adapter file is megabytes. **QLoRA** also stores the frozen base in 4-bit NF4, so an 8B model fine-tunes in a few GB and a 65B model on a single 48 GB GPU. Adapters can be merged into the weights (no inference cost) or swapped per customer on one base model. The trade-off: LoRA typically learns somewhat less than full fine-tuning on hard new skills (code, maths), but also forgets less of what the base model knew. What you'll be able to do after this: explain LoRA's maths, size LoRA and QLoRA runs, and choose rank and target modules.
 
 #### A low-rank update to frozen weights
 
-$$ h = W_0\,x + \frac{\alpha}{r}\,B A\,x, \qquad B\in\mathbb{R}^{d_{out}\times r},\; A\in\mathbb{R}^{r\times d_{in}},\; r \ll d $$
+$$ h = {W_0}\,x + {\frac{\alpha}{r}}\,{B A}\,x, \qquad B\in\mathbb{R}^{d_{out}\times r},\; A\in\mathbb{R}^{r\times d_{in}},\; r \ll d $$
 
-Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, arXiv:2106.09685: on GPT-3 175B, 10,000× fewer trainable parameters and 3× less GPU memory than full fine-tuning, with comparable quality and no added inference latency once merged.
+Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, [arXiv:2106.09685](https://arxiv.org/abs/2106.09685): on GPT-3 175B, 10,000× fewer trainable parameters and 3× less GPU memory than full fine-tuning, with comparable quality and no added inference latency once merged.
 
 - **frozen pretrained weight**: d_out × d_in, never updated (and in QLoRA stored in 4-bit NF4).
 
@@ -134,12 +134,12 @@ How to fine-tune large models cheaply: LoRA's low-rank update (rank, alpha, targ
 
 #### Sources
 
-1. E. Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, arXiv:2106.09685.
+1. E. Hu et al., "LoRA: Low-Rank Adaptation of Large Language Models", ICLR 2022, [arXiv:2106.09685](https://arxiv.org/abs/2106.09685).
 
-2. T. Dettmers et al., "QLoRA: Efficient Finetuning of Quantized LLMs", NeurIPS 2023, arXiv:2305.14314.
+2. T. Dettmers et al., "QLoRA: Efficient Finetuning of Quantized LLMs", NeurIPS 2023, [arXiv:2305.14314](https://arxiv.org/abs/2305.14314).
 
-3. D. Biderman et al., "LoRA Learns Less and Forgets Less", TMLR 2024, arXiv:2405.09673.
+3. D. Biderman et al., "LoRA Learns Less and Forgets Less", TMLR 2024, [arXiv:2405.09673](https://arxiv.org/abs/2405.09673).
 
-4. S.-Y. Liu et al., "DoRA: Weight-Decomposed Low-Rank Adaptation", ICML 2024, arXiv:2402.09353; Y. Sheng et al., "S-LoRA: Serving Thousands of Concurrent LoRA Adapters", MLSys 2024, arXiv:2311.03285.
+4. S.-Y. Liu et al., "DoRA: Weight-Decomposed Low-Rank Adaptation", ICML 2024, [arXiv:2402.09353](https://arxiv.org/abs/2402.09353); Y. Sheng et al., "S-LoRA: Serving Thousands of Concurrent LoRA Adapters", MLSys 2024, [arXiv:2311.03285](https://arxiv.org/abs/2311.03285).
 
 5. Hugging Face PEFT documentation (LoRA configuration, target modules).

@@ -48,13 +48,13 @@ At the start the policy equals the reference: margin 0, loss **ln 2 = 0.693**, g
 
 #### In one breath
 
-RLHF needs a reward model, an RL loop, a value model and careful tuning. **DPO** (Rafailov et al. 2023) showed that the KL-regularised RLHF objective has a closed-form optimal policy, so the reward can be written in terms of the policy itself: the **implicit reward** of an answer is β · log(πθ/πref), how much more likely the model makes it than the SFT reference does. Plugging that into the Bradley–Terry loss gives a loss you can minimise directly on (prompt, chosen, rejected) triples: **raise the chosen answer's log-ratio relative to the rejected one**. It's stable, cheap (two models: policy and frozen reference) and matched or beat PPO in the paper; Llama 3 used it. The catches: it learns only from a fixed dataset (offline), the loss can fall while _both_ answers become less likely, and it can favour length. Tuned PPO or online variants can still win.What you'll be able to do after this: write the DPO loss, explain β and the implicit reward, and compare DPO with PPO and its variants.
+RLHF needs a reward model, an RL loop, a value model and careful tuning. **DPO** (Rafailov et al. 2023) showed that the KL-regularised RLHF objective has a closed-form optimal policy, so the reward can be written in terms of the policy itself: the **implicit reward** of an answer is β · log(πθ/πref), how much more likely the model makes it than the SFT reference does. Plugging that into the Bradley–Terry loss gives a loss you can minimise directly on (prompt, chosen, rejected) triples: **raise the chosen answer's log-ratio relative to the rejected one**. It's stable, cheap (two models: policy and frozen reference) and matched or beat PPO in the paper; Llama 3 used it. The catches: it learns only from a fixed dataset (offline), the loss can fall while _both_ answers become less likely, and it can favour length. Tuned PPO or online variants can still win. What you'll be able to do after this: write the DPO loss, explain β and the implicit reward, and compare DPO with PPO and its variants.
 
 #### The implicit reward and the DPO loss
 
-$$ \mathcal{L}_{DPO} = -\log \sigma\Big(\beta\Big[\log\frac{\pi_\theta(y_w\mid x)}{\pi_{ref}(y_w\mid x)} - \log\frac{\pi_\theta(y_l\mid x)}{\pi_{ref}(y_l\mid x)}\Big]\Big) $$
+$$ \mathcal{L}_{DPO} = -\log {\sigma\Big(}{\beta}\Big[{\log\frac{\pi_\theta(y_w\mid x)}{\pi_{ref}(y_w\mid x)}} - {\log\frac{\pi_\theta(y_l\mid x)}{\pi_{ref}(y_l\mid x)}}\Big]{\Big)} $$
 
-Rafailov et al., "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", NeurIPS 2023, arXiv:2305.18290, Eq. 7. log π(y|x) is the sum of the answer's token log-probabilities.
+Rafailov et al., "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", NeurIPS 2023, [arXiv:2305.18290](https://arxiv.org/abs/2305.18290), Eq. 7. log π(y|x) is the sum of the answer's token log-probabilities.
 
 - **chosen log-ratio**: How much more (or less) likely the policy makes the chosen answer than the frozen SFT reference does, in log space.
 
@@ -130,12 +130,12 @@ How Direct Preference Optimization trains on preference pairs with a simple clas
 
 #### Sources
 
-1. R. Rafailov et al., "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", NeurIPS 2023, arXiv:2305.18290.
+1. R. Rafailov et al., "Direct Preference Optimization: Your Language Model is Secretly a Reward Model", NeurIPS 2023, [arXiv:2305.18290](https://arxiv.org/abs/2305.18290).
 
-2. S. Xu et al., "Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study", ICML 2024, arXiv:2404.10719.
+2. S. Xu et al., "Is DPO Superior to PPO for LLM Alignment? A Comprehensive Study", ICML 2024, [arXiv:2404.10719](https://arxiv.org/abs/2404.10719).
 
-3. M. Azar et al., "A General Theoretical Paradigm to Understand Learning from Human Preferences" (IPO), 2023, arXiv:2310.12036; K. Ethayarajh et al., "KTO", 2024, arXiv:2402.01306.
+3. M. Azar et al., "A General Theoretical Paradigm to Understand Learning from Human Preferences" (IPO), 2023, [arXiv:2310.12036](https://arxiv.org/abs/2310.12036); K. Ethayarajh et al., "KTO", 2024, [arXiv:2402.01306](https://arxiv.org/abs/2402.01306).
 
-4. J. Hong et al., "ORPO", 2024, arXiv:2403.07691; Y. Meng et al., "SimPO", NeurIPS 2024, arXiv:2405.14734.
+4. J. Hong et al., "ORPO", 2024, [arXiv:2403.07691](https://arxiv.org/abs/2403.07691); Y. Meng et al., "SimPO", NeurIPS 2024, [arXiv:2405.14734](https://arxiv.org/abs/2405.14734).
 
-5. N. Razin et al., "Unintentional Unalignment: Likelihood Displacement in Direct Preference Optimization", 2024, arXiv:2410.08847; Llama Team, "The Llama 3 Herd of Models", 2024, arXiv:2407.21783.
+5. N. Razin et al., "Unintentional Unalignment: Likelihood Displacement in Direct Preference Optimization", 2024, [arXiv:2410.08847](https://arxiv.org/abs/2410.08847); Llama Team, "The Llama 3 Herd of Models", 2024, [arXiv:2407.21783](https://arxiv.org/abs/2407.21783).

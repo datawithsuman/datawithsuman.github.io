@@ -191,8 +191,10 @@ Your judge says quality went up, but merchants aren't accepting more suggestions
 
 The judge may have drifted from what people value, or the model may have learned to please it. I'd compare the judge with fresh human labels on recent conversations, read the cases where they disagree and check for shortcuts. Then I'd fix the judge and add those cases to the test set.
 
+#### The 30-second answer
+
 First I'd clarify the jobs, the volume and what the assistant may do alone. I'd build one agent in a loop: it picks a tool, my code checks and runs it, and the result goes back to the model. Tools are narrow and scoped to the signed-in store in code. Reads run freely, and any store change becomes a draft the merchant confirms, with idempotency keys on writes. As tools grow past about 20, I'd expect a huge system prompt and confusing overlaps. So I'd return each tool's instructions with its result, load only the tools that fit the request and keep the stable prompt cacheable. For evaluation, I'd sample real conversations, have at least three experts label them, and tune specific judges until they agree with people about as well as people agree with each other. I'd add rule checks, simulate merchants before each release and watch for the model gaming the scores. I'd cap steps and cost, and ask the merchant when the request is unclear. I'd roll out read-only first, then drafts, then riskier actions.
 
 **Key terms and sources**
 
-Based on an e-commerce company's published design: Shopify's post on its merchant assistant. Volumes, permission rules and the lab's numbers are our own illustrations. Uses agents, tool calling, evaluating agents and agent safety.
+Based on an e-commerce company's published design: [Shopify's post on its merchant assistant](https://shopify.engineering/building-production-ready-agentic-systems). Volumes, permission rules and the lab's numbers are our own illustrations. Uses agents, tool calling, evaluating agents and agent safety. · checked 5 Nov 2026

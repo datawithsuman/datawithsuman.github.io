@@ -48,7 +48,7 @@ Up to **4 requests/s** everything is comfortable: p99 TTFT **188 ms**, TPOT 25 m
 
 #### In one breath
 
-Users feel two latencies: **TTFT** (time to first token: how long before anything appears) and **TPOT / ITL** (time per output token: how smoothly it streams). End-to-end latency ≈ TTFT + TPOT × (output tokens − 1). Operators care about **throughput** (tokens or requests per second per GPU). These pull in opposite directions: more load means bigger batches and more throughput, but each step gets slower and requests start **queueing**, and close to capacity the queue, and the **p99** TTFT, explode. So the metric that matters is **goodput**: requests per second that meet the SLO (e.g. TTFT ≤ 1 s and TPOT ≤ 50 ms), measured at percentiles, not averages. Capacity planning means finding the highest load where goodput stays near 100%, then leaving headroom.What you'll be able to do after this: define the metrics, read a load test, set SLOs and explain why p99 explodes near capacity.
+Users feel two latencies: **TTFT** (time to first token: how long before anything appears) and **TPOT / ITL** (time per output token: how smoothly it streams). End-to-end latency ≈ TTFT + TPOT × (output tokens − 1). Operators care about **throughput** (tokens or requests per second per GPU). These pull in opposite directions: more load means bigger batches and more throughput, but each step gets slower and requests start **queueing**, and close to capacity the queue, and the **p99** TTFT, explode. So the metric that matters is **goodput**: requests per second that meet the SLO (e.g. TTFT ≤ 1 s and TPOT ≤ 50 ms), measured at percentiles, not averages. Capacity planning means finding the highest load where goodput stays near 100%, then leaving headroom. What you'll be able to do after this: define the metrics, read a load test, set SLOs and explain why p99 explodes near capacity.
 
 #### The metrics
 
@@ -72,7 +72,7 @@ Report p50, p90 and p99, not means. Little's law (L = λ · W) links them: concu
 
 - **Pick SLOs per product:** chat needs fast TTFT and smooth streaming; batch summarisation cares about cost and E2E; agents chaining many calls care about E2E per step.
 
-- **Tune for the SLO:** chunked prefill and smaller token budgets protect TPOT; prefix caching and more replicas protect TTFT; disaggregation lets you tune each phase separately (DistServe reported up to 7.4× more requests within SLO).
+- **Tune for the SLO:** chunked prefill and smaller token budgets protect TPOT; prefix caching and more replicas protect TTFT; [disaggregation](https://arxiv.org/abs/2401.09670) lets you tune each phase separately (DistServe reported up to 7.4× more requests within SLO).
 
 - **Operate:** alert on p99 TTFT and queue length, autoscale on queue depth or KV-cache usage (not GPU utilisation, which looks "busy" even when idle-waiting on memory), and shed or queue low-priority traffic under overload.
 
@@ -128,9 +128,9 @@ What to measure and promise when serving an LLM: time to first token, time per o
 
 #### Sources
 
-1. Y. Zhong et al., "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving", OSDI 2024, arXiv:2401.09670.
+1. Y. Zhong et al., "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving", OSDI 2024, [arXiv:2401.09670](https://arxiv.org/abs/2401.09670).
 
-2. A. Agrawal et al., "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve", OSDI 2024, arXiv:2403.02310; A. Agrawal et al., "Etalon: Holistic Performance Evaluation Framework for LLM Inference Systems", 2024, arXiv:2407.07000.
+2. A. Agrawal et al., "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve", OSDI 2024, [arXiv:2403.02310](https://arxiv.org/abs/2403.02310); A. Agrawal et al., "Etalon: Holistic Performance Evaluation Framework for LLM Inference Systems", 2024, [arXiv:2407.07000](https://arxiv.org/abs/2407.07000).
 
 3. vLLM documentation, benchmarking (`benchmark_serving`); NVIDIA GenAI-Perf documentation.
 

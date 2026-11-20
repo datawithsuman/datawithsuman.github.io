@@ -74,7 +74,7 @@ Choose the smallest effect worth detecting (the **MDE**), then use the variance,
 
 #### The maths
 
-$$ n = \frac{(z_{1-\alpha/2} + z_{1-\beta})^2 \cdot 2\sigma^2}{\delta^2} \;\approx\; \frac{16\,\sigma^2}{\delta^2} $$
+$$ {n} = \frac{({z_{1-\alpha/2} + z_{1-\beta}})^2 \cdot {2\sigma^2}}{{\delta^2}} \;\approx\; \frac{16\,\sigma^2}{\delta^2} $$
 
 The 16 rule assumes 5% significance, 80% power and two equal groups. At 10% conversion and δ = 1 point: σ² = 0.09, so 16 × 0.09 ÷ 0.0001 = 14,400 per group.
 
@@ -132,16 +132,18 @@ A test with low power found a significant 8% lift. Do you believe it?
 
 With caution. Low-powered tests only reach significance when noise pushes the result high, so the real lift is probably smaller. It may even be a false positive. I'd look at the confidence interval and rerun it with proper power if the decision matters.
 
+#### The 30-second answer
+
 I'd pick the smallest effect worth shipping, estimate the metric's variance from recent data, and set 5% significance and 80% power. That gives about 16 sigma squared over delta squared users per group. Then I divide by eligible daily traffic and round up to full weeks to cover weekly cycles. Halving the effect needs four times the users. If that's too long, I'd use a more sensitive metric, CUPED or triggering, or accept a larger minimum effect.
 
 **Key terms and sources**
 
-Minimum detectable effect, power and the sample size formula, and how to turn them into a runtime in full weeks.
+Minimum detectable effect, power and the sample size formula, and how to turn them into a runtime in full weeks. · checked 7 Nov 2026
 
 #### Sources
 
 - Hypothesis tests and power on this site
 
-- Kohavi, Tang and Xu, Trustworthy Online Controlled Experiments (2020), excerpt
+- [Kohavi, Tang and Xu, Trustworthy Online Controlled Experiments (2020), excerpt](https://assets.cambridge.org/97811087/24265/excerpt/9781108724265_excerpt.pdf)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

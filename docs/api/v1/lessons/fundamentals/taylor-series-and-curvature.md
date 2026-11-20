@@ -77,7 +77,7 @@ When the gradient is zero, the second-order term decides what you have. All-posi
 
 #### The maths
 
-$$ f(x+\Delta) \approx f(x) + \nabla f(x)^\top \Delta + \tfrac{1}{2}\Delta^\top H(x)\,\Delta $$
+$$ {f(x+\Delta)} \approx {f(x)} + {\nabla f(x)^\top \Delta} + {\tfrac{1}{2}\Delta^\top H(x)\,\Delta} $$
 
 Worked example: f(x) = x² near x = 3, with Δ = 0.1. Value 9, slope term 0.6, curvature term 0.01. The total of 9.61 is exactly 3.1², since a quadratic’s approximation is exact.
 
@@ -133,19 +133,21 @@ Does the first-order approximation guarantee a lower loss?
 
 Only for small enough steps. It's a local statement, and curvature can make a larger step go uphill. That's why training can diverge, and why methods like line search exist.
 
+#### The 30-second answer
+
 A Taylor expansion approximates a function near a point with a polynomial. First order is the gradient term, and it's why gradient descent works: a small step along the negative gradient changes the loss by minus eta times the squared gradient norm. Second order adds curvature, through the Hessian. On a quadratic with second derivative L, a gradient step multiplies the distance by one minus eta L, so above 2 over L it diverges. In many dimensions, the largest Hessian eigenvalue sets the limit. At a flat point, the Hessian's signs distinguish minima and saddles.
 
 **Key terms and sources**
 
-First and second-order Taylor approximations, what the Hessian says about curvature, and how they explain gradient descent, learning rate limits and saddle points.
+First and second-order Taylor approximations, what the Hessian says about curvature, and how they explain gradient descent, learning rate limits and saddle points. · checked 6 Nov 2026
 
 #### Sources
 
-- Deisenroth, Faisal and Ong, Mathematics for Machine Learning
+- [Deisenroth, Faisal and Ong, Mathematics for Machine Learning](https://mml-book.github.io/)
 
-- Boyd and Vandenberghe, Introduction to Applied Linear Algebra
+- [Boyd and Vandenberghe, Introduction to Applied Linear Algebra](https://web.stanford.edu/~boyd/vmls/)
 
-- Goodfellow et al., Deep Learning, slides for chapter 4
+- [Goodfellow et al., Deep Learning, slides for chapter 4](https://mnassar.github.io/deeplearninghandbook/slides/04_numerical.pdf)
 
 - Learning rate schedules on this site
 

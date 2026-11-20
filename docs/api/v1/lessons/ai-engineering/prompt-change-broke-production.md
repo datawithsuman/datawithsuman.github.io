@@ -80,7 +80,7 @@ If a change breaks 2% of requests, five random examples show none of them about 
 
 #### The maths
 
-$$ P(\text{see a break}) = 1 - (1 - f)^{n} $$
+$$ {P(\text{see a break})} = 1 - (1 - {f})^{{n}} $$
 
 This assumes test cases are a random sample of traffic. Adding past incidents and edge cases on purpose catches known risks with fewer cases.
 
@@ -136,20 +136,22 @@ How big should a regression set be?
 
 Big enough to catch the failure rates you care about: about 300 random cases for a 95% chance of seeing a 1% problem. Add every past incident and known edge case on top.
 
+#### The 30-second answer
+
 A prompt line applies to every request, and the model decides when it fires, so a narrow fix can change behaviour everywhere. Five spot checks miss a problem that affects 2% of requests about 90% of the time. I'd roll back first, then write a narrower rule with its reason, and add the original bug and the new failures to a regression set. Going forward, prompts are versioned with the model, every change runs a few hundred cases including past incidents, I compare case by case rather than the average, and I roll out gradually with one-step rollback.
 
 **Key terms and sources**
 
-A scenario: why prompt changes have global effects, why spot checks miss regressions, and how to version, evaluate, roll out and roll back prompts like code.
+A scenario: why prompt changes have global effects, why spot checks miss regressions, and how to version, evaluate, roll out and roll back prompts like code. · checked 7 Nov 2026
 
 #### Sources
 
-- Sclar et al., Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design
+- [Sclar et al., Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324)
 
-- Anthropic, Prompting best practices
+- [Anthropic, Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 
-- OpenAI, GPT-5 prompting guide (archived cookbook)
+- [OpenAI, GPT-5 prompting guide (archived cookbook)](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)
 
-- Zheng et al., Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena
+- [Zheng et al., Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor guides change with each model.

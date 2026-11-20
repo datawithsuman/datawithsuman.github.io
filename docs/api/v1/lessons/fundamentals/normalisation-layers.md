@@ -48,11 +48,11 @@ With BatchNorm at batch size 8, order #1's normalised value has a spread of **0.
 
 #### In one breath
 
-A normalisation layer rescales activations to a standard range (then lets the network learn its own scale γ and shift β), which keeps signals well-behaved and lets you train faster with higher learning rates. **BatchNorm** normalises each feature **across the examples in the batch**, so an example's output depends on what else is in its batch; it needs running averages for inference and breaks down for tiny batches. **LayerNorm** normalises **across the features of one example**, so it behaves the same at any batch size, in training and inference; that's why transformers use it. **RMSNorm** drops LayerNorm's mean-subtraction and only divides by the root-mean-square: cheaper, about as good, and the norm used in LLaMA-style LLMs.What you'll be able to do after this: say which axis each norm uses, explain BatchNorm's batch dependence and train/inference gap, and explain why LLMs use pre-norm RMSNorm.
+A normalisation layer rescales activations to a standard range (then lets the network learn its own scale γ and shift β), which keeps signals well-behaved and lets you train faster with higher learning rates. **BatchNorm** normalises each feature **across the examples in the batch**, so an example's output depends on what else is in its batch; it needs running averages for inference and breaks down for tiny batches. **LayerNorm** normalises **across the features of one example**, so it behaves the same at any batch size, in training and inference; that's why transformers use it. **RMSNorm** drops LayerNorm's mean-subtraction and only divides by the root-mean-square: cheaper, about as good, and the norm used in LLaMA-style LLMs. What you'll be able to do after this: say which axis each norm uses, explain BatchNorm's batch dependence and train/inference gap, and explain why LLMs use pre-norm RMSNorm.
 
 #### Same recipe, different axis
 
-$$ \hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}, \qquad y = \gamma\,\hat{x} + \beta $$
+$$ \hat{x} = \frac{x - {\mu}}{{\sqrt{\sigma^2 + \epsilon}}}, \qquad y = {\gamma\,\hat{x} + \beta} $$
 
 - **mean**: BatchNorm: the mean of this feature over the B examples in the batch. LayerNorm: the mean over the d features of this one example.
 
@@ -60,9 +60,9 @@ $$ \hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}, \qquad y = \gamma\,\hat
 
 - **learned scale and shift**: γ and β are trained, so the network can undo the normalisation if that helps; normalising doesn’t limit what the layer can represent.
 
-$$ \mathrm{RMSNorm}(x) = \frac{x}{\sqrt{\tfrac{1}{d}\sum_i x_i^2 + \epsilon}} \odot \gamma $$
+$$ \mathrm{RMSNorm}(x) = \frac{x}{{\sqrt{\tfrac{1}{d}\sum_i x_i^2 + \epsilon}}} \odot {\gamma} $$
 
-Zhang & Sennrich, NeurIPS 2019 arXiv:1910.07467: comparable quality to LayerNorm with 7%–64% less running time across their models. Used in T5, LLaMA, Mistral and most recent open LLMs.
+Zhang & Sennrich, NeurIPS 2019 [arXiv:1910.07467](https://arxiv.org/abs/1910.07467): comparable quality to LayerNorm with 7%–64% less running time across their models. Used in T5, LLaMA, Mistral and most recent open LLMs.
 
 - **root mean square**: RMSNorm skips the mean entirely and divides by the RMS of the features: one statistic instead of two.
 
@@ -70,7 +70,7 @@ Zhang & Sennrich, NeurIPS 2019 arXiv:1910.07467: comparable quality to LayerNorm
 
 #### Smoother loss, not (only) less covariate shift
 
-Santurkar et al. (2018) arXiv:1805.11604 showed that BatchNorm networks train well even when noise is injected to _increase_ covariate shift. Their explanation: normalisation makes the loss surface and its gradients **smoother** (more Lipschitz), so larger learning rates are safe. In practice normalisation layers give: faster training, higher usable learning rates, less sensitivity to initialisation, and (for BatchNorm) a mild regularising effect from the batch noise you saw in the lab.
+Santurkar et al. (2018) [arXiv:1805.11604](https://arxiv.org/abs/1805.11604) showed that BatchNorm networks train well even when noise is injected to _increase_ covariate shift. Their explanation: normalisation makes the loss surface and its gradients **smoother** (more Lipschitz), so larger learning rates are safe. In practice normalisation layers give: faster training, higher usable learning rates, less sensitivity to initialisation, and (for BatchNorm) a mild regularising effect from the batch noise you saw in the lab.
 
 #### Pre-norm vs post-norm
 
@@ -82,7 +82,7 @@ x ← LayerNorm(x + Sublayer(x)). The norm sits on the residual path, so gradien
 
 x ← x + Sublayer(Norm(x)). The residual path stays a clean identity; Xiong et al. (2020) show gradients are well-behaved at initialisation and warmup can be shortened or removed. Standard in today's LLMs, usually with RMSNorm.
 
-Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020 arXiv:2002.04745. Covered again in the Transformer block lesson.
+Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020 [arXiv:2002.04745](https://arxiv.org/abs/2002.04745). Covered again in the Transformer block lesson.
 
 ## In practice
 
@@ -153,14 +153,14 @@ What normalisation layers compute, which axis each one normalises over, train vs
 
 #### Sources
 
-1. S. Ioffe & C. Szegedy, "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift", ICML 2015, arXiv:1502.03167.
+1. S. Ioffe & C. Szegedy, "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift", ICML 2015, [arXiv:1502.03167](https://arxiv.org/abs/1502.03167).
 
-2. J. Ba, J. Kiros & G. Hinton, "Layer Normalization", arXiv:1607.06450, 2016.
+2. J. Ba, J. Kiros & G. Hinton, "Layer Normalization", [arXiv:1607.06450](https://arxiv.org/abs/1607.06450), 2016.
 
-3. S. Santurkar, D. Tsipras, A. Ilyas & A. Mądry, "How Does Batch Normalization Help Optimization?", NeurIPS 2018, arXiv:1805.11604.
+3. S. Santurkar, D. Tsipras, A. Ilyas & A. Mądry, "How Does Batch Normalization Help Optimization?", NeurIPS 2018, [arXiv:1805.11604](https://arxiv.org/abs/1805.11604).
 
-4. B. Zhang & R. Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019, arXiv:1910.07467.
+4. B. Zhang & R. Sennrich, "Root Mean Square Layer Normalization", NeurIPS 2019, [arXiv:1910.07467](https://arxiv.org/abs/1910.07467).
 
-5. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, arXiv:2002.04745.
+5. R. Xiong et al., "On Layer Normalization in the Transformer Architecture", ICML 2020, [arXiv:2002.04745](https://arxiv.org/abs/2002.04745).
 
-6. Y. Wu & K. He, "Group Normalization", ECCV 2018, arXiv:1803.08494.
+6. Y. Wu & K. He, "Group Normalization", ECCV 2018, [arXiv:1803.08494](https://arxiv.org/abs/1803.08494).

@@ -79,7 +79,7 @@ People or test sets differ a lot from each other. A paired test works on each su
 
 #### The maths
 
-$$ t = \frac{\bar x_1 - \bar x_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}}, \qquad t_{\text{paired}} = \frac{\bar d}{s_d / \sqrt{n}}, \qquad s_d^2 = s_1^2 + s_2^2 - 2\rho s_1 s_2 $$
+$$ {t} = \frac{{\bar x_1 - \bar x_2}}{{\sqrt{s_1^2/n_1 + s_2^2/n_2}}}, \qquad {t_{\text{paired}} = \frac{\bar d}{s_d / \sqrt{n}}}, \qquad {s_d^2 = s_1^2 + s_2^2 - 2\rho s_1 s_2} $$
 
 Worked example: n = 16, mean 52, s = 8, testing against 50. SE = 8 ÷ 4 = 2, so t = 1, with 15 degrees of freedom. That’s not significant.
 
@@ -137,18 +137,20 @@ When does a t-test mislead you?
 
 When samples aren't independent, like many clicks from one user, as it underestimates noise. Also with small samples from very skewed or heavy-tailed data, and when you've run many tests, or stopped early. Independence is the most serious, as a larger sample doesn't fix it.
 
+#### The 30-second answer
+
 Both ask how many standard errors a difference is from zero. A z-test assumes the population's spread is known, while a t-test estimates it, adding uncertainty, so it uses a t-distribution with heavier tails. With large samples, they match. For two groups, I'd default to Welch's t-test, which doesn't assume equal variances. If I'm measuring the same subjects twice, like two models on the same test folds, I'd use a paired test: differences between subjects cancel, which makes it much more sensitive. The key assumption is independence.
 
 **Key terms and sources**
 
-One-sample, two-sample and paired t-tests, degrees of freedom, Welch's correction, how the t differs from z, and when to use each.
+One-sample, two-sample and paired t-tests, degrees of freedom, Welch's correction, how the t differs from z, and when to use each. · checked 6 Nov 2026
 
 #### Sources
 
-- Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics
+- [Diez, Çetinkaya-Rundel and Barr, OpenIntro Statistics](https://www.openintro.org/book/os/)
 
-- Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt
+- [Bruce, Bruce and Gedeck, Practical Statistics for Data Scientists, contents excerpt](https://toc.uni.li/FLMF048415.pdf)
 
-- Wasserman, All of Statistics
+- [Wasserman, All of Statistics](https://www.stat.cmu.edu/~larry/all-of-statistics/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

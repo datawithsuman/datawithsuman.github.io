@@ -47,7 +47,7 @@ With only **code and config** in version control, you can't answer any of the fi
 
 #### In one breath
 
-A model is the product of **code + data + configuration + randomness + environment**. If any of these isn't recorded, you can't rebuild the model, explain why this week's version is worse, or prove to an auditor what it learned from. **Experiment tracking** means every training run automatically records its code version, a pointer to an immutable data snapshot, feature definitions, hyperparameters, random seeds, library versions and hardware, plus metrics on a **versioned evaluation set**. A **model registry** is the catalogue of trained models with their lineage, stage (candidate, production, archived), approvals and documentation, so deployment and rollback are a matter of pointing to a version. Even then, GPU non-determinism and seeds cause run-to-run variance; measure it before calling a 0.2-point gain real.What you'll be able to do after this: list what to record per run, explain sources of non-determinism, and describe what a registry enables.
+A model is the product of **code + data + configuration + randomness + environment**. If any of these isn't recorded, you can't rebuild the model, explain why this week's version is worse, or prove to an auditor what it learned from. **Experiment tracking** means every training run automatically records its code version, a pointer to an immutable data snapshot, feature definitions, hyperparameters, random seeds, library versions and hardware, plus metrics on a **versioned evaluation set**. A **model registry** is the catalogue of trained models with their lineage, stage (candidate, production, archived), approvals and documentation, so deployment and rollback are a matter of pointing to a version. Even then, GPU non-determinism and seeds cause run-to-run variance; measure it before calling a 0.2-point gain real. What you'll be able to do after this: list what to record per run, explain sources of non-determinism, and describe what a registry enables.
 
 #### What every run should record
 
@@ -132,10 +132,10 @@ What to record for every training run (code version, data snapshot, feature defi
 
 #### Sources
 
-1. J. Pineau et al., "Improving Reproducibility in Machine Learning Research", JMLR 2021, arXiv:2003.12206.
+1. J. Pineau et al., "Improving Reproducibility in Machine Learning Research", JMLR 2021, [arXiv:2003.12206](https://arxiv.org/abs/2003.12206).
 
-2. X. Bouthillier et al., "Accounting for Variance in Machine Learning Benchmarks", MLSys 2021, arXiv:2103.03098.
+2. X. Bouthillier et al., "Accounting for Variance in Machine Learning Benchmarks", MLSys 2021, [arXiv:2103.03098](https://arxiv.org/abs/2103.03098).
 
-3. T. Gebru et al., "Datasheets for Datasets", CACM 2021, arXiv:1803.09010; M. Mitchell et al., "Model Cards for Model Reporting", FAT* 2019, arXiv:1810.03993.
+3. T. Gebru et al., "Datasheets for Datasets", CACM 2021, [arXiv:1803.09010](https://arxiv.org/abs/1803.09010); M. Mitchell et al., "Model Cards for Model Reporting", FAT* 2019, [arXiv:1810.03993](https://arxiv.org/abs/1810.03993).
 
 4. D. Sculley et al., NeurIPS 2015; E. Breck et al., "The ML Test Score", IEEE Big Data 2017.

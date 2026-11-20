@@ -48,7 +48,7 @@ Untick everything and you have the naive prompt: just the customer's message, an
 
 #### In one breath
 
-A production prompt is a small program with parts: a **role** and goal, explicit **rules** (what to do, what never to do, what to do when unsure), **context** wrapped in clear delimiters such as XML tags, a few **examples** of ideal input → output, a precise **output format**, and the user's message last. Order parts from most to least stable so the shared prefix can be cached. Models are surprisingly sensitive to wording and formatting (Sclar et al. measured up to 76 accuracy points of difference from formatting alone on LLaMA-2-13B), so prompts must be **versioned and evaluated** on a test set like any code change, not tweaked by feel. Split complex tasks into **chained** prompts, and for reasoning let the model think first.What you'll be able to do after this: write a well-structured production prompt, order it for caching, and set up prompt evaluation.
+A production prompt is a small program with parts: a **role** and goal, explicit **rules** (what to do, what never to do, what to do when unsure), **context** wrapped in clear delimiters such as XML tags, a few **examples** of ideal input → output, a precise **output format**, and the user's message last. Order parts from most to least stable so the shared prefix can be cached. Models are surprisingly sensitive to wording and formatting (Sclar et al. measured up to 76 accuracy points of difference from formatting alone on LLaMA-2-13B), so prompts must be **versioned and evaluated** on a test set like any code change, not tweaked by feel. Split complex tasks into **chained** prompts, and for reasoning let the model think first. What you'll be able to do after this: write a well-structured production prompt, order it for caching, and set up prompt evaluation.
 
 #### The parts of a production prompt
 
@@ -136,10 +136,10 @@ How production prompts are structured: system role, explicit rules, delimited co
 
 1. Anthropic, "Prompt engineering overview" and related guides (XML tags, examples, chaining); OpenAI, "Prompt engineering" guide.
 
-2. M. Sclar et al., "Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design", ICLR 2024, arXiv:2310.11324.
+2. M. Sclar et al., "Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design", ICLR 2024, [arXiv:2310.11324](https://arxiv.org/abs/2310.11324).
 
-3. O. Khattab et al., "DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines", ICLR 2024, arXiv:2310.03714; Y. Zhou et al., "Large Language Models Are Human-Level Prompt Engineers" (APE), ICLR 2023, arXiv:2211.01910.
+3. O. Khattab et al., "DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines", ICLR 2024, [arXiv:2310.03714](https://arxiv.org/abs/2310.03714); Y. Zhou et al., "Large Language Models Are Human-Level Prompt Engineers" (APE), ICLR 2023, [arXiv:2211.01910](https://arxiv.org/abs/2211.01910).
 
-4. T. Brown et al. (GPT-3), NeurIPS 2020, arXiv:2005.14165; J. Wei et al. (Chain-of-Thought), NeurIPS 2022, arXiv:2201.11903.
+4. T. Brown et al. (GPT-3), NeurIPS 2020, [arXiv:2005.14165](https://arxiv.org/abs/2005.14165); J. Wei et al. (Chain-of-Thought), NeurIPS 2022, [arXiv:2201.11903](https://arxiv.org/abs/2201.11903).
 
-5. Anthropic, Prompting best practices (examples, long-context layout, explaining rules), checked 7 Nov 2026; OpenAI, GPT-5 prompting guide (contradictory instructions).
+5. Anthropic, [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) (examples, long-context layout, explaining rules), checked 7 Nov 2026; OpenAI, [GPT-5 prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide) (contradictory instructions).

@@ -162,8 +162,10 @@ The agent mishears an order number and cancels the wrong order. How do you preve
 
 Read back the number and the action, and wait for a clear yes before any change. Check the order belongs to the verified caller. Make changes reversible where possible, and log every action with the transcript, so mistakes can be traced and undone.
 
+#### The 30-second answer
+
 First I'd clarify the call reasons, which actions the agent may take, the volume and how quickly it must respond. The key metric is time to the first useful audio after the caller finishes. Audio streams through speech-to-text, and an end-of-speech model decides when the turn is over, because a fixed silence timer is either slow or cuts people off. The agent then works as a graph, not a chain: lookups, retrieval and safety checks run in parallel, small models handle small jobs, and I'd prefetch the caller's recent orders at the start. Text-to-speech streams from the first sentence, common phrases are cached, and a short, specific progress message covers real waits. I'd keep separate speech, LLM and speech steps so the agent can call our systems and every stage is traced. For tail latency I'd hedge across providers. The agent reads back numbers before acting, verifies the caller before sharing data, handles interruptions, and can always hand off to a person with a summary. I'd roll out one call reason at a time.
 
 **Key terms and sources**
 
-Based on a customer-service AI company's published engineering post: Sierra's "Engineering low-latency voice agents" (October 2025). The post gives no latency targets or measured times, so the lab's numbers, the estimate, barge-in and hand-off come from our own knowledge. Uses tool calling, serving metrics and human-in-the-loop design.
+Based on a customer-service AI company's published engineering post: [Sierra's "Engineering low-latency voice agents"](https://sierra.ai/blog/voice-latency) (October 2025). The post gives no latency targets or measured times, so the lab's numbers, the estimate, barge-in and hand-off come from our own knowledge. Uses tool calling, serving metrics and human-in-the-loop design. · checked 5 Nov 2026

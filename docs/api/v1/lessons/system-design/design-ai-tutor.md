@@ -159,8 +159,10 @@ Should the tutor remember students across days?
 
 Useful context helps, but it should be meaningful summaries of their work, like skills and recent attempts, under strict privacy rules. Raw transcripts mostly add noise and risk.
 
+#### The 30-second answer
+
 First I'd clarify the students' ages, the subject, the volume, and that the goal is learning, not chat. The tutor sees the current problem plus structured learning data: recent attempts, skill levels and missing prerequisites, as clean summaries rather than raw logs. The prompt sets the method: ask for the next step, give hints, encourage, and never reveal the answer before the student tries. The LLM drafts a reply, and a separate checker verifies any maths, called only when needed to save time. Moderation stops unsafe conversations and informs teachers or parents, and student data follows privacy law. I'd measure next-problem correctness without help and engagement quality, with guardrails on answers given away, maths errors and response time. Every change is an A/B test that ships only with a high chance of improvement and no guardrail harm. I'd expect steady, small gains rather than one big win, and I'd pilot in classrooms before scaling.
 
 **Key terms and sources**
 
-Based on an education nonprofit's published learnings: Khan Academy's "How Khan Academy Is Building a Better AI Tutor: Our Most Recent Learnings" (2026) and its prompt engineering approach. The baseline response time in the lab and the estimate are ours; the changes are the post's. Uses prompt patterns, context engineering and evaluation.
+Based on an education nonprofit's published learnings: [Khan Academy's "How Khan Academy Is Building a Better AI Tutor: Our Most Recent Learnings"](https://blog.khanacademy.org/?p=21314) (2026) and its [prompt engineering approach](https://blog.khanacademy.org/khan-academys-7-step-approach-to-prompt-engineering-for-khanmigo). The baseline response time in the lab and the estimate are ours; the changes are the post's. Uses prompt patterns, context engineering and evaluation. · checked 5 Nov 2026

@@ -83,7 +83,7 @@ So don't treat it as an automatic upgrade. The memory cost is real: in the secon
 
 #### The maths
 
-$$ S(q, d) = \sum_{i \in q} \max_{j \in d}\ q_i \cdot d_j $$
+$$ {S(q, d)} = \sum_{{i \in q}} {\max_{j \in d}}\ {q_i \cdot d_j} $$
 
 The MaxSim operator from ColBERT (Khattab and Zaharia, 2020). A single vector averages everything into one point before comparing.
 
@@ -141,30 +141,32 @@ Recall@50 is 60%. Will a re-ranker fix it?
 
 No. A re-ranker can only reorder what it's given. Fix retrieval first with hybrid search, better parsing or chunking, query rewriting or a better embedding model.
 
+#### The 30-second answer
+
 If the right chunk is found but ranked low, I'd add a second stage. A bi-encoder compares single vectors, so it's fast but coarse. A cross-encoder reads the query and chunk together, which is much more accurate, so I'd run it on the top 50 to 150. Late interaction, like ColBERT, stores a vector per token, and sums each query token's best match, which keeps detail without running a model per pair at query time, but costs much more memory. Results vary: it doubled the hit rate in one study, and lost to dense in another. I'd also check MMR before using it, as it hurt on focused corpora. And I'd measure the whole stack, because gains overlap.
 
 **Key terms and sources**
 
-Why a second ranking stage helps, cross-encoders, how ColBERT's MaxSim works, latency and memory costs, why MMR can hurt, and conflicting evidence on late interaction.
+Why a second ranking stage helps, cross-encoders, how ColBERT's MaxSim works, latency and memory costs, why MMR can hurt, and conflicting evidence on late interaction. · checked 7 Nov 2026
 
 #### Sources
 
-- Nogueira and Cho, Passage Re-ranking with BERT
+- [Nogueira and Cho, Passage Re-ranking with BERT](https://arxiv.org/abs/1901.04085)
 
-- Khattab and Zaharia, ColBERT
+- [Khattab and Zaharia, ColBERT](https://arxiv.org/abs/2004.12832)
 
-- Microsoft, Raising the bar for RAG excellence
+- [Microsoft, Raising the bar for RAG excellence](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/raising-the-bar-for-rag-excellence-query-rewriting-and-new-semantic-ranker/4302729)
 
-- Anthropic, Introducing Contextual Retrieval
+- [Anthropic, Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 
-- Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality
+- [Levy, Shlomov and Choshen, Retrieval Augmented Generation Compositionality](https://arxiv.org/abs/2610.29722)
 
-- Rathi, Chawla and Andreopoulos, A Controlled Comparison of RAG Strategies
+- [Rathi, Chawla and Andreopoulos, A Controlled Comparison of RAG Strategies](https://arxiv.org/abs/2609.38473)
 
-- Kuru and Keskin, Evaluating Modern RAG
+- [Kuru and Keskin, Evaluating Modern RAG](https://arxiv.org/abs/2608.23176)
 
-- Eibich et al., ARAGOG
+- [Eibich et al., ARAGOG](https://arxiv.org/abs/2404.01037)
 
-- Weller et al., On the Theoretical Limitations of Embedding-Based Retrieval
+- [Weller et al., On the Theoretical Limitations of Embedding-Based Retrieval](https://arxiv.org/abs/2508.21038)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Most recent papers are preprints.

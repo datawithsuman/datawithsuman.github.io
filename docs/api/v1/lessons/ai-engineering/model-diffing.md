@@ -35,7 +35,7 @@ Illustrative directions; match = largest cosine with any base feature; threshold
 
 ##### False positives in diffing
 
-Crosscoders trained with an L1 penalty can invent “model-exclusive” features; BatchTopK reduces this but doesn’t remove it, because current methods “cannot distinguish between features introduced via fine-tuning and those merely represented differently” p. 79. And the reverse holds too: a feature like “confessing previous faults” appearing only in the fine-tuned model shows neither that it is used, nor that the base model lacked the means to do it p. 79.
+Crosscoders trained with an L1 penalty can invent “model-exclusive” features; BatchTopK reduces this but doesn’t remove it, because current methods “cannot distinguish between features introduced via fine-tuning and those merely represented differently” [p. 79](https://arxiv.org/pdf/2611.08438#page=79). And the reverse holds too: a feature like “confessing previous faults” appearing only in the fine-tuned model shows neither that it is used, nor that the base model lacked the means to do it [p. 79](https://arxiv.org/pdf/2611.08438#page=79).
 
 **Notice:** past about 25°, the rotated old feature is flagged as new too, and nothing in the diff output tells them apart. Check new features against the base model's features before reporting them.
 
@@ -57,17 +57,17 @@ Worrying behaviours like reward hacking and sycophancy often appear during fine-
 | **Crosscoder** (Transcoders and Attribution Graphs) | Model-specific encoders into one shared feature space; a feature whose decoder is large in one model only is a candidate difference | works across architectures |
 | **Transcoder diff** | Learn a correction term so the base MLP reproduces the fine-tuned MLP: diffs the _computation_, not the activations | same architecture |
 
-Survey §9.1 p. 78. Steering with latents that fire more in the fine-tuned model has identified features responsible for misaligned behaviour p. 78.
+Survey §9.1 [p. 78](https://arxiv.org/pdf/2611.08438#page=78). Steering with latents that fire more in the fine-tuned model has identified features responsible for misaligned behaviour [p. 78](https://arxiv.org/pdf/2611.08438#page=78).
 
-**Was it really fine-tuning?** A feature can look new because the fine-tuning _data_ is new, not the model. Fix: fine-tune the base SAE in stages, first on base model + fine-tuning data, then fine-tuned model + base data, then fine-tuned model + fine-tuning data. Only features that appear only in the last stage are likely to come from fine-tuning p. 78.
+**Was it really fine-tuning?** A feature can look new because the fine-tuning _data_ is new, not the model. Fix: fine-tune the base SAE in stages, first on base model + fine-tuning data, then fine-tuned model + base data, then fine-tuned model + fine-tuning data. Only features that appear only in the last stage are likely to come from fine-tuning [p. 78](https://arxiv.org/pdf/2611.08438#page=78).
 
-Older similarity measures (SVCCA, PWCCA, CKA from Linear Representations and Universality) ask whether two models are _alike overall_; diffing asks which concrete features or circuits changed p. 78.
+Older similarity measures (SVCCA, PWCCA, CKA from Linear Representations and Universality) ask whether two models are _alike overall_; diffing asks which concrete features or circuits changed [p. 78](https://arxiv.org/pdf/2611.08438#page=78).
 
 #### Diffing closed models through their answers
 
-For closed-weight models, an LLM can compare many response pairs from the two models on a shared prompt set, then extract, cluster and summarise the differences as natural-language hypotheses. Benchmarked against an SAE baseline it matches on many dimensions and surfaces more abstract, behaviour-level differences p. 79.
+For closed-weight models, an LLM can compare many response pairs from the two models on a shared prompt set, then extract, cluster and summarise the differences as natural-language hypotheses. Benchmarked against an SAE baseline it matches on many dimensions and surfaces more abstract, behaviour-level differences [p. 79](https://arxiv.org/pdf/2611.08438#page=79).
 
-Applications so far: effects of fine-tuning and distillation, differences between architectures, concept evolution during pretraining, and vision-specific features added in vision-language training p. 78.
+Applications so far: effects of fine-tuning and distillation, differences between architectures, concept evolution during pretraining, and vision-specific features added in vision-language training [p. 78](https://arxiv.org/pdf/2611.08438#page=78).
 
 ##### Next · 9.2
 
@@ -75,7 +75,7 @@ Where is a fact stored? Knowledge localisation and causal tracing.
 
 ##### Sources for this tab
 
-- Survey §9–9.1, Figure 14, arXiv 2611.08438, pp. 77–79.
+- Survey §9–9.1, Figure 14, [arXiv 2611.08438](https://arxiv.org/abs/2611.08438), pp. 77–79.
 
 ## In practice
 
@@ -117,24 +117,26 @@ Can you diff a model you only reach through an API?
 
 Partly: compare output distributions on many prompts, or log-probabilities if the API exposes them. You can find what changed, but not where inside the model.
 
+#### The 30-second answer
+
 I'd diff the two models' internals. The simplest version keeps an SAE trained on the base model as a fixed yardstick and checks which features change after fine-tuning. A crosscoder trained on both models gives shared features plus ones specific to each. Then I'd steer with any suspicious feature to confirm it causes the behaviour. OpenAI used this kind of SAE diffing to find a misaligned persona feature behind emergent misalignment. The trap is that a rotated old feature can look new, so I'd check its similarity to base-model features.
 
 **Key terms and sources**
 
-Built from Barez et al., _Understanding AI from the Inside_ (arXiv 2611.08438) and 5 more sources · checked 13 Nov 2026
+Built from Barez et al., _Understanding AI from the Inside_ (arXiv [2611.08438](https://arxiv.org/abs/2611.08438)) and 5 more sources · checked 13 Nov 2026
 
 #### Sources
 
-- Barez et al., Understanding AI from the Inside (survey, 2026)
+- [Barez et al., Understanding AI from the Inside (survey, 2026)](https://arxiv.org/abs/2611.08438)
 
-- Lindsey et al., Sparse Crosscoders (Anthropic, 2024)
+- [Lindsey et al., Sparse Crosscoders (Anthropic, 2024)](https://transformer-circuits.pub/2024/crosscoders/index.html)
 
-- Betley et al., Emergent Misalignment (2025)
+- [Betley et al., Emergent Misalignment (2025)](https://arxiv.org/abs/2502.17424)
 
-- OpenAI, Toward understanding and preventing misalignment generalization (18 Jun 2025)
+- [OpenAI, Toward understanding and preventing misalignment generalization (18 Jun 2025)](https://openai.com/index/emergent-misalignment/)
 
-- Wang et al., Persona Features Control Emergent Misalignment (OpenAI, 2025)
+- [Wang et al., Persona Features Control Emergent Misalignment (OpenAI, 2025)](https://arxiv.org/abs/2506.19823)
 
-- Chen et al., Persona Vectors: Monitoring and Controlling Character Traits (Anthropic, 2025)
+- [Chen et al., Persona Vectors: Monitoring and Controlling Character Traits (Anthropic, 2025)](https://arxiv.org/abs/2507.21509)
 
 Explanations are ours, built from these sources. Chapters marked with page numbers come from the survey. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints.

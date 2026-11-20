@@ -85,7 +85,7 @@ With nothing else known, the uniform distribution makes the fewest assumptions. 
 
 #### The maths
 
-$$ H(p) = -\sum_x p(x)\log_2 p(x), \qquad H(p, q) = H(p) + D_{KL}(p \| q), \qquad \text{Perplexity} = \exp\!\Big(-\frac{1}{N}\sum_{i=1}^N \ln q(x_i)\Big) $$
+$$ {H(p)} = -\sum_x p(x)\log_2 p(x), \qquad {H(p, q)} = {H(p)} + {D_{KL}(p \| q)}, \qquad {\text{Perplexity} = \exp\!\Big(-\frac{1}{N}\sum_{i=1}^N \ln q(x_i)\Big)} $$
 
 Worked example: an average loss of 2.3026 nats per token gives a perplexity of e^2.3026 ≈ 10. That’s as uncertain as choosing among 10 equally likely tokens.
 
@@ -143,19 +143,21 @@ Does lower perplexity mean a better chatbot?
 
 Not necessarily. It measures how well a model predicts text like its test set. A model can have low perplexity and still be unhelpful or wrong. Chat quality needs other evaluation, and it's why post-training often changes usefulness more than it changes perplexity.
 
+#### The 30-second answer
+
 Entropy is the fewest bits per symbol any code can use on average, if you know the true distribution, because likely symbols get short codes. If you build the code using the wrong distribution, the average cost is the cross-entropy, and the extra cost is KL divergence. So minimising cross-entropy means learning to predict well. Perplexity is the exponential of the average per-token loss, or an effective number of choices. Lower's better, but it depends on the tokeniser, and it measures prediction rather than quality.
 
 **Key terms and sources**
 
-Why entropy is the limit of compression, why cross-entropy is the cost of a wrong model, the difference between bits and nats, and how to read perplexity.
+Why entropy is the limit of compression, why cross-entropy is the cost of a wrong model, the difference between bits and nats, and how to read perplexity. · checked 6 Nov 2026
 
 #### Sources
 
-- MacKay, Information Theory, Inference and Learning Algorithms, contents
+- [MacKay, Information Theory, Inference and Learning Algorithms, contents](https://lsl.sinica.edu.tw/Activities/bookexhibition/files/692/9780521642989_toc.pdf)
 
-- Murphy, Probabilistic Machine Learning: An Introduction, chapter 6
+- [Murphy, Probabilistic Machine Learning: An Introduction, chapter 6](https://probml.github.io/pml-book/book1.html)
 
-- Shannon, A Mathematical Theory of Communication (1948)
+- [Shannon, A Mathematical Theory of Communication (1948)](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf)
 
 - N-gram language models on this site
 

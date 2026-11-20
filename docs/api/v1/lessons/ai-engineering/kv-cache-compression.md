@@ -80,7 +80,7 @@ Engines usually evict from the end of cached sequences, to protect shared prefix
 
 #### The maths
 
-$$ t_{\text{reload}} = \frac{\text{KV bytes}}{\text{link bandwidth}}, \qquad t_{\text{recompute}} \approx \frac{2PT}{\text{usable FLOP/s}} $$
+$$ {t_{\text{reload}}} = \frac{{\text{KV bytes}}}{{\text{link bandwidth}}}, \qquad {t_{\text{recompute}}} \approx \frac{{2PT}}{{\text{usable FLOP/s}}} $$
 
 Simple arithmetic for the reload-or-recompute choice. Recompute also takes GPU time away from other users, which reload doesn’t.
 
@@ -142,28 +142,30 @@ Does an FP8 KV cache change the model's output?
 
 Slightly, as rounding errors enter every later attention step. It's usually small, but test long-context tasks, and compare against bf16 on your own evaluations.
 
+#### The 30-second answer
+
 Paging removes waste, but at long contexts the cache itself fills the GPU, and an 8B model's 32k-token conversation is about 4 GB. I have three options. Quantize it: FP8 halves it with little risk, and KIVI's 2-bit method reported up to 4 times larger batches. Evict tokens: H2O and SnapKV keep the tokens attention relies on, which saves a lot but loses information for good, so I'd avoid it where exact recall matters. Or offload: move idle conversations to CPU memory or SSD and reload them later. Reloading 4 GB from CPU memory takes tens of milliseconds, against about a second of GPU time to recompute. For agents, I'd keep shared prefixes and recent turns, and route returning conversations to the machine holding their cache.
 
 **Key terms and sources**
 
-Why long contexts make the KV cache the bottleneck, quantizing it, evicting unimportant tokens, offloading to CPU memory or SSD, and when to reload or recompute.
+Why long contexts make the KV cache the bottleneck, quantizing it, evicting unimportant tokens, offloading to CPU memory or SSD, and when to reload or recompute. · checked 7 Nov 2026
 
 #### Sources
 
-- Liu et al., KIVI: 2-bit KV cache quantization
+- [Liu et al., KIVI: 2-bit KV cache quantization](https://arxiv.org/abs/2402.02750)
 
-- Zhang et al., H2O: Heavy-Hitter Oracle
+- [Zhang et al., H2O: Heavy-Hitter Oracle](https://arxiv.org/abs/2306.14048)
 
-- Li et al., SnapKV
+- [Li et al., SnapKV](https://arxiv.org/abs/2404.14469)
 
-- Liu et al., LMCache
+- [Liu et al., LMCache](https://arxiv.org/abs/2510.09665)
 
-- Qin et al., Mooncake
+- [Qin et al., Mooncake](https://arxiv.org/abs/2407.00079)
 
-- Rethinking KV Cache Eviction for Agentic LLM Serving
+- [Rethinking KV Cache Eviction for Agentic LLM Serving](https://arxiv.org/abs/2611.00391)
 
-- Gandalf: increasing flash lifetime for KV cache offloading
+- [Gandalf: increasing flash lifetime for KV cache offloading](https://arxiv.org/abs/2610.30791)
 
-- Kwon et al., PagedAttention
+- [Kwon et al., PagedAttention](https://arxiv.org/abs/2309.06180)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and vendor results are their own.

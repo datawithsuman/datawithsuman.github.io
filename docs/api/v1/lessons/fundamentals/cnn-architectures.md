@@ -87,7 +87,7 @@ Its authors began with ResNet-50, and applied Transformer choices step by step: 
 
 #### The maths
 
-$$ \underbrace{K^2 M N F^2}_{\text{standard}} \;\to\; \underbrace{K^2 M F^2}_{\text{depthwise}} + \underbrace{M N F^2}_{\text{pointwise}}, \qquad \text{ratio} = \frac{1}{N} + \frac{1}{K^2} $$
+$$ {\underbrace{K^2 M N F^2}_{\text{standard}}} \;\to\; {\underbrace{K^2 M F^2}_{\text{depthwise}}} + {\underbrace{M N F^2}_{\text{pointwise}}}, \qquad {\text{ratio} = \frac{1}{N} + \frac{1}{K^2}} $$
 
 From the MobileNet paper, Equations 2 and 5 and the ratio after them.
 
@@ -145,28 +145,30 @@ You need image classification on a low-end phone. What would you do?
 
 Start with a pretrained MobileNet-style model. Tune the width and resolution multipliers against measured latency on the actual device. Then consider quantisation. I'd also measure memory, as FLOPs alone won't predict real speed.
 
+#### The 30-second answer
+
 Each architecture added one idea. VGG stacked small 3×3 filters. Inception ran filter sizes in parallel, using 1×1 convolutions to cut cost. ResNet added skip connections, so very deep networks could train. MobileNet split a convolution into depthwise and pointwise parts, which is about 8 to 9 times cheaper with 3×3 filters. EfficientNet scaled depth, width and resolution together. ConvNeXt showed that a CNN with Transformer-style design choices competes with Transformers. In practice, I'd start from a pretrained backbone, and choose by accuracy, latency and memory on the real device.
 
 **Key terms and sources**
 
-AlexNet, VGG, Inception, ResNet, DenseNet, MobileNet, EfficientNet and ConvNeXt: the one idea each added, and how depthwise separable convolutions cut cost.
+AlexNet, VGG, Inception, ResNet, DenseNet, MobileNet, EfficientNet and ConvNeXt: the one idea each added, and how depthwise separable convolutions cut cost. · checked 6 Nov 2026
 
 #### Sources
 
-- Krizhevsky et al., AlexNet (2012)
+- [Krizhevsky et al., AlexNet (2012)](https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html)
 
-- Simonyan and Zisserman, VGG
+- [Simonyan and Zisserman, VGG](https://arxiv.org/abs/1409.1556)
 
-- Szegedy et al., Inception
+- [Szegedy et al., Inception](https://arxiv.org/abs/1409.4842)
 
-- He et al., ResNet
+- [He et al., ResNet](https://arxiv.org/abs/1512.03385)
 
-- Huang et al., DenseNet
+- [Huang et al., DenseNet](https://arxiv.org/abs/1608.06993)
 
-- Howard et al., MobileNets
+- [Howard et al., MobileNets](https://arxiv.org/abs/1704.04861)
 
-- Tan and Le, EfficientNet
+- [Tan and Le, EfficientNet](https://arxiv.org/abs/1905.11946)
 
-- Liu et al., ConvNeXt
+- [Liu et al., ConvNeXt](https://arxiv.org/abs/2201.03545)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

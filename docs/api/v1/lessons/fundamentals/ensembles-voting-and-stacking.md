@@ -85,7 +85,7 @@ Each model must be trained, served, monitored and explained. A stack of 20 that 
 
 #### The maths
 
-$$ \mathrm{Var}(\bar f) = \rho\,\sigma^2 + \frac{1 - \rho}{N}\,\sigma^2, \qquad \hat y = g\big(f_1^{\text{oof}}(x), \dots, f_N^{\text{oof}}(x)\big) $$
+$$ {\mathrm{Var}(\bar f)} = {\rho\,\sigma^2} + {\frac{1 - \rho}{N}\,\sigma^2}, \qquad {\hat y = g\big(f_1^{\text{oof}}(x), \dots, f_N^{\text{oof}}(x)\big)} $$
 
 The variance formula is for N identically distributed models with pairwise correlation ρ, as in Hastie, Tibshirani and Friedman’s explanation of random forests.
 
@@ -145,18 +145,20 @@ Why doesn't adding more trees to a random forest overfit, while boosting can?
 
 A forest averages, so more trees only reduce the variance, down to the limit set by correlation. Boosting keeps fitting the remaining errors, so eventually it fits noise. That's why boosting needs a learning rate and early stopping.
 
+#### The 30-second answer
+
 Ensembles help when models beat chance and make different mistakes. The variance of an average has a part that shrinks with more models and a part set by their correlation, so variety matters. Bagging trains in parallel on resampled data, which lowers variance. Boosting trains in sequence on earlier errors, which lowers bias first. Stacking trains a small model on the base models' predictions, and these must be out-of-fold, or it trusts the most overfit one. In production, I'd weigh any gain against the extra cost.
 
 **Key terms and sources**
 
-Why many models beat one, why they must differ, how voting, bagging, boosting and stacking compare, and how to avoid leakage in a stack.
+Why many models beat one, why they must differ, how voting, bagging, boosting and stacking compare, and how to avoid leakage in a stack. · checked 6 Nov 2026
 
 #### Sources
 
-- scikit-learn on ensembles, voting and stacking
+- [scikit-learn on ensembles, voting and stacking](https://scikit-learn.org/stable/modules/ensemble.html)
 
-- Hastie, Tibshirani and Friedman, The Elements of Statistical Learning
+- [Hastie, Tibshirani and Friedman, The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
 
-- ISLR
+- [ISLR](https://www.statlearning.com/)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

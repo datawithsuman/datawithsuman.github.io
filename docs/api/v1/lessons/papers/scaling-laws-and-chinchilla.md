@@ -12,7 +12,7 @@
 
 ### The paper
 
-Kaplan et al., OpenAI, 2020 · arXiv 2001.08361 + Hoffmann et al., DeepMind, 2022 (NeurIPS 2022) · arXiv 2203.15556 · 10 sources, checked 11 Nov 2026
+Kaplan et al., OpenAI, 2020 · arXiv [2001.08361](https://arxiv.org/abs/2001.08361) + Hoffmann et al., DeepMind, 2022 (NeurIPS 2022) · arXiv [2203.15556](https://arxiv.org/abs/2203.15556) · 10 sources, checked 11 Nov 2026
 
 In 2020, OpenAI showed that a language model's loss falls as a smooth, predictable **power law** as you add parameters, data or compute, so you can forecast a big model from small ones. Their advice for a fixed compute budget: spend most of it on a **bigger model** and only a little on more data. The field listened: GPT-3 (175B) and Gopher (280B) were trained on only about 300 billion tokens. In 2022, DeepMind redid the experiment with 400+ models and found the opposite balance: model size and data should grow **equally**, about **20 training tokens per parameter**. To prove it, they trained **Chinchilla**, 70B parameters on 1.4 trillion tokens, with the same compute as the 280B Gopher. It beat Gopher on almost every task and costs a quarter as much to run.
 
@@ -24,11 +24,11 @@ from the Chinchilla paper
 
 You have the compute DeepMind used for Gopher: about 5.8 × 1023 floating-point operations. Do you train a **280B** model on 300 billion tokens, or a **70B** model on 1.4 trillion tokens?
 
-Both cost almost the same to train. Gopher took the first option, as everyone did in 2021. Chinchilla took the second §4. We'll follow this choice through both papers, and you'll be able to try every option in between.
+Both cost almost the same to train. Gopher took the first option, as everyone did in 2021. Chinchilla took the second [§4](https://arxiv.org/abs/2203.15556). We'll follow this choice through both papers, and you'll be able to try every option in between.
 
 #### You only get to train the big model once
 
-A large training run is planned around a fixed budget: so many accelerators for so many weeks. The Chinchilla paper puts it plainly: "it is typically only feasible to train these large models once", so the model size and the amount of data have to be right before you start §1.
+A large training run is planned around a fixed budget: so many accelerators for so many weeks. The Chinchilla paper puts it plainly: "it is typically only feasible to train these large models once", so the model size and the amount of data have to be right before you start [§1](https://arxiv.org/abs/2203.15556).
 
 ##### Too big, too little data
 
@@ -64,9 +64,9 @@ Computed from the fitted formula with the paper's published constants and D = C 
 
 #### Training compute is roughly six times parameters times tokens
 
-$$ C \approx 6\,N\,D $$
+$$ {C} \approx {6}\,{N}\,{D} $$
 
-Kaplan §1.3, §2.1 p. 6–7 · hover a term.
+Kaplan §1.3, §2.1 [p. 6–7](https://arxiv.org/abs/2001.08361) · hover a term.
 
 - **training compute**: C: the total floating-point operations (FLOPs) to train the model.
 
@@ -80,11 +80,11 @@ This one line is why the question is a trade-off. With C fixed, N × D is fixed:
 
 #### Loss falls as a power law in size, data and compute
 
-OpenAI trained decoder-only Transformers from 768 to 1.5 billion parameters (not counting embeddings) on WebText2, about 23 billion tokens, and measured the test loss §2–3. When only one factor limits the model, the loss follows a straight line on a log-log plot:
+OpenAI trained decoder-only Transformers from 768 to 1.5 billion parameters (not counting embeddings) on WebText2, about 23 billion tokens, and measured the test loss [§2–3](https://arxiv.org/abs/2001.08361). When only one factor limits the model, the loss follows a straight line on a log-log plot:
 
-$$ L(N) = \left(\frac{N_c}{N}\right)^{\alpha_N} $$
+$$ {L(N)} = \left(\frac{{N_c}}{{N}}\right)^{{\alpha_N}} $$
 
-Equation 1.1 §1.2. Data and compute have the same form, with αD ≈ 0.095 and αC ≈ 0.050 · hover a term.
+Equation 1.1 [§1.2](https://arxiv.org/abs/2001.08361). Data and compute have the same form, with αD ≈ 0.095 and αC ≈ 0.050 · hover a term.
 
 - **test loss**: L: cross-entropy loss in nats per token. Lower is better.
 
@@ -106,7 +106,7 @@ Equation 1.1 §1.2. Data and compute have the same form, with αD ≈ 0.095 and 
 
 ##### Their recipe for spending more compute
 
-Kaplan fitted Nopt ∝ C0.73 and Dopt ∝ C0.27. For every 10× more compute, make the model about **5.4× bigger** and give it only about **1.9× more data**. Most of the extra compute goes into parameters §6, Fig. 14.
+Kaplan fitted Nopt ∝ C0.73 and Dopt ∝ C0.27. For every 10× more compute, make the model about **5.4× bigger** and give it only about **1.9× more data**. Most of the extra compute goes into parameters [§6, Fig. 14](https://arxiv.org/abs/2001.08361).
 
 #### Every big model read about 300 billion tokens
 
@@ -119,13 +119,13 @@ Kaplan fitted Nopt ∝ C0.73 and Dopt ∝ C0.27. For every 10× more compute, ma
 | MT-NLG | 530B | 270B | 0.5 |
 | **Chinchilla** | **70B** | **1,400B** | **20** |
 
-Chinchilla Table 1 §1; tokens per parameter computed from it.
+Chinchilla Table 1 [§1](https://arxiv.org/abs/2203.15556); tokens per parameter computed from it.
 
-Following Kaplan and the GPT-3 setup, labs raced to more parameters while keeping data around 300 billion tokens. The largest dense model, MT-NLG, reached 530B parameters, over 3× GPT-3, in two years §5.
+Following Kaplan and the GPT-3 setup, labs raced to more parameters while keeping data around 300 billion tokens. The largest dense model, MT-NLG, reached 530B parameters, over 3× GPT-3, in two years [§5](https://arxiv.org/abs/2203.15556).
 
 #### 400 models later, a different split
 
-DeepMind asked the same question: for a fixed budget C, which N and D give the lowest loss? They trained over 400 models from 70 million to over 16 billion parameters on 5 to 500 billion tokens, and estimated the answer three independent ways §3:
+DeepMind asked the same question: for a fixed budget C, which N and D give the lowest loss? They trained over 400 models from 70 million to over 16 billion parameters on 5 to 500 billion tokens, and estimated the answer three independent ways [§3](https://arxiv.org/abs/2203.15556):
 
 | Approach | How | Nopt ∝ Ca | Dopt ∝ Cb |
 |---|---|---|---|
@@ -134,19 +134,19 @@ DeepMind asked the same question: for a fixed budget C, which N and D give the l
 | 3 · Fitted loss formula | Fit L(N, D) to all runs, then minimise it under C = 6ND | 0.46 | 0.54 |
 | _Kaplan et al. 2020_ | | 0.73 | 0.27 |
 
-Table 2 §3.4.
+Table 2 [§3.4](https://arxiv.org/abs/2203.15556).
 
 All three agree: a ≈ b ≈ 0.5. **Every time you double the model, double the data.** They also found the same result on two other datasets, C4 and GitHub code.
 
 ##### Why Kaplan got a different answer, according to DeepMind
 
-Kaplan used one learning-rate schedule length for every run. Losses read off partway through a long schedule are worse than a run whose schedule matches its length, which made short training look worse than it is, and pushed the advice towards bigger models. Most of Kaplan's runs were also small, many under 100M parameters §2. Later work found other causes too (chapter 10).
+Kaplan used one learning-rate schedule length for every run. Losses read off partway through a long schedule are worse than a run whose schedule matches its length, which made short training look worse than it is, and pushed the advice towards bigger models. Most of Kaplan's runs were also small, many under 100M parameters [§2](https://arxiv.org/abs/2203.15556). Later work found other causes too (chapter 10).
 
 #### Loss = the text's own entropy + a size penalty + a data penalty
 
-$$ \hat{L}(N, D) = E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}} $$
+$$ \hat{L}(N, D) = {E} + {\frac{A}{N^{\alpha}}} + {\frac{B}{D^{\beta}}} $$
 
-Equations 2 and 10 §3.3, App. D.2 · hover a term.
+Equations 2 and 10 [§3.3, App. D.2](https://arxiv.org/abs/2203.15556) · hover a term.
 
 - **the floor**: E ≈ 1.69: the loss of a perfect model, roughly the entropy of natural text. No model can go below it.
 
@@ -168,7 +168,7 @@ With C fixed, making N bigger shrinks the size penalty but forces D smaller, whi
 | 280B | 5.9T | 9.90 × 1024 |
 | 1T | 21.2T | 1.27 × 1026 |
 
-Table 3, from approach 1 §3.4.
+Table 3, from approach 1 [§3.4](https://arxiv.org/abs/2203.15556).
 
 Divide the two columns and you get about 20 tokens per parameter at every size: the rule of thumb everyone quotes. By this table, GPT-3 should have read 3.7 trillion tokens, not 300 billion, and a 1-trillion-parameter model isn't worth training unless you have about 250× Gopher's compute.
 
@@ -182,7 +182,7 @@ Kaplan: N × m0.73, D × m0.27. Chinchilla: N × m0.5, D × m0.5. Bars are on a 
 
 #### A 70B model beat a 280B model with the same compute
 
-The analysis put the best size for Gopher's budget between 40B and 70B. DeepMind trained the larger end, **Chinchilla: 70B parameters on 1.4 trillion tokens**, with the same architecture family and data source (MassiveText) as Gopher. The main changes were AdamW instead of Adam and a slightly different tokenizer §4.1.
+The analysis put the best size for Gopher's budget between 40B and 70B. DeepMind trained the larger end, **Chinchilla: 70B parameters on 1.4 trillion tokens**, with the same architecture family and data source (MassiveText) as Gopher. The main changes were AdamW instead of Adam and a slightly different tokenizer [§4.1](https://arxiv.org/abs/2203.15556).
 
 ##### MMLU, 5-shot accuracy (Table 6)
 
@@ -209,21 +209,21 @@ Training happens once; inference happens billions of times. A model trained comp
 | Chinchilla: hardware | TPUv3 and TPUv4, with JAX and Haiku |
 | Chinchilla: schedule lesson | Set the cosine learning-rate schedule to the planned number of tokens; overshooting it by more than about 25% hurts |
 
-Kaplan §1–5, Chinchilla §2, §4.1 and App. B Kaplan · Chinchilla.
+Kaplan §1–5, Chinchilla §2, §4.1 and App. B [Kaplan](https://arxiv.org/abs/2001.08361) · [Chinchilla](https://arxiv.org/abs/2203.15556).
 
 #### Two later papers traced the gap
 
 ##### Counting and scale
 
-Pearce and Song showed much of the gap comes from Kaplan counting only non-embedding parameters, combined with working at small scale. Simulating Chinchilla's study under those conditions reproduces exponents close to Kaplan's arXiv 2406.12907.
+Pearce and Song showed much of the gap comes from Kaplan counting only non-embedding parameters, combined with working at small scale. Simulating Chinchilla's study under those conditions reproduces exponents close to Kaplan's [arXiv 2406.12907](https://arxiv.org/abs/2406.12907).
 
 ##### Three training details
 
-Porian et al. reproduced Kaplan's law and found three causes: ignoring the cost of the last layer, the warm-up length, and optimiser settings not tuned per scale. Fixing them gave "excellent agreement" with Chinchilla. They also found careful learning-rate decay was _not_ essential, against DeepMind's own explanation arXiv 2406.19146.
+Porian et al. reproduced Kaplan's law and found three causes: ignoring the cost of the last layer, the warm-up length, and optimiser settings not tuned per scale. Fixing them gave "excellent agreement" with Chinchilla. They also found careful learning-rate decay was _not_ essential, against DeepMind's own explanation [arXiv 2406.19146](https://arxiv.org/abs/2406.19146).
 
 ##### A problem with approach 3
 
-Besiroglu et al. rebuilt the data from the paper's plots and found the published fit of the loss formula didn't match the data, and that its confidence intervals were implausibly narrow. Refitting gave results consistent with approaches 1 and 2, so the headline answer stands, but the exact constants in chapter 6 shouldn't be trusted to many digits arXiv 2404.10102.
+Besiroglu et al. rebuilt the data from the paper's plots and found the published fit of the loss formula didn't match the data, and that its confidence intervals were implausibly narrow. Refitting gave results consistent with approaches 1 and 2, so the headline answer stands, but the exact constants in chapter 6 shouldn't be trusted to many digits [arXiv 2404.10102](https://arxiv.org/abs/2404.10102).
 
 ### Where it falls short
 
@@ -237,15 +237,15 @@ Besiroglu et al. rebuilt the data from the paper's plots and found the published
 
 - **Under one epoch.** Every run saw each token at most once; repeating data wasn't studied.
 
-- **Quality is assumed.** More tokens help only if they're good tokens, and web-scale data brings toxicity and privacy problems §5.
+- **Quality is assumed.** More tokens help only if they're good tokens, and web-scale data brings toxicity and privacy problems [§5](https://arxiv.org/abs/2203.15556).
 
 ##### What came after
 
 | Idea | What it says |
 |---|---|
-| **Count inference too** (Sardana et al. 2023) | If a model will serve about a billion requests, train it smaller and longer than Chinchilla-optimal. Quality kept improving up to 10,000 tokens per parameter arXiv 2401.00448. |
-| **Running out of data** (Muennighoff et al. 2023) | Up to about 4 passes over repeated data is nearly as good as fresh data; beyond that, returns fall towards zero arXiv 2305.16264. |
-| **Over-trained open models** | Meta's Llama 3 8B read about 15 trillion tokens, nearly 1,900 per parameter, about 90× the Chinchilla ratio, because a small model that's cheap to serve was the goal Llama 3. |
+| **Count inference too** (Sardana et al. 2023) | If a model will serve about a billion requests, train it smaller and longer than Chinchilla-optimal. Quality kept improving up to 10,000 tokens per parameter [arXiv 2401.00448](https://arxiv.org/abs/2401.00448). |
+| **Running out of data** (Muennighoff et al. 2023) | Up to about 4 passes over repeated data is nearly as good as fresh data; beyond that, returns fall towards zero [arXiv 2305.16264](https://arxiv.org/abs/2305.16264). |
+| **Over-trained open models** | Meta's Llama 3 8B read about 15 trillion tokens, nearly 1,900 per parameter, about 90× the Chinchilla ratio, because a small model that's cheap to serve was the goal [Llama 3](https://arxiv.org/abs/2407.21783). |
 
 ##### Tokens per parameter, from 2020 to 2024
 
@@ -305,24 +305,24 @@ Deliberately training past compute-optimal to get a smaller model that's cheaper
 
 #### Everything on this page comes from these
 
-1. Kaplan et al. (2020). Scaling Laws for Neural Language Models. arXiv 2001.08361 (main text read in full)
+1. Kaplan et al. (2020). Scaling Laws for Neural Language Models. [arXiv 2001.08361](https://arxiv.org/abs/2001.08361) (main text read in full)
 
-2. Hoffmann et al. (2022). Training Compute-Optimal Large Language Models (Chinchilla). arXiv 2203.15556 (read in full, including appendix D)
+2. Hoffmann et al. (2022). Training Compute-Optimal Large Language Models (Chinchilla). [arXiv 2203.15556](https://arxiv.org/abs/2203.15556) (read in full, including appendix D)
 
-3. Brown et al. (2020). Language Models are Few-Shot Learners (GPT-3). arXiv 2005.14165
+3. Brown et al. (2020). Language Models are Few-Shot Learners (GPT-3). [arXiv 2005.14165](https://arxiv.org/abs/2005.14165)
 
-4. Rae et al. (2021). Scaling Language Models: Methods, Analysis & Insights from Training Gopher. arXiv 2112.11446
+4. Rae et al. (2021). Scaling Language Models: Methods, Analysis & Insights from Training Gopher. [arXiv 2112.11446](https://arxiv.org/abs/2112.11446)
 
-5. Besiroglu et al. (2024). Chinchilla Scaling: A replication attempt. arXiv 2404.10102
+5. Besiroglu et al. (2024). Chinchilla Scaling: A replication attempt. [arXiv 2404.10102](https://arxiv.org/abs/2404.10102)
 
-6. Pearce and Song (2024). Reconciling Kaplan and Chinchilla Scaling Laws. arXiv 2406.12907
+6. Pearce and Song (2024). Reconciling Kaplan and Chinchilla Scaling Laws. [arXiv 2406.12907](https://arxiv.org/abs/2406.12907)
 
-7. Porian et al. (2024). Resolving Discrepancies in Compute-Optimal Scaling of Language Models. arXiv 2406.19146
+7. Porian et al. (2024). Resolving Discrepancies in Compute-Optimal Scaling of Language Models. [arXiv 2406.19146](https://arxiv.org/abs/2406.19146)
 
-8. Sardana et al. (2023). Beyond Chinchilla-Optimal: Accounting for Inference in Language Model Scaling Laws. arXiv 2401.00448
+8. Sardana et al. (2023). Beyond Chinchilla-Optimal: Accounting for Inference in Language Model Scaling Laws. [arXiv 2401.00448](https://arxiv.org/abs/2401.00448)
 
-9. Muennighoff et al. (2023). Scaling Data-Constrained Language Models. arXiv 2305.16264
+9. Muennighoff et al. (2023). Scaling Data-Constrained Language Models. [arXiv 2305.16264](https://arxiv.org/abs/2305.16264)
 
-10. Llama Team, Meta (2024). The Llama 3 Herd of Models. arXiv 2407.21783
+10. Llama Team, Meta (2024). The Llama 3 Herd of Models. [arXiv 2407.21783](https://arxiv.org/abs/2407.21783)
 
 The labs compute from the papers' published formulas. @datawithsuman

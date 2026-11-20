@@ -48,7 +48,7 @@ With **10** AI applications and **20** tools, custom integrations mean **200** a
 
 #### In one breath
 
-Every AI app (chat assistant, IDE, agent) wants to connect to every tool and data source (GitHub, Slack, databases, your order system). Without a standard, that's **N apps × M tools** custom integrations. The **Model Context Protocol**, introduced by Anthropic in Nov 2024 and since adopted widely (and donated to the Linux Foundation's Agentic AI Foundation in Dec 2025), standardises the connection: a tool provider writes one **MCP server**; any MCP-capable **host** connects to it through a **client**, so it's **N + M**. Servers expose **tools** (actions the model can call), **resources** (data to read) and **prompts** (templates); messages are **JSON-RPC 2.0** over **stdio** (local) or **Streamable HTTP** (remote, with OAuth). MCP doesn't replace function calling; it's how the tools get discovered and invoked across apps. The spec is versioned by date and changes often, so check the current revision.What you'll be able to do after this: explain MCP's architecture and primitives, compare it with function calling, and name its security risks.
+Every AI app (chat assistant, IDE, agent) wants to connect to every tool and data source (GitHub, Slack, databases, your order system). Without a standard, that's **N apps × M tools** custom integrations. The **Model Context Protocol**, introduced by Anthropic in Nov 2024 and since adopted widely (and donated to the Linux Foundation's Agentic AI Foundation in Dec 2025), standardises the connection: a tool provider writes one **MCP server**; any MCP-capable **host** connects to it through a **client**, so it's **N + M**. Servers expose **tools** (actions the model can call), **resources** (data to read) and **prompts** (templates); messages are **JSON-RPC 2.0** over **stdio** (local) or **Streamable HTTP** (remote, with OAuth). MCP doesn't replace function calling; it's how the tools get discovered and invoked across apps. The spec is versioned by date and changes often, so check the current revision. What you'll be able to do after this: explain MCP's architecture and primitives, compare it with function calling, and name its security risks.
 
 #### Hosts, clients, servers and primitives
 
@@ -134,7 +134,7 @@ What MCP is and why it spread: the N×M integration problem, hosts, clients and 
 
 #### Sources
 
-1. Model Context Protocol specification, revisions and changelog, modelcontextprotocol.io; GitHub releases.
+1. Model Context Protocol specification, revisions and changelog, [modelcontextprotocol.io](https://modelcontextprotocol.io/specification); [GitHub releases](https://github.com/modelcontextprotocol/modelcontextprotocol/releases).
 
 2. Anthropic, "Introducing the Model Context Protocol", Nov 2024.
 
@@ -142,4 +142,4 @@ What MCP is and why it spread: the N×M integration problem, hosts, clients and 
 
 4. Invariant Labs, "MCP Security Notification: Tool Poisoning Attacks", 2025; OWASP GenAI Security Project guidance on agentic applications.
 
-5. MCP specification 2026-07-28 and changelog; H. Zhou et al., "A First Measurement Study on Authentication Security in Real-World Remote MCP Servers", 2026, arXiv:2605.22333; N. Padilla, "Exposed by Design", 2026, arXiv:2608.00150.
+5. MCP specification 2026-07-28 and [changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog); H. Zhou et al., "A First Measurement Study on Authentication Security in Real-World Remote MCP Servers", 2026, [arXiv:2605.22333](https://arxiv.org/abs/2605.22333); N. Padilla, "Exposed by Design", 2026, [arXiv:2608.00150](https://arxiv.org/abs/2608.00150).

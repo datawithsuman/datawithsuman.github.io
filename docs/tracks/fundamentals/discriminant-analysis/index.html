@@ -149,12 +149,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">LDA and QDA are generative: they model each class as a Gaussian, and use Bayes' rule. LDA shares one covariance across classes, so the quadratic term cancels, and boundaries are straight. QDA gives each class its own, so boundaries curve, but it has far more to estimate, so it needs more data. Gaussian naive Bayes is QDA with diagonal covariances. Compared with logistic regression, LDA is more efficient if the Gaussian assumption holds, while logistic regression is safer if it doesn't. With many features, I'd use shrinkage. LDA can also project data to at most K minus 1 dimensions.</p>
+<h3>The 30-second answer</h3><p class="say30">LDA and QDA are generative: they model each class as a Gaussian, and use Bayes' rule. LDA shares one covariance across classes, so the quadratic term cancels, and boundaries are straight. QDA gives each class its own, so boundaries curve, but it has far more to estimate, so it needs more data. Gaussian naive Bayes is QDA with diagonal covariances. Compared with logistic regression, LDA is more efficient if the Gaussian assumption holds, while logistic regression is safer if it doesn't. With many features, I'd use shrinkage. LDA can also project data to at most K minus 1 dimensions.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Modelling each class as a Gaussian: shared or separate covariance, linear or curved boundaries, shrinkage, LDA as dimensionality reduction, and how they compare.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Modelling each class as a Gaussian: shared or separate covariance, linear or curved boundaries, shrinkage, LDA as dimensionality reduction, and how they compare. · checked 6 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://scikit-learn.org/stable/modules/lda_qda.html">scikit-learn on linear and quadratic discriminant analysis</a></li><li><a href="https://www.statlearning.com/">ISLR, chapter on classification</a></li><li><a href="https://cs229.stanford.edu/syllabus-summer2019.html">CS229 syllabus, generative learning</a></li></ul>
   <p class="small">Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.</p>

@@ -48,7 +48,7 @@ Prompted JSON with **12 fields** and a 1% chance per field of a formatting slip 
 
 #### In one breath
 
-Apps need fields, not prose: `{"refund_inr": 42, "escalate": false}`. Asking nicely for JSON mostly works, but every field is a chance for a stray comment, a missing quote or a wrong key, and the chances multiply: at 1% per field, a 12-field object is valid only 88.6% of the time. **Constrained decoding** fixes the syntax: the schema is compiled into a grammar, and at every step the decoder **masks out** tokens that would break it, so output always parses (OpenAI reported 100% schema adherence with strict Structured Outputs, versus under 40% for gpt-4-0613 with prompting alone on its complex-schema eval). It doesn't fix _content_: a valid number can still be the wrong refund, so you still validate values in code. Forcing a format can also hurt reasoning, so let the model reason first (or in a `reasoning` field placed before the answer fields).What you'll be able to do after this: choose between prompting, JSON mode and constrained decoding, design schemas, and combine them with validation.
+Apps need fields, not prose: `{"refund_inr": 42, "escalate": false}`. Asking nicely for JSON mostly works, but every field is a chance for a stray comment, a missing quote or a wrong key, and the chances multiply: at 1% per field, a 12-field object is valid only 88.6% of the time. **Constrained decoding** fixes the syntax: the schema is compiled into a grammar, and at every step the decoder **masks out** tokens that would break it, so output always parses (OpenAI reported 100% schema adherence with strict Structured Outputs, versus under 40% for gpt-4-0613 with prompting alone on its complex-schema eval). It doesn't fix _content_: a valid number can still be the wrong refund, so you still validate values in code. Forcing a format can also hurt reasoning, so let the model reason first (or in a `reasoning` field placed before the answer fields). What you'll be able to do after this: choose between prompting, JSON mode and constrained decoding, design schemas, and combine them with validation.
 
 #### Three levels of enforcement
 
@@ -130,10 +130,10 @@ Getting LLMs to return machine-readable output reliably: prompting for JSON, JSO
 
 1. OpenAI, "Introducing Structured Outputs in the API", Aug 2024.
 
-2. B. Willard & R. Louf, "Efficient Guided Generation for Large Language Models" (Outlines), 2023, arXiv:2307.09702; Y. Dong et al., "XGrammar", 2024, arXiv:2411.15100.
+2. B. Willard & R. Louf, "Efficient Guided Generation for Large Language Models" (Outlines), 2023, [arXiv:2307.09702](https://arxiv.org/abs/2307.09702); Y. Dong et al., "XGrammar", 2024, [arXiv:2411.15100](https://arxiv.org/abs/2411.15100).
 
-3. Z. R. Tam et al., "Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models", EMNLP Industry 2024, arXiv:2408.02442.
+3. Z. R. Tam et al., "Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models", EMNLP Industry 2024, [arXiv:2408.02442](https://arxiv.org/abs/2408.02442).
 
 4. vLLM and SGLang structured output / guided decoding documentation; Pydantic documentation.
 
-5. W. Kurt, "Say What You Mean: A Response to Let Me Speak Freely", dottxt, 2024; S.-Y. Lin, "Your Prompt Is Not the Only Prompt: How Much Do LLMs Weight Structured-Output Schema Descriptions?", 2026, arXiv:2608.08254.
+5. W. Kurt, ["Say What You Mean: A Response to Let Me Speak Freely"](https://blog.dottxt.ai/say-what-you-mean.html), dottxt, 2024; S.-Y. Lin, "Your Prompt Is Not the Only Prompt: How Much Do LLMs Weight Structured-Output Schema Descriptions?", 2026, [arXiv:2608.08254](https://arxiv.org/abs/2608.08254).

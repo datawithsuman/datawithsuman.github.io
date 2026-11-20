@@ -83,7 +83,7 @@ Always compute a feature **as of the prediction time**. If a new feature gives a
 
 #### The maths
 
-$$ x_{\sin} = \sin\!\left(\frac{2\pi \cdot \text{hour}}{24}\right), \qquad x_{\cos} = \cos\!\left(\frac{2\pi \cdot \text{hour}}{24}\right), \qquad x_{7d}(t) = \sum_{k=1}^{7} \text{orders}(t - k) $$
+$$ {x_{\sin}} = \sin\!\left(\frac{2\pi \cdot \text{hour}}{24}\right), \qquad {x_{\cos}} = \cos\!\left(\frac{2\pi \cdot \text{hour}}{24}\right), \qquad {x_{7d}(t)} = \sum_{k=1}^{7} \text{orders}(t - k) $$
 
 With a cycle encoding, a linear model can represent a single daily peak. Two daily peaks need a second pair at 12 hours, as the lab shows.
 
@@ -139,18 +139,20 @@ Do tree models need feature engineering?
 
 Less than linear models, as they don't need scaling, and they find thresholds and many interactions. But they can't easily make ratios, as this needs many splits, and they can't extrapolate trends. Good domain features still often help the most.
 
+#### The 30-second answer
+
 I'd start by asking how the outcome really happens, then express that: ratios for fair comparisons, recency, windows of counts, cycles for time, and interactions. Linear models need more of this, while trees find thresholds and interactions, but not smooth ratios or trends. The main risk is leakage, so I'd compute every feature as of the prediction time, and fit anything learned from data on training folds only. If a feature gives a sudden huge jump, I'd suspect a leak first. I'd use the same code in training and serving.
 
 **Key terms and sources**
 
-Turning raw data into signal: ratios, dates and cycles, aggregates and interactions, what different models need, and how to avoid leakage.
+Turning raw data into signal: ratios, dates and cycles, aggregates and interactions, what different models need, and how to avoid leakage. · checked 6 Nov 2026
 
 #### Sources
 
-- scikit-learn user guide
+- [scikit-learn user guide](https://scikit-learn.org/stable/user_guide.html)
 
-- Google Machine Learning Crash Course
+- [Google Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course)
 
-- Géron, Hands-On Machine Learning, contents
+- [Géron, Hands-On Machine Learning, contents](https://unilibrary.zetech.ac.ke/bib/5958)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

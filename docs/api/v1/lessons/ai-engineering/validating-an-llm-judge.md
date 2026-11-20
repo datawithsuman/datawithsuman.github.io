@@ -78,7 +78,7 @@ Judges drift: production changes, and providers update models. Pin the judge's m
 
 #### The maths
 
-$$ \hat\theta = \frac{p_{obs} + \mathrm{TNR} - 1}{\mathrm{TPR} + \mathrm{TNR} - 1} $$
+$$ {\hat\theta} = \frac{{p_{obs}} + {\mathrm{TNR}} - 1}{{\mathrm{TPR}} + \mathrm{TNR} - 1} $$
 
 If the denominator TPR + TNR − 1 is close to 0, the judge is guessing and the correction blows up. Practical code refuses to correct below about 0.05.
 
@@ -138,22 +138,24 @@ The judge's verdict flips between runs on the same trace. What does that mean?
 
 The trace is borderline for your rubric. Clarify the definition or add examples near that boundary, and use temperature 0 in production.
 
+#### The 30-second answer
+
 I'd treat the judge as a classifier. I'd split human-labelled traces into a small train set for few-shot examples, a dev set to refine the prompt, and a test set used once. On the test set I'd measure TPR and TNR separately, aiming for about 90% each. Then on production traces I'd correct the judge's raw pass rate with the Rogan–Gladen formula, observed plus TNR minus one, over TPR plus TNR minus one, bootstrap the test set for a confidence interval, pin the judge model, and re-check it with fresh labels every week.
 
 **Key terms and sources**
 
-How to check an LLM judge against human labels with train, dev and test splits, measure the two ways it can be wrong (true positive and true negative rates), correct its raw pass rate, and put error bars on the result.
+How to check an LLM judge against human labels with train, dev and test splits, measure the two ways it can be wrong (true positive and true negative rates), correct its raw pass rate, and put error bars on the result. · checked 15 Nov 2026
 
 #### Sources
 
 - H. Husain and S. Shankar, _Evals for AI Engineers_ (O'Reilly): the Analyze-Measure-Improve lifecycle, error analysis, judges, CI and review
 
-- W. J. Rogan and B. Gladen, Estimating prevalence from the results of a screening test, Am. J. Epidemiology, 1978
+- [W. J. Rogan and B. Gladen, Estimating prevalence from the results of a screening test, Am. J. Epidemiology, 1978](https://doi.org/10.1093/oxfordjournals.aje.a112510)
 
-- H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)
+- [H. Husain and S. Shankar, AI Evals: everything you need to know (FAQ)](https://hamel.dev/blog/posts/evals-faq/)
 
-- E. Yan, Product evals in three simple steps
+- [E. Yan, Product evals in three simple steps](https://eugeneyan.com/writing/product-evals/)
 
-- S. Shankar et al., Who validates the validators? (EvalGen), UIST 2024
+- [S. Shankar et al., Who validates the validators? (EvalGen), UIST 2024](https://arxiv.org/abs/2404.12272)
 
 Explanations and examples are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and benchmark scores change quickly.

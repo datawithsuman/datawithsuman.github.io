@@ -98,7 +98,7 @@ Errors build up as you forecast further ahead. For a naive forecast, the spread 
 
 #### The maths
 
-$$ y'_t = c + \sum_{i=1}^{p}\phi_i\, y'_{t-i} + \sum_{j=1}^{q}\theta_j\, e_{t-j} + e_t, \qquad \ell_t = \alpha y_t + (1-\alpha)\,\ell_{t-1} $$
+$$ {y'_t} = {c} + {\sum_{i=1}^{p}\phi_i\, y'_{t-i}} + {\sum_{j=1}^{q}\theta_j\, e_{t-j}} + {e_t}, \qquad {\ell_t = \alpha y_t + (1-\alpha)\,\ell_{t-1}} $$
 
 From Hyndman and Athanasopoulos, Forecasting: Principles and Practice, chapters 8 and 9.
 
@@ -160,18 +160,20 @@ What's the difference between AR and MA?
 
 AR predicts from past values, so a shock's effect fades gradually. MA predicts from past errors, so a shock's effect ends after q steps. That's why the ACF of an MA(q) series has a last clear spike at lag q, while an AR series decays.
 
+#### The 30-second answer
+
 A stationary series behaves the same whenever you look at it, so trends and seasons break it, and differencing usually fixes that. ARIMA predicts the differenced series from its past values and past errors. I'd choose d with a test, read p or q from the ACF and PACF if the pattern is clear, and otherwise compare AICc for the same d. Exponential smoothing tracks a level, trend and season with weighted averages. Neither family contains the other, so I'd compare them with a backtest, against seasonal naive, and report intervals, which widen with the horizon.
 
 **Key terms and sources**
 
-Stationarity, differencing, ACF and PACF, what AR, MA and ARIMA models do, exponential smoothing from simple to Holt-Winters, and why intervals widen.
+Stationarity, differencing, ACF and PACF, what AR, MA and ARIMA models do, exponential smoothing from simple to Holt-Winters, and why intervals widen. · checked 6 Nov 2026
 
 #### Sources
 
-- Hyndman and Athanasopoulos, Forecasting: Principles and Practice, ARIMA (chapter 9)
+- [Hyndman and Athanasopoulos, Forecasting: Principles and Practice, ARIMA (chapter 9)](https://otexts.com/fpp3/arima.html)
 
-- Same book, exponential smoothing (chapter 8)
+- [Same book, exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
 
-- Same book, prediction intervals (section 5.5)
+- [Same book, prediction intervals (section 5.5)](https://otexts.com/fpp3/prediction-intervals.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

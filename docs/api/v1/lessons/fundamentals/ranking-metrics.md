@@ -47,7 +47,7 @@ Binary metrics count grade ≥ 2 ("good" or better) as relevant. There are 5 suc
 
 #### In one breath
 
-Search, recommendations and RAG retrieval return an **ordered list**, and users mostly look at the top. Ranking metrics score the list, not single predictions. **Precision@k**: how much of the top k is relevant. **Recall@k**: how much of everything relevant made the top k (the key RAG retriever metric). **MRR**: how high the first relevant result is. **MAP**: precision averaged at every relevant hit. **NDCG**: graded relevance with a position discount, normalised against the ideal order, the standard for search. Offline metrics are a proxy; online behaviour (clicks, conversions) is the truth.What you'll be able to do after this: compute every metric by hand on a ranked list, choose the right one for search vs RAG vs recommendations, and explain why NDCG needs graded labels.
+Search, recommendations and RAG retrieval return an **ordered list**, and users mostly look at the top. Ranking metrics score the list, not single predictions. **Precision@k**: how much of the top k is relevant. **Recall@k**: how much of everything relevant made the top k (the key RAG retriever metric). **MRR**: how high the first relevant result is. **MAP**: precision averaged at every relevant hit. **NDCG**: graded relevance with a position discount, normalised against the ideal order, the standard for search. Offline metrics are a proxy; online behaviour (clicks, conversions) is the truth. What you'll be able to do after this: compute every metric by hand on a ranked list, choose the right one for search vs RAG vs recommendations, and explain why NDCG needs graded labels.
 
 #### Relevance labels and the cut-off k
 
@@ -55,7 +55,7 @@ You need a judgement for each (query, item) pair: **binary** (relevant or not; R
 
 #### Precision@k, Recall@k and hit rate
 
-$$ P@k = \tfrac{\#\text{rel in top }k}{k} \qquad R@k = \tfrac{\#\text{rel in top }k}{\#\text{rel total}} \qquad HR@k = \mathbb 1[\#\text{rel in top }k \ge 1] $$
+$$ {P@k = \tfrac{\#\text{rel in top }k}{k}} \qquad {R@k = \tfrac{\#\text{rel in top }k}{\#\text{rel total}}} \qquad {HR@k = \mathbb 1[\#\text{rel in top }k \ge 1]} $$
 
 - **precision@k**: Share of the top k that is relevant. What the user sees on the first screen.
 
@@ -67,9 +67,9 @@ Recall@k needs to know every relevant item, which is easy when there's one gold 
 
 #### Reciprocal rank and MRR
 
-$$ \text{MRR} = \tfrac{1}{|Q|}\textstyle\sum_{q\in Q} \,1\,/\,\text{rank}_q $$
+$$ {\text{MRR}} = {\tfrac{1}{|Q|}\textstyle\sum_{q\in Q}} \,1\,/\,{\text{rank}_q} $$
 
-scikit-learn notes that with exactly one relevant label per sample, label-ranking average precision "is equivalent to the mean reciprocal rank" docs.
+scikit-learn notes that with exactly one relevant label per sample, label-ranking average precision "is equivalent to the mean reciprocal rank" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 - **mean reciprocal rank**: Average over queries of 1 / (position of the first relevant result).
 
@@ -83,7 +83,7 @@ Retriever X often puts the gold chunk first but sometimes misses it entirely; Y 
 
 #### Average precision and MAP
 
-$$ AP@k = \tfrac{1}{\min(k,\,R)}\textstyle\sum_{i=1}^{k} P@i\cdot\text{rel}(i) $$
+$$ {AP@k} = {\tfrac{1}{\min(k,\,R)}}\textstyle\sum_{i=1}^{k} P@i\cdot{\text{rel}(i)} $$
 
 The standard IR definition (Manning, Raghavan & Schütze, _Introduction to Information Retrieval_, ch. 8); it's the ranking version of the area under the precision–recall curve from the ROC vs PR lesson.
 
@@ -95,9 +95,9 @@ The standard IR definition (Manning, Raghavan & Schütze, _Introduction to Infor
 
 #### DCG and NDCG
 
-$$ \text{DCG}@k = \textstyle\sum_{i=1}^{k}\text{rel}_i \,/\, \log_2(i+1) \qquad \text{NDCG}@k = \text{DCG}@k \,/\, \text{IDCG}@k $$
+$$ {\text{DCG}@k} = \textstyle\sum_{i=1}^{k}{\text{rel}_i} \,/\, {\log_2(i+1)} \qquad {\text{NDCG}@k = \text{DCG}@k \,/\, \text{IDCG}@k} $$
 
-Järvelin & Kekäläinen introduced cumulated gain, its discounted version, and normalisation against the ideal ranking ACM TOIS 2002. scikit-learn: "Use NDCG when [the ground truth] has graded relevance" docs. Log base and gain function vary between libraries: always say which you used.
+Järvelin & Kekäläinen introduced cumulated gain, its discounted version, and normalisation against the ideal ranking [ACM TOIS 2002](https://trepo.tuni.fi/bitstream/10024/65718/1/cumulated_gain_based_indicators_2002.pdf). scikit-learn: "Use NDCG when [the ground truth] has graded relevance" [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Log base and gain function vary between libraries: always say which you used.
 
 - **discounted cumulative gain**: Sum of the gains of the top k items, each discounted by its position.
 
@@ -221,12 +221,12 @@ Precision@k, Recall@k, Hit Rate, MRR, MAP and NDCG · built from Järvelin & Kek
 
 #### What this page is built from
 
-1. K. Järvelin & J. Kekäläinen, Cumulated gain-based evaluation of IR techniques, ACM TOIS 20(4) (2002).
+1. K. Järvelin & J. Kekäläinen, [Cumulated gain-based evaluation of IR techniques](https://trepo.tuni.fi/bitstream/10024/65718/1/cumulated_gain_based_indicators_2002.pdf), ACM TOIS 20(4) (2002).
 
 2. C. Manning, P. Raghavan & H. Schütze, _Introduction to Information Retrieval_, ch. 8 (evaluation: precision, recall, MAP), Cambridge University Press 2008.
 
-3. scikit-learn, Metrics and scoring: ranking metrics (DCG/NDCG, LRAP ≈ MRR, coverage error).
+3. scikit-learn, [Metrics and scoring: ranking metrics](https://scikit-learn.org/stable/modules/model_evaluation.html) (DCG/NDCG, LRAP ≈ MRR, coverage error).
 
-4. Discounted cumulative gain (common log₂(i + 1) form).
+4. [Discounted cumulative gain](https://en.wikipedia.org/wiki/Discounted_cumulative_gain) (common log₂(i + 1) form).
 
 Search results, grades and RAG ranks are illustrative.

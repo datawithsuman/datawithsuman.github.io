@@ -74,7 +74,7 @@ The bound holds for one fixed model. If you try many models on the same test set
 
 #### The maths
 
-$$ P(X \ge a) \le \frac{\mathbb{E}[X]}{a}, \qquad P(|\bar X - \mu| \ge \varepsilon) \le \frac{\sigma^2}{n\varepsilon^2}, \qquad P(|\bar X - \mu| \ge \varepsilon) \le 2e^{-2n\varepsilon^2} $$
+$$ {P(X \ge a) \le \frac{\mathbb{E}[X]}{a}}, \qquad {P(|\bar X - \mu| \ge \varepsilon) \le \frac{\sigma^2}{n\varepsilon^2}}, \qquad {P(|\bar X - \mu| \ge \varepsilon) \le 2e^{-2n\varepsilon^2}} $$
 
 They’re upper bounds, so the real chance is usually far smaller. Their strength is that they hold for finite n, with few assumptions.
 
@@ -128,17 +128,19 @@ Why does reusing the test set inflate performance?
 
 You're selecting the model that did best on those particular examples, which picks up some luck. With more comparisons, the best score is more likely to be inflated. This adaptive reuse breaks the assumption of a fixed model, so keep a final test set you use only once.
 
+#### The 30-second answer
+
 These give guarantees on how far a value can stray from its mean, using little information. Markov needs only a non-negative variable and its mean. Chebyshev adds the variance, with a bound of one over k squared. Hoeffding needs independent, bounded values, and its bound falls exponentially with n. That gives a test-set size: n at least log of 2 over delta, divided by 2 epsilon squared. For plus or minus 2% at 95% confidence, it's about 4,600. If you reuse a test set across many models, the guarantee weakens.
 
 **Key terms and sources**
 
-Guarantees on how far an average can stray: Markov, Chebyshev and Hoeffding, how they compare, and what they say about test-set size and generalisation.
+Guarantees on how far an average can stray: Markov, Chebyshev and Hoeffding, how they compare, and what they say about test-set size and generalisation. · checked 6 Nov 2026
 
 #### Sources
 
-- Blitzstein and Hwang, Introduction to Probability
+- [Blitzstein and Hwang, Introduction to Probability](https://www.oreilly.com/library/view/-/9781466575578/)
 
-- Murphy, Probabilistic Machine Learning: An Introduction
+- [Murphy, Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
 
 - Train, test and cross-validation on this site
 

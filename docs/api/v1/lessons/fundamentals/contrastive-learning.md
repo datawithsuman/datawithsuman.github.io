@@ -48,11 +48,11 @@ With trained encoders and τ = 0.1, all 5 photos pick their own caption and the 
 
 #### In one breath
 
-**Contrastive learning** trains an encoder so that two views of the same thing land close together (a **positive pair**) and views of different things land far apart (**negatives**). For each example, the **InfoNCE** loss is a softmax classification: "which of the N candidates in this batch is my partner?", over cosine similarities divided by a **temperature** τ. **SimCLR** makes the pairs from two random augmentations of the same image; **CLIP** pairs each image with its caption from 400 million web image–text pairs, producing a shared space where text can search images and zero-shot classification works by comparing an image with prompts like "a photo of biryani". More negatives (bigger batches or a queue, as in MoCo) usually help.What you'll be able to do after this: write and compute the InfoNCE loss, explain temperature and negatives, and contrast SimCLR with CLIP.
+**Contrastive learning** trains an encoder so that two views of the same thing land close together (a **positive pair**) and views of different things land far apart (**negatives**). For each example, the **InfoNCE** loss is a softmax classification: "which of the N candidates in this batch is my partner?", over cosine similarities divided by a **temperature** τ. **SimCLR** makes the pairs from two random augmentations of the same image; **CLIP** pairs each image with its caption from 400 million web image–text pairs, producing a shared space where text can search images and zero-shot classification works by comparing an image with prompts like "a photo of biryani". More negatives (bigger batches or a queue, as in MoCo) usually help. What you'll be able to do after this: write and compute the InfoNCE loss, explain temperature and negatives, and contrast SimCLR with CLIP.
 
 #### InfoNCE: find your partner among N
 
-$$ \ell_i = -\log \frac{\exp\big(\mathrm{sim}(z_i, z_i^{+})/\tau\big)}{\sum_{j=1}^{N}\exp\big(\mathrm{sim}(z_i, z_j)/\tau\big)}, \qquad \mathrm{sim}(a,b) = \frac{a^{\top}b}{\lVert a\rVert\lVert b\rVert} $$
+$$ \ell_i = -\log \frac{\exp\big({\mathrm{sim}(z_i, z_i^{+})}/{\tau}\big)}{{\sum_{j=1}^{N}\exp\big(\mathrm{sim}(z_i, z_j)/\tau\big)}}, \qquad {\mathrm{sim}(a,b) = \frac{a^{\top}b}{\lVert a\rVert\lVert b\rVert}} $$
 
 Oord, Li & Vinyals (2018) introduced InfoNCE and showed it bounds the mutual information between the pair: the lower bound can be at most log N, one reason more negatives help. It's cross-entropy where the "class" is the partner's index (loss functions). Wang & Isola (2020) describe what it optimises as **alignment** (positives close) and **uniformity** (embeddings spread over the sphere).
 
@@ -80,7 +80,7 @@ InfoNCE maximises a lower bound on mutual information between two views.
 | **Negatives** | the other images in a large batch (up to 8,192) | the other captions/images in a batch of 32,768 |
 | **Result** | 76.5% ImageNet top-1 with a linear classifier on frozen features | zero-shot classification by comparing an image with "a photo of a {class}" prompts |
 
-SimCLR found strong augmentation (especially crop + colour) and the projection head essential arXiv:2002.05709. MoCo (He et al. 2020) keeps a queue of past embeddings from a slowly updated encoder to get many negatives without huge batches. CLIP arXiv:2103.00020 learns τ as a parameter.
+SimCLR found strong augmentation (especially crop + colour) and the projection head essential [arXiv:2002.05709](https://arxiv.org/abs/2002.05709). MoCo (He et al. 2020) keeps a queue of past embeddings from a slowly updated encoder to get many negatives without huge batches. CLIP [arXiv:2103.00020](https://arxiv.org/abs/2103.00020) learns τ as a parameter.
 
 #### Learning without negatives: BYOL, DINO and MAE
 
@@ -100,7 +100,7 @@ DINO and BYOL report a linear classifier on frozen features. MAE's figure is aft
 
 - **Which to use:** contrastive training still suits matching across types, like image and text. These methods suit pretraining a vision backbone from unlabelled images.
 
-Sources: BYOL, DINO and MAE.
+Sources: [BYOL](https://arxiv.org/abs/2006.07733), [DINO](https://arxiv.org/abs/2104.14294) and [MAE](https://arxiv.org/abs/2111.06377).
 
 #### What contrastive embeddings power
 
@@ -160,12 +160,12 @@ Learning embeddings without labels by pulling matching pairs together and pushin
 
 #### Sources
 
-1. A. van den Oord, Y. Li & O. Vinyals, "Representation Learning with Contrastive Predictive Coding", arXiv:1807.03748, 2018.
+1. A. van den Oord, Y. Li & O. Vinyals, "Representation Learning with Contrastive Predictive Coding", [arXiv:1807.03748](https://arxiv.org/abs/1807.03748), 2018.
 
-2. T. Chen, S. Kornblith, M. Norouzi & G. Hinton, "A Simple Framework for Contrastive Learning of Visual Representations" (SimCLR), ICML 2020, arXiv:2002.05709.
+2. T. Chen, S. Kornblith, M. Norouzi & G. Hinton, "A Simple Framework for Contrastive Learning of Visual Representations" (SimCLR), ICML 2020, [arXiv:2002.05709](https://arxiv.org/abs/2002.05709).
 
-3. K. He, H. Fan, Y. Wu, S. Xie & R. Girshick, "Momentum Contrast for Unsupervised Visual Representation Learning" (MoCo), CVPR 2020, arXiv:1911.05722.
+3. K. He, H. Fan, Y. Wu, S. Xie & R. Girshick, "Momentum Contrast for Unsupervised Visual Representation Learning" (MoCo), CVPR 2020, [arXiv:1911.05722](https://arxiv.org/abs/1911.05722).
 
-4. A. Radford et al., "Learning Transferable Visual Models From Natural Language Supervision" (CLIP), ICML 2021, arXiv:2103.00020.
+4. A. Radford et al., "Learning Transferable Visual Models From Natural Language Supervision" (CLIP), ICML 2021, [arXiv:2103.00020](https://arxiv.org/abs/2103.00020).
 
-5. T. Wang & P. Isola, "Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere", ICML 2020, arXiv:2005.10242.
+5. T. Wang & P. Isola, "Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere", ICML 2020, [arXiv:2005.10242](https://arxiv.org/abs/2005.10242).

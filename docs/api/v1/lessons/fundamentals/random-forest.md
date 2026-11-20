@@ -27,7 +27,7 @@ One feature, credit score, separates these eight perfectly (650 and below never 
 
 #### One decision tree is sharp but unstable
 
-A decision tree asks yes/no questions about features until it reaches a leaf with an answer. Grown deep, it fits its training data almost perfectly, so its bias is low. The catch is variance: scikit-learn's own docs warn that "small variations in the data might result in a completely different tree being generated" sklearn trees. Watch it happen with one relabelled applicant.
+A decision tree asks yes/no questions about features until it reaches a leaf with an answer. Grown deep, it fits its training data almost perfectly, so its bias is low. The catch is variance: scikit-learn's own docs warn that "small variations in the data might result in a completely different tree being generated" [sklearn trees](https://scikit-learn.org/stable/modules/tree.html). Watch it happen with one relabelled applicant.
 
 1. Trained on the eight rows, the best first question is "credit ≤ 650?". It splits the data perfectly.
 
@@ -55,9 +55,9 @@ _Illustrative. Different rows and features make the trees disagree, and the comb
 
 #### Averaging only cancels mistakes that differ
 
-Here is the one equation the whole method follows from. Average B trees whose predictions each have variance σ² and are correlated with each other by ρ ESL Eq. 15.1, p. 588:
+Here is the one equation the whole method follows from. Average B trees whose predictions each have variance σ² and are correlated with each other by ρ [ESL Eq. 15.1, p. 588](https://hastie.su.domains/ElemStatLearn/):
 
-$$ \mathrm{Var}\big(\bar f\,\big) = \rho\,\sigma^{2} + \frac{1-\rho}{B}\,\sigma^{2} $$
+$$ {\mathrm{Var}\big(\bar f\,\big)} = {{\rho}\,\sigma^{2}} + {\frac{1-\rho}{B}\,\sigma^{2}} $$
 
 Hastie, Tibshirani & Friedman, _Elements of Statistical Learning_, §15.2 · hover any symbol for its meaning.
 
@@ -81,15 +81,15 @@ Why only variance? Bagged trees are identically distributed, so the average has 
 
 #### In one breath
 
-A single decision tree is accurate on the data it saw but changes wildly when the data changes a little. A random forest grows hundreds of trees, each on a bootstrap sample of the rows and each choosing every split from a random handful of features, then lets them vote. The randomness makes the trees disagree, and averaging trees that disagree cancels their mistakes.After this you can derive why it works (the variance formula), explain every knob (n_estimators, max_features, bootstrap, oob_score), and answer the usual interview follow-ups.
+A single decision tree is accurate on the data it saw but changes wildly when the data changes a little. A random forest grows hundreds of trees, each on a bootstrap sample of the rows and each choosing every split from a random handful of features, then lets them vote. The randomness makes the trees disagree, and averaging trees that disagree cancels their mistakes. After this you can derive why it works (the variance formula), explain every knob (n_estimators, max_features, bootstrap, oob_score), and answer the usual interview follow-ups.
 
 #### Gini impurity: how mixed is a group?
 
-At each node, a tree (CART, which scikit-learn implements) tries every feature and every threshold, and keeps the split whose two children are the least mixed. Mixedness is measured with Gini impurity: 0 when a group is all one class, 0.5 when two classes are 50/50 sklearn §1.10.7.
+At each node, a tree (CART, which scikit-learn implements) tries every feature and every threshold, and keeps the split whose two children are the least mixed. Mixedness is measured with Gini impurity: 0 when a group is all one class, 0.5 when two classes are 50/50 [sklearn §1.10.7](https://scikit-learn.org/stable/modules/tree.html#classification-criteria).
 
-$$ G(\theta) = \tfrac{n_{L}}{n}\,H(L) + \tfrac{n_{R}}{n}\,H(R),\qquad H(Q)=\sum_k p_k\,(1-p_k) $$
+$$ {G(\theta)} = {\tfrac{n_{L}}{n}}\,{H(L)} + {\tfrac{n_{R}}{n}}\,H(R),\qquad {H(Q)=\sum_k p_k\,(1-p_k)} $$
 
-scikit-learn's mathematical formulation for classification trees sklearn §1.10.7 · hover any symbol for its meaning.
+scikit-learn's mathematical formulation for classification trees [sklearn §1.10.7](https://scikit-learn.org/stable/modules/tree.html#mathematical-formulation) · hover any symbol for its meaning.
 
 - **split score**: G is the score of one candidate split: lower is better. The tree computes it for every feature and threshold and keeps the minimum.
 
@@ -109,7 +109,7 @@ Try every feature: only credit score reaches 0. A greedy tree will always take i
 
 1. Start with the N = 8 training rows.
 
-2. Draw 8 rows at random, putting each one back before the next draw. scikit-learn does exactly this with `randint(0, n, n)` _forest.py.
+2. Draw 8 rows at random, putting each one back before the next draw. scikit-learn does exactly this with `randint(0, n, n)` [_forest.py](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py).
 
 3. Some rows get picked twice or more, so this tree effectively weights them more.
 
@@ -117,9 +117,9 @@ Try every feature: only credit score reaches 0. A greedy tree will always take i
 
 How many rows does a tree miss? Each draw misses a given row with probability 1 − 1/N, and there are N independent draws:
 
-$$ P(\text{row never drawn}) = \Big(1-\frac{1}{N}\Big)^{N} \;\longrightarrow\; e^{-1}\approx 0.368 $$
+$$ {P(\text{row never drawn})} = {\Big(1-\frac{1}{N}\Big)}^{{N}} \;\longrightarrow\; {e^{-1}\approx 0.368} $$
 
-Standard bootstrap result; Breiman: "about one-third of the instances are left out" Breiman 2001, p. 8.
+Standard bootstrap result; Breiman: "about one-third of the instances are left out" [Breiman 2001, p. 8](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8).
 
 - **chance a row is left out**: The probability that one particular row never appears in the bootstrap sample.
 
@@ -131,11 +131,11 @@ Standard bootstrap result; Breiman: "about one-third of the instances are left o
 
 ##### Why keep bootstrapping once features are random?
 
-Breiman gives two reasons: bagging "seems to enhance accuracy when random features are used", and the left-out rows give running estimates of error, strength and correlation p. 8. scikit-learn: `bootstrap=True` by default; turn it off and every tree sees all rows (as Extra-Trees do).
+Breiman gives two reasons: bagging "seems to enhance accuracy when random features are used", and the left-out rows give running estimates of error, strength and correlation [p. 8](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8). scikit-learn: `bootstrap=True` by default; turn it off and every tree sees all rows (as Extra-Trees do).
 
 #### Hide the star feature sometimes
 
-This is the move that turns bagging into a random forest. Before each split, the tree may only look at m features drawn at random from all p. It picks the best split among those m, and the next node draws a fresh m ESL Alg. 15.1.
+This is the move that turns bagging into a random forest. Before each split, the tree may only look at m features drawn at random from all p. It picks the best split among those m, and the next node draws a fresh m [ESL Alg. 15.1](https://hastie.su.domains/ElemStatLearn/).
 
 1. At the root, the tree could consider all four features, and credit score would win every time.
 
@@ -153,11 +153,11 @@ Same experiment as the bagging lab in The answer that sounds right, but now you 
 
 ##### The trade-off, in Breiman's own bound
 
-Lower m means less correlated trees, but each tree is also a bit weaker. The authors put it plainly: "Reducing m reduces both the correlation and the strength" Breiman & Cutler. Breiman's Theorem 2.3 bounds the forest's error with exactly these two numbers:
+Lower m means less correlated trees, but each tree is also a bit weaker. The authors put it plainly: "Reducing m reduces both the correlation and the strength" [Breiman & Cutler](https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm). Breiman's Theorem 2.3 bounds the forest's error with exactly these two numbers:
 
-$$ PE^{*} \;\le\; \frac{\bar\rho\,\big(1-s^{2}\big)}{s^{2}} $$
+$$ {PE^{*}} \;\le\; {\frac{{\bar\rho}\,\big(1-{s}^{2}\big)}{{s}^{2}}} $$
 
-Breiman 2001, Theorem 2.3 p. 6. He adds that the bound "is likely to be loose".
+Breiman 2001, Theorem 2.3 [p. 6](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=6). He adds that the bound "is likely to be loose".
 
 - **forest error**: PE* is the forest’s generalization error: the chance it misclassifies a new example.
 
@@ -175,11 +175,11 @@ Breiman 2001, Theorem 2.3 p. 6. He adds that the bound "is likely to be loose".
 | scikit-learn default | "sqrt" | 1.0 = all features (plain bagging) |
 | Breiman's 2001 experiments | m = 1 and m = ⌊log₂p + 1⌋, picked by out-of-bag error | |
 
-Sources: ESL §15.3, p. 592; sklearn ensembles, which also notes 0.3 "is a typical default in the literature" for regression; Breiman p. 9.
+Sources: ESL §15.3, p. 592; [sklearn ensembles](https://scikit-learn.org/stable/modules/ensemble.html#random-forests), which also notes 0.3 "is a typical default in the literature" for regression; Breiman p. 9.
 
 ##### It is not very sensitive to m
 
-Across Breiman's 20 datasets, the average absolute difference in test error between m = 1 and the larger m was under 1%. "It was surprising that using a single randomly chosen input variable to split on at each node could produce good accuracy" p. 11. ESL adds that the best m is problem-dependent and worth tuning (their Figure 15.3: m = 6 beats the default 2).
+Across Breiman's 20 datasets, the average absolute difference in test error between m = 1 and the larger m was under 1%. "It was surprising that using a single randomly chosen input variable to split on at each node could produce good accuracy" [p. 11](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=11). ESL adds that the best m is problem-dependent and worth tuning (their Figure 15.3: m = 6 beats the default 2).
 
 ##### What breaks without it
 
@@ -187,9 +187,9 @@ Set m = p and you are back to bagging: scikit-learn calls `max_features=1.0` "eq
 
 #### Vote, or average the probabilities
 
-For regression the forest averages the trees' numbers. For classification the original paper lets each tree cast one vote Def. 1.1, p. 2.
+For regression the forest averages the trees' numbers. For classification the original paper lets each tree cast one vote [Def. 1.1, p. 2](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=2).
 
-$$ \hat f^{\,B}_{\mathrm{rf}}(x) = \frac{1}{B}\sum_{b=1}^{B}\,T(x;\,\Theta_b) $$
+$$ {\hat f^{\,B}_{\mathrm{rf}}(x)} = {\frac{1}{B}\sum_{b=1}^{B}}\,{T(x;\,{\Theta_b})} $$
 
 ESL Eq. 15.2, p. 589 · hover any symbol for its meaning.
 
@@ -201,15 +201,15 @@ ESL Eq. 15.2, p. 589 · hover any symbol for its meaning.
 
 - **its randomness**: Θ_b holds everything random about tree b: which rows it drew and which features each split was offered.
 
-Here is a detail many explanations miss: **scikit-learn does not take a majority vote.** Its classifier averages each tree's predicted class probabilities ("in contrast to the original publication") sklearn ensembles; the code divides the summed `predict_proba` by the number of trees _forest.py. Usually they agree. Not always:
+Here is a detail many explanations miss: **scikit-learn does not take a majority vote.** Its classifier averages each tree's predicted class probabilities ("in contrast to the original publication") [sklearn ensembles](https://scikit-learn.org/stable/modules/ensemble.html#random-forests); the code divides the summed `predict_proba` by the number of trees [_forest.py](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py). Usually they agree. Not always:
 
 ##### Do more trees overfit?
 
-No. Breiman's Theorem 1.2: as trees are added the error converges to a limit, "this result explains why random forests do not overfit as more trees are added" p. 4. More trees only cost time.
+No. Breiman's Theorem 1.2: as trees are added the error converges to a limit, "this result explains why random forests do not overfit as more trees are added" [p. 4](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=4). More trees only cost time.
 
 ##### But the forest itself can still overfit
 
-ESL is careful here: adding trees does not overfit, but the limit, an average of fully grown trees, "can overfit the data" and "incur unnecessary variance"; controlling depth gives small gains in some studies, though full trees "seldom cost much" ESL §15.3.4, p. 596. The authors' site says "Random forests does not overfit" Breiman & Cutler. Both are right about different things: B does not overfit; depth and leaf size can.
+ESL is careful here: adding trees does not overfit, but the limit, an average of fully grown trees, "can overfit the data" and "incur unnecessary variance"; controlling depth gives small gains in some studies, though full trees "seldom cost much" ESL §15.3.4, p. 596. The authors' site says "Random forests does not overfit" [Breiman & Cutler](https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm). Both are right about different things: B does not overfit; depth and leaf size can.
 
 #### Every row is a test row for about a third of the trees
 
@@ -221,7 +221,7 @@ ESL is careful here: adding trees does not overfit, but the limit, an average of
 
 4. Do this for every row and compare with the truth. That error rate is the out-of-bag (OOB) error, a test-set estimate without holding any data back.
 
-Breiman cites evidence that the OOB estimate "is as accurate as using a test set of the same size as the training set", and notes it is unbiased once you run past the point where the error has converged p. 8. ESL: almost identical to N-fold cross-validation, so you can stop adding trees once OOB error stabilizes ESL §15.3.1, p. 592. In scikit-learn: `oob_score=True`, available only with `bootstrap=True`.
+Breiman cites evidence that the OOB estimate "is as accurate as using a test set of the same size as the training set", and notes it is unbiased once you run past the point where the error has converged [p. 8](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=8). ESL: almost identical to N-fold cross-validation, so you can stop adding trees once OOB error stabilizes ESL §15.3.1, p. 592. In scikit-learn: `oob_score=True`, available only with `bootstrap=True`.
 
 #### Shuffle a column and see how much worse it gets
 
@@ -233,9 +233,9 @@ Breiman cites evidence that the OOB estimate "is as accurate as using a test set
 
 4. If error barely moves, the model did not need it. Repeat for every feature.
 
-$$ i_j = s - \frac{1}{K}\sum_{k=1}^{K} s_{k,j} $$
+$$ {i_j} = {s} - {\frac{1}{K}\sum_{k=1}^{K} s_{k,j}} $$
 
-sklearn permutation importance; Breiman's original version permutes each variable in the out-of-bag rows p. 19.
+[sklearn permutation importance](https://scikit-learn.org/stable/modules/permutation_importance.html); Breiman's original version permutes each variable in the out-of-bag rows [p. 19](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=19).
 
 - **importance of feature j**: How much the score drops when feature j is scrambled.
 
@@ -251,7 +251,7 @@ sklearn permutation importance; Breiman's original version permutes each variabl
 
 ##### Do not trust the default bar chart blindly
 
-scikit-learn: impurity-based importances "favor high cardinality features" and are computed on training data, so they "do not necessarily inform us on which features are most important" for new data sklearn. Strobl et al. (2007) showed the measures are unreliable when predictors differ in scale or number of categories, and a 2008 follow-up found bias toward correlated predictors Strobl 2007. For correlated features, scikit-learn suggests clustering them and keeping one per cluster.
+scikit-learn: impurity-based importances "favor high cardinality features" and are computed on training data, so they "do not necessarily inform us on which features are most important" for new data [sklearn](https://scikit-learn.org/stable/modules/ensemble.html#feature-importance-evaluation). Strobl et al. (2007) showed the measures are unreliable when predictors differ in scale or number of categories, and a 2008 follow-up found bias toward correlated predictors [Strobl 2007](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-25). For correlated features, scikit-learn suggests clustering them and keeping one per cluster.
 
 To explain a model properly, see SHAP, permutation importance and partial dependence. To compare combination methods, see ensembles.
 
@@ -283,7 +283,7 @@ To explain a model properly, see SHAP, permutation importance and partial depend
 
 Idea one: train 100 trees and average them. On the same data, a tree-growing algorithm with no randomness builds the same tree 100 times. The average of 100 identical answers is that answer.
 
-Idea two, bagging (Breiman, 1996): give each tree a different bootstrap sample, the rows drawn at random with replacement Breiman 1996. Better, but there is a trap. When one feature is much stronger than the rest, most samples still split on it first, so the trees stay similar.
+Idea two, bagging (Breiman, 1996): give each tree a different bootstrap sample, the rows drawn at random with replacement [Breiman 1996](https://statistics.berkeley.edu/node/1781). Better, but there is a trap. When one feature is much stronger than the rest, most samples still split on it first, so the trees stay similar.
 
 1. Bootstrap sample 1 repeats row 1 and leaves out row 3. Its best first split is still credit score.
 
@@ -313,7 +313,7 @@ This grows 60 one-split trees, each on its own bootstrap sample, letting every s
 
 ##### What came after
 
-**Extra-Trees** (Geurts et al., 2006) go further: random features and random thresholds, and by default no bootstrap, trading a bit more bias for a bit less variance Geurts 2006. **Gradient boosting** (XGBoost, LightGBM) takes AdaBoost's sequential route and now usually leads tabular benchmarks.
+**Extra-Trees** (Geurts et al., 2006) go further: random features and random thresholds, and by default no bootstrap, trading a bit more bias for a bit less variance [Geurts 2006](https://doi.org/10.1007/s10994-006-6226-1). **Gradient boosting** (XGBoost, LightGBM) takes AdaBoost's sequential route and now usually leads tabular benchmarks.
 
 ## Say it
 
@@ -391,7 +391,7 @@ Leo Breiman's 2001 method, as it runs in scikit-learn today · 16 sources · che
 
 #### Five ways people already randomized ensembles
 
-Breiman's paper opens by listing the tricks it builds on Breiman 2001, p. 1–2. Each injects randomness somewhere different.
+Breiman's paper opens by listing the tricks it builds on [Breiman 2001, p. 1–2](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=1). Each injects randomness somewhere different.
 
 1. Bagging (Breiman, 1996): each tree sees a bootstrap sample of the rows, then they vote.
 
@@ -401,19 +401,19 @@ Breiman's paper opens by listing the tricks it builds on Breiman 2001, p. 1–2.
 
 4. The random forest combines bagging with a fresh random feature subset at every single split, and grows each tree to full depth without pruning.
 
-Before random forests, these randomized ensembles were less accurate than AdaBoost: Breiman notes that random split selection beats bagging, "but none of these three forests do as well as Adaboost" Breiman 2001, p. 7. Closing that gap was the goal.
+Before random forests, these randomized ensembles were less accurate than AdaBoost: Breiman notes that random split selection beats bagging, "but none of these three forests do as well as Adaboost" [Breiman 2001, p. 7](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=7). Closing that gap was the goal.
 
 #### Does it work?
 
 ##### One tree vs forest vs AdaBoost (Breiman, 2001)
 
-Test-set error, lower is better. Forest-RI with 100 trees; AdaBoost with 50; m chosen by out-of-bag error between 1 and ⌊log₂p + 1⌋; "one tree" is the average single tree in the forest Table 2, p. 10–11.
+Test-set error, lower is better. Forest-RI with 100 trees; AdaBoost with 50; m chosen by out-of-bag error between 1 and ⌊log₂p + 1⌋; "one tree" is the average single tree in the forest [Table 2, p. 10–11](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=10).
 
 The forest cuts the average single tree's error by about 1.8× (glass) to 9× (vowel) and matches AdaBoost, beating it on some datasets and trailing on others. Across all 20 datasets in the table the two stay within a few points of each other.
 
 ##### With 5% of labels flipped
 
-Breiman flipped 5% of the training labels and measured how much each method's test error rose Table 4, p. 16:
+Breiman flipped 5% of the training labels and measured how much each method's test error rose [Table 4, p. 16](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=16):
 
 | Dataset | AdaBoost | Random forest |
 |---|---|---|
@@ -428,11 +428,11 @@ Why: AdaBoost keeps raising the weight of rows it gets wrong, and mislabelled ro
 
 ##### Fast, too
 
-Each split searches only m features. On the zip-code data with m = 1, 100 forest trees took 4.0 minutes versus almost three hours for 50 AdaBoost trees, about 40× faster (a 250 MHz Mac in 2000) p. 11.
+Each split searches only m features. On the zip-code data with m = 1, 100 forest trees took 4.0 minutes versus almost three hours for 50 AdaBoost trees, about 40× faster (a 250 MHz Mac in 2000) [p. 11](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf#page=11).
 
 ##### Update · my check (27 Oct 2026)
 
-Twenty-five years on, tree ensembles still do well on tables. A 45-dataset NeurIPS 2022 benchmark found tree-based models such as XGBoost and random forests remain state of the art on medium-sized (~10K rows) tabular data, ahead of deep learning Grinsztajn et al. 2022. The NeurIPS 2025 TabArena benchmark finds gradient-boosted trees still strong, deep models catching up with large tuning budgets, and TabPFNv2 excelling on small datasets (≤10K rows) TabArena. In those benchmarks, tuned boosting usually edges out random forests on accuracy; forests win on how little tuning they need. A review of RF tuning agrees the defaults "work reasonably well" in most cases, with tuning adding some gains Probst et al. 2019.
+Twenty-five years on, tree ensembles still do well on tables. A 45-dataset NeurIPS 2022 benchmark found tree-based models such as XGBoost and random forests remain state of the art on medium-sized (~10K rows) tabular data, ahead of deep learning [Grinsztajn et al. 2022](https://arxiv.org/abs/2207.08815). The NeurIPS 2025 TabArena benchmark finds gradient-boosted trees still strong, deep models catching up with large tuning budgets, and TabPFNv2 excelling on small datasets (≤10K rows) [TabArena](https://arxiv.org/abs/2506.16791). In those benchmarks, tuned boosting usually edges out random forests on accuracy; forests win on how little tuning they need. A review of RF tuning agrees the defaults "work reasonably well" in most cases, with tuning adding some gains [Probst et al. 2019](https://arxiv.org/abs/1804.03515).
 
 #### Key terms
 
@@ -470,30 +470,30 @@ Mean decrease in impurity, scikit-learn's default `feature_importances_`.
 
 #### Everything on this page comes from these
 
-1. Breiman, L. (2001). Random Forests. _Machine Learning_ 45, 5–32. preprint PDF
+1. Breiman, L. (2001). Random Forests. _Machine Learning_ 45, 5–32. [preprint PDF](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf)
 
-2. Breiman, L. & Cutler, A. Random Forests (authors' site). stat.berkeley.edu
+2. Breiman, L. & Cutler, A. Random Forests (authors' site). [stat.berkeley.edu](https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm)
 
-3. Hastie, Tibshirani, Friedman. _The Elements of Statistical Learning_, 2nd ed., Ch. 15. book site
+3. Hastie, Tibshirani, Friedman. _The Elements of Statistical Learning_, 2nd ed., Ch. 15. [book site](https://hastie.su.domains/ElemStatLearn/)
 
-4. scikit-learn User Guide: Ensembles, Decision trees, Permutation importance
+4. scikit-learn User Guide: [Ensembles](https://scikit-learn.org/stable/modules/ensemble.html#random-forests), [Decision trees](https://scikit-learn.org/stable/modules/tree.html), [Permutation importance](https://scikit-learn.org/stable/modules/permutation_importance.html)
 
-5. scikit-learn source, sklearn/ensemble/_forest.py
+5. scikit-learn source, [sklearn/ensemble/_forest.py](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py)
 
-6. Breiman, L. (1996). Bagging Predictors. Berkeley Statistics
+6. Breiman, L. (1996). Bagging Predictors. [Berkeley Statistics](https://statistics.berkeley.edu/node/1781)
 
-7. Geurts, Ernst, Wehenkel (2006). Extremely randomized trees. doi
+7. Geurts, Ernst, Wehenkel (2006). Extremely randomized trees. [doi](https://doi.org/10.1007/s10994-006-6226-1)
 
-8. Strobl, Boulesteix, Zeileis, Hothorn (2007). Bias in random forest variable importance measures. BMC Bioinformatics
+8. Strobl, Boulesteix, Zeileis, Hothorn (2007). Bias in random forest variable importance measures. [BMC Bioinformatics](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-25)
 
-9. Probst, Wright, Boulesteix (2019). Hyperparameters and Tuning Strategies for Random Forest. arXiv 1804.03515
+9. Probst, Wright, Boulesteix (2019). Hyperparameters and Tuning Strategies for Random Forest. [arXiv 1804.03515](https://arxiv.org/abs/1804.03515)
 
-10. Grinsztajn, Oyallon, Varoquaux (2022). Why do tree-based models still outperform deep learning on tabular data? arXiv 2207.08815
+10. Grinsztajn, Oyallon, Varoquaux (2022). Why do tree-based models still outperform deep learning on tabular data? [arXiv 2207.08815](https://arxiv.org/abs/2207.08815)
 
-11. Erickson et al. (2025). TabArena: A Living Benchmark for Machine Learning on Tabular Data. arXiv 2506.16791
+11. Erickson et al. (2025). TabArena: A Living Benchmark for Machine Learning on Tabular Data. [arXiv 2506.16791](https://arxiv.org/abs/2506.16791)
 
-12. Bootstrap aggregating. Wikipedia (63.2% / 36.8%)
+12. Bootstrap aggregating. [Wikipedia](https://en.wikipedia.org/wiki/Bootstrap_aggregating) (63.2% / 36.8%)
 
-13. Interview-question collections used to pick the follow-ups: Analytics Vidhya, Towards AI, DS Handbook
+13. Interview-question collections used to pick the follow-ups: [Analytics Vidhya](https://www.analyticsvidhya.com/blog/2022/12/interview-questions-on-bagging-algorithms-in-machine-learning/), [Towards AI](https://towardsai.net/p/machine-learning/top-20-random-forest-interview-questions-answers), [DS Handbook](https://dshandbook.substack.com/p/random-forest-interview-questions)
 
 The 8-applicant dataset and the numbers in the permutation and OOB scenes are illustrative. All other numbers come from the sources above. @datawithsuman

@@ -80,7 +80,7 @@ With K classes, the class means lie in at most K − 1 dimensions, so LDA can pr
 
 #### The maths
 
-$$ \delta_k(x) = -\tfrac12 \log|\Sigma_k| - \tfrac12 (x-\mu_k)^{\top}\Sigma_k^{-1}(x-\mu_k) + \log \pi_k, \qquad \delta_k(x) = x^{\top}\Sigma^{-1}\mu_k - \tfrac12\mu_k^{\top}\Sigma^{-1}\mu_k + \log\pi_k $$
+$$ {\delta_k(x) = -\tfrac12 \log|\Sigma_k| - \tfrac12 (x-\mu_k)^{\top}\Sigma_k^{-1}(x-\mu_k) + \log \pi_k}, \qquad {\delta_k(x) = x^{\top}\Sigma^{-1}\mu_k - \tfrac12\mu_k^{\top}\Sigma^{-1}\mu_k + \log\pi_k} $$
 
 Both come from Bayes’ rule with Gaussian classes, as in the scikit-learn guide. π is the share of each class.
 
@@ -134,18 +134,20 @@ How is naive Bayes related to QDA?
 
 Gaussian naive Bayes is QDA with each covariance restricted to its diagonal. That removes correlations, so it estimates far fewer numbers. It's more stable with little data, but it can't use correlation between features.
 
+#### The 30-second answer
+
 LDA and QDA are generative: they model each class as a Gaussian, and use Bayes' rule. LDA shares one covariance across classes, so the quadratic term cancels, and boundaries are straight. QDA gives each class its own, so boundaries curve, but it has far more to estimate, so it needs more data. Gaussian naive Bayes is QDA with diagonal covariances. Compared with logistic regression, LDA is more efficient if the Gaussian assumption holds, while logistic regression is safer if it doesn't. With many features, I'd use shrinkage. LDA can also project data to at most K minus 1 dimensions.
 
 **Key terms and sources**
 
-Modelling each class as a Gaussian: shared or separate covariance, linear or curved boundaries, shrinkage, LDA as dimensionality reduction, and how they compare.
+Modelling each class as a Gaussian: shared or separate covariance, linear or curved boundaries, shrinkage, LDA as dimensionality reduction, and how they compare. · checked 6 Nov 2026
 
 #### Sources
 
-- scikit-learn on linear and quadratic discriminant analysis
+- [scikit-learn on linear and quadratic discriminant analysis](https://scikit-learn.org/stable/modules/lda_qda.html)
 
-- ISLR, chapter on classification
+- [ISLR, chapter on classification](https://www.statlearning.com/)
 
-- CS229 syllabus, generative learning
+- [CS229 syllabus, generative learning](https://cs229.stanford.edu/syllabus-summer2019.html)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

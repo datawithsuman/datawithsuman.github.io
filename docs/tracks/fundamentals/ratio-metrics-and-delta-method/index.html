@@ -139,12 +139,12 @@
 </div>
 <div class="say-step say-final" data-say-step tabindex="-1">
 <p class="say-score" data-say-score hidden></p>
-<p class="say30">If I randomise by user but measure per page view, those views aren't independent, because one person's behaviour repeats. The standard formula treats them as separate, so the standard error's too small, and false positives rise above 5%. I'd use the delta method, which computes the variance from per-user clicks and views and how they vary together. Or I'd bootstrap whole users. The key is that uncertainty should reflect the number of randomised users, not page views.</p>
+<h3>The 30-second answer</h3><p class="say30">If I randomise by user but measure per page view, those views aren't independent, because one person's behaviour repeats. The standard formula treats them as separate, so the standard error's too small, and false positives rise above 5%. I'd use the delta method, which computes the variance from per-user clicks and views and how they vary together. Or I'd bootstrap whole users. The key is that uncertainty should reflect the number of randomised users, not page views.</p>
 
 </div>
 </div>
 </section>
-<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Why ratio metrics break standard A/B test formulas when the analysis unit differs from the randomisation unit, and how the delta method fixes it.</p><section class="ch" id="src" data-toc="Sources">
+<p class="mark-done"><button type="button" class="link-btn" id="markDone">Mark done</button></p></div><div class="lx"><details class="more" id="reference"><summary>Key terms and sources</summary><p class="small built-from">Why ratio metrics break standard A/B test formulas when the analysis unit differs from the randomisation unit, and how the delta method fixes it. · checked 7 Nov 2026</p><section class="ch" id="src" data-toc="Sources">
   <h3>Sources</h3>
   <ul><li><a href="https://ftp.fau.de/cran/web/packages/deltatest/readme/README.html">Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics (2018), via the deltatest package notes</a></li><li><a href="https://campus.datacamp.com/courses/ab-testing-in-python/practical-considerations-and-making-decisions?ex=8">Ratio metrics in A/B testing, DataCamp</a></li><li><a href="https://arxiv.org/abs/1803.06336">Deng, Knoblich and Lu, Applying the Delta Method in Metric Analytics</a></li></ul>
   <p class="small">Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.</p>

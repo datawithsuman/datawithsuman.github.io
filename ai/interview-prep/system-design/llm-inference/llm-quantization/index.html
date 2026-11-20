@@ -218,7 +218,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
 <header class="top">
   <div class="kicker">Deep explainer · LLM Inference &amp; Serving · 2 of 9</div>
   <h1>LLM Quantization</h1>
-  <div class="meta">Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 docs and the gpt-oss model card · checked 28 Oct 2026 · updated 29 Oct 2026</div>
+  <div class="meta">Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 docs and the gpt-oss model card · checked 7 Nov 2026 · updated 29 Oct 2026</div>
   <div class="tldr"><b>In one breath:</b> quantization stores each number in 8 or 4 bits instead of 16, so the model fits on fewer GPUs and decode moves fewer bytes per token. Rounding always makes errors. The real methods differ in <b>where those errors land</b>: spread across small groups, steered away from the 1% of channels that matter (AWQ), cancelled by adjusting the remaining weights (GPTQ), or moved from hard-to-quantize activations into easy weights (SmoothQuant).<br><span class="small">What you'll be able to do after this: size a quantized deployment on a napkin, explain why plain rounding breaks large models, read the GPTQ, AWQ and SmoothQuant equations, and choose a format for a given bottleneck.</span></div>
   <div class="legend"><span><i style="background:var(--a)"></i>original values</span><span><i style="background:var(--b)"></i>quantized values</span><span><i style="background:var(--bad)"></i>error, outliers, collapse</span><span><i style="background:var(--ok)"></i>fix that works</span><span><i style="background:var(--st)"></i>activations</span><span><i style="background:var(--info)"></i>memory, numbers</span></div>
 </header>
@@ -655,7 +655,7 @@ ol.src-list{font-size:14px;color:var(--dim);padding-left:20px} ol.src-list li{ma
     <li><b>Quantize the KV cache too.</b> At high concurrency the KV cache, not the weights, limits batch size; an FP8 KV cache halves it. See <a href="../scaling-inference/">Scaling Inference</a> for why FP8 weights alone may not reduce GPU count.</li>
     <li><b>Evaluate on tasks, not just perplexity.</b> Perplexity can hide drops on reasoning, maths, code and long-context tasks; check your own task metrics before and after quantizing.</li>
   </ul></div>
-  <p class="small" id="dq-note"><b>Added 7 Nov 2026:</b> since prefill and decode want different formats, a 2026 paper from NVIDIA and ISTA proposes quantizing them differently, with low-precision maths for prefill and compact weights for decode. It's early research, but it fits the phase split in <a href="../prefill-vs-decode/">Prefill vs Decode</a>.</p>
+  <p class="small" id="dq-note">Since prefill and decode want different formats, a 2026 paper from NVIDIA and ISTA proposes quantizing them differently, with low-precision maths for prefill and compact weights for decode. It's early research, but it fits the phase split in <a href="../prefill-vs-decode/">Prefill vs Decode</a>.</p>
 </section>
 
 <section class="ch" id="iv" data-toc="Interview">

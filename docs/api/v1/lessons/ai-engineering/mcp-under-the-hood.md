@@ -90,7 +90,7 @@ Long-running work moved into an optional **tasks** extension, polled with `tasks
 
 #### The maths
 
-$$ \text{code\_challenge} = \text{BASE64URL}\big(\text{SHA256}(\text{code\_verifier})\big) $$
+$$ {\text{code\_challenge}} = \text{BASE64URL}\big(\text{SHA256}({\text{code\_verifier}})\big) $$
 
 PKCE. Local MCP clients can't keep a secret, so this one-time pair is what binds the sign-in to the token request. Servers that let clients skip it, or downgrade it, lose that protection.
 
@@ -146,26 +146,28 @@ A tool needs the user to confirm a refund mid-call. How does that work now?
 
 The server returns input required with a confirmation question. The client shows it to the user and repeats the call with the answer.
 
+#### The 30-second answer
+
 Since the July 2026 spec, MCP is stateless: no initialise handshake or sessions, and each JSON-RPC request carries its version and capabilities, so any instance can serve it. The client discovers the server, lists tools and calls them; if the server needs input, it returns input required and the client repeats the call with answers, replacing server-initiated sampling and elicitation. Remote servers use Streamable HTTP and OAuth 2.1: the client finds the authorisation server from the server's metadata, signs in with PKCE, and gets a token bound to that server, which checks the audience and never passes the token on. Real servers often get this wrong: 40% of nearly 8,000 had no authentication.
 
 **Key terms and sources**
 
-The 2026-07-28 MCP specification in detail: stateless requests, discovery, tool calls, multi round-trip requests, tasks and extensions, Streamable HTTP, the OAuth flow step by step, and the security pitfalls measured in real servers.
+The 2026-07-28 MCP specification in detail: stateless requests, discovery, tool calls, multi round-trip requests, tasks and extensions, Streamable HTTP, the OAuth flow step by step, and the security pitfalls measured in real servers. · checked 7 Nov 2026
 
 #### Sources
 
-- MCP specification 2026-07-28 and changelog
+- [MCP specification 2026-07-28 and changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog)
 
-- MCP authorization, 2026-07-28
+- [MCP authorization, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
 
-- MCP security best practices
+- [MCP security best practices](https://modelcontextprotocol.io/specification/2026-07-28/basic/security_best_practices)
 
-- MCP Apps extension
+- [MCP Apps extension](https://modelcontextprotocol.io/extensions/apps/overview)
 
-- Zhou et al., A First Measurement Study on Authentication Security in Real-World Remote MCP Servers
+- [Zhou et al., A First Measurement Study on Authentication Security in Real-World Remote MCP Servers](https://arxiv.org/abs/2605.22333)
 
-- Padilla, Exposed by Design: A Dynamic Security Assessment of Internet-Facing MCP Servers at Scale
+- [Padilla, Exposed by Design: A Dynamic Security Assessment of Internet-Facing MCP Servers at Scale](https://arxiv.org/abs/2608.00150)
 
-- Anthropic, Code execution with MCP, Nov 2025
+- [Anthropic, Code execution with MCP, Nov 2025](https://www.anthropic.com/engineering/code-execution-with-mcp)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

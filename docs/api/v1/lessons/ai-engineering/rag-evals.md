@@ -48,7 +48,7 @@ With **good retrieval** and the right answer, everything is 1.00 except precisio
 
 #### In one breath
 
-"it looked good on five examples" is how LLM apps fail in production. Start a **golden set** early: a few hundred real inputs with the expected answer or behaviour, including hard and adversarial cases. For RAG, score **retrieval** and **generation** separately: **context recall** (did we retrieve everything the answer needs?), **context precision** (how much of what we retrieved is relevant?), **faithfulness** (is every claim in the answer supported by the retrieved context?) and **answer correctness** (does it match the reference?). A correct answer can still be unfaithful, a sign the model is answering from memory, which will fail when memory is wrong. Use **code checks** wherever possible (JSON valid, refund within policy), LLM judges validated against humans for the rest, run the suite on every prompt, model or index change, and watch **online** signals (escalations, thumbs-down, resolution rate).What you'll be able to do after this: design an eval suite for a RAG app, interpret its metrics, and set up regression testing.
+"it looked good on five examples" is how LLM apps fail in production. Start a **golden set** early: a few hundred real inputs with the expected answer or behaviour, including hard and adversarial cases. For RAG, score **retrieval** and **generation** separately: **context recall** (did we retrieve everything the answer needs?), **context precision** (how much of what we retrieved is relevant?), **faithfulness** (is every claim in the answer supported by the retrieved context?) and **answer correctness** (does it match the reference?). A correct answer can still be unfaithful, a sign the model is answering from memory, which will fail when memory is wrong. Use **code checks** wherever possible (JSON valid, refund within policy), LLM judges validated against humans for the rest, run the suite on every prompt, model or index change, and watch **online** signals (escalations, thumbs-down, resolution rate). What you'll be able to do after this: design an eval suite for a RAG app, interpret its metrics, and set up regression testing.
 
 #### Component metrics for RAG
 
@@ -133,14 +133,14 @@ How to measure whether an LLM application works: building a golden set, evaluati
 
 #### Sources
 
-1. S. Es et al., "RAGAS: Automated Evaluation of Retrieval Augmented Generation", EACL 2024 (demo), arXiv:2309.15217.
+1. S. Es et al., "RAGAS: Automated Evaluation of Retrieval Augmented Generation", EACL 2024 (demo), [arXiv:2309.15217](https://arxiv.org/abs/2309.15217).
 
-2. J. Saad-Falcon et al., "ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems", NAACL 2024, arXiv:2311.09476.
+2. J. Saad-Falcon et al., "ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems", NAACL 2024, [arXiv:2311.09476](https://arxiv.org/abs/2311.09476).
 
-3. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, arXiv:2306.05685.
+3. L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023, [arXiv:2306.05685](https://arxiv.org/abs/2306.05685).
 
-4. S. Shankar et al., "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences", UIST 2024, arXiv:2404.12272.
+4. S. Shankar et al., "Who Validates the Validators? Aligning LLM-Assisted Evaluation of LLM Outputs with Human Preferences", UIST 2024, [arXiv:2404.12272](https://arxiv.org/abs/2404.12272).
 
-5. P. Liang et al., "Holistic Evaluation of Language Models" (HELM), 2022, arXiv:2211.09110; OpenAI and Anthropic evaluation guides.
+5. P. Liang et al., "Holistic Evaluation of Language Models" (HELM), 2022, [arXiv:2211.09110](https://arxiv.org/abs/2211.09110); OpenAI and Anthropic evaluation guides.
 
-6. I. Levy, S. Shlomov & L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, arXiv:2610.29722; J. Wallat et al., "Correctness is not Faithfulness in RAG Attributions", 2024, arXiv:2412.18004.
+6. I. Levy, S. Shlomov & L. Choshen, "Retrieval Augmented Generation Compositionality", 2026, [arXiv:2610.29722](https://arxiv.org/abs/2610.29722); J. Wallat et al., "Correctness is not Faithfulness in RAG Attributions", 2024, [arXiv:2412.18004](https://arxiv.org/abs/2412.18004).

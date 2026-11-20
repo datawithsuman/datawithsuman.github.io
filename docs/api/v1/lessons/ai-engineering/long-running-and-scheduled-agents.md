@@ -72,7 +72,7 @@ Long jobs increasingly hand work to sub-agents that run in parallel and report b
 
 #### The maths
 
-$$ \text{tokens} = S\,(t_{\text{orient}} + t_{\text{work}}) $$
+$$ {\text{tokens}} = {S}\,({t_{\text{orient}}} + {t_{\text{work}}}) $$
 
 Good handoff notes shrink re-orientation in every session, so the saving grows with the number of sessions.
 
@@ -132,22 +132,24 @@ How do you stop a scheduled agent spamming people?
 
 Triage what's worth raising, deduplicate against earlier messages, limit actions per run, and measure how often people act on its messages.
 
+#### The 30-second answer
+
 Long tasks outgrow a context window, so the agent works in sessions that start with no memory. I'd have a setup agent write a feature list and progress file, then working sessions that each pick one feature, test it, commit and update the notes, with a rule never to edit tests. For quality, separate a planner, a generator and an evaluator that tests the running result; Anthropic's full harness cost about 20 times more than one agent but built a far better app. For scheduled agents, which are now most runs on some platforms, I'd triage before notifying, cap actions and log everything.
 
 **Key terms and sources**
 
-Agents that work across many context windows: setup agents, feature lists and progress files, generator and evaluator loops, what harnesses cost, and scheduled, proactive agents that run without a user asking.
+Agents that work across many context windows: setup agents, feature lists and progress files, generator and evaluator loops, what harnesses cost, and scheduled, proactive agents that run without a user asking. · checked 7 Nov 2026
 
 #### Sources
 
-- Anthropic, Effective harnesses for long-running agents, Nov 2025
+- [Anthropic, Effective harnesses for long-running agents, Nov 2025](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 
-- Anthropic, Harness design for long-running application development, Mar 2026
+- [Anthropic, Harness design for long-running application development, Mar 2026](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
-- LangChain, How to build proactive, always-on agents, Oct 2026
+- [LangChain, How to build proactive, always-on agents, Oct 2026](https://www.langchain.com/blog/proactive-agents)
 
-- LangChain, New context engineering challenges in late 2026
+- [LangChain, New context engineering challenges in late 2026](https://www.langchain.com/blog/context-engineering-challenges-late-2026)
 
-- Merrill et al., Terminal-Bench
+- [Merrill et al., Terminal-Bench](https://arxiv.org/abs/2601.11868)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative unless a lab says otherwise. Many recent papers are preprints, and provider policies change.

@@ -52,7 +52,7 @@ With 0 merges every word is a string of characters: **5.3 tokens per word** on a
 
 #### In one breath
 
-Word-level vocabularies can't handle new words ("biryanis", typos, names) and grow without limit; character-level input makes sequences very long. **Subword tokenisation** sits in between: frequent words stay whole, rare words are split into meaningful pieces ("spici" + "est"). **Byte-pair encoding (BPE)** starts from characters and repeatedly **merges the most frequent adjacent pair** into a new token until the vocabulary reaches a target size (GPT-2: 50,257). **WordPiece** (BERT) picks merges that most increase the training data's likelihood; the **unigram** model (SentencePiece) starts big and prunes. **Byte-level BPE** works on raw bytes, so any text can be encoded with no unknown tokens. Tokenisation decides how many tokens your text costs, and explains many LLM quirks.What you'll be able to do after this: run BPE by hand, compare BPE, WordPiece and unigram, and explain tokenisation effects in LLMs.
+Word-level vocabularies can't handle new words ("biryanis", typos, names) and grow without limit; character-level input makes sequences very long. **Subword tokenisation** sits in between: frequent words stay whole, rare words are split into meaningful pieces ("spici" + "est"). **Byte-pair encoding (BPE)** starts from characters and repeatedly **merges the most frequent adjacent pair** into a new token until the vocabulary reaches a target size (GPT-2: 50,257). **WordPiece** (BERT) picks merges that most increase the training data's likelihood; the **unigram** model (SentencePiece) starts big and prunes. **Byte-level BPE** works on raw bytes, so any text can be encoded with no unknown tokens. Tokenisation decides how many tokens your text costs, and explains many LLM quirks. What you'll be able to do after this: run BPE by hand, compare BPE, WordPiece and unigram, and explain tokenisation effects in LLMs.
 
 #### Byte-pair encoding, step by step
 
@@ -64,7 +64,7 @@ Word-level vocabularies can't handle new words ("biryanis", typos, names) and gr
 
 4. Repeat until the vocabulary reaches the target size. To tokenise new text, apply the learned merges in the same order.
 
-Gage (1994) introduced BPE for data compression; Sennrich, Haddow & Birch (ACL 2016) adapted it for neural machine translation of rare words arXiv:1508.07909. GPT-2 applies BPE to raw bytes with a 50,257-token vocabulary (Radford et al. 2019).
+Gage (1994) introduced BPE for data compression; Sennrich, Haddow & Birch (ACL 2016) adapted it for neural machine translation of rare words [arXiv:1508.07909](https://arxiv.org/abs/1508.07909). GPT-2 applies BPE to raw bytes with a 50,257-token vocabulary (Radford et al. 2019).
 
 ## In practice
 
@@ -79,7 +79,7 @@ Gage (1994) introduced BPE for data compression; Sennrich, Haddow & Birch (ACL 2
 | **Unigram LM** | top-down: start with a large vocabulary and prune pieces that least reduce likelihood; can sample segmentations | T5, ALBERT, XLNet via SentencePiece (Kudo 2018) |
 | **SentencePiece** | a library that implements BPE and unigram on raw text, treating spaces as a symbol (▁), language-independent | LLaMA 1/2, T5, many multilingual models |
 
-Kudo & Richardson, EMNLP 2018 demo arXiv:1808.06226. Note: SentencePiece implements BPE and unigram, not WordPiece.
+Kudo & Richardson, EMNLP 2018 demo [arXiv:1808.06226](https://arxiv.org/abs/1808.06226). Note: SentencePiece implements BPE and unigram, not WordPiece.
 
 #### Tokenisation quirks you'll be asked about
 
@@ -143,10 +143,10 @@ Why modern models split text into subword pieces rather than whole words or char
 
 1. P. Gage, "A New Algorithm for Data Compression", _C Users Journal_ 12(2), 1994.
 
-2. R. Sennrich, B. Haddow & A. Birch, "Neural Machine Translation of Rare Words with Subword Units", ACL 2016, arXiv:1508.07909.
+2. R. Sennrich, B. Haddow & A. Birch, "Neural Machine Translation of Rare Words with Subword Units", ACL 2016, [arXiv:1508.07909](https://arxiv.org/abs/1508.07909).
 
-3. M. Schuster & K. Nakajima, "Japanese and Korean Voice Search", ICASSP 2012; Y. Wu et al., "Google's Neural Machine Translation System", arXiv:1609.08144, 2016.
+3. M. Schuster & K. Nakajima, "Japanese and Korean Voice Search", ICASSP 2012; Y. Wu et al., "Google's Neural Machine Translation System", [arXiv:1609.08144](https://arxiv.org/abs/1609.08144), 2016.
 
-4. T. Kudo, "Subword Regularization", ACL 2018, arXiv:1804.10959; T. Kudo & J. Richardson, "SentencePiece", EMNLP 2018, arXiv:1808.06226.
+4. T. Kudo, "Subword Regularization", ACL 2018, [arXiv:1804.10959](https://arxiv.org/abs/1804.10959); T. Kudo & J. Richardson, "SentencePiece", EMNLP 2018, [arXiv:1808.06226](https://arxiv.org/abs/1808.06226).
 
 5. A. Radford et al., "Language Models are Unsupervised Multitask Learners" (GPT-2), OpenAI 2019.

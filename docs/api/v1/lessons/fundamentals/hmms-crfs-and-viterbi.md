@@ -87,7 +87,7 @@ In a BiLSTM-CRF, the network gives each word a score for each tag, and the CRF a
 
 #### The maths
 
-$$ P(t, w) = \prod_{i} P(t_i \mid t_{i-1})\, P(w_i \mid t_i), \qquad v_i(s) = \max_{r}\, v_{i-1}(r)\, P(s \mid r)\, P(w_i \mid s) $$
+$$ {P(t, w)} = \prod_{i} {P(t_i \mid t_{i-1})}\, {P(w_i \mid t_i)}, \qquad {v_i(s)} = \max_{r}\, {v_{i-1}(r)}\, P(s \mid r)\, P(w_i \mid s) $$
 
 Standard HMM forms, as in the Viterbi article and Jurafsky and Martin’s appendix on HMMs. In practice, sum logs to avoid underflow.
 
@@ -147,22 +147,24 @@ With 10 tags and 20 words, how much faster is Viterbi than brute force?
 
 Brute force checks 10²⁰ sequences. Viterbi does 20 × 10² = 2,000 steps. The saving comes from keeping only the best path into each tag at each word.
 
+#### The 30-second answer
+
 Labelling each word alone ignores its neighbours, and can give invalid sequences. An HMM models tag transitions and word emissions, and the Viterbi algorithm finds the best sequence with dynamic programming. Each cell keeps the best score for ending in a tag, plus a pointer, so it costs T times S squared, not S to the T. The forward algorithm replaces max with sum, to get the likelihood. A CRF models tags given words directly, so it can use rich features, and it still decodes with Viterbi. In neural taggers, the network gives the scores, and a CRF layer can add transitions.
 
 **Key terms and sources**
 
-Why labelling words one at a time fails, hidden Markov models, the Viterbi algorithm, forward and Baum-Welch, conditional random fields and neural CRFs.
+Why labelling words one at a time fails, hidden Markov models, the Viterbi algorithm, forward and Baum-Welch, conditional random fields and neural CRFs. · checked 7 Nov 2026
 
 #### Sources
 
-- Viterbi algorithm, Wikipedia
+- [Viterbi algorithm, Wikipedia](https://en.wikipedia.org/wiki/Viterbi_algorithm)
 
-- Jurafsky and Martin, Appendix A: Hidden Markov Models
+- [Jurafsky and Martin, Appendix A: Hidden Markov Models](https://web.stanford.edu/~jurafsky/slp3/A.pdf)
 
-- Lample et al., Neural Architectures for Named Entity Recognition
+- [Lample et al., Neural Architectures for Named Entity Recognition](https://arxiv.org/abs/1603.01360)
 
-- Devlin et al., BERT
+- [Devlin et al., BERT](https://arxiv.org/abs/1810.04805)
 
-- Conditional random field, Wikipedia, citing Lafferty et al. (2001)
+- [Conditional random field, Wikipedia, citing Lafferty et al. (2001)](https://en.wikipedia.org/wiki/Conditional_random_field)
 
 Explanations are ours, built from these sources. Lab numbers are illustrative, and worked examples were checked by calculation.

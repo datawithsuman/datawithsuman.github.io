@@ -48,7 +48,7 @@ With **50 tools** in the prompt, **7,500 tokens** of definitions ride along on e
 
 #### In one breath
 
-The model can't run code; it can only write text. **Tool calling** makes that text structured: you describe each tool (name, description, JSON-schema parameters), the model replies with a **call** like `{"name": "get_order", "arguments": {"order_id": "48213"}}` (generated with constrained decoding), **your code** executes it, and the result goes back into the conversation for the next step. Models can request several independent calls at once (**parallel calls**), cutting latency. Most agent failures are tool failures: vague descriptions, overlapping tools, unhelpful errors, or too many tools; every tool definition costs context tokens, and selection accuracy drops as tools pile up (RAG-MCP: 13.6% with all tools loaded, 43.1% when relevant tools were retrieved first).What you'll be able to do after this: explain the tool-call loop, design good tools, and handle large tool sets.
+The model can't run code; it can only write text. **Tool calling** makes that text structured: you describe each tool (name, description, JSON-schema parameters), the model replies with a **call** like `{"name": "get_order", "arguments": {"order_id": "48213"}}` (generated with constrained decoding), **your code** executes it, and the result goes back into the conversation for the next step. Models can request several independent calls at once (**parallel calls**), cutting latency. Most agent failures are tool failures: vague descriptions, overlapping tools, unhelpful errors, or too many tools; every tool definition costs context tokens, and selection accuracy drops as tools pile up (RAG-MCP: 13.6% with all tools loaded, 43.1% when relevant tools were retrieved first). What you'll be able to do after this: explain the tool-call loop, design good tools, and handle large tool sets.
 
 #### The tool-call loop
 
@@ -80,7 +80,7 @@ The model can't run code; it can only write text. **Tool calling** makes that te
 
 - **Evaluate tools** like prompts: test sets of tasks, track wrong-tool and bad-argument rates.
 
-**Added 7 Nov 2026: code instead of definitions.** With many MCP tools, an agent can write code that calls them, instead of loading every definition and passing every result through its context. Anthropic reported one workflow falling from 150,000 to 2,000 tokens, a 98.7% saving. Its tool guide also caps Claude Code tool responses at 25,000 tokens by default, and found a concise response used 72 tokens against 206 for a detailed one.
+**Code instead of definitions.** With many MCP tools, an agent can write code that calls them, instead of loading every definition and passing every result through its context. Anthropic reported one workflow falling from 150,000 to 2,000 tokens, a 98.7% saving. Its tool guide also caps Claude Code tool responses at 25,000 tokens by default, and found a concise response used 72 tokens against 206 for a detailed one.
 
 #### The model proposes, your code disposes
 
@@ -130,14 +130,14 @@ You give the model tool definitions with names, descriptions and JSON-schema par
 
 **Key terms and sources**
 
-How LLMs call tools: JSON-schema tool definitions, the model emitting a structured call, your code executing it and returning the result, parallel calls, error handling, and designing tools agents can use well (clear names and descriptions, few overlapping tools, helpful errors); plus why loading hundreds of tools hurts and how tool search fixes it · built from Schick et al. (Toolformer, 2023), Patil et al. (Gorilla, NeurIPS 2024), Gan & Sun (RAG-MCP, 2025), Anthropic (Writing tools for agents, 2025), and the OpenAI and Anthropic tool-use documentation · checked 29 Oct 2026
+How LLMs call tools: JSON-schema tool definitions, the model emitting a structured call, your code executing it and returning the result, parallel calls, error handling, and designing tools agents can use well (clear names and descriptions, few overlapping tools, helpful errors); plus why loading hundreds of tools hurts and how tool search fixes it · built from Schick et al. (Toolformer, 2023), Patil et al. (Gorilla, NeurIPS 2024), Gan & Sun (RAG-MCP, 2025), Anthropic (Writing tools for agents, 2025), and the OpenAI and Anthropic tool-use documentation · checked 7 Nov 2026
 
 #### Sources
 
-1. T. Schick et al., "Toolformer", NeurIPS 2023, arXiv:2302.04761; S. Patil et al., "Gorilla: Large Language Model Connected with Massive APIs", NeurIPS 2024, arXiv:2305.15334.
+1. T. Schick et al., "Toolformer", NeurIPS 2023, [arXiv:2302.04761](https://arxiv.org/abs/2302.04761); S. Patil et al., "Gorilla: Large Language Model Connected with Massive APIs", NeurIPS 2024, [arXiv:2305.15334](https://arxiv.org/abs/2305.15334).
 
-2. T. Gan & Q. Sun, "RAG-MCP: Mitigating Prompt Bloat in LLM Tool Selection via Retrieval-Augmented Generation", 2025, arXiv:2505.03275.
+2. T. Gan & Q. Sun, "RAG-MCP: Mitigating Prompt Bloat in LLM Tool Selection via Retrieval-Augmented Generation", 2025, [arXiv:2505.03275](https://arxiv.org/abs/2505.03275).
 
 3. Anthropic, "Writing effective tools for agents", 2025; Anthropic and OpenAI tool-use / function-calling documentation.
 
-4. Anthropic, "Code execution with MCP", Nov 2025; "Writing effective tools for agents", Sep 2025.
+4. Anthropic, ["Code execution with MCP"](https://www.anthropic.com/engineering/code-execution-with-mcp), Nov 2025; ["Writing effective tools for agents"](https://www.anthropic.com/engineering/writing-tools-for-agents), Sep 2025.

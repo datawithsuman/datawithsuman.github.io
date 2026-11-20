@@ -48,7 +48,7 @@ Lower the threshold and you flag more: recall rises, precision falls. Raise it a
 
 #### In one breath
 
-Every classification metric is a ratio built from four counts: true positives, false positives, false negatives and true negatives. **Accuracy** hides rare classes. **Precision** asks "when I flag, am I right?" **Recall** asks "of what's out there, how much do I catch?" **Specificity** and **NPV** ask the same about negatives. **F1** balances precision and recall and ignores true negatives. Precision depends on how common the positive class is; recall doesn't. For many classes, **macro**, **micro** and **weighted** averaging answer different questions.What you'll be able to do after this: compute and explain every metric from a confusion matrix, pick the one a scenario needs, and spot the accuracy trap instantly.
+Every classification metric is a ratio built from four counts: true positives, false positives, false negatives and true negatives. **Accuracy** hides rare classes. **Precision** asks "when I flag, am I right?" **Recall** asks "of what's out there, how much do I catch?" **Specificity** and **NPV** ask the same about negatives. **F1** balances precision and recall and ignores true negatives. Precision depends on how common the positive class is; recall doesn't. For many classes, **macro**, **micro** and **weighted** averaging answer different questions. What you'll be able to do after this: compute and explain every metric from a confusion matrix, pick the one a scenario needs, and spot the accuracy trap instantly.
 
 #### Four counts: the confusion matrix
 
@@ -66,9 +66,9 @@ Every classification metric is a ratio built from four counts: true positives, f
 
 #### Each metric divides by a different "out of what?"
 
-$$ \text{Precision} = \tfrac{TP}{TP+FP} \quad \text{Recall} = \tfrac{TP}{TP+FN} \quad \text{Specificity} = \tfrac{TN}{TN+FP} \quad \text{NPV} = \tfrac{TN}{TN+FN} $$
+$$ {\text{Precision} = \tfrac{TP}{TP+FP}} \quad {\text{Recall} = \tfrac{TP}{TP+FN}} \quad {\text{Specificity} = \tfrac{TN}{TN+FP}} \quad {\text{NPV} = \tfrac{TN}{TN+FN}} $$
 
-Standard definitions, as in scikit-learn's metrics guide docs. Recall, sensitivity, hit rate and true positive rate are four names for one thing.
+Standard definitions, as in scikit-learn's metrics guide [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Recall, sensitivity, hit rate and true positive rate are four names for one thing.
 
 - **precision (PPV)**: Out of everything I flagged, how much was really positive? TP / (TP + FP). Low precision = many false alarms. Spam filters live and die on this.
 
@@ -82,7 +82,7 @@ Standard definitions, as in scikit-learn's metrics guide docs. Recall, sensitivi
 
 Recall and specificity describe the test itself. Precision mixes the test with the **base rate**: when positives are rare, even a small false-positive rate on the huge negative group swamps the true positives. That's Bayes' rule:
 
-$$ \text{PPV} = \text{rec}\cdot\pi \,\Big/\, \big(\text{rec}\cdot\pi + (1-\text{spec})\,(1-\pi)\big), \quad \pi = \text{prevalence} $$
+$$ {\text{PPV}} = {\text{rec}\cdot\pi} \,\Big/\, \big({\text{rec}\cdot\pi} + {(1-\text{spec})\,(1-\pi)}\big), \quad {\pi = \text{prevalence}} $$
 
 - **precision (PPV)**: Probability that a flagged case is really positive.
 
@@ -96,7 +96,7 @@ Screening scenario: a good test (90% sensitive, 95% specific) at 1% prevalence f
 
 #### F1: the harmonic mean, and what it ignores
 
-$$ F_1 = 2PR \,/\, (P+R) = 2TP \,/\, (2TP + FP + FN) $$
+$$ {F_1} = {2PR \,/\, (P+R)} = {2TP \,/\, (2TP + FP + FN)} $$
 
 - **F1**: One number between 0 and 1 that is high only when precision and recall are both high.
 
@@ -108,13 +108,13 @@ The harmonic mean punishes imbalance; you can't buy a good F1 with one great num
 
 ##### F1's blind spots
 
-It ignores true negatives, and it changes if you swap which class you call "positive"; MCC doesn't have either problem Chicco & Jurman 2020. By default scikit-learn returns F1 = 0 when there are no positive predictions and no positives; the `zero_division` parameter controls this docs.
+It ignores true negatives, and it changes if you swap which class you call "positive"; MCC doesn't have either problem [Chicco & Jurman 2020](https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312). By default scikit-learn returns F1 = 0 when there are no positive predictions and no positives; the `zero_division` parameter controls this [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 #### Macro, micro and weighted
 
 Support tickets go to **billing** (600), **technical** (350) or **cancel subscription** (50). Cancel is rare but the most expensive to miss: an unhandled cancel is a lost customer. Compare two models:
 
-Micro-averaging pools all decisions, so with every class included it equals accuracy docs; it's dominated by big classes. Macro-averaging gives every class equal weight, so the rare class counts as much as billing. Weighted averages by support. Model A looks fine on micro and weighted, and macro exposes it.
+Micro-averaging pools all decisions, so with every class included it equals accuracy [docs](https://scikit-learn.org/stable/modules/model_evaluation.html); it's dominated by big classes. Macro-averaging gives every class equal weight, so the rare class counts as much as billing. Weighted averages by support. Model A looks fine on micro and weighted, and macro exposes it.
 
 | Average | Question it answers | Use when |
 |---|---|---|
@@ -123,7 +123,7 @@ Micro-averaging pools all decisions, so with every class included it equals accu
 | **weighted** | Macro, but proportional to class size | Reporting overall quality on imbalanced data without letting tiny classes dominate |
 | **per class (None)** | Everything, unsummarised | Always look at this before trusting any average |
 
-scikit-learn notes that macro "may over-emphasize the typically low performance on an infrequent class", and that a weighted F can fall outside the range between precision and recall docs.
+scikit-learn notes that macro "may over-emphasize the typically low performance on an infrequent class", and that a weighted F can fall outside the range between precision and recall [docs](https://scikit-learn.org/stable/modules/model_evaluation.html).
 
 ## In practice
 
@@ -137,7 +137,7 @@ In practice you print a per-class report (scikit-learn's `classification_report`
 
 ##### Top-k accuracy
 
-Correct if the true label is among the k highest-scored classes; accuracy is the k = 1 case docs. Use it when a human or a later step picks from a short list: ImageNet top-5, product category suggestions, autocomplete.
+Correct if the true label is among the k highest-scored classes; accuracy is the k = 1 case [docs](https://scikit-learn.org/stable/modules/model_evaluation.html). Use it when a human or a later step picks from a short list: ImageNet top-5, product category suggestions, autocomplete.
 
 ##### Multi-label (several tags per item)
 
@@ -174,7 +174,7 @@ With rare positives, the do-nothing baseline already scores near 100%, and a gen
 
 ##### What breaks
 
-Accuracy "cannot be considered a reliable measure" on unbalanced data, because it gives "an overly optimistic estimate" Chicco & Jurman 2020. Always compare against the majority-class baseline, and use metrics that look at the positive class directly.
+Accuracy "cannot be considered a reliable measure" on unbalanced data, because it gives "an overly optimistic estimate" [Chicco & Jurman 2020](https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312). Always compare against the majority-class baseline, and use metrics that look at the positive class directly.
 
 #### What to keep
 
@@ -257,12 +257,12 @@ Built from scikit-learn's model-evaluation guide and Chicco & Jurman (2020) · c
 
 #### What this page is built from
 
-1. scikit-learn, Metrics and scoring: quantifying the quality of predictions (precision/recall/F, averaging, top-k, Hamming, Jaccard).
+1. scikit-learn, [Metrics and scoring: quantifying the quality of predictions](https://scikit-learn.org/stable/modules/model_evaluation.html) (precision/recall/F, averaging, top-k, Hamming, Jaccard).
 
-2. D. Chicco & G. Jurman, The advantages of the Matthews correlation coefficient over F1 score and accuracy in binary classification evaluation, BMC Genomics 21:6 (2020).
+2. D. Chicco & G. Jurman, [The advantages of the Matthews correlation coefficient over F1 score and accuracy in binary classification evaluation](https://pmc.ncbi.nlm.nih.gov/articles/PMC6941312), BMC Genomics 21:6 (2020).
 
 3. T. Fawcett, "An introduction to ROC analysis", _Pattern Recognition Letters_ 27 (2006): definitions of TPR, FPR and related terms.
 
-4. Interview angle: DataLemur ML interview questions.
+4. Interview angle: [DataLemur ML interview questions](https://datalemur.com/blog/machine-learning-interview-questions).
 
 Scenario scores come from a simple, illustrative model of a classifier (positives' and negatives' scores as two overlapping bell curves), with expected counts computed exactly.

@@ -74,7 +74,7 @@ Random assignment makes X the same on average in both groups, whichever group a 
 
 #### The maths
 
-$$ Y^{adj} = Y - \theta\,(X - \bar X), \quad \theta = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)}, \quad \mathrm{Var}(Y^{adj}) = \mathrm{Var}(Y)(1-\rho^2) $$
+$$ {Y^{adj}} = {Y} - {\theta}\,({X - \bar X}), \quad {\theta} = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)}, \quad {\mathrm{Var}(Y^{adj})} = \mathrm{Var}(Y)(1-\rho^2) $$
 
 From Deng, Xu, Kohavi and Walker (WSDM 2013). Calculate θ on the pooled data of both groups, so it’s the same value for each.
 
@@ -136,20 +136,22 @@ Does CUPED change the size of the effect you measure?
 
 Not on average. Both groups have the same expected pre-experiment value, so subtracting it leaves the expected difference unchanged. In any one test, the estimate can move a bit, because you've adjusted for chance imbalance, and that's where the precision comes from.
 
+#### The 30-second answer
+
 I'd use CUPED. Much of a metric's noise is that some users always do more than others, and that's predictable from their behaviour before the test. I subtract the predictable part, using theta equal to the covariance of before and during over the variance of before. Randomisation makes the before-values equal on average across groups, so the effect estimate doesn't change. Variance falls by rho squared, so at a correlation of 0.7, I need about half the users. The covariate must come from before the test.
 
 **Key terms and sources**
 
-CUPED uses each user's data from before the experiment to remove predictable noise, so tests need fewer users.
+CUPED uses each user's data from before the experiment to remove predictable noise, so tests need fewer users. · checked 7 Nov 2026
 
 #### Sources
 
-- Deng, Xu, Kohavi and Walker, CUPED (WSDM 2013)
+- [Deng, Xu, Kohavi and Walker, CUPED (WSDM 2013)](https://exp-platform.com/cuped/)
 
-- A walkthrough of CUPED and regression
+- [A walkthrough of CUPED and regression](https://dpananos.github.io/posts/2025-03-03-cuped)
 
-- Statsig documentation on variance reduction
+- [Statsig documentation on variance reduction](https://docs.statsig.com/stats-engine/variance_reduction)
 
-- Poyarkov et al., Boosted Decision Tree Regression Adjustment (KDD 2016)
+- [Poyarkov et al., Boosted Decision Tree Regression Adjustment (KDD 2016)](https://www.kdd.org/kdd2016/papers/files/adf0653-poyarkovA.pdf)
 
 Lab numbers are illustrative unless a lab says otherwise. Explanations are ours, built from these sources and standard statistics.

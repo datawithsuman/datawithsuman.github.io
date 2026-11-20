@@ -83,7 +83,7 @@ A random encouragement, like a prompt shown to some users, changes who uses a fe
 
 #### The maths
 
-$$ \hat\tau_{\text{DiD}} = (\bar Y_{T,\text{after}} - \bar Y_{T,\text{before}}) - (\bar Y_{C,\text{after}} - \bar Y_{C,\text{before}}), \qquad \hat\tau_{\text{IV}} = \frac{\text{effect of } Z \text{ on } Y}{\text{effect of } Z \text{ on } X} $$
+$$ {\hat\tau_{\text{DiD}}} = {(\bar Y_{T,\text{after}} - \bar Y_{T,\text{before}})} - {(\bar Y_{C,\text{after}} - \bar Y_{C,\text{before}})}, \qquad {\hat\tau_{\text{IV}} = \frac{\text{effect of } Z \text{ on } Y}{\text{effect of } Z \text{ on } X}} $$
 
 Worked example: treated goes from 50 to 58, and control goes from 40 to 43. DiD = 8 − 3 = 5. That’s only right if treated would otherwise have also risen by 3.
 
@@ -141,17 +141,19 @@ What makes a good instrument?
 
 It must clearly change the treatment, and affect the outcome only through it. A randomised prompt is the cleanest. The second condition can't be tested from data, so it must be argued. A weak instrument also makes estimates very noisy and possibly biased.
 
+#### The 30-second answer
+
 I'd look for something that acts like an experiment. If a change hit some groups at a known time, I'd use difference-in-differences, which assumes parallel trends. If users opted in and I've measured what drives that, I'd use matching or propensity scores, which assume no unmeasured confounders. With a cutoff rule, regression discontinuity compares those just either side. With a random nudge, instrumental variables can work. Each relies on an assumption I can't fully test, so I'd check earlier trends and run placebo tests.
 
 **Key terms and sources**
 
-Difference-in-differences, matching and propensity scores, regression discontinuity and instrumental variables: how each works, what it assumes, and what could go wrong.
+Difference-in-differences, matching and propensity scores, regression discontinuity and instrumental variables: how each works, what it assumes, and what could go wrong. · checked 6 Nov 2026
 
 #### Sources
 
-- Hernán and Robins, Causal Inference: What If
+- [Hernán and Robins, Causal Inference: What If](https://miguelhernan.org/whatifbook)
 
-- Cunningham, Causal Inference: The Mixtape
+- [Cunningham, Causal Inference: The Mixtape](https://mixtape.scunning.com/)
 
 - Correlation vs causation on this site
 

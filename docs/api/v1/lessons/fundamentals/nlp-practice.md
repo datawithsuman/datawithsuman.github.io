@@ -164,6 +164,6 @@ Note that V alone scores higher on word 2, while N wins on word 1. Transitions j
 
 Keep practising
 
-Built from the lessons in this track and their sources: Jurafsky & Martin, SLP3 (ch. 3, 4, 18, 11); Sennrich et al. (2016) and the Hugging Face course BPE example; Papineni et al. (2002) for BLEU clipping; Cormack et al. (2009) for RRF. Review: Preprocessing, TF-IDF, N-gram LMs, Tokenisation, NER, Retrieval, Evaluation.
+Built from the lessons in this track and their sources: Jurafsky & Martin, [SLP3](https://web.stanford.edu/~jurafsky/slp3/) (ch. 3, 4, 18, 11); Sennrich et al. (2016) and the [Hugging Face course](https://huggingface.co/learn/llm-course/chapter6/5) BPE example; Papineni et al. (2002) for BLEU clipping; Cormack et al. (2009) for RRF. Review: Preprocessing, TF-IDF, N-gram LMs, Tokenisation, NER, Retrieval, Evaluation.
 
 New lessons: Edit Distance, HMMs and Viterbi and BERT.
