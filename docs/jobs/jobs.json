@@ -1,8 +1,56 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "days": 7,
- "count": 62,
+ "count": 58,
  "jobs": [
+  {
+   "title": "Data Scientist",
+   "company": "Philips",
+   "location": "Bengaluru",
+   "posted": "2026-11-20",
+   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Research Scientist - Nemotron India",
+   "company": "NVIDIA",
+   "location": "3 locations in India",
+   "posted": "2026-11-20",
+   "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Research-Scientist---Nemotron-India_JR2028483",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Lead AI Product Engineer",
+   "company": "Fractal Analytics",
+   "location": "2 locations in India",
+   "posted": "2026-11-20",
+   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
+   "title": "Generative AI and Deep Learning Data Scientist",
+   "company": "Citi",
+   "location": "India",
+   "posted": "2026-11-20",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Bangaluru-Karnataka-India/Generative-AI-and-Deep-Learning-Data-Scientist_261000794",
+   "exp": [
+    2,
+    5
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "Senior, Data Scientist",
    "company": "Walmart Global Tech",
@@ -40,6 +88,30 @@
    "exp_from": "jd"
   },
   {
+   "title": "Data Scientist",
+   "company": "Sigmoid",
+   "location": "Bengaluru",
+   "posted": "2026-11-19",
+   "url": "https://job-boards.greenhouse.io/sigmoid/jobs/8951153002",
+   "exp": [
+    1,
+    3
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Bengaluru",
+   "posted": "2026-11-19",
+   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/senior-ai-ml-engineer/34088/102829678480",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "Lead AI or ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Hyderabad",
@@ -52,28 +124,36 @@
    "exp_from": "jd"
   },
   {
-   "title": "Research Scientist - Nemotron India",
-   "company": "NVIDIA",
-   "location": "3 locations in India",
+   "title": "AI Full Stack Developer - AI Connectors, Plugins, MCP",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
    "posted": "2026-11-19",
-   "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Research-Scientist---Nemotron-India_JR2028483",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-full-stack-developer-ai-connectors-plugins-mcp/34088/102141801840",
+   "exp_from": "none"
   },
   {
-   "title": "Lead AI Product Engineer",
-   "company": "Fractal Analytics",
-   "location": "2 locations in India",
+   "title": "Principal Applied Scientist",
+   "company": "Microsoft",
+   "location": "Bengaluru",
    "posted": "2026-11-19",
-   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557075943",
    "exp": [
-    7,
+    8,
     null
    ],
    "exp_from": "title"
+  },
+  {
+   "title": "Silicon Senior AI/ML Hardware Architect, Google Cloud",
+   "company": "Google",
+   "location": "Bengaluru",
+   "posted": "2026-11-19",
+   "url": "https://www.google.com/about/careers/applications/jobs/results/84928260579697350",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior Data Scientist",
@@ -202,7 +282,7 @@
   {
    "title": "Data Scientist",
    "company": "EXL",
-   "location": "India",
+   "location": "Gurugram",
    "posted": "2026-11-18",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22714",
    "exp_from": "none"
@@ -328,18 +408,6 @@
    "exp_from": "none"
   },
   {
-   "title": "Fincrime Screening Data Scientist - AVP",
-   "company": "Barclays",
-   "location": "2 locations in India",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Noida-Candor-TechSpace/FCS-Data-Scientist_JR-0000125622-1",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "title"
-  },
-  {
    "title": "Assistant Vice President - Applied AI Engineer",
    "company": "Barclays",
    "location": "Bengaluru",
@@ -456,18 +524,6 @@
    "exp_from": "jd"
   },
   {
-   "title": "Data Science Engagement Lead",
-   "company": "Shell",
-   "location": "Chennai",
-   "posted": "2026-11-14",
-   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/SHELL-CENTRE--CHENNAI/Data-Science-Engagement-Lead_R202317-1",
-   "exp": [
-    10,
-    12
-   ],
-   "exp_from": "jd"
-  },
-  {
    "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
    "company": "Salesforce",
    "location": "2 locations in India",
@@ -580,54 +636,6 @@
    "exp_from": "jd"
   },
   {
-   "title": "Staff, Data Scientist – AI Agent Platform",
-   "company": "Walmart Global Tech",
-   "location": "Bengaluru",
-   "posted": "2026-11-12",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Staff--Data-Scientist---AI-Agent-Platform_R-2696006",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "PRINCIPAL, DATA SCIENTIST",
-   "company": "Walmart Global Tech",
-   "location": "Bengaluru",
-   "posted": "2026-11-12",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PW-II/PRINCIPAL--DATA-SCIENTIST_R-2656082",
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Senior AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer/34088/103216188224",
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Principal AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-12",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/principal-ai-or-ml-engineer/34088/102829678576",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "title"
-  },
-  {
    "title": "Associate Director - CIB Business Risk - AI Governance Lead",
    "company": "HSBC",
    "location": "Bengaluru",
@@ -650,66 +658,6 @@
     null
    ],
    "exp_from": "title"
-  },
-  {
-   "title": "Senior Staff AI Scientist",
-   "company": "GE HealthCare",
-   "location": "Bengaluru",
-   "posted": "2026-11-12",
-   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Senior-Staff-AI-Scientist_R4048849-1",
-   "exp": [
-    5,
-    8
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Data Scientist II, AWS - Quick",
-   "company": "Amazon",
-   "location": "Chennai",
-   "posted": "2026-11-12",
-   "url": "https://www.amazon.jobs/en/jobs/10602065/data-scientist-ii-aws-quick",
-   "exp": [
-    2,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "IT Risk & AI Engineer, IT Risk",
-   "company": "Amazon",
-   "location": "Bengaluru",
-   "posted": "2026-11-12",
-   "url": "https://www.amazon.jobs/en/jobs/10595131/it-risk-ai-engineer-it-risk",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Staff Software Engineer, Search ML Infrastructure",
-   "company": "Google",
-   "location": "Bengaluru",
-   "posted": "2026-11-11",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/123521561096266438",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Staff Software Engineer, Machine Learning, Geo",
-   "company": "Google",
-   "location": "Bengaluru",
-   "posted": "2026-11-11",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/104937753002549958",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
   }
  ]
 }
