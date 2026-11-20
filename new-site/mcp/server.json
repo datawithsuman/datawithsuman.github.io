@@ -5,12 +5,12 @@
   "description": "Free AI/ML interview prep: lessons, system design, quizzes, mock interviews and AI/ML jobs in India.",
   "version": "1.0.1",
   "websiteUrl": "https://aimlrounds.com/",
-  "remotes": [
-    {
-      "type": "streamable-http",
-      "url": "https://mcp.aimlrounds.com/mcp"
-    }
-  ],
+  "repository": {
+    "url": "https://github.com/datawithsuman/datawithsuman.github.io",
+    "source": "github",
+    "id": "1393245589",
+    "subfolder": "new-site/mcp"
+  },
   "icons": [
     {
       "src": "https://aimlrounds.com/assets/favicon.svg",
@@ -18,6 +18,12 @@
       "sizes": [
         "any"
       ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.aimlrounds.com/mcp"
     }
   ]
 }
