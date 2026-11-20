@@ -1,8 +1,44 @@
 {
  "updated": "2026-11-20",
  "days": 7,
- "count": 58,
+ "count": 71,
  "jobs": [
+  {
+   "title": "Director, Data Science",
+   "company": "Walmart Global Tech",
+   "location": "Bengaluru",
+   "posted": "2026-11-20",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Director--Data-Science_R-2698750",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Distinguished, Machine Learning Engineer",
+   "company": "Walmart Global Tech",
+   "location": "Bengaluru",
+   "posted": "2026-11-20",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Distinguished--Machine-Learning-Engineer_R-2698758",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "SW AI Engineer",
+   "company": "Siemens Healthineers",
+   "location": "India",
+   "posted": "2026-11-20",
+   "url": "https://onehealthineers.wd3.myworkdayjobs.com/SHSJB/job/PUN-MIC-T-4/SW-AI-Engineer_R-31941",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "Data Scientist",
    "company": "Philips",
@@ -11,6 +47,18 @@
    "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
    "exp": [
     5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-20",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-ai-ml-engineer/34088/100102546944",
+   "exp": [
+    10,
     null
    ],
    "exp_from": "jd"
@@ -28,6 +76,14 @@
    "exp_from": "jd"
   },
   {
+   "title": "Applied Sciences",
+   "company": "Microsoft",
+   "location": "India",
+   "posted": "2026-11-20",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393557074078",
+   "exp_from": "none"
+  },
+  {
    "title": "Lead AI Product Engineer",
    "company": "Fractal Analytics",
    "location": "2 locations in India",
@@ -38,6 +94,14 @@
     null
    ],
    "exp_from": "title"
+  },
+  {
+   "title": "Data Scientist",
+   "company": "EXL",
+   "location": "Gurugram",
+   "posted": "2026-11-20",
+   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/13375",
+   "exp_from": "none"
   },
   {
    "title": "Generative AI and Deep Learning Data Scientist",
@@ -64,13 +128,13 @@
    "exp_from": "jd"
   },
   {
-   "title": "Sr. AI Engineer-MarTech",
-   "company": "Target",
+   "title": "SENIOR, DATA SCIENTIST",
+   "company": "Walmart Global Tech",
    "location": "Bengaluru",
    "posted": "2026-11-19",
-   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/L4-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Sr-AI-Engineer-Promo-Optimisation_R0000442383-1",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP2/SENIOR--DATA-SCIENTIST_R-2706431",
    "exp": [
-    4,
+    7,
     null
    ],
    "exp_from": "jd"
@@ -232,6 +296,18 @@
    "exp_from": "jd"
   },
   {
+   "title": "Staff Data Scientist",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-18",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138614",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "Lead AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Hyderabad",
@@ -242,6 +318,18 @@
     null
    ],
    "exp_from": "jd"
+  },
+  {
+   "title": "Lead AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-18",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/lead-ai-ml-engineer/34088/103492333280",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
   },
   {
    "title": "AI or ML Engineer",
@@ -348,6 +436,26 @@
    "exp_from": "jd"
   },
   {
+   "title": "Staff Machine Learning Engineer",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-17",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Machine-Learning-Engineer_R0138938",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI or ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Bengaluru",
+   "posted": "2026-11-17",
+   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/ai-or-ml-engineer/34088/102446557264",
+   "exp_from": "none"
+  },
+  {
    "title": "Associate AI or ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Noida",
@@ -408,11 +516,43 @@
    "exp_from": "none"
   },
   {
+   "title": "AI Software Engineer",
+   "company": "Barclays",
+   "location": "Pune",
+   "posted": "2026-11-17",
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129116",
+   "exp_from": "none"
+  },
+  {
    "title": "Assistant Vice President - Applied AI Engineer",
    "company": "Barclays",
    "location": "Bengaluru",
    "posted": "2026-11-17",
    "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101372",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Assistant Vice President - Applied AI Engineer",
+   "company": "Barclays",
+   "location": "Bengaluru",
+   "posted": "2026-11-17",
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101371",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Assistant Vice President - Applied AI Engineer",
+   "company": "Barclays",
+   "location": "Bengaluru",
+   "posted": "2026-11-17",
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101370-3",
    "exp": [
     8,
     null
@@ -456,14 +596,6 @@
    "exp_from": "jd"
   },
   {
-   "title": "Applied Sciences",
-   "company": "Microsoft",
-   "location": "India",
-   "posted": "2026-11-16",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393557074078",
-   "exp_from": "none"
-  },
-  {
    "title": "Lead Data Engineer - Data Engineering, Databricks, Model Serving, ML Ops, Data Architecture and modeling",
    "company": "JPMorgan Chase",
    "location": "Mumbai",
@@ -500,6 +632,18 @@
    "exp_from": "jd"
   },
   {
+   "title": "Gen AI Specialist",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-16",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161725173",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "Senior Applied Scientist, Amazon Core Search",
    "company": "Amazon",
    "location": "Bengaluru",
@@ -524,6 +668,18 @@
    "exp_from": "jd"
   },
   {
+   "title": "GenAI/Agentic AI specialists",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-15",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161679689",
+   "exp": [
+    5,
+    8
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
    "company": "Salesforce",
    "location": "2 locations in India",
@@ -531,18 +687,6 @@
    "url": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Bangalore/LMTS---Lead-AI-ML-Engineer--LLM-Post-Training-_JR368314",
    "exp": [
     10,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Principal Data Scientist",
-   "company": "Philips",
-   "location": "Bengaluru",
-   "posted": "2026-11-14",
-   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Principal-Data-Scientist_592609",
-   "exp": [
-    9,
     null
    ],
    "exp_from": "jd"
