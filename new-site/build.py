@@ -1226,6 +1226,8 @@ def site_files():
     write("404.html", html + foot_html("/"))
     write("CNAME", "aimlrounds.com\n")
     # proves to the official MCP Registry that this domain owns the com.aimlrounds/* server names (public key only)
+    # mcptry directory: proves the maintainer controls aimlrounds.com (claimed 20 Nov 2026)
+    write(".well-known/mcptry-verify.txt", "mcptry-verify=vAJPsebNMK1sdfr33vxeyEUH9qZ_kYgx\n")
     write(".well-known/mcp-registry-auth", (Path(__file__).parent / "mcp" / "mcp-registry-auth").read_text(encoding="utf-8"))
     base = BASE
     urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
