@@ -628,6 +628,38 @@ def fetch(row):
         return row, [], f"{type(e).__name__}: {e}"[:160]
 
 
+def job_id(url):
+    """The posting's own id, read from its link, so a job is never merged with another just because the titles match.
+    Workday: the requisition at the end (..._R-2698722, ..._JR-0000101370-3 → JR-0000101370, a re-post of the same requisition).
+    Others: an id in the query (gh_jid, jobId, id) or the last long number in the path (Amazon, Google, Oracle, SmartRecruiters…).
+    None if the link has no id (e.g. Tredence links every job to one shared page)."""
+    u = urllib.parse.urlsplit(url.strip())
+    path = re.sub(r"/[a-z]{2}(?:-[a-z]{2})?(?=/)", "", u.path.rstrip("/"), count=1, flags=re.I)  # drop /en/ or /en-US/
+    m = re.search(r"_([a-z]{0,4}-?\d{4,})(?:-\d{1,2})?$", path, re.I)
+    if m:
+        return m.group(1).upper()
+    q = urllib.parse.parse_qs(u.query)
+    for k in ("gh_jid", "jobId", "jobid", "job_id", "id"):
+        if q.get(k):
+            return q[k][0]
+    uuid = re.findall(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", path, re.I)  # Lever, Ashby
+    if uuid:
+        return uuid[-1].lower()
+    nums = re.findall(r"(?<![a-z0-9])(\d{5,})(?![0-9])", path, re.I)
+    if nums:
+        return nums[-1]
+    return None
+
+
+def dedupe_key(j):
+    """Two rows are the same job only if they point to the same posting id at the same company.
+    Without an id, only if link, title and location all match, since nothing else tells them apart."""
+    jid = job_id(j["url"])
+    if jid:
+        return (j["company"], jid)
+    return (j["company"], j["url"].split("?")[0].rstrip("/").lower(), j["title"].lower(), j["location"].lower())
+
+
 def main():
     rows = [r for r in csv.DictReader(open(HERE / "companies.csv")) if r["how_we_get_jobs"] == "Automatic" and r["source"] in SOURCES]
     with ThreadPoolExecutor(12) as ex:
@@ -659,7 +691,7 @@ def main():
         if err:
             for j in previous:
                 if j["company"] == row["company"] and (NOW.date() - dt.date.fromisoformat(j["posted"])).days <= DAYS:
-                    seen.add((j["company"], j["title"].lower()))
+                    seen.add(dedupe_key(j))
                     keep.append(j)
                     n += 1
             err += f" (kept {n} from last run)"
@@ -668,7 +700,7 @@ def main():
                 continue
             if not INDIA.search(j["location"]) or not is_ai_ml(j["title"]):
                 continue
-            k = (j["company"], j["title"].lower())
+            k = dedupe_key(j)
             if k in seen:
                 continue
             seen.add(k)
