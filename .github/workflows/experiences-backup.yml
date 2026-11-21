@@ -1,0 +1,33 @@
+name: Back up interview experiences
+
+on:
+  schedule:
+    - cron: "11 21 * * *"  # 02:41 IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: experiences-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export approved posts
+        run: |
+          curl -sSf --retry 3 https://experiences.aimlrounds.com/v1/export -o /tmp/backup.json
+          python3 -c "import json; d = json.load(open('/tmp/backup.json')); assert isinstance(d['posts'], list); print(d['count'], 'posts')"
+          python3 -c "import json; d = json.load(open('/tmp/backup.json')); d.pop('exported'); json.dump(d, open('new-site/experiences/backup.json', 'w'), ensure_ascii=False, indent=1)"
+      - name: Commit if changed
+        run: |
+          git config user.name "experiences-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add new-site/experiences/backup.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Back up interview experiences $(date -u +%F)"
+          git push

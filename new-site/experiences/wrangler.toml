@@ -1,0 +1,25 @@
+name = "aimlrounds-experiences"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+# Serve at https://experiences.aimlrounds.com (the zone is on this Cloudflare account).
+routes = [
+  { pattern = "experiences.aimlrounds.com", custom_domain = true }
+]
+
+# Daily clean-up: clear connection hashes after 2 days, purge rejected posts after 30 days.
+[triggers]
+crons = ["30 20 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aimlrounds-experiences"
+database_id = "25abde79-dff2-402a-a113-d151df21cc4b"
+
+[vars]
+ALLOWED_ORIGINS = "https://aimlrounds.com,https://www.aimlrounds.com"
+# Cloudflare Access for /admin: team name (xxx in xxx.cloudflareaccess.com) and the application's AUD tag.
+ACCESS_TEAM = "aimlrounds"
+ACCESS_AUD = "8c4580fdba77b44834952f8548dc6f21b5dd13417bced73b9b845f2815f752ab"
+# Secrets (set with `npx wrangler secret put NAME`, never written here): TURNSTILE_SECRET, HASH_SALT
