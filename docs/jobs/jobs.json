@@ -63,6 +63,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-21",
    "url": "https://visa.wd5.myworkdayjobs.com/Visa/job/IN---Bengaluru-India/Staff-Data-Scientist_REF090422W-2",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -77,12 +82,7 @@
      "Experience building and maintaining Spark‑based data and feature pipelines to support ML training and inference workflows.",
      "Familiarity with big data platforms and storage systems such as Hadoop, EMR, and NoSQL databases."
     ]
-   },
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Sr Data Scientist- MarTech",
@@ -90,6 +90,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-21",
    "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/BangaloreIndia/Sr-Data-Scientist--Promo-Optimisation_R0000442385",
+   "exp": [
+    4,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -104,12 +109,7 @@
      "Hands-on experience applying machine learning techniques to solve business problems, preferably in retail, e-commerce, Marketing, personalization, promotions, pricing…",
      "Experience with one or more areas of operations research, such as linear programming, mixed-integer programming, constrained optimization, simulation, stochastic…"
     ]
-   },
-   "exp": [
-    4,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "SW AI Engineer",
@@ -144,6 +144,11 @@
    "location": "2 locations in India",
    "posted": "2026-11-21",
    "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Staff-Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139151",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "PyTorch",
@@ -158,12 +163,7 @@
      "5+ years relevant experience and a Bachelor’s degree OR any equivalent combination of education and experience.",
      "Familiarity with card network ecosystems (Visa/Mastercard authorization flows, chargebacks, dispute rules) and debit-specific regulations such as Reg E."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Machine Learning Engineer, Fraud (Crypto & Debit Card)",
@@ -171,6 +171,11 @@
    "location": "2 locations in India",
    "posted": "2026-11-21",
    "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139149",
+   "exp": [
+    1,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "TensorFlow",
@@ -185,12 +190,7 @@
      "Familiarity with ML frameworks like TensorFlow or scikit-learn.",
      "1+ years of relevant experience (internships, co-ops, or academic projects count) and a Bachelor’s degree OR any equivalent combination of education and experience."
     ]
-   },
-   "exp": [
-    1,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Sr Data Scientist",
@@ -198,17 +198,17 @@
    "location": "2 locations in India",
    "posted": "2026-11-21",
    "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Data-Scientist_R0139152",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "needs": [
      "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
      "A strong understanding of fraud risk, including how fraud patterns evolve and how to respond to emerging threats."
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Science and AI Engineering Lead​, VP",
@@ -216,6 +216,11 @@
    "location": "Pune",
    "posted": "2026-11-21",
    "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Business-Bay/Data-Science-and-AI-Engineering-Lead---VP_R0453375",
+   "exp": [
+    18,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LangChain",
@@ -230,12 +235,7 @@
      "Demonstrable experience with data / feature engineering, data product creation, and modern data solutions such as BigQuery, Looker, PostgreSQL, Pinecone, Spark, MongoDB…",
      "Strong knowledge of current best practice for AI risk management across the solution lifecycle, and how to leverage technology to implement these controls (e.g. from…"
     ]
-   },
-   "exp": [
-    18,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Research Engineer",
@@ -243,6 +243,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://job-boards.greenhouse.io/turing/jobs/6266941004",
+   "exp": [
+    4,
+    5
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Reinforcement learning",
@@ -256,12 +261,7 @@
      "Around 4–5 years of experience building or improving deep learning systems, with hands-on work in training data, post-training, evaluation, or agentic systems.",
      "Strong programming skills in Python. Experience with SQL or other structured-data workflows is helpful."
     ]
-   },
-   "exp": [
-    4,
-    5
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Machine Learning Engineer",
@@ -269,6 +269,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-20",
    "url": "https://jobs.smartrecruiters.com/servicenow/744000162790659",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title",
    "jd": {
     "skills": [
      "Python",
@@ -279,12 +284,7 @@
      "Experience building new products that use challenging algorithms",
      "Expertise in coding efficient, object-oriented, modularized and quality software"
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "title"
+   }
   },
   {
    "title": "Staff AI Platform Engineer",
@@ -292,6 +292,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-20",
    "url": "https://jobs.smartrecruiters.com/servicenow/744000162683609",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Agents",
@@ -306,12 +311,7 @@
      "Expert-level programming experience in Python, Java, Go, TypeScript, or equivalent languages.",
      "8+ years of software engineering experience, or equivalent practical experience."
     ]
-   },
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior AI/ML Engineer",
@@ -373,6 +373,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://morganstanley.eightfold.ai/careers/job/549800652399",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Generative AI",
@@ -387,12 +392,7 @@
      "6-8 years of experience as an Application Developer with design and developing multi-tier Python applications",
      "Familiarity with GenAI architectures (e.g. transformers, LLMs like GPT)"
     ]
-   },
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Scientist 2",
@@ -400,6 +400,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-20",
    "url": "https://apply.careers.microsoft.com/careers/job/1970393557074752",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -413,12 +418,7 @@
      "Bachelor's or Master's degree in Data Science, Computer Science, Statistics, Mathematics, Economics, Engineering or a related quantitative field, or equivalent…",
      "3+ years of hands-on experience in data science, machine learning or applied analytics, with a track record of shipping models or insights that drove business decisions."
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied Sciences",
@@ -440,7 +440,12 @@
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-20",
-   "url": "https://jobs.mercedes-benz.com/ai-ml-engineer-247842-MER0004AL6",
+   "url": "https://jobs.mercedes-benz.com/ai-ml-engineer-247844-MER0004AL6",
+   "exp": [
+    3,
+    6
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -455,12 +460,7 @@
      "Experience with RAG and vector search (OpenSearch, pgvector or similar) and embeddings.",
      "Experience with agent or orchestration frameworks (for example LangGraph, LangChain, LlamaIndex, Strands, Bedrock Agents) and protocols such as MCP."
     ]
-   },
-   "exp": [
-    3,
-    6
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI/ML Engineer",
@@ -468,6 +468,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://jobs.mercedes-benz.com/ai-ml-engineer-247843-MER0004AL6",
+   "exp": [
+    3,
+    6
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -482,19 +487,19 @@
      "Experience with RAG and vector search (OpenSearch, pgvector or similar) and embeddings.",
      "Experience with agent or orchestration frameworks (for example LangGraph, LangChain, LlamaIndex, Strands, Bedrock Agents) and protocols such as MCP."
     ]
-   },
-   "exp": [
-    3,
-    6
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI/ML Engineer",
    "company": "Mercedes-Benz R&D India",
    "location": "Bengaluru",
    "posted": "2026-11-20",
-   "url": "https://jobs.mercedes-benz.com/ai-ml-engineer-247844-MER0004AL6",
+   "url": "https://jobs.mercedes-benz.com/ai-ml-engineer-247842-MER0004AL6",
+   "exp": [
+    3,
+    6
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -509,12 +514,7 @@
      "Experience with RAG and vector search (OpenSearch, pgvector or similar) and embeddings.",
      "Experience with agent or orchestration frameworks (for example LangGraph, LangChain, LlamaIndex, Strands, Bedrock Agents) and protocols such as MCP."
     ]
-   },
-   "exp": [
-    3,
-    6
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Staff Software Engineer, ML/Quality Search",
@@ -522,6 +522,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://www.google.com/about/careers/applications/jobs/results/109675655980819142",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -536,12 +541,7 @@
      "5 years of experience with one or more of the following: Speech/audio (e.g., technology duplicating and responding to the human voice), reinforcement learning (e.g.…",
      "5 years of experience with design and architecture; and testing/launching software products."
     ]
-   },
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Lead AI Product Engineer",
@@ -650,6 +650,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162671589",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "SQL",
@@ -663,12 +668,7 @@
      "Educational qualification: Bachelor’s or Master’s degree in Computer Science, Information Technology, Engineering, Data Science, or a related field.",
      "Experience : 5+ years of experience in Data Engineering, AI Engineering, or related domains."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Machine Learning Engineer - Responsible AI",
@@ -702,6 +702,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://www.amazon.jobs/en/jobs/10609719/applied-scientist-ii-detail-page",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -716,12 +721,7 @@
      "PhD, or Master's degree and 4+ years of CS, CE, ML or related field experience",
      "Experience in patents or publications at top-tier peer-reviewed conferences or journals"
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied Scientist II, Detail Page",
@@ -729,6 +729,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://www.amazon.jobs/en/jobs/10609718/applied-scientist-ii-detail-page",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -743,12 +748,7 @@
      "Experience in patents or publications at top-tier peer-reviewed conferences or journals",
      "Experience in any of the following areas: algorithms and data structures, parsing, numerical optimization, data mining, parallel and distributed computing…"
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior, Data Scientist",
