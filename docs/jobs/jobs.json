@@ -574,6 +574,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-20",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22913",
+   "exp": [
+    3,
+    6
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -586,12 +591,7 @@
      "Bachelor's/Master's Degree with 3-6 years in Data Analytics, CX Analytics, Conversational AI Analytics, or related role The candidate must be passionate and highly…",
      "Experience in CC contact channels, digital products, Digital transformation solutions, Conversational AI Optimization (Voice & Digital), Client handling, and web data…"
     ]
-   },
-   "exp": [
-    3,
-    6
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Scientist",
@@ -599,6 +599,11 @@
    "location": "Gurugram",
    "posted": "2026-11-20",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22951",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Python",
@@ -613,12 +618,7 @@
      "5+ years of experience in data science, building hands-on ML models.",
      "5+ years of experience as a NLP and Python developer."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Generative AI and Deep Learning Data Scientist",
