@@ -768,3 +768,18 @@ body.rm-open { overflow: hidden; }
 .exp-result.bad { border-color: #B42318; color: #B42318; }
 .exp-link-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 14px 18px; text-decoration: none; }
 .exp-link-strip:hover { border-color: var(--line-strong); background: var(--line-soft); }
+
+/* MCP server page */
+.mcp-tabs { margin-top: 2px; }
+.mcp-panel { display: grid; gap: 12px; }
+.mcp-code { position: relative; background: var(--ink); color: #fff; border-radius: var(--radius-control); min-width: 0; }
+.mcp-code pre { margin: 0; padding: 14px 92px 14px 16px; overflow-x: auto; font: 500 14px/1.55 var(--mono); }
+.mcp-copy { position: absolute; top: 8px; right: 8px; min-height: 36px; padding: 0 12px; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; background: transparent; color: #fff; font-size: 13px; }
+.mcp-copy:hover { background: rgba(255,255,255,.12); }
+.mcp-steps { display: grid; gap: 6px; padding-left: 20px; list-style: decimal; }
+.mcp-asks, .mcp-defs { display: grid; gap: 12px; }
+.mcp-asks li { display: grid; gap: 2px; padding-left: 14px; border-left: 3px solid var(--line-strong); }
+.mcp-defs li { display: grid; grid-template-columns: minmax(130px, auto) 1fr; gap: 4px 14px; align-items: baseline; }
+.mcp-defs code { font-size: 14px; }
+@media (max-width: 560px) { .mcp-defs li { grid-template-columns: 1fr; } }
+.mcp-page code { overflow-wrap: anywhere; }

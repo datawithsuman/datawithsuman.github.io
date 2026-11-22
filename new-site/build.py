@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Builds the static site into dist/. Run: python3 build.py"""
+import base64
 import datetime as dt
 import json
 import random
@@ -220,7 +221,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}new/">What's new</a><a href="{root}progress/">My progress</a><a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}new/">What's new</a><a href="{root}progress/">My progress</a>{f'<a href="{root}mcp/">MCP server</a>' if MCP_PUBLIC else ""}<a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -935,6 +936,7 @@ def search_index():
     jobs_page()
     if EXPERIENCES_PUBLIC:
         experiences_pages()
+    mcp_page()
     privacy_page()
     items = updates()
     new_page(items)
@@ -1129,6 +1131,72 @@ def about_page():
     write("about/index.html", html + foot_html(root))
 
 
+# ---------- MCP server page ----------
+# Always built at /mcp/ so it can be checked before launch. While MCP_PUBLIC is False it is noindex,
+# missing from the footer and the sitemap. Install steps checked 19 Nov 2026; re-check them before changing.
+MCP_URL = "https://mcp.aimlrounds.com/mcp"
+
+
+def mcp_page():
+    root = "../"
+    desc = "Connect AIML Rounds to your AI assistant and prepare for AI/ML interviews in the chat. Free, no sign-in."
+    cursor_cfg = base64.b64encode(json.dumps({"url": MCP_URL}, separators=(",", ":")).encode()).decode()
+    def code(text):
+        return f'<div class="mcp-code"><pre><code>{esc(text)}</code></pre><button type="button" class="mcp-copy" data-copy="{esc(text)}">Copy</button></div>'
+    clients = [
+        ("claude-code", "Claude Code", f'<p>Run this once in your terminal. It adds the server for all your projects.</p>{code(f"claude mcp add --transport http --scope user aimlrounds {MCP_URL}")}<p class="note">Check it with <code>/mcp</code> inside Claude Code.</p>'),
+        ("claude", "Claude app", f'<ol class="mcp-steps"><li>In Claude (web or desktop), open <b>Settings</b>, then <b>Connectors</b>.</li><li>Choose <b>Add custom connector</b>.</li><li>Name it <b>AIML Rounds</b> and paste this address:</li></ol>{code(MCP_URL)}<p class="note">On the free plan you can add one custom connector.</p>'),
+        ("cursor", "Cursor", f'<p><a class="btn btn-primary" href="cursor://anysphere.cursor-deeplink/mcp/install?name=aimlrounds&amp;config={cursor_cfg}">Add to Cursor</a></p><p>Or add this to <code>~/.cursor/mcp.json</code>:</p>{code(json.dumps({"mcpServers": {"aimlrounds": {"url": MCP_URL}}}, indent=2))}'),
+        ("vscode", "VS Code", f'<p>Add this to <code>.vscode/mcp.json</code> in your project, then start the server from that file.</p>{code(json.dumps({"servers": {"aimlrounds": {"type": "http", "url": MCP_URL}}}, indent=2))}'),
+        ("codex", "Codex CLI", f'<p>Run this once in your terminal.</p>{code(f"codex mcp add aimlrounds --url {MCP_URL}")}<p>Or add it to <code>~/.codex/config.toml</code>:</p>{code(f"[mcp_servers.aimlrounds]{chr(10)}url = \"{MCP_URL}\"")}'),
+    ]
+    tabs = "".join(f'<button type="button" data-mcp-tab="{i}" aria-pressed="{"true" if n == 0 else "false"}">{name}</button>' for n, (i, name, _) in enumerate(clients))
+    panels = "".join(f'<div class="mcp-panel" data-mcp-panel="{i}"{"" if n == 0 else " hidden"}>{body}</div>' for n, (i, _, body) in enumerate(clients))
+    asks = [("Quiz me on RAG, one question at a time.", "A quiz from the site. It waits for your answer, then explains."),
+            ("Run a mock ML system design interview for an ML engineer.", "A mock round. Answer in your own words and get feedback against the model answer."),
+            ("Explain the KV cache from aimlrounds.", "The lesson, explained in the chat, with a link to the page."),
+            ("Make a 6-week study plan for an AI engineer role.", "A plan built from the role roadmap, with lessons, quizzes and mocks."),
+            ("Show new GenAI jobs in Bengaluru for 2–5 years of experience.", "Postings from the last 7 days, with direct links to apply."),
+            ("What's new on aimlrounds this week?", "Lessons, designs and quizzes added recently.")]
+    ask_html = "".join(f'<li><b>“{esc(q)}”</b><span class="note">{esc(a)}</span></li>' for q, a in asks)
+    tools = [("search", "Find lessons by keywords or an interview question."), ("get_lesson", "Read a lesson, or one tab of it, such as the interview answer."),
+             ("browse", "The site's tracks, parts and sections."), ("roadmap", "The study roadmap for AI Engineer, ML Engineer or Data Scientist."),
+             ("quiz", "Multiple-choice questions per topic. Answers stay hidden until you've answered."), ("mock_interview", "Mock rounds per role, with model answers for feedback."),
+             ("jobs", "AI/ML jobs in India from the last 7 days. Filter by skill, company, city or experience."), ("whats_new", "What was added to the site recently.")]
+    tool_html = "".join(f'<li><code>{n}</code><span>{esc(d)}</span></li>' for n, d in tools)
+    prompts = [("study_topic", "Learn one topic from the lessons, then check yourself with its quiz."), ("mock_interview", "A mock interview for a role, one question at a time, with feedback."),
+               ("study_plan", "A week-by-week plan from the role roadmap."), ("job_prep", "Find matching jobs, then map what they ask for to lessons to revise.")]
+    prompt_html = "".join(f'<li><code>{n}</code><span>{esc(d)}</span></li>' for n, d in prompts)
+    extra = "" if MCP_PUBLIC else '<meta name="robots" content="noindex">'
+    html = head_html("MCP server · AIML Rounds", desc, root, path="mcp/", extra_head=extra)
+    html += f"""<main id="main"><div class="page about mcp-page">
+<section class="hero-roadmaps"><p class="eyebrow">MCP SERVER</p><h1 class="h1-home">AIML Rounds in your AI assistant.</h1><p class="lead">{desc}</p></section>
+<section class="panel block"><h2>What it is</h2><p>MCP (Model Context Protocol) lets an AI assistant use outside tools. Add the AIML Rounds server and your assistant can search the lessons, quiz you, run mock interviews and find jobs, answering from the site instead of from memory, with links to the pages.</p>
+<ul class="about-list"><li>Address: <code>{MCP_URL}</code></li><li>Free and read-only. No sign-in, no API key.</li><li>Listed in the official MCP Registry as <code>com.aimlrounds/aimlrounds</code>. Servers at any other address aren't run by this site.</li></ul></section>
+<section class="panel block"><h2>Add it</h2><div class="depth mcp-tabs" role="group" aria-label="Choose your app">{tabs}</div>{panels}</section>
+<section class="panel block"><h2>Then just ask</h2><p>Use plain words. If your assistant doesn't pick the server on its own, add “from aimlrounds” to your message.</p><ul class="mcp-asks">{ask_html}</ul></section>
+<section class="panel block"><h2>Guided prompts</h2><p>Some apps list these as ready-made prompts. In Claude Code, type <code>/mcp__aimlrounds__study_topic</code> and so on. In other apps, ask for them by name.</p><ul class="mcp-defs">{prompt_html}</ul></section>
+<section class="panel block"><h2>Tools</h2><p>Your assistant picks these for you. They're listed here so you know what it can do.</p><ul class="mcp-defs">{tool_html}</ul></section>
+</div></main>
+<script>
+(function () {{
+  var tabs = document.querySelectorAll("[data-mcp-tab]"), panels = document.querySelectorAll("[data-mcp-panel]");
+  Array.prototype.forEach.call(tabs, function (b) {{ b.addEventListener("click", function () {{
+    Array.prototype.forEach.call(tabs, function (x) {{ x.setAttribute("aria-pressed", x === b ? "true" : "false"); }});
+    Array.prototype.forEach.call(panels, function (p) {{ p.hidden = p.dataset.mcpPanel !== b.dataset.mcpTab; }});
+  }}); }});
+  document.addEventListener("click", function (e) {{
+    var c = e.target.closest(".mcp-copy"); if (!c) return;
+    function done(t) {{ c.textContent = t; setTimeout(function () {{ c.textContent = "Copy"; }}, 1600); }}
+    if (navigator.clipboard) navigator.clipboard.writeText(c.dataset.copy).then(function () {{ done("Copied"); }}, function () {{ done("Press Ctrl C"); }});
+    else done("Press Ctrl C");
+  }});
+}})();
+</script>
+"""
+    write("mcp/index.html", html + foot_html(root))
+
+
 def privacy_page():
     """Plain facts about what the site stores. Update this if tracking changes or a sign-up is added."""
     root = "../"
@@ -1294,7 +1362,7 @@ def site_files():
     write(".well-known/mcptry-verify.txt", "mcptry-verify=vAJPsebNMK1sdfr33vxeyEUH9qZ_kYgx\n")
     write(".well-known/mcp-registry-auth", (Path(__file__).parent / "mcp" / "mcp-registry-auth").read_text(encoding="utf-8"))
     base = BASE
-    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/"] + (["experiences/"] if EXPERIENCES_PUBLIC else []) + ["mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/"] + (["experiences/"] if EXPERIENCES_PUBLIC else []) + ["mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + (["mcp/"] if MCP_PUBLIC else []) + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
