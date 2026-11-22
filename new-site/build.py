@@ -107,6 +107,17 @@ BASE = "https://aimlrounds.com/"
 # The MCP server runs at mcp.aimlrounds.com, but the site doesn't mention it until launch.
 # Set True to show it on the About page and in llms.txt.
 MCP_PUBLIC = False
+# Interview experiences: hidden 22 Nov 2026 (Worker + D1 stay up). True brings back pages, nav, links, sitemap, privacy text.
+EXPERIENCES_PUBLIC = False
+def EXP_NAV(root, page):
+    cur = ' aria-current="page"' if page == "experiences" else ""
+    return f'<a href="{root}experiences/"{cur}>Interview experiences</a>' if EXPERIENCES_PUBLIC else ""
+EXP_STRIP_MOCK = '<a class="panel exp-link-strip" href="../experiences/"><b>Real interview experiences</b><span class="note">What candidates were asked in AI/ML interviews, shared anonymously.</span><span class="jobs-strip-go">Read them →</span></a>\n' if EXPERIENCES_PUBLIC else ""
+EXP_STRIP_JOBS = '<a class="panel exp-link-strip" href="../experiences/"><b>Got an interview?</b><span class="note">Read what others were asked in AI/ML interviews.</span><span class="jobs-strip-go">Interview experiences →</span></a>\n' if EXPERIENCES_PUBLIC else ""
+EXP_PRIV1 = '<li>If you share an <b>interview experience</b>, we store the role and the text you wrote, and the date. To stop spam, we also keep a scrambled code made from your connection (never the IP address itself) for two days, then delete it. Posts that our rules reject are deleted after 30 days. Approved posts are public. Ask us by email to remove a post.</li>' if EXPERIENCES_PUBLIC else ""
+EXP_PRIV2 = "<li><b>Cloudflare Workers and D1</b> store shared interview experiences, and <b>Cloudflare Turnstile</b> checks that the person sharing one isn't a bot.</li>" if EXPERIENCES_PUBLIC else ""
+def EXP_HEAD(root):
+    return f'<a class="head-link" href="{root}experiences/">Experiences</a>' if EXPERIENCES_PUBLIC else ""
 LOGO = '<svg class="logo" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#11141B"/><circle cx="8" cy="14" r="2.4" fill="#fff"/><circle cx="14" cy="14" r="2.4" fill="#fff"/><circle cx="20" cy="14" r="2.4" fill="#fff"/></svg>'
 SEARCH_ICON = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>'
 
@@ -157,7 +168,7 @@ def preview_tags(title, desc, path):
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
     if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a>'
-               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a><a href="{root}experiences/"{' aria-current="page"' if page == "experiences" else ""}>Interview experiences</a><a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a></nav>')
+               f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a>{EXP_NAV(root, page)}<a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a></nav>')
     else:
         tabs = "".join(
             f'<a class="t-{t["id"]}{" active" if t is active else ""}" href="{root}tracks/{t["id"]}/"'
@@ -189,7 +200,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
-{"" if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}mock/">Mocks</a><a class="head-link" href="{root}experiences/">Experiences</a><a class="head-link" href="{root}jobs/">Jobs</a>'}
+{"" if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}mock/">Mocks</a>{EXP_HEAD(root)}<a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -922,7 +933,8 @@ def search_index():
         quiz_page(tid)
     mock_pages()
     jobs_page()
-    experiences_pages()
+    if EXPERIENCES_PUBLIC:
+        experiences_pages()
     privacy_page()
     items = updates()
     new_page(items)
@@ -971,8 +983,7 @@ def mock_pages():
     html += f"""<main id="main"><section class="page mock-page"><p class="eyebrow">MOCK INTERVIEWS</p><h1 class="h1-track">Mock interviews</h1><p class="lead">{desc}</p>
 <div class="card-grid role-cards">{cards}</div>{soon_html}
 <section class="panel block"><h2>How to use a mock</h2><ol class="mock-how"><li>Set the timer, or just note the time.</li><li>Read a question and answer it out loud, as you would to an interviewer.</li><li>Open the model answer and tick off what the interviewer listens for.</li><li>Revisit the linked lessons for anything you missed.</li></ol></section>
-<a class="panel exp-link-strip" href="../experiences/"><b>Real interview experiences</b><span class="note">What candidates were asked in AI/ML interviews, shared anonymously.</span><span class="jobs-strip-go">Read them →</span></a>
-</section></main>
+{EXP_STRIP_MOCK}</section></main>
 """
     write("mock/index.html", html + foot_html("../"))
     for m in mocks.MOCKS:
@@ -1028,8 +1039,7 @@ def jobs_page():
 <p class="note" id="jobsMeta" aria-live="polite">Loading jobs…</p></div>
 <ul class="panel jobs-list" id="jobsList" tabindex="0" aria-label="Job postings, scroll for more"></ul>
 <noscript><p class="note">Turn on JavaScript to see the job list.</p></noscript>
-<a class="panel exp-link-strip" href="../experiences/"><b>Got an interview?</b><span class="note">Read what others were asked in AI/ML interviews.</span><span class="jobs-strip-go">Interview experiences →</span></a>
-<p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>
+{EXP_STRIP_JOBS}<p class="note jobs-note">Every link goes to the company's own careers page. We collect these automatically and don't vet them, so check the details there before you apply.</p>
 </section></main>
 """
     write("jobs/index.html", html + foot_html(root))
@@ -1127,8 +1137,8 @@ def privacy_page():
     html = head_html("Privacy · AIML Rounds", desc, root, path="privacy/")
     html += f"""<main id="main"><div class="page about">
 <section class="hero-roadmaps"><p class="eyebrow">PRIVACY</p><h1 class="h1-home">Privacy, in plain words.</h1><p class="lead">{desc}</p></section>
-<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts or ads. {SIGNUP_NOTE}</li><li>We count visits with <b>Cloudflare Web Analytics</b>: anonymous page views, which pages are popular and which sites send visitors. It sets no cookies and doesn't track you across other sites.</li><li>If you share an <b>interview experience</b>, we store the role and the text you wrote, and the date. To stop spam, we also keep a scrambled code made from your connection (never the IP address itself) for two days, then delete it. Posts that our rules reject are deleted after 30 days. Approved posts are public. Ask us by email to remove a post.</li><li>Your lesson progress, the days you studied, the quiz and mock answers you've opened, and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
-<section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Cloudflare Web Analytics</b> counts page visits, as described above.</li><li><b>Cloudflare Workers and D1</b> store shared interview experiences, and <b>Cloudflare Turnstile</b> checks that the person sharing one isn't a bot.</li><li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
+<section class="panel block"><h2>What the site itself keeps</h2><ul class="about-list"><li>There are no accounts or ads. {SIGNUP_NOTE}</li><li>We count visits with <b>Cloudflare Web Analytics</b>: anonymous page views, which pages are popular and which sites send visitors. It sets no cookies and doesn't track you across other sites.</li>{EXP_PRIV1}<li>Your lesson progress, the days you studied, the quiz and mock answers you've opened, and which sections you've opened are saved in your own browser, using local storage. They aren't sent to the site. Clearing your browser data removes them.</li></ul></section>
+<section class="panel block"><h2>Outside services</h2><p>Like most websites, pages load through other services, and these can see basic request details such as your IP address:</p><ul class="about-list"><li><b>GitHub Pages</b> hosts the site.</li><li><b>Google Fonts</b> provides the fonts.</li><li><b>cdnjs</b>, from Cloudflare, provides the maths display on lesson pages.</li><li><b>Cloudflare Web Analytics</b> counts page visits, as described above.</li>{EXP_PRIV2}<li><b>Links to other sites</b> follow those sites' own policies once you click them.</li></ul></section>
 <section class="panel block"><h2>Questions</h2><p>Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></section>
 </div></main>
 """
@@ -1284,7 +1294,7 @@ def site_files():
     write(".well-known/mcptry-verify.txt", "mcptry-verify=vAJPsebNMK1sdfr33vxeyEUH9qZ_kYgx\n")
     write(".well-known/mcp-registry-auth", (Path(__file__).parent / "mcp" / "mcp-registry-auth").read_text(encoding="utf-8"))
     base = BASE
-    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/", "experiences/", "mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/"] + (["experiences/"] if EXPERIENCES_PUBLIC else []) + ["mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")
