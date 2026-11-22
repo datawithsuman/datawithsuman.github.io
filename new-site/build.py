@@ -107,7 +107,7 @@ ASSET_V = hashlib.md5(b"".join((HERE / "assets" / n).read_bytes() for n in ("sit
 BASE = "https://aimlrounds.com/"
 # The MCP server runs at mcp.aimlrounds.com, but the site doesn't mention it until launch.
 # Set True to show it on the About page and in llms.txt.
-MCP_PUBLIC = False
+MCP_PUBLIC = True
 # Interview experiences: hidden 22 Nov 2026 (Worker + D1 stay up). True brings back pages, nav, links, sitemap, privacy text.
 EXPERIENCES_PUBLIC = False
 def EXP_NAV(root, page):
