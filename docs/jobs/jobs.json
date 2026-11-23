@@ -1,14 +1,73 @@
 {
  "updated": "2026-11-23",
  "days": 7,
- "count": 72,
+ "count": 74,
  "jobs": [
+  {
+   "title": "Research Engineer",
+   "company": "Quantiphi",
+   "location": "2 locations in India",
+   "posted": "2026-11-23",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Engineer_JR9674",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Python",
+     "PyTorch",
+     "GCP",
+     "Generative AI",
+     "Agents"
+    ],
+    "needs": [
+     "Minimum work experience required : from new graduates to 3+ yrs of research experience post graduation",
+     "Hands-on experience in developing and improving Large Language Models and related techniques (finetuning / quantization / distillation / inference optimization / model…",
+     "Knowledge of Cloud-environments like GCP/Azure, ML frameworks like PyTorch, Agent-frameworks like Langchain, ADK etc., with good experience in large scale distributed…"
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Gurugram",
+   "posted": "2026-11-23",
+   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/ai-ml-engineer/34088/103672563216",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "RAG",
+     "Agents",
+     "Generative AI",
+     "Prompt engineering",
+     "Vector databases"
+    ],
+    "needs": [
+     "Bachelor's degree in Computer Science, Engineering, Data Science, or a related technical field; equivalent experience considered",
+     "2+ years of experience in software engineering, machine learning, or AI engineering",
+     "Hands-on experience building and deploying generative AI and LLM-based applications in production environments."
+    ]
+   },
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "AI/ML Engineer - Python, Agentic AI, LLM, RAG",
    "company": "Optum (UnitedHealth Group)",
    "location": "Gurugram",
    "posted": "2026-11-23",
    "url": "https://careers.unitedhealthgroup.com/job/gurgaon/ai-ml-engineer-python-agentic-ai-llm-rag/34088/103668543024",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -23,12 +82,57 @@
      "3+ years of software engineering experience developing and maintaining production-grade applications",
      "Hands-on experience with Python, JavaScript/TypeScript, React, and Next.js"
     ]
+   }
+  },
+  {
+   "title": "Senior Machine learning Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163145558",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "Azure",
+     "Kubernetes",
+     "SQL",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "Education: Bachelor’s degree in Computer Science, Electrical Engineering, or a related field. An advanced degree is an advantage.",
+     "Experience: 5+ years of industry experience in MLOps, Data Engineering, or Software Infrastructure, with a focus on Deep Learning systems.",
+     "Programming & Software Design: Expert-level proficiency in Python with a strong emphasis on clean software design, object-oriented programming, and architectural…"
+    ]
    },
    "exp": [
-    3,
+    5,
     null
    ],
    "exp_from": "jd"
+  },
+  {
+   "title": "AI/ML Data Scientist",
+   "company": "Barclays",
+   "location": "Gurugram",
+   "posted": "2026-11-23",
+   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Gurugram-DLF-Downtown/AI-ML-Data-Scientist_JR-0000136329-1",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "NLP",
+     "Python",
+     "SQL",
+     "Spark",
+     "AWS"
+    ],
+    "needs": [
+     "Requires in-depth technical knowledge and experience in their assigned area of expertise",
+     "OR for an individual contributor, they develop technical expertise in work area, acting as an advisor where appropriate.",
+     "Maintain and continually build an understanding of how own sub-function integrates with function, alongside knowledge of the organisations products, services and…"
+    ]
+   },
+   "exp_from": "none"
   },
   {
    "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
@@ -63,6 +167,11 @@
    "location": "Gurugram",
    "posted": "2026-11-22",
    "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer-python-agentic-ai-rag-llm/34088/103665831200",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -77,12 +186,7 @@
      "5+ years of hands-on software engineering experience with solid expertise in building scalable, enterprise-grade applications",
      "3+ years of experience developing and deploying AI/ML and Generative AI solutions in production environments."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Director, Data Science",
@@ -803,33 +907,6 @@
     "needs": [
      "Option 1- Bachelor’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3 years' experience in an…",
      "Option 2- Master’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
-    ]
-   }
-  },
-  {
-   "title": "SENIOR, DATA SCIENTIST",
-   "company": "Walmart Global Tech",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP2/SENIOR--DATA-SCIENTIST_R-2706431",
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Deep learning",
-     "Python",
-     "Statistics",
-     "LLMs",
-     "NLP",
-     "MLOps"
-    ],
-    "needs": [
-     "Bachelor's with > 7 years of relevant experience OR Masters with > 5 years of relevant experience OR PHD in Comp Science/Statistics/Mathematics with > 3 years of…",
-     "Experience in machine learning, supervised and unsupervised: NLP, Classification, Data/Text Mining, Multi-modal models, Neural Networks, Deep Learning Algorithms",
-     "Strong Experience in Python, PySpark,Google Cloud platform, model deployment"
     ]
    }
   },
@@ -1626,33 +1703,6 @@
      "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
      "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
      "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
-    ]
-   }
-  },
-  {
-   "title": "Lead Data Engineer - Data Engineering, Databricks, Model Serving, ML Ops, Data Architecture and modeling",
-   "company": "JPMorgan Chase",
-   "location": "Mumbai",
-   "posted": "2026-11-16",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210806251",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Spark",
-     "Databricks",
-     "SQL",
-     "MLOps",
-     "Kafka",
-     "Airflow"
-    ],
-    "needs": [
-     "Formal training or certification on data engineering concepts and 5+ years applied experience",
-     "Demonstrates strong, hands-on proficiency with Apache Spark or comparable distributed compute frameworks, including experience optimizing jobs for performance and cost…",
-     "Demonstrates hands-on exposure to distributed computing, cloud data platforms, and production ML infrastructure."
     ]
    }
   },
