@@ -2,11 +2,10 @@ name: Update jobs
 
 on:
   schedule:
-    # GitHub often starts scheduled runs hours late, so run at quiet off-the-hour times
-    # well before 06:00 IST; the 06:00 slot is a final top-up.
-    - cron: "47 18 * * *"  # 00:17 IST
-    - cron: "17 22 * * *"  # 03:47 IST
+    # 06:00, 12:00 and 18:00 IST. GitHub can start scheduled runs late, sometimes by hours.
     - cron: "30 0 * * *"   # 06:00 IST
+    - cron: "30 6 * * *"   # 12:00 IST
+    - cron: "30 12 * * *"  # 18:00 IST
   workflow_dispatch:
 
 permissions:
