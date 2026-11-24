@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-24",
  "days": 7,
- "count": 84,
+ "count": 82,
  "jobs": [
   {
    "title": "STAFF, DATA SCIENTIST",
@@ -34,6 +34,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-24",
    "url": "https://jobs.smartrecruiters.com/swiggy/6000000001603325",
+   "exp": [
+    8,
+    12
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "PyTorch",
@@ -47,12 +52,7 @@
      "Risk/Fraud: graph-based models (e.g., entity graphs, GNNs for fraud rings), classical ML (GBMs, tree ensembles, logistic regression), and deep learning frameworks such…",
      "Hands-on experience with: Strong system design skills for low-latency, high-throughput ML platforms; fluency with Python, PySpark, PyTorch/TensorFlow, feature stores…"
     ]
-   },
-   "exp": [
-    8,
-    12
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Sr Machine Learning Engineer",
@@ -87,6 +87,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-24",
    "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/AI-Engineer_REQ-10093342",
+   "exp": [
+    8,
+    12
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Agents",
@@ -101,35 +106,6 @@
      "8–12 years of overall software engineering, AI engineering, machine learning engineering, data engineering, or related technology experience, including significant…",
      "Professional software development experience in Python and at least one additional language such as JavaScript/TypeScript or Java."
     ]
-   },
-   "exp": [
-    8,
-    12
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "Scientific Computing Engineer - Drug Product Process Modeling & Data Science",
-   "company": "Novartis",
-   "location": "Hyderabad",
-   "posted": "2026-11-24",
-   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/Specialist--Data-Science---Artificial-Intelligence_REQ-10087078",
-   "exp": [
-    2,
-    4
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "Python",
-     "Time series",
-     "Optimisation"
-    ],
-    "needs": [
-     "Experience with AI or machine learning is welcome, but not the primary selection criterion.",
-     "Essential Skills Master’s degree or PhD in mechanical engineering, process engineering, chemical engineering, pharmaceutical engineering, materials science, applied…"
-    ]
    }
   },
   {
@@ -138,12 +114,12 @@
    "location": "Bengaluru",
    "posted": "2026-11-24",
    "url": "https://apply.careers.microsoft.com/careers/job/1970393557078622",
-   "jd": {},
    "exp": [
     8,
     null
    ],
-   "exp_from": "title"
+   "exp_from": "title",
+   "jd": {}
   },
   {
    "title": "AI Developer",
@@ -151,6 +127,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-24",
    "url": "https://iqvia.wd1.myworkdayjobs.com/IQVIA/job/Bangalore-India/AI-Developer_R1580766",
+   "exp": [
+    4,
+    6
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Agents",
@@ -165,12 +146,7 @@
      "Knowledge of APIs and enterprise system integrations.",
      "Experience with Azure AI Services or related cloud AI platforms."
     ]
-   },
-   "exp": [
-    4,
-    6
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Research Engineer - Power Systems",
@@ -1169,32 +1145,6 @@
    }
   },
   {
-   "title": "Data Scientist 2",
-   "company": "Microsoft",
-   "location": "Hyderabad",
-   "posted": "2026-11-20",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393557074752",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "A/B testing",
-     "Azure",
-     "LLMs",
-     "Generative AI",
-     "Time series"
-    ],
-    "needs": [
-     "Bachelor's or Master's degree in Data Science, Computer Science, Statistics, Mathematics, Economics, Engineering or a related quantitative field, or equivalent…",
-     "3+ years of hands-on experience in data science, machine learning or applied analytics, with a track record of shipping models or insights that drove business decisions."
-    ]
-   }
-  },
-  {
    "title": "Applied Sciences",
    "company": "Microsoft",
    "location": "India",
@@ -1677,6 +1627,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-19",
    "url": "https://job-boards.greenhouse.io/anthropic/jobs/5486776008",
+   "exp": [
+    7,
+    10
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs"
@@ -1684,12 +1639,7 @@
     "needs": [
      "Hands-on experience building with LLM APIs: you have built and evaluated working prototypes or agents, and can guide a partner's own engineers on architecture and evals.…"
     ]
-   },
-   "exp": [
-    7,
-    10
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior, Data Scientist",
