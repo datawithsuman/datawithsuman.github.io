@@ -783,3 +783,9 @@ body.rm-open { overflow: hidden; }
 .mcp-defs code { font-size: 14px; }
 @media (max-width: 560px) { .mcp-defs li { grid-template-columns: 1fr; } }
 .mcp-page code { overflow-wrap: anywhere; }
+
+/* Step players: keep the narration box at the height of its longest line, so Back/Next/Play never jump while stepping. */
+.lx [data-scene].js ol.say { display: grid; }
+.lx [data-scene].js ol.say > li { display: block; grid-area: 1 / 1; visibility: hidden; }
+.lx [data-scene].js ol.say > li.on { visibility: visible; }
+@media print { .lx [data-scene].js ol.say { display: block; } .lx [data-scene].js ol.say > li { visibility: visible; } }
