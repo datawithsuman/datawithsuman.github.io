@@ -1,14 +1,350 @@
 {
- "updated": "2026-11-23",
+ "updated": "2026-11-24",
  "days": 7,
- "count": 74,
+ "count": 81,
  "jobs": [
+  {
+   "title": "STAFF, DATA SCIENTIST",
+   "company": "Walmart Global Tech",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/STAFF--DATA-SCIENTIST_R-2713980",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Statistics",
+     "Python",
+     "SQL"
+    ],
+    "needs": [
+     "Hands-on experience applying data science and analytics to retail inventory problems, such as inventory optimization, replenishment, safety stock, or product…",
+     "Strong understanding of retail inventory and replenishment concepts, including demand, lead times, service levels, inventory flow, and the trade-offs between inventory…",
+     "Experience designing, building, and validating statistical, optimization, or simulation models to solve inventory or supply chain problems."
+    ]
+   },
+   "exp": [
+    4,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Sr Machine Learning Engineer",
+   "company": "PayPal",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Machine-Learning-Engineer_R0139032",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Optimisation",
+     "Python",
+     "SQL",
+     "PyTorch",
+     "TensorFlow"
+    ],
+    "needs": [
+     "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
+     "Total 3 - 8 years of experience, of which 3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience."
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Scientific Computing Engineer - Drug Product Process Modeling & Data Science",
+   "company": "Novartis",
+   "location": "Hyderabad",
+   "posted": "2026-11-24",
+   "url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Hyderabad-Office/Specialist--Data-Science---Artificial-Intelligence_REQ-10087078",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Python",
+     "Time series",
+     "Optimisation"
+    ],
+    "needs": [
+     "Experience with AI or machine learning is welcome, but not the primary selection criterion.",
+     "Essential Skills Master’s degree or PhD in mechanical engineering, process engineering, chemical engineering, pharmaceutical engineering, materials science, applied…"
+    ]
+   },
+   "exp": [
+    2,
+    4
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Research Engineer - Power Systems",
+   "company": "GE Vernova",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://gevernova.wd5.myworkdayjobs.com/Vernova_ExternalSite/job/Bengaluru/Research-Engineer---Power-Systems_R5059493-2",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Python",
+     "C++"
+    ],
+    "needs": [
+     "Doctorate degree in Electrical Engineering or related field with atleast 1 year of experience or a Master’s degree in Electrical Engineering or related field with at…",
+     "Demonstrated expertise in power system operation and, power system simulation and analysis, power system dynamics, transients, protection and stability. Understanding of…",
+     "Hands-on hardware design and build experience in power systems experimental set-up. Experience in system simulation tools such as PSCAD, Matlab/Simulink, DigSilent etc."
+    ]
+   },
+   "exp": [
+    1,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "GenAI and ML Ops Engineer",
+   "company": "GE HealthCare",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/Bengaluru/GenAI-and-ML-Ops-Engineer_R4049991-1",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Python",
+     "Optimisation"
+    ],
+    "needs": [
+     "Education Qualification For roles outside USA: Bachelor's Degree in Computer Science or “STEM” Majors (Science, Technology, Engineering and Math) with advanced…"
+    ]
+   },
+   "exp_from": "none"
+  },
+  {
+   "title": "Data Science and AI Engineering Lead​, VP",
+   "company": "Deutsche Bank",
+   "location": "Pune",
+   "posted": "2026-11-24",
+   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Business-Bay/Data-Science-and-AI-Engineering-Lead---VP_R0453375",
+   "exp": [
+    18,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LangChain",
+     "Python",
+     "GCP",
+     "Optimisation",
+     "SQL",
+     "PyTorch"
+    ],
+    "needs": [
+     "Experience with front-to-back AI solution design and architecture, particularly the design of agentic AI solutions",
+     "Demonstrable experience with data / feature engineering, data product creation, and modern data solutions such as BigQuery, Looker, PostgreSQL, Pinecone, Spark, MongoDB…",
+     "Strong knowledge of current best practice for AI risk management across the solution lifecycle, and how to leverage technology to implement these controls (e.g. from…"
+    ]
+   }
+  },
+  {
+   "title": "Research Engineer, Post-Training & Vision-Language Models",
+   "company": "Cohesity",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://cohesity.wd5.myworkdayjobs.com/Cohesity_Careers/job/Bangalore---India-Office/Research-Engineer--Post-Training---Vision-Language-Models_R05337",
+   "jd": {
+    "skills": [
+     "Fine-tuning",
+     "AWS",
+     "GCP",
+     "Agents",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "5+ years of professional experience in machine learning engineering or research.",
+     "Hands-on experience training, fine-tuning, using RL techniques or evaluating large language or vision-language models.",
+     "Master’s degree or PhD in Computer Science, Machine Learning, or a related field preferred."
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Machine Learning Engineering Technical Leader",
+   "company": "Cisco",
+   "location": "Hyderabad",
+   "posted": "2026-11-24",
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Hyderabad-India/Machine-Learning-Engineering-Technical-Leader_2027055-1",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "LLMs",
+     "Agents",
+     "Python",
+     "Kubernetes",
+     "AWS"
+    ],
+    "needs": [
+     "10+ years of industry experience in software engineering and backend development with strong proficiency in Python (preferred) or Java .",
+     "Experience building API-driven and event-driven services for AI inference, agent orchestration, tool invocation, and data pipelines.",
+     "Hands-on experience with Generative AI and Large Language Models (LLMs)"
+    ]
+   },
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI Engineer",
+   "company": "Cisco",
+   "location": "Bengaluru",
+   "posted": "2026-11-24",
+   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Bangalore-India/AI-Engineer_2028964-1",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "Python",
+     "RAG",
+     "Spark",
+     "Airflow"
+    ],
+    "needs": [
+     "3 years of experience in Software Engineering, Data Science, or a related technical field.",
+     "Bachelor’s degree in Computer Science, Data Science, Engineering, or equivalent practical experience.",
+     "Experience building and deploying LLM-powered applications or AI agents in a production environment."
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Data science Lead/Manager",
+   "company": "eBay",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Data-science-Lead-Manager_R0076386",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "A/B testing",
+     "Python",
+     "SQL"
+    ],
+    "needs": [
+     "Hands-on experience with basic statistical",
+     "Strong understanding of A/B testing, experimentation, and measurement",
+     "Interest or experience in AI/GenAI applications in analytics"
+    ]
+   },
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
+   "title": "Data Scientist",
+   "company": "Shell",
+   "location": "Chennai",
+   "posted": "2026-11-23",
+   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/Chennai---RMZ-Millenia/Data-Scientist_R205059",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "MLOps",
+     "Python",
+     "SQL",
+     "AWS",
+     "GCP"
+    ],
+    "needs": [
+     "What you bring 6–8 years of experience in data science, including hands-on development of AI/ML or optimization models and at least 2 years working with process event or…",
+     "Bachelor’s or Master’s degree in Computer Science, Data Science, Engineering, Mathematics, or a related quantitative field."
+    ]
+   },
+   "exp": [
+    6,
+    8
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Data Science Engagement Lead",
+   "company": "Shell",
+   "location": "Chennai",
+   "posted": "2026-11-23",
+   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/SHELL-CENTRE--CHENNAI/Data-Science-Engagement-Lead_R202317-1",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Python",
+     "SQL",
+     "AWS",
+     "GCP",
+     "Azure"
+    ],
+    "needs": [
+     "10–12 years of total experience, including 6+ years in analytics consulting, of which 3+ years in process-mining consulting or process-analytics leadership within global…",
+     "Bachelor’s or Master’s degree in Mathematics, Statistics, Economics, Data Science, Engineering, Technical Finance, or a related quantitative field.",
+     "Combines deep analytical expertise with consulting leadership, leveraging prior hands-on experience in analytical solution development and data-driven problem solving to…"
+    ]
+   },
+   "exp": [
+    10,
+    12
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior Machine Learning Engineer",
+   "company": "Quantiphi",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Senior-Machine-Learning-Engineer_JR10864",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "Python",
+     "TensorFlow",
+     "GCP",
+     "LLMs",
+     "Reinforcement learning"
+    ],
+    "needs": [
+     "Education level: Bachelor’s or Master’s degree in Mechanical/Chemical/Materials or relevant stream",
+     "Preferred work experience: 2+ yrs of research experience post graduation (in applied ML research)",
+     "Hands-on experience in developing and deploying models with various deep learning architectures such as physics-informed neural networks, neural operators in engineering…"
+    ]
+   },
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "Research Engineer",
    "company": "Quantiphi",
    "location": "2 locations in India",
    "posted": "2026-11-23",
    "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Engineer_JR9674",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -23,6 +359,80 @@
      "Hands-on experience in developing and improving Large Language Models and related techniques (finetuning / quantization / distillation / inference optimization / model…",
      "Knowledge of Cloud-environments like GCP/Azure, ML frameworks like PyTorch, Agent-frameworks like Langchain, ADK etc., with good experience in large scale distributed…"
     ]
+   }
+  },
+  {
+   "title": "IN-Senior Associate_Data Science + Gen AI_GCC_ Advisory_ Bangalore",
+   "company": "PwC",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Bengaluru-Millenia/IN-Senior-Associate--Full-Stack-Developer---Data---Analytics---Advisory--Bangalore_732328WD-2",
+   "jd": {
+    "skills": [
+     "RAG",
+     "Vector databases",
+     "AWS",
+     "Azure",
+     "LLMs",
+     "Fine-tuning"
+    ],
+    "needs": [
+     "Strong hands-on experience with Python, PyTorch, TensorFlow, or Transformers (Hugging Face).",
+     "Familiarity with LLM APIs, vector databases (e.g., FAISS, Pinecone), and RAG frameworks (e.g., LangChain, LlamaIndex).",
+     "Experience building chatbots, copilots, or AI assistants."
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
+   "title": "IN_Senior Associate_ Data Scientist_GCC_Advisory_Gurgaon",
+   "company": "PwC",
+   "location": "Gurugram",
+   "posted": "2026-11-23",
+   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Gurugram-Downtown-4/IN-Senior-Associate--Data-Scientist-D-A-Advisory-Hyderabad_753942WD",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Deep learning",
+     "Python",
+     "NLP",
+     "Transformers",
+     "A/B testing"
+    ],
+    "needs": [
+     "Who We Are Looking For: • Mandatory skill sets 8+ years of experience in data science or a related quantitative field (e.g., Computer Science, Statistics, Mathematics)."
+    ]
+   },
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Sr Machine Learning Engineer, Fraud (Crypto & Debit Card)",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-23",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139150",
+   "jd": {
+    "skills": [
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn",
+     "AWS",
+     "GCP",
+     "Azure"
+    ],
+    "needs": [
+     "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
+     "Familiarity with cloud platforms (AWS, Azure, GCP) and tools for data processing and model deployment."
+    ]
    },
    "exp": [
     3,
@@ -36,6 +446,11 @@
    "location": "Gurugram",
    "posted": "2026-11-23",
    "url": "https://careers.unitedhealthgroup.com/job/gurgaon/ai-ml-engineer/34088/103672563216",
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -50,9 +465,31 @@
      "2+ years of experience in software engineering, machine learning, or AI engineering",
      "Hands-on experience building and deploying generative AI and LLM-based applications in production environments."
     ]
+   }
+  },
+  {
+   "title": "Lead AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Gurugram",
+   "posted": "2026-11-23",
+   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/lead-ai-ml-engineer/34088/98078151792",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Generative AI",
+     "Agents",
+     "Python",
+     "RAG",
+     "MLOps"
+    ],
+    "needs": [
+     "Bachelor's or master's degree in computer science, engineering, or a related field (or equivalent practical experience)",
+     "12+ years of experience in software engineering, with at least 2+ years of hands-on experience building and deploying AI/ML systems in production environments…",
+     "Solid expertise in designing and implementing API-based integrations, microservices architectures, and automation frameworks, along with experience in Python, machine…"
+    ]
    },
    "exp": [
-    2,
+    12,
     null
    ],
    "exp_from": "jd"
@@ -85,11 +522,120 @@
    }
   },
   {
+   "title": "Principal Data Scientist",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Noida",
+   "posted": "2026-11-23",
+   "url": "https://careers.unitedhealthgroup.com/job/noida/principal-data-scientist/34088/103184508768",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Optimisation",
+     "Azure",
+     "Databricks",
+     "LLMs",
+     "Generative AI"
+    ],
+    "needs": [
+     "Graduate (Master's/PhD preferred) degree in Engineering, Mathematics, Statistics, Computer Science, Artificial Intelligence, or a related quantitative discipline",
+     "12+ years of experience in Data Science, Advanced Analytics, AIML, and predictive modeling, with at least 6-8+ years leading teams, projects, or significant workstreams…",
+     "8+ years of hands-on programming experience using Python, R, SAS, SQL, and distributed computing frameworks, including statistical and research-oriented analysis of…"
+    ]
+   },
+   "exp": [
+    12,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Applied AI ML Director - Head of AI & Data Science",
+   "company": "JPMorgan Chase",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210779168",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Statistics"
+    ],
+    "needs": [
+     "7 years of relevant experience in AI and data science",
+     "Master's degree or PhD in a quantitative discipline",
+     "Hands-on experience with agentic engineering, including agentic coding tools, specification-driven or evaluation-driven development, or multi-agent orchestration"
+    ]
+   },
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior Applied Scientist (Machine Learning)",
+   "company": "Expedia",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Senior-Applied-Scientist--Machine-Learning-_R-111151-1",
+   "jd": {
+    "skills": [
+     "Time series",
+     "MLOps",
+     "A/B testing",
+     "Causal inference",
+     "Python",
+     "SQL"
+    ],
+    "needs": [
+     "You have a master's degree or Ph.D. in Computer Science, Statistics, Mathematics, Economics, Engineering, or a related technical field; or equivalent related…",
+     "You have 6+ years (with a master's degree) or 4+ years (with a Ph.D.) of industry experience applying machine learning to solve real-world problems.",
+     "You have hands-on fluency in Python and its data science ecosystem (e.g., PySpark, scikit-learn, pandas), and SQL."
+    ]
+   },
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Gen AI and Data Engineer - Assistant Vice President",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-23",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Gen-AI-and-Data-Engineer---Assistant-Vice-President_261009329",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "NLP",
+     "Vector databases",
+     "Statistics",
+     "LLMs",
+     "RAG"
+    ],
+    "needs": [
+     "Overall 8+ years of experience in Gen AI / AI ML and Data Engineering.",
+     "Mathematics & Statistics: Advanced knowledge of probability, statistics and linear algebra. Expertise in statistical modelling, hypothesis testing and experimental…",
+     "Experience with relational (SQL) and Vector databases."
+    ]
+   },
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
    "title": "Senior Machine learning Engineer",
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-23",
    "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163145558",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Deep learning",
@@ -104,12 +650,7 @@
      "Experience: 5+ years of industry experience in MLOps, Data Engineering, or Software Infrastructure, with a focus on Deep Learning systems.",
      "Programming & Software Design: Expert-level proficiency in Python with a strong emphasis on clean software design, object-oriented programming, and architectural…"
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI/ML Data Scientist",
@@ -117,6 +658,7 @@
    "location": "Gurugram",
    "posted": "2026-11-23",
    "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Gurugram-DLF-Downtown/AI-ML-Data-Scientist_JR-0000136329-1",
+   "exp_from": "none",
    "jd": {
     "skills": [
      "Generative AI",
@@ -131,35 +673,34 @@
      "OR for an individual contributor, they develop technical expertise in work area, acting as an advisor where appropriate.",
      "Maintain and continually build an understanding of how own sub-function integrates with function, alongside knowledge of the organisations products, services and…"
     ]
-   },
-   "exp_from": "none"
+   }
   },
   {
-   "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
-   "company": "Salesforce",
-   "location": "2 locations in India",
-   "posted": "2026-11-22",
-   "url": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Bangalore/LMTS---Lead-AI-ML-Engineer--LLM-Post-Training-_JR368314",
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd",
+   "title": "Senior Applied Scientist, Alexa AI - ML Engineering",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-23",
+   "url": "https://www.amazon.jobs/en/jobs/10612236/senior-applied-scientist-alexa-ai-ml-engineering",
    "jd": {
     "skills": [
-     "Fine-tuning",
-     "LLMs",
+     "Recommender systems",
+     "Spark",
+     "A/B testing",
      "Optimisation",
-     "Agents",
      "Python",
-     "PyTorch"
+     "TensorFlow"
     ],
     "needs": [
-     "10+ years of software engineering experience, including technical leadership on production systems.",
-     "Strong Python engineering experience building and maintaining reliable production systems.",
-     "Hands-on ownership of LLM post-training. You have trained or materially improved open-weight language models through SFT and LoRA/QLoRA. Experience with preference…"
+     "PhD, or Master's degree and 6+ years of applied research experience",
+     "Experience with modeling tools such as R, scikit-learn, Spark MLLib, MxNet, Tensorflow, numpy, scipy etc.",
+     "Experience with large scale distributed systems such as Hadoop, Spark etc."
     ]
-   }
+   },
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Senior AI/ML Engineer - Python, Agentic AI, RAG, LLM",
@@ -189,10 +730,37 @@
    }
   },
   {
+   "title": "LMTS - Lead AI/ML Engineer (LLM Post-Training)",
+   "company": "Salesforce",
+   "location": "2 locations in India",
+   "posted": "2026-11-21",
+   "url": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Bangalore/LMTS---Lead-AI-ML-Engineer--LLM-Post-Training-_JR368314",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Fine-tuning",
+     "LLMs",
+     "Optimisation",
+     "Agents",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "10+ years of software engineering experience, including technical leadership on production systems.",
+     "Strong Python engineering experience building and maintaining reliable production systems.",
+     "Hands-on ownership of LLM post-training. You have trained or materially improved open-weight language models through SFT and LoRA/QLoRA. Experience with preference…"
+    ]
+   }
+  },
+  {
    "title": "Director, Data Science",
    "company": "Walmart Global Tech",
    "location": "Bengaluru",
-   "posted": "2026-11-21",
+   "posted": "2026-11-20",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Director--Data-Science_R-2698750",
    "exp": [
     15,
@@ -219,7 +787,7 @@
    "title": "Distinguished, Machine Learning Engineer",
    "company": "Walmart Global Tech",
    "location": "Bengaluru",
-   "posted": "2026-11-21",
+   "posted": "2026-11-20",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/Distinguished--Machine-Learning-Engineer_R-2698758",
    "exp": [
     15,
@@ -246,7 +814,7 @@
    "title": "Staff Data Scientist",
    "company": "Visa",
    "location": "Bengaluru",
-   "posted": "2026-11-21",
+   "posted": "2026-11-20",
    "url": "https://visa.wd5.myworkdayjobs.com/Visa/job/IN---Bengaluru-India/Staff-Data-Scientist_REF090422W-2",
    "exp": [
     8,
@@ -266,159 +834,6 @@
      "8+ yrs. work experience with a Bachelor’s Degree or 6+ years of work experience with a Master's or Advanced Degree in an analytical field such as computer science…",
      "Experience building and maintaining Spark‑based data and feature pipelines to support ML training and inference workflows.",
      "Familiarity with big data platforms and storage systems such as Hadoop, EMR, and NoSQL databases."
-    ]
-   }
-  },
-  {
-   "title": "Sr Data Scientist- MarTech",
-   "company": "Target",
-   "location": "Bengaluru",
-   "posted": "2026-11-21",
-   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/BangaloreIndia/Sr-Data-Scientist--Promo-Optimisation_R0000442385",
-   "exp": [
-    4,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Optimisation",
-     "A/B testing",
-     "Recommender systems",
-     "Causal inference",
-     "Statistics",
-     "Generative AI"
-    ],
-    "needs": [
-     "4+ years of relevant experience in data science, applied machine learning, operations research, optimization, AI engineering, or advanced analytics.",
-     "Hands-on experience applying machine learning techniques to solve business problems, preferably in retail, e-commerce, Marketing, personalization, promotions, pricing…",
-     "Experience with one or more areas of operations research, such as linear programming, mixed-integer programming, constrained optimization, simulation, stochastic…"
-    ]
-   }
-  },
-  {
-   "title": "SW AI Engineer",
-   "company": "Siemens Healthineers",
-   "location": "India",
-   "posted": "2026-11-21",
-   "url": "https://onehealthineers.wd3.myworkdayjobs.com/SHSJB/job/PUN-MIC-T-4/SW-AI-Engineer_R-31941",
-   "exp": [
-    6,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Agents",
-     "LangChain",
-     "Generative AI",
-     "RAG",
-     "Prompt engineering"
-    ],
-    "needs": [
-     "Experience: 6–8 years of hands-on software development / AI engineering experience.",
-     "AI Harness Development is a mandatory skill: Must have hands-on experience designing and building an AI/LLM Harness, orchestration framework, agentic framework, or…",
-     "Strong hands-on experience developing Generative AI / LLM-based applications, beyond simply using AI coding assistants."
-    ]
-   }
-  },
-  {
-   "title": "Staff Machine Learning Engineer, Fraud (Crypto & Debit Card)",
-   "company": "PayPal",
-   "location": "2 locations in India",
-   "posted": "2026-11-21",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Staff-Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139151",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "PyTorch",
-     "TensorFlow",
-     "scikit-learn",
-     "AWS",
-     "GCP",
-     "Azure"
-    ],
-    "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "5+ years relevant experience and a Bachelor’s degree OR any equivalent combination of education and experience.",
-     "Familiarity with card network ecosystems (Visa/Mastercard authorization flows, chargebacks, dispute rules) and debit-specific regulations such as Reg E."
-    ]
-   }
-  },
-  {
-   "title": "Machine Learning Engineer, Fraud (Crypto & Debit Card)",
-   "company": "PayPal",
-   "location": "2 locations in India",
-   "posted": "2026-11-21",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139149",
-   "exp": [
-    1,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "TensorFlow",
-     "scikit-learn",
-     "Statistics",
-     "Python",
-     "SQL",
-     "PyTorch"
-    ],
-    "needs": [
-     "1+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Familiarity with ML frameworks like TensorFlow or scikit-learn.",
-     "1+ years of relevant experience (internships, co-ops, or academic projects count) and a Bachelor’s degree OR any equivalent combination of education and experience."
-    ]
-   }
-  },
-  {
-   "title": "Sr Data Scientist",
-   "company": "PayPal",
-   "location": "2 locations in India",
-   "posted": "2026-11-21",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Data-Scientist_R0139152",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "needs": [
-     "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "A strong understanding of fraud risk, including how fraud patterns evolve and how to respond to emerging threats."
-    ]
-   }
-  },
-  {
-   "title": "Data Science and AI Engineering Lead​, VP",
-   "company": "Deutsche Bank",
-   "location": "Pune",
-   "posted": "2026-11-21",
-   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Pune---Business-Bay/Data-Science-and-AI-Engineering-Lead---VP_R0453375",
-   "exp": [
-    18,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LangChain",
-     "Python",
-     "GCP",
-     "Optimisation",
-     "SQL",
-     "PyTorch"
-    ],
-    "needs": [
-     "Experience with front-to-back AI solution design and architecture, particularly the design of agentic AI solutions",
-     "Demonstrable experience with data / feature engineering, data product creation, and modern data solutions such as BigQuery, Looker, PostgreSQL, Pinecone, Spark, MongoDB…",
-     "Strong knowledge of current best practice for AI risk management across the solution lifecycle, and how to leverage technology to implement these controls (e.g. from…"
     ]
    }
   },
@@ -445,6 +860,60 @@
     "needs": [
      "Around 4–5 years of experience building or improving deep learning systems, with hands-on work in training data, post-training, evaluation, or agentic systems.",
      "Strong programming skills in Python. Experience with SQL or other structured-data workflows is helpful."
+    ]
+   }
+  },
+  {
+   "title": "Sr Data Scientist- MarTech",
+   "company": "Target",
+   "location": "Bengaluru",
+   "posted": "2026-11-20",
+   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/BangaloreIndia/Sr-Data-Scientist--Promo-Optimisation_R0000442385",
+   "exp": [
+    4,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "A/B testing",
+     "Recommender systems",
+     "Causal inference",
+     "Statistics",
+     "Generative AI"
+    ],
+    "needs": [
+     "4+ years of relevant experience in data science, applied machine learning, operations research, optimization, AI engineering, or advanced analytics.",
+     "Hands-on experience applying machine learning techniques to solve business problems, preferably in retail, e-commerce, Marketing, personalization, promotions, pricing…",
+     "Experience with one or more areas of operations research, such as linear programming, mixed-integer programming, constrained optimization, simulation, stochastic…"
+    ]
+   }
+  },
+  {
+   "title": "SW AI Engineer",
+   "company": "Siemens Healthineers",
+   "location": "India",
+   "posted": "2026-11-20",
+   "url": "https://onehealthineers.wd3.myworkdayjobs.com/SHSJB/job/PUN-MIC-T-4/SW-AI-Engineer_R-31941",
+   "exp": [
+    6,
+    8
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Agents",
+     "LangChain",
+     "Generative AI",
+     "RAG",
+     "Prompt engineering"
+    ],
+    "needs": [
+     "Experience: 6–8 years of hands-on software development / AI engineering experience.",
+     "AI Harness Development is a mandatory skill: Must have hands-on experience designing and building an AI/LLM Harness, orchestration framework, agentic framework, or…",
+     "Strong hands-on experience developing Generative AI / LLM-based applications, beyond simply using AI coding assistants."
     ]
    }
   },
@@ -499,6 +968,78 @@
    }
   },
   {
+   "title": "Staff Machine Learning Engineer, Fraud (Crypto & Debit Card)",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-20",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Staff-Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139151",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn",
+     "AWS",
+     "GCP",
+     "Azure"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "5+ years relevant experience and a Bachelor’s degree OR any equivalent combination of education and experience.",
+     "Familiarity with card network ecosystems (Visa/Mastercard authorization flows, chargebacks, dispute rules) and debit-specific regulations such as Reg E."
+    ]
+   }
+  },
+  {
+   "title": "Machine Learning Engineer, Fraud (Crypto & Debit Card)",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-20",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Machine-Learning-Engineer--Fraud--Crypto---Debit-Card-_R0139149",
+   "exp": [
+    1,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "TensorFlow",
+     "scikit-learn",
+     "Statistics",
+     "Python",
+     "SQL",
+     "PyTorch"
+    ],
+    "needs": [
+     "1+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Familiarity with ML frameworks like TensorFlow or scikit-learn.",
+     "1+ years of relevant experience (internships, co-ops, or academic projects count) and a Bachelor’s degree OR any equivalent combination of education and experience."
+    ]
+   }
+  },
+  {
+   "title": "Sr Data Scientist",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-20",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Data-Scientist_R0139152",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "needs": [
+     "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "A strong understanding of fraud risk, including how fraud patterns evolve and how to respond to emerging threats."
+    ]
+   }
+  },
+  {
    "title": "Senior AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Hyderabad",
@@ -522,33 +1063,6 @@
      "Bachelor's degree or higher in computer science engineering",
      "10+ years of experience in AI ML roles",
      "Proficiency in Python, pytorch , SQL and other programming languages for data analysis and modeling with atleast 5+ years of experience"
-    ]
-   }
-  },
-  {
-   "title": "Research Scientist - Nemotron India",
-   "company": "NVIDIA",
-   "location": "3 locations in India",
-   "posted": "2026-11-20",
-   "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Research-Scientist---Nemotron-India_JR2028483",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Deep learning",
-     "NLP",
-     "LLMs",
-     "Generative AI",
-     "Python",
-     "PyTorch"
-    ],
-    "needs": [
-     "MS or PhD in Electrical Engineering, Computer Science/Engineering, or a related field (or equivalent experience).",
-     "3+ years of experience.",
-     "Knowledge of application areas such as natural language processing and computer vision."
     ]
    }
   },
@@ -729,31 +1243,6 @@
    }
   },
   {
-   "title": "Lead AI Product Engineer",
-   "company": "Fractal Analytics",
-   "location": "2 locations in India",
-   "posted": "2026-11-20",
-   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Python",
-     "Azure",
-     "Databricks",
-     "LLMs"
-    ],
-    "needs": [
-     "Production experience with LLM and agentic systems: multi-step workflows, tool use, orchestration frameworks, and the failure modes that only appear at scale.",
-     "Experience with agent observability and tracing tooling."
-    ]
-   }
-  },
-  {
    "title": "Data Scientist",
    "company": "EXL",
    "location": "Bengaluru",
@@ -885,32 +1374,6 @@
    }
   },
   {
-   "title": "Senior, Data Scientist",
-   "company": "Walmart Global Tech",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-Building-10/Senior--Data-Scientist_R-2698722",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Optimisation",
-     "Statistics",
-     "Time series",
-     "Python",
-     "TensorFlow",
-     "scikit-learn"
-    ],
-    "needs": [
-     "Option 1- Bachelor’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3 years' experience in an…",
-     "Option 2- Master’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
-    ]
-   }
-  },
-  {
    "title": "Associate Lead Data Scientist (RGM)",
    "company": "Sigmoid",
    "location": "Bengaluru",
@@ -1036,6 +1499,33 @@
    }
   },
   {
+   "title": "Research Scientist - Nemotron India",
+   "company": "NVIDIA",
+   "location": "3 locations in India",
+   "posted": "2026-11-19",
+   "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Research-Scientist---Nemotron-India_JR2028483",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "NLP",
+     "LLMs",
+     "Generative AI",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "MS or PhD in Electrical Engineering, Computer Science/Engineering, or a related field (or equivalent experience).",
+     "3+ years of experience.",
+     "Knowledge of application areas such as natural language processing and computer vision."
+    ]
+   }
+  },
+  {
    "title": "Principal Applied Scientist",
    "company": "Microsoft",
    "location": "Bengaluru",
@@ -1073,6 +1563,31 @@
    }
   },
   {
+   "title": "Lead AI Product Engineer",
+   "company": "Fractal Analytics",
+   "location": "2 locations in India",
+   "posted": "2026-11-19",
+   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Agents",
+     "Python",
+     "Azure",
+     "Databricks",
+     "LLMs"
+    ],
+    "needs": [
+     "Production experience with LLM and agentic systems: multi-step workflows, tool use, orchestration frameworks, and the failure modes that only appear at scale.",
+     "Experience with agent observability and tracing tooling."
+    ]
+   }
+  },
+  {
    "title": "AI / ML and Generative AI research assistant",
    "company": "Bosch",
    "location": "Coimbatore",
@@ -1082,60 +1597,11 @@
    "jd": {}
   },
   {
-   "title": "Lead AI Engineer",
-   "company": "Target",
+   "title": "Senior, Data Scientist",
+   "company": "Walmart Global Tech",
    "location": "Bengaluru",
    "posted": "2026-11-18",
-   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/Tower-02-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Lead-Engineer--Advanced-AI_R0000441606",
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Agents",
-     "Optimisation",
-     "Deep learning",
-     "Python",
-     "PyTorch"
-    ],
-    "needs": [
-     "4-year degree in Quantitative disciplines (Science, Tech, Engineering, Mathematics) or equivalent industry experience required; MS in Computer Science, Machine Learning…",
-     "6+ years of hands-on software engineering experience, including experience building and operating production systems."
-    ]
-   }
-  },
-  {
-   "title": "Research Scientist",
-   "company": "Quantiphi",
-   "location": "Bengaluru",
-   "posted": "2026-11-18",
-   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Scientist_JR11668",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "PyTorch",
-     "Reinforcement learning",
-     "Python",
-     "LLMs",
-     "Agents",
-     "Transformers"
-    ],
-    "needs": [
-     "(PhD + 2) / (MTech + 5) years of research experience in RL with a strong publication record in top venues",
-     "Strong programming skills in Python, with proven expertise in PyTorch or equivalent, and a track record of writing clean, modular, and deployable code.",
-     "Familiarity with advanced ML architectures such as graphs and transformers."
-    ]
-   }
-  },
-  {
-   "title": "Research Engineer",
-   "company": "Quantiphi",
-   "location": "2 locations in India",
-   "posted": "2026-11-18",
-   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-MH-Mumbai-Eureka/Research-Engineer_JR10781",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-Building-10/Senior--Data-Scientist_R-2698722",
    "exp": [
     3,
     null
@@ -1143,90 +1609,16 @@
    "exp_from": "jd",
    "jd": {
     "skills": [
-     "NLP",
-     "Deep learning",
-     "Reinforcement learning",
-     "Python",
-     "PyTorch",
-     "TensorFlow"
-    ],
-    "needs": [
-     "Master’s degree, PhD, or equivalent experience in Biological Sciences/ Biotechnology, Computer Science, Artificial Intelligence, Machine Learning, Applied Mathematics…",
-     "Minimum work experience required : from new graduates to 3+ yrs of research experience post graduation (in ML research)",
-     "Strong foundation in AI/ML concepts with hands-on experience in model development, experimental design, and large-scale data analysis."
-    ]
-   }
-  },
-  {
-   "title": "Data and Analytics Engineering - Artificial Intelligence and Machine Learning - Specialist 3 - CS - G",
-   "company": "PwC",
-   "location": "Mumbai",
-   "posted": "2026-11-18",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Mumbai-Goregaon/Data-and-Analytics-Engineering---Artificial-Intelligence-and-Machine-Learning---Specialist-3---CS---G_DB_009221-1",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {
-    "skills": [
-     "Deep learning",
-     "CUDA",
-     "C++",
-     "Java"
-    ]
-   }
-  },
-  {
-   "title": "Staff Data Scientist",
-   "company": "PayPal",
-   "location": "Chennai",
-   "posted": "2026-11-18",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138621",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "SQL",
-     "GCP",
-     "LLMs",
-     "Python",
-     "Generative AI",
-     "Agents"
-    ],
-    "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Bachelor’s degree in computer science, Engineering, Mathematics, Statistics, Data Mining or related field or equivalent practical experience",
-     "A minimum of 8 years of experience in building and shipping machine-learning systems to production, with demonstrated Staff-level scope, ownership and technical…"
-    ]
-   }
-  },
-  {
-   "title": "Staff Data Scientist",
-   "company": "PayPal",
-   "location": "2 locations in India",
-   "posted": "2026-11-18",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138614",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "A/B testing",
-     "SQL",
+     "Optimisation",
      "Statistics",
-     "Optimisation"
+     "Time series",
+     "Python",
+     "TensorFlow",
+     "scikit-learn"
     ],
     "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Bachelor’s degree with at least 8 years of professional experience , or a master’s degree with at least six years of experience.",
-     "Advanced proficiency in SQL and Python , with hands-on experience working with large and complex datasets."
+     "Option 1- Bachelor’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3 years' experience in an…",
+     "Option 2- Master’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
     ]
    }
   },
@@ -1404,38 +1796,107 @@
    }
   },
   {
-   "title": "Staff Machine Learning Engineer",
-   "company": "PayPal",
-   "location": "2 locations in India",
+   "title": "Lead AI Engineer",
+   "company": "Target",
+   "location": "Bengaluru",
    "posted": "2026-11-17",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Machine-Learning-Engineer_R0138937-1",
+   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/Tower-02-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Lead-Engineer--Advanced-AI_R0000441606",
    "exp": [
-    5,
+    6,
     null
    ],
    "exp_from": "jd",
    "jd": {
     "skills": [
-     "MLOps",
-     "PyTorch",
-     "TensorFlow",
-     "scikit-learn",
-     "GCP",
-     "Java"
+     "LLMs",
+     "Agents",
+     "Optimisation",
+     "Deep learning",
+     "Python",
+     "PyTorch"
     ],
     "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Extensive experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
-     "8+ years of professional software engineering experience, with a proven record of leading projects end to end."
+     "4-year degree in Quantitative disciplines (Science, Tech, Engineering, Mathematics) or equivalent industry experience required; MS in Computer Science, Machine Learning…",
+     "6+ years of hands-on software engineering experience, including experience building and operating production systems."
     ]
    }
   },
   {
-   "title": "Staff Machine Learning Engineer",
-   "company": "PayPal",
+   "title": "Research Scientist",
+   "company": "Quantiphi",
+   "location": "Bengaluru",
+   "posted": "2026-11-17",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Scientist_JR11668",
+   "exp_from": "none",
+   "jd": {
+    "skills": [
+     "PyTorch",
+     "Reinforcement learning",
+     "Python",
+     "LLMs",
+     "Agents",
+     "Transformers"
+    ],
+    "needs": [
+     "(PhD + 2) / (MTech + 5) years of research experience in RL with a strong publication record in top venues",
+     "Strong programming skills in Python, with proven expertise in PyTorch or equivalent, and a track record of writing clean, modular, and deployable code.",
+     "Familiarity with advanced ML architectures such as graphs and transformers."
+    ]
+   }
+  },
+  {
+   "title": "Research Engineer",
+   "company": "Quantiphi",
    "location": "2 locations in India",
    "posted": "2026-11-17",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Machine-Learning-Engineer_R0138938",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-MH-Mumbai-Eureka/Research-Engineer_JR10781",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "NLP",
+     "Deep learning",
+     "Reinforcement learning",
+     "Python",
+     "PyTorch",
+     "TensorFlow"
+    ],
+    "needs": [
+     "Master’s degree, PhD, or equivalent experience in Biological Sciences/ Biotechnology, Computer Science, Artificial Intelligence, Machine Learning, Applied Mathematics…",
+     "Minimum work experience required : from new graduates to 3+ yrs of research experience post graduation (in ML research)",
+     "Strong foundation in AI/ML concepts with hands-on experience in model development, experimental design, and large-scale data analysis."
+    ]
+   }
+  },
+  {
+   "title": "Data and Analytics Engineering - Artificial Intelligence and Machine Learning - Specialist 3 - CS - G",
+   "company": "PwC",
+   "location": "Mumbai",
+   "posted": "2026-11-17",
+   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Mumbai-Goregaon/Data-and-Analytics-Engineering---Artificial-Intelligence-and-Machine-Learning---Specialist-3---CS---G_DB_009221-1",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "title",
+   "jd": {
+    "skills": [
+     "Deep learning",
+     "CUDA",
+     "C++",
+     "Java"
+    ]
+   }
+  },
+  {
+   "title": "Staff Data Scientist",
+   "company": "PayPal",
+   "location": "Chennai",
+   "posted": "2026-11-17",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138621",
    "exp": [
     5,
     null
@@ -1443,17 +1904,43 @@
    "exp_from": "jd",
    "jd": {
     "skills": [
-     "PyTorch",
-     "TensorFlow",
-     "scikit-learn",
+     "SQL",
      "GCP",
-     "MLOps",
-     "Java"
+     "LLMs",
+     "Python",
+     "Generative AI",
+     "Agents"
     ],
     "needs": [
      "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Extensive experience with ML frameworks like TensorFlow, PyTorch, or scikit-learn.",
-     "8+ years of professional software engineering experience."
+     "Bachelor’s degree in computer science, Engineering, Mathematics, Statistics, Data Mining or related field or equivalent practical experience",
+     "A minimum of 8 years of experience in building and shipping machine-learning systems to production, with demonstrated Staff-level scope, ownership and technical…"
+    ]
+   }
+  },
+  {
+   "title": "Staff Data Scientist",
+   "company": "PayPal",
+   "location": "2 locations in India",
+   "posted": "2026-11-17",
+   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138614",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Python",
+     "A/B testing",
+     "SQL",
+     "Statistics",
+     "Optimisation"
+    ],
+    "needs": [
+     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
+     "Bachelor’s degree with at least 8 years of professional experience , or a master’s degree with at least six years of experience.",
+     "Advanced proficiency in SQL and Python , with hands-on experience working with large and complex datasets."
     ]
    }
   },
@@ -1531,182 +2018,6 @@
    }
   },
   {
-   "title": "AI DevSecOps Engineer",
-   "company": "Cisco",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://cisco.wd5.myworkdayjobs.com/Cisco_Careers/job/Bangalore-India/AI-DevSecOps-Engineer_2029202",
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "AWS",
-     "Agents",
-     "Kubernetes",
-     "LLMs",
-     "Generative AI"
-    ],
-    "needs": [
-     "Solid scripting and automation capability in Python (or Go/Bash) with hands-on Terraform (IaC) and GitHub Actions (CI/CD pipelines).",
-     "Hands-on with SBOMs, provenance, and artifact signing (e.g., Sigstore/Cosign).",
-     "Experience with SIEM logging, detection engineering, and incident triage."
-    ]
-   }
-  },
-  {
-   "title": "Gen AI Engineer",
-   "company": "Barclays",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Gen-AI-Engineer_JR-0000100208",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Generative AI",
-     "AWS",
-     "LLMs",
-     "Agents",
-     "Vector databases",
-     "LangChain"
-    ],
-    "needs": [
-     "To be successful as a Gen AI Engineer, you should have experience with: Strong proficiency in Python around Agentic, GenAI and framework such as LangChain, LangGraph…",
-     "Hands-on experience with AWS ML ecosystem (Bedrock, SageMaker, Lambda, API Gateway)."
-    ]
-   }
-  },
-  {
-   "title": "AI Software Engineer",
-   "company": "Barclays",
-   "location": "Pune",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129112",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Java",
-     "Python",
-     "AWS",
-     "RAG",
-     "Agents",
-     "Kubernetes"
-    ],
-    "needs": [
-     "AWS and experience in solving complex business issues.",
-     "Hands-on delivery of Generative AI solutions, including LLM integration, prompt engineering, Retrieval-Augmented Generation, embeddings, vector databases and agentic AI…",
-     "Knowledge of programming / scripting languages such as Bash, Power Shell, Python or Java."
-    ]
-   }
-  },
-  {
-   "title": "AI Software Engineer",
-   "company": "Barclays",
-   "location": "Pune",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Pune-Gera-Commerzone-SEZ/AI-Software-Engineer_JR-0000129116",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Java",
-     "Python",
-     "AWS",
-     "RAG",
-     "Agents",
-     "Kubernetes"
-    ],
-    "needs": [
-     "AWS and experience in solving complex business issues.",
-     "Hands-on delivery of Generative AI solutions, including LLM integration, prompt engineering, Retrieval-Augmented Generation, embeddings, vector databases and agentic AI…",
-     "Knowledge of programming / scripting languages such as Bash, Power Shell, Python or Java."
-    ]
-   }
-  },
-  {
-   "title": "Assistant Vice President - Applied AI Engineer",
-   "company": "Barclays",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101372",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Fine-tuning",
-     "LLMs",
-     "AWS",
-     "RAG",
-     "Prompt engineering"
-    ],
-    "needs": [
-     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
-     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
-     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
-    ]
-   }
-  },
-  {
-   "title": "Assistant Vice President - Applied AI Engineer",
-   "company": "Barclays",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101371",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Fine-tuning",
-     "LLMs",
-     "AWS",
-     "RAG",
-     "Prompt engineering"
-    ],
-    "needs": [
-     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
-     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
-     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
-    ]
-   }
-  },
-  {
-   "title": "Assistant Vice President - Applied AI Engineer",
-   "company": "Barclays",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Bengaluru-Maruthi-Onyx---TESCO-TSA/Assistant-Vice-President---Applied-AI-Engineer_JR-0000101370-3",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Fine-tuning",
-     "LLMs",
-     "AWS",
-     "RAG",
-     "Prompt engineering"
-    ],
-    "needs": [
-     "Bachelor's degree (or above) in Computer Science, Engineering, Mathematics, or related discipline",
-     "8+ years software engineering experience with at least 3 years building AI/ML systems, scalable ML infrastructure, or model serving platforms at enterprise scale",
-     "Strong proficiency in Python (FastAPI, asyncio) and/or Go/Java, with production experience building APIs and microservices serving high-throughput, low-latency workloads"
-    ]
-   }
-  },
-  {
    "title": "AI Architect",
    "company": "Bosch",
    "location": "Bengaluru",
@@ -1728,129 +2039,6 @@
     ],
     "needs": [
      "Good to have skills : Experience with Mobility / Automotive / Manufacturing domainExperience in presenting research papers in international conferences like CVPR, EMNLP…"
-    ]
-   }
-  },
-  {
-   "title": "Gen AI Specialist",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161724733",
-   "exp": [
-    5,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Generative AI",
-     "NLP",
-     "Azure",
-     "RAG",
-     "Transformers"
-    ],
-    "needs": [
-     "Able to lead the project independently.· Experience in turning ideas into actionable designs.",
-     "If Bachelors, Machine Learning or Computer Science specialization only A Master’s or PhD is preferred (Computer Science / Machine Learning/ Mechanical, etc) 5- 8 years"
-    ]
-   }
-  },
-  {
-   "title": "Gen AI Specialist",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-16",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161725173",
-   "exp": [
-    5,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Generative AI",
-     "NLP",
-     "Azure",
-     "RAG",
-     "Transformers"
-    ],
-    "needs": [
-     "Able to lead the project independently.· Experience in turning ideas into actionable designs.",
-     "If Bachelors, Machine Learning or Computer Science specialization only A Master’s or PhD is preferred (Computer Science / Machine Learning/ Mechanical, etc) 5- 8 years"
-    ]
-   }
-  },
-  {
-   "title": "Senior Applied Scientist, Amazon Core Search",
-   "company": "Amazon",
-   "location": "Bengaluru",
-   "posted": "2026-11-16",
-   "url": "https://www.amazon.jobs/en/jobs/10606534/senior-applied-scientist-amazon-core-search",
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Spark",
-     "Search and ranking",
-     "Python",
-     "TensorFlow",
-     "scikit-learn",
-     "Deep learning"
-    ],
-    "needs": [
-     "PhD, or Master's degree and 6+ years of applied research experience",
-     "6+ years of building machine learning models or developing algorithms for business application experience",
-     "Experience with neural deep learning methods and machine learning"
-    ]
-   }
-  },
-  {
-   "title": "GenAI/Agentic AI specialists",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-15",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161679729",
-   "exp": [
-    5,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Agents",
-     "LangChain",
-     "RAG",
-     "Transformers",
-     "Azure"
-    ]
-   }
-  },
-  {
-   "title": "GenAI/Agentic AI specialists",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-15",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000161679689",
-   "exp": [
-    5,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Agents",
-     "LangChain",
-     "RAG",
-     "Transformers",
-     "Azure"
     ]
    }
   }
