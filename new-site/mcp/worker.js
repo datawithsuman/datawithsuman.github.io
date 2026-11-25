@@ -2,13 +2,23 @@
 // mock interviews and jobs to Claude and other MCP clients over Streamable HTTP (stateless, JSON responses).
 // It owns no content: everything is read from the files build.py publishes under /api/v1/ and /jobs/.
 
-const SERVER = { name: "aimlrounds", title: "AIML Rounds", version: "1.1.0" };
+const SERVER = { name: "aimlrounds", title: "AIML Rounds", version: "1.2.0" };
 const VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 const TTL_MS = 10 * 60 * 1000;
 
 const INSTRUCTIONS = `AIML Rounds (aimlrounds.com) is a free AI/ML interview-prep site: lessons from maths to LLMs, RAG, agents, inference, MLOps, evals and AI/ML system design; role roadmaps; topic quizzes; mock interviews; and AI/ML jobs in India from the last 7 days.
 Use search to find lessons, then get_lesson to read one. Each lesson says when its sources were checked and when its text last changed; for fast-moving facts (prices, model names, benchmarks) mention that date. When you teach from a lesson, follow its own framing (situation → idea → how it works → in practice → the interview answer) and give the lesson link.
 For quizzes and mock interviews, ask one question at a time and let the learner answer before revealing anything.`;
+
+// One scoring scale for every role, tied to each question's "listen_for" checklist.
+const RUBRIC = {
+  5: "Every listen_for point, correct, plus a trade-off, failure case or real example",
+  4: "Every listen_for point, correct, nothing extra",
+  3: "At least half the listen_for points, no factual errors",
+  2: "Fewer than half the points, or one clear factual error",
+  1: "Misses most points or is mostly wrong",
+  how: "Score against the listen_for checklist only. Name each point covered and each point missed, then give the score.",
+};
 
 // ---------- data ----------
 const cache = new Map();
@@ -310,6 +320,7 @@ const HANDLERS = {
       questions: r.questions.map((q, i) => a.include_answers
         ? { n: i + 1, question: q.q, model_answer: q.answer.join("\n\n"), listen_for: q.listen_for, lessons: q.lessons }
         : { n: i + 1, question: q.q }),
+      rubric: a.include_answers ? RUBRIC : undefined,
       note: a.include_answers ? undefined : "Ask one question at a time. Call again with include_answers: true to give feedback." };
   },
 
@@ -375,7 +386,7 @@ const PROMPTS = [
 function promptText(name, a) {
   switch (name) {
     case "mock_interview":
-      return `Run a mock interview for the ${a.role} role using the AIML Rounds mock_interview tool${a.round ? `, round "${a.round}"` : " (list the rounds and let me pick)"}. Ask one question at a time and wait for my answer. After each answer, fetch the model answer (include_answers: true), tell me what I covered and missed from "what the interviewer listens for", give a 1–5 score, and link the lesson to revise. At the end, summarise my weak areas.`;
+      return `Run a mock interview for the ${a.role} role using the AIML Rounds mock_interview tool${a.round ? `, round "${a.round}"` : " (list the rounds and let me pick)"}. Ask one question at a time and wait for my answer. After each answer, fetch the model answer (include_answers: true), tell me what I covered and missed from "what the interviewer listens for", give a 1–5 score using the returned rubric, and link the lesson to revise. At the end, summarise my weak areas.`;
     case "study_topic":
       return `Teach me "${a.topic}" from AIML Rounds. Search for the best lesson, read it with get_lesson, and teach it in the lesson's order: the interview situation, the intuition, how it works, in practice. Keep it conversational and check my understanding with a question after each part. Finish with the "Say it" interview answer and 3 questions from the matching topic quiz (ask first, reveal after). Link the lesson page.`;
     case "study_plan":
