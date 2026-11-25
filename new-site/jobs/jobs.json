@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-25",
  "days": 7,
- "count": 90,
+ "count": 91,
  "jobs": [
   {
    "title": "Data Scientist",
@@ -9,6 +9,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Data-Scientist_R0077651",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Python",
@@ -22,9 +27,31 @@
      "Technical Skills : Proficiency in programming (Python/R) and data querying (SQL), and experience building dashboards and self-serve reporting in BI tools.",
      "Prior experience in customer experience, customer service or contact center operations, or service analytics."
     ]
+   }
+  },
+  {
+   "title": "SENIOR MANAGER, DATA SCIENCE",
+   "company": "Walmart Global Tech",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/SENIOR-MANAGER--DATA-SCIENCE_R-2688549",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Python",
+     "Generative AI",
+     "Deep learning",
+     "PyTorch",
+     "TensorFlow"
+    ],
+    "needs": [
+     "You have 13+ years experience in design, development, deployment, and maintenance of highly scalable, robust, and user-centric GenAI /AI /ML products and applications",
+     "You have a bachelors/masters degree in computer science, information technology, engineering, statistics, economics, mathematics, or related area",
+     "You have excellent industry experience in production-grade AI/ML system development with major technology companies or AI-native start-ups."
+    ]
    },
    "exp": [
-    5,
+    13,
     null
    ],
    "exp_from": "jd"
@@ -35,6 +62,11 @@
    "location": "2 locations in India",
    "posted": "2026-11-25",
    "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Engineer_JR10775",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Python",
@@ -45,9 +77,31 @@
      "Required Skills Bachelor’s or Master’s degree with 3+ years of relevant industry experience, or a PhD in Quantum Computing, Physics, Chemistry, Computer Science…",
      "Strong hands-on engineering experience in Python and modern software development practices, including clean code, testing, version control, documentation, and…"
     ]
+   }
+  },
+  {
+   "title": "Data Scientist",
+   "company": "Philips",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "Agents",
+     "RAG",
+     "Time series",
+     "Deep learning"
+    ],
+    "needs": [
+     "You have at least five years hands-on experience developing AI/ML systems, with significant experience in LLMs, Generative AI, or AI agents in a professional or…",
+     "You are proficient in Python and relevant libraries for data science and deep learning (e.g., NumPy, Pandas, TensorFlow, PyTorch)",
+     "You have a strong understanding of classic NLP and LLM-based approaches and hands-on experience with LLM-based architecture, such as RAG, prompt engineering, data…"
+    ]
    },
    "exp": [
-    3,
+    5,
     null
    ],
    "exp_from": "jd"
@@ -85,6 +139,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-25",
    "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-ml-engineer/34088/101289987904",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -99,12 +158,7 @@
      "Experience in implementing real projects using Gen AI, Fine tuning LLMs , RAG.",
      "Proficiency in Python, pytorch , SQL and other programming languages for data analysis and modeling with atleast 5+ years of experience."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI ML Engineer",
@@ -112,6 +166,7 @@
    "location": "Hyderabad",
    "posted": "2026-11-25",
    "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-ml-engineer/34088/100146256752",
+   "exp_from": "none",
    "jd": {
     "skills": [
      "LLMs",
@@ -121,8 +176,7 @@
      "Prompt engineering",
      "Python"
     ]
-   },
-   "exp_from": "none"
+   }
   },
   {
    "title": "Senior Applied Scientist",
@@ -130,6 +184,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://apply.careers.microsoft.com/careers/job/1970393556978488",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -143,12 +202,7 @@
      "Bachelor's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 8+ years related experience (e.g., statistics…",
      "OR Master's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 6+ years related experience (e.g., statistics…"
     ]
-   },
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Software Engineer III - Python, AWS / MLOps",
@@ -210,6 +264,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Staff-AI-Application-Engineer_R4049717-1",
+   "exp": [
+    3,
+    5
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -224,12 +283,7 @@
      "Experience: 3–5 years of hands-on experience developing and deploying AI-powered or data-driven applications in enterprise environments.",
      "Experience: 3–5 years of hands-on experience developing and deploying AI-powered or data-driven applications in enterprise environments."
     ]
-   },
-   "exp": [
-    3,
-    5
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Data Scientist (5 to 8 Years)",
@@ -264,6 +318,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/19352",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Python",
@@ -278,12 +337,7 @@
      "Bachelor's or Master's degree in a quantitative field (CS, machine learning, mathematics, statistics) or equivalent experience.",
      "5+ years of experience in data science, building hands-on ML models."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI Architect",
@@ -291,6 +345,11 @@
    "location": "Gurugram",
    "posted": "2026-11-25",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22785",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -301,12 +360,7 @@
      "6+ years of experience, including time leading projects or people.",
      "Hands-on GNN delivery (PyTorch, message passing, embeddings), not just oversight."
     ]
-   },
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Generative AI Software Engineer",
@@ -368,6 +422,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163675569",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Agents",
@@ -377,12 +436,7 @@
      "Azure",
      "Optimisation"
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Scientist I A - GBS IND",
@@ -390,6 +444,11 @@
    "location": "Chennai",
    "posted": "2026-11-25",
    "url": "https://careers.bankofamerica.com/en-us/job-detail/26038301/data-scientist-i-a-gbs-ind-chennai-india",
+   "exp": [
+    6,
+    9
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -404,12 +463,7 @@
      "Proficiency in programming languages such as SQL, Python, or R",
      "Knowledge of databases and SQL language for Oracle, and Hive/Impala"
     ]
-   },
-   "exp": [
-    6,
-    9
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied Scientist, Print On Demand Science",
@@ -417,6 +471,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://www.amazon.jobs/en/jobs/10614072/applied-scientist-print-on-demand-science",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -431,12 +490,7 @@
      "Experience developing and implementing deep learning algorithms, particularly with respect to computer vision algorithms",
      "Experience in any of the following areas: algorithms and data structures, parsing, numerical optimization, data mining, parallel and distributed computing…"
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied Scientist I, Worldwide Returns & Recommerce - Science",
@@ -1151,29 +1205,6 @@
      "Education: Bachelor’s degree in Computer Science, Electrical Engineering, or a related field. An advanced degree is an advantage.",
      "Experience: 5+ years of industry experience in MLOps, Data Engineering, or Software Infrastructure, with a focus on Deep Learning systems.",
      "Programming & Software Design: Expert-level proficiency in Python with a strong emphasis on clean software design, object-oriented programming, and architectural…"
-    ]
-   }
-  },
-  {
-   "title": "AI/ML Data Scientist",
-   "company": "Barclays",
-   "location": "Gurugram",
-   "posted": "2026-11-23",
-   "url": "https://barclays.wd3.myworkdayjobs.com/External_Career_Site_Barclays/job/Gurugram-DLF-Downtown/AI-ML-Data-Scientist_JR-0000136329-1",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Generative AI",
-     "NLP",
-     "Python",
-     "SQL",
-     "Spark",
-     "AWS"
-    ],
-    "needs": [
-     "Requires in-depth technical knowledge and experience in their assigned area of expertise",
-     "OR for an individual contributor, they develop technical expertise in work area, acting as an advisor where appropriate.",
-     "Maintain and continually build an understanding of how own sub-function integrates with function, alongside knowledge of the organisations products, services and…"
     ]
    }
   },
