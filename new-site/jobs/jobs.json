@@ -1,14 +1,68 @@
 {
  "updated": "2026-11-25",
  "days": 7,
- "count": 79,
+ "count": 90,
  "jobs": [
+  {
+   "title": "Data Scientist",
+   "company": "eBay",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://ebay.wd5.myworkdayjobs.com/apply/job/Bengaluru-India/Data-Scientist_R0077651",
+   "jd": {
+    "skills": [
+     "Python",
+     "SQL",
+     "LLMs",
+     "Agents",
+     "NLP"
+    ],
+    "needs": [
+     "Educational Background & Experience : BA/BS degree with 5+ years (or Masters/PhD with 3+ years) of relevant experience across at least two areas such as Quantitative…",
+     "Technical Skills : Proficiency in programming (Python/R) and data querying (SQL), and experience building dashboards and self-serve reporting in BI tools.",
+     "Prior experience in customer experience, customer service or contact center operations, or service analytics."
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Research Engineer",
+   "company": "Quantiphi",
+   "location": "2 locations in India",
+   "posted": "2026-11-25",
+   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Engineer_JR10775",
+   "jd": {
+    "skills": [
+     "Python",
+     "AWS",
+     "Optimisation"
+    ],
+    "needs": [
+     "Required Skills Bachelor’s or Master’s degree with 3+ years of relevant industry experience, or a PhD in Quantum Computing, Physics, Chemistry, Computer Science…",
+     "Strong hands-on engineering experience in Python and modern software development practices, including clean code, testing, version control, documentation, and…"
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "Associate AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Hyderabad",
    "posted": "2026-11-25",
    "url": "https://careers.unitedhealthgroup.com/job/hyderabad/associate-ai-ml-engineer/34088/103051748416",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Azure",
@@ -23,9 +77,75 @@
      "Experience designing and building both batch and real-time streaming data pipelines using Spark, Scala, or Python",
      "Hands-on experience working with event-streaming or distributed messaging platforms (e.g., Apache Kafka, Azure Event Hubs, or Spark Structured Streaming)"
     ]
+   }
+  },
+  {
+   "title": "AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-25",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-ml-engineer/34088/101289987904",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "RAG",
+     "NLP",
+     "Python",
+     "SQL",
+     "PyTorch"
+    ],
+    "needs": [
+     "Bachelor's degree or higher in computer science engineering. Overall 5+ years of experience in AI ML roles",
+     "Experience in implementing real projects using Gen AI, Fine tuning LLMs , RAG.",
+     "Proficiency in Python, pytorch , SQL and other programming languages for data analysis and modeling with atleast 5+ years of experience."
+    ]
    },
    "exp": [
-    3,
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-25",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-ml-engineer/34088/100146256752",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "RAG",
+     "Agents",
+     "Azure",
+     "Prompt engineering",
+     "Python"
+    ]
+   },
+   "exp_from": "none"
+  },
+  {
+   "title": "Senior Applied Scientist",
+   "company": "Microsoft",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://apply.careers.microsoft.com/careers/job/1970393556978488",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Deep learning",
+     "Causal inference",
+     "Reinforcement learning",
+     "Python",
+     "PyTorch"
+    ],
+    "needs": [
+     "Bachelor's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 8+ years related experience (e.g., statistics…",
+     "OR Master's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 6+ years related experience (e.g., statistics…"
+    ]
+   },
+   "exp": [
+    8,
     null
    ],
    "exp_from": "jd"
@@ -36,6 +156,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210809553",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -50,12 +175,7 @@
      "Hands-on practical experience in system design, application development, testing, and operational stability",
      "Experience in developing, debugging, and maintaining code in a large corporate environment with one or more modern programming languages and database querying languages"
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Sr Data Scientist",
@@ -63,6 +183,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://gevernova.wd5.myworkdayjobs.com/Vernova_ExternalSite/job/Bengaluru/Sr-Data-Scientist_R5059764",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "MLOps",
@@ -77,10 +202,32 @@
      "DevOps & Containerization: Working knowledge of containerization, orchestration, and software engineering principles (e.g., Docker, Kubernetes).",
      "Services Integration: Experience translating complex algorithms into commercially viable APIs, microservices, and integrated production services; familiarity with…"
     ]
+   }
+  },
+  {
+   "title": "Staff AI Application Engineer",
+   "company": "GE HealthCare",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/Staff-AI-Application-Engineer_R4049717-1",
+   "jd": {
+    "skills": [
+     "AWS",
+     "Azure",
+     "LLMs",
+     "LangChain",
+     "Docker",
+     "GCP"
+    ],
+    "needs": [
+     "Education: Master’s or PhD degree (or equivalent experience) in Computer Science, Software Engineering, Artificial Intelligence, or related STEM field.",
+     "Experience: 3–5 years of hands-on experience developing and deploying AI-powered or data-driven applications in enterprise environments.",
+     "Experience: 3–5 years of hands-on experience developing and deploying AI-powered or data-driven applications in enterprise environments."
+    ]
    },
    "exp": [
-    5,
-    null
+    3,
+    5
    ],
    "exp_from": "jd"
   },
@@ -90,6 +237,11 @@
    "location": "5 locations in India",
    "posted": "2026-11-25",
    "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Senior-Data-Scientist--Data-Scientist--3-to-9yrs_SR-21926",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "GCP",
@@ -104,6 +256,51 @@
      "Strong knowledge of machine learning and statistical modeling techniques in a in a clouds-based environment such as GCP, Azure, Amazon, Databricks",
      "Experience with programming languages such as Python, R, Spark"
     ]
+   }
+  },
+  {
+   "title": "Senior Data Scientist",
+   "company": "EXL",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/19352",
+   "jd": {
+    "skills": [
+     "Python",
+     "Generative AI",
+     "NLP",
+     "SQL",
+     "AWS",
+     "RAG"
+    ],
+    "needs": [
+     "Familiarity with testing tools.",
+     "Bachelor's or Master's degree in a quantitative field (CS, machine learning, mathematics, statistics) or equivalent experience.",
+     "5+ years of experience in data science, building hands-on ML models."
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "AI Architect",
+   "company": "EXL",
+   "location": "Gurugram",
+   "posted": "2026-11-25",
+   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22785",
+   "jd": {
+    "skills": [
+     "AWS",
+     "PyTorch"
+    ],
+    "needs": [
+     "Stay hands-on with GNN modelling, graph feature engineering and pipelines.",
+     "6+ years of experience, including time leading projects or people.",
+     "Hands-on GNN delivery (PyTorch, message passing, embeddings), not just oversight."
+    ]
    },
    "exp": [
     6,
@@ -117,6 +314,11 @@
    "location": "Pune",
    "posted": "2026-11-25",
    "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Generative-AI-Software-Engineer_261001423",
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -131,12 +333,7 @@
      "Strong proficiency in Python and modern AI development frameworks such as FastAPI, Flask, Pandas, Scikit-learn, Hugging Face, LangChain, and LangGraph.",
      "Hands-on experience building Generative AI applications using proprietary and open-weight LLMs."
     ]
-   },
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "GenAI Agentic AI Engg Lead- AVP - PUNE",
@@ -144,6 +341,11 @@
    "location": "Pune",
    "posted": "2026-11-25",
    "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/GenAI-Agentic-AI-Engg-Lead--AVP---PUNE_261007454",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "RAG",
@@ -158,9 +360,80 @@
      "8+ years of experience in machine learning and deep learning, with a focus on generative AI solution design and development.",
      "Strong proficiency in Python and deep learning frameworks such as TensorFlow, PyTorch, or Keras."
     ]
+   }
+  },
+  {
+   "title": "Generative AI & Agent Systems Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163675569",
+   "jd": {
+    "skills": [
+     "Agents",
+     "RAG",
+     "LLMs",
+     "Python",
+     "Azure",
+     "Optimisation"
+    ]
    },
    "exp": [
-    8,
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Data Scientist I A - GBS IND",
+   "company": "Bank of America",
+   "location": "Chennai",
+   "posted": "2026-11-25",
+   "url": "https://careers.bankofamerica.com/en-us/job-detail/26038301/data-scientist-i-a-gbs-ind-chennai-india",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Python",
+     "SQL",
+     "Spark",
+     "Time series",
+     "Optimisation"
+    ],
+    "needs": [
+     "Bachelor's degree in statistics, operations research, economics, finance, physics or mathematics",
+     "Proficiency in programming languages such as SQL, Python, or R",
+     "Knowledge of databases and SQL language for Oracle, and Hive/Impala"
+    ]
+   },
+   "exp": [
+    6,
+    9
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Applied Scientist, Print On Demand Science",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://www.amazon.jobs/en/jobs/10614072/applied-scientist-print-on-demand-science",
+   "jd": {
+    "skills": [
+     "Optimisation",
+     "Computer vision",
+     "Statistics",
+     "Deep learning",
+     "Python",
+     "Generative AI"
+    ],
+    "needs": [
+     "3+ years of building machine learning models or developing algorithms for business application experience",
+     "Experience developing and implementing deep learning algorithms, particularly with respect to computer vision algorithms",
+     "Experience in any of the following areas: algorithms and data structures, parsing, numerical optimization, data mining, parallel and distributed computing…"
+    ]
+   },
+   "exp": [
+    3,
     null
    ],
    "exp_from": "jd"
@@ -171,6 +444,11 @@
    "location": "Hyderabad",
    "posted": "2026-11-25",
    "url": "https://www.amazon.jobs/en/jobs/10606600/applied-scientist-i-worldwide-returns-recommerce-science",
+   "exp": [
+    0,
+    2
+   ],
+   "exp_from": "title",
    "jd": {
     "skills": [
      "LLMs",
@@ -183,12 +461,7 @@
     "needs": [
      "Experience with SQL and an RDBMS (e.g., Oracle) or Data Warehouse"
     ]
-   },
-   "exp": [
-    0,
-    2
-   ],
-   "exp_from": "title"
+   }
   },
   {
    "title": "STAFF, DATA SCIENTIST",
@@ -274,6 +547,11 @@
    "location": "Noida",
    "posted": "2026-11-24",
    "url": "https://careers.unitedhealthgroup.com/job/noida/ai-or-ml-engineer-rag-databricks/34088/103752535424",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Azure",
@@ -288,12 +566,7 @@
      "5+ years of experience in software development",
      "4+ years of hands on experience delivering AI/ML solutions in production environments"
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI Engineer",
