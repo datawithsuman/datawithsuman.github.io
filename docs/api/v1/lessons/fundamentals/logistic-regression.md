@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/logistic-regression/
 - Before this: Linear Regression (`fundamentals/linear-regression`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: ac3ae3a28b
 
 ## Intuition
 

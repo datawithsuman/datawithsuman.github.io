@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-semantic-search/
 - Before this: Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 237b52da5a
 
 ## Intuition
 

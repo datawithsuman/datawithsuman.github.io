@@ -6,6 +6,7 @@
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/sparse-autoencoders/
 - Before this: Features, Polysemanticity and Superposition (`ai-engineering/features-and-superposition`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 7d1f04c444
 
 ## Intuition
 

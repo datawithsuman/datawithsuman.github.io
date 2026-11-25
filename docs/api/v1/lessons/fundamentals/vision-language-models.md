@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/vision-language-models/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`), Vision Transformers (`fundamentals/vision-transformers`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 5e37a92f82
 
 ## Intuition
 

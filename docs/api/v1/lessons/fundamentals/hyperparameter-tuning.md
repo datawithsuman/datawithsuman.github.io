@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/hyperparameter-tuning/
 - Before this: Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: f27ca9e6d2
 
 ## Intuition
 

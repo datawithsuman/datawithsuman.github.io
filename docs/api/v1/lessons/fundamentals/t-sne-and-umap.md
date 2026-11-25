@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/t-sne-and-umap/
 - Before this: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: a303938ad1
 
 ## Intuition
 

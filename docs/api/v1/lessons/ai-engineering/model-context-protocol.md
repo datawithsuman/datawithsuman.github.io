@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/model-context-protocol/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 97cb637cc9
 
 ## Intuition
 

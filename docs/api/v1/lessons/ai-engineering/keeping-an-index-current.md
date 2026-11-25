@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/keeping-an-index-current/
 - Before this: Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 75c0b2bd96
 
 ## Intuition
 

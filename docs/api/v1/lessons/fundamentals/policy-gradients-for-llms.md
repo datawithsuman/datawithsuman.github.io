@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/policy-gradients-for-llms/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: aa0e7a6e5f
 
 ## Intuition
 

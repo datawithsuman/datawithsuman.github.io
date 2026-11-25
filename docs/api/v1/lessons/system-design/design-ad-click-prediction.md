@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-ad-click-prediction/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Probability Metrics (`fundamentals/probability-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: d07c3ef18b
 
 ## Intuition
 

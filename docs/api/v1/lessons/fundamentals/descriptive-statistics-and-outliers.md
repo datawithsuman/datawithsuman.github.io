@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/descriptive-statistics-and-outliers/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: bd49795002
 
 ## Intuition
 

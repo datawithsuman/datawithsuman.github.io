@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/error-analysis/
 - Before this: Building Your First Eval Set: Real Traces and Synthetic Queries (`ai-engineering/building-an-eval-dataset`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 7c509fb9b0
 
 ## Intuition
 

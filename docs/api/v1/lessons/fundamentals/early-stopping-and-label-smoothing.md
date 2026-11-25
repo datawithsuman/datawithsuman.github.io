@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/early-stopping-and-label-smoothing/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4402c2f439
 
 ## Intuition
 

@@ -10,10 +10,18 @@ keep their TeX). The MCP server in ../mcp reads these files, so it never needs i
   api/v1/mocks.json            mock interview rounds with model answers
   api/v1/roadmap.json          role roadmaps: topics in order, with their lessons
   api/v1/new.json              recently added pages
+
+Each lesson also carries freshness fields, so an AI tool can say how recent its source is:
+  checked   the date the lesson's sources were last checked (from the lesson's own "checked <date>" line)
+  updated   the date the lesson's text last changed (tracked by content hash in lesson_versions.json)
+  version   a short hash of the lesson text; it changes whenever the text changes
 """
+import hashlib
 import json
 import re
-from datetime import date
+import subprocess
+from datetime import date, datetime
+from pathlib import Path
 from html import unescape
 from html.parser import HTMLParser
 
@@ -315,12 +323,43 @@ def lesson_markdown(html):
     return text, heads
 
 
+VERSIONS_FILE = Path(__file__).parent / "lesson_versions.json"
+CHECKED_RE = re.compile(r"checked (\d{1,2} [A-Z][a-z]{2,8} 20\d\d)")
+
+
+def checked_date(text):
+    """The latest "checked <date>" in the lesson, as YYYY-MM-DD, or ""."""
+    out = []
+    for m in CHECKED_RE.findall(text):
+        for fmt in ("%d %b %Y", "%d %B %Y"):
+            try:
+                out.append(datetime.strptime(m, fmt).date().isoformat())
+                break
+            except ValueError:
+                pass
+    return max(out) if out else ""
+
+
+def git_last_change(path):
+    """Date of the last commit that touched an exported lesson file (used once, as the baseline)."""
+    try:
+        path = Path(path).resolve()
+        r = subprocess.run(["git", "log", "-1", "--format=%cs", "--", str(path)], cwd=Path(__file__).parent,
+                           capture_output=True, text=True, timeout=60)
+        return r.stdout.strip()
+    except Exception as e:
+        print("  git date lookup failed for", path, "-", e)
+        return ""
+
+
 def export(b):
     """b is the build module (TRACKS, ORDERED, LESSONS, RM, quizzes, mocks, DIST, BASE, ...)."""
     base, dist = b.BASE, b.DIST
     api = dist / "api/v1"
     (api / "lessons").mkdir(parents=True, exist_ok=True)
     rows, full = [], []
+    versions = json.loads(VERSIONS_FILE.read_text()) if VERSIONS_FILE.exists() else {}
+    today = date.today().isoformat()
     quiz_by_lesson = {}
     for tid in b.quizzes.READY:
         for k in b.RM["topics"][tid]["lessons"]:
@@ -341,8 +380,17 @@ def export(b):
             head.append("- Related: " + ", ".join(f"{b.LESSONS[k]['title']} (`{k}`)" for k in l["related"]))
         if l["key"] in quiz_by_lesson:
             head.append(f"- Quiz topic: `{quiz_by_lesson[l['key']]}`")
-        md = "\n".join(head) + "\n\n" + body + "\n"
         path = api / "lessons" / f"{l['key']}.md"
+        ver = hashlib.sha256(body.encode("utf-8")).hexdigest()[:10]
+        old = versions.get(l["key"])
+        if not old:  # first time: take the last real change from git history, else today
+            old = {"version": ver, "updated": git_last_change(path) or today}
+        elif old["version"] != ver:
+            old = {"version": ver, "updated": today}
+        versions[l["key"]] = old
+        checked = checked_date(body)
+        head.append(f"- Sources checked: {checked or 'not stated'} · Text last changed: {old['updated']} · Version: {ver}")
+        md = "\n".join(head) + "\n\n" + body + "\n"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(md, encoding="utf-8")
         full.append(md)
@@ -350,7 +398,9 @@ def export(b):
                      "section": m["name"], "type": b.TYPE_LABEL[l["type"]].lower(), "minutes": l["minutes"],
                      "lead": l["lead"], "q": l.get("q", "") if l.get("q") != l["lead"] else "",
                      "headings": heads[:30], "words": len(body.split()), "url": base + l["url"],
-                     "quiz": quiz_by_lesson.get(l["key"], "")})
+                     "quiz": quiz_by_lesson.get(l["key"], ""),
+                     "checked": checked, "updated": old["updated"], "version": ver})
+    VERSIONS_FILE.write_text(json.dumps(dict(sorted(versions.items())), indent=1) + "\n")
 
     topics = b.RM["topics"]
     quizzes = {tid: {"id": tid, "name": topics[tid]["name"], "url": base + f"quiz/{b.QUIZ_SLUG[tid]}/",
@@ -378,7 +428,6 @@ def export(b):
     def dump(name, obj):
         (api / name).write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    today = date.today().isoformat()
     dump("index.json", {"site": base, "updated": today, "tracks": tracks, "lessons": rows,
                         "quizzes": [{"id": q["id"], "name": q["name"], "n": len(q["questions"])} for q in quizzes.values()],
                         "mocks": [{"id": m["id"], "name": m["name"], "rounds": [r["id"] for r in m["rounds"]]} for m in mocks]})

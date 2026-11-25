@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/improving-tools-with-evals/
 - Before this: Evaluating an MCP Server: Tool Choice, Descriptions and Distractors (`ai-engineering/evaluating-mcp-servers`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 8a564c895e
 
 ## Intuition
 

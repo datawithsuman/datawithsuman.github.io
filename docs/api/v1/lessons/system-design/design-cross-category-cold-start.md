@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-cross-category-cold-start/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 54b02b8bc3
 
 ## Intuition
 

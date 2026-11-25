@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/decoding-and-sampling/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 63f5bbe383
 
 ## Intuition
 

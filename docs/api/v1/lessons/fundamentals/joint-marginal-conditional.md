@@ -8,6 +8,7 @@
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Related: Naive Bayes (`fundamentals/naive-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fab2fc286f
 
 ## Intuition
 

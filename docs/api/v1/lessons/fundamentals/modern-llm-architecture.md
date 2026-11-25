@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/modern-llm-architecture/
 - Before this: The Transformer, End to End (`fundamentals/transformer-end-to-end`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e4c3d4c9ee
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/what-is-an-agent/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: fc8377c82e
 
 ## Intuition
 

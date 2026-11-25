@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/weight-initialisation/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 031d3f6fd1
 
 ## Intuition
 

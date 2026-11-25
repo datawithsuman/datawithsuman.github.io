@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/image-segmentation/
 - Before this: CNN Architectures: AlexNet to ConvNeXt (`fundamentals/cnn-architectures`), Pooling, Stride, Padding and Output Shapes (`fundamentals/pooling-stride-padding`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0933609341
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/scaling-laws-and-chinchilla/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: ae70671296
 
 ## Gist
 

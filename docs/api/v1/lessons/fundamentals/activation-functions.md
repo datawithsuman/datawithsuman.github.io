@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/activation-functions/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: aa05dec122
 
 ## Intuition
 

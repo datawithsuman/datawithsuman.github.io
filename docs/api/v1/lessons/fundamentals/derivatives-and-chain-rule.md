@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/derivatives-and-chain-rule/
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `calc`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 103e335f16
 
 ## Intuition
 

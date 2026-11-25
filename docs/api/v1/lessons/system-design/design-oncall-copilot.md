@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-oncall-copilot/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Agentic RAG, and When Not to Index (`ai-engineering/agentic-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 2ab5fd60b2
 
 ## Intuition
 

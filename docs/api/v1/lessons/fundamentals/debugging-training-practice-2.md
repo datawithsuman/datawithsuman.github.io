@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/debugging-training-practice-2/
 - Before this: Debugging Training: Loss Won't Go Down (`fundamentals/debugging-training-practice-1`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 598ff6febd
 
 How to use this page
 

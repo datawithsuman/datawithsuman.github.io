@@ -8,6 +8,7 @@
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Linear Independence, Basis and Rank (`fundamentals/linear-independence-basis-and-rank`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: dbe6cd16f2
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-fraud-detection/
 - Before this: Class Imbalance (`fundamentals/class-imbalance`), Thresholds & Misclassification Costs (`fundamentals/thresholds-and-costs`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 1efb0802a4
 
 ## Intuition
 

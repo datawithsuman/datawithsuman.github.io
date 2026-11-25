@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/dpo/
 - Before this: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f7f4e16178
 
 ## Intuition
 

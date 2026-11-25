@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-at-scale/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 94a0fe8913
 
 ## Intuition
 

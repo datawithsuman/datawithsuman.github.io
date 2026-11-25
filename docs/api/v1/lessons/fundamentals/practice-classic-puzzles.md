@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-classic-puzzles/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 22f89a993e
 
 How to use this page
 

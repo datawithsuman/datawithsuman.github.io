@@ -6,6 +6,7 @@
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/k-means/
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8be44b1186
 
 ## Intuition
 

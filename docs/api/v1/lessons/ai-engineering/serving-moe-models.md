@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-moe-models/
 - Before this: Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`), Mixture of Experts (`fundamentals/mixture-of-experts`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 95ef5aa33c
 
 ## Intuition
 

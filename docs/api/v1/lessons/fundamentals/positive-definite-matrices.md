@@ -8,6 +8,7 @@
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Related: Convexity & Local Minima (`fundamentals/convexity-and-local-minima`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 57bc4a10ac
 
 ## Intuition
 

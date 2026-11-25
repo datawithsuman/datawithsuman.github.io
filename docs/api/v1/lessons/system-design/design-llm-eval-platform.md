@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-eval-platform/
 - Before this: RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`), LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 3d876eea44
 
 ## Intuition
 

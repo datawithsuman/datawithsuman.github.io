@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/attention-variants-mqa-gqa-mla/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`), Multi-Head Attention (`fundamentals/multi-head-attention`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f3977e99cc
 
 ## Intuition
 

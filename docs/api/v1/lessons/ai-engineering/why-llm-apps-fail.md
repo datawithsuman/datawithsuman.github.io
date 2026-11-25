@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/why-llm-apps-fail/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 27c6d326ea
 
 ## Intuition
 

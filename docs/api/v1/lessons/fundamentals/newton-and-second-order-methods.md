@@ -8,6 +8,7 @@
 - Before this: Taylor Series and Curvature (`fundamentals/taylor-series-and-curvature`), Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Related: Gradient Boosting (`fundamentals/gradient-boosting`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 5b3fd96b53
 
 ## Intuition
 

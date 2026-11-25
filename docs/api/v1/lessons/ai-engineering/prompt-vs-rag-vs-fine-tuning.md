@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b0625ca222
 
 ## Intuition
 

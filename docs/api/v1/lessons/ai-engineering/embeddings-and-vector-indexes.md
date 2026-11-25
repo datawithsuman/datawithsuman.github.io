@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/embeddings-and-vector-indexes/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3ccc1e8c4e
 
 ## Intuition
 

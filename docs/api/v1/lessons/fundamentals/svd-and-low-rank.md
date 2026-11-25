@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/svd-and-low-rank/
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 0582dabc2e
 
 ## Intuition
 

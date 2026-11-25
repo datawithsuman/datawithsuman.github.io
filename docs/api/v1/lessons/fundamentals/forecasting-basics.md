@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/forecasting-basics/
 - Before this: Linear Regression (`fundamentals/linear-regression`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `ts`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 1b62daa0b8
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/linear-algebra-practice/
 - Before this: SVD & Low-Rank Approximation (`fundamentals/svd-and-low-rank`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: 13588701d3
 
 How to use this page
 

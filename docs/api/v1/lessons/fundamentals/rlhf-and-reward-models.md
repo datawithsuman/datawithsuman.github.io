@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/rlhf-and-reward-models/
 - Before this: Policy Gradients for LLMs (`fundamentals/policy-gradients-for-llms`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: dfedc6f5a4
 
 ## Intuition
 

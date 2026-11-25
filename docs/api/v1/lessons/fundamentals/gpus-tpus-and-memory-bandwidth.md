@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/gpus-tpus-and-memory-bandwidth/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: fafb299d28
 
 ## Intuition
 

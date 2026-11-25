@@ -8,6 +8,7 @@
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: d5d694eb34
 
 ## Intuition
 

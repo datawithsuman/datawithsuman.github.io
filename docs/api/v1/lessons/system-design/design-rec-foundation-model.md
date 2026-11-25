@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-rec-foundation-model/
 - Before this: Distillation: How Small Models Learn from Big Ones (`fundamentals/distillation`), The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5fa170dc16
 
 ## Intuition
 

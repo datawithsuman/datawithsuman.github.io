@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluating-mcp-servers/
 - Before this: Tool-Call Evals: Selection, Arguments, Trajectories and Effects (`ai-engineering/agent-and-tool-evaluation-metrics`), MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: bd158bc76a
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-cost-and-latency/
 - Before this: Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 0d8b6412aa
 
 How to use this page
 

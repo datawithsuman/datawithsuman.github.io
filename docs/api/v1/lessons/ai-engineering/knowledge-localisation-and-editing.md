@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/knowledge-localisation-and-editing/
 - Before this: Activation Patching and Circuit Discovery (`ai-engineering/activation-patching`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 4d4940ca41
 
 ## Intuition
 

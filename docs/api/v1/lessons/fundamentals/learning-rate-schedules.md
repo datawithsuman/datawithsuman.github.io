@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/learning-rate-schedules/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0298b64c3c
 
 ## Intuition
 

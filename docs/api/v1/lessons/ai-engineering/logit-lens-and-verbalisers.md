@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/logit-lens-and-verbalisers/
 - Before this: The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: ee69e9076d
 
 ## Intuition
 

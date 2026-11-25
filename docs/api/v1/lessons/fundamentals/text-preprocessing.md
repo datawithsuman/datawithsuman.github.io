@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/fundamentals/text-preprocessing/
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 006bf77033
 
 ## Intuition
 

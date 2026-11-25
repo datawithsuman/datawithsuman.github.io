@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/normalisation-layers/
 - Before this: Vanishing & Exploding Gradients (`fundamentals/vanishing-exploding-gradients`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 17247b7597
 
 ## Intuition
 

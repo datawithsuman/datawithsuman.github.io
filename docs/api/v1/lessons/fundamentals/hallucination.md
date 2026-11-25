@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/hallucination/
 - Before this: In-Context Learning and Chain-of-Thought (`fundamentals/in-context-learning-and-cot`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e6b0aa0a55
 
 ## Intuition
 

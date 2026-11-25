@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/
 - Before this: Memory and Context Engineering (`ai-engineering/memory-and-context-engineering`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 4a25c20b58
 
 How to use this page
 

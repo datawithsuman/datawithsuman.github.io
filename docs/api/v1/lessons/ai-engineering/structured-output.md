@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/structured-output/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Decoding: Temperature, Top-k, Top-p and Min-p (`fundamentals/decoding-and-sampling`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8c4a6070c6
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llmops/
 - Before this: Deployment Patterns: Shadow, Canary, A/B and Rollback (`ai-engineering/deployment-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4dc34251cc
 
 ## Intuition
 

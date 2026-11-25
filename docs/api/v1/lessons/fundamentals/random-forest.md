@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/random-forest/
 - Before this: Decision Trees (`fundamentals/decision-trees`)
 - Quiz topic: `trees`
+- Sources checked: 2026-10-27 · Text last changed: 2026-11-20 · Version: 8e12382887
 
 ## Intuition
 

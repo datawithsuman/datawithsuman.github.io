@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/debugging-training-practice-1/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b9461391cb
 
 How to use this page
 

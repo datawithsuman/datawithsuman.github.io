@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/running-many-tests-at-once/
 - Before this: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`), Multiple Testing and Segments (`fundamentals/multiple-testing`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 6e5e609114
 
 ## Intuition
 

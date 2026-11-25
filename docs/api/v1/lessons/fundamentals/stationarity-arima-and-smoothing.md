@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/stationarity-arima-and-smoothing/
 - Before this: Time-Series Forecasting Basics (`fundamentals/forecasting-basics`)
 - Quiz topic: `ts`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e9d72098a6
 
 ## Intuition
 

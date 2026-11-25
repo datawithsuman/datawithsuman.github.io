@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/choosing-the-right-eval/
 - Before this: Why LLM Apps Fail: The Three Gulfs (`ai-engineering/why-llm-apps-fail`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 91ffd0630f
 
 ## Intuition
 

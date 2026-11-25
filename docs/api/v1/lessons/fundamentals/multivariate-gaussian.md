@@ -8,6 +8,7 @@
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`), Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Related: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 111c641505
 
 ## Intuition
 

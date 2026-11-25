@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-and-bayes/
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 2d4b331a34
 
 ## Intuition
 

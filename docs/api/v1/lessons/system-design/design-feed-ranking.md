@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-feed-ranking/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 924f65d0e7
 
 ## Intuition
 

@@ -8,6 +8,7 @@
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`), Linear Independence, Basis and Rank (`fundamentals/linear-independence-basis-and-rank`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: c7e14a3301
 
 ## Intuition
 

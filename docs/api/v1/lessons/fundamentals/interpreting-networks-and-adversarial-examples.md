@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/interpreting-networks-and-adversarial-examples/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: b80bbb1070
 
 ## Intuition
 

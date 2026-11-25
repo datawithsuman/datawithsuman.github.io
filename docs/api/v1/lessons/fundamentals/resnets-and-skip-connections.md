@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/resnets-and-skip-connections/
 - Before this: Vanishing & Exploding Gradients (`fundamentals/vanishing-exploding-gradients`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f8a25255d4
 
 ## Intuition
 

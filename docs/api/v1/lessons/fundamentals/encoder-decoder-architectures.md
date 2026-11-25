@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/encoder-decoder-architectures/
 - Before this: The Transformer Block (`fundamentals/transformer-block`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 765cc27465
 
 ## Intuition
 

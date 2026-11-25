@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/bias-variance/
 - Before this: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 338e793956
 
 ## Intuition
 

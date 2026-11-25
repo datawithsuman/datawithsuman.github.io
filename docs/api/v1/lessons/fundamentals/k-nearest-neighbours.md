@@ -8,6 +8,7 @@
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Missing Values & Feature Scaling (`fundamentals/missing-values-and-scaling`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: c0e881cad1
 
 ## Intuition
 

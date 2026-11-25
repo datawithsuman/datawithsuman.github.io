@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/positional-encodings/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `attn`
+- Sources checked: 2026-11-16 · Text last changed: 2026-11-20 · Version: 3fec57b041
 
 ## Intuition
 

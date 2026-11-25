@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/long-context/
 - Before this: Positional Encodings (incl. RoPE) (`fundamentals/positional-encodings`), Attention Variants: MQA, GQA and MLA (`fundamentals/attention-variants-mqa-gqa-mla`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: aeb55d1882
 
 ## Intuition
 

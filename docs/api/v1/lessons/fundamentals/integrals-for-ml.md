@@ -8,6 +8,7 @@
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Related: Autoencoders and VAEs (`fundamentals/autoencoders-and-vaes`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 9445839913
 
 ## Intuition
 

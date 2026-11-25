@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/long-running-and-scheduled-agents/
 - Before this: Agent Frameworks and Harnesses: Graphs, State and Middleware (`ai-engineering/agent-frameworks-and-harnesses`), Multi-Agent Systems (`ai-engineering/multi-agent-systems`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 99eef1e38e
 
 ## Intuition
 

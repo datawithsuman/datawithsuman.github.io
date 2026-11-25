@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/monitoring-without-labels/
 - Before this: Drift Detection and Monitoring (`ai-engineering/drift-detection-and-monitoring`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 808e159b5a
 
 ## Intuition
 

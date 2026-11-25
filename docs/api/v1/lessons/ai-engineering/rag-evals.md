@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-evals/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `evals`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 5ac986b8fa
 
 ## Intuition
 

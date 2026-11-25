@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/rnns-and-backprop-through-time/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 20ed87505d
 
 ## Intuition
 

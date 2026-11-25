@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-text-to-sql/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: f2ae2b6a8d
 
 ## Intuition
 

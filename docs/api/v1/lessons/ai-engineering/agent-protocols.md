@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-protocols/
 - Before this: MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: d6f2dbea17
 
 ## Intuition
 

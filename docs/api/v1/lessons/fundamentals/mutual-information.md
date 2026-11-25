@@ -8,6 +8,7 @@
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`), Joint, Marginal and Conditional Distributions (`fundamentals/joint-marginal-conditional`)
 - Related: Decision Trees (`fundamentals/decision-trees`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 79dff987d8
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/correlation-vs-causation/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 4943f21d42
 
 ## Intuition
 

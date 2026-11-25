@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluating-agents/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Code Checks First: Assertions, Schemas and Execution (`ai-engineering/code-based-evaluators`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e0b2a15789
 
 ## Intuition
 

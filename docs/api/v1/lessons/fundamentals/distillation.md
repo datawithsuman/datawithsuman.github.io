@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/distillation/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 966e26aa06
 
 ## Intuition
 

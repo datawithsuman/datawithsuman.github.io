@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/non-parametric-and-permutation-tests/
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e176ae1383
 
 ## Intuition
 

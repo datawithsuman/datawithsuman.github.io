@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sample-ratio-mismatch/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cbf4ac631a
 
 ## Intuition
 

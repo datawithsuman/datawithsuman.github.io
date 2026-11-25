@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/heterogeneous-effects-and-uplift/
 - Before this: Multiple Testing and Segments (`fundamentals/multiple-testing`), Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: bb2e9bc503
 
 ## Intuition
 

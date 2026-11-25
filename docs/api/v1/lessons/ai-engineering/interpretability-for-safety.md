@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-for-safety/
 - Before this: Probing Classifiers (`ai-engineering/probing-classifiers`), Steering Vectors (`ai-engineering/steering-vectors`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: b24bae8455
 
 ## Intuition
 

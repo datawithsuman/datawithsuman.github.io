@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prefix-caching/
 - Before this: KV Cache Management and PagedAttention (`ai-engineering/kv-cache-and-pagedattention`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 56932783d3
 
 ## Intuition
 

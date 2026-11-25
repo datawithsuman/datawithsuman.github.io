@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/mlops-practice/
 - Before this: Retraining Pipelines and Continuous Training (`ai-engineering/retraining-pipelines`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 0419e65db8
 
 How to use this page
 

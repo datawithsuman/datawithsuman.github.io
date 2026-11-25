@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/reranking-and-late-interaction/
 - Before this: Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 760b4958de
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sequential-testing/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: f8e8932621
 
 ## Intuition
 

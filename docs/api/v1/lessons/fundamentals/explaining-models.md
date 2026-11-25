@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/explaining-models/
 - Before this: Random Forest (`fundamentals/random-forest`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0e6ed5f933
 
 ## Intuition
 

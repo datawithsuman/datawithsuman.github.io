@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-change-broke-production/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 8632ace4bd
 
 ## Intuition
 

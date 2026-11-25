@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/text-classification/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`), Naive Bayes (`fundamentals/naive-bayes`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e8eca9a934
 
 ## Intuition
 

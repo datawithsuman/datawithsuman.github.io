@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/perceptron-to-mlp/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 2cd99fea9c
 
 ## Intuition
 

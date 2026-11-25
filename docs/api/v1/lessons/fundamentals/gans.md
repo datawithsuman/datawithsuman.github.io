@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/gans/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0c3689df66
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-ai-tutor/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: d08a59e88d
 
 ## Intuition
 

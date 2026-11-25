@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-safety/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 1d76975f7d
 
 ## Intuition
 

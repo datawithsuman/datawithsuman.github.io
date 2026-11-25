@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-inference-practice/
 - Before this: Sizing and Cost: Cost per Million Tokens (`ai-engineering/sizing-and-cost`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 44ce82e9a4
 
 How to use this page
 

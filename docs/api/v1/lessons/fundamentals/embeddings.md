@@ -8,6 +8,7 @@
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d22bd66285
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prefill-vs-decode/
 - Before this: Attention Variants: MQA, GQA and MLA (`fundamentals/attention-variants-mqa-gqa-mla`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 174f2fcf7d
 
 ## Intuition
 

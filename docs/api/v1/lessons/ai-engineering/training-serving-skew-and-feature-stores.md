@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/training-serving-skew-and-feature-stores/
 - Before this: Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 31c8c4084b
 
 ## Intuition
 

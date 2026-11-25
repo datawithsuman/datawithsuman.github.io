@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/experiment-tracking-and-model-registry/
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4cf6ec781f
 
 ## Intuition
 

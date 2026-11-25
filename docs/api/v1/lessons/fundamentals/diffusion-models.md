@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/diffusion-models/
 - Before this: Autoencoders and VAEs (`fundamentals/autoencoders-and-vaes`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8dddadaf1c
 
 ## Intuition
 

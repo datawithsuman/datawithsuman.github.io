@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-short-video-recs/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: de9a224949
 
 ## Intuition
 

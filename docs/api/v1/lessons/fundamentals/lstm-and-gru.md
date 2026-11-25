@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/lstm-and-gru/
 - Before this: RNNs and Backprop Through Time (`fundamentals/rnns-and-backprop-through-time`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f2e1fb26c8
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/hierarchical-clustering/
 - Before this: k-Means Clustering (`fundamentals/k-means`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 6012bed064
 
 ## Intuition
 

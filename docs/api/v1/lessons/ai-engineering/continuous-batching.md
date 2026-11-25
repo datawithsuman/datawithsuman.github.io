@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/continuous-batching/
 - Before this: KV Cache Management and PagedAttention (`ai-engineering/kv-cache-and-pagedattention`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: cefb1ea9f4
 
 ## Intuition
 

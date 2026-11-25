@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-patterns/
 - Before this: In-Context Learning and Chain-of-Thought (`fundamentals/in-context-learning-and-cot`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 6aadb34b73
 
 ## Intuition
 

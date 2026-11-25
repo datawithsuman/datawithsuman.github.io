@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/advanced-rag/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `rag`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 1c8d921607
 
 ## Intuition
 

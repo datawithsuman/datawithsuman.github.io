@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/autoencoders-and-vaes/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d2bed2962e
 
 ## Intuition
 

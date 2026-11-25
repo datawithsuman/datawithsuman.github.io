@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-human-in-the-loop/
 - Before this: Human-in-the-Loop Design for Agents (`ai-engineering/human-in-the-loop-design`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 88ce6f670a
 
 How to use this page
 

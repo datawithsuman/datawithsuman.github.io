@@ -6,6 +6,7 @@
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/linear-regression/
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 47a9e1e207
 
 ## Intuition
 

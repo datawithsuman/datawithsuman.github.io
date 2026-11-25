@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/cost-and-latency/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`), Prefix and Prompt Caching (`ai-engineering/prefix-caching`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e5dcb89f8b
 
 ## Intuition
 

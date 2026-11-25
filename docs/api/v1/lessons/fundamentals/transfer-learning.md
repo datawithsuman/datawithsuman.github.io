@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/transfer-learning/
 - Before this: ResNets and Skip Connections (`fundamentals/resnets-and-skip-connections`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d0a1a78603
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/safety-and-guardrail-incidents/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: 692ea0fcad
 
 How to use this page
 

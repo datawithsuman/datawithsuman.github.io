@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/matrices-as-transformations/
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: d33d498abe
 
 ## Intuition
 

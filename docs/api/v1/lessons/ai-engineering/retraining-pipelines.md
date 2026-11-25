@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/retraining-pipelines/
 - Before this: Drift Detection and Monitoring (`ai-engineering/drift-detection-and-monitoring`), Deployment Patterns: Shadow, Canary, A/B and Rollback (`ai-engineering/deployment-patterns`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 231639d488
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-incident-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 571a22f681
 
 ## Intuition
 

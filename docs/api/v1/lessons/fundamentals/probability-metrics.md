@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-metrics/
 - Before this: ROC-AUC vs PR-AUC (`fundamentals/roc-auc-vs-pr-auc`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 11902f6e75
 
 ## Intuition
 

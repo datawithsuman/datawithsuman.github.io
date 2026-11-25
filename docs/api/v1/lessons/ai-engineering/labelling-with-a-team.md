@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/labelling-with-a-team/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 1c209e99c0
 
 ## Intuition
 

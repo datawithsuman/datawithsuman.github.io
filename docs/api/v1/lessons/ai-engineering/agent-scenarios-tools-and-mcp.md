@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-tools-and-mcp/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), MCP Under the Hood: Messages, Transports and Authorization (`ai-engineering/mcp-under-the-hood`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: e6bbf998e0
 
 How to use this page
 

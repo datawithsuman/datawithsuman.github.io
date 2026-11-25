@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/backpropagation/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`), From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0a1de02663
 
 ## Intuition
 

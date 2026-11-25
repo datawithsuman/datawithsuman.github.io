@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/feedback-loops-and-unbiased-data/
 - Before this: Retraining Pipelines and Continuous Training (`ai-engineering/retraining-pipelines`), Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: c4e7f1c1bb
 
 ## Intuition
 

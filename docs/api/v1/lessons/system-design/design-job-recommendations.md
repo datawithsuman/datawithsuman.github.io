@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-job-recommendations/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Contrastive Learning (SimCLR, CLIP) (`fundamentals/contrastive-learning`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 62eb5f0dcc
 
 ## Intuition
 

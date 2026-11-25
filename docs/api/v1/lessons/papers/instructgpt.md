@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/instructgpt/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Related: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: fd71e4b039
 
 ## Gist
 

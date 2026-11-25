@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/mixture-of-experts/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 9a44608e79
 
 ## Intuition
 

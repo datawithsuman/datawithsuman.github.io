@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/lora-and-qlora/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8b5e8de8ac
 
 ## Intuition
 

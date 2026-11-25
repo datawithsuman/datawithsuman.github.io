@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/validating-interpretability-claims/
 - Before this: Activation Patching and Circuit Discovery (`ai-engineering/activation-patching`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: d41a2bf4a4
 
 ## Intuition
 

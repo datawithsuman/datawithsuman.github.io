@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Agent Protocols: MCP, A2A, AG-UI and Commerce (`ai-engineering/agent-protocols`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 7e4a8c992c
 
 How to use this page
 

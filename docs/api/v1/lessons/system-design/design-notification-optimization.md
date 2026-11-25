@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-notification-optimization/
 - Before this: Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`), Bayesian Inference and Conjugate Priors (`fundamentals/bayesian-inference-and-conjugate-priors`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 339464befc
 
 ## Intuition
 

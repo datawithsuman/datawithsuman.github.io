@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-code-autocomplete/
 - Before this: Continuous Batching and Scheduling (`ai-engineering/continuous-batching`), Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0120789cd2
 
 ## Intuition
 

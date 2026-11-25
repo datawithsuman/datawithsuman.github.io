@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/discriminant-analysis/
 - Before this: Naive Bayes (`fundamentals/naive-bayes`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `clf`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 7d403507c5
 
 ## Intuition
 

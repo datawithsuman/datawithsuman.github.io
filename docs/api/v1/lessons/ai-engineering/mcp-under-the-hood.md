@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/mcp-under-the-hood/
 - Before this: MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: b5c8c91116
 
 ## Intuition
 

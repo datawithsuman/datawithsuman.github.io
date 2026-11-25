@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/bert-and-masked-language-models/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`), Encoder vs Decoder vs Encoder-Decoder (`fundamentals/encoder-decoder-architectures`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 0b594c4b86
 
 ## Intuition
 

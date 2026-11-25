@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/code-based-evaluators/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 41d1c6e28e
 
 ## Intuition
 

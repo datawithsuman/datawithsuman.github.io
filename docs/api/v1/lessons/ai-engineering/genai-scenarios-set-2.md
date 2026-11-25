@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-2/
 - Before this: GenAI App Scenarios: Set 1 (`ai-engineering/genai-scenarios-set-1`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: d28bb7291b
 
 How to use this page
 

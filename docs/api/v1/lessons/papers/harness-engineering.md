@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/harness-engineering/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Related: Context Language Models (`papers/context-language-models`)
+- Sources checked: 2026-10-27 · Text last changed: 2026-11-20 · Version: 07b9687e43
 
 ## Gist
 

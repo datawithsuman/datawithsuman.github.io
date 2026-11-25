@@ -1,0 +1,1438 @@
+{
+ "ai-engineering/activation-patching": {
+  "version": "9fd182aaec",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/advanced-rag": {
+  "version": "1c8d921607",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-and-tool-evaluation-metrics": {
+  "version": "ab7afb0a59",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-frameworks-and-harnesses": {
+  "version": "bb804bc36f",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-infrastructure": {
+  "version": "913b5a7c5e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-protocols": {
+  "version": "d6f2dbea17",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-safety": {
+  "version": "1d76975f7d",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agent-scenarios-context-and-memory": {
+  "version": "4a25c20b58",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-cost-and-latency": {
+  "version": "0d8b6412aa",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-human-in-the-loop": {
+  "version": "88ce6f670a",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-long-running": {
+  "version": "7d1622d74b",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-multi-agent-and-protocols": {
+  "version": "7e4a8c992c",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-observability": {
+  "version": "5e90535ee2",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-planning-and-reliability": {
+  "version": "c5874c978b",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-safety-and-security": {
+  "version": "96af383f40",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-scenarios-tools-and-mcp": {
+  "version": "e6bbf998e0",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agent-skills-and-self-improving-context": {
+  "version": "7da628dceb",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/agentic-ai-practice": {
+  "version": "1a2b0d13d0",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/agentic-rag": {
+  "version": "7585dad217",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/applied-evals-practice": {
+  "version": "f5a2a5fd17",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/automatic-prompt-optimization": {
+  "version": "64861edbab",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/batch-vs-online-inference": {
+  "version": "45e98078d2",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/building-an-eval-dataset": {
+  "version": "8b83f6957a",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/choosing-the-right-eval": {
+  "version": "91ffd0630f",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/code-based-evaluators": {
+  "version": "41d1c6e28e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/coding-agent-evals": {
+  "version": "524062ab13",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/continuous-batching": {
+  "version": "cefb1ea9f4",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/cost-and-latency": {
+  "version": "e5dcb89f8b",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/cost-and-reliability-incidents": {
+  "version": "eea5227a54",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/deployment-patterns": {
+  "version": "066f7f4137",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/drift-detection-and-monitoring": {
+  "version": "4d873ce1b9",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/embeddings-and-vector-indexes": {
+  "version": "3ccc1e8c4e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/error-analysis": {
+  "version": "7c509fb9b0",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/evals-in-ci": {
+  "version": "5ed8e1cce3",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/evaluating-agents": {
+  "version": "e0b2a15789",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/evaluating-mcp-servers": {
+  "version": "bd158bc76a",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/evaluation-incidents": {
+  "version": "2362fab3c2",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/experiment-tracking-and-model-registry": {
+  "version": "4cf6ec781f",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/features-and-superposition": {
+  "version": "444398f6df",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/feedback-loops-and-unbiased-data": {
+  "version": "c4e7f1c1bb",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/fine-tuning-incidents": {
+  "version": "e31e268b33",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/genai-scenarios-set-1": {
+  "version": "eed38b5ee9",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/genai-scenarios-set-2": {
+  "version": "d28bb7291b",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/grounded-answers": {
+  "version": "66f6a65f47",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/guardrails-and-prompt-injection": {
+  "version": "682a31e9ab",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/human-in-the-loop-design": {
+  "version": "72a52edd1e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/improving-tools-with-evals": {
+  "version": "8a564c895e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/improving-with-evals": {
+  "version": "98630815f2",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/interpretability-for-safety": {
+  "version": "b24bae8455",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/interpretability-practice": {
+  "version": "9fa45b5e9f",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/interpretability-scenarios": {
+  "version": "c052271ae6",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/keeping-an-index-current": {
+  "version": "75c0b2bd96",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/knowledge-localisation-and-editing": {
+  "version": "4d4940ca41",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/kv-cache-and-pagedattention": {
+  "version": "44ae644e60",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/kv-cache-compression": {
+  "version": "01ec713f30",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/labelling-with-a-team": {
+  "version": "1c209e99c0",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/linear-representations": {
+  "version": "046af8b638",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/llm-api-reliability": {
+  "version": "4f8b7b29a5",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/llm-as-a-judge": {
+  "version": "6784b991f0",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/llm-inference-practice": {
+  "version": "44ce82e9a4",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/llm-quantization": {
+  "version": "a742dc6e24",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/llm-serving-incidents": {
+  "version": "56ab065d0a",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/llmops": {
+  "version": "4dc34251cc",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/logit-lens-and-verbalisers": {
+  "version": "ee69e9076d",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/long-running-and-scheduled-agents": {
+  "version": "99eef1e38e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/mcp-under-the-hood": {
+  "version": "b5c8c91116",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/memory-and-context-engineering": {
+  "version": "1f4a2a9d80",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/mlops-practice": {
+  "version": "0419e65db8",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/model-context-protocol": {
+  "version": "97cb637cc9",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/model-diffing": {
+  "version": "e02757a513",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/model-upgrades-and-retirements": {
+  "version": "f1424bbb76",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/monitoring-without-labels": {
+  "version": "808e159b5a",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/multi-agent-evals": {
+  "version": "fb8a529dc3",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/multi-agent-systems": {
+  "version": "e3383b332b",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/multi-turn-evals": {
+  "version": "8ad2d899cf",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/online-evals-and-guardrails": {
+  "version": "6d8b3877e3",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/parsing-and-chunking": {
+  "version": "85b4d28710",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/permissions-and-poisoning": {
+  "version": "bdfc59c3a2",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/planning-and-reflection": {
+  "version": "b42860c812",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prefill-vs-decode": {
+  "version": "174f2fcf7d",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prefix-caching": {
+  "version": "56932783d3",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/probing-classifiers": {
+  "version": "dda7e4f172",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prompt-change-broke-production": {
+  "version": "8632ace4bd",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prompt-engineering-patterns": {
+  "version": "6aadb34b73",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prompt-engineering-practice": {
+  "version": "2ab9096825",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/prompt-vs-rag-vs-fine-tuning": {
+  "version": "b0625ca222",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/prompting-reasoning-models": {
+  "version": "21b0fb526a",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/rag-at-scale": {
+  "version": "94a0fe8913",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/rag-end-to-end": {
+  "version": "7f3a511963",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/rag-evals": {
+  "version": "5ac986b8fa",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/rag-practice": {
+  "version": "bae7faf580",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/rag-wrong-answer": {
+  "version": "2e0e9d3054",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/reranking-and-late-interaction": {
+  "version": "760b4958de",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/residual-stream-and-circuits": {
+  "version": "fe831ccf7c",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/retraining-pipelines": {
+  "version": "231639d488",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/reviewing-traces-at-scale": {
+  "version": "748bb4f0b6",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/sae-failures-and-alternatives": {
+  "version": "76d97f183c",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/safety-and-guardrail-incidents": {
+  "version": "692ea0fcad",
+  "updated": "2026-11-19"
+ },
+ "ai-engineering/safety-and-red-team-evals": {
+  "version": "73146ffc29",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/scaling-inference": {
+  "version": "0381fcad04",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/serving-agents-and-reasoning-models": {
+  "version": "1bdb660c7c",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/serving-metrics-and-slos": {
+  "version": "d54c95b539",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/serving-moe-models": {
+  "version": "95ef5aa33c",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/simulated-users-and-environments": {
+  "version": "b58b32c685",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/sizing-and-cost": {
+  "version": "beed7025f4",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/sparse-autoencoders": {
+  "version": "7d1f04c444",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/speculative-decoding": {
+  "version": "f46efc7401",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/steering-vectors": {
+  "version": "757f449860",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/structured-output": {
+  "version": "8c4a6070c6",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/system-prompts-with-many-rules": {
+  "version": "ed56a63fb5",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/tool-calling": {
+  "version": "4174d3b8e1",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/tracing-and-observability": {
+  "version": "d3ce270d23",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/training-serving-skew-and-feature-stores": {
+  "version": "31c8c4084b",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/transcoders-and-attribution-graphs": {
+  "version": "54e6bb69d6",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/validating-an-llm-judge": {
+  "version": "5d44594686",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/validating-interpretability-claims": {
+  "version": "d41a2bf4a4",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/what-is-an-agent": {
+  "version": "fc8377c82e",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/why-llm-apps-fail": {
+  "version": "27c6d326ea",
+  "updated": "2026-11-20"
+ },
+ "ai-engineering/why-look-inside-a-model": {
+  "version": "dbb9d3c489",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/ab-testing-practice": {
+  "version": "b1a1ad6e7f",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/activation-functions": {
+  "version": "aa05dec122",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/anomaly-detection": {
+  "version": "8d70dadcec",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/attention-alternatives": {
+  "version": "69ac4f581b",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/attention-variants-mqa-gqa-mla": {
+  "version": "f3977e99cc",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/autoencoders-and-vaes": {
+  "version": "d2bed2962e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/automatic-differentiation": {
+  "version": "3dfc7805bc",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/backpropagation": {
+  "version": "0a1de02663",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bag-of-words-and-tf-idf": {
+  "version": "ff0fd2d239",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bandits-vs-ab-tests": {
+  "version": "0f850c745f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/batch-size-and-learning-rate": {
+  "version": "08cc71782b",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bayesian-inference-and-conjugate-priors": {
+  "version": "e320292178",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bayesian-vs-frequentist": {
+  "version": "cc4114cc21",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/benchmarks-and-contamination": {
+  "version": "f73bc20a7f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bert-and-masked-language-models": {
+  "version": "0b594c4b86",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/bias-variance": {
+  "version": "338e793956",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/calculus-practice": {
+  "version": "a91662cbc0",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/categorical-encoding": {
+  "version": "29a1514359",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/causal-inference-without-experiments": {
+  "version": "a638cbcfdd",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/chi-squared-tests-and-anova": {
+  "version": "fa0b694b8f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/choosing-ab-metrics": {
+  "version": "cc966dccdd",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/choosing-the-right-metric": {
+  "version": "ca8fbc6edb",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/class-imbalance": {
+  "version": "fbfc14426c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/classical-ml-practice": {
+  "version": "df249e9ebc",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/classification-metrics": {
+  "version": "cba6bd1650",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/cnn-architectures": {
+  "version": "95fb74285f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/comparing-distributions": {
+  "version": "83294bcace",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/concentration-inequalities": {
+  "version": "52789210a3",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/confidence-intervals-and-bootstrap": {
+  "version": "8759dbb2f1",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/contrastive-learning": {
+  "version": "95a3794e0a",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/convexity-and-local-minima": {
+  "version": "e6e707c45d",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/convolution-and-receptive-field": {
+  "version": "681218a78e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/correlation-vs-causation": {
+  "version": "4943f21d42",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/cross-validation-and-leakage": {
+  "version": "8c33d78e1a",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/data-augmentation-and-mixup": {
+  "version": "68a674ff06",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/dbscan": {
+  "version": "a3fa53b46b",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/debugging-training-practice-1": {
+  "version": "b9461391cb",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/debugging-training-practice-2": {
+  "version": "598ff6febd",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/decision-trees": {
+  "version": "c2194de86c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/decoding-and-sampling": {
+  "version": "63f5bbe383",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/deep-learning-practice": {
+  "version": "a8bb93f79d",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/derivatives-and-chain-rule": {
+  "version": "103e335f16",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/descriptive-statistics-and-outliers": {
+  "version": "bd49795002",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/diffusion-models": {
+  "version": "8dddadaf1c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/discriminant-analysis": {
+  "version": "7d403507c5",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/distillation": {
+  "version": "966e26aa06",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/distributed-training": {
+  "version": "6e98509c63",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/dpo": {
+  "version": "f7f4e16178",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/dropout": {
+  "version": "6c1913e795",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/early-stopping-and-label-smoothing": {
+  "version": "4402c2f439",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/edit-distance-and-spelling-correction": {
+  "version": "fe96b9869c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/eigenvalues-and-eigenvectors": {
+  "version": "64e5beb59f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/embeddings": {
+  "version": "d22bd66285",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/encoder-decoder-architectures": {
+  "version": "765cc27465",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/ensembles-voting-and-stacking": {
+  "version": "ff1b62792c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/entropy-cross-entropy-kl": {
+  "version": "eec8c361f2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/expectation-and-variance": {
+  "version": "51e3abb313",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/explaining-models": {
+  "version": "0e6ed5f933",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/feature-engineering": {
+  "version": "3503fccbd7",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/feature-selection": {
+  "version": "30041e81cc",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/flashattention": {
+  "version": "4c40e728a0",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/forecasting-basics": {
+  "version": "1b62daa0b8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/gans": {
+  "version": "0c3689df66",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/gaussian-mixture-models": {
+  "version": "6cde3dd518",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/generalised-linear-models": {
+  "version": "872d128907",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/gpus-tpus-and-memory-bandwidth": {
+  "version": "fafb299d28",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/gradient-boosting": {
+  "version": "7b3fe8531a",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/gradient-descent": {
+  "version": "9afecaa665",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/hallucination": {
+  "version": "e6b0aa0a55",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/heterogeneous-effects-and-uplift": {
+  "version": "bb2e9bc503",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/hierarchical-clustering": {
+  "version": "6012bed064",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/hmms-crfs-and-viterbi": {
+  "version": "cab5c0ff71",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/hyperparameter-tuning": {
+  "version": "f27ca9e6d2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/hypothesis-testing-and-ab-tests": {
+  "version": "418a80e6fe",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/image-segmentation": {
+  "version": "0933609341",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/in-context-learning-and-cot": {
+  "version": "84c5731d80",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/inference-for-regression": {
+  "version": "c7e14a3301",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/information-compression-and-perplexity": {
+  "version": "fed526afdb",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/information-extraction": {
+  "version": "3b81269f91",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/information-theory-practice": {
+  "version": "6ad19fc26a",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/integrals-for-ml": {
+  "version": "9445839913",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/interference-in-experiments": {
+  "version": "73f99313a8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/interpreting-networks-and-adversarial-examples": {
+  "version": "b80bbb1070",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/joint-marginal-conditional": {
+  "version": "fab2fc286f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/k-means": {
+  "version": "8be44b1186",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/k-nearest-neighbours": {
+  "version": "c0e881cad1",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/lagrange-multipliers-and-kkt": {
+  "version": "c5903ed087",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/law-of-large-numbers-and-clt": {
+  "version": "7374f04a05",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/learning-curves-and-debugging": {
+  "version": "23663b4d7d",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/learning-rate-schedules": {
+  "version": "0298b64c3c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/linear-algebra-practice": {
+  "version": "13588701d3",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/linear-independence-basis-and-rank": {
+  "version": "5a6cfdb43e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/linear-regression": {
+  "version": "47a9e1e207",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/llm-practice-post-training": {
+  "version": "da3d271ec7",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/llm-practice-scaling": {
+  "version": "c3f3fc66a9",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/logistic-regression": {
+  "version": "ac3ae3a28b",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/long-context": {
+  "version": "aeb55d1882",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/lora-and-qlora": {
+  "version": "8b5e8de8ac",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/loss-functions": {
+  "version": "4a4d6d8856",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/lstm-and-gru": {
+  "version": "f2e1fb26c8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/markov-chains": {
+  "version": "4457f73dbf",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/matrices-as-transformations": {
+  "version": "d33d498abe",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/matrix-calculus": {
+  "version": "77cb090349",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/matrix-multiplication-and-tensor-shapes": {
+  "version": "932941ab0b",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/missing-values-and-scaling": {
+  "version": "a34b18efb7",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/mixture-of-experts": {
+  "version": "9a44608e79",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/mle-and-map": {
+  "version": "f1022db2f8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/modern-llm-architecture": {
+  "version": "e4c3d4c9ee",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/multi-head-attention": {
+  "version": "b6030bd96e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/multiple-testing": {
+  "version": "c1761338a9",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/multivariate-gaussian": {
+  "version": "111c641505",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/mutual-information": {
+  "version": "79dff987d8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/n-gram-language-models": {
+  "version": "f8e892fe03",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/naive-bayes": {
+  "version": "9ea2fa39fd",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/newton-and-second-order-methods": {
+  "version": "5b3fd96b53",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/next-token-prediction": {
+  "version": "de520e2962",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/nlp-evaluation-metrics": {
+  "version": "27d1b6571d",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/nlp-practice": {
+  "version": "ea4c071e24",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/non-parametric-and-permutation-tests": {
+  "version": "e176ae1383",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/normalisation-layers": {
+  "version": "17247b7597",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/novelty-and-long-term-effects": {
+  "version": "2c578a3bf0",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/object-detection": {
+  "version": "b5a476a519",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/orthogonality-and-projections": {
+  "version": "dbe6cd16f2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/pca": {
+  "version": "4cab063815",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/perceptron-to-mlp": {
+  "version": "2cd99fea9c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/policy-gradients-for-llms": {
+  "version": "aa0e7a6e5f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/pooling-stride-padding": {
+  "version": "ecc6edbdf3",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/positional-encodings": {
+  "version": "3fec57b041",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/positive-definite-matrices": {
+  "version": "57bc4a10ac",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/practice-balls-and-urns": {
+  "version": "99e9f6a33a",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/practice-bayes": {
+  "version": "300877cf23",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/practice-cards": {
+  "version": "63ac3a3a5f",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/practice-classic-puzzles": {
+  "version": "22f89a993e",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/practice-coins": {
+  "version": "4ee4d00d94",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/practice-dice": {
+  "version": "725d10926b",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/pretraining-data": {
+  "version": "5e9338aa6f",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/probability-and-bayes": {
+  "version": "2d4b331a34",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/probability-distributions": {
+  "version": "637f161604",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/probability-metrics": {
+  "version": "11902f6e75",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/random-forest": {
+  "version": "8e12382887",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/randomisation-and-assignment": {
+  "version": "c3b80aca04",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/ranking-metrics": {
+  "version": "0ea8e63d89",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/ratio-metrics-and-delta-method": {
+  "version": "69ee9d3a25",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/reading-ab-results": {
+  "version": "479c9a97ea",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/reasoning-models-grpo": {
+  "version": "689c6dde17",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/regression-metrics": {
+  "version": "42e523bacb",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/regularized-linear-models": {
+  "version": "b3a9115acd",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/resnets-and-skip-connections": {
+  "version": "f8a25255d4",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/revenue-and-heavy-tailed-metrics": {
+  "version": "70750a0bd2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/rlhf-and-reward-models": {
+  "version": "dfedc6f5a4",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/rnns-and-backprop-through-time": {
+  "version": "20ed87505d",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/roc-auc-vs-pr-auc": {
+  "version": "502a5099b4",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/running-many-tests-at-once": {
+  "version": "6e5e609114",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/safety-training-and-jailbreaks": {
+  "version": "e3b1b4db6e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sample-ratio-mismatch": {
+  "version": "cbf4ac631a",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sample-size-and-power": {
+  "version": "3005281955",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sampling-and-bias": {
+  "version": "4b7874d15e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sampling-methods": {
+  "version": "0d1c853b58",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/scaling-laws": {
+  "version": "7cabb2a753",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/search-and-retrieval": {
+  "version": "c7e76322bb",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/self-attention": {
+  "version": "e501b955f2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/seq2seq-and-attention": {
+  "version": "049d3ba499",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sequence-labelling-and-ner": {
+  "version": "633e786330",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/sequential-testing": {
+  "version": "f8e8932621",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/softmax-regression": {
+  "version": "d5d694eb34",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/solving-linear-systems": {
+  "version": "a807442c9d",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/stationarity-arima-and-smoothing": {
+  "version": "e9d72098a6",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/statistics-practice": {
+  "version": "b3d1227e59",
+  "updated": "2026-11-19"
+ },
+ "fundamentals/subword-tokenisation": {
+  "version": "0a2107109c",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/supervised-fine-tuning": {
+  "version": "fa659ef342",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/support-vector-machines": {
+  "version": "8c0971f5d6",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/svd-and-low-rank": {
+  "version": "0582dabc2e",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/t-sne-and-umap": {
+  "version": "a303938ad1",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/t-tests-and-z-tests": {
+  "version": "968753a702",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/taylor-series-and-curvature": {
+  "version": "0f8a0704f8",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/text-classification": {
+  "version": "e8eca9a934",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/text-preprocessing": {
+  "version": "006bf77033",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/thresholds-and-costs": {
+  "version": "aa64366bdf",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/topic-modelling": {
+  "version": "65c03497c2",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/training-instabilities": {
+  "version": "87f49d55b7",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/transfer-learning": {
+  "version": "d0a1a78603",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/transformer-block": {
+  "version": "b3de989eee",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/transformer-end-to-end": {
+  "version": "855d1ad8c3",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/vanishing-exploding-gradients": {
+  "version": "bd089c02bf",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/variance-reduction-cuped": {
+  "version": "57c995f7d1",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/vector-and-matrix-norms": {
+  "version": "f4476bfbb6",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/vectors-and-cosine-similarity": {
+  "version": "48ad58aaa9",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/vision-language-models": {
+  "version": "5e37a92f82",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/vision-transformers": {
+  "version": "43952fd725",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/weight-decay-and-adamw": {
+  "version": "a2517ebd2a",
+  "updated": "2026-11-20"
+ },
+ "fundamentals/weight-initialisation": {
+  "version": "031d3f6fd1",
+  "updated": "2026-11-20"
+ },
+ "papers/attention-is-all-you-need": {
+  "version": "0938e87fd8",
+  "updated": "2026-11-20"
+ },
+ "papers/context-language-models": {
+  "version": "e71d02e7cd",
+  "updated": "2026-11-20"
+ },
+ "papers/deepseek-r1": {
+  "version": "cf4b3abc74",
+  "updated": "2026-11-20"
+ },
+ "papers/harness-engineering": {
+  "version": "07b9687e43",
+  "updated": "2026-11-20"
+ },
+ "papers/instructgpt": {
+  "version": "fd71e4b039",
+  "updated": "2026-11-20"
+ },
+ "papers/lora": {
+  "version": "527bc7e0a9",
+  "updated": "2026-11-20"
+ },
+ "papers/mech-interp-survey": {
+  "version": "d4419b229e",
+  "updated": "2026-11-20"
+ },
+ "papers/scaling-laws-and-chinchilla": {
+  "version": "ae70671296",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-ad-click-prediction": {
+  "version": "d07c3ef18b",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-ai-subject-lines": {
+  "version": "df729f8421",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-ai-tutor": {
+  "version": "d08a59e88d",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-code-autocomplete": {
+  "version": "0120789cd2",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-codebase-qa": {
+  "version": "66141c818e",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-coding-agent": {
+  "version": "1fa903b148",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-content-moderation": {
+  "version": "0783795d9a",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-cross-category-cold-start": {
+  "version": "54b02b8bc3",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-document-extraction": {
+  "version": "b239518161",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-enterprise-rag": {
+  "version": "03ee857945",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-eta-prediction": {
+  "version": "c4f8d442fa",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-experimentation-platform": {
+  "version": "dc8e977a3c",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-feed-ranking": {
+  "version": "924f65d0e7",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-fraud-detection": {
+  "version": "1efb0802a4",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-hiring-agent": {
+  "version": "46fb9a9fd2",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-image-personalisation": {
+  "version": "e201d5495b",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-incident-agent": {
+  "version": "571a22f681",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-interleaving": {
+  "version": "85cba2a372",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-job-recommendations": {
+  "version": "62eb5f0dcc",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-launch-decision-rule": {
+  "version": "feb3e42994",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-llm-eval-platform": {
+  "version": "3d876eea44",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-llm-platform": {
+  "version": "dc206f1472",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-llm-prompt-test": {
+  "version": "ef093b90a0",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-network-experiment": {
+  "version": "75c9bee354",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-notification-optimization": {
+  "version": "339464befc",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-oncall-copilot": {
+  "version": "2ab5fd60b2",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-rec-foundation-model": {
+  "version": "5fa170dc16",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-refund-agent": {
+  "version": "8f1fb4053c",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-research-agent": {
+  "version": "0497aee4e5",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-search-ranking": {
+  "version": "f0adb2bd31",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-semantic-search": {
+  "version": "237b52da5a",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-short-video-recs": {
+  "version": "de9a224949",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-spam-abuse-detection": {
+  "version": "4282bbd691",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-store-assistant": {
+  "version": "0a2bc69163",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-support-chatbot": {
+  "version": "5483568f7e",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-text-to-sql": {
+  "version": "f2ae2b6a8d",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-ticket-graph-rag": {
+  "version": "1baf0b7fa9",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-trip-planner-agent": {
+  "version": "c2050c2516",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-vision-llm": {
+  "version": "69bea643eb",
+  "updated": "2026-11-20"
+ },
+ "system-design/design-voice-agent": {
+  "version": "e4e886bdf4",
+  "updated": "2026-11-20"
+ },
+ "system-design/recommendation-system": {
+  "version": "ed0caf4afb",
+  "updated": "2026-11-19"
+ }
+}

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/subword-tokenisation/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0a2107109c
 
 ## Intuition
 

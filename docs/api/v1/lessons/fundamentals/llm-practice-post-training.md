@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/llm-practice-post-training/
 - Before this: LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`), Benchmarks and Contamination (`fundamentals/benchmarks-and-contamination`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: da3d271ec7
 
 How to use this page
 

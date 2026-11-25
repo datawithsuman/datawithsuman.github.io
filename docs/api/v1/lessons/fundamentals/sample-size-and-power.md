@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sample-size-and-power/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`), Choosing Metrics: OEC, Drivers and Guardrails (`fundamentals/choosing-ab-metrics`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3005281955
 
 ## Intuition
 

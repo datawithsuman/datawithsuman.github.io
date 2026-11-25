@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/human-in-the-loop-design/
 - Before this: Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`), Agent Frameworks and Harnesses: Graphs, State and Middleware (`ai-engineering/agent-frameworks-and-harnesses`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 72a52edd1e
 
 ## Intuition
 

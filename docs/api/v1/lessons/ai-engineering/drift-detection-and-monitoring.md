@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/drift-detection-and-monitoring/
 - Before this: Training/Serving Skew and Feature Stores (`ai-engineering/training-serving-skew-and-feature-stores`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4d873ce1b9
 
 ## Intuition
 

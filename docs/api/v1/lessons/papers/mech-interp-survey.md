@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/mech-interp-survey/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Related: Why Look Inside a Model? (`ai-engineering/why-look-inside-a-model`), Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: d4419b229e
 
 ## Gist
 

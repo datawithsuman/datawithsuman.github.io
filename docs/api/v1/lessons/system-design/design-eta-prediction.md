@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-eta-prediction/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`), Regression Metrics (`fundamentals/regression-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: c4f8d442fa
 
 ## Intuition
 

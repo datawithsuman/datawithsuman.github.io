@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/contrastive-learning/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 95a3794e0a
 
 ## Intuition
 

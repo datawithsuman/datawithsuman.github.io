@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/next-token-prediction/
 - Before this: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`), The Transformer, End to End (`fundamentals/transformer-end-to-end`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: de520e2962
 
 ## Intuition
 

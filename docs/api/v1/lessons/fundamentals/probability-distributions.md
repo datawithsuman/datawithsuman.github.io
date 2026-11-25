@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-distributions/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 637f161604
 
 ## Intuition
 

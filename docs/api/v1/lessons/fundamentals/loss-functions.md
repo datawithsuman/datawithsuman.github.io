@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/loss-functions/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4a4d6d8856
 
 ## Intuition
 

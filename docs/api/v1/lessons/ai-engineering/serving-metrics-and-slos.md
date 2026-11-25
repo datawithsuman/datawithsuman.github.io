@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-metrics-and-slos/
 - Before this: Continuous Batching and Scheduling (`ai-engineering/continuous-batching`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d54c95b539
 
 ## Intuition
 

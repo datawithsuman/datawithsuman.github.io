@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/edit-distance-and-spelling-correction/
 - Before this: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: fe96b9869c
 
 ## Intuition
 

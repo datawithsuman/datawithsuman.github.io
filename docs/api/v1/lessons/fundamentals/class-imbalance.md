@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/class-imbalance/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`), Thresholds & Misclassification Costs (`fundamentals/thresholds-and-costs`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: fbfc14426c
 
 ## Intuition
 

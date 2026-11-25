@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/causal-inference-without-experiments/
 - Before this: Correlation vs Causation (`fundamentals/correlation-vs-causation`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: a638cbcfdd
 
 ## Intuition
 

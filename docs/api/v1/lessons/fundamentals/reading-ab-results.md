@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/reading-ab-results/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), Confidence Intervals & the Bootstrap (`fundamentals/confidence-intervals-and-bootstrap`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 479c9a97ea
 
 ## Intuition
 

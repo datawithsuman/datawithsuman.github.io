@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/pretraining-data/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 5e9338aa6f
 
 ## Intuition
 

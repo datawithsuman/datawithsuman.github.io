@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-enterprise-rag/
 - Before this: Permissions and Poisoning in RAG (`ai-engineering/permissions-and-poisoning`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 03ee857945
 
 ## Intuition
 

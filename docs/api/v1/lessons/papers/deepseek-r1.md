@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/deepseek-r1/
 - Before this: InstructGPT (`papers/instructgpt`)
 - Related: Reasoning Models: RLVR, GRPO and Test-Time Compute (`fundamentals/reasoning-models-grpo`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: cf4b3abc74
 
 ## Gist
 

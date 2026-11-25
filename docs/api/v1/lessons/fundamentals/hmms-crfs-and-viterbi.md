@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/hmms-crfs-and-viterbi/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cab5c0ff71
 
 ## Intuition
 

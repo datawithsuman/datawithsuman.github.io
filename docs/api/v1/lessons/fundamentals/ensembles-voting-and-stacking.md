@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/ensembles-voting-and-stacking/
 - Before this: Random Forest (`fundamentals/random-forest`), Gradient Boosting (`fundamentals/gradient-boosting`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `trees`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: ff1b62792c
 
 ## Intuition
 

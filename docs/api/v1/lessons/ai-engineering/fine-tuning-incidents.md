@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/fine-tuning-incidents/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: e31e268b33
 
 How to use this page
 

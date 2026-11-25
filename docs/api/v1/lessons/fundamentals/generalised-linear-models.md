@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/generalised-linear-models/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `lin`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 872d128907
 
 ## Intuition
 

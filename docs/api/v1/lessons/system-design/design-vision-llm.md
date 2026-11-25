@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-vision-llm/
 - Before this: Vision-Language Models (`fundamentals/vision-language-models`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 69bea643eb
 
 ## Intuition
 

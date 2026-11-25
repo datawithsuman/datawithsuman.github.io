@@ -8,6 +8,7 @@
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 64e5beb59f
 
 ## Intuition
 

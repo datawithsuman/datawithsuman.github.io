@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/taylor-series-and-curvature/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`), Matrix Calculus (`fundamentals/matrix-calculus`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0f8a0704f8
 
 ## Intuition
 

@@ -8,6 +8,7 @@
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 932941ab0b
 
 ## Intuition
 

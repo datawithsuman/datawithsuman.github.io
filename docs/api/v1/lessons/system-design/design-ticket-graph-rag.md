@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-ticket-graph-rag/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Ranking Metrics (`fundamentals/ranking-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 1baf0b7fa9
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/online-evals-and-guardrails/
 - Before this: Evals in CI: Golden Sets, Regression Gates and Model Upgrades (`ai-engineering/evals-in-ci`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 6d8b3877e3
 
 ## Intuition
 

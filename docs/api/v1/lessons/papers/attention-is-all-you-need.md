@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/attention-is-all-you-need/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Related: Multi-Head Attention (`fundamentals/multi-head-attention`)
+- Sources checked: 2026-11-09 · Text last changed: 2026-11-20 · Version: 0938e87fd8
 
 ## Gist
 

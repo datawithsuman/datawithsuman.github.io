@@ -8,6 +8,7 @@
 - Before this: Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Related: Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e320292178
 
 ## Intuition
 

@@ -8,6 +8,7 @@
 - Before this: Seq2seq and Bahdanau Attention (`fundamentals/seq2seq-and-attention`), Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e501b955f2
 
 ## Intuition
 

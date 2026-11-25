@@ -8,6 +8,7 @@
 - Before this: The Transformer Block (`fundamentals/transformer-block`), Positional Encodings (incl. RoPE) (`fundamentals/positional-encodings`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 855d1ad8c3
 
 ## Intuition
 

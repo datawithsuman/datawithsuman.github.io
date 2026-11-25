@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: ef093b90a0
 
 ## Intuition
 

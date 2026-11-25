@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-platform/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: dc206f1472
 
 ## Intuition
 

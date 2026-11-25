@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-1/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: eed38b5ee9
 
 How to use this page
 

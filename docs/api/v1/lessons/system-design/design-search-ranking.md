@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-search-ranking/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), Learning-Rate Schedules (`fundamentals/learning-rate-schedules`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: f0adb2bd31
 
 ## Intuition
 

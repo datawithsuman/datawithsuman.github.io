@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/memory-and-context-engineering/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-08 · Text last changed: 2026-11-20 · Version: 1f4a2a9d80
 
 ## Intuition
 

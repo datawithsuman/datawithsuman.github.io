@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-coins/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 4ee4d00d94
 
 How to use this page
 

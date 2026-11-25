@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`), Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: df729f8421
 
 ## Intuition
 

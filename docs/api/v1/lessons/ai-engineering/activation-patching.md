@@ -6,6 +6,7 @@
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/activation-patching/
 - Before this: The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 9fd182aaec
 
 ## Intuition
 

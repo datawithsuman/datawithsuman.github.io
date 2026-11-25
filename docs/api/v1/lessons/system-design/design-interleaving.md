@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-interleaving/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), Ranking Metrics (`fundamentals/ranking-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 85cba2a372
 
 ## Intuition
 

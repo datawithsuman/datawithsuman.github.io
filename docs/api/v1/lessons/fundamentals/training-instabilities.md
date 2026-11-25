@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/training-instabilities/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`), BatchNorm vs LayerNorm vs RMSNorm (`fundamentals/normalisation-layers`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 87f49d55b7
 
 ## Intuition
 

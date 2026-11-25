@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-balls-and-urns/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 99e9f6a33a
 
 How to use this page
 

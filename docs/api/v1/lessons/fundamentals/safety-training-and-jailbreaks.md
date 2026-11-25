@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/safety-training-and-jailbreaks/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`), Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Quiz topic: `post`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e3b1b4db6e
 
 ## Intuition
 

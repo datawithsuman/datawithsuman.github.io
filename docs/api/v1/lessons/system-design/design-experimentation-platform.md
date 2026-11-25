@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-experimentation-platform/
 - Before this: Running Many Tests at Once (`fundamentals/running-many-tests-at-once`), Trust Checks: SRM and A/A Tests (`fundamentals/sample-ratio-mismatch`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: dc8e977a3c
 
 ## Intuition
 

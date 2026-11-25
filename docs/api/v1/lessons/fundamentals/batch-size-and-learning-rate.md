@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/batch-size-and-learning-rate/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 08cc71782b
 
 ## Intuition
 

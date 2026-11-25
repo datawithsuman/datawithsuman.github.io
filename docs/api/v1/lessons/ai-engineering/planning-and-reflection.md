@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/planning-and-reflection/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b42860c812
 
 ## Intuition
 

@@ -6,6 +6,7 @@
 - Type: Interview · 35 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-scenarios/
 - Before this: Probing Classifiers (`ai-engineering/probing-classifiers`), Steering Vectors (`ai-engineering/steering-vectors`)
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: c052271ae6
 
 How to use this page
 

@@ -8,6 +8,7 @@
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: GANs (`fundamentals/gans`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 83294bcace
 
 ## Intuition
 

@@ -8,6 +8,7 @@
 - Before this: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`)
 - Related: Choosing the Right Metric (`fundamentals/choosing-the-right-metric`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cc966dccdd
 
 ## Intuition
 

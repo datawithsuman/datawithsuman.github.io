@@ -8,6 +8,7 @@
 - Before this: Confidence Intervals & the Bootstrap (`fundamentals/confidence-intervals-and-bootstrap`)
 - Related: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`)
 - Quiz topic: `stats`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 418a80e6fe
 
 ## Intuition
 

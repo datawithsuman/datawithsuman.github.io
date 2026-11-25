@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-planning-and-reliability/
 - Before this: Planning and Reflection (`ai-engineering/planning-and-reflection`), Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: c5874c978b
 
 How to use this page
 

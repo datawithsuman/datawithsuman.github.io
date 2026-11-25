@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/in-context-learning-and-cot/
 - Before this: Decoding: Temperature, Top-k, Top-p and Min-p (`fundamentals/decoding-and-sampling`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 84c5731d80
 
 ## Intuition
 

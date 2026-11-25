@@ -6,6 +6,7 @@
 - Type: Concept · 15 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/why-look-inside-a-model/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: dbb9d3c489
 
 ## Intuition
 

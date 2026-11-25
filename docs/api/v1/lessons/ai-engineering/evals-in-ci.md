@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/evals-in-ci/
 - Before this: Code Checks First: Assertions, Schemas and Execution (`ai-engineering/code-based-evaluators`), Can You Trust Your Judge? TPR, TNR and Corrected Pass Rates (`ai-engineering/validating-an-llm-judge`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5ed8e1cce3
 
 ## Intuition
 

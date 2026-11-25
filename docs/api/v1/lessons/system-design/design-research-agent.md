@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-research-agent/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0497aee4e5
 
 ## Intuition
 

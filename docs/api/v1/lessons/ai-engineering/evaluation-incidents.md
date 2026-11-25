@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluation-incidents/
 - Before this: RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`), Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`)
 - Quiz topic: `evals`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 2362fab3c2
 
 How to use this page
 

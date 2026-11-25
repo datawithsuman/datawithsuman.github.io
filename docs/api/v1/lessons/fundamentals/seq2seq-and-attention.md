@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/seq2seq-and-attention/
 - Before this: LSTM and GRU (`fundamentals/lstm-and-gru`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 049d3ba499
 
 ## Intuition
 

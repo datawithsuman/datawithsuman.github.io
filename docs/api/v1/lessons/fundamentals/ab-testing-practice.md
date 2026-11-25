@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/ab-testing-practice/
 - Before this: Running Many Tests at Once (`fundamentals/running-many-tests-at-once`), Heterogeneous Effects and Uplift Modelling (`fundamentals/heterogeneous-effects-and-uplift`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: b1a1ad6e7f
 
 How to use this page
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-refund-agent/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8f1fb4053c
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/object-detection/
 - Before this: CNN Architectures: AlexNet to ConvNeXt (`fundamentals/cnn-architectures`), Loss Functions for Deep Learning (`fundamentals/loss-functions`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: b5a476a519
 
 ## Intuition
 

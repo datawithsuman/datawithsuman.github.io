@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agentic-rag/
 - Before this: Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`), What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 7585dad217
 
 ## Intuition
 

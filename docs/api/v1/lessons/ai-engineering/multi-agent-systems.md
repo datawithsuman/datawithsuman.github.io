@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/multi-agent-systems/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e3383b332b
 
 ## Intuition
 

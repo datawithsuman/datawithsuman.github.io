@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/
 - Before this: Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 1a2b0d13d0
 
 How to use this page
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/multi-head-attention/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b6030bd96e
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/reviewing-traces-at-scale/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Tracing and Observability for LLM Apps and Agents (`ai-engineering/tracing-and-observability`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 748bb4f0b6
 
 ## Intuition
 

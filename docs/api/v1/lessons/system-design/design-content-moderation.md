@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-content-moderation/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0783795d9a
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/classification-metrics/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: cba6bd1650
 
 ## Intuition
 

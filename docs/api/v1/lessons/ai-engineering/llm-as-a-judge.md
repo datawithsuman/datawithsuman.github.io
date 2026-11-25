@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-as-a-judge/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Benchmarks and Contamination (`fundamentals/benchmarks-and-contamination`)
 - Quiz topic: `evals`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 6784b991f0
 
 ## Intuition
 

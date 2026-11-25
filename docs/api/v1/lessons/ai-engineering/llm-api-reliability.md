@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-api-reliability/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4f8b7b29a5
 
 ## Intuition
 

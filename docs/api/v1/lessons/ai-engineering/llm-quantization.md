@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-quantization/
 - Before this: Prefill vs Decode (`ai-engineering/prefill-vs-decode`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: a742dc6e24
 
 ## Intuition
 

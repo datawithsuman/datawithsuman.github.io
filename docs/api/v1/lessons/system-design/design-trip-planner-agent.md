@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-trip-planner-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: c2050c2516
 
 ## Intuition
 

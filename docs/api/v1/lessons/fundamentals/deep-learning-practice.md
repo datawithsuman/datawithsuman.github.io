@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/deep-learning-practice/
 - Before this: Multi-Head Attention (`fundamentals/multi-head-attention`), Pooling, Stride, Padding and Output Shapes (`fundamentals/pooling-stride-padding`)
 - Quiz topic: `genm`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: a8bb93f79d
 
 How to use this page
 

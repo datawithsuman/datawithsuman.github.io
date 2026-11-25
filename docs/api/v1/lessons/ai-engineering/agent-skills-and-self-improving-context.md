@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-skills-and-self-improving-context/
 - Before this: Memory and Context Engineering (`ai-engineering/memory-and-context-engineering`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 7da628dceb
 
 ## Intuition
 

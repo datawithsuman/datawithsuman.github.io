@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/concentration-inequalities/
 - Before this: Law of Large Numbers and Central Limit Theorem (`fundamentals/law-of-large-numbers-and-clt`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 52789210a3
 
 ## Intuition
 

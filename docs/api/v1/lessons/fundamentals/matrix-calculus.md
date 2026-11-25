@@ -8,6 +8,7 @@
 - Before this: Matrix Multiplication and Tensor Shapes (`fundamentals/matrix-multiplication-and-tensor-shapes`), Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 77cb090349
 
 ## Intuition
 

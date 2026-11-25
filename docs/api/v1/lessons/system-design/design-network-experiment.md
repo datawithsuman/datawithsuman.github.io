@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-network-experiment/
 - Before this: Interference: When Groups Affect Each Other (`fundamentals/interference-in-experiments`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 75c9bee354
 
 ## Intuition
 

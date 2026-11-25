@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/roc-auc-vs-pr-auc/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 502a5099b4
 
 ## Intuition
 

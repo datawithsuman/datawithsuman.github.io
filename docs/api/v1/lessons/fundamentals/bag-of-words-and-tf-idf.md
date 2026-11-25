@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/bag-of-words-and-tf-idf/
 - Before this: Text Preprocessing (`fundamentals/text-preprocessing`), Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ff0fd2d239
 
 ## Intuition
 

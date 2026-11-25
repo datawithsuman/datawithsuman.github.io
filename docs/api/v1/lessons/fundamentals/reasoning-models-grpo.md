@@ -8,6 +8,7 @@
 - Before this: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Related: DeepSeek-R1 (`papers/deepseek-r1`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 689c6dde17
 
 ## Intuition
 

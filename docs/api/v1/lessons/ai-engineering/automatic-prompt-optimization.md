@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/automatic-prompt-optimization/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 64861edbab
 
 ## Intuition
 

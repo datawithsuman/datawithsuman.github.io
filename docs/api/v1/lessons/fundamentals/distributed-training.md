@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/distributed-training/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 6e98509c63
 
 ## Intuition
 

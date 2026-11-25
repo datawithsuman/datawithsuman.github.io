@@ -8,6 +8,7 @@
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 5a6cfdb43e
 
 ## Intuition
 

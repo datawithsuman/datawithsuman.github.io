@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/solving-linear-systems/
 - Before this: SVD & Low-Rank Approximation (`fundamentals/svd-and-low-rank`), Orthogonality and Projections (`fundamentals/orthogonality-and-projections`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: a807442c9d
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/markov-chains/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`), Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 4457f73dbf
 
 ## Intuition
 

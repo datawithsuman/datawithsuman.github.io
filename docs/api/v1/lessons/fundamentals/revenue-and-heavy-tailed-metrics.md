@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/revenue-and-heavy-tailed-metrics/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 70750a0bd2
 
 ## Intuition
 

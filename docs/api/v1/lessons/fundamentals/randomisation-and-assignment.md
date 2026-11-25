@@ -8,6 +8,7 @@
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Related: Correlation vs Causation (`fundamentals/correlation-vs-causation`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: c3b80aca04
 
 ## Intuition
 

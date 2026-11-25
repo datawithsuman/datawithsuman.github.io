@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/nlp-practice/
 - Before this: Search: BM25, Dense and Hybrid Retrieval (`fundamentals/search-and-retrieval`), NLP Evaluation: BLEU, ROUGE, EM/F1 (`fundamentals/nlp-evaluation-metrics`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ea4c071e24
 
 How to use this page
 

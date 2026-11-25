@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/attention-alternatives/
 - Before this: Long Context: RoPE Scaling, Sliding Windows and Attention Sinks (`fundamentals/long-context`), GPUs, TPUs and Memory Bandwidth (`fundamentals/gpus-tpus-and-memory-bandwidth`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 69ac4f581b
 
 ## Intuition
 

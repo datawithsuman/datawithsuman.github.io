@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/classical-ml-practice/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: df249e9ebc
 
 How to use this page
 

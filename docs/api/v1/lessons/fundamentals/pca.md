@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/pca/
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 4cab063815
 
 ## Intuition
 

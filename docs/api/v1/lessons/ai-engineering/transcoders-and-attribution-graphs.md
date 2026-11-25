@@ -6,6 +6,7 @@
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/transcoders-and-attribution-graphs/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`), The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 54e6bb69d6
 
 ## Intuition
 

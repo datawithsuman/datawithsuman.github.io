@@ -8,6 +8,7 @@
 - Before this: Common Probability Distributions (`fundamentals/probability-distributions`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Related: Softmax Regression (`fundamentals/softmax-regression`)
 - Quiz topic: `info`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: eec8c361f2
 
 ## Intuition
 

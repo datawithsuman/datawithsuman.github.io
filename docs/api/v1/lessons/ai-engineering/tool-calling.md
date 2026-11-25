@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/tool-calling/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4174d3b8e1
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/guardrails-and-prompt-injection/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 682a31e9ab
 
 ## Intuition
 

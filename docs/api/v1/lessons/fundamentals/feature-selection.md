@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/feature-selection/
 - Before this: Feature Engineering (`fundamentals/feature-engineering`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `feat`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 30041e81cc
 
 ## Intuition
 

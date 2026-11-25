@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/information-theory-practice/
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: 6ad19fc26a
 
 How to use this page
 

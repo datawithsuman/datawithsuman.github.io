@@ -8,6 +8,7 @@
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: c7e76322bb
 
 ## Intuition
 

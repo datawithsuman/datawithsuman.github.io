@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sampling-methods/
 - Before this: Markov Chains (`fundamentals/markov-chains`), Integrals for ML (`fundamentals/integrals-for-ml`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0d1c853b58
 
 ## Intuition
 

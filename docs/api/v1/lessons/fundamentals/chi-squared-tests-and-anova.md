@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/chi-squared-tests-and-anova/
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fa0b694b8f
 
 ## Intuition
 

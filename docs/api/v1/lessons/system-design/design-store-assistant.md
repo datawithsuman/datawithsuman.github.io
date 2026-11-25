@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-store-assistant/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0a2bc69163
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-agents-and-reasoning-models/
 - Before this: Prefix and Prompt Caching (`ai-engineering/prefix-caching`), KV Cache Compression, Eviction and Offloading (`ai-engineering/kv-cache-compression`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 1bdb660c7c
 
 ## Intuition
 

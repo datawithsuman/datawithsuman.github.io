@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/learning-curves-and-debugging/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 23663b4d7d
 
 ## Intuition
 

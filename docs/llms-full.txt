@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/vectors-and-cosine-similarity/
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 48ad58aaa9
 
 ## Intuition
 
@@ -203,6 +204,7 @@ Vectors as lists of features, length (norm), the dot product, cosine similarity,
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Related: Regularized Linear Models (`fundamentals/regularized-linear-models`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: f4476bfbb6
 
 ## Intuition
 
@@ -360,6 +362,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/matrices-as-transformations/
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: d33d498abe
 
 ## Intuition
 
@@ -548,6 +551,7 @@ Matrix–vector multiplication, columns as "where the axes go", composition, the
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 932941ab0b
 
 ## Intuition
 
@@ -709,6 +713,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 5a6cfdb43e
 
 ## Intuition
 
@@ -870,6 +875,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Linear Independence, Basis and Rank (`fundamentals/linear-independence-basis-and-rank`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: dbe6cd16f2
 
 ## Intuition
 
@@ -1034,6 +1040,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Matrices as Transformations (`fundamentals/matrices-as-transformations`)
 - Related: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 64e5beb59f
 
 ## Intuition
 
@@ -1209,6 +1216,7 @@ The directions a matrix only stretches, how to find them, symmetric matrices and
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Related: Convexity & Local Minima (`fundamentals/convexity-and-local-minima`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 57bc4a10ac
 
 ## Intuition
 
@@ -1369,6 +1377,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/svd-and-low-rank/
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 0582dabc2e
 
 ## Intuition
 
@@ -1574,6 +1583,7 @@ The icon is generated procedurally with fixed-seed noise; the SVD is computed li
 - Page: https://aimlrounds.com/tracks/fundamentals/solving-linear-systems/
 - Before this: SVD & Low-Rank Approximation (`fundamentals/svd-and-low-rank`), Orthogonality and Projections (`fundamentals/orthogonality-and-projections`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: a807442c9d
 
 ## Intuition
 
@@ -1743,6 +1753,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Matrix Multiplication and Tensor Shapes (`fundamentals/matrix-multiplication-and-tensor-shapes`), Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 77cb090349
 
 ## Intuition
 
@@ -1908,6 +1919,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/linear-algebra-practice/
 - Before this: SVD & Low-Rank Approximation (`fundamentals/svd-and-low-rank`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: 13588701d3
 
 How to use this page
 
@@ -2041,6 +2053,7 @@ Review vectors, rank, SVD and matrix calculus.
 - Page: https://aimlrounds.com/tracks/fundamentals/derivatives-and-chain-rule/
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `calc`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 103e335f16
 
 ## Intuition
 
@@ -2224,6 +2237,7 @@ Derivatives as sensitivity, partial derivatives, the gradient vector, the chain 
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 3dfc7805bc
 
 ## Intuition
 
@@ -2390,6 +2404,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/taylor-series-and-curvature/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`), Matrix Calculus (`fundamentals/matrix-calculus`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0f8a0704f8
 
 ## Intuition
 
@@ -2548,6 +2563,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/gradient-descent/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Quiz topic: `calc`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 9afecaa665
 
 ## Intuition
 
@@ -2745,6 +2761,7 @@ The optimisers run live in your browser on the quadratic above.
 - Before this: Taylor Series and Curvature (`fundamentals/taylor-series-and-curvature`), Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Related: Gradient Boosting (`fundamentals/gradient-boosting`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 5b3fd96b53
 
 ## Intuition
 
@@ -2912,6 +2929,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/convexity-and-local-minima/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `calc`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: e6e707c45d
 
 ## Intuition
 
@@ -3085,6 +3103,7 @@ Convex functions, the second-derivative and Hessian tests, why a local minimum o
 - Before this: Convexity & Local Minima (`fundamentals/convexity-and-local-minima`)
 - Related: Principal Component Analysis (`fundamentals/pca`), Support Vector Machines (`fundamentals/support-vector-machines`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: c5903ed087
 
 ## Intuition
 
@@ -3258,6 +3277,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Related: Autoencoders and VAEs (`fundamentals/autoencoders-and-vaes`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 9445839913
 
 ## Intuition
 
@@ -3417,6 +3437,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/calculus-practice/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: a91662cbc0
 
 How to use this page
 
@@ -3551,6 +3572,7 @@ Review derivatives, gradient descent, Newton and Lagrange multipliers.
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-and-bayes/
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 2d4b331a34
 
 ## Intuition
 
@@ -3731,6 +3753,7 @@ Events, joint and conditional probability, independence, the law of total probab
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Related: Naive Bayes (`fundamentals/naive-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fab2fc286f
 
 ## Intuition
 
@@ -3892,6 +3915,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-distributions/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 637f161604
 
 ## Intuition
 
@@ -4066,6 +4090,7 @@ Bernoulli, binomial, Poisson, Gaussian and exponential: what each models, their 
 - Before this: Common Probability Distributions (`fundamentals/probability-distributions`)
 - Related: Random Forest (`fundamentals/random-forest`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 51e3abb313
 
 ## Intuition
 
@@ -4244,6 +4269,7 @@ Expected value and its linearity, variance and standard deviation, covariance an
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`), Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Related: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 111c641505
 
 ## Intuition
 
@@ -4405,6 +4431,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Related: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 7374f04a05
 
 ## Intuition
 
@@ -4566,6 +4593,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/concentration-inequalities/
 - Before this: Law of Large Numbers and Central Limit Theorem (`fundamentals/law-of-large-numbers-and-clt`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 52789210a3
 
 ## Intuition
 
@@ -4718,6 +4746,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Common Probability Distributions (`fundamentals/probability-distributions`)
 - Related: Regularized Linear Models (`fundamentals/regularized-linear-models`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: f1022db2f8
 
 ## Intuition
 
@@ -4901,6 +4930,7 @@ Likelihood vs probability, log-likelihood, maximum likelihood estimation, why ML
 - Before this: Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Related: Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e320292178
 
 ## Intuition
 
@@ -5073,6 +5103,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/markov-chains/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`), Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 4457f73dbf
 
 ## Intuition
 
@@ -5237,6 +5268,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/sampling-methods/
 - Before this: Markov Chains (`fundamentals/markov-chains`), Integrals for ML (`fundamentals/integrals-for-ml`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0d1c853b58
 
 ## Intuition
 
@@ -5403,6 +5435,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-bayes/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 300877cf23
 
 How to use this page
 
@@ -5514,6 +5547,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-coins/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 4ee4d00d94
 
 How to use this page
 
@@ -5617,6 +5651,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-dice/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 725d10926b
 
 How to use this page
 
@@ -5714,6 +5749,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-cards/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 63ac3a3a5f
 
 How to use this page
 
@@ -5809,6 +5845,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-balls-and-urns/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 99e9f6a33a
 
 How to use this page
 
@@ -5906,6 +5943,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-classic-puzzles/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 22f89a993e
 
 How to use this page
 
@@ -6009,6 +6047,7 @@ These are classic interview questions. For more in the same style: Frederick Mos
 - Page: https://aimlrounds.com/tracks/fundamentals/descriptive-statistics-and-outliers/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: bd49795002
 
 ## Intuition
 
@@ -6174,6 +6213,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/sampling-and-bias/
 - Before this: Descriptive Statistics and Outliers (`fundamentals/descriptive-statistics-and-outliers`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 4b7874d15e
 
 ## Intuition
 
@@ -6336,6 +6376,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/confidence-intervals-and-bootstrap/
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Quiz topic: `stats`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8759dbb2f1
 
 ## Intuition
 
@@ -6504,6 +6545,7 @@ Delivery times are simulated (log-normal) with fixed seeds; intervals and bootst
 - Before this: Confidence Intervals & the Bootstrap (`fundamentals/confidence-intervals-and-bootstrap`)
 - Related: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`)
 - Quiz topic: `stats`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 418a80e6fe
 
 ## Intuition
 
@@ -6700,6 +6742,7 @@ A/A tests and power curves are simulated or computed live in your browser.
 - Page: https://aimlrounds.com/tracks/fundamentals/t-tests-and-z-tests/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 968753a702
 
 ## Intuition
 
@@ -6860,6 +6903,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/chi-squared-tests-and-anova/
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fa0b694b8f
 
 ## Intuition
 
@@ -7019,6 +7063,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/non-parametric-and-permutation-tests/
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e176ae1383
 
 ## Intuition
 
@@ -7192,6 +7237,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: T-Tests and Z-Tests (`fundamentals/t-tests-and-z-tests`), Linear Independence, Basis and Rank (`fundamentals/linear-independence-basis-and-rank`)
 - Related: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: c7e14a3301
 
 ## Intuition
 
@@ -7359,6 +7405,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/correlation-vs-causation/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Quiz topic: `stats`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 4943f21d42
 
 ## Intuition
 
@@ -7536,6 +7583,7 @@ The tracking example is simulated with a known (zero or positive) effect; kidney
 - Page: https://aimlrounds.com/tracks/fundamentals/causal-inference-without-experiments/
 - Before this: Correlation vs Causation (`fundamentals/correlation-vs-causation`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: a638cbcfdd
 
 ## Intuition
 
@@ -7700,6 +7748,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/bayesian-vs-frequentist/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`), Bayesian Inference and Conjugate Priors (`fundamentals/bayesian-inference-and-conjugate-priors`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: cc4114cc21
 
 ## Intuition
 
@@ -7858,6 +7907,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/statistics-practice/
 - Before this: Chi-Squared Tests and ANOVA (`fundamentals/chi-squared-tests-and-anova`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: b3d1227e59
 
 How to use this page
 
@@ -7998,6 +8048,7 @@ Review t-tests, chi-squared and ANOVA, regression and causal inference.
 - Before this: Common Probability Distributions (`fundamentals/probability-distributions`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Related: Softmax Regression (`fundamentals/softmax-regression`)
 - Quiz topic: `info`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: eec8c361f2
 
 ## Intuition
 
@@ -8176,6 +8227,7 @@ Information as surprise, entropy, cross-entropy and why it is the classification
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fed526afdb
 
 ## Intuition
 
@@ -8344,6 +8396,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`), Joint, Marginal and Conditional Distributions (`fundamentals/joint-marginal-conditional`)
 - Related: Decision Trees (`fundamentals/decision-trees`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 79dff987d8
 
 ## Intuition
 
@@ -8517,6 +8570,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: GANs (`fundamentals/gans`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 83294bcace
 
 ## Intuition
 
@@ -8677,6 +8731,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/information-theory-practice/
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: 6ad19fc26a
 
 How to use this page
 
@@ -8803,6 +8858,7 @@ Review entropy and KL, compression and perplexity, mutual information and compar
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Related: Correlation vs Causation (`fundamentals/correlation-vs-causation`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: c3b80aca04
 
 ## Intuition
 
@@ -8962,6 +9018,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Before this: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`)
 - Related: Choosing the Right Metric (`fundamentals/choosing-the-right-metric`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cc966dccdd
 
 ## Intuition
 
@@ -9110,6 +9167,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/sample-size-and-power/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`), Choosing Metrics: OEC, Drivers and Guardrails (`fundamentals/choosing-ab-metrics`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3005281955
 
 ## Intuition
 
@@ -9263,6 +9321,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/reading-ab-results/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), Confidence Intervals & the Bootstrap (`fundamentals/confidence-intervals-and-bootstrap`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 479c9a97ea
 
 ## Intuition
 
@@ -9417,6 +9476,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/ratio-metrics-and-delta-method/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 69ee9d3a25
 
 ## Intuition
 
@@ -9568,6 +9628,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/variance-reduction-cuped/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 57c995f7d1
 
 ## Intuition
 
@@ -9729,6 +9790,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/revenue-and-heavy-tailed-metrics/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 70750a0bd2
 
 ## Intuition
 
@@ -9888,6 +9950,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/sequential-testing/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: f8e8932621
 
 ## Intuition
 
@@ -10049,6 +10112,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/multiple-testing/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: c1761338a9
 
 ## Intuition
 
@@ -10213,6 +10277,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/sample-ratio-mismatch/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cbf4ac631a
 
 ## Intuition
 
@@ -10372,6 +10437,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/novelty-and-long-term-effects/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 2c578a3bf0
 
 ## Intuition
 
@@ -10535,6 +10601,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/interference-in-experiments/
 - Before this: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 73f99313a8
 
 ## Intuition
 
@@ -10691,6 +10758,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/bandits-vs-ab-tests/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 0f850c745f
 
 ## Intuition
 
@@ -10850,6 +10918,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/running-many-tests-at-once/
 - Before this: Randomisation and Assignment (`fundamentals/randomisation-and-assignment`), Multiple Testing and Segments (`fundamentals/multiple-testing`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 6e5e609114
 
 ## Intuition
 
@@ -11007,6 +11076,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/heterogeneous-effects-and-uplift/
 - Before this: Multiple Testing and Segments (`fundamentals/multiple-testing`), Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: bb2e9bc503
 
 ## Intuition
 
@@ -11173,6 +11243,7 @@ Lab numbers are illustrative unless a lab says otherwise. Explanations are ours,
 - Page: https://aimlrounds.com/tracks/fundamentals/ab-testing-practice/
 - Before this: Running Many Tests at Once (`fundamentals/running-many-tests-at-once`), Heterogeneous Effects and Uplift Modelling (`fundamentals/heterogeneous-effects-and-uplift`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: b1a1ad6e7f
 
 How to use this page
 
@@ -11379,6 +11450,7 @@ Uses the lessons in this section, from Randomisation to Uplift Modelling, and th
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/categorical-encoding/
 - Quiz topic: `feat`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 29a1514359
 
 ## Intuition
 
@@ -11641,6 +11713,7 @@ Order data is simulated with fixed seeds; every model is fitted live in your bro
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/missing-values-and-scaling/
 - Quiz topic: `feat`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: a34b18efb7
 
 ## Intuition
 
@@ -11908,6 +11981,7 @@ Data simulated with fixed seeds; every model is fitted live in your browser.
 - Page: https://aimlrounds.com/tracks/fundamentals/feature-engineering/
 - Before this: Missing Values & Feature Scaling (`fundamentals/missing-values-and-scaling`), Encoding Categorical Features (`fundamentals/categorical-encoding`)
 - Quiz topic: `feat`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 3503fccbd7
 
 ## Intuition
 
@@ -12070,6 +12144,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/feature-selection/
 - Before this: Feature Engineering (`fundamentals/feature-engineering`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `feat`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 30041e81cc
 
 ## Intuition
 
@@ -12230,6 +12305,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/linear-regression/
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 47a9e1e207
 
 ## Intuition
 
@@ -12644,6 +12720,7 @@ Flat sizes and prices, the polynomial dataset and the gradient-descent runs are 
 - Page: https://aimlrounds.com/tracks/fundamentals/regularized-linear-models/
 - Before this: Linear Regression (`fundamentals/linear-regression`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: b3a9115acd
 
 ## Intuition
 
@@ -13007,6 +13084,7 @@ The flats data is simulated with a fixed random seed (known true effects) and fi
 - Page: https://aimlrounds.com/tracks/fundamentals/logistic-regression/
 - Before this: Linear Regression (`fundamentals/linear-regression`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: ac3ae3a28b
 
 ## Intuition
 
@@ -13324,6 +13402,7 @@ Student data is illustrative; every fit and curve on this page is computed live.
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `lin`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: d5d694eb34
 
 ## Intuition
 
@@ -13623,6 +13702,7 @@ Fruit data is illustrative; models are trained with a fixed seed and computed li
 - Page: https://aimlrounds.com/tracks/fundamentals/generalised-linear-models/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `lin`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 872d128907
 
 ## Intuition
 
@@ -13784,6 +13864,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/decision-trees/
 - Quiz topic: `trees`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: c2194de86c
 
 ## Intuition
 
@@ -14070,6 +14151,7 @@ Loan and delivery data are simulated with fixed seeds; every tree on this page i
 - Page: https://aimlrounds.com/tracks/fundamentals/random-forest/
 - Before this: Decision Trees (`fundamentals/decision-trees`)
 - Quiz topic: `trees`
+- Sources checked: 2026-10-27 · Text last changed: 2026-11-20 · Version: 8e12382887
 
 ## Intuition
 
@@ -14574,6 +14656,7 @@ The 8-applicant dataset and the numbers in the permutation and OOB scenes are il
 - Before this: Decision Trees (`fundamentals/decision-trees`), Random Forest (`fundamentals/random-forest`)
 - Related: Design a recommendation system (`system-design/recommendation-system`)
 - Quiz topic: `trees`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 7b3fe8531a
 
 ## Intuition
 
@@ -14942,6 +15025,7 @@ The delivery data is simulated; the boosted models on this page are trained live
 - Page: https://aimlrounds.com/tracks/fundamentals/ensembles-voting-and-stacking/
 - Before this: Random Forest (`fundamentals/random-forest`), Gradient Boosting (`fundamentals/gradient-boosting`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `trees`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: ff1b62792c
 
 ## Intuition
 
@@ -15110,6 +15194,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/support-vector-machines/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8c0971f5d6
 
 ## Intuition
 
@@ -15562,6 +15647,7 @@ All datasets are simulated with fixed seeds; every SVM on this page is trained l
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Missing Values & Feature Scaling (`fundamentals/missing-values-and-scaling`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: c0e881cad1
 
 ## Intuition
 
@@ -15878,6 +15964,7 @@ All datasets are simulated with fixed seeds; every result on this page is comput
 - Page: https://aimlrounds.com/tracks/fundamentals/naive-bayes/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 9ea2fa39fd
 
 ## Intuition
 
@@ -16220,6 +16307,7 @@ Word counts are illustrative; numeric data is simulated with fixed seeds; every 
 - Page: https://aimlrounds.com/tracks/fundamentals/discriminant-analysis/
 - Before this: Naive Bayes (`fundamentals/naive-bayes`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `clf`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 7d403507c5
 
 ## Intuition
 
@@ -16376,6 +16464,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/k-means/
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8be44b1186
 
 ## Intuition
 
@@ -16685,6 +16774,7 @@ Customer data is simulated with fixed seeds; every clustering on this page runs 
 - Page: https://aimlrounds.com/tracks/fundamentals/hierarchical-clustering/
 - Before this: k-Means Clustering (`fundamentals/k-means`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 6012bed064
 
 ## Intuition
 
@@ -16939,6 +17029,7 @@ Customer data is simulated with fixed seeds; every tree on this page is built li
 - Page: https://aimlrounds.com/tracks/fundamentals/dbscan/
 - Before this: k-Means Clustering (`fundamentals/k-means`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: a3fa53b46b
 
 ## Intuition
 
@@ -17225,6 +17316,7 @@ GPS data is simulated with fixed seeds; DBSCAN runs live in your browser.
 - Page: https://aimlrounds.com/tracks/fundamentals/gaussian-mixture-models/
 - Before this: k-Means Clustering (`fundamentals/k-means`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 6cde3dd518
 
 ## Intuition
 
@@ -17516,6 +17608,7 @@ Customer data is simulated with fixed seeds; EM runs live in your browser.
 - Page: https://aimlrounds.com/tracks/fundamentals/pca/
 - Before this: Eigenvalues & Eigenvectors (`fundamentals/eigenvalues-and-eigenvectors`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 4cab063815
 
 ## Intuition
 
@@ -17820,6 +17913,7 @@ Customer data is simulated with fixed seeds; PCA runs live in your browser (Jaco
 - Page: https://aimlrounds.com/tracks/fundamentals/t-sne-and-umap/
 - Before this: Principal Component Analysis (`fundamentals/pca`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: a303938ad1
 
 ## Intuition
 
@@ -18159,6 +18253,7 @@ Customer data is simulated with fixed seeds; t-SNE runs live in your browser (ex
 - Page: https://aimlrounds.com/tracks/fundamentals/anomaly-detection/
 - Before this: Random Forest (`fundamentals/random-forest`), k-Nearest Neighbours (`fundamentals/k-nearest-neighbours`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8d70dadcec
 
 ## Intuition
 
@@ -18409,6 +18504,7 @@ Order data is simulated with fixed seeds; every detector runs live in your brows
 - Page: https://aimlrounds.com/tracks/fundamentals/forecasting-basics/
 - Before this: Linear Regression (`fundamentals/linear-regression`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `ts`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 1b62daa0b8
 
 ## Intuition
 
@@ -18687,6 +18783,7 @@ The order series is simulated with a known trend, weekly pattern and yearly wave
 - Page: https://aimlrounds.com/tracks/fundamentals/stationarity-arima-and-smoothing/
 - Before this: Time-Series Forecasting Basics (`fundamentals/forecasting-basics`)
 - Quiz topic: `ts`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: e9d72098a6
 
 ## Intuition
 
@@ -18870,6 +18967,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/classification-metrics/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: cba6bd1650
 
 ## Intuition
 
@@ -19142,6 +19240,7 @@ Scenario scores come from a simple, illustrative model of a classifier (positive
 - Page: https://aimlrounds.com/tracks/fundamentals/roc-auc-vs-pr-auc/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 502a5099b4
 
 ## Intuition
 
@@ -19360,6 +19459,7 @@ Built from Fawcett (2006), Davis & Goadrich (2006), Saito & Rehmsmeier (2015), H
 - Page: https://aimlrounds.com/tracks/fundamentals/thresholds-and-costs/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: aa64366bdf
 
 ## Intuition
 
@@ -19641,6 +19741,7 @@ Costs are illustrative round numbers; expected counts and costs are computed exa
 - Page: https://aimlrounds.com/tracks/fundamentals/regression-metrics/
 - Before this: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 42e523bacb
 
 ## Intuition
 
@@ -19890,6 +19991,7 @@ Delivery, demand and skewed-time data are illustrative.
 - Before this: Classification Metrics (`fundamentals/classification-metrics`)
 - Related: Design a recommendation system (`system-design/recommendation-system`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 0ea8e63d89
 
 ## Intuition
 
@@ -20125,6 +20227,7 @@ Search results, grades and RAG ranks are illustrative.
 - Page: https://aimlrounds.com/tracks/fundamentals/probability-metrics/
 - Before this: ROC-AUC vs PR-AUC (`fundamentals/roc-auc-vs-pr-auc`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 11902f6e75
 
 ## Intuition
 
@@ -20367,6 +20470,7 @@ The live lab uses an illustrative two-bell-curve score model with 10% positives;
 - Page: https://aimlrounds.com/tracks/fundamentals/choosing-the-right-metric/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`), Regression Metrics (`fundamentals/regression-metrics`), Ranking Metrics (`fundamentals/ranking-metrics`), Probability Metrics (`fundamentals/probability-metrics`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: ca8fbc6edb
 
 ## Intuition
 
@@ -20546,6 +20650,7 @@ A decision guide, 12 interview scenarios, and "is the difference real?" · built
 - Page: https://aimlrounds.com/tracks/fundamentals/bias-variance/
 - Before this: Linear Regression (`fundamentals/linear-regression`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 338e793956
 
 ## Intuition
 
@@ -20814,6 +20919,7 @@ Delivery data is simulated with a known true curve; every fit and decomposition 
 - Page: https://aimlrounds.com/tracks/fundamentals/cross-validation-and-leakage/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8c33d78e1a
 
 ## Intuition
 
@@ -21084,6 +21190,7 @@ All three datasets are simulated with no real signal, so the honest answer is kn
 - Page: https://aimlrounds.com/tracks/fundamentals/class-imbalance/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`), Thresholds & Misclassification Costs (`fundamentals/thresholds-and-costs`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: fbfc14426c
 
 ## Intuition
 
@@ -21368,6 +21475,7 @@ Fraud data is simulated with fixed seeds; all models are trained live in your br
 - Page: https://aimlrounds.com/tracks/fundamentals/hyperparameter-tuning/
 - Before this: Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: f27ca9e6d2
 
 ## Intuition
 
@@ -21615,6 +21723,7 @@ Loss functions are simulated with known optima; every search runs live in your b
 - Page: https://aimlrounds.com/tracks/fundamentals/learning-curves-and-debugging/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 23663b4d7d
 
 ## Intuition
 
@@ -21778,6 +21887,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/explaining-models/
 - Before this: Random Forest (`fundamentals/random-forest`), Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0e6ed5f933
 
 ## Intuition
 
@@ -21945,6 +22055,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/classical-ml-practice/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: df249e9ebc
 
 How to use this page
 
@@ -22080,6 +22191,7 @@ Review gradient boosting, regularisation, classification metrics, logistic regre
 - Page: https://aimlrounds.com/tracks/fundamentals/perceptron-to-mlp/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 2cd99fea9c
 
 ## Intuition
 
@@ -22255,6 +22367,7 @@ The artificial neuron, the perceptron and its XOR limit, hidden layers, why a no
 - Page: https://aimlrounds.com/tracks/fundamentals/activation-functions/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: aa05dec122
 
 ## Intuition
 
@@ -22420,6 +22533,7 @@ Sigmoid, tanh, ReLU and its variants, GELU and gated units like SwiGLU: what eac
 - Page: https://aimlrounds.com/tracks/fundamentals/loss-functions/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`), Maximum Likelihood & MAP (`fundamentals/mle-and-map`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4a4d6d8856
 
 ## Intuition
 
@@ -22574,6 +22688,7 @@ Cross-entropy vs MSE for classification, MSE vs MAE vs Huber for regression, foc
 - Page: https://aimlrounds.com/tracks/fundamentals/backpropagation/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`), From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `nn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0a1de02663
 
 ## Intuition
 
@@ -22735,6 +22850,7 @@ For what uses these gradients, see Gradient Descent, Momentum and Adam.
 - Page: https://aimlrounds.com/tracks/fundamentals/weight-initialisation/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 031d3f6fd1
 
 ## Intuition
 
@@ -22889,6 +23005,7 @@ Why weights must start random, why the scale matters, Xavier/Glorot initialisati
 - Page: https://aimlrounds.com/tracks/fundamentals/vanishing-exploding-gradients/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`), Activation Functions (`fundamentals/activation-functions`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: bd089c02bf
 
 ## Intuition
 
@@ -23055,6 +23172,7 @@ Why gradients shrink or blow up as they travel back through many layers or time 
 - Page: https://aimlrounds.com/tracks/fundamentals/normalisation-layers/
 - Before this: Vanishing & Exploding Gradients (`fundamentals/vanishing-exploding-gradients`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 17247b7597
 
 ## Intuition
 
@@ -23225,6 +23343,7 @@ What normalisation layers compute, which axis each one normalises over, train vs
 - Page: https://aimlrounds.com/tracks/fundamentals/learning-rate-schedules/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0298b64c3c
 
 ## Intuition
 
@@ -23373,6 +23492,7 @@ Why the learning rate should change during training: step decay, cosine annealin
 - Page: https://aimlrounds.com/tracks/fundamentals/batch-size-and-learning-rate/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 08cc71782b
 
 ## Intuition
 
@@ -23525,6 +23645,7 @@ What batch size changes (gradient noise, steps per epoch, hardware use), the lin
 - Page: https://aimlrounds.com/tracks/fundamentals/dropout/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 6c1913e795
 
 ## Intuition
 
@@ -23674,6 +23795,7 @@ Randomly switching off units during training, why that stops co-adaptation and a
 - Page: https://aimlrounds.com/tracks/fundamentals/weight-decay-and-adamw/
 - Before this: Regularized Linear Models (`fundamentals/regularized-linear-models`), Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: a2517ebd2a
 
 ## Intuition
 
@@ -23820,6 +23942,7 @@ What weight decay does, why it equals L2 regularisation for plain SGD but not fo
 - Page: https://aimlrounds.com/tracks/fundamentals/data-augmentation-and-mixup/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 68a674ff06
 
 ## Intuition
 
@@ -23972,6 +24095,7 @@ Making more training data from the data you have: label-preserving transforms fo
 - Page: https://aimlrounds.com/tracks/fundamentals/early-stopping-and-label-smoothing/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4402c2f439
 
 ## Intuition
 
@@ -24125,6 +24249,7 @@ Two cheap regularisers: stop training when validation loss stops improving (and 
 - Page: https://aimlrounds.com/tracks/fundamentals/debugging-training-practice-1/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b9461391cb
 
 How to use this page
 
@@ -24238,6 +24363,7 @@ Based on common failure modes collected in Andrej Karpathy, [“A Recipe for Tra
 - Page: https://aimlrounds.com/tracks/fundamentals/debugging-training-practice-2/
 - Before this: Debugging Training: Loss Won't Go Down (`fundamentals/debugging-training-practice-1`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 598ff6febd
 
 How to use this page
 
@@ -24355,6 +24481,7 @@ Based on Andrej Karpathy, [“A Recipe for Training Neural Networks”](https://
 - Page: https://aimlrounds.com/tracks/fundamentals/convolution-and-receptive-field/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 681218a78e
 
 ## Intuition
 
@@ -24512,6 +24639,7 @@ What a convolution layer computes, why weight sharing and local connections make
 - Page: https://aimlrounds.com/tracks/fundamentals/pooling-stride-padding/
 - Before this: Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ecc6edbdf3
 
 ## Intuition
 
@@ -24677,6 +24805,7 @@ How stride and padding control a conv layer's output size, the output-shape form
 - Page: https://aimlrounds.com/tracks/fundamentals/resnets-and-skip-connections/
 - Before this: Vanishing & Exploding Gradients (`fundamentals/vanishing-exploding-gradients`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f8a25255d4
 
 ## Intuition
 
@@ -24828,6 +24957,7 @@ The degradation problem (deeper plain networks train worse), residual blocks tha
 - Page: https://aimlrounds.com/tracks/fundamentals/cnn-architectures/
 - Before this: ResNets and Skip Connections (`fundamentals/resnets-and-skip-connections`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 95fb74285f
 
 ## Intuition
 
@@ -25006,6 +25136,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/transfer-learning/
 - Before this: ResNets and Skip Connections (`fundamentals/resnets-and-skip-connections`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d0a1a78603
 
 ## Intuition
 
@@ -25152,6 +25283,7 @@ Reusing a network trained on a big dataset for a new task: feature extraction (f
 - Page: https://aimlrounds.com/tracks/fundamentals/rnns-and-backprop-through-time/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 20ed87505d
 
 ## Intuition
 
@@ -25307,6 +25439,7 @@ Recurrent neural networks read a sequence one step at a time with a hidden state
 - Page: https://aimlrounds.com/tracks/fundamentals/lstm-and-gru/
 - Before this: RNNs and Backprop Through Time (`fundamentals/rnns-and-backprop-through-time`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f2e1fb26c8
 
 ## Intuition
 
@@ -25458,6 +25591,7 @@ Gated recurrent cells: the LSTM's cell state and its forget, input and output ga
 - Page: https://aimlrounds.com/tracks/fundamentals/seq2seq-and-attention/
 - Before this: LSTM and GRU (`fundamentals/lstm-and-gru`)
 - Quiz topic: `seq`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 049d3ba499
 
 ## Intuition
 
@@ -25606,6 +25740,7 @@ Encoder–decoder models for sequence-to-sequence tasks, the fixed-length bottle
 - Before this: Seq2seq and Bahdanau Attention (`fundamentals/seq2seq-and-attention`), Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e501b955f2
 
 ## Intuition
 
@@ -25755,6 +25890,7 @@ How every token builds a new representation by looking at every other token: que
 - Page: https://aimlrounds.com/tracks/fundamentals/multi-head-attention/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b6030bd96e
 
 ## Intuition
 
@@ -25904,6 +26040,7 @@ Running several attention operations in parallel, each in its own smaller subspa
 - Page: https://aimlrounds.com/tracks/fundamentals/positional-encodings/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `attn`
+- Sources checked: 2026-11-16 · Text last changed: 2026-11-20 · Version: 3fec57b041
 
 ## Intuition
 
@@ -26119,6 +26256,7 @@ Why attention needs position information, sinusoidal encodings, learned absolute
 - Page: https://aimlrounds.com/tracks/fundamentals/transformer-block/
 - Before this: Multi-Head Attention (`fundamentals/multi-head-attention`), BatchNorm vs LayerNorm vs RMSNorm (`fundamentals/normalisation-layers`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b3de989eee
 
 ## Intuition
 
@@ -26268,6 +26406,7 @@ The repeating unit of every Transformer: multi-head attention and a feed-forward
 - Page: https://aimlrounds.com/tracks/fundamentals/encoder-decoder-architectures/
 - Before this: The Transformer Block (`fundamentals/transformer-block`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 765cc27465
 
 ## Intuition
 
@@ -26424,6 +26563,7 @@ The three Transformer families: bidirectional encoders (BERT) for understanding,
 - Before this: The Transformer Block (`fundamentals/transformer-block`), Positional Encodings (incl. RoPE) (`fundamentals/positional-encodings`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 855d1ad8c3
 
 ## Intuition
 
@@ -26580,6 +26720,7 @@ One sentence followed through a whole GPT-style decoder: tokens, embeddings, pos
 - Page: https://aimlrounds.com/tracks/fundamentals/vision-transformers/
 - Before this: The Transformer, End to End (`fundamentals/transformer-end-to-end`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 43952fd725
 
 ## Intuition
 
@@ -26748,6 +26889,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/object-detection/
 - Before this: CNN Architectures: AlexNet to ConvNeXt (`fundamentals/cnn-architectures`), Loss Functions for Deep Learning (`fundamentals/loss-functions`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: b5a476a519
 
 ## Intuition
 
@@ -26935,6 +27077,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/image-segmentation/
 - Before this: CNN Architectures: AlexNet to ConvNeXt (`fundamentals/cnn-architectures`), Pooling, Stride, Padding and Output Shapes (`fundamentals/pooling-stride-padding`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 0933609341
 
 ## Intuition
 
@@ -27112,6 +27255,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/interpreting-networks-and-adversarial-examples/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: b80bbb1070
 
 ## Intuition
 
@@ -27277,6 +27421,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`), Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d22bd66285
 
 ## Intuition
 
@@ -27426,6 +27571,7 @@ Turning discrete things (words, dishes, users) into dense vectors where similar 
 - Page: https://aimlrounds.com/tracks/fundamentals/autoencoders-and-vaes/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d2bed2962e
 
 ## Intuition
 
@@ -27585,6 +27731,7 @@ Compressing data through a bottleneck and reconstructing it; what a linear autoe
 - Page: https://aimlrounds.com/tracks/fundamentals/gans/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0c3689df66
 
 ## Intuition
 
@@ -27734,6 +27881,7 @@ Generative adversarial networks: a generator and a discriminator in a minimax ga
 - Page: https://aimlrounds.com/tracks/fundamentals/diffusion-models/
 - Before this: Autoencoders and VAEs (`fundamentals/autoencoders-and-vaes`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8dddadaf1c
 
 ## Intuition
 
@@ -27913,6 +28061,7 @@ Generating data by learning to reverse a gradual noising process: the forward pr
 - Page: https://aimlrounds.com/tracks/fundamentals/contrastive-learning/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `genm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 95a3794e0a
 
 ## Intuition
 
@@ -28088,6 +28237,7 @@ Learning embeddings without labels by pulling matching pairs together and pushin
 - Page: https://aimlrounds.com/tracks/fundamentals/deep-learning-practice/
 - Before this: Multi-Head Attention (`fundamentals/multi-head-attention`), Pooling, Stride, Padding and Output Shapes (`fundamentals/pooling-stride-padding`)
 - Quiz topic: `genm`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: a8bb93f79d
 
 How to use this page
 
@@ -28230,6 +28380,7 @@ Review MLPs, output shapes, multi-head attention, CNN architectures and object d
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/fundamentals/text-preprocessing/
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 006bf77033
 
 ## Intuition
 
@@ -28368,6 +28519,7 @@ Turning raw text into tokens a model can count: lowercasing, punctuation, word t
 - Page: https://aimlrounds.com/tracks/fundamentals/bag-of-words-and-tf-idf/
 - Before this: Text Preprocessing (`fundamentals/text-preprocessing`), Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ff0fd2d239
 
 ## Intuition
 
@@ -28515,6 +28667,7 @@ Representing documents as word-count vectors, adding n-grams for word order, and
 - Page: https://aimlrounds.com/tracks/fundamentals/text-classification/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`), Naive Bayes (`fundamentals/naive-bayes`), Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e8eca9a934
 
 ## Intuition
 
@@ -28664,6 +28817,7 @@ Classic text classifiers on bag-of-words / TF-IDF features: multinomial Naive Ba
 - Page: https://aimlrounds.com/tracks/fundamentals/topic-modelling/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 65c03497c2
 
 ## Intuition
 
@@ -28833,6 +28987,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/n-gram-language-models/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f8e892fe03
 
 ## Intuition
 
@@ -28986,6 +29141,7 @@ Predicting the next word from counts: the chain rule, the Markov assumption, big
 - Page: https://aimlrounds.com/tracks/fundamentals/edit-distance-and-spelling-correction/
 - Before this: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: fe96b9869c
 
 ## Intuition
 
@@ -29157,6 +29313,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/subword-tokenisation/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0a2107109c
 
 ## Intuition
 
@@ -29313,6 +29470,7 @@ Why modern models split text into subword pieces rather than whole words or char
 - Page: https://aimlrounds.com/tracks/fundamentals/sequence-labelling-and-ner/
 - Before this: Text Classification: Naive Bayes vs Logistic Regression (`fundamentals/text-classification`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 633e786330
 
 ## Intuition
 
@@ -29466,6 +29624,7 @@ Assigning a label to every token: part-of-speech tagging and named entity recogn
 - Page: https://aimlrounds.com/tracks/fundamentals/hmms-crfs-and-viterbi/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: cab5c0ff71
 
 ## Intuition
 
@@ -29640,6 +29799,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/bert-and-masked-language-models/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`), Encoder vs Decoder vs Encoder-Decoder (`fundamentals/encoder-decoder-architectures`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 0b594c4b86
 
 ## Intuition
 
@@ -29817,6 +29977,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/information-extraction/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`), BERT and Masked Language Models (`fundamentals/bert-and-masked-language-models`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3b81269f91
 
 ## Intuition
 
@@ -29987,6 +30148,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: c7e76322bb
 
 ## Intuition
 
@@ -30138,6 +30300,7 @@ Finding the right documents for a query: the inverted index, BM25 (TF-IDF with s
 - Page: https://aimlrounds.com/tracks/fundamentals/nlp-evaluation-metrics/
 - Before this: Text Classification: Naive Bayes vs Logistic Regression (`fundamentals/text-classification`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 27d1b6571d
 
 ## Intuition
 
@@ -30296,6 +30459,7 @@ How generated or extracted text is scored against references: BLEU for translati
 - Page: https://aimlrounds.com/tracks/fundamentals/nlp-practice/
 - Before this: Search: BM25, Dense and Hybrid Retrieval (`fundamentals/search-and-retrieval`), NLP Evaluation: BLEU, ROUGE, EM/F1 (`fundamentals/nlp-evaluation-metrics`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ea4c071e24
 
 How to use this page
 
@@ -30469,6 +30633,7 @@ New lessons: Edit Distance, HMMs and Viterbi and BERT.
 - Page: https://aimlrounds.com/tracks/fundamentals/modern-llm-architecture/
 - Before this: The Transformer, End to End (`fundamentals/transformer-end-to-end`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e4c3d4c9ee
 
 ## Intuition
 
@@ -30649,6 +30814,7 @@ What changed between the 2017 Transformer and today's decoder-only LLMs (Llama, 
 - Page: https://aimlrounds.com/tracks/fundamentals/attention-variants-mqa-gqa-mla/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`), Multi-Head Attention (`fundamentals/multi-head-attention`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f3977e99cc
 
 ## Intuition
 
@@ -30806,6 +30972,7 @@ Why the KV cache, not the weights, limits how many users an LLM can serve at lon
 - Page: https://aimlrounds.com/tracks/fundamentals/gpus-tpus-and-memory-bandwidth/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: fafb299d28
 
 ## Intuition
 
@@ -30976,6 +31143,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/flashattention/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4c40e728a0
 
 ## Intuition
 
@@ -31131,6 +31299,7 @@ Why standard attention is slow because of memory traffic rather than arithmetic,
 - Page: https://aimlrounds.com/tracks/fundamentals/long-context/
 - Before this: Positional Encodings (incl. RoPE) (`fundamentals/positional-encodings`), Attention Variants: MQA, GQA and MLA (`fundamentals/attention-variants-mqa-gqa-mla`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: aeb55d1882
 
 ## Intuition
 
@@ -31282,6 +31451,7 @@ Why a model trained on 4k or 8k tokens breaks at 32k, how position interpolation
 - Page: https://aimlrounds.com/tracks/fundamentals/attention-alternatives/
 - Before this: Long Context: RoPE Scaling, Sliding Windows and Attention Sinks (`fundamentals/long-context`), GPUs, TPUs and Memory Bandwidth (`fundamentals/gpus-tpus-and-memory-bandwidth`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 69ac4f581b
 
 ## Intuition
 
@@ -31463,6 +31633,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/mixture-of-experts/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 9a44608e79
 
 ## Intuition
 
@@ -31618,6 +31789,7 @@ How MoE layers give a model many more parameters without more compute per token:
 - Page: https://aimlrounds.com/tracks/fundamentals/vision-language-models/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`), Vision Transformers (`fundamentals/vision-transformers`)
 - Quiz topic: `arch`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 5e37a92f82
 
 ## Intuition
 
@@ -31791,6 +31963,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/next-token-prediction/
 - Before this: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`), The Transformer, End to End (`fundamentals/transformer-end-to-end`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: de520e2962
 
 ## Intuition
 
@@ -31944,6 +32117,7 @@ How LLMs are pre-trained: the autoregressive factorisation, cross-entropy on eve
 - Page: https://aimlrounds.com/tracks/fundamentals/pretraining-data/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 5e9338aa6f
 
 ## Intuition
 
@@ -32107,6 +32281,7 @@ How trillions of tokens of web text become training data: text extraction, langu
 - Page: https://aimlrounds.com/tracks/fundamentals/scaling-laws/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 7cabb2a753
 
 ## Intuition
 
@@ -32252,6 +32427,7 @@ How loss falls predictably with model size, data and compute; the C ≈ 6ND esti
 - Page: https://aimlrounds.com/tracks/fundamentals/distributed-training/
 - Before this: Anatomy of a Modern LLM (`fundamentals/modern-llm-architecture`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 6e98509c63
 
 ## Intuition
 
@@ -32403,6 +32579,7 @@ Why a 70B model can't be trained on one GPU, where the memory goes (16 bytes per
 - Page: https://aimlrounds.com/tracks/fundamentals/training-instabilities/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`), BatchNorm vs LayerNorm vs RMSNorm (`fundamentals/normalisation-layers`)
 - Quiz topic: `pre`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 87f49d55b7
 
 ## Intuition
 
@@ -32552,6 +32729,7 @@ What goes wrong in long LLM training runs: sudden loss spikes and divergence, gr
 - Page: https://aimlrounds.com/tracks/fundamentals/supervised-fine-tuning/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: fa659ef342
 
 ## Intuition
 
@@ -32701,6 +32879,7 @@ How a pre-trained base model that only continues text becomes an assistant that 
 - Page: https://aimlrounds.com/tracks/fundamentals/policy-gradients-for-llms/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: aa0e7a6e5f
 
 ## Intuition
 
@@ -32874,6 +33053,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/rlhf-and-reward-models/
 - Before this: Policy Gradients for LLMs (`fundamentals/policy-gradients-for-llms`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: dfedc6f5a4
 
 ## Intuition
 
@@ -33025,6 +33205,7 @@ How human preferences become a training signal: collecting comparisons, training
 - Page: https://aimlrounds.com/tracks/fundamentals/dpo/
 - Before this: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f7f4e16178
 
 ## Intuition
 
@@ -33171,6 +33352,7 @@ How Direct Preference Optimization trains on preference pairs with a simple clas
 - Before this: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Related: DeepSeek-R1 (`papers/deepseek-r1`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 689c6dde17
 
 ## Intuition
 
@@ -33336,6 +33518,7 @@ How models like OpenAI o1 and DeepSeek-R1 learn to "think" before answering: rei
 - Page: https://aimlrounds.com/tracks/fundamentals/distillation/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 966e26aa06
 
 ## Intuition
 
@@ -33483,6 +33666,7 @@ Knowledge distillation from Hinton's soft targets to today's LLM practice: tempe
 - Page: https://aimlrounds.com/tracks/fundamentals/lora-and-qlora/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8b5e8de8ac
 
 ## Intuition
 
@@ -33632,6 +33816,7 @@ How to fine-tune large models cheaply: LoRA's low-rank update (rank, alpha, targ
 - Page: https://aimlrounds.com/tracks/fundamentals/safety-training-and-jailbreaks/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`), Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
 - Quiz topic: `post`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e3b1b4db6e
 
 ## Intuition
 
@@ -33812,6 +33997,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative, a
 - Page: https://aimlrounds.com/tracks/fundamentals/decoding-and-sampling/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 63f5bbe383
 
 ## Intuition
 
@@ -33977,6 +34163,7 @@ How an LLM turns next-token probabilities into text: greedy decoding and beam se
 - Page: https://aimlrounds.com/tracks/fundamentals/in-context-learning-and-cot/
 - Before this: Decoding: Temperature, Top-k, Top-p and Min-p (`fundamentals/decoding-and-sampling`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 84c5731d80
 
 ## Intuition
 
@@ -34118,6 +34305,7 @@ How LLMs learn tasks from the prompt alone: zero-shot and few-shot prompting, wh
 - Page: https://aimlrounds.com/tracks/fundamentals/hallucination/
 - Before this: In-Context Learning and Chain-of-Thought (`fundamentals/in-context-learning-and-cot`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e6b0aa0a55
 
 ## Intuition
 
@@ -34263,6 +34451,7 @@ What hallucinations are (unsupported or false content stated fluently), why they
 - Page: https://aimlrounds.com/tracks/fundamentals/benchmarks-and-contamination/
 - Before this: Pretraining Data: Deduplication, Filtering and Mixtures (`fundamentals/pretraining-data`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f73bc20a7f
 
 ## Intuition
 
@@ -34408,6 +34597,7 @@ How LLMs are compared: knowledge and reasoning benchmarks (MMLU, GPQA, AIME), ag
 - Page: https://aimlrounds.com/tracks/fundamentals/llm-practice-scaling/
 - Before this: Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP (`fundamentals/distributed-training`), Mixture of Experts (`fundamentals/mixture-of-experts`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: c3f3fc66a9
 
 How to use this page
 
@@ -34565,6 +34755,7 @@ New lessons: GPUs and memory bandwidth and Vision-Language Models.
 - Page: https://aimlrounds.com/tracks/fundamentals/llm-practice-post-training/
 - Before this: LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`), Benchmarks and Contamination (`fundamentals/benchmarks-and-contamination`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: da3d271ec7
 
 How to use this page
 
@@ -34728,6 +34919,7 @@ New lessons: Policy Gradients and Safety Training.
 - Page: https://aimlrounds.com/tracks/ai-engineering/prefill-vs-decode/
 - Before this: Attention Variants: MQA, GQA and MLA (`fundamentals/attention-variants-mqa-gqa-mla`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 174f2fcf7d
 
 ## Intuition
 
@@ -35252,6 +35444,7 @@ Napkin numbers (4.8 ms, 34 ms, 209 tokens/s, 295 FLOPs/byte, 128 KiB per token) 
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-quantization/
 - Before this: Prefill vs Decode (`ai-engineering/prefill-vs-decode`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: a742dc6e24
 
 ## Intuition
 
@@ -35802,6 +35995,7 @@ Built from GPTQ, AWQ, SmoothQuant and LLM.int8() (read in full), NVIDIA's NVFP4 
 - Page: https://aimlrounds.com/tracks/ai-engineering/kv-cache-and-pagedattention/
 - Before this: Prefill vs Decode (`ai-engineering/prefill-vs-decode`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 44ae644e60
 
 ## Intuition
 
@@ -35943,6 +36137,7 @@ How serving engines store the KV cache of many concurrent requests: why reservin
 - Page: https://aimlrounds.com/tracks/ai-engineering/kv-cache-compression/
 - Before this: KV Cache Management and PagedAttention (`ai-engineering/kv-cache-and-pagedattention`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 01ec713f30
 
 ## Intuition
 
@@ -36118,6 +36313,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/continuous-batching/
 - Before this: KV Cache Management and PagedAttention (`ai-engineering/kv-cache-and-pagedattention`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: cefb1ea9f4
 
 ## Intuition
 
@@ -36263,6 +36459,7 @@ How a serving engine decides, every few milliseconds, which requests run: static
 - Page: https://aimlrounds.com/tracks/ai-engineering/prefix-caching/
 - Before this: KV Cache Management and PagedAttention (`ai-engineering/kv-cache-and-pagedattention`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 56932783d3
 
 ## Intuition
 
@@ -36402,6 +36599,7 @@ Reusing the KV cache of repeated prompt prefixes (system prompts, few-shot examp
 - Page: https://aimlrounds.com/tracks/ai-engineering/speculative-decoding/
 - Before this: Prefill vs Decode (`ai-engineering/prefill-vs-decode`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f46efc7401
 
 ## Intuition
 
@@ -36554,6 +36752,7 @@ How a cheap draft proposes several tokens that the big model verifies in one for
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-metrics-and-slos/
 - Before this: Continuous Batching and Scheduling (`ai-engineering/continuous-batching`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: d54c95b539
 
 ## Intuition
 
@@ -36695,6 +36894,7 @@ What to measure and promise when serving an LLM: time to first token, time per o
 - Page: https://aimlrounds.com/tracks/ai-engineering/scaling-inference/
 - Before this: Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`), Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP (`fundamentals/distributed-training`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0381fcad04
 
 ## Intuition
 
@@ -36837,6 +37037,7 @@ How a model too big for one GPU is served (tensor, pipeline and expert paralleli
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-moe-models/
 - Before this: Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`), Mixture of Experts (`fundamentals/mixture-of-experts`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 95ef5aa33c
 
 ## Intuition
 
@@ -37004,6 +37205,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/serving-agents-and-reasoning-models/
 - Before this: Prefix and Prompt Caching (`ai-engineering/prefix-caching`), KV Cache Compression, Eviction and Offloading (`ai-engineering/kv-cache-compression`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 1bdb660c7c
 
 ## Intuition
 
@@ -37174,6 +37376,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/sizing-and-cost/
 - Before this: Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: beed7025f4
 
 ## Intuition
 
@@ -37322,6 +37525,7 @@ How to estimate what serving an LLM costs: throughput from first principles (mem
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-inference-practice/
 - Before this: Sizing and Cost: Cost per Million Tokens (`ai-engineering/sizing-and-cost`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 44ce82e9a4
 
 How to use this page
 
@@ -37493,6 +37697,7 @@ New lessons: KV Cache Compression, Serving MoE Models and Serving Agents and Rea
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-serving-incidents/
 - Before this: Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`), Prefix and Prompt Caching (`ai-engineering/prefix-caching`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: 56ab065d0a
 
 How to use this page
 
@@ -37646,6 +37851,7 @@ Uses the lessons in this section: Prefill vs Decode, KV Cache, Continuous Batchi
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-patterns/
 - Before this: In-Context Learning and Chain-of-Thought (`fundamentals/in-context-learning-and-cot`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 6aadb34b73
 
 ## Intuition
 
@@ -37795,6 +38001,7 @@ How production prompts are structured: system role, explicit rules, delimited co
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompting-reasoning-models/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Reasoning Models: RLVR, GRPO and Test-Time Compute (`fundamentals/reasoning-models-grpo`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 21b0fb526a
 
 ## Intuition
 
@@ -37962,6 +38169,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/structured-output/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Decoding: Temperature, Top-k, Top-p and Min-p (`fundamentals/decoding-and-sampling`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8c4a6070c6
 
 ## Intuition
 
@@ -38105,6 +38313,7 @@ Getting LLMs to return machine-readable output reliably: prompting for JSON, JSO
 - Page: https://aimlrounds.com/tracks/ai-engineering/system-prompts-with-many-rules/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: ed56a63fb5
 
 ## Intuition
 
@@ -38266,6 +38475,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/automatic-prompt-optimization/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 64861edbab
 
 ## Intuition
 
@@ -38435,6 +38645,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-vs-rag-vs-fine-tuning/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b0625ca222
 
 ## Intuition
 
@@ -38582,6 +38793,7 @@ A practical decision framework for adapting an LLM to a product: what each appro
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-change-broke-production/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 8632ace4bd
 
 ## Intuition
 
@@ -38743,6 +38955,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-practice/
 - Before this: A Prompt Fix That Broke Production (`ai-engineering/prompt-change-broke-production`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: 2ab9096825
 
 How to use this page
 
@@ -38880,6 +39093,7 @@ Uses Prompt Engineering Patterns, Prompting Reasoning Models, Structured Output,
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-end-to-end/
 - Before this: Search: BM25, Dense and Hybrid Retrieval (`fundamentals/search-and-retrieval`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `rag`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 7f3a511963
 
 ## Intuition
 
@@ -39028,6 +39242,7 @@ How a retrieval-augmented generation system is built: ingestion and parsing, chu
 - Page: https://aimlrounds.com/tracks/ai-engineering/parsing-and-chunking/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 85b4d28710
 
 ## Intuition
 
@@ -39210,6 +39425,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/embeddings-and-vector-indexes/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3ccc1e8c4e
 
 ## Intuition
 
@@ -39385,6 +39601,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/advanced-rag/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `rag`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 1c8d921607
 
 ## Intuition
 
@@ -39535,6 +39752,7 @@ The techniques that take a basic RAG system from "often finds the right passage"
 - Page: https://aimlrounds.com/tracks/ai-engineering/reranking-and-late-interaction/
 - Before this: Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 760b4958de
 
 ## Intuition
 
@@ -39711,6 +39929,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/grounded-answers/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 66f6a65f47
 
 ## Intuition
 
@@ -39883,6 +40102,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/agentic-rag/
 - Before this: Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`), What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 7585dad217
 
 ## Intuition
 
@@ -40057,6 +40277,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/permissions-and-poisoning/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: bdfc59c3a2
 
 ## Intuition
 
@@ -40238,6 +40459,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/keeping-an-index-current/
 - Before this: Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 75c0b2bd96
 
 ## Intuition
 
@@ -40411,6 +40633,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-wrong-answer/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 2e0e9d3054
 
 ## Intuition
 
@@ -40568,6 +40791,7 @@ Sources checked 5 Nov 2026
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-at-scale/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 94a0fe8913
 
 ## Intuition
 
@@ -40733,6 +40957,7 @@ Sources checked 5 Nov 2026
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-practice/
 - Before this: Re-ranking and Late Interaction (`ai-engineering/reranking-and-late-interaction`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: bae7faf580
 
 How to use this page
 
@@ -40898,6 +41123,7 @@ Uses RAG End to End, Embeddings and Vector Indexes, Re-ranking, Grounded Answers
 - Page: https://aimlrounds.com/tracks/ai-engineering/what-is-an-agent/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: fc8377c82e
 
 ## Intuition
 
@@ -41044,6 +41270,7 @@ What makes an LLM system an agent: the loop of reasoning, acting with tools and 
 - Page: https://aimlrounds.com/tracks/ai-engineering/tool-calling/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4174d3b8e1
 
 ## Intuition
 
@@ -41191,6 +41418,7 @@ How LLMs call tools: JSON-schema tool definitions, the model emitting a structur
 - Page: https://aimlrounds.com/tracks/ai-engineering/planning-and-reflection/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b42860c812
 
 ## Intuition
 
@@ -41330,6 +41558,7 @@ How agents organise multi-step work and recover from mistakes: ReAct's step-by-s
 - Page: https://aimlrounds.com/tracks/ai-engineering/memory-and-context-engineering/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-08 · Text last changed: 2026-11-20 · Version: 1f4a2a9d80
 
 ## Intuition
 
@@ -41483,6 +41712,7 @@ What goes into an agent's context window at each step and why it matters: short-
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-skills-and-self-improving-context/
 - Before this: Memory and Context Engineering (`ai-engineering/memory-and-context-engineering`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 7da628dceb
 
 ## Intuition
 
@@ -41650,6 +41880,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/model-context-protocol/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 97cb637cc9
 
 ## Intuition
 
@@ -41799,6 +42030,7 @@ What MCP is and why it spread: the N×M integration problem, hosts, clients and 
 - Page: https://aimlrounds.com/tracks/ai-engineering/mcp-under-the-hood/
 - Before this: MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: b5c8c91116
 
 ## Intuition
 
@@ -41976,6 +42208,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-protocols/
 - Before this: MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: d6f2dbea17
 
 ## Intuition
 
@@ -42153,6 +42386,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/multi-agent-systems/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e3383b332b
 
 ## Intuition
 
@@ -42295,6 +42529,7 @@ When several agents beat one: orchestrator–worker (sub-agents), handoffs betwe
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-infrastructure/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 913b5a7c5e
 
 ## Intuition
 
@@ -42440,6 +42675,7 @@ What it takes to run agents reliably in production: long-running tasks that surv
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-frameworks-and-harnesses/
 - Before this: Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: bb804bc36f
 
 ## Intuition
 
@@ -42613,6 +42849,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/long-running-and-scheduled-agents/
 - Before this: Agent Frameworks and Harnesses: Graphs, State and Middleware (`ai-engineering/agent-frameworks-and-harnesses`), Multi-Agent Systems (`ai-engineering/multi-agent-systems`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 99eef1e38e
 
 ## Intuition
 
@@ -42772,6 +43009,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-safety/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 1d76975f7d
 
 ## Intuition
 
@@ -42918,6 +43156,7 @@ Why agents raise the stakes of prompt injection (they act, not just talk), the "
 - Page: https://aimlrounds.com/tracks/ai-engineering/human-in-the-loop-design/
 - Before this: Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`), Agent Frameworks and Harnesses: Graphs, State and Middleware (`ai-engineering/agent-frameworks-and-harnesses`)
 - Quiz topic: `agents`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 72a52edd1e
 
 ## Intuition
 
@@ -43103,6 +43342,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/agentic-ai-practice/
 - Before this: Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `agents`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 1a2b0d13d0
 
 How to use this page
 
@@ -43260,6 +43500,7 @@ New lesson: Measuring Agents in Practice.
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-context-and-memory/
 - Before this: Memory and Context Engineering (`ai-engineering/memory-and-context-engineering`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 4a25c20b58
 
 How to use this page
 
@@ -43429,6 +43670,7 @@ Uses Memory and Context Engineering, Agent Skills, Agent Safety, Long-Running an
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-tools-and-mcp/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), MCP Under the Hood: Messages, Transports and Authorization (`ai-engineering/mcp-under-the-hood`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: e6bbf998e0
 
 How to use this page
 
@@ -43580,6 +43822,7 @@ Uses Tool Calling, MCP, MCP Under the Hood, Human-in-the-Loop Design. More incid
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-planning-and-reliability/
 - Before this: Planning and Reflection (`ai-engineering/planning-and-reflection`), Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: c5874c978b
 
 How to use this page
 
@@ -43733,6 +43976,7 @@ Uses Planning and Reflection, Agent Infrastructure, Agent Frameworks and Harness
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-multi-agent-and-protocols/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Agent Protocols: MCP, A2A, AG-UI and Commerce (`ai-engineering/agent-protocols`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 7e4a8c992c
 
 How to use this page
 
@@ -43884,6 +44128,7 @@ Uses Multi-Agent Systems, Agent Protocols, Agent Safety, MCP Under the Hood. Mor
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-observability/
 - Before this: Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 5e90535ee2
 
 How to use this page
 
@@ -44039,6 +44284,7 @@ Uses Agent Infrastructure, Tracing and Observability, Evaluating Agents. More in
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-safety-and-security/
 - Before this: Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 96af383f40
 
 How to use this page
 
@@ -44196,6 +44442,7 @@ Uses Agent Safety, Human-in-the-Loop Design, MCP Under the Hood, Memory and Cont
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-cost-and-latency/
 - Before this: Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 0d8b6412aa
 
 How to use this page
 
@@ -44343,6 +44590,7 @@ Uses Agent Infrastructure, Multi-Agent Systems, Serving Agents and Reasoning Mod
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-human-in-the-loop/
 - Before this: Human-in-the-Loop Design for Agents (`ai-engineering/human-in-the-loop-design`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 88ce6f670a
 
 How to use this page
 
@@ -44486,6 +44734,7 @@ Uses Human-in-the-Loop Design, Agent Frameworks and Harnesses, Agent Safety. Mor
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-long-running/
 - Before this: Long-Running and Scheduled Agents (`ai-engineering/long-running-and-scheduled-agents`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 7d1622d74b
 
 How to use this page
 
@@ -44647,6 +44896,7 @@ Uses Long-Running and Scheduled Agents, Agent Frameworks and Harnesses, Agent Sa
 - Page: https://aimlrounds.com/tracks/ai-engineering/why-llm-apps-fail/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 27c6d326ea
 
 ## Intuition
 
@@ -44792,6 +45042,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/choosing-the-right-eval/
 - Before this: Why LLM Apps Fail: The Three Gulfs (`ai-engineering/why-llm-apps-fail`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 91ffd0630f
 
 ## Intuition
 
@@ -44937,6 +45188,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/building-an-eval-dataset/
 - Before this: Why LLM Apps Fail: The Three Gulfs (`ai-engineering/why-llm-apps-fail`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 8b83f6957a
 
 ## Intuition
 
@@ -45094,6 +45346,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/error-analysis/
 - Before this: Building Your First Eval Set: Real Traces and Synthetic Queries (`ai-engineering/building-an-eval-dataset`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 7c509fb9b0
 
 ## Intuition
 
@@ -45241,6 +45494,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/reviewing-traces-at-scale/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Tracing and Observability for LLM Apps and Agents (`ai-engineering/tracing-and-observability`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 748bb4f0b6
 
 ## Intuition
 
@@ -45386,6 +45640,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/code-based-evaluators/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 41d1c6e28e
 
 ## Intuition
 
@@ -45525,6 +45780,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-as-a-judge/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), Benchmarks and Contamination (`fundamentals/benchmarks-and-contamination`)
 - Quiz topic: `evals`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 6784b991f0
 
 ## Intuition
 
@@ -45686,6 +45942,7 @@ Evaluating open-ended answers when there's no single correct output: human pairw
 - Page: https://aimlrounds.com/tracks/ai-engineering/validating-an-llm-judge/
 - Before this: LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5d44594686
 
 ## Intuition
 
@@ -45851,6 +46108,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/labelling-with-a-team/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 1c209e99c0
 
 ## Intuition
 
@@ -46010,6 +46268,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-evals/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `evals`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 5ac986b8fa
 
 ## Intuition
 
@@ -46160,6 +46419,7 @@ How to measure whether an LLM application works: building a golden set, evaluati
 - Page: https://aimlrounds.com/tracks/ai-engineering/multi-turn-evals/
 - Before this: Error Analysis: From Traces to Failure Rates (`ai-engineering/error-analysis`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 8ad2d899cf
 
 ## Intuition
 
@@ -46309,6 +46569,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluating-agents/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Code Checks First: Assertions, Schemas and Execution (`ai-engineering/code-based-evaluators`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: e0b2a15789
 
 ## Intuition
 
@@ -46458,6 +46719,7 @@ How to measure agents: outcome-based task success in realistic environments, con
 - Page: https://aimlrounds.com/tracks/ai-engineering/simulated-users-and-environments/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: b58b32c685
 
 ## Intuition
 
@@ -46607,6 +46869,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/coding-agent-evals/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 524062ab13
 
 ## Intuition
 
@@ -46756,6 +47019,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/multi-agent-evals/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`), Multi-Agent Systems (`ai-engineering/multi-agent-systems`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: fb8a529dc3
 
 ## Intuition
 
@@ -46907,6 +47171,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-and-tool-evaluation-metrics/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`), Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: ab7afb0a59
 
 ## Intuition
 
@@ -47140,6 +47405,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluating-mcp-servers/
 - Before this: Tool-Call Evals: Selection, Arguments, Trajectories and Effects (`ai-engineering/agent-and-tool-evaluation-metrics`), MCP: The Model Context Protocol (`ai-engineering/model-context-protocol`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: bd158bc76a
 
 ## Intuition
 
@@ -47287,6 +47553,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/improving-tools-with-evals/
 - Before this: Evaluating an MCP Server: Tool Choice, Descriptions and Distractors (`ai-engineering/evaluating-mcp-servers`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 8a564c895e
 
 ## Intuition
 
@@ -47443,6 +47710,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/evals-in-ci/
 - Before this: Code Checks First: Assertions, Schemas and Execution (`ai-engineering/code-based-evaluators`), Can You Trust Your Judge? TPR, TNR and Corrected Pass Rates (`ai-engineering/validating-an-llm-judge`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5ed8e1cce3
 
 ## Intuition
 
@@ -47614,6 +47882,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/online-evals-and-guardrails/
 - Before this: Evals in CI: Golden Sets, Regression Gates and Model Upgrades (`ai-engineering/evals-in-ci`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 6d8b3877e3
 
 ## Intuition
 
@@ -47755,6 +48024,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/safety-and-red-team-evals/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 73146ffc29
 
 ## Intuition
 
@@ -47907,6 +48177,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/improving-with-evals/
 - Before this: Evals in CI: Golden Sets, Regression Gates and Model Upgrades (`ai-engineering/evals-in-ci`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 98630815f2
 
 ## Intuition
 
@@ -48054,6 +48325,7 @@ Explanations and examples are ours, built from these sources. Lab numbers are il
 - Page: https://aimlrounds.com/tracks/ai-engineering/applied-evals-practice/
 - Before this: Can You Trust Your Judge? TPR, TNR and Corrected Pass Rates (`ai-engineering/validating-an-llm-judge`)
 - Quiz topic: `evals`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: f5a2a5fd17
 
 How to use this page
 
@@ -48305,6 +48577,7 @@ Each answer names the lesson it comes from. For real incidents, try Evaluation I
 - Page: https://aimlrounds.com/tracks/ai-engineering/evaluation-incidents/
 - Before this: RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`), Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`)
 - Quiz topic: `evals`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 2362fab3c2
 
 How to use this page
 
@@ -48658,6 +48931,7 @@ Uses these lessons: RAG Evals, Agent Evals, Tool-Call Evals, LLM Judges, Can You
 - Page: https://aimlrounds.com/tracks/ai-engineering/training-serving-skew-and-feature-stores/
 - Before this: Cross-Validation & Data Leakage (`fundamentals/cross-validation-and-leakage`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 31c8c4084b
 
 ## Intuition
 
@@ -48801,6 +49075,7 @@ Why a model that looks great offline disappoints in production: training/serving
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/batch-vs-online-inference/
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 45e98078d2
 
 ## Intuition
 
@@ -48944,6 +49219,7 @@ How and when predictions get computed: batch (precompute and look up), online (c
 - Page: https://aimlrounds.com/tracks/ai-engineering/deployment-patterns/
 - Before this: Batch vs Online vs Streaming Inference (`ai-engineering/batch-vs-online-inference`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 066f7f4137
 
 ## Intuition
 
@@ -49090,6 +49366,7 @@ How to replace a production model safely: offline validation gates, shadow deplo
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/experiment-tracking-and-model-registry/
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4cf6ec781f
 
 ## Intuition
 
@@ -49236,6 +49513,7 @@ What to record for every training run (code version, data snapshot, feature defi
 - Page: https://aimlrounds.com/tracks/ai-engineering/drift-detection-and-monitoring/
 - Before this: Training/Serving Skew and Feature Stores (`ai-engineering/training-serving-skew-and-feature-stores`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4d873ce1b9
 
 ## Intuition
 
@@ -49386,6 +49664,7 @@ How to know a production model is degrading: data drift (inputs change), concept
 - Page: https://aimlrounds.com/tracks/ai-engineering/monitoring-without-labels/
 - Before this: Drift Detection and Monitoring (`ai-engineering/drift-detection-and-monitoring`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 808e159b5a
 
 ## Intuition
 
@@ -49541,6 +49820,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/retraining-pipelines/
 - Before this: Drift Detection and Monitoring (`ai-engineering/drift-detection-and-monitoring`), Deployment Patterns: Shadow, Canary, A/B and Rollback (`ai-engineering/deployment-patterns`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 231639d488
 
 ## Intuition
 
@@ -49690,6 +49970,7 @@ When and how to retrain production models: scheduled vs triggered retraining, wh
 - Page: https://aimlrounds.com/tracks/ai-engineering/feedback-loops-and-unbiased-data/
 - Before this: Retraining Pipelines and Continuous Training (`ai-engineering/retraining-pipelines`), Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: c4e7f1c1bb
 
 ## Intuition
 
@@ -49851,6 +50132,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/mlops-practice/
 - Before this: Retraining Pipelines and Continuous Training (`ai-engineering/retraining-pipelines`)
 - Quiz topic: `mlops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: 0419e65db8
 
 How to use this page
 
@@ -50022,6 +50304,7 @@ New lessons: Monitoring Without Labels and Feedback Loops and Unbiased Training 
 - Page: https://aimlrounds.com/tracks/ai-engineering/llmops/
 - Before this: Deployment Patterns: Shadow, Canary, A/B and Rollback (`ai-engineering/deployment-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4dc34251cc
 
 ## Intuition
 
@@ -50170,6 +50453,7 @@ How operating LLM applications differs from classic MLOps: the model is usually 
 - Page: https://aimlrounds.com/tracks/ai-engineering/tracing-and-observability/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: d3ce270d23
 
 ## Intuition
 
@@ -50328,6 +50612,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/model-upgrades-and-retirements/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: f1424bbb76
 
 ## Intuition
 
@@ -50491,6 +50776,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/guardrails-and-prompt-injection/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 682a31e9ab
 
 ## Intuition
 
@@ -50650,6 +50936,7 @@ Protecting LLM applications: the main risks (direct jailbreaks, indirect prompt 
 - Page: https://aimlrounds.com/tracks/ai-engineering/cost-and-latency/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`), Prefix and Prompt Caching (`ai-engineering/prefix-caching`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: e5dcb89f8b
 
 ## Intuition
 
@@ -50794,6 +51081,7 @@ How to make an LLM application cheaper and faster without losing quality: where 
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-api-reliability/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 4f8b7b29a5
 
 ## Intuition
 
@@ -50963,6 +51251,7 @@ Explanations are ours, built from these sources. Lab numbers are illustrative un
 - Page: https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-1/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: eed38b5ee9
 
 How to use this page
 
@@ -51090,6 +51379,7 @@ New lessons: LLM API Reliability, Model Upgrades and Retirements and Tracing and
 - Page: https://aimlrounds.com/tracks/ai-engineering/genai-scenarios-set-2/
 - Before this: GenAI App Scenarios: Set 1 (`ai-engineering/genai-scenarios-set-1`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: d28bb7291b
 
 How to use this page
 
@@ -51243,6 +51533,7 @@ Uses these lessons: GenAI App Scenarios: Set 1, Structured Output, Parsing and C
 - Page: https://aimlrounds.com/tracks/ai-engineering/fine-tuning-incidents/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: e31e268b33
 
 How to use this page
 
@@ -51396,6 +51687,7 @@ Uses these lessons: SFT and Instruction Tuning, LoRA and QLoRA, DPO, Prompt vs R
 - Page: https://aimlrounds.com/tracks/ai-engineering/safety-and-guardrail-incidents/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: 692ea0fcad
 
 How to use this page
 
@@ -51549,6 +51841,7 @@ Uses these lessons: Guardrails and Prompt Injection, Agent Safety, Permissions a
 - Page: https://aimlrounds.com/tracks/ai-engineering/cost-and-reliability-incidents/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`), LLM API Reliability: Rate Limits, Retries and Fallbacks (`ai-engineering/llm-api-reliability`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: eea5227a54
 
 How to use this page
 
@@ -51701,6 +51994,7 @@ Uses these lessons: Cost and Latency, LLM API Reliability, Tracing and Observabi
 - Type: Concept · 15 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/why-look-inside-a-model/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: dbb9d3c489
 
 ## Intuition
 
@@ -51902,6 +52196,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/features-and-superposition/
 - Before this: Why Look Inside a Model? (`ai-engineering/why-look-inside-a-model`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 444398f6df
 
 ## Intuition
 
@@ -52231,6 +52526,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/residual-stream-and-circuits/
 - Before this: Features, Polysemanticity and Superposition (`ai-engineering/features-and-superposition`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: fe831ccf7c
 
 ## Intuition
 
@@ -52481,6 +52777,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/linear-representations/
 - Before this: Features, Polysemanticity and Superposition (`ai-engineering/features-and-superposition`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 046af8b638
 
 ## Intuition
 
@@ -52671,6 +52968,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/sparse-autoencoders/
 - Before this: Features, Polysemanticity and Superposition (`ai-engineering/features-and-superposition`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 7d1f04c444
 
 ## Intuition
 
@@ -52893,6 +53191,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/sae-failures-and-alternatives/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 76d97f183c
 
 ## Intuition
 
@@ -53128,6 +53427,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/transcoders-and-attribution-graphs/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`), The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 54e6bb69d6
 
 ## Intuition
 
@@ -53404,6 +53704,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/activation-patching/
 - Before this: The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 9fd182aaec
 
 ## Intuition
 
@@ -53622,6 +53923,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/validating-interpretability-claims/
 - Before this: Activation Patching and Circuit Discovery (`ai-engineering/activation-patching`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: d41a2bf4a4
 
 ## Intuition
 
@@ -53858,6 +54160,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/logit-lens-and-verbalisers/
 - Before this: The Residual Stream and Circuits (`ai-engineering/residual-stream-and-circuits`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: ee69e9076d
 
 ## Intuition
 
@@ -54088,6 +54391,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/probing-classifiers/
 - Before this: Linear Representations and Universality (`ai-engineering/linear-representations`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: dda7e4f172
 
 ## Intuition
 
@@ -54302,6 +54606,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/steering-vectors/
 - Before this: Linear Representations and Universality (`ai-engineering/linear-representations`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 757f449860
 
 ## Intuition
 
@@ -54462,6 +54767,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/knowledge-localisation-and-editing/
 - Before this: Activation Patching and Circuit Discovery (`ai-engineering/activation-patching`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 4d4940ca41
 
 ## Intuition
 
@@ -54628,6 +54934,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 15 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/model-diffing/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: e02757a513
 
 ## Intuition
 
@@ -54774,6 +55081,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-for-safety/
 - Before this: Probing Classifiers (`ai-engineering/probing-classifiers`), Steering Vectors (`ai-engineering/steering-vectors`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: b24bae8455
 
 ## Intuition
 
@@ -55052,6 +55360,7 @@ Explanations are ours, built from these sources. Chapters marked with page numbe
 - Type: Interview · 30 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-practice/
 - Before this: Validating Interpretability Claims (`ai-engineering/validating-interpretability-claims`)
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 9fa45b5e9f
 
 How to use this page
 
@@ -55220,6 +55529,7 @@ Each question links back to a lesson in this part: Why Look Inside a Model?, Fea
 - Type: Interview · 35 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-scenarios/
 - Before this: Probing Classifiers (`ai-engineering/probing-classifiers`), Steering Vectors (`ai-engineering/steering-vectors`)
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: c052271ae6
 
 How to use this page
 
@@ -55363,6 +55673,7 @@ The lessons behind these incidents: Why Look Inside a Model?, Features, Polysema
 - Page: https://aimlrounds.com/tracks/system-design/design-support-chatbot/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 5483568f7e
 
 ## Intuition
 
@@ -55567,6 +55878,7 @@ Based on a food-delivery company's published design for its delivery-partner sup
 - Page: https://aimlrounds.com/tracks/system-design/design-ai-tutor/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: d08a59e88d
 
 ## Intuition
 
@@ -55739,6 +56051,7 @@ Based on an education nonprofit's published learnings: [Khan Academy's "How Khan
 - Page: https://aimlrounds.com/tracks/system-design/design-voice-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: e4e886bdf4
 
 ## Intuition
 
@@ -55914,6 +56227,7 @@ Based on a customer-service AI company's published engineering post: [Sierra's "
 - Page: https://aimlrounds.com/tracks/system-design/design-store-assistant/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0a2bc69163
 
 ## Intuition
 
@@ -56118,6 +56432,7 @@ Based on an e-commerce company's published design: [Shopify's post on its mercha
 - Page: https://aimlrounds.com/tracks/system-design/design-codebase-qa/
 - Before this: Parsing and Chunking (`ai-engineering/parsing-and-chunking`), Keeping an Index Current (`ai-engineering/keeping-an-index-current`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 66141c818e
 
 ## Intuition
 
@@ -56282,6 +56597,7 @@ Based on published write-ups: a code search company's post ["How Cody understand
 - Page: https://aimlrounds.com/tracks/system-design/design-oncall-copilot/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Agentic RAG, and When Not to Index (`ai-engineering/agentic-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 2ab5fd60b2
 
 ## Intuition
 
@@ -56440,6 +56756,7 @@ Based on a ride-hailing company's posts: ["Genie: Uber's Gen AI On-Call Copilot"
 - Page: https://aimlrounds.com/tracks/system-design/design-ticket-graph-rag/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Ranking Metrics (`fundamentals/ranking-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 1baf0b7fa9
 
 ## Intuition
 
@@ -56600,6 +56917,7 @@ Based on a professional network's published paper: ["Retrieval-Augmented Generat
 - Page: https://aimlrounds.com/tracks/system-design/design-semantic-search/
 - Before this: Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 237b52da5a
 
 ## Intuition
 
@@ -56769,6 +57087,7 @@ Based on a retailer's published paper: ["Semantic Retrieval at Walmart"](https:/
 - Page: https://aimlrounds.com/tracks/system-design/design-enterprise-rag/
 - Before this: Permissions and Poisoning in RAG (`ai-engineering/permissions-and-poisoning`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 03ee857945
 
 ## Intuition
 
@@ -56961,6 +57280,7 @@ Built from published work: [Uber's agentic RAG post](https://www.uber.com/en-CA/
 - Page: https://aimlrounds.com/tracks/system-design/design-text-to-sql/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Advanced RAG: Hybrid Search, Re-ranking, Query Rewriting and GraphRAG (`ai-engineering/advanced-rag`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: f2ae2b6a8d
 
 ## Intuition
 
@@ -57151,6 +57471,7 @@ Based on a social media company's published design: [Pinterest's first post](htt
 - Page: https://aimlrounds.com/tracks/system-design/design-vision-llm/
 - Before this: Vision-Language Models (`fundamentals/vision-language-models`), LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 69bea643eb
 
 ## Intuition
 
@@ -57320,6 +57641,7 @@ Based on a super-app's published post: [Grab's "How we built a custom vision LLM
 - Page: https://aimlrounds.com/tracks/system-design/design-document-extraction/
 - Before this: Parsing and Chunking (`ai-engineering/parsing-and-chunking`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: b239518161
 
 ## Intuition
 
@@ -57494,6 +57816,7 @@ Based on a ride-hailing company's published system: [Uber's "Advancing Invoice D
 - Page: https://aimlrounds.com/tracks/system-design/design-spam-abuse-detection/
 - Before this: Anomaly Detection (`fundamentals/anomaly-detection`), Thresholds & Misclassification Costs (`fundamentals/thresholds-and-costs`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 4282bbd691
 
 ## Intuition
 
@@ -57662,6 +57985,7 @@ Based on a professional network's published posts: [LinkedIn's "Automated Fake A
 - Page: https://aimlrounds.com/tracks/system-design/design-content-moderation/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0783795d9a
 
 ## Intuition
 
@@ -57834,6 +58158,7 @@ Based on a gaming platform's published posts: [Roblox's "How Roblox Uses AI to M
 - Page: https://aimlrounds.com/tracks/system-design/design-refund-agent/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 8f1fb4053c
 
 ## Intuition
 
@@ -57972,6 +58297,7 @@ A full agent system design walkthrough in interview order: clarify requirements,
 - Page: https://aimlrounds.com/tracks/system-design/design-incident-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 571a22f681
 
 ## Intuition
 
@@ -58134,6 +58460,7 @@ Based on published write-ups: an observability company's [investigation agent](h
 - Page: https://aimlrounds.com/tracks/system-design/design-hiring-agent/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Human-in-the-Loop Design for Agents (`ai-engineering/human-in-the-loop-design`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 46fb9a9fd2
 
 ## Intuition
 
@@ -58298,6 +58625,7 @@ Based on a professional network's published material: its engineering post ["The
 - Page: https://aimlrounds.com/tracks/system-design/design-trip-planner-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: c2050c2516
 
 ## Intuition
 
@@ -58454,6 +58782,7 @@ Based on a travel company's published work, reported by the trade press: [an int
 - Page: https://aimlrounds.com/tracks/system-design/design-research-agent/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Agent Infrastructure: Durable Execution, Retries and Budgets (`ai-engineering/agent-infrastructure`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0497aee4e5
 
 ## Intuition
 
@@ -58654,6 +58983,7 @@ Based on an AI company's published design: [Anthropic's post on its multi-agent 
 - Page: https://aimlrounds.com/tracks/system-design/recommendation-system/
 - Before this: Gradient Boosting (`fundamentals/gradient-boosting`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `sdrec`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: ed0caf4afb
 
 ## Intuition
 
@@ -58747,6 +59077,7 @@ You can't score every item for every user, so I'd narrow in stages. A fast candi
 - Page: https://aimlrounds.com/tracks/system-design/design-short-video-recs/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: de9a224949
 
 ## Intuition
 
@@ -58905,6 +59236,7 @@ Based on a short-video company's published paper: ["Monolith: Real Time Recommen
 - Page: https://aimlrounds.com/tracks/system-design/design-job-recommendations/
 - Before this: Embeddings and Representation Learning (`fundamentals/embeddings`), Contrastive Learning (SimCLR, CLIP) (`fundamentals/contrastive-learning`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 62eb5f0dcc
 
 ## Intuition
 
@@ -59063,6 +59395,7 @@ Based on a professional network's published work: the paper ["A Scalable and Eff
 - Page: https://aimlrounds.com/tracks/system-design/design-cross-category-cold-start/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 54b02b8bc3
 
 ## Intuition
 
@@ -59219,6 +59552,7 @@ Based on a delivery company's published paper: ["Mind the Gap: Bridging Behavior
 - Page: https://aimlrounds.com/tracks/system-design/design-rec-foundation-model/
 - Before this: Distillation: How Small Models Learn from Big Ones (`fundamentals/distillation`), The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5fa170dc16
 
 ## Intuition
 
@@ -59373,6 +59707,7 @@ Based on published posts: a social network's [generative ads model](https://engi
 - Page: https://aimlrounds.com/tracks/system-design/design-fraud-detection/
 - Before this: Class Imbalance (`fundamentals/class-imbalance`), Thresholds & Misclassification Costs (`fundamentals/thresholds-and-costs`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 1efb0802a4
 
 ## Intuition
 
@@ -59546,6 +59881,7 @@ Based on a payments company's published post: [Stripe's "How we built it: Stripe
 - Page: https://aimlrounds.com/tracks/system-design/design-feed-ranking/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), Embeddings and Vector Indexes (`ai-engineering/embeddings-and-vector-indexes`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 924f65d0e7
 
 ## Intuition
 
@@ -59720,6 +60056,7 @@ Based on a social app's published post: [Meta's "Scaling the Instagram Explore r
 - Page: https://aimlrounds.com/tracks/system-design/design-ad-click-prediction/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`), Probability Metrics (`fundamentals/probability-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: d07c3ef18b
 
 ## Intuition
 
@@ -59888,6 +60225,7 @@ Based on a social network's published paper: ["Practical Lessons from Predicting
 - Page: https://aimlrounds.com/tracks/system-design/design-search-ranking/
 - Before this: Ranking Metrics (`fundamentals/ranking-metrics`), Learning-Rate Schedules (`fundamentals/learning-rate-schedules`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: f0adb2bd31
 
 ## Intuition
 
@@ -60054,6 +60392,7 @@ Based on a home-sharing marketplace's published paper: ["Applying Deep Learning 
 - Page: https://aimlrounds.com/tracks/system-design/design-eta-prediction/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`), Regression Metrics (`fundamentals/regression-metrics`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: c4f8d442fa
 
 ## Intuition
 
@@ -60221,6 +60560,7 @@ Based on a ride-hailing company's published post: [Uber's "DeepETA: How Uber Pre
 - Page: https://aimlrounds.com/tracks/system-design/design-notification-optimization/
 - Before this: Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`), Bayesian Inference and Conjugate Priors (`fundamentals/bayesian-inference-and-conjugate-priors`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 339464befc
 
 ## Intuition
 
@@ -60387,6 +60727,7 @@ Based on a language-learning app's published paper: ["A Sleeping, Recovering Ban
 - Page: https://aimlrounds.com/tracks/system-design/design-coding-agent/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 1fa903b148
 
 ## Intuition
 
@@ -60560,6 +60901,7 @@ Based on a music-streaming company's published series: [Spotify's background cod
 - Page: https://aimlrounds.com/tracks/system-design/design-code-autocomplete/
 - Before this: Continuous Batching and Scheduling (`ai-engineering/continuous-batching`), Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 0120789cd2
 
 ## Intuition
 
@@ -60740,6 +61082,7 @@ Based on a talk about a real system: [David Cheney on serving GitHub Copilot](ht
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-eval-platform/
 - Before this: RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`), LLMOps: What's Different (`ai-engineering/llmops`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 3d876eea44
 
 ## Intuition
 
@@ -60912,6 +61255,7 @@ Based on a file-storage company's published approach for its AI assistant: [Drop
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-platform/
 - Before this: LLMOps: What's Different (`ai-engineering/llmops`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: dc206f1472
 
 ## Intuition
 
@@ -61094,6 +61438,7 @@ Based on a ride-hailing company's published design: [Uber's post on its LLM gate
 - Page: https://aimlrounds.com/tracks/system-design/design-llm-prompt-test/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: ef093b90a0
 
 ## Intuition
 
@@ -61273,6 +61618,7 @@ Based on an education company's approach, from [a vendor's account of Khan Acade
 - Page: https://aimlrounds.com/tracks/system-design/design-ai-subject-lines/
 - Before this: Reading the Result: Significance and Decisions (`fundamentals/reading-ab-results`), Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: df729f8421
 
 ## Intuition
 
@@ -61449,6 +61795,7 @@ Based on a neighbourhood app's published work: [Nextdoor's paper, Let AI Enterta
 - Page: https://aimlrounds.com/tracks/system-design/design-interleaving/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`), Ranking Metrics (`fundamentals/ranking-metrics`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 85cba2a372
 
 ## Intuition
 
@@ -61643,6 +61990,7 @@ Based on published work: [Airbnb's KDD 2025 paper](https://arxiv.org/html/2508.0
 - Page: https://aimlrounds.com/tracks/system-design/design-network-experiment/
 - Before this: Interference: When Groups Affect Each Other (`fundamentals/interference-in-experiments`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: 75c9bee354
 
 ## Intuition
 
@@ -61827,6 +62175,7 @@ Based on a professional network's published method: [LinkedIn's ego-cluster pape
 - Page: https://aimlrounds.com/tracks/system-design/design-image-personalisation/
 - Before this: Bandits vs A/B Tests (`fundamentals/bandits-vs-ab-tests`)
 - Quiz topic: `sdrec`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: e201d5495b
 
 ## Intuition
 
@@ -62011,6 +62360,7 @@ Based on a streaming company's published work: [Netflix's QCon 2018 talk](https:
 - Page: https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/
 - Before this: Choosing Metrics: OEC, Drivers and Guardrails (`fundamentals/choosing-ab-metrics`), Multiple Testing and Segments (`fundamentals/multiple-testing`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: feb3e42994
 
 ## Intuition
 
@@ -62195,6 +62545,7 @@ Based on a music streaming company's published framework: [Spotify's post](https
 - Page: https://aimlrounds.com/tracks/system-design/design-experimentation-platform/
 - Before this: Running Many Tests at Once (`fundamentals/running-many-tests-at-once`), Trust Checks: SRM and A/A Tests (`fundamentals/sample-ratio-mismatch`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: dc8e977a3c
 
 ## Intuition
 
@@ -62381,6 +62732,7 @@ Built from published accounts: [Google's overlapping experiments paper](https://
 - Page: https://aimlrounds.com/tracks/papers/attention-is-all-you-need/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Related: Multi-Head Attention (`fundamentals/multi-head-attention`)
+- Sources checked: 2026-11-09 · Text last changed: 2026-11-20 · Version: 0938e87fd8
 
 ## Gist
 
@@ -62746,6 +63098,7 @@ The attention scores in the first lab are illustrative. All other numbers come f
 - Page: https://aimlrounds.com/tracks/papers/scaling-laws-and-chinchilla/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Related: Attention Is All You Need (`papers/attention-is-all-you-need`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: ae70671296
 
 ## Gist
 
@@ -63078,6 +63431,7 @@ The labs compute from the papers' published formulas. @datawithsuman
 - Page: https://aimlrounds.com/tracks/papers/instructgpt/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Related: Reward Models and RLHF (PPO) (`fundamentals/rlhf-and-reward-models`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: fd71e4b039
 
 ## Gist
 
@@ -63389,6 +63743,7 @@ The KL lab's curves are illustrative. All other numbers come from the paper. @da
 - Page: https://aimlrounds.com/tracks/papers/deepseek-r1/
 - Before this: InstructGPT (`papers/instructgpt`)
 - Related: Reasoning Models: RLVR, GRPO and Test-Time Compute (`fundamentals/reasoning-models-grpo`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: cf4b3abc74
 
 ## Gist
 
@@ -63818,6 +64173,7 @@ The voting lab is illustrative. All other numbers come from the papers above. @d
 - Page: https://aimlrounds.com/tracks/papers/lora/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Related: LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: 527bc7e0a9
 
 ## Gist
 
@@ -64105,6 +64461,7 @@ The labs compute from the paper's formulas and figures. @datawithsuman
 - Page: https://aimlrounds.com/tracks/papers/harness-engineering/
 - Before this: What Is an Agent? The ReAct Loop (`ai-engineering/what-is-an-agent`)
 - Related: Context Language Models (`papers/context-language-models`)
+- Sources checked: 2026-10-27 · Text last changed: 2026-11-20 · Version: 07b9687e43
 
 ## Gist
 
@@ -64618,6 +64975,7 @@ The test_invoice.py task and the numbers inside the widgets (tokens per schema, 
 - Page: https://aimlrounds.com/tracks/papers/context-language-models/
 - Before this: Harness Engineering (`papers/harness-engineering`)
 - Related: Harness Engineering (`papers/harness-engineering`)
+- Sources checked: not stated · Text last changed: 2026-11-20 · Version: e71d02e7cd
 
 ## Gist
 
@@ -64843,6 +65201,7 @@ The paper's four-task test that isolates context management from reasoning.
 - Page: https://aimlrounds.com/tracks/papers/mech-interp-survey/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Related: Why Look Inside a Model? (`ai-engineering/why-look-inside-a-model`), Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: d4419b229e
 
 ## Gist
 

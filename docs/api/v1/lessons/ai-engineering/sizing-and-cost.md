@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/sizing-and-cost/
 - Before this: Scaling Inference: Parallelism, Replicas and Routing (`ai-engineering/scaling-inference`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: beed7025f4
 
 ## Intuition
 

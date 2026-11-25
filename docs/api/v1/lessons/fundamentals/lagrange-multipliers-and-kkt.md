@@ -8,6 +8,7 @@
 - Before this: Convexity & Local Minima (`fundamentals/convexity-and-local-minima`)
 - Related: Principal Component Analysis (`fundamentals/pca`), Support Vector Machines (`fundamentals/support-vector-machines`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: c5903ed087
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sequence-labelling-and-ner/
 - Before this: Text Classification: Naive Bayes vs Logistic Regression (`fundamentals/text-classification`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 633e786330
 
 ## Intuition
 

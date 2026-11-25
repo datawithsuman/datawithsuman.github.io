@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/calculus-practice/
 - Before this: Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-19 · Version: a91662cbc0
 
 How to use this page
 

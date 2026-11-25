@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/llm-practice-scaling/
 - Before this: Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP (`fundamentals/distributed-training`), Mixture of Experts (`fundamentals/mixture-of-experts`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-19 · Version: c3f3fc66a9
 
 How to use this page
 

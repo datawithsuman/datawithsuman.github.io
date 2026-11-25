@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/weight-decay-and-adamw/
 - Before this: Regularized Linear Models (`fundamentals/regularized-linear-models`), Gradient Descent, Momentum & Adam (`fundamentals/gradient-descent`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: a2517ebd2a
 
 ## Intuition
 

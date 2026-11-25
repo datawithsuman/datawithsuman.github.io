@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-end-to-end/
 - Before this: Search: BM25, Dense and Hybrid Retrieval (`fundamentals/search-and-retrieval`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `rag`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 7f3a511963
 
 ## Intuition
 

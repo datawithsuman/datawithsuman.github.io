@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/benchmarks-and-contamination/
 - Before this: Pretraining Data: Deduplication, Filtering and Mixtures (`fundamentals/pretraining-data`)
 - Quiz topic: `llmgen`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f73bc20a7f
 
 ## Intuition
 

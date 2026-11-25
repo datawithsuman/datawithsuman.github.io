@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-hiring-agent/
 - Before this: Multi-Agent Systems (`ai-engineering/multi-agent-systems`), Human-in-the-Loop Design for Agents (`ai-engineering/human-in-the-loop-design`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 46fb9a9fd2
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/cross-validation-and-leakage/
 - Before this: The Bias–Variance Trade-off (`fundamentals/bias-variance`)
 - Quiz topic: `mlcore`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8c33d78e1a
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/validating-an-llm-judge/
 - Before this: LLM Judges: Pairwise Preferences and Pass/Fail Checks (`ai-engineering/llm-as-a-judge`), Classification Metrics (`fundamentals/classification-metrics`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 5d44594686
 
 ## Intuition
 

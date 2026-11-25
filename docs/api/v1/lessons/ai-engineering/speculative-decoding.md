@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/speculative-decoding/
 - Before this: Prefill vs Decode (`ai-engineering/prefill-vs-decode`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f46efc7401
 
 ## Intuition
 

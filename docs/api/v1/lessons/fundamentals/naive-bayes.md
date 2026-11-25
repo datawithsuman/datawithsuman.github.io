@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/naive-bayes/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 9ea2fa39fd
 
 ## Intuition
 

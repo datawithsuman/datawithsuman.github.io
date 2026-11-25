@@ -8,6 +8,7 @@
 - Before this: Expectation, Variance & Covariance (`fundamentals/expectation-and-variance`)
 - Related: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`)
 - Quiz topic: `prob`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 7374f04a05
 
 ## Intuition
 

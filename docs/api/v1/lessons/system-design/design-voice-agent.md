@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-voice-agent/
 - Before this: Tool and Function Calling (`ai-engineering/tool-calling`), Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: e4e886bdf4
 
 ## Intuition
 

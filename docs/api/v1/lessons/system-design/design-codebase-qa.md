@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-codebase-qa/
 - Before this: Parsing and Chunking (`ai-engineering/parsing-and-chunking`), Keeping an Index Current (`ai-engineering/keeping-an-index-current`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 66141c818e
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/cnn-architectures/
 - Before this: ResNets and Skip Connections (`fundamentals/resnets-and-skip-connections`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 95fb74285f
 
 ## Intuition
 

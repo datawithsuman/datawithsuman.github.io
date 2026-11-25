@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-document-extraction/
 - Before this: Parsing and Chunking (`ai-engineering/parsing-and-chunking`), Structured Output and Constrained Decoding (`ai-engineering/structured-output`)
 - Quiz topic: `sdllm`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: b239518161
 
 ## Intuition
 

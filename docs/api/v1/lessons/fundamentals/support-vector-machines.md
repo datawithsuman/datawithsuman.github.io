@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/support-vector-machines/
 - Before this: Logistic Regression (`fundamentals/logistic-regression`)
 - Quiz topic: `clf`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8c0971f5d6
 
 ## Intuition
 

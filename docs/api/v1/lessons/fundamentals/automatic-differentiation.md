@@ -8,6 +8,7 @@
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Related: Backpropagation Through a Network (`fundamentals/backpropagation`)
 - Quiz topic: `calc`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 3dfc7805bc
 
 ## Intuition
 

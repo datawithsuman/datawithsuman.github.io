@@ -2,12 +2,12 @@
 // mock interviews and jobs to Claude and other MCP clients over Streamable HTTP (stateless, JSON responses).
 // It owns no content: everything is read from the files build.py publishes under /api/v1/ and /jobs/.
 
-const SERVER = { name: "aimlrounds", title: "AIML Rounds", version: "1.0.0" };
+const SERVER = { name: "aimlrounds", title: "AIML Rounds", version: "1.1.0" };
 const VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 const TTL_MS = 10 * 60 * 1000;
 
 const INSTRUCTIONS = `AIML Rounds (aimlrounds.com) is a free AI/ML interview-prep site: lessons from maths to LLMs, RAG, agents, inference, MLOps, evals and AI/ML system design; role roadmaps; topic quizzes; mock interviews; and AI/ML jobs in India from the last 7 days.
-Use search to find lessons, then get_lesson to read one. When you teach from a lesson, follow its own framing (situation → idea → how it works → in practice → the interview answer) and give the lesson link.
+Use search to find lessons, then get_lesson to read one. Each lesson says when its sources were checked and when its text last changed; for fast-moving facts (prices, model names, benchmarks) mention that date. When you teach from a lesson, follow its own framing (situation → idea → how it works → in practice → the interview answer) and give the lesson link.
 For quizzes and mock interviews, ask one question at a time and let the learner answer before revealing anything.`;
 
 // ---------- data ----------
@@ -56,7 +56,8 @@ function score(row, terms, phrase) {
 }
 
 const where = (r) => [r.trackName, r.part, r.section].filter((x, i, a) => x && a.indexOf(x) === i).join(" › ");
-const brief = (r) => ({ id: r.id, title: r.title, where: where(r), type: r.type, minutes: r.minutes, question: r.lead, url: r.url });
+const brief = (r) => ({ id: r.id, title: r.title, where: where(r), type: r.type, minutes: r.minutes, question: r.lead, url: r.url,
+  sources_checked: r.checked || undefined, last_changed: r.updated || undefined, version: r.version || undefined });
 
 async function findLesson(env, ref) {
   const idx = await index(env);

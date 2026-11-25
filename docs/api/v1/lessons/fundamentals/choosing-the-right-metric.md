@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/choosing-the-right-metric/
 - Before this: Classification Metrics (`fundamentals/classification-metrics`), Regression Metrics (`fundamentals/regression-metrics`), Ranking Metrics (`fundamentals/ranking-metrics`), Probability Metrics (`fundamentals/probability-metrics`)
 - Quiz topic: `metrics`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: ca8fbc6edb
 
 ## Intuition
 

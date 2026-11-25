@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/convolution-and-receptive-field/
 - Before this: From Perceptron to MLP (`fundamentals/perceptron-to-mlp`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 681218a78e
 
 ## Intuition
 

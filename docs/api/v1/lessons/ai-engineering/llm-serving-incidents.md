@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/llm-serving-incidents/
 - Before this: Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`), Prefix and Prompt Caching (`ai-engineering/prefix-caching`)
 - Quiz topic: `infer`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: 56ab065d0a
 
 How to use this page
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/safety-and-red-team-evals/
 - Before this: Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`), Agent Safety: Permissions, Sandboxing and the Lethal Trifecta (`ai-engineering/agent-safety`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 73146ffc29
 
 ## Intuition
 

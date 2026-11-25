@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/gradient-descent/
 - Before this: Derivatives, Gradients & the Chain Rule (`fundamentals/derivatives-and-chain-rule`)
 - Quiz topic: `calc`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 9afecaa665
 
 ## Intuition
 

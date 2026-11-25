@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/vanishing-exploding-gradients/
 - Before this: Backpropagation Through a Network (`fundamentals/backpropagation`), Activation Functions (`fundamentals/activation-functions`)
 - Quiz topic: `train`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: bd089c02bf
 
 ## Intuition
 

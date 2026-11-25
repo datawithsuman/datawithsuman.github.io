@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/supervised-fine-tuning/
 - Before this: The Next-Token Objective (`fundamentals/next-token-prediction`)
 - Quiz topic: `post`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: fa659ef342
 
 ## Intuition
 

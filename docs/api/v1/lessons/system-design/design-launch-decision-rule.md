@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/design-launch-decision-rule/
 - Before this: Choosing Metrics: OEC, Drivers and Guardrails (`fundamentals/choosing-ab-metrics`), Multiple Testing and Segments (`fundamentals/multiple-testing`)
 - Quiz topic: `sdexp`
+- Sources checked: 2026-11-05 · Text last changed: 2026-11-20 · Version: feb3e42994
 
 ## Intuition
 

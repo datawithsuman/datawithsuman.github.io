@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/vision-transformers/
 - Before this: The Transformer, End to End (`fundamentals/transformer-end-to-end`), Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 43952fd725
 
 ## Intuition
 

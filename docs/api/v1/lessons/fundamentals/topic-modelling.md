@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/topic-modelling/
 - Before this: Bag-of-Words, N-grams and TF-IDF (`fundamentals/bag-of-words-and-tf-idf`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 65c03497c2
 
 ## Intuition
 

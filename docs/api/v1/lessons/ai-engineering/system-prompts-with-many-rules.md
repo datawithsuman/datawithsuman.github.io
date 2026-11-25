@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/system-prompts-with-many-rules/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: ed56a63fb5
 
 ## Intuition
 

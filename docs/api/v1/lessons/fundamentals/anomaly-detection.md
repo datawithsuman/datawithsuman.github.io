@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/anomaly-detection/
 - Before this: Random Forest (`fundamentals/random-forest`), k-Nearest Neighbours (`fundamentals/k-nearest-neighbours`)
 - Quiz topic: `unsup`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 8d70dadcec
 
 ## Intuition
 

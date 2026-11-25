@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-scenarios-long-running/
 - Before this: Long-Running and Scheduled Agents (`ai-engineering/long-running-and-scheduled-agents`)
 - Quiz topic: `agents`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 7d1622d74b
 
 How to use this page
 

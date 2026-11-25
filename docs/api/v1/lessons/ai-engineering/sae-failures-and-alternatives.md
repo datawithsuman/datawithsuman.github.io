@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/sae-failures-and-alternatives/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 76d97f183c
 
 ## Intuition
 

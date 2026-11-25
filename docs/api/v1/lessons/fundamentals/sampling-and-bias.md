@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/sampling-and-bias/
 - Before this: Descriptive Statistics and Outliers (`fundamentals/descriptive-statistics-and-outliers`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 4b7874d15e
 
 ## Intuition
 

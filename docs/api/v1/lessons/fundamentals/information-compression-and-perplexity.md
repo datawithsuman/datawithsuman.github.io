@@ -8,6 +8,7 @@
 - Before this: Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Related: N-gram Language Models and Perplexity (`fundamentals/n-gram-language-models`)
 - Quiz topic: `info`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: fed526afdb
 
 ## Intuition
 

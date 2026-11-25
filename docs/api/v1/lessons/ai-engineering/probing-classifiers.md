@@ -6,6 +6,7 @@
 - Type: Concept · 20 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/probing-classifiers/
 - Before this: Linear Representations and Universality (`ai-engineering/linear-representations`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: dda7e4f172
 
 ## Intuition
 

@@ -6,6 +6,7 @@
 - Type: Interview · 30 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/interpretability-practice/
 - Before this: Validating Interpretability Claims (`ai-engineering/validating-interpretability-claims`)
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: 9fa45b5e9f
 
 How to use this page
 

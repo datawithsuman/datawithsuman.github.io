@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/feature-engineering/
 - Before this: Missing Values & Feature Scaling (`fundamentals/missing-values-and-scaling`), Encoding Categorical Features (`fundamentals/categorical-encoding`)
 - Quiz topic: `feat`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: 3503fccbd7
 
 ## Intuition
 

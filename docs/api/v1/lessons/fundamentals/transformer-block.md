@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/transformer-block/
 - Before this: Multi-Head Attention (`fundamentals/multi-head-attention`), BatchNorm vs LayerNorm vs RMSNorm (`fundamentals/normalisation-layers`)
 - Quiz topic: `attn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: b3de989eee
 
 ## Intuition
 

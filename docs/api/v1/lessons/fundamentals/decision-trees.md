@@ -6,6 +6,7 @@
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/decision-trees/
 - Quiz topic: `trees`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: c2194de86c
 
 ## Intuition
 

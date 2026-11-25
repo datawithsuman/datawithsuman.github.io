@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/permissions-and-poisoning/
 - Before this: RAG End to End (`ai-engineering/rag-end-to-end`), Guardrails and Prompt Injection (`ai-engineering/guardrails-and-prompt-injection`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: bdfc59c3a2
 
 ## Intuition
 

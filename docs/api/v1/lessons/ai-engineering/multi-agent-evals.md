@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/multi-agent-evals/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`), Multi-Agent Systems (`ai-engineering/multi-agent-systems`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: fb8a529dc3
 
 ## Intuition
 

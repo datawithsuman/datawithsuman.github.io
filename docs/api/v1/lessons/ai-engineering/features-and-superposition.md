@@ -6,6 +6,7 @@
 - Type: Concept · 25 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/features-and-superposition/
 - Before this: Why Look Inside a Model? (`ai-engineering/why-look-inside-a-model`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: 444398f6df
 
 ## Intuition
 

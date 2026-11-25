@@ -6,6 +6,7 @@
 - Type: Concept · 15 min
 - Page: https://aimlrounds.com/tracks/ai-engineering/model-diffing/
 - Before this: Sparse Autoencoders (`ai-engineering/sparse-autoencoders`)
+- Sources checked: 2026-11-13 · Text last changed: 2026-11-20 · Version: e02757a513
 
 ## Intuition
 

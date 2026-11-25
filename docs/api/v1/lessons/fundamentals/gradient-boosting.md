@@ -8,6 +8,7 @@
 - Before this: Decision Trees (`fundamentals/decision-trees`), Random Forest (`fundamentals/random-forest`)
 - Related: Design a recommendation system (`system-design/recommendation-system`)
 - Quiz topic: `trees`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 7b3fe8531a
 
 ## Intuition
 

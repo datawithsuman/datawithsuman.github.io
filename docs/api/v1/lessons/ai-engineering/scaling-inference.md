@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/scaling-inference/
 - Before this: Serving Metrics and SLOs (`ai-engineering/serving-metrics-and-slos`), Training at Scale: Mixed Precision, Parallelism, ZeRO/FSDP (`fundamentals/distributed-training`)
 - Quiz topic: `infer`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 0381fcad04
 
 ## Intuition
 

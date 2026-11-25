@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/pooling-stride-padding/
 - Before this: Convolution and Receptive Field (`fundamentals/convolution-and-receptive-field`)
 - Quiz topic: `cnn`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: ecc6edbdf3
 
 ## Intuition
 

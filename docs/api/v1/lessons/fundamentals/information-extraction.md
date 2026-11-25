@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/information-extraction/
 - Before this: Sequence Labelling and NER (`fundamentals/sequence-labelling-and-ner`), BERT and Masked Language Models (`fundamentals/bert-and-masked-language-models`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 3b81269f91
 
 ## Intuition
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompting-reasoning-models/
 - Before this: Prompt Engineering Patterns (`ai-engineering/prompt-engineering-patterns`), Reasoning Models: RLVR, GRPO and Test-Time Compute (`fundamentals/reasoning-models-grpo`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 21b0fb526a
 
 ## Intuition
 

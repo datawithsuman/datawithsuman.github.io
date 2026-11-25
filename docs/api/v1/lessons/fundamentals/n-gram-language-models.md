@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/n-gram-language-models/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`), Entropy, Cross-Entropy & KL Divergence (`fundamentals/entropy-cross-entropy-kl`)
 - Quiz topic: `nlp`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: f8e892fe03
 
 ## Intuition
 

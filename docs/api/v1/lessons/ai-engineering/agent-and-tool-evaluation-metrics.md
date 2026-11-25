@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/agent-and-tool-evaluation-metrics/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`), Tool and Function Calling (`ai-engineering/tool-calling`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: ab7afb0a59
 
 ## Intuition
 

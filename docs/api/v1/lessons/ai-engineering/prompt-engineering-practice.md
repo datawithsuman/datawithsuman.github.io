@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/prompt-engineering-practice/
 - Before this: A Prompt Fix That Broke Production (`ai-engineering/prompt-change-broke-production`)
 - Quiz topic: `prompt`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: 2ab9096825
 
 How to use this page
 

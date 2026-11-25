@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/vectors-and-cosine-similarity/
 - Related: RAG End to End (`ai-engineering/rag-end-to-end`)
 - Quiz topic: `la`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: 48ad58aaa9
 
 ## Intuition
 

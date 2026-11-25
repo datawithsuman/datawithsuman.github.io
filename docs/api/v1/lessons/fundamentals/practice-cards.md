@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/practice-cards/
 - Before this: Probability Basics & Bayes' Rule (`fundamentals/probability-and-bayes`)
 - Quiz topic: `prob`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-19 · Version: 63ac3a3a5f
 
 How to use this page
 

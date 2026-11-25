@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/coding-agent-evals/
 - Before this: Agent Evals: End States, pass^k and Cost (`ai-engineering/evaluating-agents`)
 - Quiz topic: `evals`
+- Sources checked: 2026-11-15 · Text last changed: 2026-11-20 · Version: 524062ab13
 
 ## Intuition
 

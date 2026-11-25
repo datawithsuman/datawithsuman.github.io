@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/flashattention/
 - Before this: Self-Attention (Q, K, V) (`fundamentals/self-attention`)
 - Quiz topic: `arch`
+- Sources checked: 2026-10-29 · Text last changed: 2026-11-20 · Version: 4c40e728a0
 
 ## Intuition
 

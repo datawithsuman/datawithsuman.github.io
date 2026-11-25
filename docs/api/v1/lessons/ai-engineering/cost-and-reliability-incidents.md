@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/cost-and-reliability-incidents/
 - Before this: Cost and Latency: Routing, Caching and Batching (`ai-engineering/cost-and-latency`), LLM API Reliability: Rate Limits, Retries and Fallbacks (`ai-engineering/llm-api-reliability`)
 - Quiz topic: `llmops`
+- Sources checked: 2026-11-10 · Text last changed: 2026-11-19 · Version: eea5227a54
 
 How to use this page
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/variance-reduction-cuped/
 - Before this: Sample Size, Power and Runtime (`fundamentals/sample-size-and-power`)
 - Quiz topic: `ab`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-20 · Version: 57c995f7d1
 
 ## Intuition
 

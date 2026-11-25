@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/fundamentals/bayesian-vs-frequentist/
 - Before this: Hypothesis Tests, p-values & A/B Testing (`fundamentals/hypothesis-testing-and-ab-tests`), Bayesian Inference and Conjugate Priors (`fundamentals/bayesian-inference-and-conjugate-priors`)
 - Quiz topic: `stats`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: cc4114cc21
 
 ## Intuition
 

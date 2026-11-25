@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/papers/lora/
 - Before this: SFT and Instruction Tuning (`fundamentals/supervised-fine-tuning`)
 - Related: LoRA and QLoRA: Parameter-Efficient Fine-Tuning (`fundamentals/lora-and-qlora`)
+- Sources checked: 2026-11-11 · Text last changed: 2026-11-20 · Version: 527bc7e0a9
 
 ## Gist
 

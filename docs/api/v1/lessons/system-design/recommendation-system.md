@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/system-design/recommendation-system/
 - Before this: Gradient Boosting (`fundamentals/gradient-boosting`), Embeddings and Representation Learning (`fundamentals/embeddings`)
 - Quiz topic: `sdrec`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: ed0caf4afb
 
 ## Intuition
 

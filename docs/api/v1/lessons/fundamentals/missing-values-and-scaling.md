@@ -6,6 +6,7 @@
 - Type: Concept · 30 min
 - Page: https://aimlrounds.com/tracks/fundamentals/missing-values-and-scaling/
 - Quiz topic: `feat`
+- Sources checked: 2026-10-28 · Text last changed: 2026-11-20 · Version: a34b18efb7
 
 ## Intuition
 

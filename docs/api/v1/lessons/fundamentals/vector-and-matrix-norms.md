@@ -8,6 +8,7 @@
 - Before this: Vectors, Dot Products & Cosine Similarity (`fundamentals/vectors-and-cosine-similarity`)
 - Related: Regularized Linear Models (`fundamentals/regularized-linear-models`)
 - Quiz topic: `la`
+- Sources checked: 2026-11-06 · Text last changed: 2026-11-20 · Version: f4476bfbb6
 
 ## Intuition
 

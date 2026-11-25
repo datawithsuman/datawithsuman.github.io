@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/applied-evals-practice/
 - Before this: Can You Trust Your Judge? TPR, TNR and Corrected Pass Rates (`ai-engineering/validating-an-llm-judge`)
 - Quiz topic: `evals`
+- Sources checked: not stated · Text last changed: 2026-11-19 · Version: f5a2a5fd17
 
 How to use this page
 

@@ -7,6 +7,7 @@
 - Page: https://aimlrounds.com/tracks/ai-engineering/rag-practice/
 - Before this: Re-ranking and Late Interaction (`ai-engineering/reranking-and-late-interaction`), RAG Evals: Retrieval, Faithfulness and Relevance (`ai-engineering/rag-evals`)
 - Quiz topic: `rag`
+- Sources checked: 2026-11-07 · Text last changed: 2026-11-19 · Version: bae7faf580
 
 How to use this page
 
