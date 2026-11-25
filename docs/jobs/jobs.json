@@ -1,8 +1,195 @@
 {
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "days": 7,
- "count": 82,
+ "count": 79,
  "jobs": [
+  {
+   "title": "Associate AI/ML Engineer",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Hyderabad",
+   "posted": "2026-11-25",
+   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/associate-ai-ml-engineer/34088/103051748416",
+   "jd": {
+    "skills": [
+     "Azure",
+     "RAG",
+     "Spark",
+     "Databricks",
+     "Agents",
+     "Python"
+    ],
+    "needs": [
+     "3+ years of software engineering experience, including hands-on experience building AI/GenAI or LLM-based applications (e.g., RAG systems, agentic workflows, or AI…",
+     "Experience designing and building both batch and real-time streaming data pipelines using Spark, Scala, or Python",
+     "Hands-on experience working with event-streaming or distributed messaging platforms (e.g., Apache Kafka, Azure Event Hubs, or Spark Structured Streaming)"
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Software Engineer III - Python, AWS / MLOps",
+   "company": "JPMorgan Chase",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210809553",
+   "jd": {
+    "skills": [
+     "AWS",
+     "Python",
+     "MLOps",
+     "Kafka",
+     "Kubernetes",
+     "Docker"
+    ],
+    "needs": [
+     "Formal training or certification on software engineering concepts and 3+ years applied experience",
+     "Hands-on practical experience in system design, application development, testing, and operational stability",
+     "Experience in developing, debugging, and maintaining code in a large corporate environment with one or more modern programming languages and database querying languages"
+    ]
+   },
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Sr Data Scientist",
+   "company": "GE Vernova",
+   "location": "Bengaluru",
+   "posted": "2026-11-25",
+   "url": "https://gevernova.wd5.myworkdayjobs.com/Vernova_ExternalSite/job/Bengaluru/Sr-Data-Scientist_R5059764",
+   "jd": {
+    "skills": [
+     "MLOps",
+     "LLMs",
+     "Generative AI",
+     "RAG",
+     "Agents",
+     "SQL"
+    ],
+    "needs": [
+     "Bachelor’s degree in Computer Science or a STEM field with a minimum of 5 years of relevant experience. A Master’s or PhD in a quantitative field is preferred.",
+     "DevOps & Containerization: Working knowledge of containerization, orchestration, and software engineering principles (e.g., Docker, Kubernetes).",
+     "Services Integration: Experience translating complex algorithms into commercially viable APIs, microservices, and integrated production services; familiarity with…"
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior Data Scientist (5 to 8 Years)",
+   "company": "Fractal Analytics",
+   "location": "5 locations in India",
+   "posted": "2026-11-25",
+   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Senior-Data-Scientist--Data-Scientist--3-to-9yrs_SR-21926",
+   "jd": {
+    "skills": [
+     "GCP",
+     "MLOps",
+     "Python",
+     "Spark",
+     "Azure",
+     "Databricks"
+    ],
+    "needs": [
+     "Brings 6+ years of deep data science experience.",
+     "Strong knowledge of machine learning and statistical modeling techniques in a in a clouds-based environment such as GCP, Azure, Amazon, Databricks",
+     "Experience with programming languages such as Python, R, Spark"
+    ]
+   },
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Generative AI Software Engineer",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-25",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Generative-AI-Software-Engineer_261001423",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "Python",
+     "Agents",
+     "LangChain",
+     "scikit-learn"
+    ],
+    "needs": [
+     "7+ years of software engineering experience building enterprise-grade applications and platforms.",
+     "Strong proficiency in Python and modern AI development frameworks such as FastAPI, Flask, Pandas, Scikit-learn, Hugging Face, LangChain, and LangGraph.",
+     "Hands-on experience building Generative AI applications using proprietary and open-weight LLMs."
+    ]
+   },
+   "exp": [
+    7,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "GenAI Agentic AI Engg Lead- AVP - PUNE",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-25",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/GenAI-Agentic-AI-Engg-Lead--AVP---PUNE_261007454",
+   "jd": {
+    "skills": [
+     "RAG",
+     "Agents",
+     "Deep learning",
+     "Generative AI",
+     "NLP",
+     "Fine-tuning"
+    ],
+    "needs": [
+     "Strong understanding of Model Risk Management (MRM) and Fair Lending (FL) guidelines for LLM based solutions",
+     "8+ years of experience in machine learning and deep learning, with a focus on generative AI solution design and development.",
+     "Strong proficiency in Python and deep learning frameworks such as TensorFlow, PyTorch, or Keras."
+    ]
+   },
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Applied Scientist I, Worldwide Returns & Recommerce - Science",
+   "company": "Amazon",
+   "location": "Hyderabad",
+   "posted": "2026-11-25",
+   "url": "https://www.amazon.jobs/en/jobs/10606600/applied-scientist-i-worldwide-returns-recommerce-science",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Python",
+     "SQL",
+     "PyTorch",
+     "NLP",
+     "Computer vision"
+    ],
+    "needs": [
+     "Experience with SQL and an RDBMS (e.g., Oracle) or Data Warehouse"
+    ]
+   },
+   "exp": [
+    0,
+    2
+   ],
+   "exp_from": "title"
+  },
   {
    "title": "STAFF, DATA SCIENTIST",
    "company": "Walmart Global Tech",
@@ -80,6 +267,33 @@
      "Total 3 - 8 years of experience, of which 3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience."
     ]
    }
+  },
+  {
+   "title": "AI or ML Engineer - RAG, Databricks",
+   "company": "Optum (UnitedHealth Group)",
+   "location": "Noida",
+   "posted": "2026-11-24",
+   "url": "https://careers.unitedhealthgroup.com/job/noida/ai-or-ml-engineer-rag-databricks/34088/103752535424",
+   "jd": {
+    "skills": [
+     "Azure",
+     "LLMs",
+     "RAG",
+     "Agents",
+     "Deep learning",
+     "A/B testing"
+    ],
+    "needs": [
+     "Graduate degree or equivalent experience",
+     "5+ years of experience in software development",
+     "4+ years of hands on experience delivering AI/ML solutions in production environments"
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "AI Engineer",
@@ -510,33 +724,6 @@
    }
   },
   {
-   "title": "AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-23",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/ai-ml-engineer/34088/103672563216",
-   "exp": [
-    2,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "RAG",
-     "Agents",
-     "Generative AI",
-     "Prompt engineering",
-     "Vector databases"
-    ],
-    "needs": [
-     "Bachelor's degree in Computer Science, Engineering, Data Science, or a related technical field; equivalent experience considered",
-     "2+ years of experience in software engineering, machine learning, or AI engineering",
-     "Hands-on experience building and deploying generative AI and LLM-based applications in production environments."
-    ]
-   }
-  },
-  {
    "title": "Lead AI/ML Engineer",
    "company": "Optum (UnitedHealth Group)",
    "location": "Gurugram",
@@ -560,33 +747,6 @@
      "Bachelor's or master's degree in computer science, engineering, or a related field (or equivalent practical experience)",
      "12+ years of experience in software engineering, with at least 2+ years of hands-on experience building and deploying AI/ML systems in production environments…",
      "Solid expertise in designing and implementing API-based integrations, microservices architectures, and automation frameworks, along with experience in Python, machine…"
-    ]
-   }
-  },
-  {
-   "title": "AI/ML Engineer - Python, Agentic AI, LLM, RAG",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-23",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/ai-ml-engineer-python-agentic-ai-llm-rag/34088/103668543024",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "RAG",
-     "Optimisation",
-     "Python",
-     "Generative AI",
-     "Agents"
-    ],
-    "needs": [
-     "Full time Bachelor's degree in Computer Science, Artificial Intelligence, Machine Learning, Software Engineering, or a related field",
-     "3+ years of software engineering experience developing and maintaining production-grade applications",
-     "Hands-on experience with Python, JavaScript/TypeScript, React, and Next.js"
     ]
    }
   },
@@ -1837,228 +1997,6 @@
      "3+ years of professional software engineering experience, mainly writing production backend code in Python.",
      "Experience building REST APIs (FastAPI preferred; Flask/Django acceptable), including async programming, Pydantic validation and authentication.",
      "Hands-on experience building LLM workflows via API (Gemini, Claude, GPT): context assembly, multi-step prompt chaining, embeddings/retrieval, and making output quality…"
-    ]
-   }
-  },
-  {
-   "title": "Lead AI Engineer",
-   "company": "Target",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/Tower-02-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Lead-Engineer--Advanced-AI_R0000441606",
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Agents",
-     "Optimisation",
-     "Deep learning",
-     "Python",
-     "PyTorch"
-    ],
-    "needs": [
-     "4-year degree in Quantitative disciplines (Science, Tech, Engineering, Mathematics) or equivalent industry experience required; MS in Computer Science, Machine Learning…",
-     "6+ years of hands-on software engineering experience, including experience building and operating production systems."
-    ]
-   }
-  },
-  {
-   "title": "Research Scientist",
-   "company": "Quantiphi",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-KA-Bengaluru/Research-Scientist_JR11668",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "PyTorch",
-     "Reinforcement learning",
-     "Python",
-     "LLMs",
-     "Agents",
-     "Transformers"
-    ],
-    "needs": [
-     "(PhD + 2) / (MTech + 5) years of research experience in RL with a strong publication record in top venues",
-     "Strong programming skills in Python, with proven expertise in PyTorch or equivalent, and a track record of writing clean, modular, and deployable code.",
-     "Familiarity with advanced ML architectures such as graphs and transformers."
-    ]
-   }
-  },
-  {
-   "title": "Research Engineer",
-   "company": "Quantiphi",
-   "location": "2 locations in India",
-   "posted": "2026-11-17",
-   "url": "https://quantiphi.wd1.myworkdayjobs.com/Careers_at_Quantiphi/job/IN-MH-Mumbai-Eureka/Research-Engineer_JR10781",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "NLP",
-     "Deep learning",
-     "Reinforcement learning",
-     "Python",
-     "PyTorch",
-     "TensorFlow"
-    ],
-    "needs": [
-     "Master’s degree, PhD, or equivalent experience in Biological Sciences/ Biotechnology, Computer Science, Artificial Intelligence, Machine Learning, Applied Mathematics…",
-     "Minimum work experience required : from new graduates to 3+ yrs of research experience post graduation (in ML research)",
-     "Strong foundation in AI/ML concepts with hands-on experience in model development, experimental design, and large-scale data analysis."
-    ]
-   }
-  },
-  {
-   "title": "Data and Analytics Engineering - Artificial Intelligence and Machine Learning - Specialist 3 - CS - G",
-   "company": "PwC",
-   "location": "Mumbai",
-   "posted": "2026-11-17",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Mumbai-Goregaon/Data-and-Analytics-Engineering---Artificial-Intelligence-and-Machine-Learning---Specialist-3---CS---G_DB_009221-1",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {
-    "skills": [
-     "Deep learning",
-     "CUDA",
-     "C++",
-     "Java"
-    ]
-   }
-  },
-  {
-   "title": "Staff Data Scientist",
-   "company": "PayPal",
-   "location": "Chennai",
-   "posted": "2026-11-17",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138621",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "SQL",
-     "GCP",
-     "LLMs",
-     "Python",
-     "Generative AI",
-     "Agents"
-    ],
-    "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Bachelor’s degree in computer science, Engineering, Mathematics, Statistics, Data Mining or related field or equivalent practical experience",
-     "A minimum of 8 years of experience in building and shipping machine-learning systems to production, with demonstrated Staff-level scope, ownership and technical…"
-    ]
-   }
-  },
-  {
-   "title": "Staff Data Scientist",
-   "company": "PayPal",
-   "location": "2 locations in India",
-   "posted": "2026-11-17",
-   "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Chennai-Tamil-Nadu-India/Staff-Data-Scientist_R0138614",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "A/B testing",
-     "SQL",
-     "Statistics",
-     "Optimisation"
-    ],
-    "needs": [
-     "5+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
-     "Bachelor’s degree with at least 8 years of professional experience , or a master’s degree with at least six years of experience.",
-     "Advanced proficiency in SQL and Python , with hands-on experience working with large and complex datasets."
-    ]
-   }
-  },
-  {
-   "title": "AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/ai-or-ml-engineer/34088/102446557264",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Generative AI",
-     "RAG",
-     "Deep learning",
-     "Vector databases",
-     "MLOps"
-    ],
-    "needs": [
-     "Hands-on experience with ML frameworks and libraries such as TensorFlow, PyTorch, Keras, and Scikit-learn",
-     "Hands-on experience integrating LLM provider APIs (e.g., Anthropic Claude, OpenAI, Azure OpenAI) into applications",
-     "Experience building LLM workflows and agentic applications using orchestration frameworks such as LangGraph and LangChain"
-    ]
-   }
-  },
-  {
-   "title": "Associate AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Noida",
-   "posted": "2026-11-17",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/associate-ai-or-ml-engineer/34088/103445991232",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Python",
-     "LLMs",
-     "Vector databases",
-     "Generative AI",
-     "RAG",
-     "Agents"
-    ],
-    "needs": [
-     "Bachelor's degree in Computer Science, Engineering, Data Science, AI/ML or a related technical field, or equivalent practical experience",
-     "Experience developing REST APIs / backend services",
-     "Solid programming fundamentals with hands-on experience in Python"
-    ]
-   }
-  },
-  {
-   "title": "Applied AI ML Lead RISK MODELING",
-   "company": "JPMorgan Chase",
-   "location": "Bengaluru",
-   "posted": "2026-11-17",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210803766",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Generative AI",
-     "Spark",
-     "Statistics",
-     "AWS",
-     "Python",
-     "SQL"
-    ],
-    "needs": [
-     "Advanced degree in Mathematics, Statistics, Computer Science, Operations Research, Econometrics, Physics, or other related quantitative fields (or equivalent practical…",
-     "Minimum 8 years of experience in developing and managing predictive risk models in financial institutions.",
-     "Strong programming proficiency (Python, PyTorch or TensorFlow, PySpark, SQL) and ability to write production-quality, maintainable code (version control, testing…"
     ]
    }
   }
