@@ -1,8 +1,97 @@
 {
- "updated": "2026-11-25",
+ "updated": "2026-11-26",
  "days": 7,
- "count": 91,
+ "count": 84,
  "jobs": [
+  {
+   "title": "Data Scientist",
+   "company": "Philips",
+   "location": "Bengaluru",
+   "posted": "2026-11-26",
+   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "LLMs",
+     "Generative AI",
+     "Agents",
+     "RAG",
+     "Time series",
+     "Deep learning"
+    ],
+    "needs": [
+     "You have at least five years hands-on experience developing AI/ML systems, with significant experience in LLMs, Generative AI, or AI agents in a professional or…",
+     "You are proficient in Python and relevant libraries for data science and deep learning (e.g., NumPy, Pandas, TensorFlow, PyTorch)",
+     "You have a strong understanding of classic NLP and LLM-based approaches and hands-on experience with LLM-based architecture, such as RAG, prompt engineering, data…"
+    ]
+   }
+  },
+  {
+   "title": "AI Engineer",
+   "company": "IQVIA",
+   "location": "2 locations in India",
+   "posted": "2026-11-26",
+   "url": "https://iqvia.wd1.myworkdayjobs.com/IQVIA/job/Bangalore-India/AI-Engineer_R1555457",
+   "jd": {
+    "skills": [
+     "Python",
+     "NLP",
+     "Deep learning",
+     "Statistics",
+     "C++",
+     "Java"
+    ],
+    "needs": [
+     "Master's Degree Master’s Degree in Machine Learning, Statistics, Computer Science, Physics, Math, or related field",
+     "0-2 years’ experience working on creating machine learning algorithms"
+    ]
+   },
+   "exp": [
+    0,
+    2
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Lead AI Engineer - Vice President",
+   "company": "Deutsche Bank",
+   "location": "Bengaluru",
+   "posted": "2026-11-26",
+   "url": "https://db.wd3.myworkdayjobs.com/DBWebsite/job/Bangalore-Velankani-ISC/Lead-AI-Engineer---Vice-President_R0420386-1",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Agents",
+     "LLMs",
+     "RAG",
+     "A/B testing",
+     "Python"
+    ],
+    "needs": [
+     "Relevant professional experience designing and implementing production technology solutions, including recent hands-on delivery of AI, machine-learning or generative-AI…",
+     "Bachelor’s or master’s degree in computer science, Engineering",
+     "Strong hands-on software engineering experience in Python and API/service development, with disciplined use of source control, automated testing and code review."
+    ]
+   },
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "title"
+  },
+  {
+   "title": "Machine Learning Engineer - Experimentation",
+   "company": "Apple",
+   "location": "Hyderabad",
+   "posted": "2026-11-26",
+   "url": "https://jobs.apple.com/en-in/details/200696858/machine-learning-engineer-experimentation",
+   "jd": {},
+   "exp_from": "none"
+  },
   {
    "title": "Data Scientist",
    "company": "eBay",
@@ -35,6 +124,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-25",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP1/SENIOR-MANAGER--DATA-SCIENCE_R-2688549",
+   "exp": [
+    13,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -49,12 +143,7 @@
      "You have a bachelors/masters degree in computer science, information technology, engineering, statistics, economics, mathematics, or related area",
      "You have excellent industry experience in production-grade AI/ML system development with major technology companies or AI-native start-ups."
     ]
-   },
-   "exp": [
-    13,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Research Engineer",
@@ -78,33 +167,6 @@
      "Strong hands-on engineering experience in Python and modern software development practices, including clean code, testing, version control, documentation, and…"
     ]
    }
-  },
-  {
-   "title": "Data Scientist",
-   "company": "Philips",
-   "location": "Bengaluru",
-   "posted": "2026-11-25",
-   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Generative AI",
-     "Agents",
-     "RAG",
-     "Time series",
-     "Deep learning"
-    ],
-    "needs": [
-     "You have at least five years hands-on experience developing AI/ML systems, with significant experience in LLMs, Generative AI, or AI agents in a professional or…",
-     "You are proficient in Python and relevant libraries for data science and deep learning (e.g., NumPy, Pandas, TensorFlow, PyTorch)",
-     "You have a strong understanding of classic NLP and LLM-based approaches and hands-on experience with LLM-based architecture, such as RAG, prompt engineering, data…"
-    ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
   },
   {
    "title": "Associate AI/ML Engineer",
@@ -201,33 +263,6 @@
     "needs": [
      "Bachelor's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 8+ years related experience (e.g., statistics…",
      "OR Master's Degree in Statistics, Econometrics, Computer Science, Electrical or Computer Engineering, or related field AND 6+ years related experience (e.g., statistics…"
-    ]
-   }
-  },
-  {
-   "title": "Software Engineer III - Python, AWS / MLOps",
-   "company": "JPMorgan Chase",
-   "location": "Bengaluru",
-   "posted": "2026-11-25",
-   "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210809553",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "AWS",
-     "Python",
-     "MLOps",
-     "Kafka",
-     "Kubernetes",
-     "Docker"
-    ],
-    "needs": [
-     "Formal training or certification on software engineering concepts and 3+ years applied experience",
-     "Hands-on practical experience in system design, application development, testing, and operational stability",
-     "Experience in developing, debugging, and maintaining code in a large corporate environment with one or more modern programming languages and database querying languages"
     ]
    }
   },
@@ -999,31 +1034,6 @@
    }
   },
   {
-   "title": "IN_Senior Associate_ Data Scientist_GCC_Advisory_Gurgaon",
-   "company": "PwC",
-   "location": "Gurugram",
-   "posted": "2026-11-23",
-   "url": "https://pwc.wd3.myworkdayjobs.com/Global_Experienced_Careers/job/Gurugram-Downtown-4/IN-Senior-Associate--Data-Scientist-D-A-Advisory-Hyderabad_753942WD",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "Deep learning",
-     "Python",
-     "NLP",
-     "Transformers",
-     "A/B testing"
-    ],
-    "needs": [
-     "Who We Are Looking For: • Mandatory skill sets 8+ years of experience in data science or a related quantitative field (e.g., Computer Science, Statistics, Mathematics)."
-    ]
-   }
-  },
-  {
    "title": "Sr Machine Learning Engineer, Fraud (Crypto & Debit Card)",
    "company": "PayPal",
    "location": "2 locations in India",
@@ -1232,33 +1242,6 @@
      "PhD, or Master's degree and 6+ years of applied research experience",
      "Experience with modeling tools such as R, scikit-learn, Spark MLLib, MxNet, Tensorflow, numpy, scipy etc.",
      "Experience with large scale distributed systems such as Hadoop, Spark etc."
-    ]
-   }
-  },
-  {
-   "title": "Senior AI/ML Engineer - Python, Agentic AI, RAG, LLM",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Gurugram",
-   "posted": "2026-11-22",
-   "url": "https://careers.unitedhealthgroup.com/job/gurgaon/senior-ai-ml-engineer-python-agentic-ai-rag-llm/34088/103665831200",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "RAG",
-     "Agents",
-     "Prompt engineering",
-     "Optimisation",
-     "Python"
-    ],
-    "needs": [
-     "Bachelor's or Master's degree in Computer Science, Artificial Intelligence, Machine Learning, Software Engineering, or a related field",
-     "5+ years of hands-on software engineering experience with solid expertise in building scalable, enterprise-grade applications",
-     "3+ years of experience developing and deploying AI/ML and Generative AI solutions in production environments."
     ]
    }
   },
@@ -2106,110 +2089,6 @@
    }
   },
   {
-   "title": "Senior, Data Scientist",
-   "company": "Walmart Global Tech",
-   "location": "Bengaluru",
-   "posted": "2026-11-18",
-   "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-Building-10/Senior--Data-Scientist_R-2698722",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Optimisation",
-     "Statistics",
-     "Time series",
-     "Python",
-     "TensorFlow",
-     "scikit-learn"
-    ],
-    "needs": [
-     "Option 1- Bachelor’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3 years' experience in an…",
-     "Option 2- Master’s degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
-    ]
-   }
-  },
-  {
-   "title": "Lead AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-18",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/lead-ai-ml-engineer/34088/100049159344",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Generative AI",
-     "MLOps",
-     "RAG",
-     "Optimisation",
-     "Python",
-     "AWS"
-    ],
-    "needs": [
-     "Bachelor's degree in Computer Science, Engineering, Data Science, Mathematics, or related field",
-     "8+ years of software engineering, machine learning engineering, or related experience",
-     "Experience with Generative AI, LLMs, Retrieval Augmented Generation (RAG), prompt engineering, and AI agents"
-    ]
-   }
-  },
-  {
-   "title": "Lead AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-18",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/lead-ai-ml-engineer/34088/103492333280",
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "NLP",
-     "Deep learning",
-     "Optimisation",
-     "Computer vision"
-    ],
-    "needs": [
-     "Maintain up-to-date knowledge of the latest data science trends and technologies, implementing new methodologies as appropriate"
-    ]
-   }
-  },
-  {
-   "title": "Manager AI or ML Engineering",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Noida",
-   "posted": "2026-11-18",
-   "url": "https://careers.unitedhealthgroup.com/job/noida/manager-ai-or-ml-engineering/34088/103492333104",
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Azure",
-     "Agents",
-     "LLMs",
-     "RAG",
-     "LangChain",
-     "MLOps"
-    ],
-    "needs": [
-     "10+ years of overall software Engineering experience, 6+ years of experience in Python development using common AI/ML and data science libraries such as Scikit-Learn…",
-     "3+ years of experience designing and implementing Generative AI solutions utilizing Large Language Models (GPT, Claude, Gemini, Llama, Mistral, etc.)",
-     "3+ years of experience building enterprise RAG solutions using embeddings, vector databases, semantic search, and knowledge retrieval techniques"
-    ]
-   }
-  },
-  {
    "title": "Customer Experience AI and Knowledge Architect",
    "company": "Google",
    "location": "Bengaluru, Hyderabad, Gurugram",
@@ -2228,79 +2107,6 @@
      "Bachelor’s degree or equivalent practical experience.",
      "8 years of experience in a technical project management or a customer-facing role.",
      "Knowledge of Google Ads and related ads products."
-    ]
-   }
-  },
-  {
-   "title": "Data Scientist",
-   "company": "EXL",
-   "location": "Gurugram",
-   "posted": "2026-11-18",
-   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/22714",
-   "exp": [
-    2,
-    5
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics"
-    ],
-    "needs": [
-     "Bachelor's/Master's in Engineering 2-5 years Data Scientists design and implement data analysis processes to derive actionable insights."
-    ]
-   }
-  },
-  {
-   "title": "Research Engineer – Neuro-Symbolic AI (Knowledge Graphs) & Multimodal Assistant Systems",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-18",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162231579",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "NLP",
-     "RAG",
-     "Deep learning",
-     "PyTorch",
-     "Agents"
-    ],
-    "needs": [
-     "Advanced Data Engineering for Multi-Modal Integration: Demonstrated proficiency in building robust data pipelines capable of integrating, cleaning, and preprocessing…",
-     "Proven experience in extracting structured knowledge from unstructured text using NLP techniques like Named Entity Recognition (NER) and Relation Extraction. to…",
-     "Strong understanding of knowledge representation and reasoning techniques, including ontology design, schema alignment, rule authoring, explainable inference workflows…"
-    ]
-   }
-  },
-  {
-   "title": "AI & Backend Software Engineer – Intellectual Property Rights(Python / FastAPI / GenAI)",
-   "company": "Bosch",
-   "location": "Bengaluru",
-   "posted": "2026-11-18",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162220979",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "SQL",
-     "LLMs",
-     "Databricks",
-     "Generative AI"
-    ],
-    "needs": [
-     "3+ years of professional software engineering experience, mainly writing production backend code in Python.",
-     "Experience building REST APIs (FastAPI preferred; Flask/Django acceptable), including async programming, Pydantic validation and authentication.",
-     "Hands-on experience building LLM workflows via API (Gemini, Claude, GPT): context assembly, multi-step prompt chaining, embeddings/retrieval, and making output quality…"
     ]
    }
   }
