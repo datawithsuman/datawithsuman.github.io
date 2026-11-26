@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-26",
  "days": 7,
- "count": 88,
+ "count": 86,
  "jobs": [
   {
    "title": "SENIOR, DATA SCIENTIST",
@@ -9,6 +9,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-Building-10/SENIOR--DATA-SCIENTIST_R-2698727",
+   "exp": [
+    1,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Optimisation",
@@ -19,12 +24,7 @@
      "Minimum Qualifications:Option 1- Bachelor's degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3…",
      "Option 2- Master's degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
     ]
-   },
-   "exp": [
-    1,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Scientist",
@@ -59,17 +59,17 @@
    "location": "2 locations in India",
    "posted": "2026-11-26",
    "url": "https://paypal.wd1.myworkdayjobs.com/jobs/job/Bangalore-Karnataka-India/Sr-Data-Scientist_R0139152",
+   "exp": [
+    3,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "needs": [
      "3+ years relevant experience and a Bachelor’s degree OR Any equivalent combination of education and experience.",
      "A strong understanding of fraud risk, including how fraud patterns evolve and how to respond to emerging threats."
     ]
-   },
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "AI ML Engineer",
@@ -77,6 +77,11 @@
    "location": "Noida",
    "posted": "2026-11-26",
    "url": "https://careers.unitedhealthgroup.com/job/noida/ai-ml-engineer/34088/103229769312",
+   "exp": [
+    8,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Java",
@@ -91,12 +96,7 @@
      "8+ years of hands-on Java work, with strong knowledge of Java 11/17+, multithreading, collections and the JVM",
      "Experience with microservices, REST APIs and messaging (Kafka, RabbitMQ)"
     ]
-   },
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied AI ML Lead - Vice President",
@@ -104,6 +104,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210810333",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -118,37 +123,6 @@
      "A strong understanding of statistics, applied AI/ML techniques, and a practical problem-solving mindset. Experience improving model robustness, conducting advanced…",
      "A quantitative, technically proficient individual who is detail-oriented, able to multi-task, and work independently."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
-  },
-  {
-   "title": "AI Engineer",
-   "company": "IQVIA",
-   "location": "2 locations in India",
-   "posted": "2026-11-26",
-   "url": "https://iqvia.wd1.myworkdayjobs.com/IQVIA/job/Bangalore-India/AI-Engineer_R1555457",
-   "exp": [
-    0,
-    2
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "NLP",
-     "Deep learning",
-     "Statistics",
-     "C++",
-     "Java"
-    ],
-    "needs": [
-     "Master's Degree Master’s Degree in Machine Learning, Statistics, Computer Science, Physics, Math, or related field",
-     "0-2 years’ experience working on creating machine learning algorithms"
-    ]
    }
   },
   {
@@ -157,6 +131,7 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://gehc.wd5.myworkdayjobs.com/GEHC_ExternalSite/job/IND19-01-Bengaluru-EPIP-122-Phase-II/GenAI-and-ML-Ops-Engineer_R4049991-1",
+   "exp_from": "none",
    "jd": {
     "skills": [
      "Statistics",
@@ -166,8 +141,7 @@
     "needs": [
      "Education Qualification Bachelor's Degree in Computer Science or “STEM” Majors (Science, Technology, Engineering and Math) with advanced experience."
     ]
-   },
-   "exp_from": "none"
+   }
   },
   {
    "title": "Machine Learning Engineer III",
@@ -175,6 +149,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Machine-Learning-Engineer-III_R-111412",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "PyTorch",
@@ -188,12 +167,7 @@
      "Bachelor’s or Master’s degree in a technical field (e.g., Computer Science) or equivalent relevant work experience.",
      "Proficiency with ML libraries such as PyTorch and/or TensorFlow, and experience integrating models into production services for inference at scale."
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Data Scientist II",
@@ -201,6 +175,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Data-Scientist-II_R-110969",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -214,12 +193,7 @@
      "5+ years of hands-on industry experience applying statistics, causal inference, or experimentation to real-world business or product problems.",
      "Experimentation & Causal Inference: Deep expertise in experimental design (A/B testing, sequential testing, power analysis) and causal inference methods (e.g.…"
     ]
-   },
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Lead AI Engineer - Vice President",
@@ -254,8 +228,8 @@
    "location": "Hyderabad",
    "posted": "2026-11-26",
    "url": "https://jobs.apple.com/en-in/details/200696858/machine-learning-engineer-experimentation",
-   "jd": {},
-   "exp_from": "none"
+   "exp_from": "none",
+   "jd": {}
   },
   {
    "title": "Data Scientist",
@@ -861,33 +835,6 @@
    ],
    "exp_from": "title",
    "jd": {}
-  },
-  {
-   "title": "AI Developer",
-   "company": "IQVIA",
-   "location": "Bengaluru",
-   "posted": "2026-11-24",
-   "url": "https://iqvia.wd1.myworkdayjobs.com/IQVIA/job/Bangalore-India/AI-Developer_R1580766",
-   "exp": [
-    4,
-    6
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Agents",
-     "LLMs",
-     "SQL",
-     "Generative AI",
-     "Azure",
-     "RAG"
-    ],
-    "needs": [
-     "Experience building AI assistants, chatbots, or similar AI solutions.",
-     "Knowledge of APIs and enterprise system integrations.",
-     "Experience with Azure AI Services or related cloud AI platforms."
-    ]
-   }
   },
   {
    "title": "Research Engineer - Power Systems",
