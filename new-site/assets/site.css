@@ -789,3 +789,29 @@ body.rm-open { overflow: hidden; }
 .lx [data-scene].js ol.say > li { display: block; grid-area: 1 / 1; visibility: hidden; }
 .lx [data-scene].js ol.say > li.on { visibility: visible; }
 @media print { .lx [data-scene].js ol.say { display: block; } .lx [data-scene].js ol.say > li { visibility: visible; } }
+
+/* News: same scrolling panel as jobs, one card per story */
+.news-item { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 4px 14px; padding: 16px 18px; }
+.news-item + .news-item { border-top: 1px solid var(--line-soft); }
+.news-item:hover { background: var(--line-soft); }
+.news-src { grid-row: 1 / span 3; width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--ink); color: #fff; font: 500 11px/1 var(--mono); letter-spacing: .02em; }
+.news-meta { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; font-size: 13px; color: var(--muted); }
+.news-meta b { font-weight: 600; color: var(--ink); }
+.news-tag { padding: 1px 8px; border-radius: 999px; font: 500 11px/1.6 var(--mono); letter-spacing: .03em; text-transform: uppercase; background: var(--line-soft); color: var(--ink); }
+.news-tag.t-agents { background: oklch(0.95 0.03 300); color: oklch(0.38 0.17 300); }
+.news-tag.t-models { background: oklch(0.95 0.03 255); color: oklch(0.38 0.17 255); }
+.news-tag.t-infer { background: oklch(0.95 0.04 60); color: oklch(0.40 0.12 50); }
+.news-tag.t-research { background: oklch(0.95 0.03 195); color: oklch(0.36 0.09 195); }
+.news-title { grid-column: 2; font: 600 16px/1.35 var(--body); letter-spacing: 0; }
+.news-title a { text-decoration: none; }
+.news-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.news-sum { grid-column: 2; font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 70ch; }
+.news-read { grid-column: 3; grid-row: 1 / span 2; align-self: start; font-weight: 600; white-space: nowrap; text-decoration: none; }
+.news-read:hover { text-decoration: underline; text-underline-offset: 3px; }
+.news-page .depth button { white-space: nowrap; }
+.news-page .depth .n { margin-left: 5px; font: 500 11px var(--mono); opacity: .65; }
+@media (max-width: 560px) {
+  .news-item { grid-template-columns: minmax(0, 1fr); padding: 14px; }
+  .news-src { display: none; }
+  .news-meta, .news-title, .news-sum, .news-read { grid-column: 1; grid-row: auto; }
+}

@@ -562,6 +562,65 @@
     });
   }
 
+  // News: the /news/ list reads news/news.json, refreshed every few hours.
+  var newsList = document.getElementById("newsList");
+  if (newsList) {
+    fetch((document.body.dataset.root || "") + "news/news.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+      var meta = document.getElementById("newsMeta"), search = document.getElementById("newsSearch"), group = document.getElementById("newsTopics");
+      var TAG = { agents: "Agents", models: "Models", infer: "Inference", tools: "Dev tools", research: "Research", prod: "In production" };
+      var now = Date.now(), items = data.items || [], topic = read("dws.newsTopic", "all") || "all";
+      if (!TAG[topic]) topic = "all";
+      function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+      function ago(t) {
+        var h = Math.round((now - Date.parse(t)) / 36e5);
+        if (h < 1) return "Just now";
+        if (h < 24) return h + "h ago";
+        var d = Math.round(h / 24);
+        return d === 1 ? "Yesterday" : d + " days ago";
+      }
+      function safe(u) { return /^https?:\/\//.test(u) ? u : "#"; }
+      function row(n) {
+        var u = esc(safe(n.url));
+        return '<li class="news-item"><span class="news-src" aria-hidden="true">' + esc(n.ab || n.src.slice(0, 2)) + '</span>' +
+          '<p class="news-meta"><b>' + esc(n.src) + "</b><span>" + ago(n.at) + "</span>" + (n.also ? "<span>· also in " + esc(n.also) + "</span>" : "") +
+          '<span class="news-tag t-' + esc(n.topic) + '">' + esc(TAG[n.topic] || "") + "</span></p>" +
+          '<h3 class="news-title"><a href="' + u + '" target="_blank" rel="noopener">' + esc(n.title) + "</a></h3>" +
+          (n.sum ? '<p class="news-sum">' + esc(n.sum) + "</p>" : "") +
+          '<a class="news-read" href="' + u + '" target="_blank" rel="noopener" aria-label="Read the original post on ' + esc(n.src) + '">Read ↗</a></li>';
+      }
+      group.querySelectorAll("[data-topic-n]").forEach(function (s) {
+        var k = s.dataset.topicN;
+        s.textContent = items.filter(function (n) { return k === "all" || n.topic === k; }).length;
+      });
+      var updated = new Date(data.updated).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+      function draw() {
+        var q = (search.value || "").trim().toLowerCase();
+        var shown = items.filter(function (n) {
+          return (topic === "all" || n.topic === topic) && (!q || (n.src + " " + n.title + " " + (n.sum || "") + " " + (TAG[n.topic] || "")).toLowerCase().indexOf(q) > -1);
+        });
+        newsList.innerHTML = shown.length ? shown.map(row).join("") : '<li class="jobs-empty">No stories match that. Try another word or topic.</li>';
+        newsList.classList.toggle("is-short", shown.length < 5);
+        newsList.scrollTop = 0;
+        meta.textContent = (q || topic !== "all") ? shown.length + " of " + items.length + " stories"
+          : items.length + " stories from " + data.sources + " sources in the last " + data.days + " days · updated " + updated;
+      }
+      group.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.topic === topic ? "true" : "false");
+        b.addEventListener("click", function () {
+          topic = b.dataset.topic;
+          write("dws.newsTopic", topic);
+          group.querySelectorAll("button").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+          draw();
+        });
+      });
+      search.addEventListener("input", draw);
+      draw();
+    }).catch(function () {
+      var meta = document.getElementById("newsMeta");
+      if (meta) meta.textContent = "The news couldn't load. Try again in a minute.";
+    });
+  }
+
   // Home page role cards: how much of each role's core path is done.
   if (window.ROADMAP) {
     document.querySelectorAll("[data-role-card]").forEach(function (card) {

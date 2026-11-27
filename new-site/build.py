@@ -167,7 +167,7 @@ def preview_tags(title, desc, path):
 
 
 def head_html(title, desc, root, active=None, page="home", extra_head="", path=None):
-    if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences"):
+    if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences", "news"):
         nav = (f'<nav class="links" aria-label="Main"><a href="{root}#tracks">Tracks</a>'
                f'<a href="{root}roadmap/"{' aria-current="page"' if page == "roadmap" else ""}>Roadmap</a><a href="{root}mock/"{' aria-current="page"' if page == "mock" else ""}>Mock interviews</a>{EXP_NAV(root, page)}<a href="{root}jobs/"{' aria-current="page"' if page == "jobs" else ""}>Jobs</a></nav>')
     else:
@@ -201,7 +201,7 @@ def head_html(title, desc, root, active=None, page="home", extra_head="", path=N
 <header class="site-head"><div class="{width} head-inner">
 <a class="brand" href="{root}">{LOGO}<span>AIML Rounds</span></a>
 {nav}
-{"" if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}mock/">Mocks</a>{EXP_HEAD(root)}<a class="head-link" href="{root}jobs/">Jobs</a>'}
+{"" if page in ("home", "jobs", "roadmap", "quiz", "mock", "experiences", "news") else f'<a class="head-link" href="{root}roadmap/">Roadmap</a><a class="head-link" href="{root}mock/">Mocks</a>{EXP_HEAD(root)}<a class="head-link" href="{root}jobs/">Jobs</a>'}
 <button type="button" class="search-btn" id="searchOpen" aria-haspopup="dialog">{SEARCH_ICON}<span class="search-label">Search lessons</span><kbd>Ctrl K</kbd></button>
 </div></header>
 """
@@ -221,7 +221,7 @@ def social_html(cls="foot-social"):
 
 
 def foot_html(root, width="page", scripts=""):
-    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}new/">What's new</a><a href="{root}progress/">My progress</a>{f'<a href="{root}mcp/">MCP server</a>' if MCP_PUBLIC else ""}<a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
+    return f"""{scripts}<footer class="site-foot"><div class="{width} foot-inner"><span class="foot-tag">AI &amp; ML, explained simply.</span><nav class="foot-links" aria-label="Site"><a href="{root}about/">About</a><a href="{root}new/">What's new</a><a href="{root}news/">AI news</a><a href="{root}progress/">My progress</a>{f'<a href="{root}mcp/">MCP server</a>' if MCP_PUBLIC else ""}<a href="{root}privacy/">Privacy</a></nav>{social_html()}</div></footer>
 <dialog class="search" id="searchDialog" aria-label="Search lessons">
 <div class="search-top"><label class="sr" for="searchInput">Search lessons</label><input id="searchInput" type="search" placeholder="Search lessons" autocomplete="off"><button type="button" class="btn-close" id="searchClose">Close</button></div>
 <div id="searchResults" class="search-results" aria-live="polite"></div>
@@ -934,6 +934,7 @@ def search_index():
         quiz_page(tid)
     mock_pages()
     jobs_page()
+    news_page()
     if EXPERIENCES_PUBLIC:
         experiences_pages()
     mcp_page()
@@ -1045,6 +1046,28 @@ def jobs_page():
 </section></main>
 """
     write("jobs/index.html", html + foot_html(root))
+
+
+def news_page():
+    """The last 7 days of AI launches and engineering posts. news/fetch_news.py writes news.json; site.js draws the list."""
+    root = "../"
+    (DIST / "news").mkdir(parents=True, exist_ok=True)
+    if (HERE / "news/news.json").exists():
+        shutil.copy(HERE / "news/news.json", DIST / "news/news.json")
+    desc = "Launches, releases and engineering posts from the AI labs' own blogs, from the last 7 days. Updated every few hours."
+    topics = [("all", "All"), ("agents", "Agents"), ("models", "Models"), ("infer", "Inference"), ("tools", "Dev tools"), ("research", "Research"), ("prod", "In production")]
+    btns = "".join(f'<button type="button" data-topic="{k}" aria-pressed="{"true" if k == "all" else "false"}">{n}<span class="n" data-topic-n="{k}"></span></button>' for k, n in topics)
+    html = head_html("Latest AI news · AIML Rounds", desc, root, page="news", path="news/")
+    html += f"""<main id="main"><section class="page jobs-page news-page"><p class="eyebrow">NEWS</p><h1 class="h1-track">Latest AI news</h1><p class="lead">{desc}</p>
+<div class="jobs-tools"><label class="sr" for="newsSearch">Search news</label><input id="newsSearch" class="jobs-search" type="search" placeholder="Search by company, model or topic" autocomplete="off">
+<div class="jobs-exp"><span class="note" id="newsTopicLabel">Topic</span><div class="depth" role="group" aria-labelledby="newsTopicLabel" id="newsTopics">{btns}</div></div>
+<p class="note" id="newsMeta" aria-live="polite">Loading news…</p></div>
+<ul class="panel jobs-list news-list" id="newsList" tabindex="0" aria-label="News stories, scroll for more"></ul>
+<noscript><p class="note">Turn on JavaScript to see the news.</p></noscript>
+<p class="note jobs-note">Every link goes to the original post. Summaries are short so you can decide what to read; the original is always the source of truth. We collect these automatically every few hours.</p>
+</section></main>
+"""
+    write("news/index.html", html + foot_html(root))
 
 
 # ---------- Interview experiences ----------
@@ -1362,7 +1385,7 @@ def site_files():
     write(".well-known/mcptry-verify.txt", "mcptry-verify=vAJPsebNMK1sdfr33vxeyEUH9qZ_kYgx\n")
     write(".well-known/mcp-registry-auth", (Path(__file__).parent / "mcp" / "mcp-registry-auth").read_text(encoding="utf-8"))
     base = BASE
-    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/"] + (["experiences/"] if EXPERIENCES_PUBLIC else []) + ["mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + (["mcp/"] if MCP_PUBLIC else []) + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
+    urls = ["", "about/", "new/", "progress/", "roadmap/", "jobs/", "news/"] + (["experiences/"] if EXPERIENCES_PUBLIC else []) + ["mock/"] + [f'mock/{m["id"]}/' for m in mocks.MOCKS] + [f'mock/{m["id"]}/{r["id"]}/' for m in mocks.MOCKS for r in m["rounds"]] + [f"quiz/{s}/" for s in QUIZ_SLUG.values()] + (["mcp/"] if MCP_PUBLIC else []) + ["privacy/"] + [f'tracks/{t["id"]}/' for t in TRACKS] + [l["url"] for l in ORDERED]
     rows = "".join(f"<url><loc>{base}{u}</loc></url>" for u in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{rows}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {base}sitemap.xml\n")

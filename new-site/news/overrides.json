@@ -1,0 +1,266 @@
+{
+ "https://www.langchain.com/blog/the-agent-lake": {
+  "title": "The Agent Lake",
+  "sum": "An agent lake holds every trace your agents produce. LangChain shows how it finds the useful traces at scale and turns them into fixes and fine-tuned models.",
+  "topic": "agents"
+ },
+ "https://analyticsindiamag.com/ai-news/bharatgen-launches-patram-15-a-7b-vision-language-model-for-document-processing": {
+  "title": "BharatGen Launches Patram 1.5, a 7B Vision-Language Model for Document Processing",
+  "sum": "BharatGen's Patram 1.5 is a 7B vision-language model for documents. It handles English and English mixed with Indian languages, takes up to 32,000 tokens and several images per request.",
+  "topic": "models"
+ },
+ "https://huggingface.co/blog/nvidia/building-on-nemotron-35-parse-open-data-fine-tunin": {
+  "title": "Building on Nemotron 3.5 Parse: Open Data, Fine-Tuning, and Faster Inference",
+  "sum": "NVIDIA released synthetic training data, a fine-tuning recipe and a faster speculative decoder for Parse 3.5, which turns document pages into ordered, labelled content with tables and charts as structured records.",
+  "topic": "models"
+ },
+ "https://huggingface.co/blog/training-swarms": {
+  "title": "Swarms, flocks, gangs: how to build, train and evaluate multi-agent systems",
+  "sum": "First post in a series on building and training swarms of agents on small, affordable models, with examples you can rerun on Hugging Face Jobs for about $50.",
+  "topic": "agents"
+ },
+ "https://www.philschmid.de/mcp-2027": {
+  "title": "Why I'm Bullish on MCP for 2027",
+  "sum": "Code Mode, typed outputSchema, multimodality, Agent Skills inside MCP, MCP Events and MCP Apps: why Phil Schmid expects MCP to become the integration layer for agent harnesses in 2027.",
+  "topic": "agents"
+ },
+ "https://developer.nvidia.com/blog/how-to-optimize-nvfp4-attention-on-nvidia-rtx-blackwell-through-register-recycling/": {
+  "title": "How to optimize NVFP4 attention on RTX Blackwell through register recycling",
+  "sum": "Long sequences make attention the bottleneck when serving large models. NVIDIA shows how it speeds up 4-bit (NVFP4) attention on RTX Blackwell GPUs.",
+  "topic": "infer"
+ },
+ "https://research.google/blog/verifiable-social-reasoning-for-llm-assistants/": {
+  "title": "Verifiable Social Reasoning for LLM Assistants",
+  "sum": "A test of how well assistants understand social situations: agents with hidden motives act out a scene, and the assistant must infer the motive from the user's account, so there is a checkable right answer.",
+  "topic": "research"
+ },
+ "https://blog.cloudflare.com/search-for-agents/": {
+  "title": "Introducing Search for Agents",
+  "sum": "Site owners switch on one setting and Cloudflare indexes their content and publishes a search API that AI agents can find and call, with support for the HTTP QUERY method.",
+  "topic": "agents"
+ },
+ "https://www.anthropic.com/research/migrating-api-to-rust": {
+  "title": "Migrating our Messages API to Rust",
+  "sum": "Anthropic rewrote its Messages API in Rust and used the old Python version to check the new one, with teams of Claude agents finding and fixing differences. Analytics India Mag reports 70% less CPU and over 80% less memory.",
+  "topic": "infer"
+ },
+ "https://huggingface.co/blog/ibm-research/an-indic-voice-agent-with-cuga": {
+  "title": "An Indic Voice Agent with CUGA",
+  "sum": "IBM Research built a small voice agent for Indian languages on CUGA, its open-source agent harness that handles model wiring, tools, state and guardrails.",
+  "topic": "agents"
+ },
+ "https://huggingface.co/blog/inkling-2-mini-inference-hillclimb": {
+  "title": "Hill-climbing Inkling 2 Mini inference on one RTX PRO 6000",
+  "sum": "Hugging Face gave a coding agent an inference-optimisation skill and let it run serving experiments for an afternoon, to see how fast Inkling 2 Mini can run on one 96 GB RTX PRO 6000.",
+  "topic": "infer"
+ },
+ "https://www.philschmid.de/gemini-4-neon-context-engineering": {
+  "title": "How my context engineering changed for Gemini 4 Neon",
+  "sum": "After weeks of building with Gemini 4 Neon, Phil Schmid found that many guardrails, skills and rules written for older models were slowing it down. Five things he changed.",
+  "topic": "agents"
+ },
+ "https://vercel.com/changelog/workflows-speculative-execution": {
+  "title": "Workflow is 10x faster, again",
+  "sum": "Vercel Workflows now run steps speculatively when it is safe to, cutting step-to-step latency 12x and making large fan-outs over 5x faster.",
+  "topic": "tools"
+ },
+ "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities": {
+  "title": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+  "sum": "OpenAI reports GPT-6 models designing protein structures and sequences using reasoning and code. Lab tests found evidence of binding across five targets.",
+  "topic": "research"
+ },
+ "https://thinkingmachines.ai/news/training-a-scalable-forecasting-agent/": {
+  "title": "Training a Scalable Forecasting Agent (Guest Post with Mantic)",
+  "sum": "A forecasting agent post-trained from Inkling 2 Small on Tinker is about as accurate as strong frontier models at a fraction of the cost, cheap enough to make 100,000 forecasts about the S&P 500.",
+  "topic": "research"
+ },
+ "https://claude.com/resources/articles/skills-over-mcp-tasks-and-more": {
+  "title": "MCP servers can now ship skills, run tasks, and more with Claude",
+  "sum": "Skills over MCP is in public beta in Claude, so MCP servers can ship skills alongside their tools. Tasks and Elicitation are now generally available, and File Uploads is coming soon.",
+  "topic": "agents"
+ },
+ "https://analyticsindiamag.com/ai-news/cashfree-launches-wallet-letting-ai-agents-pay-for-indian-users": {
+  "title": "Cashfree Enables AI Agents in India to Pay From Wallet on Behalf of Users",
+  "sum": "Cashfree Wallet now lets AI agents pay bills for users within budgets the user sets, without the agent ever seeing card or bank details.",
+  "topic": "agents"
+ },
+ "https://openai.com/business/customer-stories/ifood": {
+  "title": "How iFood scales coding agents across 15,000 repositories",
+  "sum": "iFood runs a cloud coding agent, called through an API, across more than 15,000 repositories for jobs like enforcing internal standards, fixing vulnerable dependencies and running analyses. Security was its first big user.",
+  "topic": "prod"
+ },
+ "https://simonwillison.net/2026/Nov/23/glm-54/": {
+  "title": "GLM-5.4: Z.ai's first loop transformer",
+  "sum": "Z.ai's GLM-5.4 is its first model with a looped transformer: a group of weight-shared layers runs several times per forward pass, refining the hidden state each time.",
+  "topic": "models"
+ },
+ "https://openai.com/index/introducing-shirudo": {
+  "title": "OpenAI and Cisco introduce Shirudo",
+  "sum": "OpenAI and Cisco released Shirudo, an open-source Linux runtime that blocks exploits with temporary safeguards while teams roll out patches, without taking services offline.",
+  "topic": "tools"
+ },
+ "https://research.google/blog/supercharging-transformer-residual-connections/": {
+  "title": "Supercharging transformer residual connections",
+  "sum": "DeepCrossAttention replaces plain residual connections with learned, depth-wise cross-attention over earlier layers' outputs. Google says models reach the same quality up to three times faster.",
+  "topic": "research"
+ },
+ "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/": {
+  "title": "Finding faster quantum algorithms with agents and formal verification",
+  "sum": "DeepMind used teams of agents together with formal verification to find faster quantum algorithms for fusion and chemistry problems.",
+  "topic": "research"
+ },
+ "https://claude.com/resources/articles/introducing-claude-ship": {
+  "title": "Introducing Claude Ship",
+  "sum": "Claude can now review pull requests, fix them and approve the ones a team's policy allows, so developers can open a pull request and get back to building.",
+  "topic": "tools"
+ },
+ "https://www.langchain.com/blog/knowledge-factory": {
+  "title": "How to build a knowledge factory for AI agents",
+  "sum": "How LangChain keeps its agents' company knowledge current: agents flag what is missing, and a curator agent fixes it in the background.",
+  "topic": "agents"
+ },
+ "https://analyticsindiamag.com/ai-news/sarvam-defends-hosting-chinese-ai-models-releases-upgraded-105b-model": {
+  "title": "Sarvam Defends Hosting Chinese AI Models, Releases Upgraded 105B Model",
+  "sum": "Sarvam released an upgraded version of its 105B model and defended serving Chinese open-weight models on Token Factory, its inference platform hosted in India.",
+  "topic": "models"
+ },
+ "https://analyticsindiamag.com/ai-startups/bolna-builds-its-own-speech-model-to-catch-what-voice-ai-misses": {
+  "title": "Bolna Builds Its Own Speech Model to Catch What Voice AI Misses",
+  "sum": "Bengaluru's Bolna AI launched Syl, its own speech recognition model, so voice agents handle short replies and conversational nuance in Indian conversations better.",
+  "topic": "models"
+ },
+ "https://openai.com/business/customer-stories/richpanel-ai-customer-support": {
+  "title": "Richpanel helps companies automate 50% of support in 30 days",
+  "sum": "Richpanel's support agents use GPT-6 Astra and GPT-6.1 Sol for tools and procedures and GPT-6 Luna for conversations, automating half of support within 30 days.",
+  "topic": "prod"
+ },
+ "https://huggingface.co/blog/agentic-evals": {
+  "title": "How to build and maintain an agentic evaluation",
+  "sum": "How to build an agent evaluation in the open and keep it useful, using the Hub's new support for agent traces and benchmarks. The Hub now hosts about 17,000 eval datasets, 16x more than a year ago.",
+  "topic": "research"
+ },
+ "https://eugeneyan.com/writing/public-evals": {
+  "title": "Lessons from 12 evals: where they break and what to measure instead",
+  "sum": "A teardown of 12 public evals. In eight of them the grader failed work that should have passed, and many measure what is easy to measure. Ends with what to measure instead.",
+  "topic": "research"
+ },
+ "https://openai.com/index/perplexity-and-intelligence": {
+  "title": "Perplexity and Intelligence",
+  "sum": "OpenAI argues that perplexity can track progress in AI models and proposes it as a shared way for developers to evaluate emerging capabilities.",
+  "topic": "research"
+ },
+ "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/": {
+  "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+  "sum": "Sharing the KV cache through ElastiCache avoids recomputing the same context on every turn. AWS says it cuts inference cost by up to 40% and time to first token by up to 80%, and a coding-agent skill sets it up.",
+  "topic": "infer"
+ },
+ "https://aws.amazon.com/blogs/machine-learning/introducing-amazon-sagemaker-hyperpod-global-inference-gateway-one-endpoint-across-regions-and-clusters/": {
+  "title": "Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters",
+  "sum": "One managed endpoint that routes inference requests across SageMaker HyperPod clusters in one or several regions, picks the best cluster and fails over automatically.",
+  "topic": "infer"
+ },
+ "https://aws.amazon.com/blogs/machine-learning/how-standard-bank-group-automates-ai-risk-assessment-for-generative-ai/": {
+  "title": "How Standard Bank Group automates AI risk assessment for generative AI",
+  "sum": "The bank automated the evidence behind its generative AI approval gates. An LLM-as-a-judge on Bedrock scores each use case against international AI standards and the bank's own policies, so risk committees get consistent, traceable evidence.",
+  "topic": "prod"
+ },
+ "https://aws.amazon.com/blogs/machine-learning/announcing-amazon-textract-insights-verifiable-generative-ai-for-documents/": {
+  "title": "Announcing Amazon Textract Insights: Verifiable generative AI for documents",
+  "sum": "Now generally available: describe the fields you need in plain language, send a document or a mixed packet, and get structured results with a confidence score and the page each value came from. No model training needed.",
+  "topic": "tools"
+ },
+ "https://www.langchain.com/blog/langsmith-tool-gateway": {
+  "title": "LangSmith Tool Gateway: Secure, governed tool use for agents",
+  "sum": "Now in public beta: a gateway that handles credentials, identity and access for every tool call an agent makes, with policies, approvals and traces.",
+  "topic": "agents"
+ },
+ "https://thinkingmachines.ai/news/inkling-2-mini/": {
+  "title": "Introducing Inkling 2 Mini",
+  "sum": "Thinking Machines' new open-weights model is small enough to run on a laptop. It loops its middle layers to reason more per token and reach answers in fewer tokens. Already in transformers, Ollama and Vercel AI Gateway.",
+  "topic": "models"
+ },
+ "https://huggingface.co/blog/video-trainium3": {
+  "hide": true
+ },
+ "https://huggingface.co/blog/allenai/where-scientists-draw-the-line-on-ai-agents": {
+  "hide": true
+ },
+ "https://github.blog/ai-and-ml/github-copilot/how-to-choose-the-next-safe-step-in-application-modernization/": {
+  "hide": true
+ },
+ "https://simonwillison.net/2026/Nov/24/llm-inflection-points/": {
+  "hide": true
+ },
+ "https://developer.nvidia.com/blog/how-to-run-nvidia-cosmos-3-on-local-ai-devices-using-hugging-face-diffusers/": {
+  "hide": true
+ },
+ "https://developer.nvidia.com/blog/prepare-market-data-for-forecasting-with-nvidia-megatron-core/": {
+  "hide": true
+ },
+ "https://simonwillison.net/2026/Nov/24/astra-historical-mystery/": {
+  "hide": true
+ },
+ "https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/": {
+  "hide": true
+ },
+ "https://claude.com/resources/articles/install-as-app": {
+  "hide": true
+ },
+ "https://openai.com/index/searching-for-distant-planets-with-astra": {
+  "hide": true
+ },
+ "https://openai.com/business/customer-stories/intentful-dots": {
+  "hide": true
+ },
+ "https://openai.com/business/customer-stories/clay-plugins-openai": {
+  "hide": true
+ },
+ "https://vercel.com/changelog/inkling-2-mini-now-available-on-ai-gateway": {
+  "hide": true
+ },
+ "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-hydrogen-builders/": {
+  "hide": true
+ },
+ "https://analyticsindiamag.com/ai-news/lt-technology-services-launches-ai-toolchain-for-software-defined-vehicles": {
+  "hide": true
+ },
+ "https://vercel.com/changelog/ai-gateway-now-runs-canary-zdr-audits": {
+  "hide": true
+ },
+ "https://vercel.com/blog/introducing-audited-zdr-on-ai-gateway": {
+  "hide": true
+ },
+ "https://vercel.com/changelog/choose-ai-gateway-providers-by-headquarters-country": {
+  "hide": true
+ },
+ "https://aws.amazon.com/blogs/machine-learning/meta-ads-is-now-available-in-aws-quick/": {
+  "hide": true
+ },
+ "https://github.com/huggingface/transformers/releases/tag/v5.24.0": {
+  "hide": true
+ },
+ "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/": {
+  "hide": true
+ },
+ "https://research.google/blog/how-google-duplex-evolved-to-also-call-businesses-for-you-in-gemini/": {
+  "hide": true
+ },
+ "https://latent.space/p/formal-verification/": {
+  "hide": true
+ },
+ "https://aws.amazon.com/blogs/machine-learning/introducing-enhanced-observability-in-amazon-sagemaker-hyperpod-to-diagnose-gpu-training-issues/": {
+  "hide": true
+ },
+ "https://www.langchain.com/blog/agent-governance-observability": {
+  "hide": true
+ },
+ "https://aws.amazon.com/blogs/machine-learning/use-kimi-code-cli-with-models-on-amazon-bedrock/": {
+  "hide": true
+ },
+ "https://openai.com/business/customer-stories/hebbia": {
+  "hide": true
+ },
+ "https://huggingface.co/blog/inkling2mini": {
+  "hide": true
+ }
+}
