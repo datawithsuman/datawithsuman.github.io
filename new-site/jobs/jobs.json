@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-27",
  "days": 7,
- "count": 83,
+ "count": 81,
  "jobs": [
   {
    "title": "Lead AI Engineer - Director- Software Engineering",
@@ -9,6 +9,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-27",
    "url": "https://morganstanley.eightfold.ai/careers/job/549801392494",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "LLMs",
@@ -22,12 +27,7 @@
      "What you'll bring to the role: \\- 10+ years of hands-on software development experience, including 6+ years in Python.",
      "\\- Experience with DevOps and CI/CD tooling (e.g., Jenkins, GitHub, Git, Jira or equivalents)."
     ]
-   },
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Machine Learning Engineer",
@@ -35,6 +35,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-27",
    "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/Machine-Learning-Engineer_3171594-1",
+   "exp": [
+    2,
+    4
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "AWS",
@@ -48,12 +53,7 @@
      "Four-year or Graduate Degree in Computer Science, Statistics, Mathematics, Data Science, or any other related discipline or commensurate work experience or demonstrated…",
      "Typically has 2-4 years of work experience, preferably in computer programming languages, machine learning, algorithms, statistical methods, or a related field or an…"
     ]
-   },
-   "exp": [
-    2,
-    4
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Data Scientist",
@@ -61,6 +61,11 @@
    "location": "Gurugram",
    "posted": "2026-11-27",
    "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/23191",
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Python",
@@ -75,12 +80,7 @@
      "4 + years of experience building and deploying ML models for fraud detection, preferably using Python (scikit‑learn, pandas, XGBoost, LightGBM).",
      "Strong expertise in feature engineering, handling imbalanced datasets, and model evaluation techniques."
     ]
-   },
-   "exp": [
-    2,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Senior Engineer AI-ML",
@@ -88,6 +88,11 @@
    "location": "Pune",
    "posted": "2026-11-27",
    "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Engineer-AI-ML_26986557",
+   "exp": [
+    6,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Generative AI",
@@ -102,12 +107,7 @@
      "Hands-on experience with Machine Learning, Generative AI, and Agentic AI systems.",
      "Experience with Natural Language Processing (NLP), computer vision, or other AI domains."
     ]
-   },
-   "exp": [
-    6,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Generative AI & Agent Systems Engineer",
@@ -159,6 +159,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-27",
    "url": "https://www.amazon.jobs/en/jobs/10615771/data-scientist-ii",
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Statistics",
@@ -173,12 +178,7 @@
      "2+ years of data querying languages (e.g. SQL, Hadoop/Hive) experience",
      "Master's degree in a quantitative field, or Bachelor's degree and 5+ years of a quantitative field such as statistics, mathematics, data science, business analytics…"
     ]
-   },
-   "exp": [
-    2,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "SENIOR, DATA SCIENTIST",
@@ -1167,59 +1167,6 @@
      "Hands-on experience with basic statistical",
      "Strong understanding of A/B testing, experimentation, and measurement",
      "Interest or experience in AI/GenAI applications in analytics"
-    ]
-   }
-  },
-  {
-   "title": "Data Scientist",
-   "company": "Shell",
-   "location": "Chennai",
-   "posted": "2026-11-23",
-   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/Chennai---RMZ-Millenia/Data-Scientist_R205059",
-   "exp": [
-    6,
-    8
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Optimisation",
-     "MLOps",
-     "Python",
-     "SQL",
-     "AWS",
-     "GCP"
-    ],
-    "needs": [
-     "What you bring 6–8 years of experience in data science, including hands-on development of AI/ML or optimization models and at least 2 years working with process event or…",
-     "Bachelor’s or Master’s degree in Computer Science, Data Science, Engineering, Mathematics, or a related quantitative field."
-    ]
-   }
-  },
-  {
-   "title": "Data Science Engagement Lead",
-   "company": "Shell",
-   "location": "Chennai",
-   "posted": "2026-11-23",
-   "url": "https://shell.wd3.myworkdayjobs.com/ShellCareers/job/SHELL-CENTRE--CHENNAI/Data-Science-Engagement-Lead_R202317-1",
-   "exp": [
-    10,
-    12
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Optimisation",
-     "Python",
-     "SQL",
-     "AWS",
-     "GCP",
-     "Azure"
-    ],
-    "needs": [
-     "10–12 years of total experience, including 6+ years in analytics consulting, of which 3+ years in process-mining consulting or process-analytics leadership within global…",
-     "Bachelor’s or Master’s degree in Mathematics, Statistics, Economics, Data Science, Engineering, Technical Finance, or a related quantitative field.",
-     "Combines deep analytical expertise with consulting leadership, leveraging prior hands-on experience in analytical solution development and data-driven problem solving to…"
     ]
    }
   },
