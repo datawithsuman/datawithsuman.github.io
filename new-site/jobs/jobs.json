@@ -1,8 +1,52 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-27",
  "days": 7,
- "count": 86,
+ "count": 81,
  "jobs": [
+  {
+   "title": "Generative AI & Agent Systems Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-27",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163963058",
+   "jd": {
+    "skills": [
+     "Agents",
+     "RAG",
+     "LLMs",
+     "Python",
+     "Azure",
+     "Optimisation"
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Generative AI & Agent Systems Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-27",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163962938",
+   "jd": {
+    "skills": [
+     "Agents",
+     "RAG",
+     "LLMs",
+     "Python",
+     "Azure",
+     "Optimisation"
+    ]
+   },
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd"
+  },
   {
    "title": "SENIOR, DATA SCIENTIST",
    "company": "Walmart Global Tech",
@@ -97,6 +141,33 @@
      "Experience with microservices, REST APIs and messaging (Kafka, RabbitMQ)"
     ]
    }
+  },
+  {
+   "title": "Staff Forward Deployed AI Engineer",
+   "company": "MongoDB",
+   "location": "Bengaluru",
+   "posted": "2026-11-26",
+   "url": "https://www.mongodb.com/careers/job/?gh_jid=8304154",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "SQL",
+     "Python",
+     "AWS",
+     "GCP",
+     "Azure"
+    ],
+    "needs": [
+     "10+ years of experience as a field engineer or professional services consultant or full stack developer working directly with Enterprise clients.",
+     "Proficiency in Python and Java or C#, and some familiarity with common database access patterns and frameworks in one or more of these languages.",
+     "Deep experience developing enterprise applications using relational databases, and employing SQL and stored procedures with Oracle, MS SQL Server, Sybase and/or…"
+    ]
+   },
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd"
   },
   {
    "title": "Applied AI ML Lead - Vice President",
@@ -1913,33 +1984,6 @@
    }
   },
   {
-   "title": "Associate Lead Data Scientist (RGM)",
-   "company": "Sigmoid",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://job-boards.greenhouse.io/sigmoid/jobs/8011986002",
-   "exp": [
-    4,
-    6
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "Python",
-     "Causal inference",
-     "SQL",
-     "scikit-learn",
-     "Spark"
-    ],
-    "needs": [
-     "Hands-on experience with RGM use cases such as price-pack architecture (PPA), price elasticity modeling, promo effectiveness, and revenue decomposition",
-     "Proficiency in statistical modeling, machine learning, and causal inference techniques applied to commercial problems (e.g., MMM, demand modeling, uplift modeling)",
-     "4- 6 years of relevant Machine Learning experience."
-    ]
-   }
-  },
-  {
    "title": "Data Scientist",
    "company": "Sigmoid",
    "location": "Bengaluru",
@@ -1965,106 +2009,6 @@
    }
   },
   {
-   "title": "Senior AI/ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://careers.unitedhealthgroup.com/job/bengaluru/senior-ai-ml-engineer/34088/102829678480",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Vector databases",
-     "LLMs",
-     "RAG",
-     "Azure",
-     "Prompt engineering",
-     "LangChain"
-    ],
-    "needs": [
-     "Bachelor's degree in Computer Science, Data Science, Machine Learning, or a related field, or equivalent experience",
-     "8+ years of software or machine learning engineering experience",
-     "6+ years hands-on building with LLMs, including prompt engineering, tool/function calling, and agent or multi-step orchestration"
-    ]
-   }
-  },
-  {
-   "title": "Lead AI or ML Engineer",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-19",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/lead-ai-or-ml-engineer/34088/103501773520",
-   "exp": [
-    12,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Statistics",
-     "NLP",
-     "Deep learning",
-     "Optimisation",
-     "Computer vision"
-    ],
-    "needs": [
-     "Undergraduate degree or equivalent experience",
-     "12+ years of relevant professional experience"
-    ]
-   }
-  },
-  {
-   "title": "AI Full Stack Developer - AI Connectors, Plugins, MCP",
-   "company": "Optum (UnitedHealth Group)",
-   "location": "Hyderabad",
-   "posted": "2026-11-19",
-   "url": "https://careers.unitedhealthgroup.com/job/hyderabad/ai-full-stack-developer-ai-connectors-plugins-mcp/34088/102141801840",
-   "exp_from": "none",
-   "jd": {
-    "skills": [
-     "Python",
-     "Azure",
-     "Optimisation",
-     "Java"
-    ],
-    "needs": [
-     "Bachelor's degree in computer science, engineering or a related field, or equivalent practical experience. Demonstrated problem-solving and clear technical documentation…",
-     "Familiarity with AI and enterprise governance, legal review, data privacy and least-privilege principles. Ability to document data flows and controls, participate in…",
-     "Experience with TypeScript or C#, Azure, Copilot Studio or Power Platform"
-    ]
-   }
-  },
-  {
-   "title": "Research Scientist - Nemotron India",
-   "company": "NVIDIA",
-   "location": "3 locations in India",
-   "posted": "2026-11-19",
-   "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/India-Bengaluru/Research-Scientist---Nemotron-India_JR2028483",
-   "exp": [
-    3,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Deep learning",
-     "NLP",
-     "LLMs",
-     "Generative AI",
-     "Python",
-     "PyTorch"
-    ],
-    "needs": [
-     "MS or PhD in Electrical Engineering, Computer Science/Engineering, or a related field (or equivalent experience).",
-     "3+ years of experience.",
-     "Knowledge of application areas such as natural language processing and computer vision."
-    ]
-   }
-  },
-  {
    "title": "Principal Applied Scientist",
    "company": "Microsoft",
    "location": "Bengaluru",
@@ -2075,64 +2019,6 @@
     null
    ],
    "exp_from": "title",
-   "jd": {}
-  },
-  {
-   "title": "Silicon Senior AI/ML Hardware Architect, Google Cloud",
-   "company": "Google",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/84928260579697350",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "GCP",
-     "Python",
-     "C++"
-    ],
-    "needs": [
-     "Bachelor's degree in Electrical Engineering, Computer Engineering, Computer Science, a related field, or equivalent practical experience.",
-     "8 years of experience in architecture and micro-architecture design of graphics or Machine Learning (ML) or Ethernet/ROCE/UAL/NVlink scaleup/out fabrics or managing Low…",
-     "Experience in memory hierarchy on chip fabrics, memory controllers, High Bandwidth Memory (HBM), and Dynamic Random-Access Memory (DRAM) technologies."
-    ]
-   }
-  },
-  {
-   "title": "Lead AI Product Engineer",
-   "company": "Fractal Analytics",
-   "location": "2 locations in India",
-   "posted": "2026-11-19",
-   "url": "https://fractal.wd1.myworkdayjobs.com/Careers/job/Bengaluru/Lead-AI-Product-Engineer_SR-45878",
-   "exp": [
-    7,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Python",
-     "Azure",
-     "Databricks",
-     "LLMs"
-    ],
-    "needs": [
-     "Production experience with LLM and agentic systems: multi-step workflows, tool use, orchestration frameworks, and the failure modes that only appear at scale.",
-     "Experience with agent observability and tracing tooling."
-    ]
-   }
-  },
-  {
-   "title": "AI / ML and Generative AI research assistant",
-   "company": "Bosch",
-   "location": "Coimbatore",
-   "posted": "2026-11-19",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000162445000",
-   "exp_from": "none",
    "jd": {}
   },
   {
