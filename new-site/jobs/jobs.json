@@ -1,26 +1,110 @@
 {
  "updated": "2026-11-27",
  "days": 7,
- "count": 81,
+ "count": 83,
  "jobs": [
   {
-   "title": "Generative AI & Agent Systems Engineer",
-   "company": "Bosch",
+   "title": "Lead AI Engineer - Director- Software Engineering",
+   "company": "Morgan Stanley",
    "location": "Bengaluru",
    "posted": "2026-11-27",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163963058",
+   "url": "https://morganstanley.eightfold.ai/careers/job/549801392494",
    "jd": {
     "skills": [
-     "Agents",
-     "RAG",
      "LLMs",
      "Python",
-     "Azure",
-     "Optimisation"
+     "Agents",
+     "Kubernetes",
+     "AWS",
+     "Databricks"
+    ],
+    "needs": [
+     "What you'll bring to the role: \\- 10+ years of hands-on software development experience, including 6+ years in Python.",
+     "\\- Experience with DevOps and CI/CD tooling (e.g., Jenkins, GitHub, Git, Jira or equivalents)."
     ]
    },
    "exp": [
-    5,
+    10,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Machine Learning Engineer",
+   "company": "HP",
+   "location": "Bengaluru",
+   "posted": "2026-11-27",
+   "url": "https://hp.wd5.myworkdayjobs.com/ExternalCareerSite/job/Bengaluru-Karnataka-India/Machine-Learning-Engineer_3171594-1",
+   "jd": {
+    "skills": [
+     "AWS",
+     "Statistics",
+     "Python",
+     "PyTorch",
+     "TensorFlow",
+     "scikit-learn"
+    ],
+    "needs": [
+     "Four-year or Graduate Degree in Computer Science, Statistics, Mathematics, Data Science, or any other related discipline or commensurate work experience or demonstrated…",
+     "Typically has 2-4 years of work experience, preferably in computer programming languages, machine learning, algorithms, statistical methods, or a related field or an…"
+    ]
+   },
+   "exp": [
+    2,
+    4
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior Data Scientist",
+   "company": "EXL",
+   "location": "Gurugram",
+   "posted": "2026-11-27",
+   "url": "https://fa-ewjt-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_2/job/23191",
+   "jd": {
+    "skills": [
+     "Python",
+     "Kubernetes",
+     "Docker",
+     "AWS",
+     "Azure",
+     "Statistics"
+    ],
+    "needs": [
+     "Minimum 2 + years of hands‑on experience in end‑to‑end risk model development, validation, or monitoring in banking or financial services.",
+     "4 + years of experience building and deploying ML models for fraud detection, preferably using Python (scikit‑learn, pandas, XGBoost, LightGBM).",
+     "Strong expertise in feature engineering, handling imbalanced datasets, and model evaluation techniques."
+    ]
+   },
+   "exp": [
+    2,
+    null
+   ],
+   "exp_from": "jd"
+  },
+  {
+   "title": "Senior Engineer AI-ML",
+   "company": "Citi",
+   "location": "Pune",
+   "posted": "2026-11-27",
+   "url": "https://citi.wd5.myworkdayjobs.com/2/job/Pune-Maharashtra-India/Senior-Engineer-AI-ML_26986557",
+   "jd": {
+    "skills": [
+     "Generative AI",
+     "Python",
+     "Agents",
+     "NLP",
+     "PyTorch",
+     "TensorFlow"
+    ],
+    "needs": [
+     "6+ years of relevant experience in AL, ML with strong proficiency in Python programming and experience with libraries such as NumPy, Pandas, Scikit-learn, TensorFlow…",
+     "Hands-on experience with Machine Learning, Generative AI, and Agentic AI systems.",
+     "Experience with Natural Language Processing (NLP), computer vision, or other AI domains."
+    ]
+   },
+   "exp": [
+    6,
     null
    ],
    "exp_from": "jd"
@@ -30,7 +114,12 @@
    "company": "Bosch",
    "location": "Bengaluru",
    "posted": "2026-11-27",
-   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163962938",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163963058",
+   "exp": [
+    5,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Agents",
@@ -40,9 +129,53 @@
      "Azure",
      "Optimisation"
     ]
-   },
+   }
+  },
+  {
+   "title": "Generative AI & Agent Systems Engineer",
+   "company": "Bosch",
+   "location": "Bengaluru",
+   "posted": "2026-11-27",
+   "url": "https://jobs.smartrecruiters.com/BoschGroup/744000163962938",
    "exp": [
     5,
+    null
+   ],
+   "exp_from": "jd",
+   "jd": {
+    "skills": [
+     "Agents",
+     "RAG",
+     "LLMs",
+     "Python",
+     "Azure",
+     "Optimisation"
+    ]
+   }
+  },
+  {
+   "title": "Data Scientist II",
+   "company": "Amazon",
+   "location": "Bengaluru",
+   "posted": "2026-11-27",
+   "url": "https://www.amazon.jobs/en/jobs/10615771/data-scientist-ii",
+   "jd": {
+    "skills": [
+     "Statistics",
+     "Time series",
+     "A/B testing",
+     "Optimisation",
+     "Python",
+     "SQL"
+    ],
+    "needs": [
+     "2+ years of data scientist or similar role involving data extraction, analysis, statistical modeling and communication experience",
+     "2+ years of data querying languages (e.g. SQL, Hadoop/Hive) experience",
+     "Master's degree in a quantitative field, or Bachelor's degree and 5+ years of a quantitative field such as statistics, mathematics, data science, business analytics…"
+    ]
+   },
+   "exp": [
+    2,
     null
    ],
    "exp_from": "jd"
@@ -67,33 +200,6 @@
     "needs": [
      "Minimum Qualifications:Option 1- Bachelor's degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 3…",
      "Option 2- Master's degree in Statistics, Economics, Analytics, Mathematics, Computer Science, Information Technology, or related field and 1 years' experience in an…"
-    ]
-   }
-  },
-  {
-   "title": "Data Scientist",
-   "company": "Philips",
-   "location": "Bengaluru",
-   "posted": "2026-11-26",
-   "url": "https://philips.wd3.myworkdayjobs.com/jobs-and-careers/job/Bangalore/Data-Scientist_592335",
-   "exp": [
-    5,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "Generative AI",
-     "Agents",
-     "RAG",
-     "Time series",
-     "Deep learning"
-    ],
-    "needs": [
-     "You have at least five years hands-on experience developing AI/ML systems, with significant experience in LLMs, Generative AI, or AI agents in a professional or…",
-     "You are proficient in Python and relevant libraries for data science and deep learning (e.g., NumPy, Pandas, TensorFlow, PyTorch)",
-     "You have a strong understanding of classic NLP and LLM-based approaches and hands-on experience with LLM-based architecture, such as RAG, prompt engineering, data…"
     ]
    }
   },
@@ -148,6 +254,11 @@
    "location": "Bengaluru",
    "posted": "2026-11-26",
    "url": "https://www.mongodb.com/careers/job/?gh_jid=8304154",
+   "exp": [
+    10,
+    null
+   ],
+   "exp_from": "jd",
    "jd": {
     "skills": [
      "Generative AI",
@@ -162,12 +273,7 @@
      "Proficiency in Python and Java or C#, and some familiarity with common database access patterns and frameworks in one or more of these languages.",
      "Deep experience developing enterprise applications using relational databases, and employing SQL and stored procedures with Oracle, MS SQL Server, Sybase and/or…"
     ]
-   },
-   "exp": [
-    10,
-    null
-   ],
-   "exp_from": "jd"
+   }
   },
   {
    "title": "Applied AI ML Lead - Vice President",
@@ -1982,44 +2088,6 @@
      "Experience in any of the following areas: algorithms and data structures, parsing, numerical optimization, data mining, parallel and distributed computing…"
     ]
    }
-  },
-  {
-   "title": "Data Scientist",
-   "company": "Sigmoid",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://job-boards.greenhouse.io/sigmoid/jobs/8951153002",
-   "exp": [
-    1,
-    3
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Python",
-     "Statistics",
-     "scikit-learn",
-     "Spark",
-     "AWS",
-     "A/B testing"
-    ],
-    "needs": [
-     "Tech is preferred in Computer Science, Information Technology, or similar degree."
-    ]
-   }
-  },
-  {
-   "title": "Principal Applied Scientist",
-   "company": "Microsoft",
-   "location": "Bengaluru",
-   "posted": "2026-11-19",
-   "url": "https://apply.careers.microsoft.com/careers/job/1970393557075943",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "title",
-   "jd": {}
   },
   {
    "title": "Applied AI Architect, Beneficial Deployment",
