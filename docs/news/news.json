@@ -1,7 +1,7 @@
 {
- "updated": "2026-11-27T15:56+00:00",
+ "updated": "2026-11-28T01:27+00:00",
  "days": 7,
- "count": 45,
+ "count": 36,
  "sources": 16,
  "items": [
   {
@@ -329,87 +329,6 @@
    "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
    "url": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
    "sum": "Sharing the KV cache through ElastiCache avoids recomputing the same context on every turn. AWS says it cuts inference cost by up to 40% and time to first token by up to 80%, and a coding-agent skill sets it up."
-  },
-  {
-   "src": "AWS",
-   "ab": "AWS",
-   "at": "2026-11-20T23:07+00:00",
-   "topic": "tools",
-   "title": "Introducing managed cluster extensions for observability and user management in Amazon SageMaker HyperPod Slurm",
-   "url": "https://aws.amazon.com/blogs/machine-learning/introducing-managed-cluster-extensions-for-observability-and-user-management-in-amazon-sagemaker-hyperpod-slurm/",
-   "sum": "Amazon SageMaker HyperPod now offers managed cluster extensions for observability and user management, bringing declarative, API- and console-driven configuration to the software running on Slurm cluster nodes."
-  },
-  {
-   "src": "AWS",
-   "ab": "AWS",
-   "at": "2026-11-20T22:35+00:00",
-   "topic": "infer",
-   "title": "Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters",
-   "url": "https://aws.amazon.com/blogs/machine-learning/introducing-amazon-sagemaker-hyperpod-global-inference-gateway-one-endpoint-across-regions-and-clusters/",
-   "sum": "One managed endpoint that routes inference requests across SageMaker HyperPod clusters in one or several regions, picks the best cluster and fails over automatically."
-  },
-  {
-   "src": "AWS",
-   "ab": "AWS",
-   "at": "2026-11-20T20:37+00:00",
-   "topic": "prod",
-   "title": "How Standard Bank Group automates AI risk assessment for generative AI",
-   "url": "https://aws.amazon.com/blogs/machine-learning/how-standard-bank-group-automates-ai-risk-assessment-for-generative-ai/",
-   "sum": "The bank automated the evidence behind its generative AI approval gates. An LLM-as-a-judge on Bedrock scores each use case against international AI standards and the bank's own policies, so risk committees get consistent, traceable evidence."
-  },
-  {
-   "src": "AWS",
-   "ab": "AWS",
-   "at": "2026-11-20T20:22+00:00",
-   "topic": "tools",
-   "title": "Announcing Amazon Textract Insights: Verifiable generative AI for documents",
-   "url": "https://aws.amazon.com/blogs/machine-learning/announcing-amazon-textract-insights-verifiable-generative-ai-for-documents/",
-   "sum": "Now generally available: describe the fields you need in plain language, send a document or a mixed packet, and get structured results with a confidence score and the page each value came from. No model training needed."
-  },
-  {
-   "src": "LangChain",
-   "ab": "LC",
-   "at": "2026-11-20T18:12+00:00",
-   "topic": "agents",
-   "title": "LangSmith Tool Gateway: Secure, governed tool use for agents",
-   "url": "https://www.langchain.com/blog/langsmith-tool-gateway",
-   "sum": "Now in public beta: a gateway that handles credentials, identity and access for every tool call an agent makes, with policies, approvals and traces."
-  },
-  {
-   "src": "Thinking Machines",
-   "ab": "TM",
-   "at": "2026-11-20T12:00+00:00",
-   "topic": "models",
-   "title": "Introducing Inkling 2 Mini",
-   "url": "https://thinkingmachines.ai/news/inkling-2-mini/",
-   "sum": "Thinking Machines' new open-weights model is small enough to run on a laptop. It loops its middle layers to reason more per token and reach answers in fewer tokens. Already in transformers, Ollama and Vercel AI Gateway."
-  },
-  {
-   "src": "OpenAI",
-   "ab": "OAI",
-   "at": "2026-11-20T10:00+00:00",
-   "topic": "models",
-   "title": "Combatting adversarial distillation",
-   "url": "https://openai.com/index/combatting-adversarial-distillation",
-   "sum": "OpenAI’s layered approach to adversarial distillation combines model training, safeguards, detection, and enforcement to protect against capability extraction."
-  },
-  {
-   "src": "OpenAI",
-   "ab": "OAI",
-   "at": "2026-11-20T00:00+00:00",
-   "topic": "models",
-   "title": "Can AI help scientists identify promising drug candidates?",
-   "url": "https://openai.com/index/introducing-medchembench",
-   "sum": "MedChemBench evaluates how well AI models interpret molecular structures, reason from experimental evidence, and select compounds in early drug discovery."
-  },
-  {
-   "src": "Hugging Face",
-   "ab": "HF",
-   "at": "2026-11-20T00:00+00:00",
-   "topic": "models",
-   "title": "Introducing harness adapters: adapt your favorite model to your harness to improve performance and cost",
-   "url": "https://huggingface.co/blog/harness-adapters-at-scale",
-   "sum": "Models are not fully optimized for all harnesses and the tasks you’re doing. Instead, they target general performance. So when you combine a model and harness, you’re leaving performance and efficiency on the table for the stuff you’re actually doing."
   }
  ]
 }
