@@ -1,7 +1,7 @@
 {
  "updated": "2026-11-28",
  "days": 7,
- "count": 62,
+ "count": 60,
  "jobs": [
   {
    "title": "Lead AI Engineer - Director- Software Engineering",
@@ -1509,60 +1509,6 @@
      "Expertise in Java or Python, OOP, Design Patterns, time and space-efficient algorithms",
      "Experience building new products that use challenging algorithms",
      "Expertise in coding efficient, object-oriented, modularized and quality software"
-    ]
-   }
-  },
-  {
-   "title": "Staff AI Platform Engineer",
-   "company": "ServiceNow",
-   "location": "Hyderabad",
-   "posted": "2026-11-20",
-   "url": "https://jobs.smartrecruiters.com/servicenow/744000162683609",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "Agents",
-     "Python",
-     "LLMs",
-     "RAG",
-     "Java",
-     "A/B testing"
-    ],
-    "needs": [
-     "Strong understanding of distributed systems, system architecture, data structures, algorithms, APIs, databases, scalability, reliability, and cloud-native development.",
-     "Expert-level programming experience in Python, Java, Go, TypeScript, or equivalent languages.",
-     "8+ years of software engineering experience, or equivalent practical experience."
-    ]
-   }
-  },
-  {
-   "title": "Senior Staff Software Engineer, ML/Quality Search",
-   "company": "Google",
-   "location": "Bengaluru",
-   "posted": "2026-11-20",
-   "url": "https://www.google.com/about/careers/applications/jobs/results/109675655980819142",
-   "exp": [
-    8,
-    null
-   ],
-   "exp_from": "jd",
-   "jd": {
-    "skills": [
-     "LLMs",
-     "NLP",
-     "Generative AI",
-     "MLOps",
-     "Recommender systems",
-     "Search and ranking"
-    ],
-    "needs": [
-     "8 years of experience in software development.",
-     "5 years of experience with one or more of the following: Speech/audio (e.g., technology duplicating and responding to the human voice), reinforcement learning (e.g.…",
-     "5 years of experience with design and architecture; and testing/launching software products."
     ]
    }
   }
